@@ -1,0 +1,26 @@
+[
+  {
+    "air": 1,
+    "year": 2025,
+    "name": "rank-1-candidate",
+    "optional": "Sociology",
+    "essay": 142,
+    "gs1": 118,
+    "gs2": 112,
+    "gs3": 121,
+    "gs4": 116,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 2,
+    "year": 2025,
+    "name": "rank-2-candidate",
+    "optional": "Geography",
+    "essay": 138,
+    "gs1": 121,
+    "gs2": 109,
+    "gs3": 126,
+    "gs4": 113,
+    "answer_copy": "unverified"
+  }
+]
