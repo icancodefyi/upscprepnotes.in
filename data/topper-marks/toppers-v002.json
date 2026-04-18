@@ -1,0 +1,112 @@
+[
+  {
+    "air": 1,
+    "year": 2025,
+    "optional": "Sociology",
+    "essay": 142,
+    "gs1": 118,
+    "gs2": 112,
+    "gs3": 121,
+    "gs4": 116,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 2,
+    "year": 2025,
+    "optional": "Geography",
+    "essay": 138,
+    "gs1": 121,
+    "gs2": 109,
+    "gs3": 126,
+    "gs4": 113,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 3,
+    "year": 2025,
+    "optional": "History",
+    "essay": 140,
+    "gs1": 110,
+    "gs2": 121,
+    "gs3": 118,
+    "gs4": 120,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 4,
+    "year": 2025,
+    "optional": "Public Administration",
+    "essay": 135,
+    "gs1": 125,
+    "gs2": 114,
+    "gs3": 119,
+    "gs4": 117,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 5,
+    "year": 2025,
+    "optional": "Anthropology",
+    "essay": 139,
+    "gs1": 116,
+    "gs2": 120,
+    "gs3": 122,
+    "gs4": 108,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 6,
+    "year": 2025,
+    "optional": "Philosophy",
+    "essay": 141,
+    "gs1": 119,
+    "gs2": 111,
+    "gs3": 120,
+    "gs4": 114,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 7,
+    "year": 2025,
+    "optional": "Political Science",
+    "essay": 137,
+    "gs1": 113,
+    "gs2": 122,
+    "gs3": 116,
+    "gs4": 125,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 8,
+    "year": 2025,
+    "optional": "Sociology",
+    "essay": 136,
+    "gs1": 120,
+    "gs2": 115,
+    "gs3": 123,
+    "gs4": 110,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 9,
+    "year": 2025,
+    "optional": "Geography",
+    "essay": 143,
+    "gs1": 112,
+    "gs2": 117,
+    "gs3": 121,
+    "gs4": 115,
+    "answer_copy": "unverified"
+  },
+  {
+    "air": 10,
+    "year": 2025,
+    "optional": "History",
+    "essay": 132,
+    "gs1": 124,
+    "gs2": 113,
+    "gs3": 117,
+    "gs4": 122,
+    "answer_copy": "unverified"
+  }
+]
