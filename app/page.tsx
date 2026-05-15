@@ -136,8 +136,8 @@ export default async function HomePage() {
               </div>
 
               {/* MARQUEE */}
-           <div className="relative mt-12 max-w-[900px] overflow-hidden rounded-full border border-black bg-black py-3">
-                <div className="marquee flex w-max items-center gap-10 whitespace-nowrap px-6 text-xs font-medium uppercase tracking-[0.22em] text-white">
+              <div className="relative mt-12 max-w-[900px] overflow-hidden rounded-full border border-black bg-black py-3 marquee-track">
+                <div className="marquee-content flex items-center gap-10 px-6">
                   <span>280+ Structured Topper Profiles</span>
 
                   <span>•</span>
