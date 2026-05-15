@@ -11,24 +11,27 @@ if (!DB_NAME) {
   throw new Error("Please define DB_NAME");
 }
 
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
+
 declare global {
-  var mongoose:
-    | {
-        conn: typeof mongoose | null;
-        promise: Promise<typeof mongoose> | null;
-      }
-    | undefined;
+  // eslint-disable-next-line no-var
+  var mongooseCache: MongooseCache | undefined;
 }
 
-const cached = global.mongoose || {
+const cached = global.mongooseCache || {
   conn: null,
   promise: null,
 };
 
-global.mongoose = cached;
+global.mongooseCache = cached;
 
 export async function connectDB() {
-  if (cached.conn) return cached.conn;
+  if (cached.conn) {
+    return cached.conn;
+  }
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
