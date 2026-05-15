@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
@@ -26,8 +27,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} UPSC AIR ${topper.rank} (${topper.year}) – ${topper.optionalSubject} Strategy & Marksheet`,
-
+    title: `${topper.firstName} ${topper.lastName} UPSC AIR ${topper.rank} (${topper.year})`,
     description: topper.bio?.slice(0, 160),
   };
 }
@@ -46,278 +46,527 @@ export default async function TopperPage({ params }: Props) {
     topper.slug
   );
 
+  const resources = [
+    {
+      title: "Essay Copy",
+      marks: topper.marks.essay,
+    },
+    {
+      title: "GS1 Copy",
+      marks: topper.marks.gs1,
+    },
+    {
+      title: "GS2 Copy",
+      marks: topper.marks.gs2,
+    },
+    {
+      title: "GS3 Copy",
+      marks: topper.marks.gs3,
+    },
+    {
+      title: "GS4 Copy",
+      marks: topper.marks.gs4,
+    },
+    {
+      title: `${topper.optionalSubject} Paper`,
+      marks: topper.marks.optional1,
+    },
+  ];
+
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      {/* HERO */}
-      <section className="mb-14 flex flex-col gap-8 rounded-3xl border p-8 md:flex-row">
-        <img
-  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
-  alt={`${topper.firstName} ${topper.lastName}`}
-  className="h-52 w-52 rounded-3xl object-cover"
-/>
+    <main className="min-h-screen bg-[#f8f7f4] text-black">
+      {/* GRID */}
+      <div
+        className="fixed inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, black 1px, transparent 1px),
+            linear-gradient(to bottom, black 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
 
-        <div className="flex-1">
-          <div className="mb-4 flex flex-wrap gap-3">
-            <span className="rounded-full border px-4 py-1 text-sm font-medium">
-              AIR {topper.rank}
-            </span>
-
-            <span className="rounded-full border px-4 py-1 text-sm font-medium">
-              UPSC {topper.year}
-            </span>
-
-            <span className="rounded-full border px-4 py-1 text-sm font-medium">
-              {topper.optionalSubject} Optional
-            </span>
-          </div>
-
-          <h1 className="mb-4 text-5xl font-bold tracking-tight">
-            {topper.firstName} {topper.lastName}
-          </h1>
-
-          <p className="max-w-3xl text-lg leading-8 text-zinc-600">
-            {topper.bio}
-          </p>
-
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="rounded-2xl border p-4">
-              <p className="text-sm text-zinc-500">Total Marks</p>
-
-              <p className="mt-2 text-2xl font-bold">
-                {topper.marks.total}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border p-4">
-              <p className="text-sm text-zinc-500">Written Marks</p>
-
-              <p className="mt-2 text-2xl font-bold">
-                {topper.marks.written}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border p-4">
-              <p className="text-sm text-zinc-500">Interview</p>
-
-              <p className="mt-2 text-2xl font-bold">
-                {topper.marks.interview}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border p-4">
-              <p className="text-sm text-zinc-500">Essay</p>
-
-              <p className="mt-2 text-2xl font-bold">
-                {topper.marks.essay}
-              </p>
-            </div>
-          </div>
+      {/* LEFT RAIL */}
+      <div className="fixed left-0 top-0 hidden h-screen w-14 border-r border-black/[0.05] xl:flex xl:flex-col xl:items-center xl:justify-between xl:py-6">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-sm font-medium shadow-sm">
+          N
         </div>
-      </section>
 
-      {/* MARKS */}
-      <section className="mb-14">
-        <h2 className="mb-6 text-3xl font-bold">
-          Marks Breakdown
-        </h2>
-
-        <div className="grid gap-8 md:grid-cols-3">
-          {/* GS */}
-          <div className="rounded-3xl border p-6">
-            <h3 className="mb-4 text-xl font-semibold">
-              General Studies
-            </h3>
-
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span>GS1</span>
-                <span>{topper.marks.gs1}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>GS2</span>
-                <span>{topper.marks.gs2}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>GS3</span>
-                <span>{topper.marks.gs3}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>GS4</span>
-                <span>{topper.marks.gs4}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* OPTIONAL */}
-          <div className="rounded-3xl border p-6">
-            <h3 className="mb-4 text-xl font-semibold">
-              Optional Subject
-            </h3>
-
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span>Subject</span>
-                <span>{topper.optionalSubject}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Paper 1</span>
-                <span>{topper.marks.optional1}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Paper 2</span>
-                <span>{topper.marks.optional2}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* FINAL */}
-          <div className="rounded-3xl border p-6">
-            <h3 className="mb-4 text-xl font-semibold">
-              Final Scores
-            </h3>
-
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span>Essay</span>
-                <span>{topper.marks.essay}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Written</span>
-                <span>{topper.marks.written}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Interview</span>
-                <span>{topper.marks.interview}</span>
-              </div>
-
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>{topper.marks.total}</span>
-              </div>
-            </div>
-          </div>
+        <div className="rotate-180 text-[9px] uppercase tracking-[0.35em] text-zinc-400 [writing-mode:vertical-rl]">
+          UPSC Intelligence Archive
         </div>
-      </section>
 
-      {/* INSIGHTS */}
-      {topper.insights?.length > 0 && (
-        <section className="mb-14">
-          <h2 className="mb-6 text-3xl font-bold">
-            Key Insights
-          </h2>
+        <div className="text-[10px] text-zinc-300">
+          2026
+        </div>
+      </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {topper.insights.map(
-              (insight: string, index: number) => (
-                <div
-                  key={index}
-                  className="rounded-2xl border p-5"
-                >
-                  <p className="leading-7 text-zinc-700">
-                    {insight}
+      <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-10 xl:ml-20">
+        {/* BREADCRUMB */}
+        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+          <Link href="/">Home</Link>
+          <span>•</span>
+          <Link href="/">Toppers</Link>
+          <span>•</span>
+          <span>{topper.year}</span>
+          <span>•</span>
+          <span>{topper.optionalSubject}</span>
+        </div>
+
+        {/* HERO */}
+        <section className="mb-28">
+          <div className="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
+            {/* LEFT */}
+            <div className="lg:sticky lg:top-10 lg:h-fit">
+              <div className="overflow-hidden rounded-[28px] border border-black/[0.06] bg-white">
+                <img
+                  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
+                  alt={`${topper.firstName} ${topper.lastName}`}
+                  className="h-full w-full bg-[#f3f3f3]"
+                />
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-4">
+                  <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+                    AIR
+                  </p>
+
+                  <p className="mt-2 text-4xl font-semibold">
+                    {topper.rank}
                   </p>
                 </div>
-              )
-            )}
+
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-4">
+                  <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+                    Total Marks
+                  </p>
+
+                  <p className="mt-2 text-4xl font-semibold">
+                    {topper.marks.total}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div>
+              <div className="mb-5 flex flex-wrap gap-3">
+                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                  UPSC {topper.year}
+                </span>
+
+                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                  {topper.optionalSubject}
+                </span>
+
+                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                  Interview {topper.marks.interview}
+                </span>
+              </div>
+
+              <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">
+                {topper.firstName} {topper.lastName}
+              </h1>
+
+              <p className="mt-8 max-w-3xl text-lg leading-9 text-zinc-700">
+                {topper.bio}
+              </p>
+
+              {/* QUICK STATS */}
+              <div className="mt-10 grid overflow-hidden rounded-[30px] border border-black/[0.06] bg-white md:grid-cols-4">
+                {[
+                  {
+                    label: "Written",
+                    value: topper.marks.written,
+                  },
+                  {
+                    label: "Essay",
+                    value: topper.marks.essay,
+                  },
+                  {
+                    label: "Interview",
+                    value: topper.marks.interview,
+                  },
+                  {
+                    label: "Total",
+                    value: topper.marks.total,
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="border-b border-black/[0.05] p-6 last:border-b-0 md:border-b-0 md:border-r last:md:border-r-0"
+                  >
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+                      {item.label}
+                    </p>
+
+                    <p className="mt-3 text-4xl font-semibold tracking-tight">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
-      )}
 
-      {/* STRATEGY */}
-      <section className="mb-14">
-        <h2 className="mb-6 text-3xl font-bold">
-          Preparation Strategy
-        </h2>
+        {/* MARKS */}
+        <section className="mb-28">
+          <div className="mb-10 flex items-end justify-between">
+            <div>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+                Marks Intelligence
+              </p>
 
-        <article className="prose prose-zinc max-w-none">
-          <ReactMarkdown>
-            {topper.strategy}
-          </ReactMarkdown>
-        </article>
-      </section>
+              <h2 className="text-4xl font-semibold tracking-tight">
+                Performance Breakdown
+              </h2>
+            </div>
 
-      {/* FAQ */}
-      <section className="mb-14">
-        <h2 className="mb-6 text-3xl font-bold">
-          Frequently Asked Questions
-        </h2>
-
-        <div className="space-y-4">
-          <div className="rounded-2xl border p-5">
-            <h3 className="mb-2 font-semibold">
-              What was {topper.firstName} {topper.lastName}'s UPSC rank?
-            </h3>
-
-            <p className="text-zinc-700">
-              {topper.firstName} {topper.lastName} secured AIR{" "}
-              {topper.rank} in UPSC CSE {topper.year}.
+            <p className="hidden max-w-sm text-sm leading-7 text-zinc-500 lg:block">
+              Structured marks analysis across General Studies,
+              optional subject papers, essay, and personality test.
             </p>
           </div>
 
-          <div className="rounded-2xl border p-5">
-            <h3 className="mb-2 font-semibold">
-              What was the optional subject?
-            </h3>
+          <div className="overflow-hidden rounded-[36px] border border-black/[0.06] bg-white">
+            <div className="grid md:grid-cols-3">
+              {/* GS */}
+              <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
+                <h3 className="mb-8 text-lg font-semibold">
+                  General Studies
+                </h3>
 
-            <p className="text-zinc-700">
-              {topper.firstName} chose{" "}
-              {topper.optionalSubject} as the optional subject.
+                <div className="space-y-5">
+                  {[
+                    {
+                      label: "GS1",
+                      value: topper.marks.gs1,
+                    },
+                    {
+                      label: "GS2",
+                      value: topper.marks.gs2,
+                    },
+                    {
+                      label: "GS3",
+                      value: topper.marks.gs3,
+                    },
+                    {
+                      label: "GS4",
+                      value: topper.marks.gs4,
+                    },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <div className="mb-2 flex items-center justify-between text-sm">
+                        <span>{item.label}</span>
+                        <span>{item.value}</span>
+                      </div>
+
+                      <div className="h-[2px] bg-zinc-200">
+                        <div
+                          className="h-full bg-black"
+                          style={{
+                            width: `${(item.value / 150) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* OPTIONAL */}
+              <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
+                <h3 className="mb-8 text-lg font-semibold">
+                  Optional Subject
+                </h3>
+
+                <div className="rounded-2xl bg-[#f6f6f6] p-4">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                    Subject
+                  </p>
+
+                  <p className="mt-2 text-xl font-semibold">
+                    {topper.optionalSubject}
+                  </p>
+                </div>
+
+                <div className="mt-6 space-y-5">
+                  {[
+                    {
+                      label: "Paper 1",
+                      value: topper.marks.optional1,
+                    },
+                    {
+                      label: "Paper 2",
+                      value: topper.marks.optional2,
+                    },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <div className="mb-2 flex items-center justify-between text-sm">
+                        <span>{item.label}</span>
+                        <span>{item.value}</span>
+                      </div>
+
+                      <div className="h-[2px] bg-zinc-200">
+                        <div
+                          className="h-full bg-black"
+                          style={{
+                            width: `${(item.value / 180) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* FINAL */}
+              <div className="p-8">
+                <h3 className="mb-8 text-lg font-semibold">
+                  Final Scores
+                </h3>
+
+                <div className="space-y-5">
+                  {[
+                    {
+                      label: "Essay",
+                      value: topper.marks.essay,
+                    },
+                    {
+                      label: "Written",
+                      value: topper.marks.written,
+                    },
+                    {
+                      label: "Interview",
+                      value: topper.marks.interview,
+                    },
+                    {
+                      label: "Total",
+                      value: topper.marks.total,
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex items-center justify-between border-b border-black/[0.05] pb-4 last:border-b-0"
+                    >
+                      <span className="text-zinc-600">
+                        {item.label}
+                      </span>
+
+                      <span className="text-lg font-semibold">
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* INSIGHTS */}
+        {topper.insights?.length > 0 && (
+          <section className="mb-28">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+              Key Learnings
+            </p>
+
+            <h2 className="mb-10 text-4xl font-semibold tracking-tight">
+              Preparation Patterns & Insights
+            </h2>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              {topper.insights.map(
+                (insight: string, index: number) => (
+                  <div
+                    key={index}
+                    className="rounded-3xl border border-black/[0.06] bg-white p-6"
+                  >
+                    <p className="leading-8 text-zinc-700">
+                      {insight}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* STRATEGY */}
+        <section className="mb-28">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+            Strategy Archive
+          </p>
+
+          <h2 className="mb-10 text-4xl font-semibold tracking-tight">
+            Preparation Strategy
+          </h2>
+
+          <article className="max-w-4xl">
+            <div className="rounded-[36px] border border-black/[0.06] bg-white p-8 md:p-12">
+              <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-8">
+                <ReactMarkdown>
+                  {topper.strategy}
+                </ReactMarkdown>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        {/* RESOURCES */}
+        <section className="mb-28">
+          <div className="mb-10 flex items-end justify-between">
+            <div>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+                Resource Archive
+              </p>
+
+              <h2 className="text-4xl font-semibold tracking-tight">
+                Answer Copies & Resources
+              </h2>
+            </div>
+
+            <p className="hidden max-w-sm text-sm leading-7 text-zinc-500 lg:block">
+              Structured answer writing resources and paper-wise
+              archives.
             </p>
           </div>
 
-          <div className="rounded-2xl border p-5">
-            <h3 className="mb-2 font-semibold">
-              What were the interview marks?
-            </h3>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {resources.map((resource) => (
+              <div
+                key={resource.title}
+                className="group rounded-[28px] border border-black/[0.06] bg-white p-6 transition duration-300 hover:-translate-y-[2px]"
+              >
+                <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                  Resource
+                </p>
 
-            <p className="text-zinc-700">
-              {topper.firstName} scored{" "}
-              {topper.marks.interview} marks in the UPSC personality test.
-            </p>
+                <h3 className="mt-4 text-2xl font-semibold">
+                  {resource.title}
+                </h3>
+
+                <p className="mt-2 text-sm text-zinc-500">
+                  {resource.marks} Marks
+                </p>
+
+                <p className="mt-5 text-sm leading-7 text-zinc-600">
+                  Structured topper resource archive and answer
+                  writing material.
+                </p>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <span className="text-sm font-medium">
+                    View Resource
+                  </span>
+
+                  <span className="transition group-hover:translate-x-1">
+                    →
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* RELATED TOPPERS */}
-      <section>
-        <h2 className="mb-6 text-3xl font-bold">
-          Related {topper.optionalSubject} Toppers
-        </h2>
+        {/* FAQ */}
+        <section className="mb-28">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+            FAQ
+          </p>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {relatedToppers.map((related: any) => (
-            <a
-              key={related.slug}
-              href={`/upsc-topper/${related.slug}`}
-              className="rounded-3xl border p-5 transition hover:border-black"
+          <h2 className="mb-10 text-4xl font-semibold tracking-tight">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-5">
+            {[
+              {
+                q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
+                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
+              },
+              {
+                q: "What was the optional subject?",
+                a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject.`,
+              },
+              {
+                q: "What were the interview marks?",
+                a: `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test.`,
+              },
+            ].map((faq, index) => (
+              <div
+                key={index}
+                className="rounded-[28px] border border-black/[0.06] bg-white p-6"
+              >
+                <h3 className="text-lg font-semibold">
+                  {faq.q}
+                </h3>
+
+                <p className="mt-3 leading-8 text-zinc-600">
+                  {faq.a}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* RELATED */}
+        <section>
+          <div className="mb-10 flex items-end justify-between">
+            <div>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+                Related Profiles
+              </p>
+
+              <h2 className="text-4xl font-semibold tracking-tight">
+                Related {topper.optionalSubject} Toppers
+              </h2>
+            </div>
+
+            <Link
+              href="/"
+              className="hidden text-sm text-zinc-500 transition hover:text-black md:block"
             >
-              <img
-  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${related.firstName}-${related.lastName}`}
-  alt={`${related.firstName} ${related.lastName}`}
-  className="h-52 w-52 rounded-3xl object-cover"
-/>
-              <h3 className="text-xl font-semibold">
-                {related.firstName} {related.lastName}
-              </h3>
+              View All Toppers →
+            </Link>
+          </div>
 
-              <p className="mt-2 text-zinc-600">
-                AIR {related.rank} • {related.year}
-              </p>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {relatedToppers.map((related: any) => (
+              <Link
+                key={related.slug}
+                href={`/upsc-topper/${related.slug}`}
+                className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+              >
+                <div className="flex items-center gap-4">
+                  <img
+                    src={`https://api.dicebear.com/9.x/notionists/svg?seed=${related.firstName}-${related.lastName}`}
+                    alt={`${related.firstName} ${related.lastName}`}
+                    className="h-20 w-20 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                  />
 
-              <p className="mt-1 text-zinc-600">
-                {related.optionalSubject}
-              </p>
-            </a>
-          ))}
-        </div>
-      </section>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                      AIR {related.rank} • {related.year}
+                    </p>
+
+                    <h3 className="mt-2 text-xl font-semibold">
+                      {related.firstName} {related.lastName}
+                    </h3>
+
+                    <p className="mt-2 text-sm text-zinc-500">
+                      {related.optionalSubject}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
