@@ -45,6 +45,22 @@ const topperSchema = new Schema(
       gs4: [String],
       essay: [String],
     },
+    resources: {
+      essayLinks: [String],
+      gs1Links: [String],
+      gs2Links: [String],
+      gs3Links: [String],
+      gs4Links: [String],
+    },
+    image: {
+      profileImage: String,
+      imageUrl: String,
+    },
+    metadata: {
+      migratedAt: Date,
+      enrichedAt: Date,
+      lastTriedAt: Date,
+    },
     isFeatured: {
       type: Boolean,
       default: false,
