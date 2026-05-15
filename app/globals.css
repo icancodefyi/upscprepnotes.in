@@ -125,3 +125,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* marquee styles */
+.marquee-track {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-content {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+
+  padding-left: 24px;
+
+  white-space: nowrap;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
