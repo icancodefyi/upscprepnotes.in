@@ -45,6 +45,14 @@ const topperSchema = new Schema(
       gs4: [String],
       essay: [String],
     },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    isIndexed: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
