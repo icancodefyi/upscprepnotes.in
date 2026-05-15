@@ -108,7 +108,7 @@ export default async function HomePage() {
                 <span>Structured Knowledge Archive</span>
               </div>
 
-            <h1 className="max-w-[820px] text-5xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-6xl md:text-7xl lg:text-[64px] xl:text-[76px]">
+            <h1 className="max-w-[820px] text-3xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-4xl md:text-5xl lg:text-6xl xl:text-[64px]">
   Structured UPSC preparation intelligence.
 </h1>
 
@@ -137,7 +137,7 @@ export default async function HomePage() {
 
               {/* MARQUEE */}
               <div className="relative mt-12 max-w-[900px] overflow-hidden rounded-full border border-black bg-black py-3 marquee-track">
-                <div className="marquee-content flex items-center gap-10 px-6">
+                <div className="marquee-content flex items-center gap-6 px-4 text-[10px] sm:gap-10 sm:px-6 sm:text-xs md:text-sm">
                   <span>280+ Structured Topper Profiles</span>
 
                   <span>•</span>
@@ -234,27 +234,26 @@ export default async function HomePage() {
               <Link
                 key={topper.slug}
                 href={`/upsc-topper/${topper.slug}`}
-                className="group grid gap-6 rounded-[32px] border border-transparent bg-transparent px-4 py-5 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 hover:shadow-[0_8px_30px_rgba(0,0,0,0.03)] md:px-6 md:py-6 lg:grid-cols-[50px_100px_minmax(0,1fr)_160px]"
+                className="group grid gap-3 md:gap-6 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 hover:shadow-[0_8px_30px_rgba(0,0,0,0.03)] md:grid-cols-[50px_100px_minmax(0,1fr)_160px] grid-cols-1"
               >
                 {/* INDEX */}
-                <div className="pt-2">
+                <div className="hidden md:block pt-2">
                   <p className="text-xs text-zinc-400">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                 </div>
-
                 {/* AVATAR */}
-                <div>
+                <div className="w-fit">
                   <img
                     src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
                     alt={`${topper.firstName} ${topper.lastName}`}
-                    className="h-20 w-20 rounded-2xl border border-black/5 bg-white shadow-sm"
+                    className="h-16 w-16 md:h-20 md:w-20 rounded-2xl border border-black/5 bg-white shadow-sm"
                   />
                 </div>
 
                 {/* CONTENT */}
-                <div>
-                  <div className="mb-3 flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+                <div className="min-w-0">
+                  <div className="mb-2 md:mb-3 flex flex-wrap gap-2 md:gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
                     <span>AIR {topper.rank}</span>
 
                     <span>•</span>
@@ -266,33 +265,33 @@ export default async function HomePage() {
                     <span>{topper.optionalSubject}</span>
                   </div>
 
-                  <h3 className="text-[30px] font-semibold tracking-tight transition duration-300 group-hover:translate-x-1">
+                  <h3 className="text-lg md:text-[30px] font-semibold tracking-tight transition duration-300 group-hover:translate-x-1 truncate">
                     {topper.firstName} {topper.lastName}
                   </h3>
 
-                  <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-800">
+                  <p className="hidden md:block mt-3 max-w-3xl text-sm leading-7 text-zinc-800">
                     {topper.bio?.slice(0, 220)}...
                   </p>
                 </div>
 
                 {/* SCORE */}
-                <div className="border-l border-black/[0.04] pl-5">
+                <div className="border-l border-black/[0.04] pl-3 md:pl-5">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-zinc-500">
                       Total
                     </p>
 
-                    <p className="mt-1 text-2xl font-semibold tracking-tight">
+                    <p className="mt-1 text-lg md:text-2xl font-semibold tracking-tight">
                       {topper.marks.total}
                     </p>
                   </div>
 
                   <div className="mt-5">
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-zinc-500">
                       Interview
                     </p>
 
-                    <p className="mt-1 text-lg font-medium">
+                    <p className="mt-1 text-base md:text-lg font-medium">
                       {topper.marks.interview}
                     </p>
                   </div>

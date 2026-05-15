@@ -89,36 +89,36 @@ export default async function SubjectPage({ params }: Props) {
             Optional Subject Intelligence
           </p>
 
-          <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
             {subjectInfo.name}
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-800">
+          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-zinc-800">
             {subjectInfo.description}
           </p>
         </div>
 
         {/* STATS */}
         {stats && (
-          <div className="grid gap-8 md:grid-cols-4">
+          <div className="grid gap-4 sm:gap-8 grid-cols-2 sm:grid-cols-4">
             <div>
-              <p className="text-3xl font-semibold">{stats.totalToppers}</p>
-              <p className="mt-2 text-sm text-zinc-600">Toppers</p>
+              <p className="text-2xl sm:text-3xl font-semibold">{stats.totalToppers}</p>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Toppers</p>
             </div>
 
             <div>
-              <p className="text-3xl font-semibold">{stats.avgMarks}</p>
-              <p className="mt-2 text-sm text-zinc-600">Avg Marks</p>
+              <p className="text-2xl sm:text-3xl font-semibold">{stats.avgMarks}</p>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Avg Marks</p>
             </div>
 
             <div>
-              <p className="text-3xl font-semibold">{stats.maxMarks}</p>
-              <p className="mt-2 text-sm text-zinc-600">Highest Marks</p>
+              <p className="text-2xl sm:text-3xl font-semibold">{stats.maxMarks}</p>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Highest Marks</p>
             </div>
 
             <div>
-              <p className="text-3xl font-semibold">{stats.minMarks}</p>
-              <p className="mt-2 text-sm text-zinc-600">Lowest Marks</p>
+              <p className="text-2xl sm:text-3xl font-semibold">{stats.minMarks}</p>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Lowest Marks</p>
             </div>
           </div>
         )}
@@ -142,22 +142,22 @@ export default async function SubjectPage({ params }: Props) {
               <Link
                 key={topper._id}
                 href={`/upsc-topper/${topper.slug}`}
-                className="group grid gap-4 rounded-[32px] border border-transparent bg-transparent px-4 py-5 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 md:px-6 md:py-6 lg:grid-cols-[100px_minmax(0,1fr)_120px]"
+                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
               >
                 <div>
                   <img
                     src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
                     alt={`${topper.firstName} ${topper.lastName}`}
-                    className="h-20 w-20 rounded-2xl border border-black/5 bg-white shadow-sm"
+                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-white shadow-sm"
                   />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold tracking-tight transition duration-300 group-hover:translate-x-1">
+                  <h3 className="text-lg md:text-xl font-semibold tracking-tight transition duration-300 group-hover:translate-x-1">
                     {topper.firstName} {topper.lastName}
                   </h3>
 
-                  <div className="mt-2 flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+                  <div className="mt-2 flex flex-wrap gap-2 md:gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
                     <span>AIR {topper.rank}</span>
                     <span>•</span>
                     <span>{topper.year}</span>
@@ -166,11 +166,11 @@ export default async function SubjectPage({ params }: Props) {
 
                 <div className="flex items-center justify-end">
                   <div className="text-right">
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-zinc-500">
                       Total
                     </p>
 
-                    <p className="mt-1 text-2xl font-semibold">
+                    <p className="mt-1 text-lg md:text-2xl font-semibold">
                       {topper.marks?.total || "—"}
                     </p>
                   </div>
