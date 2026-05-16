@@ -10,26 +10,12 @@ function slugify(name) {
 }
 
 const NAMES = [
-  "Ishita Kishore",
-  "Garima Lohia",
-  "Shakti Dubey",
-  "Harshita Goyal",
-  "Uma Harathi",
-  "Smriti Mishra",
-  "Mayur Hazarika",
-  "Rahul Shrivastava",
-  "Animesh Pradhan",
-  "Donuru Ananya Reddy",
-  "Rohit Kumar",
-  "Vandana Singh",
-  "Kavita Sharma",
-  "Sourabh Verma",
-  "Neha Patel",
-  "Arjun Rao",
-  "Priya Nair",
-  "Siddharth Mehta",
-  "Megha Joshi",
-  "Aman Gupta",
+" Garima Lohia",
+"Divya Tanwar",
+"Shakti Dubey",
+"Harshita Goyal",
+"UMA Harathi",
+"Smriti Mishra"
 ];
 
 const topperSchema = new mongoose.Schema(
