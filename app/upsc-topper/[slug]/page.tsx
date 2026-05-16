@@ -73,8 +73,189 @@ export default async function TopperPage({ params }: Props) {
     },
   ];
 
+  function getSubjectSlug(subject: string) {
+    if (!subject) return "";
+    const s = subject.toLowerCase().trim();
+    const slugMap: Record<string, string> = {
+      "political science & international relations": "psir",
+      "political science": "psir",
+      psir: "psir",
+      "public administration": "public-administration",
+      mathematics: "mathematics",
+      sociology: "sociology",
+      geography: "geography",
+      philosophy: "philosophy",
+      anthropology: "anthropology",
+      history: "history",
+      law: "law",
+    };
+    if (slugMap[s]) return slugMap[s];
+    return s.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  }
+
+  // Resource intent architecture (near top)
+  const resourceIntent = [
+    { key: "essay", title: "Essay Strategy", available: (topper.resources?.essayLinks || []).length > 0 },
+    { key: "gs1", title: "GS1 Insights", available: (topper.resources?.gs1Links || []).length > 0 },
+    { key: "gs2", title: "GS2 Insights", available: (topper.resources?.gs2Links || []).length > 0 },
+    { key: "ethics", title: "Ethics Preparation", available: false },
+    { key: "optional", title: `${topper.optionalSubject} Notes`, available: ((topper.resources?.gs1Links || [])?.length > 0) || ((topper.answerCopies?.essay || [])?.length > 0) },
+  ];
+
+  // Strategy section restructuring
+  const SECTION_TITLES = [
+    "Background",
+    "Educational Journey",
+    "UPSC Attempts",
+    "Prelims Strategy",
+    "Mains Strategy",
+    "Optional Subject Strategy",
+    "Essay Preparation",
+    "Interview Preparation",
+    "Mistakes & Learnings",
+    "Key Takeaways",
+  ];
+
+  function extractSections(markdown: string) {
+    if (!markdown) return {} as Record<string, string>;
+
+    // detect explicit headings first
+    const headingRegex = /^(#{1,6})\s*(.+)$/gm;
+    const matches = [...markdown.matchAll(headingRegex)];
+
+    if (matches.length > 0) {
+      // split by headings
+      const parts: Record<string, string> = {};
+      const lines = markdown.split(/\r?\n/);
+      let current: string | null = null;
+      let buffer: string[] = [];
+
+      for (const line of lines) {
+        const m = line.match(/^(#{1,6})\s*(.+)$/);
+        if (m) {
+          if (current) parts[current] = buffer.join("\n").trim();
+          current = m[2].trim();
+          buffer = [];
+        } else {
+          buffer.push(line);
+        }
+      }
+
+      if (current) parts[current] = buffer.join("\n").trim();
+
+      // map to desired titles
+      const result: Record<string, string> = {};
+      for (const t of SECTION_TITLES) {
+        // find case-insensitive matching heading
+        const key = Object.keys(parts).find((k) => k.toLowerCase().includes(t.toLowerCase()));
+        if (key) result[t] = parts[key];
+      }
+
+      return result;
+    }
+
+    // fallback: split into paragraphs and assign sequentially
+    const paragraphs = markdown.split(/\n\s*\n+/).map((p) => p.trim()).filter(Boolean);
+    const fallback: Record<string, string> = {};
+    for (let i = 0; i < paragraphs.length && i < SECTION_TITLES.length; i++) {
+      fallback[SECTION_TITLES[i]] = paragraphs[i];
+    }
+
+    return fallback;
+  }
+
+  const structuredStrategy = extractSections(topper.strategy || "");
+
+  // FAQ Schema
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `What was ${topper.firstName}'s optional subject?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} chose ${topper.optionalSubject} as the optional subject.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `What were ${topper.firstName}'s interview marks?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test.`,
+        },
+      },
+    ],
+  };
+
+  // Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://upscprepnotes.in",
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `${topper.year}`,
+        "item": `https://upscprepnotes.in/year/${topper.year}`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": `${topper.optionalSubject}`,
+        "item": `https://upscprepnotes.in/optional/${getSubjectSlug(topper.optionalSubject)}`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": `${topper.firstName} ${topper.lastName}`,
+        "item": `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+      },
+    ],
+  };
+
+  // Person Schema
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": `${topper.firstName} ${topper.lastName}`,
+    "description": topper.bio || `UPSC AIR ${topper.rank} (${topper.year})`,
+    "jobTitle": `UPSC CSE ${topper.year} AIR ${topper.rank}`,
+    "url": `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+  };
+
   return (
     <main className="min-h-screen bg-[#f8f7f4] text-black">
+      {/* JSON-LD Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+
       {/* GRID */}
       <div
         className="fixed inset-0 opacity-[0.03]"
@@ -105,13 +286,17 @@ export default async function TopperPage({ params }: Props) {
       <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-10 xl:ml-20">
         {/* BREADCRUMB */}
         <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
-          <Link href="/">Home</Link>
+          <Link href="/" className="transition hover:text-black">
+            Home
+          </Link>
           <span>•</span>
-          <Link href="/">Toppers</Link>
+          <Link href={`/year/${topper.year}`} className="transition hover:text-black">
+            {topper.year}
+          </Link>
           <span>•</span>
-          <span>{topper.year}</span>
-          <span>•</span>
-          <span>{topper.optionalSubject}</span>
+          <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-black">
+            {topper.optionalSubject}
+          </Link>
         </div>
 
         {/* HERO */}
@@ -209,6 +394,40 @@ export default async function TopperPage({ params }: Props) {
                 ))}
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* AVAILABLE RESOURCES (near top) */}
+        <section className="mb-16">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <p className="mb-2 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+                Available Resources
+              </p>
+
+              <h3 className="text-2xl font-semibold tracking-tight">
+                Resource Intent
+              </h3>
+            </div>
+
+            <div className="hidden text-sm text-zinc-500 md:block">
+              Resource intent helps users and search engines discover focused materials.
+            </div>
+          </div>
+
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {resourceIntent.map((r) => (
+              <div key={r.key} className="rounded-xl border border-black/[0.06] bg-white p-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-lg font-semibold">{r.title}</h4>
+                  <span className={`text-sm font-medium ${r.available ? 'text-green-600' : 'text-zinc-400'}`}>
+                    {r.available ? 'Available' : 'Coming Soon'}
+                  </span>
+                </div>
+
+                <p className="mt-3 text-sm text-zinc-600">{r.available ? 'Structured material available — view in the Resources section.' : 'Planned resource. Will be added soon.'}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -408,9 +627,23 @@ export default async function TopperPage({ params }: Props) {
           <article className="max-w-4xl">
             <div className="rounded-[36px] border border-black/[0.06] bg-white p-8 md:p-12">
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-8">
-                <ReactMarkdown>
-                  {topper.strategy}
-                </ReactMarkdown>
+                {Object.keys(structuredStrategy).length > 0 ? (
+                  SECTION_TITLES.map((title) => {
+                    const content = structuredStrategy[title];
+                    if (!content) return null;
+
+                    return (
+                      <section key={title} className="mb-8">
+                        <h3 className="text-2xl font-semibold">{title}</h3>
+                        <div className="mt-4">
+                          <ReactMarkdown>{content}</ReactMarkdown>
+                        </div>
+                      </section>
+                    );
+                  })
+                ) : (
+                  <ReactMarkdown>{topper.strategy}</ReactMarkdown>
+                )}
               </div>
             </div>
           </article>
@@ -496,6 +729,18 @@ export default async function TopperPage({ params }: Props) {
                 q: "What were the interview marks?",
                 a: `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test.`,
               },
+              {
+                q: "What were the total marks?",
+                a: `${topper.firstName} obtained a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
+              },
+              {
+                q: "Are the topper's answer copies available?",
+                a: (topper.answerCopies && Object.values(topper.answerCopies).some((arr: any[]) => arr && arr.length > 0)) ? 'Yes — some answer copies are linked in the Resources section when available.' : 'No public answer copies are available for this profile.',
+              },
+              {
+                q: "Are there any quick takeaways from their preparation?",
+                a: topper.insights && topper.insights.length > 0 ? `${topper.firstName} shared ${topper.insights.length} key insights — see the Key Learnings section.` : 'No structured takeaways are available.',
+              },
             ].map((faq, index) => (
               <div
                 key={index}
@@ -510,6 +755,19 @@ export default async function TopperPage({ params }: Props) {
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* INTERNAL LINKS */}
+        <section className="mb-8">
+          <div className="flex flex-wrap gap-4">
+            <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium">
+              Explore More {topper.optionalSubject} Toppers →
+            </Link>
+
+            <Link href={`/year/${topper.year}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium">
+              More UPSC {topper.year} Toppers →
+            </Link>
           </div>
         </section>
 

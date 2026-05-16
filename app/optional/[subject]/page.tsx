@@ -8,30 +8,103 @@ interface Props {
   }>;
 }
 
-const SUBJECT_DATA: Record<string, { name: string; description: string }> = {
+const SUBJECT_DATA: Record<
+  string,
+  { name: string; description: string; overview?: string; whyPopular?: string; booklist?: string[]; prepInsights?: string[] }
+> = {
   psir: {
     name: "Political Science & International Relations",
     description:
       "Explore UPSC topper strategies, booklists, and preparation insights for PSIR optional subject.",
+    overview:
+      "PSIR (Political Science & International Relations) combines theory with contemporary polity and international affairs — ideal for candidates who enjoy conceptual analysis and current affairs.",
+    whyPopular:
+      "PSIR is popular due to its overlap with GS papers, conceptual clarity, and a large answer-writing scope across polity and international relations.",
+    booklist: [
+      "Laxmikanth — Indian Polity",
+      "A.C. Kapur — Select Essays on Political Thought",
+      "K. Kautilya / Thucydides (select readings) — for IR theory context",
+      "Oxford Handbook chapters (select) — modern IR debates",
+    ],
+    prepInsights: [
+      "Focus on core theorists and map theory to current events.",
+      "Prioritise answer structuring for normative questions.",
+      "Use timeline-based revision for IR case studies.",
+    ],
+  },
+  "public-administration": {
+    name: "Public Administration",
+    description: "Public Administration optional: administrative theory, governance, and policy implementation.",
+    overview: "Public Administration covers government structures, bureaucratic organization, and policy implementation — ideal for candidates interested in governance and administrative processes.",
+    whyPopular: "PA has direct overlap with GS papers and is conceptually coherent with clear answer-writing frameworks.",
+    booklist: ["M.P. Sharma & B.L. Sadana — Public Administration in India (core text)", "Maheshwari — Public Administration"],
+    prepInsights: ["Use case studies from Indian administrative reforms.", "Link administrative concepts to contemporary governance challenges."],
+  },
+  mathematics: {
+    name: "Mathematics",
+    description: "Mathematics optional: pure and applied mathematics topics with problem-solving focus.",
+    overview: "Mathematics covers pure and applied domains — ideal for candidates with strong quantitative foundation.",
+    booklist: ["Higher Secondary Mathematics textbooks (NCERT)", "Problem-solving resources for calculus and algebra"],
   },
   sociology: {
     name: "Sociology",
     description:
       "Discover top UPSC strategies for Sociology optional with topper profiles, marks analysis, and preparation trends.",
+    overview:
+      "Sociology optional focuses on Indian society, social institutions, and change — ideal for candidates interested in social theory, cultural analysis, and policy implications.",
+    whyPopular:
+      "Sociology is popular for its conceptual depth, reasonable answer-writing scope, and clear connection to General Studies papers on social movements and development.",
+    booklist: [
+      "D.P. Mukerji — Sociology (foundational text)",
+      "Yogendra Singh — Culture and Civilization of Ancient India",
+      "M.N. Srinivas — Religion and Society Among the Coorgs",
+      "G.S. Ghurye — Caste and Race in India",
+      "A.R. Desai — Social Background of Indian Nationalism",
+    ],
+    prepInsights: [
+      "Map sociological concepts to contemporary Indian society issues.",
+      "Build case studies around social movements and institutional change.",
+      "Connect sociology to GS (poverty, inequality, gender) for internal linking.",
+    ],
   },
   anthropology: {
     name: "Anthropology",
     description:
       "Master UPSC Anthropology optional: topper strategies, score trends, and preparation intelligence.",
+    overview:
+      "Anthropology covers human evolution, ethnography, and cultural diversity — combining physical, social, and cultural dimensions for comprehensive preparation.",
+    whyPopular:
+      "Anthropology combines unique topics (tribal studies, kinship, migration) with strong ethical dimensions and clear links to GS papers on development and social policy.",
+    booklist: [
+      "K.L. Sharma — Social Stratification in India",
+      "D.N. Majumdar — Races and Cultures of India",
+      "M.N. Srinivas — Religion and Society Among the Coorgs",
+      "Verrier Elwin — Tribal Life in India (key ethnographic source)",
+      "Barbara Bode — No Bells to Ring: Victim Voices and Structural Silence in the 1905 Maji Maji Uprising",
+    ],
+    prepInsights: [
+      "Use ethnographic examples to structure answers on kinship and social structure.",
+      "Build timelines for human evolution and migration patterns.",
+      "Connect tribal and indigenous studies to current policy debates.",
+    ],
+  },
+  geography: {
+    name: "Geography",
+    description: "Geography optional: physical and human geography with map skills and case studies.",
+    overview: "Geography combines physical processes, human systems, and environmental issues — with strong practical components like map work.",
+    whyPopular: "Geography has clear connections to GS and offers unique preparation with cartography, regional studies, and environmental policy.",
+    prepInsights: ["Build strong map reading and annotation skills.", "Use case studies for human-environment interactions.", "Connect to current events in climate policy."],
+  },
+  philosophy: {
+    name: "Philosophy",
+    description: "Philosophy optional: Indian and Western philosophical thought and applied ethics.",
+    overview: "Philosophy covers Indian philosophical schools, Western philosophy, and applied ethics — for conceptual depth and critical thinking.",
+    booklist: ["S. Radhakrishnan — Indian Philosophy (comprehensive)", "Debiprasad Chattopadhyaya — Marxist Approach to Ancient Indian Philosophy"],
   },
 };
 
 export async function generateStaticParams() {
-  return [
-    { subject: "psir" },
-    { subject: "sociology" },
-    { subject: "anthropology" },
-  ];
+  return Object.keys(SUBJECT_DATA).map((s) => ({ subject: s }));
 }
 
 async function getSubjectStats(subjectName: string) {
@@ -123,6 +196,53 @@ export default async function SubjectPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      {/* SUBJECT DETAIL SECTIONS */}
+      {(subjectInfo.overview || subjectInfo.whyPopular || (subjectInfo.booklist || []).length > 0 || (subjectInfo.prepInsights || []).length > 0) && (
+        <section className="mx-auto max-w-5xl px-6 py-8 md:py-12">
+          <div className="mb-8">
+            <h2 className="text-3xl font-semibold">About {subjectInfo.name}</h2>
+          </div>
+
+          {subjectInfo.overview && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold">Subject Overview</h3>
+              <p className="mt-3 text-zinc-700">{subjectInfo.overview}</p>
+            </div>
+          )}
+
+          {subjectInfo.whyPopular && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold">Why {subjectInfo.name} Is Popular</h3>
+              <p className="mt-3 text-zinc-700">{subjectInfo.whyPopular}</p>
+            </div>
+          )}
+
+          {(subjectInfo.booklist || []).length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold">Common Booklists</h3>
+              <ul className="mt-3 list-disc pl-6 text-zinc-700">
+                {subjectInfo.booklist!.map((book, idx) => (
+                  <li key={idx}>{book}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {(subjectInfo.prepInsights || []).length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold">Preparation Insights</h3>
+              <div className="mt-3 grid gap-4 md:grid-cols-2">
+                {subjectInfo.prepInsights!.map((insight, idx) => (
+                  <div key={idx} className="rounded-lg border border-black/[0.06] bg-white p-4">
+                    <p className="text-zinc-700">{insight}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* TOPPERS */}
       {toppers.length > 0 && (

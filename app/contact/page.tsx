@@ -14,7 +14,7 @@ export default function ContactPage() {
         <p className="leading-8 text-zinc-700">
           Email:
           <br />
-          hello@upscprepnotes.in
+          hello@impiclabs.com
         </p>
 
         <p className="leading-8 text-zinc-700">

@@ -37,22 +37,19 @@ export default function Footer() {
           </p>
 
           <div className="flex flex-col gap-4 text-sm text-zinc-700">
-            <Link href="/toppers" className="transition hover:text-black">
+            <Link href="/" className="transition hover:text-black">
               Toppers
             </Link>
 
-            <Link href="/marksheets" className="transition hover:text-black">
-              Marksheets
+            <Link href="/year/2025" className="transition hover:text-black">
+              2025 CSE
             </Link>
 
-            <Link href="/strategies" className="transition hover:text-black">
-              Strategies
+            <Link href="/year/2024" className="transition hover:text-black">
+              2024 CSE
             </Link>
 
-            <Link
-              href="/optional/psir"
-              className="transition hover:text-black"
-            >
+            <Link href="/optional/psir" className="transition hover:text-black">
               Optional Subjects
             </Link>
           </div>

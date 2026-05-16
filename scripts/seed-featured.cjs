@@ -10,13 +10,15 @@ function slugify(name) {
 }
 
 const NAMES = [
-" Garima Lohia",
-"Divya Tanwar",
-"Shakti Dubey",
-"Harshita Goyal",
-"UMA Harathi",
-"Smriti Mishra"
+  "Ishita Kishore",
+  "Garima Lohia",
+  "Divya Tanwar",
+  "Shakti Dubey",
+  "UMA Harathi",
+  "Smriti Mishra",
+  "Harshita Goyal"
 ];
+
 
 const topperSchema = new mongoose.Schema(
   {

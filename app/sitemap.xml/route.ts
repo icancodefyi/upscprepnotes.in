@@ -15,8 +15,18 @@ export async function GET() {
 
     const pages = [
       { url: "", priority: 1.0 },
-      { url: "toppers", priority: 0.8 },
-      { url: "optional/psir", priority: 0.7 },
+      { url: "about", priority: 0.7 },
+      { url: "contact", priority: 0.5 },
+      { url: "privacy-policy", priority: 0.5 },
+      { url: "terms", priority: 0.5 },
+      { url: "disclaimer", priority: 0.5 },
+      { url: "optional/psir", priority: 0.9 },
+      { url: "optional/public-administration", priority: 0.8 },
+      { url: "optional/mathematics", priority: 0.8 },
+      { url: "optional/sociology", priority: 0.8 },
+      { url: "optional/geography", priority: 0.8 },
+      { url: "optional/philosophy", priority: 0.8 },
+      { url: "optional/anthropology", priority: 0.8 },
     ];
 
     const urls = pages
@@ -33,10 +43,18 @@ export async function GET() {
       })
       .join("\n");
 
+    const yearUrls = [2022, 2023, 2024, 2025]
+      .map((year) => {
+        const loc = `${SITE_URL}/year/${year}`;
+        return `<url><loc>${loc}</loc><priority>0.7</priority></url>`;
+      })
+      .join("\n");
+
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 ${topperUrls}
+${yearUrls}
 </urlset>`;
 
     return new NextResponse(xml, {

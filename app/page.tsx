@@ -89,7 +89,7 @@ export default async function HomePage() {
               Strategies
             </Link>
 
-            <Link href="/" className="transition hover:text-black">
+            <Link href="/optional/psir" className="transition hover:text-black">
               Optional Subjects
             </Link>
           </nav>
