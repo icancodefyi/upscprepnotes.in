@@ -210,6 +210,56 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* EDUCATIONAL SECTION */}
+        <section className="mb-40 border-t border-black/10 pt-16 md:pt-24">
+          <div className="max-w-4xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
+              What is UPSCPrepNotes?
+            </p>
+
+            <h2 className="mb-8 text-4xl font-semibold tracking-tight md:text-5xl">
+              Structured Intelligence for UPSC Preparation
+            </h2>
+
+            <div className="space-y-6 text-base leading-8 text-zinc-700 md:text-lg md:leading-9">
+              <p>
+                UPSCPrepNotes is an educational intelligence archive designed to help aspirants understand how top performers approach UPSC Civil Service Examination preparation. Rather than providing generic coaching materials, we analyze and index actual strategies employed by successful candidates—those who achieved ranks in the top 100 across multiple years.
+              </p>
+
+              <p>
+                The platform provides structured access to topper profiles, marksheet analysis, optional subject performance trends, interview evaluation patterns, and answer-writing strategies. Each profile includes biographical context, educational journey details, preparation timelines, subject-specific insights, and lessons learned from attempting the examination multiple times.
+              </p>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Why Study Topper Strategies?</h3>
+                  <p>
+                    Topper analysis reveals patterns: which optional subjects correlate with higher marks, how preparation timelines compress for repeat attempts, which GS topics dominate in recent years, how answer writing quality improves across attempts. By indexing 280+ profiles across 18 optional subjects and multiple exam years, UPSCPrepNotes surfaces actionable insights that coaching institutes often obscure.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Optional Subject Intelligence</h3>
+                  <p>
+                    The choice of optional subject significantly impacts UPSC performance—with some optionals showing consistently higher average marks than others. UPSCPrepNotes tracks optional subject trends across exam years, showing which subjects attract top performers, typical score ranges, and how topper strategies differ by subject. Whether you're considering Political Science, Sociology, Anthropology, Mathematics, or Geography, the data helps inform your decision with real evidence.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Marks Intelligence & Performance Patterns</h3>
+                  <p>
+                    Understanding how toppers score across different components—GS papers, optional subject, essay, and interview—reveals the math of success. Some toppers excel in GS-heavy strategies, others build comprehensive optional subject depth. The archive shows these patterns, helping aspirants understand different viable pathways rather than assuming a single "correct" approach exists.
+                  </p>
+                </div>
+              </div>
+
+              <p className="pt-4 border-t border-black/10">
+                All content on UPSCPrepNotes is compiled from publicly available sources, interviews, published marksheets, and educational materials. The platform serves purely educational purposes and is independent of UPSC, government organizations, and coaching institutes. Use this intelligence to build your own unique preparation strategy.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* FEATURED TOPPERS */}
         <section className="mb-40 border-t border-black/10 pt-16 md:pt-24">
           <div className="mb-14 grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">

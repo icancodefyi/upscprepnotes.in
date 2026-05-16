@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "UPSCPrepNotes — Structured UPSC preparation intelligence",
   description:
     "UPSCPrepNotes: topper strategies, marksheets, optional subject insights, and preparation intelligence for UPSC aspirants.",
+  alternates: {
+    canonical: "https://upscprepnotes.in",
+  },
   openGraph: {
     title: "UPSCPrepNotes — Structured UPSC preparation intelligence",
     description:
@@ -50,6 +53,28 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', 'G-Z58V360ESL');
             `,
+          }}
+        />
+
+        {/* Organization Schema */}
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "UPSCPrepNotes",
+              "url": "https://upscprepnotes.in",
+              "description": "Structured UPSC preparation intelligence with topper profiles, marksheets, and optional subject insights",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://upscprepnotes.in/logo.png",
+                "width": 512,
+                "height": 512,
+              },
+              "sameAs": [],
+            }),
           }}
         />
       </head>

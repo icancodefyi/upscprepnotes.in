@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${topper.firstName} ${topper.lastName} UPSC AIR ${topper.rank} (${topper.year})`,
     description: topper.bio?.slice(0, 160),
+    alternates: {
+      canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+    },
   };
 }
 
