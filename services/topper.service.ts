@@ -96,6 +96,34 @@ export async function getRelatedToppers(
   return toppers.map(normalizeTopper);
 }
 
+export async function getToppersByRank(rank: number, currentSlug: string) {
+  await connectDB();
+
+  const toppers = await TopperModel.find({
+    rank,
+    slug: { $ne: currentSlug },
+  })
+    .sort({ year: -1 })
+    .limit(6)
+    .lean();
+
+  return toppers.map(normalizeTopper);
+}
+
+export async function getToppersByYear(year: number, currentSlug: string) {
+  await connectDB();
+
+  const toppers = await TopperModel.find({
+    year,
+    slug: { $ne: currentSlug },
+  })
+    .sort({ rank: 1 })
+    .limit(10)
+    .lean();
+
+  return toppers.map(normalizeTopper);
+}
+
 export async function getAllIndexedToppers() {
   await connectDB();
 

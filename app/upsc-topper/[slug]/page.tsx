@@ -5,6 +5,8 @@ import ReactMarkdown from "react-markdown";
 import {
   getRelatedToppers,
   getTopperBySlug,
+  getToppersByRank,
+  getToppersByYear,
 } from "@/services/topper.service";
 import AnswerCopyCard from "@/components/topper/AnswerCopyCard";
 
@@ -47,6 +49,16 @@ export default async function TopperPage({ params }: Props) {
 
   const relatedToppers = await getRelatedToppers(
     topper.optionalSubject,
+    topper.slug
+  );
+
+  const sameRankToppers = await getToppersByRank(
+    topper.rank,
+    topper.slug
+  );
+
+  const sameYearToppers = await getToppersByYear(
+    topper.year,
     topper.slug
   );
 
@@ -235,30 +247,10 @@ export default async function TopperPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://upscprepnotes.in",
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": `${topper.year}`,
-        "item": `https://upscprepnotes.in/year/${topper.year}`,
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": `${topper.optionalSubject}`,
-        "item": `https://upscprepnotes.in/optional/${getSubjectSlug(topper.optionalSubject)}`,
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": `${topper.firstName} ${topper.lastName}`,
-        "item": `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
-      },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://upscprepnotes.in" },
+      { "@type": "ListItem", "position": 2, "name": `UPSC ${topper.year} Toppers`, "item": `https://upscprepnotes.in/year/${topper.year}` },
+      { "@type": "ListItem", "position": 3, "name": `${topper.optionalSubject} Toppers`, "item": `https://upscprepnotes.in/optional/${getSubjectSlug(topper.optionalSubject)}` },
+      { "@type": "ListItem", "position": 4, "name": `AIR ${topper.rank} ${topper.firstName} ${topper.lastName}`, "item": `https://upscprepnotes.in/upsc-topper/${topper.slug}` },
     ],
   };
 
@@ -790,7 +782,10 @@ export default async function TopperPage({ params }: Props) {
         </section>
 
         {/* INTERNAL LINKS — SEO hub linking */}
-        <section className="mb-8">
+        <section className="mb-10">
+          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+            Explore More
+          </p>
           <div className="flex flex-wrap gap-3">
             <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
               All {topper.optionalSubject} Toppers →
@@ -806,7 +801,93 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* RELATED */}
+        {/* SAME RANK */}
+        {sameRankToppers.length > 0 && (
+          <section className="mb-20">
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tight">
+                Other AIR {topper.rank} Toppers
+              </h2>
+              <p className="mt-1 text-sm text-zinc-500">
+                Candidates who secured the same rank across different years
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {sameRankToppers.map((t: any) => (
+                <Link
+                  key={t.slug}
+                  href={`/upsc-topper/${t.slug}`}
+                  className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
+                      alt={`${t.firstName} ${t.lastName}`}
+                      className="h-16 w-16 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                    />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                        {t.year}
+                      </p>
+                      <h3 className="mt-1 text-lg font-semibold">
+                        {t.firstName} {t.lastName}
+                      </h3>
+                      <p className="mt-1 text-sm text-zinc-500">
+                        {t.optionalSubject}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* SAME YEAR */}
+        {sameYearToppers.length > 0 && (
+          <section className="mb-20">
+            <div className="mb-8">
+              <h2 className="text-3xl font-semibold tracking-tight">
+                More UPSC {topper.year} Toppers
+              </h2>
+              <p className="mt-1 text-sm text-zinc-500">
+                Top rank holders from the same year
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {sameYearToppers.map((t: any) => (
+                <Link
+                  key={t.slug}
+                  href={`/upsc-topper/${t.slug}`}
+                  className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
+                      alt={`${t.firstName} ${t.lastName}`}
+                      className="h-16 w-16 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                    />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                        AIR {t.rank}
+                      </p>
+                      <h3 className="mt-1 text-lg font-semibold">
+                        {t.firstName} {t.lastName}
+                      </h3>
+                      <p className="mt-1 text-sm text-zinc-500">
+                        {t.optionalSubject}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* RELATED (same optional) */}
         <section>
           <div className="mb-10 flex items-end justify-between">
             <div>
@@ -820,10 +901,10 @@ export default async function TopperPage({ params }: Props) {
             </div>
 
             <Link
-              href="/"
+              href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
               className="hidden text-sm text-zinc-500 transition hover:text-black md:block"
             >
-              View All Toppers →
+              View All {topper.optionalSubject} Toppers →
             </Link>
           </div>
 
