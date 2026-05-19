@@ -108,85 +108,51 @@ export default async function TopperPage({ params }: Props) {
   ];
 
   // Strategy section restructuring
-  const SECTION_TITLES = [
-    "Background",
-    "Educational Journey",
-    "UPSC Attempts",
-    "Prelims Strategy",
-    "Mains Strategy",
-    "Optional Subject Strategy",
-    "Essay Preparation",
-    "Interview Preparation",
-    "Mistakes & Learnings",
-    "Key Takeaways",
-  ];
-
   function extractSections(markdown: string) {
     if (!markdown) return {} as Record<string, string>;
 
-    // detect explicit headings first
     const headingRegex = /^(#{1,6})\s*(.+)$/gm;
     const matches = [...markdown.matchAll(headingRegex)];
 
-    if (matches.length > 0) {
-      // split by headings
-      const parts: Record<string, string> = {};
-      const lines = markdown.split(/\r?\n/);
-      let current: string | null = null;
-      let buffer: string[] = [];
+    if (matches.length === 0) return {} as Record<string, string>;
 
-      for (const line of lines) {
-        const m = line.match(/^(#{1,6})\s*(.+)$/);
-        if (m) {
-          if (current) parts[current] = buffer.join("\n").trim();
-          current = m[2].trim();
-          buffer = [];
-        } else {
-          buffer.push(line);
-        }
+    const parts: Record<string, string> = {};
+    const lines = markdown.split(/\r?\n/);
+    let current: string | null = null;
+    let buffer: string[] = [];
+
+    for (const line of lines) {
+      const m = line.match(/^(#{1,6})\s*(.+)$/);
+      if (m) {
+        if (current) parts[current] = buffer.join("\n").trim();
+        current = m[2].trim();
+        buffer = [];
+      } else {
+        buffer.push(line);
       }
-
-      if (current) parts[current] = buffer.join("\n").trim();
-
-      // map to desired titles
-      const result: Record<string, string> = {};
-      for (const t of SECTION_TITLES) {
-        // find case-insensitive matching heading
-        const key = Object.keys(parts).find((k) => k.toLowerCase().includes(t.toLowerCase()));
-        if (key) result[t] = parts[key];
-      }
-
-      return result;
     }
 
-    // fallback: split into paragraphs and assign sequentially
-    const paragraphs = markdown.split(/\n\s*\n+/).map((p) => p.trim()).filter(Boolean);
-    const fallback: Record<string, string> = {};
-    for (let i = 0; i < paragraphs.length && i < SECTION_TITLES.length; i++) {
-      fallback[SECTION_TITLES[i]] = paragraphs[i];
-    }
+    if (current) parts[current] = buffer.join("\n").trim();
 
-    return fallback;
+    return parts;
+  }
+
+  function resolveHeading(heading: string, t: typeof topper): string {
+    const lower = heading.toLowerCase();
+    if (!t) return heading;
+    if (lower.includes("background")) return `${t.firstName} ${t.lastName}'s Background`;
+    if (lower.includes("educational") || lower.includes("education") || lower.includes("journey")) return `${t.firstName} ${t.lastName}'s Education & Journey`;
+    if (lower.includes("attempt")) return `${t.firstName} ${t.lastName}'s UPSC Attempts`;
+    if (lower.includes("prelim")) return `${t.firstName} ${t.lastName}'s Prelims Strategy`;
+    if (lower.includes("mains") || lower.includes("written")) return `${t.firstName} ${t.lastName}'s Mains Strategy`;
+    if (lower.includes("optional") || lower.includes("subject")) return `${t.firstName} ${t.lastName} ${t.optionalSubject} Strategy`;
+    if (lower.includes("essay")) return `${t.firstName} ${t.lastName}'s Essay Preparation`;
+    if (lower.includes("interview") || lower.includes("personality")) return `${t.firstName} ${t.lastName}'s Interview Preparation`;
+    if (lower.includes("mistake") || lower.includes("learning") || lower.includes("key takeaway")) return `Key Takeaways from ${t.firstName} ${t.lastName}`;
+    return heading;
   }
 
   const structuredStrategy = extractSections(topper.strategy || "");
-
-  // Intent-matching sub-headings for strategy sections
-  const intentHeading = (title: string): string => {
-    const intentMap: Record<string, string> = {
-      "Background": `${topper.firstName} ${topper.lastName}'s Background`,
-      "Educational Journey": `${topper.firstName} ${topper.lastName}'s Education & Journey`,
-      "UPSC Attempts": `${topper.firstName} ${topper.lastName}'s UPSC Attempts`,
-      "Prelims Strategy": `${topper.firstName} ${topper.lastName}'s Prelims Strategy`,
-      "Mains Strategy": `${topper.firstName} ${topper.lastName}'s Mains Strategy`,
-      "Optional Subject Strategy": `${topper.firstName} ${topper.lastName} ${topper.optionalSubject} Strategy`,
-      "Essay Preparation": `${topper.firstName} ${topper.lastName}'s Essay Preparation`,
-      "Interview Preparation": `${topper.firstName} ${topper.lastName}'s Interview Preparation`,
-      "Mistakes & Learnings": `${topper.firstName} ${topper.lastName}'s Mistakes & Learnings`,
-      "Key Takeaways": `Key Takeaways from ${topper.firstName} ${topper.lastName}`,
-    };
-    return intentMap[title] || title;
-  };
 
   // Deduplicate repeated paragraphs within strategy content
   const deduplicateContent = (markdown: string): string => {
@@ -694,19 +660,14 @@ export default async function TopperPage({ params }: Props) {
             <div className="rounded-[36px] border border-black/[0.06] bg-white p-8 md:p-12">
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-8">
                 {Object.keys(structuredStrategy).length > 0 ? (
-                  SECTION_TITLES.map((title) => {
-                    const content = structuredStrategy[title];
-                    if (!content) return null;
-
-                    return (
-                      <section key={title} className="mb-8">
-                        <h3 className="text-2xl font-semibold">{intentHeading(title)}</h3>
-                        <div className="mt-4">
-                          <ReactMarkdown>{deduplicateContent(content)}</ReactMarkdown>
-                        </div>
-                      </section>
-                    );
-                  })
+                  Object.entries(structuredStrategy).map(([heading, content]) => (
+                    <section key={heading} className="mb-8">
+                      <h3 className="text-2xl font-semibold">{resolveHeading(heading, topper)}</h3>
+                      <div className="mt-4">
+                        <ReactMarkdown>{deduplicateContent(content)}</ReactMarkdown>
+                      </div>
+                    </section>
+                  ))
                 ) : (
                   <ReactMarkdown>{topper.strategy}</ReactMarkdown>
                 )}
