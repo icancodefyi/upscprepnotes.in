@@ -82,7 +82,7 @@ export default function AnswerCopyCard({
           </p>
           <Link
             href="/toppers/toppers-copy-compilation"
-            className="mt-5 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
           >
             View 50+ Answer Copy Compilation
             <span>→</span>
