@@ -736,37 +736,13 @@ export default async function TopperPage({ params }: Props) {
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {resources.map((resource) => (
-              <div
+              <AnswerCopyCard
                 key={resource.title}
-                className="group rounded-[28px] border border-black/[0.06] bg-white p-6 transition duration-300 hover:-translate-y-[2px]"
-              >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
-                  Resource
-                </p>
-
-                <h3 className="mt-4 text-2xl font-semibold">
-                  {resource.title}
-                </h3>
-
-                <p className="mt-2 text-sm text-zinc-500">
-                  {resource.marks} Marks
-                </p>
-
-                <p className="mt-5 text-sm leading-7 text-zinc-600">
-                  Structured topper resource archive and answer
-                  writing material.
-                </p>
-
-                <div className="mt-8 flex items-center justify-between">
-                  <span className="text-sm font-medium">
-                    View Resource
-                  </span>
-
-                  <span className="transition group-hover:translate-x-1">
-                    →
-                  </span>
-                </div>
-              </div>
+                title={resource.title}
+                marks={resource.marks}
+                available={Object.values(topper.resources || {}).some(arr => arr.length > 0) || Object.values(topper.answerCopies || {}).some(arr => arr.length > 0)}
+                topperName={`${topper.firstName} ${topper.lastName}`}
+              />
             ))}
           </div>
         </section>
