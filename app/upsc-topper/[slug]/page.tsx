@@ -6,6 +6,7 @@ import {
   getRelatedToppers,
   getTopperBySlug,
 } from "@/services/topper.service";
+import AnswerCopyCard from "@/components/topper/AnswerCopyCard";
 
 export const revalidate = 86400;
 
@@ -96,13 +97,14 @@ export default async function TopperPage({ params }: Props) {
     return s.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
 
-  // Resource intent architecture (near top)
-  const resourceIntent = [
-    { key: "essay", title: "Essay Strategy", available: (topper.resources?.essayLinks || []).length > 0 },
-    { key: "gs1", title: "GS1 Insights", available: (topper.resources?.gs1Links || []).length > 0 },
-    { key: "gs2", title: "GS2 Insights", available: (topper.resources?.gs2Links || []).length > 0 },
-    { key: "ethics", title: "Ethics Preparation", available: false },
-    { key: "optional", title: `${topper.optionalSubject} Notes`, available: ((topper.resources?.gs1Links || [])?.length > 0) || ((topper.answerCopies?.essay || [])?.length > 0) },
+  // Resource intent architecture — directly matches search queries
+  const answerCopyPapers = [
+    { key: "gs1", title: "GS1 Answer Copy", marks: topper.marks.gs1, available: (topper.resources?.gs1Links || []).length > 0 || (topper.answerCopies?.gs1 || []).length > 0 },
+    { key: "gs2", title: "GS2 Answer Copy", marks: topper.marks.gs2, available: (topper.resources?.gs2Links || []).length > 0 || (topper.answerCopies?.gs2 || []).length > 0 },
+    { key: "gs3", title: "GS3 Answer Copy", marks: topper.marks.gs3, available: (topper.resources?.gs3Links || []).length > 0 || (topper.answerCopies?.gs3 || []).length > 0 },
+    { key: "gs4", title: "GS4 (Ethics) Answer Copy", marks: topper.marks.gs4, available: (topper.resources?.gs4Links || []).length > 0 || (topper.answerCopies?.gs4 || []).length > 0 },
+    { key: "essay", title: "Essay Answer Copy", marks: topper.marks.essay, available: (topper.resources?.essayLinks || []).length > 0 || (topper.answerCopies?.essay || []).length > 0 },
+    { key: "optional", title: `${topper.optionalSubject} Answer Copy`, marks: topper.marks.optional1, available: Object.values(topper.resources || {}).some(arr => arr.length > 0) || Object.values(topper.answerCopies || {}).some(arr => arr.length > 0) },
   ];
 
   // Strategy section restructuring
@@ -169,7 +171,36 @@ export default async function TopperPage({ params }: Props) {
 
   const structuredStrategy = extractSections(topper.strategy || "");
 
-  // FAQ Schema
+  // Intent-matching sub-headings for strategy sections
+  const intentHeading = (title: string): string => {
+    const intentMap: Record<string, string> = {
+      "Background": `${topper.firstName} ${topper.lastName}'s Background`,
+      "Educational Journey": `${topper.firstName} ${topper.lastName}'s Education & Journey`,
+      "UPSC Attempts": `${topper.firstName} ${topper.lastName}'s UPSC Attempts`,
+      "Prelims Strategy": `${topper.firstName} ${topper.lastName}'s Prelims Strategy`,
+      "Mains Strategy": `${topper.firstName} ${topper.lastName}'s Mains Strategy`,
+      "Optional Subject Strategy": `${topper.firstName} ${topper.lastName} ${topper.optionalSubject} Strategy`,
+      "Essay Preparation": `${topper.firstName} ${topper.lastName}'s Essay Preparation`,
+      "Interview Preparation": `${topper.firstName} ${topper.lastName}'s Interview Preparation`,
+      "Mistakes & Learnings": `${topper.firstName} ${topper.lastName}'s Mistakes & Learnings`,
+      "Key Takeaways": `Key Takeaways from ${topper.firstName} ${topper.lastName}`,
+    };
+    return intentMap[title] || title;
+  };
+
+  // Deduplicate repeated paragraphs within strategy content
+  const deduplicateContent = (markdown: string): string => {
+    const seen = new Set<string>();
+    return markdown.split("\n").filter((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) return true;
+      if (seen.has(trimmed)) return false;
+      seen.add(trimmed);
+      return true;
+    }).join("\n");
+  };
+
+  // FAQ Schema — expanded for entity search intent
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -184,18 +215,50 @@ export default async function TopperPage({ params }: Props) {
       },
       {
         "@type": "Question",
-        "name": `What was ${topper.firstName}'s optional subject?`,
+        "name": `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${topper.firstName} chose ${topper.optionalSubject} as the optional subject.`,
+          "text": `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
         },
       },
       {
         "@type": "Question",
-        "name": `What were ${topper.firstName}'s interview marks?`,
+        "name": `What were ${topper.firstName} ${topper.lastName}'s interview marks?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test.`,
+          "text": `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test (interview).`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} ${topper.lastName} scored a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `What were ${topper.firstName} ${topper.lastName}'s GS1 marks?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} scored ${topper.marks.gs1} marks in GS1 paper.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `What were ${topper.firstName} ${topper.lastName}'s essay marks?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${topper.firstName} scored ${topper.marks.essay} marks in the essay paper.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `Where can I find ${topper.firstName} ${topper.lastName}'s answer copies?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Answer copies for ${topper.firstName} ${topper.lastName} are listed in the Answer Copies section above when available.`,
         },
       },
     ],
@@ -356,6 +419,9 @@ export default async function TopperPage({ params }: Props) {
 
               <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">
                 {topper.firstName} {topper.lastName}
+                <span className="mt-4 block text-2xl font-normal text-zinc-400">
+                  UPSC AIR {topper.rank} — Strategy, Marks & Answer Copies
+                </span>
               </h1>
 
               <p className="mt-8 max-w-3xl text-lg leading-9 text-zinc-700">
@@ -366,19 +432,19 @@ export default async function TopperPage({ params }: Props) {
               <div className="mt-10 grid overflow-hidden rounded-[30px] border border-black/[0.06] bg-white md:grid-cols-4">
                 {[
                   {
-                    label: "Written",
+                    label: `${topper.firstName} Written`,
                     value: topper.marks.written,
                   },
                   {
-                    label: "Essay",
+                    label: `${topper.firstName} Essay`,
                     value: topper.marks.essay,
                   },
                   {
-                    label: "Interview",
+                    label: `${topper.firstName} Interview`,
                     value: topper.marks.interview,
                   },
                   {
-                    label: "Total",
+                    label: `${topper.firstName} Total`,
                     value: topper.marks.total,
                   },
                 ].map((item) => (
@@ -400,36 +466,33 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* AVAILABLE RESOURCES (near top) */}
+        {/* RESOURCE INTENT — answer copies listing */}
         <section className="mb-16">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <p className="mb-2 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
-                Available Resources
+                Answer Copies
               </p>
 
-              <h3 className="text-2xl font-semibold tracking-tight">
-                Resource Intent
-              </h3>
+              <h2 className="text-4xl font-semibold tracking-tight">
+                {topper.firstName} {topper.lastName} Answer Copies
+              </h2>
             </div>
 
-            <div className="hidden text-sm text-zinc-500 md:block">
-              Resource intent helps users and search engines discover focused materials.
+            <div className="hidden max-w-sm text-sm leading-7 text-zinc-500 md:block">
+              Direct access to the answer copies that secured AIR {topper.rank}.
             </div>
           </div>
 
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            {resourceIntent.map((r) => (
-              <div key={r.key} className="rounded-xl border border-black/[0.06] bg-white p-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-lg font-semibold">{r.title}</h4>
-                  <span className={`text-sm font-medium ${r.available ? 'text-green-600' : 'text-zinc-400'}`}>
-                    {r.available ? 'Available' : 'Coming Soon'}
-                  </span>
-                </div>
-
-                <p className="mt-3 text-sm text-zinc-600">{r.available ? 'Structured material available — view in the Resources section.' : 'Planned resource. Will be added soon.'}</p>
-              </div>
+            {answerCopyPapers.map((p) => (
+              <AnswerCopyCard
+                key={p.key}
+                title={p.title}
+                marks={p.marks}
+                available={p.available}
+                topperName={`${topper.firstName} ${topper.lastName}`}
+              />
             ))}
           </div>
         </section>
@@ -443,7 +506,7 @@ export default async function TopperPage({ params }: Props) {
               </p>
 
               <h2 className="text-4xl font-semibold tracking-tight">
-                Performance Breakdown
+                {topper.firstName} {topper.lastName} Marks Breakdown
               </h2>
             </div>
 
@@ -457,26 +520,26 @@ export default async function TopperPage({ params }: Props) {
             <div className="grid md:grid-cols-3">
               {/* GS */}
               <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
-                <h3 className="mb-8 text-lg font-semibold">
-                  General Studies
-                </h3>
+                  <h3 className="mb-8 text-lg font-semibold">
+                    {topper.firstName} {topper.lastName} GS Marks
+                  </h3>
 
                 <div className="space-y-5">
                   {[
                     {
-                      label: "GS1",
+                      label: `${topper.firstName} GS1`,
                       value: topper.marks.gs1,
                     },
                     {
-                      label: "GS2",
+                      label: `${topper.firstName} GS2`,
                       value: topper.marks.gs2,
                     },
                     {
-                      label: "GS3",
+                      label: `${topper.firstName} GS3`,
                       value: topper.marks.gs3,
                     },
                     {
-                      label: "GS4",
+                      label: `${topper.firstName} GS4`,
                       value: topper.marks.gs4,
                     },
                   ].map((item) => (
@@ -501,9 +564,9 @@ export default async function TopperPage({ params }: Props) {
 
               {/* OPTIONAL */}
               <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
-                <h3 className="mb-8 text-lg font-semibold">
-                  Optional Subject
-                </h3>
+                  <h3 className="mb-8 text-lg font-semibold">
+                    {topper.firstName} {topper.lastName} {topper.optionalSubject} Marks
+                  </h3>
 
                 <div className="rounded-2xl bg-[#f6f6f6] p-4">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
@@ -518,11 +581,11 @@ export default async function TopperPage({ params }: Props) {
                 <div className="mt-6 space-y-5">
                   {[
                     {
-                      label: "Paper 1",
+                      label: `${topper.firstName} Paper 1`,
                       value: topper.marks.optional1,
                     },
                     {
-                      label: "Paper 2",
+                      label: `${topper.firstName} Paper 2`,
                       value: topper.marks.optional2,
                     },
                   ].map((item) => (
@@ -547,26 +610,26 @@ export default async function TopperPage({ params }: Props) {
 
               {/* FINAL */}
               <div className="p-8">
-                <h3 className="mb-8 text-lg font-semibold">
-                  Final Scores
-                </h3>
+                  <h3 className="mb-8 text-lg font-semibold">
+                    {topper.firstName} {topper.lastName} Final Scores
+                  </h3>
 
                 <div className="space-y-5">
                   {[
                     {
-                      label: "Essay",
+                      label: `${topper.firstName} Essay`,
                       value: topper.marks.essay,
                     },
                     {
-                      label: "Written",
+                      label: `${topper.firstName} Written`,
                       value: topper.marks.written,
                     },
                     {
-                      label: "Interview",
+                      label: `${topper.firstName} Interview`,
                       value: topper.marks.interview,
                     },
                     {
-                      label: "Total",
+                      label: `${topper.firstName} Total`,
                       value: topper.marks.total,
                     },
                   ].map((item) => (
@@ -596,9 +659,9 @@ export default async function TopperPage({ params }: Props) {
               Key Learnings
             </p>
 
-            <h2 className="mb-10 text-4xl font-semibold tracking-tight">
-              Preparation Patterns & Insights
-            </h2>
+          <h2 className="mb-10 text-4xl font-semibold tracking-tight">
+            {topper.firstName} {topper.lastName} Key Insights & Learnings
+          </h2>
 
             <div className="grid gap-5 md:grid-cols-2">
               {topper.insights.map(
@@ -624,7 +687,7 @@ export default async function TopperPage({ params }: Props) {
           </p>
 
           <h2 className="mb-10 text-4xl font-semibold tracking-tight">
-            Preparation Strategy
+            {topper.firstName} {topper.lastName} Preparation Strategy
           </h2>
 
           <article className="max-w-4xl">
@@ -637,9 +700,9 @@ export default async function TopperPage({ params }: Props) {
 
                     return (
                       <section key={title} className="mb-8">
-                        <h3 className="text-2xl font-semibold">{title}</h3>
+                        <h3 className="text-2xl font-semibold">{intentHeading(title)}</h3>
                         <div className="mt-4">
-                          <ReactMarkdown>{content}</ReactMarkdown>
+                          <ReactMarkdown>{deduplicateContent(content)}</ReactMarkdown>
                         </div>
                       </section>
                     );
@@ -653,7 +716,7 @@ export default async function TopperPage({ params }: Props) {
         </section>
 
         {/* RESOURCES */}
-        <section className="mb-28">
+        <section id="resources" className="mb-28">
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
@@ -661,7 +724,7 @@ export default async function TopperPage({ params }: Props) {
               </p>
 
               <h2 className="text-4xl font-semibold tracking-tight">
-                Answer Copies & Resources
+                {topper.firstName} {topper.lastName} Paper-wise Resources
               </h2>
             </div>
 
@@ -715,7 +778,7 @@ export default async function TopperPage({ params }: Props) {
           </p>
 
           <h2 className="mb-10 text-4xl font-semibold tracking-tight">
-            Frequently Asked Questions
+            FAQs about {topper.firstName} {topper.lastName}
           </h2>
 
           <div className="space-y-5">
@@ -725,24 +788,52 @@ export default async function TopperPage({ params }: Props) {
                 a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
               },
               {
-                q: "What was the optional subject?",
-                a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject.`,
+                q: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
+                a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
               },
               {
-                q: "What were the interview marks?",
-                a: `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test.`,
+                q: `What were ${topper.firstName} ${topper.lastName}'s interview marks?`,
+                a: `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test (interview).`,
               },
               {
-                q: "What were the total marks?",
+                q: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
                 a: `${topper.firstName} obtained a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
               },
               {
-                q: "Are the topper's answer copies available?",
-                a: (topper.answerCopies && Object.values(topper.answerCopies).some((arr: any[]) => arr && arr.length > 0)) ? 'Yes — some answer copies are linked in the Resources section when available.' : 'No public answer copies are available for this profile.',
+                q: `What were ${topper.firstName} ${topper.lastName}'s GS1 marks?`,
+                a: `${topper.firstName} scored ${topper.marks.gs1} marks in GS1 paper.`,
               },
               {
-                q: "Are there any quick takeaways from their preparation?",
-                a: topper.insights && topper.insights.length > 0 ? `${topper.firstName} shared ${topper.insights.length} key insights — see the Key Learnings section.` : 'No structured takeaways are available.',
+                q: `What were ${topper.firstName} ${topper.lastName}'s GS2 marks?`,
+                a: `${topper.firstName} scored ${topper.marks.gs2} marks in GS2 paper.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s GS3 marks?`,
+                a: `${topper.firstName} scored ${topper.marks.gs3} marks in GS3 paper.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s GS4 (Ethics) marks?`,
+                a: `${topper.firstName} scored ${topper.marks.gs4} marks in GS4 (Ethics) paper.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s essay marks?`,
+                a: `${topper.firstName} scored ${topper.marks.essay} marks in the essay paper.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s optional subject marks?`,
+                a: `${topper.firstName} scored ${topper.marks.optional1} in Paper 1 and ${topper.marks.optional2} in Paper 2 of ${topper.optionalSubject}.`,
+              },
+              {
+                q: `What was ${topper.firstName} ${topper.lastName}'s written score?`,
+                a: `${topper.firstName} scored ${topper.marks.written} marks in the written (mains) component.`,
+              },
+              {
+                q: `Where can I find ${topper.firstName} ${topper.lastName} answer copies?`,
+                a: (topper.answerCopies && Object.values(topper.answerCopies).some((arr: any[]) => arr && arr.length > 0)) ? `Answer copies for ${topper.firstName} ${topper.lastName} are listed in the Answer Copies section above.` : `Public answer copies for ${topper.firstName} ${topper.lastName} are not yet available. Check back soon.`,
+              },
+              {
+                q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
+                a: topper.strategy ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed in the Preparation Strategy section on this page.` : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
               },
             ].map((faq, index) => (
               <div
@@ -761,15 +852,19 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* INTERNAL LINKS */}
+        {/* INTERNAL LINKS — SEO hub linking */}
         <section className="mb-8">
-          <div className="flex flex-wrap gap-4">
-            <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium">
-              Explore More {topper.optionalSubject} Toppers →
+          <div className="flex flex-wrap gap-3">
+            <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
+              All {topper.optionalSubject} Toppers →
             </Link>
 
-            <Link href={`/year/${topper.year}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium">
-              More UPSC {topper.year} Toppers →
+            <Link href={`/year/${topper.year}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
+              UPSC {topper.year} Toppers →
+            </Link>
+
+            <Link href="/" className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
+              All UPSC Toppers →
             </Link>
           </div>
         </section>
