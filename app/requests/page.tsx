@@ -1,10 +1,19 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { connectDB } from "@/lib/mongodb";
 import { PurchaseModel } from "@/models/purchase.model";
+import { verifyAdminToken } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function RequestsPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin_session")?.value;
+  if (!token || !(await verifyAdminToken(token))) {
+    redirect("/admin/login");
+  }
+
   await connectDB();
   const purchases = await PurchaseModel.find()
     .sort({ createdAt: -1 })
@@ -34,12 +43,20 @@ export default async function RequestsPage() {
               {purchases.length} total submissions
             </p>
           </div>
-          <Link
-            href="/"
-            className="rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
-          >
-            ← Home
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin"
+              className="rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
+            >
+              ← Admin
+            </Link>
+            <Link
+              href="/"
+              className="rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
+            >
+              Home
+            </Link>
+          </div>
         </div>
 
         {purchases.length === 0 ? (
