@@ -56,6 +56,9 @@ export default function RootLayout({
           }}
         />
 
+        {/* Umami Analytics */}
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="51e3b8aa-4637-4e44-abd3-b35c0d386331"></script>
+
         {/* Organization Schema */}
         <Script
           id="organization-schema"
