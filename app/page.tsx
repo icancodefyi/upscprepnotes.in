@@ -418,6 +418,32 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* COMPILATION CTA */}
+        <section className="border-t border-black/10 pt-16 md:pt-24">
+          <div className="relative overflow-hidden rounded-[32px] bg-zinc-900 p-8 md:p-16">
+            <div className="relative z-10 max-w-2xl">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-400">
+                Coming Soon
+              </p>
+              <h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-white md:text-5xl">
+                Score 120+ in Every GS Paper
+              </h2>
+              <p className="mt-4 max-w-lg text-base leading-7 text-zinc-400 md:text-lg md:leading-8">
+                50+ verified UPSC topper answer copies across GS1–4 and Essay.
+                Learn the IBEC Method from toppers who scored 120+ marks.
+              </p>
+              <Link
+                href="/toppers/toppers-copy-compilation"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100"
+              >
+                Learn More →
+              </Link>
+            </div>
+            <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-white/[0.03]" />
+            <div className="pointer-events-none absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-white/[0.06]" />
+          </div>
+        </section>
+
         {/* FOOTER */}
       <Footer/>
       </div>

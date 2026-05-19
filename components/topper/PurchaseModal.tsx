@@ -92,7 +92,7 @@ export default function PurchaseModal({ pkg, onClose }: Props) {
                 <label className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Full Name</label>
                 <input
                   type="text"
-                  placeholder="Amit Sharma"
+                  placeholder="Your Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="mt-2 w-full rounded-2xl border border-black/10 bg-[#f8f7f4] px-5 py-3.5 text-sm outline-none transition focus:border-black/30"
@@ -103,7 +103,7 @@ export default function PurchaseModal({ pkg, onClose }: Props) {
                 <label className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Email Address</label>
                 <input
                   type="email"
-                  placeholder="amit@example.com"
+                  placeholder="you@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="mt-2 w-full rounded-2xl border border-black/10 bg-[#f8f7f4] px-5 py-3.5 text-sm outline-none transition focus:border-black/30"
@@ -114,7 +114,7 @@ export default function PurchaseModal({ pkg, onClose }: Props) {
                 <label className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Phone Number</label>
                 <input
                   type="tel"
-                  placeholder="+91 98765 43210"
+                  placeholder="+91 "
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   className="mt-2 w-full rounded-2xl border border-black/10 bg-[#f8f7f4] px-5 py-3.5 text-sm outline-none transition focus:border-black/30"
