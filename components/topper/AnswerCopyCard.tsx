@@ -60,10 +60,10 @@ export default function AnswerCopyCard({
               setState("loading");
               setTimeout(() => setState("not-found"), 1400);
             }}
-            className="mt-4 flex items-center text-sm font-medium text-zinc-700 transition hover:text-black"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
           >
-            <span>Get Answer Copy</span>
-            <span className="ml-2">→</span>
+            Get Answer Copy
+            <span>→</span>
           </button>
         </>
       )}
