@@ -77,8 +77,8 @@ export default function AnswerCopyCard({
 
       {state === "not-found" && (
         <>
-          <p className="mt-3 text-sm text-zinc-500 italic">
-            No answer copies found for this paper.
+          <p className="mt-3 text-sm text-zinc-500">
+            Not available right now — we&apos;re working hard to make it available to you.
           </p>
           <Link
             href="/toppers/toppers-copy-compilation"
