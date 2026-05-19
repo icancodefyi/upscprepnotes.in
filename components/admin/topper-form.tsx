@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { Tooltip } from "@/components/ui/tooltip";
 import type { Topper } from "@/types/topper";
@@ -314,25 +314,23 @@ export function TopperForm({ topper }: TopperFormProps) {
         <CardHeader>
           <CardTitle>Bio & Strategy</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              rows={4}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="strategy">Strategy</Label>
-            <Textarea
-              id="strategy"
-              value={strategy}
-              onChange={(e) => setStrategy(e.target.value)}
-              rows={8}
-            />
-          </div>
+        <CardContent className="space-y-6">
+          <MarkdownEditor
+            id="bio"
+            label="Bio"
+            value={bio}
+            onChange={setBio}
+            rows={4}
+            placeholder="Short biography in markdown..."
+          />
+          <MarkdownEditor
+            id="strategy"
+            label="Strategy"
+            value={strategy}
+            onChange={setStrategy}
+            rows={12}
+            placeholder="Full strategy content in markdown..."
+          />
         </CardContent>
       </Card>
 
