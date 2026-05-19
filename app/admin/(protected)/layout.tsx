@@ -15,7 +15,7 @@ async function checkAuth() {
 const navLinks = [
   { href: "/admin", label: "Toppers" },
   { href: "/admin/new", label: "Add Topper" },
-  { href: "/requests", label: "Requests" },
+  { href: "/admin/requests", label: "Requests" },
 ];
 
 export default async function ProtectedLayout({
