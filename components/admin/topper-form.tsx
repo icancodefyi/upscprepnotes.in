@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { Tooltip } from "@/components/ui/tooltip";
 import type { Topper } from "@/types/topper";
 
 interface TopperFormProps {
@@ -252,7 +254,7 @@ export function TopperForm({ topper }: TopperFormProps) {
               />
             </div>
           </div>
-          <div className="mt-4 flex gap-4">
+          <div className="mt-4 flex gap-6">
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"
@@ -261,6 +263,11 @@ export function TopperForm({ topper }: TopperFormProps) {
                 className="h-4 w-4 rounded border-zinc-300"
               />
               Featured
+              <Tooltip content="Shows this topper on the homepage featured section. Only toppers with this flag appear in the featured carousel and featured grid on the landing page.">
+                <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
+                  <IconInfoCircle className="size-3.5" />
+                </span>
+              </Tooltip>
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -270,6 +277,11 @@ export function TopperForm({ topper }: TopperFormProps) {
                 className="h-4 w-4 rounded border-zinc-300"
               />
               Indexed
+              <Tooltip content="Controls whether this topper appears in the sitemap (SEO). Uncheck for draft or incomplete profiles to prevent search engines from crawling them.">
+                <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
+                  <IconInfoCircle className="size-3.5" />
+                </span>
+              </Tooltip>
             </label>
           </div>
         </CardContent>
