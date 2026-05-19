@@ -45,7 +45,7 @@ export default function AnswerCopyCard({
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">{title}</h3>
         <span className="text-sm font-medium text-zinc-400">
-          {state === "loading" ? "Searching" : state === "not-found" ? "Unavailable" : "Not Available"}
+          {state === "loading" ? "Searching" : state === "not-found" ? "Unavailable" : ""}
         </span>
       </div>
       <p className="mt-2 text-sm text-zinc-500">{marks} Marks</p>
