@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { IconInfoCircle } from "@tabler/icons-react";
@@ -315,14 +316,16 @@ export function TopperForm({ topper }: TopperFormProps) {
           <CardTitle>Bio & Strategy</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <MarkdownEditor
-            id="bio"
-            label="Bio"
-            value={bio}
-            onChange={setBio}
-            rows={4}
-            placeholder="Short biography in markdown..."
-          />
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              id="bio"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows={4}
+              placeholder="Short biography in markdown..."
+            />
+          </div>
           <MarkdownEditor
             id="strategy"
             label="Strategy"
