@@ -80,9 +80,13 @@ export default function AnswerCopyCard({
           <p className="mt-3 text-sm text-zinc-500 italic">
             No answer copies found for this paper.
           </p>
-          <p className="mt-4 text-sm text-zinc-600">
-            Resources coming soon. Follow for updates.
-          </p>
+          <Link
+            href="/toppers/toppers-copy-compilation"
+            className="mt-5 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
+          >
+            View 50+ Answer Copy Compilation
+            <span>→</span>
+          </Link>
         </>
       )}
     </div>
