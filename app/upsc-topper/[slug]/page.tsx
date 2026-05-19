@@ -673,17 +673,16 @@ export default async function TopperPage({ params }: Props) {
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
-                Resource Archive
+                Answer Copies & Resources
               </p>
 
               <h2 className="text-4xl font-semibold tracking-tight">
-                {topper.firstName} {topper.lastName} Paper-wise Resources
+                {topper.firstName} {topper.lastName} Answer Copies & Paper-wise Resources
               </h2>
             </div>
 
             <p className="hidden max-w-sm text-sm leading-7 text-zinc-500 lg:block">
-              Structured answer writing resources and paper-wise
-              archives.
+              Access {topper.firstName} {topper.lastName}'s answer copies, paper-wise resources, and structured writing archives.
             </p>
           </div>
 

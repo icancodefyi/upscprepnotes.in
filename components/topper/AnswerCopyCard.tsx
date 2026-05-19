@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
 interface Props {
@@ -16,79 +15,30 @@ export default function AnswerCopyCard({
   available,
   topperName,
 }: Props) {
-  const [state, setState] = useState<"idle" | "loading" | "not-found">("idle");
-
-  if (available) {
-    return (
-      <Link
-        href="#resources"
-        className="group block rounded-xl border border-black/[0.06] bg-white p-4 transition duration-300 hover:-translate-y-[2px]"
-      >
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <span className="text-sm font-medium text-green-600">Available</span>
-        </div>
-        <p className="mt-2 text-sm text-zinc-500">{marks} Marks</p>
-        <p className="mt-3 text-sm text-zinc-600">
-          {topperName}'s answer copy is ready. Open to view.
-        </p>
-        <div className="mt-4 flex items-center text-sm font-medium">
-          <span>Open Copy</span>
-          <span className="ml-2 transition group-hover:translate-x-1">→</span>
-        </div>
-      </Link>
-    );
-  }
-
   return (
-    <div className="rounded-xl border border-black/[0.06] bg-white p-4 transition duration-300">
+    <Link
+      href="/toppers/toppers-copy-compilation"
+      className="group block rounded-xl border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+    >
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <span className="text-sm font-medium text-zinc-400">
-          {state === "loading" ? "Searching" : state === "not-found" ? "Unavailable" : ""}
-        </span>
+        <h3 className="text-lg font-semibold">
+          {topperName} {title}
+        </h3>
+        {available && (
+          <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
+            Available
+          </span>
+        )}
       </div>
-      <p className="mt-2 text-sm text-zinc-500">{marks} Marks</p>
-
-      {state === "idle" && (
-        <>
-          <p className="mt-3 text-sm text-zinc-600">
-            Check if answer copies are available for {topperName}.
-          </p>
-          <button
-            onClick={() => {
-              setState("loading");
-              setTimeout(() => setState("not-found"), 1400);
-            }}
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-          >
-            Get Answer Copy
-            <span>→</span>
-          </button>
-        </>
-      )}
-
-      {state === "loading" && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-zinc-500">
-          <span className="inline-block h-3 w-3 animate-spin rounded-full border border-zinc-400 border-t-transparent" />
-          Loading answer copies...
-        </div>
-      )}
-
-      {state === "not-found" && (
-        <>
-          <p className="mt-3 text-sm text-zinc-500">
-            Not available right now — we&apos;re working hard to make it available to you.
-          </p>
-          <Link
-            href="/toppers/toppers-copy-compilation"
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-          >
-            View 50+ Answer Copy Compilation
-            <span>→</span>
-          </Link>
-        </>
-      )}
-    </div>
+      <p className="mt-3 text-2xl font-semibold tracking-tight">{marks} Marks</p>
+      <p className="mt-2 text-sm text-zinc-500">
+        {available
+          ? `Access ${topperName}'s ${title.toLowerCase()} with detailed evaluation.`
+          : `Check the complete compilation for ${topperName}'s ${title.toLowerCase()} and other toppers.`}
+      </p>
+      <div className="mt-4 flex items-center text-sm font-medium text-black transition group-hover:translate-x-1">
+        {available ? "View Copy" : "Check Compilation"} <span className="ml-1">→</span>
+      </div>
+    </Link>
   );
 }
