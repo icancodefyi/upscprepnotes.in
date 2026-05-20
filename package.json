@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
+    "@imagekit/nodejs": "^7.6.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@tabler/icons-react": "^3.36.1",
@@ -33,6 +34,7 @@
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
