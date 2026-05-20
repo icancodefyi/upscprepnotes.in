@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -40,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+    <html lang="en" className={cn("font-sans", inter.variable)}>
       <head>
         {/* Google Analytics */}
         <Script
@@ -61,7 +56,11 @@ export default function RootLayout({
         />
 
         {/* Umami Analytics */}
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="51e3b8aa-4637-4e44-abd3-b35c0d386331"></script>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="51e3b8aa-4637-4e44-abd3-b35c0d386331"
+        ></script>
 
         {/* Organization Schema */}
         <Script
@@ -71,22 +70,23 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "UPSCPrepNotes",
-              "url": "https://upscprepnotes.in",
-              "description": "Structured UPSC preparation intelligence with topper profiles, marksheets, and optional subject insights",
-              "logo": {
+              name: "UPSCPrepNotes",
+              url: "https://upscprepnotes.in",
+              description:
+                "Structured UPSC preparation intelligence with topper profiles, marksheets, and optional subject insights",
+              logo: {
                 "@type": "ImageObject",
-                "url": "https://upscprepnotes.in/logo.png",
-                "width": 512,
-                "height": 512,
+                url: "https://upscprepnotes.in/logo.png",
+                width: 512,
+                height: 512,
               },
-              "sameAs": [],
+              sameAs: [],
             }),
           }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <TooltipProvider>{children}</TooltipProvider>
       </body>
