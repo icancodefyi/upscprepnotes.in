@@ -91,15 +91,15 @@ export default function SalesPage() {
           </div>
 
           {/* ═══ HERO ═══ */}
-          <section className="mb-28">
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <Badge variant="outline" className="rounded-full px-3 py-1 text-xs font-medium">
-                50+ Topper Copies
-              </Badge>
-              <Badge className="rounded-full px-3 py-1 text-xs font-medium">
-                Marks Wise • Not Rank Wise
-              </Badge>
-            </div>
+          <section className="mb-20">
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <Badge variant="outline" className="rounded-full px-3 py-1 text-xs font-medium">
+              50+ Topper Copies
+            </Badge>
+            <Badge className="rounded-full px-3 py-1 text-xs font-medium">
+              Marks Wise • Not Rank Wise
+            </Badge>
+          </div>
 
             <h1 className="text-4xl font-semibold tracking-tight md:text-6xl leading-[1.1] max-w-4xl">
               Score 120+ Marks in Each GS Paper
@@ -149,8 +149,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ IBEC METHOD ═══ */}
-          <section className="mb-28 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12">
+          <section className="mb-20 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 The Framework
               </p>
@@ -221,8 +221,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ TOPPERS ═══ */}
-          <section className="mb-28 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12">
+          <section className="mb-20 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 Featured Toppers
               </p>
@@ -258,8 +258,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ PAPER-WISE BREAKDOWN ═══ */}
-          <section className="mb-28 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12 text-center">
+          <section className="mb-20 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 Paper-wise Expertise
               </p>
@@ -299,8 +299,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ PRICING ═══ */}
-          <section className="mb-28 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12 text-center">
+          <section className="mb-20 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 Pricing
               </p>
@@ -344,8 +344,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ TESTIMONIALS ═══ */}
-          <section className="mb-28 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12 text-center">
+          <section className="mb-20 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 Testimonials
               </p>
@@ -369,8 +369,8 @@ export default function SalesPage() {
           </section>
 
           {/* ═══ FAQ ═══ */}
-          <section className="mb-20 border-t border-border pt-16 md:pt-20">
-            <div className="mb-12 text-center">
+          <section className="mb-16 border-t border-border pt-12 md:pt-16">
+            <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
                 FAQ
               </p>

@@ -128,7 +128,7 @@ export default async function HomePage() {
         </header>
 
         {/* HERO */}
-        <section className="mb-32">
+        <section className="mb-20">
           <div className="mb-6 flex flex-wrap items-center gap-3">
             <Badge variant="outline" className="rounded-full px-3 py-1 text-xs font-medium">
               50+ Topper Copies
@@ -188,8 +188,8 @@ export default async function HomePage() {
         </section>
 
         {/* IBEC METHOD */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
-          <div className="mb-12">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="mb-10">
             <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
               The Framework
             </p>
@@ -238,8 +238,8 @@ export default async function HomePage() {
         </section>
 
         {/* FEATURED TOPPERS */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
-          <div className="mb-12">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="mb-10">
             <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
               Featured Toppers
             </p>
@@ -280,7 +280,7 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="mt-8">
+          <div className="mt-6">
             <Link
               href="/year/2025"
               className="text-sm font-medium text-foreground underline underline-offset-4 transition hover:text-foreground/70"
@@ -291,8 +291,8 @@ export default async function HomePage() {
         </section>
 
         {/* PAPER-WISE BREAKDOWN */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
-          <div className="mb-12 text-center">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="mb-10 text-center">
             <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
               Paper-wise Expertise
             </p>
@@ -334,8 +334,8 @@ export default async function HomePage() {
         </section>
 
         {/* BROWSE TOPPERS BY YEAR */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
-          <div className="mb-8">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="mb-6">
             <h2 className="text-2xl font-semibold tracking-tight">
               Browse Toppers by Year
             </h2>
@@ -358,8 +358,8 @@ export default async function HomePage() {
         </section>
 
         {/* OPTIONAL SUBJECTS */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
-          <div className="mb-10">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="mb-8">
             <h2 className="text-2xl font-semibold tracking-tight">
               Optional Subjects
             </h2>
@@ -390,7 +390,7 @@ export default async function HomePage() {
         </section>
 
         {/* COMPILATION CTA */}
-        <section className="mb-32 border-t border-border pt-16 md:pt-20">
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
           <div className="overflow-hidden rounded-3xl bg-primary p-8 md:p-16">
             <div className="max-w-2xl">
               <h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-primary-foreground md:text-5xl">
