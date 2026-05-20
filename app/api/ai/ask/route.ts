@@ -100,6 +100,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": "no-cache",
+        "X-Conversation-Id": cid,
       },
     });
   } catch (err) {

@@ -127,3 +127,18 @@
   }
 
 }
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.872 0.01 258.3) transparent;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: oklch(0.872 0.01 258.3);
+    border-radius: 3px;
+  }
+}

@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, FormEvent, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import type { Components } from "react-markdown";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
 
 type Message = {
@@ -31,6 +33,8 @@ function formatTitle(title: string | undefined): string {
   return title.length > 40 ? title.slice(0, 40) + "…" : title;
 }
 
+const suggestedQuestions = getSuggestedQuestions();
+
 export default function AskPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -40,71 +44,70 @@ export default function AskPage() {
   const [streaming, setStreaming] = useState(false);
   const [quota, setQuota] = useState<{ remaining: number; canQuery: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
-  const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  const suggestedQuestions = getSuggestedQuestions();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const fetchConversations = useCallback(async () => {
-    const sessionId = getSessionId();
-    const res = await fetch(`/api/ai/conversations?sessionId=${sessionId}`);
-    const data = await res.json();
-    setConversations(data.conversations || []);
-    if (data.quota) setQuota(data.quota);
-    return data;
+    try {
+      const res = await fetch(`/api/ai/conversations?sessionId=${getSessionId()}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setConversations(data.conversations || []);
+      if (data.quota) setQuota(data.quota);
+    } catch {}
   }, []);
 
   const loadConversation = useCallback(async (id: string) => {
-    setActiveId(id);
-    const res = await fetch(`/api/ai/conversations/${id}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    setMessages(data.messages || []);
+    try {
+      setActiveId(id);
+      setMessages([]);
+      const res = await fetch(`/api/ai/conversations/${id}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setMessages(data.messages || []);
+    } catch {}
   }, []);
 
-  // Initial load
   useEffect(() => {
     (async () => {
-      const data = await fetchConversations();
-      if (data.conversations?.length > 0) {
-        await loadConversation(data.conversations[0].id);
-      }
+      await fetchConversations();
       setLoading(false);
     })();
-  }, [fetchConversations, loadConversation]);
+  }, [fetchConversations]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, streaming]);
 
   async function newConversation() {
-    const sessionId = getSessionId();
-    const res = await fetch("/api/ai/conversations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId }),
-    });
-    if (!res.ok) return;
-    const { id } = await res.json();
-    setActiveId(id);
-    setMessages([]);
-    setInput("");
-    await fetchConversations();
-    inputRef.current?.focus();
+    try {
+      const res = await fetch("/api/ai/conversations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: getSessionId() }),
+      });
+      if (!res.ok) return;
+      const { id } = await res.json();
+      setActiveId(id);
+      setMessages([]);
+      setInput("");
+      await fetchConversations();
+      setTimeout(() => inputRef.current?.focus(), 100);
+    } catch {}
   }
 
-  async function handleSubmit(e?: FormEvent) {
+  async function handleSubmit(e?: React.FormEvent) {
     e?.preventDefault();
     const text = input.trim();
     if (!text || streaming) return;
 
     const userMsg: Message = { role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setStreaming(true);
-
     const assistantMsg: Message = { role: "assistant", content: "" };
-    setMessages((prev) => [...prev, assistantMsg]);
+
+    setMessages((prev) => [...prev, userMsg, assistantMsg]);
+    setInput("");
+    if (inputRef.current) inputRef.current.style.height = "auto";
+    setStreaming(true);
 
     try {
       const res = await fetch("/api/ai/ask", {
@@ -119,15 +122,17 @@ export default function AskPage() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        const errorMsg = err.error || `Error ${res.status}`;
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: "assistant", content: errorMsg };
+          updated[updated.length - 1] = { role: "assistant", content: err.error || `Error ${res.status}` };
           return updated;
         });
         setStreaming(false);
         return;
       }
+
+      const newId = res.headers.get("X-Conversation-Id");
+      if (newId && newId !== activeId) setActiveId(newId);
 
       const reader = res.body?.getReader();
       if (!reader) return;
@@ -138,8 +143,7 @@ export default function AskPage() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const text = decoder.decode(value, { stream: true });
-        fullContent += text;
+        fullContent += decoder.decode(value, { stream: true });
         setMessages((prev) => {
           const updated = [...prev];
           updated[updated.length - 1] = { role: "assistant", content: fullContent };
@@ -166,79 +170,40 @@ export default function AskPage() {
     }
   }
 
-  function renderContent(content: string) {
-    const html = content
-      .replace(
-        /\[([^\]]+)\]\((\/[^)]+)\)/g,
-        '<a href="$2" class="font-medium text-amber-600 underline underline-offset-2 hover:text-amber-700">$1</a>',
-      )
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/^### (.+)$/gm, "<h3 class='mt-3 font-semibold text-sm'>$1</h3>")
-      .replace(/^## (.+)$/gm, "<h2 class='mt-4 font-semibold text-base'>$1</h2>")
-      .replace(/^- (.+)$/gm, "</p><li class='ml-4 list-disc text-sm'>$1</li>")
-      .replace(/\n\n/g, "</p><p class='mt-2 text-sm leading-relaxed'>")
-      .replace(/\n/g, "<br/>");
-
-    return (
-      <div
-        className="text-sm leading-relaxed [&_p]:text-sm [&_p]:leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: `<p class="text-sm leading-relaxed">${html}</p>` }}
-      />
-    );
-  }
-
   return (
     <div className="flex h-screen bg-white">
-      {/* Sidebar overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/20 md:hidden"
+          className="fixed inset-0 z-30 bg-black/50 md:hidden"
           onClick={() => setSidebarOpen(false)}
+          aria-hidden
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-zinc-200 bg-zinc-50 transition-transform duration-300 md:relative md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-zinc-200 bg-white transition-transform duration-200 md:relative md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Sidebar header */}
-        <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-4">
-          <Link href="/" className="text-xs uppercase tracking-[0.3em] text-zinc-500">
-            UPSCPrepNotes
-          </Link>
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(false)}
-            className="text-zinc-400 hover:text-zinc-600 md:hidden"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* New Chat button */}
         <div className="p-3">
           <button
             type="button"
             onClick={newConversation}
-            className="flex w-full items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
             </svg>
-            New Chat
+            New chat
           </button>
         </div>
 
-        {/* Conversation list */}
-        <nav className="flex-1 overflow-y-auto px-3 pb-3">
+        <nav className="flex-1 overflow-y-auto px-2 pb-2 scrollbar-thin" aria-label="Conversation history">
           {conversations.length === 0 ? (
-            <p className="px-2 text-xs text-zinc-400">No conversations yet</p>
+            <p className="px-3 pt-6 text-center text-xs text-zinc-400">No conversations yet</p>
           ) : (
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {conversations.map((conv) => (
                 <button
                   key={conv.id}
@@ -247,12 +212,15 @@ export default function AskPage() {
                     loadConversation(conv.id);
                     setSidebarOpen(false);
                   }}
-                  className={`w-full truncate rounded-lg px-3 py-2 text-left text-sm transition ${
+                  className={`w-full truncate rounded-lg px-3 py-2.5 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
                     activeId === conv.id
-                      ? "bg-amber-100 font-medium text-amber-900"
+                      ? "bg-primary/10 font-medium text-primary"
                       : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                   }`}
                 >
+                  <svg className="-ml-0.5 mr-2 inline h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
                   {formatTitle(conv.title)}
                 </button>
               ))}
@@ -260,70 +228,69 @@ export default function AskPage() {
           )}
         </nav>
 
-        {/* Sidebar footer */}
-        <div className="border-t border-zinc-200 px-4 py-3">
-          <div className="flex items-center justify-between text-xs text-zinc-400">
-            <span>
-              {quota ? `${quota.remaining} / 5 free` : "— / 5 free"}
+        <div className="border-t border-zinc-100 px-3 py-3">
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-zinc-400" aria-label={`Quota: ${quota?.remaining ?? "—"} of 5 queries remaining`}>
+              <svg className="-mt-0.5 mr-1 inline h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              {quota ? `${quota.remaining} / 5` : "—"}
             </span>
-            <span className="text-zinc-300">Ask AI</span>
+            <Link href="/" className="text-zinc-400 transition hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+              Home
+            </Link>
           </div>
         </div>
       </aside>
 
-      {/* Main area */}
+      {/* Main */}
       <div className="flex flex-1 flex-col min-w-0">
-        {/* Top bar */}
-        <header className="flex items-center justify-between border-b border-zinc-200 px-4 py-3 md:px-6">
+        {/* Mobile header */}
+        <header className="flex items-center justify-between border-b border-zinc-100 bg-white px-4 py-3 md:hidden">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="text-zinc-500 hover:text-zinc-700 md:hidden"
+            className="rounded-lg p-1 text-zinc-500 transition hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            aria-label="Open sidebar"
           >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
-
-          <div className="hidden md:block" />
-
-          <Link
-            href="/"
-            className="text-xs uppercase tracking-[0.3em] text-zinc-400 hover:text-zinc-600"
-          >
+          <span className="text-sm font-medium text-zinc-700">Ask AI</span>
+          <Link href="/" className="text-xs text-zinc-400 transition hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
             Home
           </Link>
         </header>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto">
+        {/* Messages area */}
+        <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
           {loading ? (
             <div className="flex h-full items-center justify-center">
-              <div className="flex gap-1">
-                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.15s]" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.3s]" />
-              </div>
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-primary" />
             </div>
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
-              <div className="max-w-lg text-center">
-                <h1 className="mb-2 text-2xl font-semibold tracking-tight text-zinc-800">
-                  Ask UPSC AI
-                </h1>
+              <div className="mx-auto w-full max-w-xl text-center">
+                <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                  </svg>
+                </div>
+                <h1 className="mb-1.5 text-xl font-semibold tracking-tight text-zinc-800">Ask UPSC AI</h1>
                 <p className="mb-8 text-sm text-zinc-400">
-                  Get answers from your UPSC study assistant — powered by topper strategies.
+                  Get answers from actual UPSC topper strategies
                 </p>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Suggested questions">
                   {suggestedQuestions.map((q) => (
                     <button
                       key={q}
                       type="button"
                       onClick={() => {
                         setInput(q);
-                        inputRef.current?.focus();
+                        setTimeout(() => inputRef.current?.focus(), 50);
                       }}
-                      className="cursor-pointer rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-500 transition hover:border-amber-300 hover:text-amber-700"
+                      className="rounded-lg border border-zinc-200 px-3.5 py-2 text-sm text-zinc-500 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                     >
                       {q}
                     </button>
@@ -332,102 +299,168 @@ export default function AskPage() {
               </div>
             </div>
           ) : (
-            <div className="mx-auto max-w-3xl px-4 py-6 md:px-6">
-              <div className="space-y-6">
-                {messages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    {msg.role === "assistant" && (
-                      <div className="mr-3 mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[10px] font-bold text-amber-700 uppercase">
+            <div className="mx-auto max-w-3xl">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`${
+                    msg.role === "assistant" ? "bg-zinc-50" : "bg-white"
+                  } border-b border-zinc-100 last:border-b-0`}
+                >
+                  <div
+                    className={`mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10 ${
+                      msg.role === "assistant" ? "" : ""
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      {/* Avatar / icon */}
+                      <div
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                          msg.role === "assistant"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-zinc-800 text-white"
+                        }`}
+                        aria-hidden
+                      >
+                        {msg.role === "assistant" ? "AI" : "U"}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        {msg.role === "assistant" ? (
+                          <div className="prose prose-zinc prose-sm max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                            <ReactMarkdown components={mdComponents}>{msg.content}</ReactMarkdown>
+                            {msg.sources && msg.sources.length > 0 && (
+                              <div className="mt-6 flex flex-wrap items-center gap-2">
+                                <span className="text-xs font-medium text-zinc-400">Sources:</span>
+                                {msg.sources.map((s) => (
+                                  <Link
+                                    key={s.slug}
+                                    href={`/upsc-topper/${s.slug}`}
+                                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                                  >
+                                    {s.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-sm leading-relaxed text-zinc-800">{msg.content}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {streaming && (
+                <div className="bg-zinc-50 border-b border-zinc-100">
+                  <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
                         AI
                       </div>
-                    )}
-                    <div
-                      className={`max-w-[85%] md:max-w-[75%] ${
-                        msg.role === "user"
-                          ? "rounded-2xl bg-zinc-900 px-4 py-2.5 text-sm text-white"
-                          : "text-zinc-800"
-                      }`}
-                    >
-                      {msg.role === "assistant" ? (
-                        <>
-                          {renderContent(msg.content)}
-                          {msg.sources && msg.sources.length > 0 && (
-                            <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-zinc-100 pt-3">
-                              <span className="text-[10px] uppercase tracking-wider text-zinc-400">
-                                Sources:
-                              </span>
-                              {msg.sources.map((s) => (
-                                <Link
-                                  key={s.slug}
-                                  href={`/upsc-topper/${s.slug}`}
-                                  className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-medium text-zinc-600 hover:bg-amber-100 hover:text-amber-700"
-                                >
-                                  {s.name}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <p className="text-sm leading-relaxed">{msg.content}</p>
-                      )}
+                      <div className="min-w-0 flex-1 pt-1.5">
+                        <span className="inline-flex gap-1">
+                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
+                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
+                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                ))}
-                {streaming && (
-                  <div className="flex justify-start">
-                    <div className="mr-3 mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[10px] font-bold text-amber-700 uppercase">
-                      AI
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div ref={bottomRef} />
+                </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
           )}
         </div>
 
         {/* Input area */}
-        <div className="border-t border-zinc-200 bg-white px-4 py-4 md:px-6">
+        <div className="border-t border-zinc-100 bg-white px-4 py-4 md:px-6 lg:px-10">
           <div className="mx-auto max-w-3xl">
             <form onSubmit={handleSubmit} className="relative">
               <textarea
-                ref={inputRef as any}
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask about UPSC preparation…"
+                placeholder="Ask a question…"
                 rows={1}
                 disabled={streaming || loading}
-                className="w-full resize-none rounded-2xl border border-zinc-200 bg-zinc-50 px-5 py-3 pr-14 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-300 focus:bg-white focus:ring-0"
-                style={{ minHeight: "44px", maxHeight: "120px" }}
+                className="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 pr-12 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-300 focus:shadow-sm"
+                style={{ minHeight: "48px", maxHeight: "160px" }}
                 onInput={(e) => {
                   const el = e.target as HTMLTextAreaElement;
                   el.style.height = "auto";
-                  el.style.height = Math.min(el.scrollHeight, 120) + "px";
+                  el.style.height = Math.min(el.scrollHeight, 160) + "px";
                 }}
               />
               <button
                 type="submit"
                 disabled={streaming || loading || !input.trim()}
-                className="absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-900 text-white transition hover:bg-zinc-800 disabled:opacity-30 disabled:hover:bg-zinc-900"
+                className="absolute right-1.5 bottom-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white transition hover:bg-zinc-800 active:scale-95 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+                aria-label="Send message"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
                 </svg>
               </button>
             </form>
-            <p className="mt-2 text-center text-[10px] text-zinc-400">
-              Responses are AI-generated. Verify important information.
-            </p>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+const mdComponents: Components = {
+  a: ({ href, children }) => (
+    <Link
+      href={href || "#"}
+      className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"
+    >
+      {children}
+    </Link>
+  ),
+  code: ({ className, children, ...props }) => {
+    const isInline = !className?.includes("language-");
+    if (isInline) {
+      return (
+        <code className="rounded bg-zinc-200/70 px-1.5 py-0.5 text-sm font-normal text-zinc-800" {...props}>
+          {children}
+        </code>
+      );
+    }
+    return (
+      <pre className="my-4 overflow-x-auto rounded-xl bg-zinc-800 p-4 text-sm leading-relaxed text-zinc-100">
+        <code className={className} {...props}>
+          {children}
+        </code>
+      </pre>
+    );
+  },
+  ul: ({ children }) => <ul className="my-3 space-y-1.5 pl-5 list-disc">{children}</ul>,
+  ol: ({ children }) => <ol className="my-3 space-y-1.5 pl-5 list-decimal">{children}</ol>,
+  li: ({ children }) => <li className="text-sm leading-relaxed text-zinc-700 pl-1">{children}</li>,
+  p: ({ children }) => <p className="my-3 text-sm leading-relaxed text-zinc-700 first:mt-0 last:mb-0">{children}</p>,
+  h1: ({ children }) => <h1 className="mt-6 mb-3 text-base font-semibold tracking-tight text-zinc-900">{children}</h1>,
+  h2: ({ children }) => <h2 className="mt-5 mb-2 text-sm font-semibold tracking-tight text-zinc-900">{children}</h2>,
+  h3: ({ children }) => <h3 className="mt-4 mb-2 text-sm font-semibold tracking-tight text-zinc-900">{children}</h3>,
+  blockquote: ({ children }) => (
+    <blockquote className="my-4 border-l-2 border-zinc-300 pl-4 text-sm italic text-zinc-500">{children}</blockquote>
+  ),
+  hr: () => <hr className="my-6 border-zinc-200" />,
+  table: ({ children }) => (
+    <div className="my-4 overflow-x-auto rounded-xl border border-zinc-200">
+      <table className="min-w-full text-sm border-collapse">{children}</table>
+    </div>
+  ),
+  th: ({ children }) => (
+    <th className="border-r border-b border-zinc-200 bg-zinc-100/80 px-3 py-2 text-left font-medium text-zinc-700 last:border-r-0">
+      {children}
+    </th>
+  ),
+  td: ({ children }) => (
+    <td className="border-r border-b border-zinc-200 px-3 py-2 text-zinc-600 last:border-r-0">{children}</td>
+  ),
+};
