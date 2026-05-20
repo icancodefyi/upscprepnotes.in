@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { verifyAdminToken } from "@/lib/admin-auth";
@@ -72,6 +73,11 @@ export async function PUT(
         { status: 404 }
       );
     }
+
+    // Purge ISR caches so changes (image, marks, etc.) appear immediately
+    revalidatePath("/");
+    revalidatePath(`/upsc-topper/${topper.slug}`);
+    if (topper.year) revalidatePath(`/year/${topper.year}`);
 
     return NextResponse.json({
       success: true,

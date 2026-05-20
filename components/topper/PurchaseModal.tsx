@@ -6,17 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 
 const PRODUCTS = [
-  { name: "GS1 Compilation", price: 299, desc: "15+ answer copies" },
-  { name: "GS2 Compilation", price: 299, desc: "12+ answer copies" },
-  { name: "GS3 Compilation", price: 299, desc: "10+ answer copies" },
-  { name: "GS4 (Ethics) Compilation", price: 299, desc: "8+ answer copies" },
-  { name: "Essay Compilation", price: 299, desc: "10+ answer copies" },
   {
     name: "Full Bundle (All Papers)",
     price: 999,
     desc: "All papers — best value",
     bestValue: true,
   },
+  { name: "GS1 Compilation", price: 299, desc: "15+ answer copies", outOfStock: true },
+  { name: "GS2 Compilation", price: 299, desc: "12+ answer copies", outOfStock: true },
+  { name: "GS3 Compilation", price: 299, desc: "10+ answer copies", outOfStock: true },
+  { name: "GS4 (Ethics) Compilation", price: 299, desc: "8+ answer copies", outOfStock: true },
+  { name: "Essay Compilation", price: 299, desc: "10+ answer copies", outOfStock: true },
 ];
 
 interface Props {
@@ -36,7 +36,12 @@ function ProductCard({
     <button
       type="button"
       onClick={onSelect}
-      className="group relative flex w-full items-center justify-between rounded-2xl border border-border/50 bg-card p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 sm:p-5"
+      disabled={"outOfStock" in p && p.outOfStock}
+      className={`group relative flex w-full items-center justify-between rounded-2xl border bg-card p-4 text-left shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 sm:p-5 ${
+        "outOfStock" in p && p.outOfStock
+          ? "cursor-not-allowed border-zinc-200 opacity-50"
+          : "border-border/50 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+      }`}
     >
       {"bestValue" in p && p.bestValue && (
         <span className="absolute -top-2.5 right-4 rounded-full bg-primary px-3 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground shadow-sm">
@@ -45,10 +50,12 @@ function ProductCard({
       )}
       <div className="min-w-0 flex-1 pr-4">
         <p className="text-sm font-semibold sm:text-base">{p.name}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">{p.desc}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          {"outOfStock" in p && p.outOfStock ? "Out of stock" : p.desc}
+        </p>
       </div>
       <div className="shrink-0 text-lg font-bold text-primary sm:text-xl">
-        ₹{p.price}
+        {"outOfStock" in p && p.outOfStock ? "—" : `₹${p.price}`}
       </div>
     </button>
   );

@@ -125,6 +125,9 @@ export default async function HomePage() {
             <Link href="/optional/psir" className="transition hover:text-foreground">
               Optional Subjects
             </Link>
+            <Link href="/ask" className="transition hover:text-foreground">
+              Ask AI
+            </Link>
           </nav>
         </header>
 
