@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { topperImageSrc } from "@/lib/utils";
 
 export const revalidate = 86400;
 
@@ -256,7 +257,7 @@ export default async function HomePage() {
                 className="flex items-center gap-4 rounded-2xl border border-transparent bg-transparent px-4 py-4 transition hover:border-border/50 hover:bg-card md:gap-6 md:px-6"
               >
                 <img
-                  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
+                  src={topperImageSrc(topper)}
                   alt={`${topper.firstName} ${topper.lastName}`}
                   className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-background md:h-14 md:w-14"
                 />

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:featured": "node ./scripts/seed-featured.cjs"
+    "seed:featured": "node ./scripts/seed-featured.cjs",
+    "scrape:images": "node scripts/scrape-topper-images.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
@@ -15,6 +16,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@tabler/icons-react": "^3.36.1",
+    "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
@@ -22,6 +24,7 @@
     "mongoose": "^9.6.2",
     "next": "16.1.6",
     "nodemailer": "^8.0.7",
+    "puppeteer": "^25.0.4",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",

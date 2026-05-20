@@ -9,15 +9,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    if (!process.env.IMAGEKIT_PRIVATE_KEY) {
+      return NextResponse.json(
+        { error: "ImageKit private key not configured" },
+        { status: 500 },
+      );
+    }
+
     const { ImageKit } = await import("@imagekit/nodejs");
 
     const imagekit = new ImageKit({
-      privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+      privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
     });
+
+    const fileName = `payment-screenshot-${Date.now()}.${(file.name || "png").split(".").pop() || "png"}`;
 
     const result = await imagekit.files.upload({
       file,
-      fileName: `payment-screenshot-${Date.now()}.${file.name.split(".").pop() || "png"}`,
+      fileName,
       folder: "upscprepnotes/payment-screenshots",
       useUniqueFileName: true,
     });
@@ -25,9 +34,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: result.url }, { status: 200 });
   } catch (err) {
     console.error("Upload error:", err);
-    return NextResponse.json(
-      { error: "Failed to upload file" },
-      { status: 500 }
-    );
+    const message =
+      err instanceof Error ? err.message : "Failed to upload file";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

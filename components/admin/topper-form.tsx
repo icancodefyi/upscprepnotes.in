@@ -76,6 +76,7 @@ export function TopperForm({ topper }: TopperFormProps) {
   const isEditing = !!topper;
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [imageUploading, setImageUploading] = useState(false);
 
   const [firstName, setFirstName] = useState(topper?.firstName || "");
   const [lastName, setLastName] = useState(topper?.lastName || "");
@@ -245,14 +246,98 @@ export function TopperForm({ topper }: TopperFormProps) {
                 onChange={(e) => setSlug(e.target.value)}
               />
             </div>
-            <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="ProfileImage">Profile Image URL</Label>
-              <Input
-                id="ProfileImage"
-                value={ProfileImage}
-                onChange={(e) => setProfileImage(e.target.value)}
-                placeholder="https://..."
-              />
+            <div className="space-y-3 sm:col-span-2">
+              <Label>Profile Image</Label>
+
+              {ProfileImage && (
+                <div className="relative mb-3 h-32 w-32 overflow-hidden rounded-xl border">
+                  <img
+                    src={ProfileImage}
+                    alt="Preview"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center gap-3">
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="block w-full text-sm text-zinc-500 file:mr-3 file:rounded-lg file:border-0 file:bg-zinc-900 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-zinc-800"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setImageUploading(true);
+                    try {
+                      const fd = new FormData();
+                      fd.append("file", file);
+                      const res = await fetch("/api/admin/toppers/upload-image", {
+                        method: "POST",
+                        body: fd,
+                      });
+                      if (!res.ok) throw new Error("Upload failed");
+                      const data = await res.json();
+                      setProfileImage(data.url);
+                    } catch {
+                      setError("Failed to upload image");
+                    } finally {
+                      setImageUploading(false);
+                    }
+                  }}
+                />
+                {imageUploading && (
+                  <span className="shrink-0 text-sm text-zinc-500">
+                    Uploading…
+                  </span>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <Input
+                  id="ProfileImage"
+                  value={ProfileImage}
+                  onChange={(e) => setProfileImage(e.target.value)}
+                  placeholder="Or paste an image URL and click Fetch →"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={imageUploading}
+                  onClick={async () => {
+                    const urlInput = document.getElementById(
+                      "ProfileImage",
+                    ) as HTMLInputElement;
+                    const url = urlInput?.value?.trim();
+                    if (!url) return;
+                    setImageUploading(true);
+                    try {
+                      const res = await fetch(
+                        "/api/admin/toppers/upload-image",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ url }),
+                        },
+                      );
+                      if (!res.ok) throw new Error("Fetch failed");
+                      const data = await res.json();
+                      setProfileImage(data.url);
+                    } catch {
+                      setError("Failed to fetch image from URL");
+                    } finally {
+                      setImageUploading(false);
+                    }
+                  }}
+                >
+                  Fetch →
+                </Button>
+              </div>
             </div>
           </div>
           <div className="mt-4 flex gap-6">

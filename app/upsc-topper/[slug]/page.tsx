@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/footer";
+import { topperImageSrc } from "@/lib/utils";
 
 export const revalidate = 86400;
 
@@ -430,7 +431,7 @@ export default async function TopperPage({ params }: Props) {
             <div className="lg:sticky lg:top-10 lg:h-fit">
               <div className="overflow-hidden rounded-[32px] border border-border/50 bg-card shadow-lg shadow-primary/5">
                 <img
-                  src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
+                  src={topperImageSrc(topper)}
                   alt={`${topper.firstName} ${topper.lastName}`}
                   className="h-full w-full bg-muted"
                 />
@@ -1093,7 +1094,7 @@ export default async function TopperPage({ params }: Props) {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
+                      src={topperImageSrc(t)}
                       alt={`${t.firstName} ${t.lastName}`}
                       className="h-16 w-16 shrink-0 rounded-2xl border border-border/50 bg-muted"
                     />
@@ -1141,7 +1142,7 @@ export default async function TopperPage({ params }: Props) {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
+                      src={topperImageSrc(t)}
                       alt={`${t.firstName} ${t.lastName}`}
                       className="h-16 w-16 shrink-0 rounded-2xl border border-border/50 bg-muted"
                     />
@@ -1195,7 +1196,7 @@ export default async function TopperPage({ params }: Props) {
               >
                 <div className="flex items-center gap-4">
                   <img
-                    src={`https://api.dicebear.com/9.x/notionists/svg?seed=${related.firstName}-${related.lastName}`}
+                    src={topperImageSrc(related)}
                     alt={`${related.firstName} ${related.lastName}`}
                     className="h-16 w-16 shrink-0 rounded-2xl border border-border/50 bg-muted"
                   />
