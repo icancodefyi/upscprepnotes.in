@@ -393,6 +393,34 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* ASK AI CTA */}
+        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+          <div className="overflow-hidden rounded-3xl border border-border/50 bg-card p-8 md:p-16">
+            <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-xl">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  Ask AI About Any Topper
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  Get instant answers about any UPSC topper&apos;s strategy, marks,
+                  optional subject, or preparation approach. Powered by our
+                  database of 280+ verified profiles.
+                </p>
+              </div>
+              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg shadow-primary/20">
+                <Link href="/ask">
+                  Ask a question &rarr;
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* COMPILATION CTA */}
         <section className="mb-20 border-t border-border pt-12 md:pt-16">
           <div className="overflow-hidden rounded-3xl bg-primary p-8 md:p-16">

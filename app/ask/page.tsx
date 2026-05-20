@@ -1,10 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
+
+export default function AskPageWrapper() {
+  return (
+    <Suspense>
+      <AskPage />
+    </Suspense>
+  );
+}
 
 type Message = {
   role: "user" | "assistant";
@@ -35,7 +44,8 @@ function formatTitle(title: string | undefined): string {
 
 const suggestedQuestions = getSuggestedQuestions();
 
-export default function AskPage() {
+function AskPage() {
+  const searchParams = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -44,8 +54,12 @@ export default function AskPage() {
   const [streaming, setStreaming] = useState(false);
   const [quota, setQuota] = useState<{ remaining: number; canQuery: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const initialQueryDone = useRef(false);
 
   const fetchConversations = useCallback(async () => {
     try {
@@ -68,6 +82,21 @@ export default function AskPage() {
     } catch {}
   }, []);
 
+  // Handle initial query param
+  useEffect(() => {
+    if (loading || initialQueryDone.current) return;
+    const q = searchParams.get("q");
+    if (q) {
+      initialQueryDone.current = true;
+      setInput(q);
+      // Wait a beat for everything to render, then submit
+      setTimeout(() => {
+        const form = document.querySelector("form");
+        if (form) form.requestSubmit();
+      }, 500);
+    }
+  }, [loading, searchParams]);
+
   useEffect(() => {
     (async () => {
       await fetchConversations();
@@ -75,9 +104,20 @@ export default function AskPage() {
     })();
   }, [fetchConversations]);
 
+  // Auto-scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, streaming]);
+    if (!showScrollBtn) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, streaming, showScrollBtn]);
+
+  // Track scroll position
+  const handleScroll = useCallback(() => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setShowScrollBtn(distFromBottom > 200);
+  }, []);
 
   async function newConversation() {
     try {
@@ -108,6 +148,7 @@ export default function AskPage() {
     setInput("");
     if (inputRef.current) inputRef.current.style.height = "auto";
     setStreaming(true);
+    setShowScrollBtn(false);
 
     try {
       const res = await fetch("/api/ai/ask", {
@@ -161,6 +202,19 @@ export default function AskPage() {
     } finally {
       setStreaming(false);
     }
+  }
+
+  async function copyContent(index: number, content: string) {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedId(index);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {}
+  }
+
+  function scrollToBottom() {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setShowScrollBtn(false);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -264,7 +318,11 @@ export default function AskPage() {
         </header>
 
         {/* Messages area */}
-        <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+        <div
+          ref={messagesContainerRef}
+          onScroll={handleScroll}
+          className="relative flex-1 overflow-y-auto bg-white scrollbar-thin"
+        >
           {loading ? (
             <div className="flex h-full items-center justify-center">
               <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-primary" />
@@ -299,79 +357,118 @@ export default function AskPage() {
               </div>
             </div>
           ) : (
-            <div className="mx-auto max-w-3xl">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`${
-                    msg.role === "assistant" ? "bg-zinc-50" : "bg-white"
-                  } border-b border-zinc-100 last:border-b-0`}
-                >
+            <>
+              <div className="mx-auto max-w-3xl">
+                {messages.map((msg, i) => (
                   <div
-                    className={`mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10 ${
-                      msg.role === "assistant" ? "" : ""
-                    }`}
+                    key={i}
+                    className={`animate-in fade-in-0 slide-in-from-bottom-2 ${
+                      msg.role === "assistant" ? "bg-zinc-50" : "bg-white"
+                    } border-b border-zinc-100 last:border-b-0`}
+                    style={{ animationDuration: "200ms" }}
                   >
-                    <div className="flex items-start gap-4">
-                      {/* Avatar / icon */}
-                      <div
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                          msg.role === "assistant"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-zinc-800 text-white"
-                        }`}
-                        aria-hidden
-                      >
-                        {msg.role === "assistant" ? "AI" : "U"}
-                      </div>
+                    <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                            msg.role === "assistant"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-zinc-800 text-white"
+                          }`}
+                          aria-hidden
+                        >
+                          {msg.role === "assistant" ? "AI" : "U"}
+                        </div>
 
-                      <div className="min-w-0 flex-1">
-                        {msg.role === "assistant" ? (
-                          <div className="prose prose-zinc prose-sm max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
-                            <ReactMarkdown components={mdComponents}>{msg.content}</ReactMarkdown>
-                            {msg.sources && msg.sources.length > 0 && (
-                              <div className="mt-6 flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-medium text-zinc-400">Sources:</span>
-                                {msg.sources.map((s) => (
-                                  <Link
-                                    key={s.slug}
-                                    href={`/upsc-topper/${s.slug}`}
-                                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                                  >
-                                    {s.name}
-                                  </Link>
-                                ))}
-                              </div>
+                        <div className="min-w-0 flex-1 group">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-zinc-500">
+                              {msg.role === "assistant" ? "Assistant" : "You"}
+                            </span>
+                            {msg.role === "assistant" && msg.content && (
+                              <button
+                                type="button"
+                                onClick={() => copyContent(i, msg.content)}
+                                className="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 rounded p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                                aria-label={copiedId === i ? "Copied" : "Copy response"}
+                              >
+                                {copiedId === i ? (
+                                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                ) : (
+                                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                  </svg>
+                                )}
+                              </button>
                             )}
                           </div>
-                        ) : (
-                          <p className="text-sm leading-relaxed text-zinc-800">{msg.content}</p>
-                        )}
+                          {msg.role === "assistant" ? (
+                            <div className="prose prose-zinc prose-sm max-w-none mt-2 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                              <ReactMarkdown components={mdComponents}>{msg.content}</ReactMarkdown>
+                              {msg.sources && msg.sources.length > 0 && (
+                                <div className="mt-6 flex flex-wrap items-center gap-2">
+                                  <span className="text-xs font-medium text-zinc-400">Sources:</span>
+                                  {msg.sources.map((s) => (
+                                    <Link
+                                      key={s.slug}
+                                      href={`/upsc-topper/${s.slug}`}
+                                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                                    >
+                                      {s.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <p className="mt-2 text-sm leading-relaxed text-zinc-800">{msg.content}</p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              {streaming && (
-                <div className="bg-zinc-50 border-b border-zinc-100">
-                  <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
-                        AI
-                      </div>
-                      <div className="min-w-0 flex-1 pt-1.5">
-                        <span className="inline-flex gap-1">
-                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
-                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
-                          <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
-                        </span>
+                ))}
+                {streaming && (
+                  <div className="bg-zinc-50 border-b border-zinc-100">
+                    <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
+                          AI
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <span className="text-xs font-semibold text-zinc-500">Assistant</span>
+                          <div className="mt-2 pt-0.5">
+                            <span className="inline-flex gap-1">
+                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
+                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
+                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Scroll to bottom button */}
+              {showScrollBtn && (
+                <button
+                  type="button"
+                  onClick={scrollToBottom}
+                  className="sticky bottom-4 left-1/2 z-10 mx-auto flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-500 shadow-lg transition hover:bg-zinc-50 hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                  style={{ width: "fit-content" }}
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                  Scroll to bottom
+                </button>
               )}
-              <div ref={messagesEndRef} />
-            </div>
+            </>
           )}
         </div>
 
@@ -406,6 +503,9 @@ export default function AskPage() {
                 </svg>
               </button>
             </form>
+            <p className="mt-2 text-center text-[11px] text-zinc-300">
+              {quota ? `${quota.remaining} free queries remaining today` : ""}
+            </p>
           </div>
         </div>
       </div>

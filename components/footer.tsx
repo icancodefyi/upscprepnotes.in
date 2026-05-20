@@ -52,6 +52,9 @@ export default function Footer() {
             <Link href="/optional/psir" className="transition hover:text-foreground/70">
               Optional Subjects
             </Link>
+            <Link href="/ask" className="transition hover:text-foreground/70">
+              Ask AI
+            </Link>
           </div>
         </div>
 
