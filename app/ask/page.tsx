@@ -268,8 +268,8 @@ function AskPage() {
                   }}
                   className={`w-full truncate rounded-lg px-3 py-2.5 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
                     activeId === conv.id
-                      ? "bg-primary/10 font-medium text-primary"
-                      : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                      ? "bg-zinc-100 font-medium text-zinc-900"
+                      : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800"
                   }`}
                 >
                   <svg className="-ml-0.5 mr-2 inline h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
@@ -372,7 +372,7 @@ function AskPage() {
                         <div
                           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                             msg.role === "assistant"
-                              ? "bg-primary text-primary-foreground"
+                              ? "bg-zinc-700 text-white"
                               : "bg-zinc-800 text-white"
                           }`}
                           aria-hidden
@@ -408,13 +408,13 @@ function AskPage() {
                             <div className="prose prose-zinc prose-sm max-w-none mt-2 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
                               <ReactMarkdown components={mdComponents}>{msg.content}</ReactMarkdown>
                               {msg.sources && msg.sources.length > 0 && (
-                                <div className="mt-6 flex flex-wrap items-center gap-2">
+                                  <div className="mt-6 flex flex-wrap items-center gap-2">
                                   <span className="text-xs font-medium text-zinc-400">Sources:</span>
                                   {msg.sources.map((s) => (
                                     <Link
                                       key={s.slug}
                                       href={`/upsc-topper/${s.slug}`}
-                                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                                      className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                                     >
                                       {s.name}
                                     </Link>
@@ -434,7 +434,7 @@ function AskPage() {
                   <div className="bg-zinc-50 border-b border-zinc-100">
                     <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
                       <div className="flex items-start gap-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-700 text-xs font-bold text-white" aria-hidden>
                           AI
                         </div>
                         <div className="min-w-0 flex-1">
@@ -517,7 +517,7 @@ const mdComponents: Components = {
   a: ({ href, children }) => (
     <Link
       href={href || "#"}
-      className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"
+      className="text-zinc-800 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500"
     >
       {children}
     </Link>

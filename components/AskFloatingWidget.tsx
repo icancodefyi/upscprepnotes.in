@@ -5,10 +5,11 @@ import Link from "next/link";
 
 export default function AskFloatingWidget() {
   const [visible, setVisible] = useState(false);
-  const [isAskPage, setIsAskPage] = useState(false);
+  const [isAskPage] = useState(
+    () => typeof window !== "undefined" && window.location.pathname === "/ask",
+  );
 
   useEffect(() => {
-    setIsAskPage(window.location.pathname === "/ask");
     setVisible(true);
   }, []);
 
