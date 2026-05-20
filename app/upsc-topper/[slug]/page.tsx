@@ -21,6 +21,38 @@ interface Props {
   }>;
 }
 
+function buildMetaDescription(topper: Record<string, any>): string {
+  const name = `${topper.firstName} ${topper.lastName}`;
+  const rank = topper.rank;
+  const year = topper.year;
+  const subject = topper.optionalSubject || "";
+  const total = topper.marks?.total ?? "";
+  const written = topper.marks?.written ?? "";
+  const interview = topper.marks?.interview ?? "";
+  const gs1 = topper.marks?.gs1 ?? "";
+  const gs2 = topper.marks?.gs2 ?? "";
+  const gs3 = topper.marks?.gs3 ?? "";
+  const gs4 = topper.marks?.gs4 ?? "";
+  const essay = topper.marks?.essay ?? "";
+  const opt1 = topper.marks?.optional1 ?? "";
+
+  // Compact data-dense format used by top-ranking competitors
+  let desc = `${name} UPSC AIR ${rank} (${year})`;
+  if (subject) desc += ` - ${subject}`;
+  if (total) desc += `. Total: ${total}`;
+  desc += ` | Written: ${written || "—"} | Interview: ${interview || "—"}.`;
+  if (gs1) desc += ` GS1:${gs1}`;
+  if (gs2) desc += ` GS2:${gs2}`;
+  if (gs3) desc += ` GS3:${gs3}`;
+  if (gs4) desc += ` GS4:${gs4}`;
+  if (essay) desc += ` Essay:${essay}`;
+  if (opt1 && subject) desc += ` ${subject.replace(/\s+/g, "")}:${opt1}`;
+  desc += " Rank-wise strategy & answer copies.";
+
+  if (desc.length > 160) desc = desc.slice(0, 157) + "...";
+  return desc;
+}
+
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
@@ -34,7 +66,7 @@ export async function generateMetadata({ params }: Props) {
 
   return {
     title: `${topper.firstName} ${topper.lastName} UPSC AIR ${topper.rank} (${topper.year})`,
-    description: topper.bio?.slice(0, 160),
+    description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
     },
@@ -230,14 +262,27 @@ export default async function TopperPage({ params }: Props) {
     ],
   };
 
-  // Person Schema
+  // Person Schema with rich marks data
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": `${topper.firstName} ${topper.lastName}`,
-    "description": topper.bio || `UPSC AIR ${topper.rank} (${topper.year})`,
+    "description": buildMetaDescription(topper),
     "jobTitle": `UPSC CSE ${topper.year} AIR ${topper.rank}`,
     "url": `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+    "knowsAbout": [
+      { "@type": "Thing", "name": `UPSC CSE ${topper.year}` },
+      { "@type": "Thing", "name": topper.optionalSubject },
+    ],
+    "succeeding": [{
+      "@type": "Person",
+      "name": `UPSC ${topper.year} Rank ${topper.rank} Holder`,
+    }],
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": "Civil Servant",
+      "occupationLocation": { "@type": "Country", "name": "India" },
+    },
   };
 
   return (
