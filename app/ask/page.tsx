@@ -290,8 +290,8 @@ function AskPage() {
               </svg>
               {quota ? `${quota.remaining} / 5` : "—"}
             </span>
-            <Link href="/" className="text-zinc-400 transition hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
-              Home
+            <Link href="/toppers/toppers-copy-compilation" className="font-medium text-primary transition hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+              Get the Compilation →
             </Link>
           </div>
         </div>
@@ -421,6 +421,17 @@ function AskPage() {
                                   ))}
                                 </div>
                               )}
+                              <div className="mt-6 rounded-xl border border-dashed border-zinc-200 bg-zinc-50/50 px-4 py-3">
+                                <Link
+                                  href="/toppers/toppers-copy-compilation"
+                                  className="flex items-center justify-between gap-2 text-xs text-zinc-500 transition hover:text-zinc-800"
+                                >
+                                  <span>See actual answer copies with marks from these toppers →</span>
+                                  <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </Link>
+                              </div>
                             </div>
                           ) : (
                             <p className="mt-2 text-sm leading-relaxed text-zinc-800">{msg.content}</p>

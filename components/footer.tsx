@@ -40,6 +40,9 @@ export default function Footer() {
             <Link href="/" className="transition hover:text-foreground/70">
               Toppers
             </Link>
+            <Link href="/toppers/toppers-copy-compilation" className="transition hover:text-foreground/70">
+              Answer Copies
+            </Link>
 
             <Link href="/year/2025" className="transition hover:text-foreground/70">
               2025 CSE

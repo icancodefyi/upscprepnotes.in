@@ -1236,6 +1236,28 @@ export default async function TopperPage({ params }: Props) {
             ))}
           </div>
         </section>
+
+        {/* PRODUCT CTA */}
+        <section className="mb-20 mt-20">
+          <div className="overflow-hidden rounded-3xl border border-border/50 bg-card p-8 md:p-12">
+            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-lg">
+                <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
+                  Want to See {topper.firstName}&apos;s Actual Answer Copy?
+                </h2>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                  Get marks-wise answer copies from 50+ toppers across GS1–4
+                  and Essay. See exactly how they wrote their way to the top.
+                </p>
+              </div>
+              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg shadow-primary/20">
+                <Link href="/toppers/toppers-copy-compilation">
+                  Get the Compilation →
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
         <Footer />
       </div>
     </main>

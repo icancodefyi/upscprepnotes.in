@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AskFloatingWidget from "@/components/AskFloatingWidget";
+import ProductFloatingWidget from "@/components/ProductFloatingWidget";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -90,6 +91,7 @@ export default function RootLayout({
         <TooltipProvider>
           {children}
           <AskFloatingWidget />
+          <ProductFloatingWidget />
         </TooltipProvider>
       </body>
     </html>
