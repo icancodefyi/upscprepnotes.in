@@ -8,6 +8,15 @@ interface Props {
   }>;
 }
 
+interface TopperData {
+  firstName: string;
+  lastName: string;
+  rank: number;
+  year: number;
+  slug: string;
+  marks: Record<string, number>;
+}
+
 const SUBJECT_DATA: Record<
   string,
   { name: string; description: string; overview?: string; whyPopular?: string; booklist?: string[]; prepInsights?: string[] }
@@ -107,33 +116,67 @@ export async function generateStaticParams() {
   return Object.keys(SUBJECT_DATA).map((s) => ({ subject: s }));
 }
 
-async function getSubjectStats(subjectName: string) {
+async function getSubjectData(subjectName: string) {
   await connectDB();
 
   const toppers = await TopperModel.find({
     optionalSubject: new RegExp(subjectName, "i"),
   }).lean();
 
-  if (!toppers.length) {
-    return { toppers: [], stats: null };
+  const mapped: TopperData[] = toppers.map((t: any) => ({
+    firstName: t.firstName,
+    lastName: t.lastName,
+    rank: t.rank,
+    year: t.year,
+    slug: t.slug,
+    marks: {
+      gs1: t.marks?.gs1 || 0,
+      gs2: t.marks?.gs2 || 0,
+      gs3: t.marks?.gs3 || 0,
+      gs4: t.marks?.gs4 || 0,
+      essay: t.marks?.essay || 0,
+      optional1: t.marks?.optional1 || 0,
+      optional2: t.marks?.optional2 || 0,
+      interview: t.marks?.interview || 0,
+      written: t.marks?.written || 0,
+      total: t.marks?.total || 0,
+    },
+  }));
+
+  const totalMarks = mapped.map(t => t.marks.optional1 || t.marks.optional2 || 0).filter(m => m > 0);
+  const avgMarks = totalMarks.length > 0 ? (totalMarks.reduce((a, b) => a + b, 0) / totalMarks.length).toFixed(1) : "—";
+  const maxMarks = totalMarks.length > 0 ? Math.max(...totalMarks) : 0;
+  const minMarks = totalMarks.length > 0 ? Math.min(...totalMarks) : 0;
+
+  return { toppers: mapped, stats: { totalToppers: mapped.length, avgMarks, maxMarks, minMarks } };
+}
+
+function computeSubjectInsights(subjectName: string, toppers: TopperData[]) {
+  if (toppers.length === 0) return [];
+
+  const insights: string[] = [];
+  const years = [...new Set(toppers.map(t => t.year))].sort();
+  const ranks = toppers.map(t => t.rank).filter(r => r > 0);
+  const interviews = toppers.map(t => t.marks.interview).filter(m => m > 0);
+  const essays = toppers.map(t => t.marks.essay).filter(m => m > 0);
+  const gs1 = toppers.map(t => t.marks.gs1).filter(m => m > 0);
+
+  insights.push(`${toppers.length} topper${toppers.length > 1 ? "s" : ""} opted for ${subjectName} as their UPSC optional subject.`);
+  insights.push(`Year range: ${Math.min(...years)}–${Math.max(...years)}`);
+
+  if (ranks.length > 0) {
+    insights.push(`Best rank among ${subjectName} optional toppers: AIR ${Math.min(...ranks)}`);
+  }
+  if (interviews.length > 0) {
+    const avg = (interviews.reduce((a, b) => a + b, 0) / interviews.length).toFixed(1);
+    insights.push(`Average interview score for ${subjectName} optional toppers: ${avg}`);
+  }
+  if (essays.length > 0) {
+    const avg = (essays.reduce((a, b) => a + b, 0) / essays.length).toFixed(1);
+    insights.push(`Average essay score for ${subjectName} optional toppers: ${avg}`);
   }
 
-  const totalMarks = toppers.map(
-    (t: any) => t.marks?.optional1 || t.marks?.optional2 || 0
-  );
-  const avgMarks = totalMarks.reduce((a, b) => a + b, 0) / totalMarks.length;
-  const maxMarks = Math.max(...totalMarks);
-  const minMarks = Math.min(...totalMarks);
-
-  return {
-    toppers: toppers.slice(0, 15),
-    stats: {
-      totalToppers: toppers.length,
-      avgMarks: avgMarks.toFixed(1),
-      maxMarks,
-      minMarks,
-    },
-  };
+  return insights;
 }
 
 export default async function SubjectPage({ params }: Props) {
@@ -151,10 +194,37 @@ export default async function SubjectPage({ params }: Props) {
     );
   }
 
-  const { toppers, stats } = await getSubjectStats(subjectInfo.name);
+  const { toppers, stats } = await getSubjectData(subjectInfo.name);
+  const insights = computeSubjectInsights(subjectInfo.name, toppers);
+
+  const datasetSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": `${subjectInfo.name} UPSC Optional Topper Marks Dataset`,
+    "description": `Structured dataset of UPSC CSE toppers who chose ${subjectInfo.name} as optional subject, including GS marks, optional marks, essay scores, interview scores, and AIR rankings.`,
+    "url": `https://upscprepnotes.in/optional/${subjectKey}`,
+    "keywords": [`${subjectInfo.name} UPSC`, "UPSC toppers", "UPSC optional subject", "civil services exam"],
+    "variableMeasured": [
+      { "@type": "PropertyValue", "name": "AIR", "description": "All India Rank" },
+      { "@type": "PropertyValue", "name": "Year" },
+      { "@type": "PropertyValue", "name": "Optional Marks" },
+      { "@type": "PropertyValue", "name": "Interview" },
+      { "@type": "PropertyValue", "name": "Total" },
+    ],
+    "distribution": {
+      "@type": "DataDownload",
+      "contentUrl": `https://upscprepnotes.in/optional/${subjectKey}`,
+      "encodingFormat": "text/html",
+    },
+  };
 
   return (
     <main className="min-h-screen bg-background text-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
+
       {/* HERO */}
       <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
         <div className="mb-12">
@@ -178,17 +248,14 @@ export default async function SubjectPage({ params }: Props) {
               <p className="text-2xl sm:text-3xl font-semibold">{stats.totalToppers}</p>
               <p className="mt-2 text-xs sm:text-sm text-zinc-600">Toppers</p>
             </div>
-
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.avgMarks}</p>
               <p className="mt-2 text-xs sm:text-sm text-zinc-600">Avg Marks</p>
             </div>
-
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.maxMarks}</p>
               <p className="mt-2 text-xs sm:text-sm text-zinc-600">Highest Marks</p>
             </div>
-
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.minMarks}</p>
               <p className="mt-2 text-xs sm:text-sm text-zinc-600">Lowest Marks</p>
@@ -196,6 +263,22 @@ export default async function SubjectPage({ params }: Props) {
           </div>
         )}
       </section>
+
+      {/* COMPUTED INSIGHTS */}
+      {insights.length > 0 && (
+        <section className="mx-auto max-w-5xl px-6 pb-8">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+            Key Insights — {subjectInfo.name}
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {insights.map((insight, i) => (
+              <div key={i} className="rounded-xl border border-black/[0.06] bg-zinc-50 p-4 text-sm leading-6 text-zinc-700">
+                {insight}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* SUBJECT DETAIL SECTIONS */}
       {(subjectInfo.overview || subjectInfo.whyPopular || (subjectInfo.booklist || []).length > 0 || (subjectInfo.prepInsights || []).length > 0) && (
@@ -244,80 +327,62 @@ export default async function SubjectPage({ params }: Props) {
         </section>
       )}
 
-      {/* TOPPERS */}
+      {/* FULL MARKS TABLE */}
       {toppers.length > 0 && (
         <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-          <div className="mb-14">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
-              Featured Toppers
-            </p>
-
-            <h2 className="text-4xl font-semibold tracking-tight">
-              {subjectInfo.name} Specialists
-            </h2>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+            {subjectInfo.name} Topper Marks Table
+          </p>
+          <div className="overflow-x-auto rounded-2xl border border-black/[0.06]">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-black/[0.06] bg-zinc-50">
+                  <th className="p-4 font-semibold">AIR</th>
+                  <th className="p-4 font-semibold">Name</th>
+                  <th className="p-4 font-semibold">Year</th>
+                  <th className="p-4 font-semibold">Opt P1</th>
+                  <th className="p-4 font-semibold">Opt P2</th>
+                  <th className="p-4 font-semibold">Essay</th>
+                  <th className="p-4 font-semibold">Written</th>
+                  <th className="p-4 font-semibold">Interview</th>
+                  <th className="p-4 font-semibold">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-black/[0.04]">
+                {toppers.map((t) => (
+                  <tr key={t.slug} className="hover:bg-zinc-50 transition">
+                    <td className="p-4 font-semibold">{t.rank}</td>
+                    <td className="p-4">
+                      <Link
+                        href={`/upsc-topper/${t.slug}`}
+                        className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                      >
+                        {t.firstName} {t.lastName}
+                      </Link>
+                    </td>
+                    <td className="p-4 text-zinc-600">{t.year}</td>
+                    <td className="p-4">{t.marks.optional1 || "—"}</td>
+                    <td className="p-4">{t.marks.optional2 || "—"}</td>
+                    <td className="p-4">{t.marks.essay || "—"}</td>
+                    <td className="p-4">{t.marks.written || "—"}</td>
+                    <td className="p-4">{t.marks.interview || "—"}</td>
+                    <td className="p-4 font-semibold">{t.marks.total || "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          <div className="space-y-4">
-            {toppers.map((topper: any) => (
-              <Link
-                key={topper._id}
-                href={`/upsc-topper/${topper.slug}`}
-                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-background/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
-              >
-                <div>
-                  <img
-                    src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
-                    alt={`${topper.firstName} ${topper.lastName}`}
-                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-background shadow-sm"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-lg md:text-xl font-semibold tracking-tight transition duration-300 group-hover:translate-x-1">
-                    {topper.firstName} {topper.lastName}
-                  </h3>
-
-                  <div className="mt-2 flex flex-wrap gap-2 md:gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.12em] text-zinc-500">
-                    <span>AIR {topper.rank}</span>
-                    <span>•</span>
-                    <span>{topper.year}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-end">
-                  <div className="text-right">
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-zinc-500">
-                      Total
-                    </p>
-
-                    <p className="mt-1 text-lg md:text-2xl font-semibold">
-                      {topper.marks?.total || "—"}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-8">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+            >
+              Browse All Toppers &rarr;
+            </Link>
           </div>
         </section>
       )}
-
-      {/* FOOTER CTA */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-        <div className="rounded-[32px] border border-black/10 bg-background/70 p-12 text-center backdrop-blur-sm">
-          <h3 className="text-3xl font-semibold">Explore More Strategies</h3>
-
-          <p className="mt-4 text-zinc-700">
-            Browse all {subjectInfo.name} preparation insights and topper profiles
-          </p>
-
-          <Link
-            href="/"
-            className="mt-8 inline-block rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </section>
     </main>
   );
 }

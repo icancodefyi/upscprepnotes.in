@@ -432,6 +432,49 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
+        {/* QUICK FACTS — machine-readable summary for LLM extraction */}
+        <section className="mb-16">
+          <div className="rounded-2xl border border-border/50 bg-card p-6">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Quick Facts
+            </p>
+            <dl className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm sm:grid-cols-3 md:grid-cols-4">
+              <div>
+                <dt className="text-muted-foreground">Name</dt>
+                <dd className="mt-0.5 font-semibold">{topper.firstName} {topper.lastName}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Rank</dt>
+                <dd className="mt-0.5 font-semibold">AIR {topper.rank}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Year</dt>
+                <dd className="mt-0.5 font-semibold">{topper.year}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Optional</dt>
+                <dd className="mt-0.5 font-semibold">{topper.optionalSubject}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Essay</dt>
+                <dd className="mt-0.5 font-semibold">{topper.marks.essay}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Written</dt>
+                <dd className="mt-0.5 font-semibold">{topper.marks.written}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Interview</dt>
+                <dd className="mt-0.5 font-semibold">{topper.marks.interview}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Total</dt>
+                <dd className="mt-0.5 font-semibold">{topper.marks.total}</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
         {/* RESOURCE INTENT — answer copies listing */}
         <section className="mb-16">
           <div className="mb-6 flex items-center justify-between">
@@ -659,6 +702,39 @@ export default async function TopperPage({ params }: Props) {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* MARKS TABLE — structured data for LLM extraction */}
+        <section className="mb-20">
+          <div className="overflow-hidden rounded-2xl border border-border/50">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-border/50 bg-muted/50">
+                  <th className="p-4 font-semibold">Paper</th>
+                  <th className="p-4 font-semibold">Marks</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/30">
+                {[
+                  { label: "GS1", marks: topper.marks.gs1 },
+                  { label: "GS2", marks: topper.marks.gs2 },
+                  { label: "GS3", marks: topper.marks.gs3 },
+                  { label: "GS4", marks: topper.marks.gs4 },
+                  { label: "Essay", marks: topper.marks.essay },
+                  { label: `${topper.optionalSubject} Paper 1`, marks: topper.marks.optional1 },
+                  { label: `${topper.optionalSubject} Paper 2`, marks: topper.marks.optional2 },
+                  { label: "Written Total", marks: topper.marks.written },
+                  { label: "Interview", marks: topper.marks.interview },
+                  { label: "Total", marks: topper.marks.total },
+                ].filter(r => r.marks > 0).map((row) => (
+                  <tr key={row.label} className="hover:bg-muted/30">
+                    <td className="p-4 text-muted-foreground">{row.label}</td>
+                    <td className="p-4 font-semibold">{row.marks}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
 
