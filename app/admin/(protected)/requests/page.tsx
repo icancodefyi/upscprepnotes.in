@@ -40,7 +40,7 @@ export default async function AdminRequestsPage() {
             </thead>
             <tbody>
               {purchases.map((p: Record<string, unknown>) => (
-                <tr key={String(p._id)} className="border-b border-black/[0.04] last:border-b-0 hover:bg-[#f8f7f4]">
+                <tr key={String(p._id)} className="border-b border-black/[0.04] last:border-b-0 hover:bg-zinc-50">
                   <td className="whitespace-nowrap p-5 text-zinc-600">
                     {new Date(String(p.createdAt)).toLocaleDateString("en-IN", {
                       day: "numeric",
@@ -52,7 +52,7 @@ export default async function AdminRequestsPage() {
                   <td className="p-5 text-zinc-600">{String(p.email)}</td>
                   <td className="p-5 text-zinc-600">{String(p.phone)}</td>
                   <td className="p-5">
-                    <span className="rounded-full border border-black/10 bg-[#f8f7f4] px-3 py-1 text-xs font-medium">
+                    <span className="rounded-full border border-black/10 bg-zinc-100 px-3 py-1 text-xs font-medium">
                       {String(p.package)}
                     </span>
                   </td>

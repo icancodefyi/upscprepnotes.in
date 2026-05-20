@@ -77,17 +77,7 @@ function LoginForm() {
 
 export default function AdminLoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#f8f7f4] p-6">
-      <div
-        className="fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, black 1px, transparent 1px),
-            linear-gradient(to bottom, black 1px, transparent 1px)
-          `,
-          backgroundSize: "80px 80px",
-        }}
-      />
+    <main className="flex min-h-screen items-center justify-center p-6">
       <Suspense fallback={
         <Card className="w-full max-w-sm">
           <CardHeader>

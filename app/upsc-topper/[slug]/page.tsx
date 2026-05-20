@@ -9,6 +9,9 @@ import {
   getToppersByYear,
 } from "@/services/topper.service";
 import AnswerCopyCard from "@/components/topper/AnswerCopyCard";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export const revalidate = 86400;
 
@@ -61,33 +64,6 @@ export default async function TopperPage({ params }: Props) {
     topper.year,
     topper.slug
   );
-
-  const resources = [
-    {
-      title: "Essay Copy",
-      marks: topper.marks.essay,
-    },
-    {
-      title: "GS1 Copy",
-      marks: topper.marks.gs1,
-    },
-    {
-      title: "GS2 Copy",
-      marks: topper.marks.gs2,
-    },
-    {
-      title: "GS3 Copy",
-      marks: topper.marks.gs3,
-    },
-    {
-      title: "GS4 Copy",
-      marks: topper.marks.gs4,
-    },
-    {
-      title: `${topper.optionalSubject} Paper`,
-      marks: topper.marks.optional1,
-    },
-  ];
 
   function getSubjectSlug(subject: string) {
     if (!subject) return "";
@@ -265,7 +241,7 @@ export default async function TopperPage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-black">
+    <main className="min-h-screen">
       {/* JSON-LD Schemas */}
       <script
         type="application/ld+json"
@@ -280,45 +256,18 @@ export default async function TopperPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
 
-      {/* GRID */}
-      <div
-        className="fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, black 1px, transparent 1px),
-            linear-gradient(to bottom, black 1px, transparent 1px)
-          `,
-          backgroundSize: "80px 80px",
-        }}
-      />
-
-      {/* LEFT RAIL */}
-      <div className="fixed left-0 top-0 hidden h-screen w-14 border-r border-black/[0.05] xl:flex xl:flex-col xl:items-center xl:justify-between xl:py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-sm font-medium shadow-sm">
-          N
-        </div>
-
-        <div className="rotate-180 text-[9px] uppercase tracking-[0.35em] text-zinc-400 [writing-mode:vertical-rl]">
-          UPSC Intelligence Archive
-        </div>
-
-        <div className="text-[10px] text-zinc-300">
-          2026
-        </div>
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-10 xl:ml-20">
+      <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-10">
         {/* BREADCRUMB */}
-        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
-          <Link href="/" className="transition hover:text-black">
+        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          <Link href="/" className="transition hover:text-foreground">
             Home
           </Link>
           <span>•</span>
-          <Link href={`/year/${topper.year}`} className="transition hover:text-black">
+          <Link href={`/year/${topper.year}`} className="transition hover:text-foreground">
             {topper.year}
           </Link>
           <span>•</span>
-          <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-black">
+          <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-foreground">
             {topper.optionalSubject}
           </Link>
         </div>
@@ -328,98 +277,87 @@ export default async function TopperPage({ params }: Props) {
           <div className="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
             {/* LEFT */}
             <div className="lg:sticky lg:top-10 lg:h-fit">
-              <div className="overflow-hidden rounded-[28px] border border-black/[0.06] bg-white">
+              <div className="overflow-hidden rounded-[28px] border border-border/50 bg-card">
                 <img
                   src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
                   alt={`${topper.firstName} ${topper.lastName}`}
-                  className="h-full w-full bg-[#f3f3f3]"
+                  className="h-full w-full bg-muted"
                 />
               </div>
 
               <div className="mt-4 space-y-3">
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-4">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
-                    AIR
-                  </p>
+                <Card className="rounded-2xl border-border/50">
+                  <CardContent className="p-4">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      AIR
+                    </p>
+                    <p className="mt-2 text-4xl font-semibold">
+                      {topper.rank}
+                    </p>
+                  </CardContent>
+                </Card>
 
-                  <p className="mt-2 text-4xl font-semibold">
-                    {topper.rank}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-4">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
-                    Total Marks
-                  </p>
-
-                  <p className="mt-2 text-4xl font-semibold">
-                    {topper.marks.total}
-                  </p>
-                </div>
+                <Card className="rounded-2xl border-border/50">
+                  <CardContent className="p-4">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      Total Marks
+                    </p>
+                    <p className="mt-2 text-4xl font-semibold">
+                      {topper.marks.total}
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
             {/* RIGHT */}
             <div>
               <div className="mb-5 flex flex-wrap gap-3">
-                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                <Badge variant="outline" className="rounded-full px-4 py-1 text-xs font-medium uppercase tracking-wide">
                   UPSC {topper.year}
-                </span>
-
-                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                </Badge>
+                <Badge variant="outline" className="rounded-full px-4 py-1 text-xs font-medium uppercase tracking-wide">
                   {topper.optionalSubject}
-                </span>
-
-                <span className="rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium uppercase tracking-wide">
+                </Badge>
+                <Badge variant="outline" className="rounded-full px-4 py-1 text-xs font-medium uppercase tracking-wide">
                   Interview {topper.marks.interview}
-                </span>
+                </Badge>
               </div>
 
               <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">
                 {topper.firstName} {topper.lastName}
-                <span className="mt-4 block text-2xl font-normal text-zinc-400">
+                <span className="mt-4 block text-2xl font-normal text-muted-foreground">
                   UPSC AIR {topper.rank} — Strategy, Marks & Answer Copies
                 </span>
               </h1>
 
-              <p className="mt-8 max-w-3xl text-lg leading-9 text-zinc-700">
+              <p className="mt-8 max-w-3xl text-lg leading-9 text-foreground">
                 {topper.bio}
               </p>
 
               {/* QUICK STATS */}
-              <div className="mt-10 grid overflow-hidden rounded-[30px] border border-black/[0.06] bg-white md:grid-cols-4">
-                {[
-                  {
-                    label: `${topper.firstName} Written`,
-                    value: topper.marks.written,
-                  },
-                  {
-                    label: `${topper.firstName} Essay`,
-                    value: topper.marks.essay,
-                  },
-                  {
-                    label: `${topper.firstName} Interview`,
-                    value: topper.marks.interview,
-                  },
-                  {
-                    label: `${topper.firstName} Total`,
-                    value: topper.marks.total,
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="border-b border-black/[0.05] p-6 last:border-b-0 md:border-b-0 md:border-r last:md:border-r-0"
-                  >
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">
-                      {item.label}
-                    </p>
-
-                    <p className="mt-3 text-4xl font-semibold tracking-tight">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <Card className="mt-10 overflow-hidden rounded-[30px] border-border/50">
+                <CardContent className="grid p-0 md:grid-cols-4">
+                  {[
+                    { label: "Written", value: topper.marks.written },
+                    { label: "Essay", value: topper.marks.essay },
+                    { label: "Interview", value: topper.marks.interview },
+                    { label: "Total", value: topper.marks.total },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="border-b border-border/50 p-6 last:border-b-0 md:border-b-0 md:border-r last:md:border-r-0"
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                        {item.label}
+                      </p>
+                      <p className="mt-3 text-4xl font-semibold tracking-tight">
+                        {item.value}
+                      </p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -428,7 +366,7 @@ export default async function TopperPage({ params }: Props) {
         <section className="mb-16">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <p className="mb-2 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+              <p className="mb-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
                 Answer Copies
               </p>
 
@@ -437,7 +375,7 @@ export default async function TopperPage({ params }: Props) {
               </h2>
             </div>
 
-            <div className="hidden max-w-sm text-sm leading-7 text-zinc-500 md:block">
+            <div className="hidden max-w-sm text-sm leading-7 text-muted-foreground md:block">
               Direct access to the answer copies that secured AIR {topper.rank}.
             </div>
           </div>
@@ -459,7 +397,7 @@ export default async function TopperPage({ params }: Props) {
         <section className="mb-28">
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
                 Marks Intelligence
               </p>
 
@@ -468,16 +406,16 @@ export default async function TopperPage({ params }: Props) {
               </h2>
             </div>
 
-            <p className="hidden max-w-sm text-sm leading-7 text-zinc-500 lg:block">
+            <p className="hidden max-w-sm text-sm leading-7 text-muted-foreground lg:block">
               Structured marks analysis across General Studies,
               optional subject papers, essay, and personality test.
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-[36px] border border-black/[0.06] bg-white">
+          <div className="overflow-hidden rounded-[36px] border border-border/50 bg-card">
             <div className="grid md:grid-cols-3">
               {/* GS */}
-              <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
+              <div className="border-b border-border/50 p-8 md:border-b-0 md:border-r">
                   <h3 className="mb-8 text-lg font-semibold">
                     {topper.firstName} {topper.lastName} GS Marks
                   </h3>
@@ -485,19 +423,19 @@ export default async function TopperPage({ params }: Props) {
                 <div className="space-y-5">
                   {[
                     {
-                      label: `${topper.firstName} GS1`,
+                      label: "GS1",
                       value: topper.marks.gs1,
                     },
                     {
-                      label: `${topper.firstName} GS2`,
+                      label: "GS2",
                       value: topper.marks.gs2,
                     },
                     {
-                      label: `${topper.firstName} GS3`,
+                      label: "GS3",
                       value: topper.marks.gs3,
                     },
                     {
-                      label: `${topper.firstName} GS4`,
+                      label: "GS4",
                       value: topper.marks.gs4,
                     },
                   ].map((item) => (
@@ -509,7 +447,7 @@ export default async function TopperPage({ params }: Props) {
 
                       <div className="h-[2px] bg-zinc-200">
                         <div
-                          className="h-full bg-black"
+                          className="h-full bg-primary"
                           style={{
                             width: `${(item.value / 150) * 100}%`,
                           }}
@@ -521,13 +459,13 @@ export default async function TopperPage({ params }: Props) {
               </div>
 
               {/* OPTIONAL */}
-              <div className="border-b border-black/[0.05] p-8 md:border-b-0 md:border-r">
+              <div className="border-b border-border/50 p-8 md:border-b-0 md:border-r">
                   <h3 className="mb-8 text-lg font-semibold">
                     {topper.firstName} {topper.lastName} {topper.optionalSubject} Marks
                   </h3>
 
                 <div className="rounded-2xl bg-[#f6f6f6] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                     Subject
                   </p>
 
@@ -539,11 +477,11 @@ export default async function TopperPage({ params }: Props) {
                 <div className="mt-6 space-y-5">
                   {[
                     {
-                      label: `${topper.firstName} Paper 1`,
+                      label: "Paper 1",
                       value: topper.marks.optional1,
                     },
                     {
-                      label: `${topper.firstName} Paper 2`,
+                      label: "Paper 2",
                       value: topper.marks.optional2,
                     },
                   ].map((item) => (
@@ -555,7 +493,7 @@ export default async function TopperPage({ params }: Props) {
 
                       <div className="h-[2px] bg-zinc-200">
                         <div
-                          className="h-full bg-black"
+                          className="h-full bg-primary"
                           style={{
                             width: `${(item.value / 180) * 100}%`,
                           }}
@@ -575,27 +513,27 @@ export default async function TopperPage({ params }: Props) {
                 <div className="space-y-5">
                   {[
                     {
-                      label: `${topper.firstName} Essay`,
+                      label: "Essay",
                       value: topper.marks.essay,
                     },
                     {
-                      label: `${topper.firstName} Written`,
+                      label: "Written",
                       value: topper.marks.written,
                     },
                     {
-                      label: `${topper.firstName} Interview`,
+                      label: "Interview",
                       value: topper.marks.interview,
                     },
                     {
-                      label: `${topper.firstName} Total`,
+                      label: "Total",
                       value: topper.marks.total,
                     },
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-center justify-between border-b border-black/[0.05] pb-4 last:border-b-0"
+                      className="flex items-center justify-between border-b border-border/50 pb-4 last:border-b-0"
                     >
-                      <span className="text-zinc-600">
+                      <span className="text-muted-foreground">
                         {item.label}
                       </span>
 
@@ -613,9 +551,9 @@ export default async function TopperPage({ params }: Props) {
         {/* INSIGHTS */}
         {topper.insights?.length > 0 && (
           <section className="mb-28">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
-              Key Learnings
-            </p>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                Key Learnings
+              </p>
 
           <h2 className="mb-10 text-4xl font-semibold tracking-tight">
             {topper.firstName} {topper.lastName} Key Insights & Learnings
@@ -626,9 +564,9 @@ export default async function TopperPage({ params }: Props) {
                 (insight: string, index: number) => (
                   <div
                     key={index}
-                    className="rounded-3xl border border-black/[0.06] bg-white p-6"
+                    className="rounded-3xl border border-border/50 bg-card p-6"
                   >
-                    <p className="leading-8 text-zinc-700">
+                    <p className="leading-8 text-foreground">
                       {insight}
                     </p>
                   </div>
@@ -640,7 +578,7 @@ export default async function TopperPage({ params }: Props) {
 
         {/* STRATEGY */}
         <section className="mb-28">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             Strategy Archive
           </p>
 
@@ -649,7 +587,7 @@ export default async function TopperPage({ params }: Props) {
           </h2>
 
           <article className="max-w-4xl">
-            <div className="rounded-[36px] border border-black/[0.06] bg-white p-8 md:p-12">
+            <div className="rounded-[36px] border border-border/50 bg-card p-8 md:p-12">
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-8">
                 {Object.keys(structuredStrategy).length > 0 ? (
                   Object.entries(structuredStrategy).map(([heading, content]) => (
@@ -668,40 +606,9 @@ export default async function TopperPage({ params }: Props) {
           </article>
         </section>
 
-        {/* RESOURCES */}
-        <section id="resources" className="mb-28">
-          <div className="mb-10 flex items-end justify-between">
-            <div>
-              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
-                Answer Copies & Resources
-              </p>
-
-              <h2 className="text-4xl font-semibold tracking-tight">
-                {topper.firstName} {topper.lastName} Answer Copies & Paper-wise Resources
-              </h2>
-            </div>
-
-            <p className="hidden max-w-sm text-sm leading-7 text-zinc-500 lg:block">
-              Access {topper.firstName} {topper.lastName}'s answer copies, paper-wise resources, and structured writing archives.
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {resources.map((resource) => (
-              <AnswerCopyCard
-                key={resource.title}
-                title={resource.title}
-                marks={resource.marks}
-                available={Object.values(topper.resources || {}).some(arr => arr.length > 0) || Object.values(topper.answerCopies || {}).some(arr => arr.length > 0)}
-                topperName={`${topper.firstName} ${topper.lastName}`}
-              />
-            ))}
-          </div>
-        </section>
-
         {/* FAQ */}
         <section className="mb-28">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             FAQ
           </p>
 
@@ -709,7 +616,7 @@ export default async function TopperPage({ params }: Props) {
             FAQs about {topper.firstName} {topper.lastName}
           </h2>
 
-          <div className="space-y-5">
+          <div className="divide-y divide-black/10">
             {[
               {
                 q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
@@ -764,15 +671,11 @@ export default async function TopperPage({ params }: Props) {
                 a: topper.strategy ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed in the Preparation Strategy section on this page.` : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
               },
             ].map((faq, index) => (
-              <div
-                key={index}
-                className="rounded-[28px] border border-black/[0.06] bg-white p-6"
-              >
-                <h3 className="text-lg font-semibold">
+              <div key={index} className="py-4 first:pt-0 last:pb-0">
+                <h3 className="text-base font-semibold">
                   {faq.q}
                 </h3>
-
-                <p className="mt-3 leading-8 text-zinc-600">
+                <p className="mt-1.5 text-sm leading-7 text-muted-foreground">
                   {faq.a}
                 </p>
               </div>
@@ -782,21 +685,27 @@ export default async function TopperPage({ params }: Props) {
 
         {/* INTERNAL LINKS — SEO hub linking */}
         <section className="mb-10">
-          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+          <p className="mb-4 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             Explore More
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
-              All {topper.optionalSubject} Toppers →
-            </Link>
+            <Button variant="outline" asChild className="rounded-full">
+              <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}>
+                All {topper.optionalSubject} Toppers →
+              </Link>
+            </Button>
 
-            <Link href={`/year/${topper.year}`} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
-              UPSC {topper.year} Toppers →
-            </Link>
+            <Button variant="outline" asChild className="rounded-full">
+              <Link href={`/year/${topper.year}`}>
+                UPSC {topper.year} Toppers →
+              </Link>
+            </Button>
 
-            <Link href="/" className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white">
-              All UPSC Toppers →
-            </Link>
+            <Button variant="outline" asChild className="rounded-full">
+              <Link href="/">
+                All UPSC Toppers →
+              </Link>
+            </Button>
           </div>
         </section>
 
@@ -807,7 +716,7 @@ export default async function TopperPage({ params }: Props) {
               <h2 className="text-3xl font-semibold tracking-tight">
                 Other AIR {topper.rank} Toppers
               </h2>
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Candidates who secured the same rank across different years
               </p>
             </div>
@@ -817,22 +726,22 @@ export default async function TopperPage({ params }: Props) {
                 <Link
                   key={t.slug}
                   href={`/upsc-topper/${t.slug}`}
-                  className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+                  className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px]"
                 >
                   <div className="flex items-center gap-4">
                     <img
                       src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
                       alt={`${t.firstName} ${t.lastName}`}
-                      className="h-16 w-16 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                      className="h-16 w-16 rounded-2xl border border-border/50 bg-muted"
                     />
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                         {t.year}
                       </p>
                       <h3 className="mt-1 text-lg font-semibold">
                         {t.firstName} {t.lastName}
                       </h3>
-                      <p className="mt-1 text-sm text-zinc-500">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {t.optionalSubject}
                       </p>
                     </div>
@@ -850,7 +759,7 @@ export default async function TopperPage({ params }: Props) {
               <h2 className="text-3xl font-semibold tracking-tight">
                 More UPSC {topper.year} Toppers
               </h2>
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Top rank holders from the same year
               </p>
             </div>
@@ -860,22 +769,22 @@ export default async function TopperPage({ params }: Props) {
                 <Link
                   key={t.slug}
                   href={`/upsc-topper/${t.slug}`}
-                  className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+                  className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px] hover:border-primary/20"
                 >
                   <div className="flex items-center gap-4">
                     <img
                       src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.firstName}-${t.lastName}`}
                       alt={`${t.firstName} ${t.lastName}`}
-                      className="h-16 w-16 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                      className="h-16 w-16 rounded-2xl border border-border/50 bg-muted"
                     />
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                         AIR {t.rank}
                       </p>
                       <h3 className="mt-1 text-lg font-semibold">
                         {t.firstName} {t.lastName}
                       </h3>
-                      <p className="mt-1 text-sm text-zinc-500">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {t.optionalSubject}
                       </p>
                     </div>
@@ -890,7 +799,7 @@ export default async function TopperPage({ params }: Props) {
         <section>
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-zinc-400">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
                 Related Profiles
               </p>
 
@@ -901,7 +810,7 @@ export default async function TopperPage({ params }: Props) {
 
             <Link
               href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
-              className="hidden text-sm text-zinc-500 transition hover:text-black md:block"
+              className="hidden text-sm text-muted-foreground transition hover:text-foreground md:block"
             >
               View All {topper.optionalSubject} Toppers →
             </Link>
@@ -912,17 +821,17 @@ export default async function TopperPage({ params }: Props) {
               <Link
                 key={related.slug}
                 href={`/upsc-topper/${related.slug}`}
-                className="group rounded-[28px] border border-black/[0.06] bg-white p-5 transition duration-300 hover:-translate-y-[2px]"
+                className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px] hover:border-primary/20"
               >
                 <div className="flex items-center gap-4">
                   <img
                     src={`https://api.dicebear.com/9.x/notionists/svg?seed=${related.firstName}-${related.lastName}`}
                     alt={`${related.firstName} ${related.lastName}`}
-                    className="h-20 w-20 rounded-2xl border border-black/[0.05] bg-[#f4f4f4]"
+                    className="h-20 w-20 rounded-2xl border border-border/50 bg-muted"
                   />
 
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                       AIR {related.rank} • {related.year}
                     </p>
 
@@ -930,7 +839,7 @@ export default async function TopperPage({ params }: Props) {
                       {related.firstName} {related.lastName}
                     </h3>
 
-                    <p className="mt-2 text-sm text-zinc-500">
+                    <p className="mt-2 text-sm text-muted-foreground">
                       {related.optionalSubject}
                     </p>
                   </div>

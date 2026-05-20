@@ -20,7 +20,7 @@ export default async function YearPage({ params }: Props) {
 
   if (isNaN(yearNum)) {
     return (
-      <main className="min-h-screen bg-[#f8f7f4]">
+      <main className="min-h-screen bg-background">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
           <h1 className="text-4xl font-semibold">Invalid year</h1>
         </div>
@@ -31,7 +31,7 @@ export default async function YearPage({ params }: Props) {
   const toppers = await getToppersByYear(yearNum);
 
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-black">
+    <main className="min-h-screen bg-background text-black">
       <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
         <div className="mb-12">
           <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
@@ -55,13 +55,13 @@ export default async function YearPage({ params }: Props) {
               <Link
                 key={topper._id}
                 href={`/upsc-topper/${topper.slug}`}
-                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
+                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-background/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
               >
                 <div>
                   <img
                     src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
                     alt={`${topper.firstName} ${topper.lastName}`}
-                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-white shadow-sm"
+                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-background shadow-sm"
                   />
                 </div>
 

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Topper } from "@/types/topper";
 
 interface TopperFormProps {
@@ -264,10 +264,15 @@ export function TopperForm({ topper }: TopperFormProps) {
                 className="h-4 w-4 rounded border-zinc-300"
               />
               Featured
-              <Tooltip content="Shows this topper on the homepage featured section. Only toppers with this flag appear in the featured carousel and featured grid on the landing page.">
-                <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
-                  <IconInfoCircle className="size-3.5" />
-                </span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
+                    <IconInfoCircle className="size-3.5" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Shows this topper on the homepage featured section. Only toppers with this flag appear in the featured carousel and featured grid on the landing page.
+                </TooltipContent>
               </Tooltip>
             </label>
             <label className="flex items-center gap-2 text-sm">
@@ -278,10 +283,15 @@ export function TopperForm({ topper }: TopperFormProps) {
                 className="h-4 w-4 rounded border-zinc-300"
               />
               Indexed
-              <Tooltip content="Controls whether this topper appears in the sitemap (SEO). Uncheck for draft or incomplete profiles to prevent search engines from crawling them.">
-                <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
-                  <IconInfoCircle className="size-3.5" />
-                </span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex cursor-help text-zinc-300 hover:text-zinc-500">
+                    <IconInfoCircle className="size-3.5" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Controls whether this topper appears in the sitemap (SEO). Uncheck for draft or incomplete profiles to prevent search engines from crawling them.
+                </TooltipContent>
               </Tooltip>
             </label>
           </div>

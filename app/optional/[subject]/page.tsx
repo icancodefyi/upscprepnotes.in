@@ -143,7 +143,7 @@ export default async function SubjectPage({ params }: Props) {
 
   if (!subjectInfo) {
     return (
-      <main className="min-h-screen bg-[#f8f7f4]">
+      <main className="min-h-screen bg-background">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
           <h1 className="text-4xl font-semibold">Subject not found</h1>
         </div>
@@ -154,7 +154,7 @@ export default async function SubjectPage({ params }: Props) {
   const { toppers, stats } = await getSubjectStats(subjectInfo.name);
 
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-black">
+    <main className="min-h-screen bg-background text-black">
       {/* HERO */}
       <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
         <div className="mb-12">
@@ -234,7 +234,7 @@ export default async function SubjectPage({ params }: Props) {
               <h3 className="text-2xl font-semibold">Preparation Insights</h3>
               <div className="mt-3 grid gap-4 md:grid-cols-2">
                 {subjectInfo.prepInsights!.map((insight, idx) => (
-                  <div key={idx} className="rounded-lg border border-black/[0.06] bg-white p-4">
+                  <div key={idx} className="rounded-lg border border-black/[0.06] bg-background p-4">
                     <p className="text-zinc-700">{insight}</p>
                   </div>
                 ))}
@@ -262,13 +262,13 @@ export default async function SubjectPage({ params }: Props) {
               <Link
                 key={topper._id}
                 href={`/upsc-topper/${topper.slug}`}
-                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-white/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
+                className="group grid gap-3 md:gap-4 rounded-[32px] border border-transparent bg-transparent px-3 py-4 md:px-6 md:py-6 transition duration-300 hover:border-black/[0.04] hover:bg-background/70 md:grid-cols-[100px_minmax(0,1fr)_120px] grid-cols-1"
               >
                 <div>
                   <img
                     src={`https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`}
                     alt={`${topper.firstName} ${topper.lastName}`}
-                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-white shadow-sm"
+                    className="md:h-20 md:w-20 h-16 w-16 rounded-2xl border border-black/5 bg-background shadow-sm"
                   />
                 </div>
 
@@ -303,7 +303,7 @@ export default async function SubjectPage({ params }: Props) {
 
       {/* FOOTER CTA */}
       <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-        <div className="rounded-[32px] border border-black/10 bg-white/70 p-12 text-center backdrop-blur-sm">
+        <div className="rounded-[32px] border border-black/10 bg-background/70 p-12 text-center backdrop-blur-sm">
           <h3 className="text-3xl font-semibold">Explore More Strategies</h3>
 
           <p className="mt-4 text-zinc-700">

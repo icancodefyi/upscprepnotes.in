@@ -26,17 +26,7 @@ export default async function ProtectedLayout({
   await checkAuth();
 
   return (
-    <div className="min-h-screen bg-[#f8f7f4]">
-      <div
-        className="fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, black 1px, transparent 1px),
-            linear-gradient(to bottom, black 1px, transparent 1px)
-          `,
-          backgroundSize: "80px 80px",
-        }}
-      />
+    <div className="min-h-screen">
       <header className="relative border-b border-black/[0.06] bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <nav className="flex items-center gap-6">

@@ -12,7 +12,7 @@ export default function LegalPage({
   children,
 }: Props) {
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-black">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-4xl px-6 py-24">
         <div className="mb-16 border-b border-black/10 pb-10">
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-zinc-500">

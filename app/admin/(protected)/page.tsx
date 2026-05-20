@@ -99,7 +99,7 @@ export default async function AdminDashboard({
                   return (
                     <tr
                       key={id}
-                      className="border-b border-black/[0.04] last:border-b-0 hover:bg-[#f8f7f4]"
+                      className="border-b border-black/[0.04] last:border-b-0 hover:bg-zinc-50"
                     >
                       <td className="p-4 font-medium">
                         {String(t.firstName || "")} {String(t.lastName || "")}
