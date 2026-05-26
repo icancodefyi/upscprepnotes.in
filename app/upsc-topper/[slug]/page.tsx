@@ -12,7 +12,6 @@ import AnswerCopyCard from "@/components/topper/AnswerCopyCard";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/footer";
 import { topperImageSrc } from "@/lib/utils";
 
 export const revalidate = 86400;
@@ -1258,7 +1257,6 @@ export default async function TopperPage({ params }: Props) {
             </div>
           </div>
         </section>
-        <Footer />
       </div>
     </main>
   );

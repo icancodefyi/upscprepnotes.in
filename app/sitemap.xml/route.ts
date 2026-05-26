@@ -27,6 +27,9 @@ export async function GET() {
       { url: "optional/geography", priority: 0.8 },
       { url: "optional/philosophy", priority: 0.8 },
       { url: "optional/anthropology", priority: 0.8 },
+      { url: "optional/history", priority: 0.8 },
+      { url: "ask", priority: 0.6 },
+      { url: "toppers/toppers-copy-compilation", priority: 0.6 },
     ];
 
     const urls = pages

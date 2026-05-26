@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { getFeaturedToppers } from "@/services/topper.service";
-import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -109,30 +108,9 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen">
-      <div className="mx-auto max-w-7xl px-6 pb-32 pt-6 md:px-10">
-        {/* NAVBAR */}
-        <header className="mb-20 flex items-center justify-between md:mb-24">
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-foreground" />
-            <p className="text-xs uppercase tracking-[0.35em] text-foreground/70 md:text-sm font-medium">
-              UPSCPREPNOTES
-            </p>
-          </div>
-          <nav className="hidden items-center gap-8 text-sm text-muted-foreground lg:flex">
-            <Link href="/" className="transition hover:text-foreground">
-              Toppers
-            </Link>
-            <Link href="/optional/psir" className="transition hover:text-foreground">
-              Optional Subjects
-            </Link>
-            <Link href="/ask" className="transition hover:text-foreground">
-              Ask AI
-            </Link>
-          </nav>
-        </header>
-
+      <div className="mx-auto max-w-7xl px-6 pb-32 md:px-10">
         {/* HERO */}
-        <section className="mb-20">
+        <section className="mt-16 mb-20">
           <div className="mb-6 flex flex-wrap items-center gap-3">
             <Badge variant="outline" className="rounded-full px-3 py-1 text-xs font-medium">
               50+ Topper Copies
@@ -441,8 +419,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <Footer />
       </div>
     </main>
   );

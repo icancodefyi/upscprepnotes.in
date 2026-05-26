@@ -106,6 +106,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const ALL_YEARS = [2022, 2023, 2024, 2025];
+
 export default async function YearPage({ params }: Props) {
   const { year } = await params;
   const yearNum = parseInt(year, 10);
@@ -149,6 +151,10 @@ export default async function YearPage({ params }: Props) {
     },
   };
 
+  const yearIndex = ALL_YEARS.indexOf(yearNum);
+  const prevYear = yearIndex > 0 ? ALL_YEARS[yearIndex - 1] : null;
+  const nextYear = yearIndex < ALL_YEARS.length - 1 ? ALL_YEARS[yearIndex + 1] : null;
+
   return (
     <main className="min-h-screen bg-background text-black">
       <script
@@ -157,6 +163,15 @@ export default async function YearPage({ params }: Props) {
       />
 
       <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
+        {/* BREADCRUMB */}
+        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+          <Link href="/" className="transition hover:text-foreground">
+            Home
+          </Link>
+          <span>•</span>
+          <span>Year {yearNum}</span>
+        </div>
+
         <div className="mb-12">
           <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
             Yearly Archive
@@ -165,6 +180,39 @@ export default async function YearPage({ params }: Props) {
           <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-zinc-800">
             Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
           </p>
+        </div>
+
+        {/* YEAR SELECTOR */}
+        <div className="mb-16 flex flex-wrap items-center gap-3">
+          {prevYear && (
+            <Link
+              href={`/year/${prevYear}`}
+              className="rounded-full border border-zinc-200 px-5 py-2 text-sm font-medium transition hover:bg-zinc-100"
+            >
+              &larr; {prevYear}
+            </Link>
+          )}
+          {ALL_YEARS.map((y) => (
+            <Link
+              key={y}
+              href={`/year/${y}`}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition ${
+                y === yearNum
+                  ? "bg-black text-white"
+                  : "border border-zinc-200 hover:bg-zinc-100"
+              }`}
+            >
+              {y}
+            </Link>
+          ))}
+          {nextYear && (
+            <Link
+              href={`/year/${nextYear}`}
+              className="rounded-full border border-zinc-200 px-5 py-2 text-sm font-medium transition hover:bg-zinc-100"
+            >
+              {nextYear} &rarr;
+            </Link>
+          )}
         </div>
 
         {toppers.length === 0 ? (

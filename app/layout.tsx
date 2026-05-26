@@ -4,6 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import AskFloatingWidget from "@/components/AskFloatingWidget";
 import ProductFloatingWidget from "@/components/ProductFloatingWidget";
 
@@ -89,7 +91,9 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <TooltipProvider>
+          <Header />
           {children}
+          <Footer />
           <AskFloatingWidget />
           <ProductFloatingWidget />
         </TooltipProvider>
