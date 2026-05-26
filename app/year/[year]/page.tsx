@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
@@ -81,6 +82,28 @@ function computeInsights(toppers: TopperData[], year: number) {
   }
 
   return insights;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { year } = await params;
+  const yearNum = parseInt(year, 10);
+
+  if (isNaN(yearNum)) {
+    return { title: "Invalid Year" };
+  }
+
+  return {
+    title: `UPSC ${yearNum} Toppers — Complete Marks Dataset`,
+    description: `Full marks breakdown for UPSC ${yearNum} toppers including GS papers, optional subject, essay, interview, and total scores.`,
+    alternates: {
+      canonical: `https://upscprepnotes.in/year/${year}`,
+    },
+    openGraph: {
+      title: `UPSC ${yearNum} Toppers — Complete Marks Dataset`,
+      description: `Full marks breakdown for UPSC ${yearNum} toppers including GS papers, optional subject, essay, interview, and total scores.`,
+      url: `https://upscprepnotes.in/year/${year}`,
+    },
+  };
 }
 
 export default async function YearPage({ params }: Props) {

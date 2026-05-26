@@ -11,7 +11,7 @@ export async function GET() {
     const toppers = await TopperModel.find({ isIndexed: true })
       .select("slug updatedAt createdAt")
       .lean()
-      .limit(30);
+      ;
 
     const pages = [
       { url: "", priority: 1.0 },

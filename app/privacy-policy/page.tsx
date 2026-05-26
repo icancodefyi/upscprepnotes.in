@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy — UPSCPrepNotes",
+  description:
+    "Information regarding analytics, usage data, and platform privacy.",
+  alternates: {
+    canonical: "https://upscprepnotes.in/privacy-policy",
+  },
+  openGraph: {
+    title: "Privacy Policy — UPSCPrepNotes",
+    description:
+      "Information regarding analytics, usage data, and platform privacy.",
+    url: "https://upscprepnotes.in/privacy-policy",
+  },
+};
 
 export default function PrivacyPolicyPage() {
   return (

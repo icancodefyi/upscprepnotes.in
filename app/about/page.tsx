@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "About — UPSCPrepNotes",
+  description:
+    "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research.",
+  alternates: {
+    canonical: "https://upscprepnotes.in/about",
+  },
+  openGraph: {
+    title: "About — UPSCPrepNotes",
+    description:
+      "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research.",
+    url: "https://upscprepnotes.in/about",
+  },
+};
 
 export default function AboutPage() {
   return (

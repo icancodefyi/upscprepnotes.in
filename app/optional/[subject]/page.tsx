@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
@@ -111,6 +112,29 @@ const SUBJECT_DATA: Record<
     booklist: ["S. Radhakrishnan — Indian Philosophy (comprehensive)", "Debiprasad Chattopadhyaya — Marxist Approach to Ancient Indian Philosophy"],
   },
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { subject } = await params;
+  const subjectKey = subject.toLowerCase();
+  const subjectInfo = SUBJECT_DATA[subjectKey];
+
+  if (!subjectInfo) {
+    return { title: "Subject Not Found" };
+  }
+
+  return {
+    title: `${subjectInfo.name} Optional — UPSCPrepNotes`,
+    description: subjectInfo.description,
+    alternates: {
+      canonical: `https://upscprepnotes.in/optional/${subjectKey}`,
+    },
+    openGraph: {
+      title: `${subjectInfo.name} Optional — UPSCPrepNotes`,
+      description: subjectInfo.description,
+      url: `https://upscprepnotes.in/optional/${subjectKey}`,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   return Object.keys(SUBJECT_DATA).map((s) => ({ subject: s }));

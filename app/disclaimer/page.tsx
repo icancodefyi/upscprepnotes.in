@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Disclaimer — UPSCPrepNotes",
+  description:
+    "Educational and informational use disclaimer.",
+  alternates: {
+    canonical: "https://upscprepnotes.in/disclaimer",
+  },
+  openGraph: {
+    title: "Disclaimer — UPSCPrepNotes",
+    description:
+      "Educational and informational use disclaimer.",
+    url: "https://upscprepnotes.in/disclaimer",
+  },
+};
 
 export default function DisclaimerPage() {
   return (

@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Contact — UPSCPrepNotes",
+  description:
+    "For platform inquiries, corrections, feedback, or collaboration.",
+  alternates: {
+    canonical: "https://upscprepnotes.in/contact",
+  },
+  openGraph: {
+    title: "Contact — UPSCPrepNotes",
+    description:
+      "For platform inquiries, corrections, feedback, or collaboration.",
+    url: "https://upscprepnotes.in/contact",
+  },
+};
 
 export default function ContactPage() {
   return (

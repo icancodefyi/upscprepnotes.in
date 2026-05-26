@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions — UPSCPrepNotes",
+  description:
+    "Platform usage terms and conditions.",
+  alternates: {
+    canonical: "https://upscprepnotes.in/terms",
+  },
+  openGraph: {
+    title: "Terms & Conditions — UPSCPrepNotes",
+    description:
+      "Platform usage terms and conditions.",
+    url: "https://upscprepnotes.in/terms",
+  },
+};
 
 export default function TermsPage() {
   return (
