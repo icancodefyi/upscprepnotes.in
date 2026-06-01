@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { trackViewItem } from "@/lib/analytics";
 import PurchaseModal from "./PurchaseModal";
 
 const TOPPERS = [
@@ -188,6 +189,7 @@ export default function SalesPage() {
   const { mounted, expired, display } = useTimer();
 
   useEffect(() => {
+    trackViewItem("Topper Answer Copy Compilation", 999);
     const onScroll = () => setScrolled(window.scrollY > 300);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

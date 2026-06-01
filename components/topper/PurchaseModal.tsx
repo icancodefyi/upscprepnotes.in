@@ -4,6 +4,12 @@ import { useState, FormEvent, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  trackAddToCart,
+  trackBeginCheckout,
+  trackAddPaymentInfo,
+  trackPurchase,
+} from "@/lib/analytics";
 
 const PRODUCTS = [
   {
@@ -72,6 +78,7 @@ export default function PurchaseModal({ onClose }: Props) {
   function selectProduct(p: (typeof PRODUCTS)[0]) {
     setProduct(p);
     setStep("form");
+    trackAddToCart(p.name, p.price);
   }
 
   function handleBack() {
@@ -93,6 +100,10 @@ export default function PurchaseModal({ onClose }: Props) {
     }
 
     setStep("payment");
+    if (product) {
+      trackBeginCheckout(product.name, product.price);
+      trackAddPaymentInfo(product.name, product.price);
+    }
   }
 
   async function handlePayAndUpload() {
@@ -136,6 +147,9 @@ export default function PurchaseModal({ onClose }: Props) {
       }
 
       setStep("done");
+      if (product) {
+        trackPurchase(product.name, product.price, `txn_${Date.now()}`);
+      }
     } catch {
       setErrMsg("Something went wrong. Please try again.");
       setStep("payment");
