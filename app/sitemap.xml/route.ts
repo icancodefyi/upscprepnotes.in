@@ -29,7 +29,8 @@ export async function GET() {
       { url: "optional/anthropology", priority: 0.8 },
       { url: "optional/history", priority: 0.8 },
       { url: "ask", priority: 0.6 },
-      { url: "toppers/toppers-copy-compilation", priority: 0.6 },
+      { url: "toppers/toppers-copy-compilation", priority: 0.9 },
+      { url: "pyq", priority: 0.9 },
     ];
 
     const urls = pages
@@ -53,11 +54,19 @@ export async function GET() {
       })
       .join("\n");
 
+    const pyqYearUrls = [2022, 2023, 2024, 2025]
+      .map((year) => {
+        const loc = `${SITE_URL}/pyq/${year}`;
+        return `<url><loc>${loc}</loc><priority>0.8</priority></url>`;
+      })
+      .join("\n");
+
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 ${topperUrls}
 ${yearUrls}
+${pyqYearUrls}
 </urlset>`;
 
     return new NextResponse(xml, {
