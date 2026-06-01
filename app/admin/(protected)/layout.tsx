@@ -15,6 +15,7 @@ async function checkAuth() {
 const navLinks = [
   { href: "/admin", label: "Toppers" },
   { href: "/admin/new", label: "Add Topper" },
+  { href: "/admin/pyq", label: "PYQ" },
   { href: "/admin/requests", label: "Requests" },
 ];
 
