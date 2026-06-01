@@ -3,8 +3,18 @@ import Link from "next/link";
 import { getFeaturedToppers } from "@/services/topper.service";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { topperImageSrc } from "@/lib/utils";
+import {
+  Trophy,
+  FileText,
+  BarChart3,
+  Sparkles,
+  ArrowRight,
+  BookOpen,
+  MessageCircle,
+  Target,
+  Award,
+} from "lucide-react";
 
 export const revalidate = 86400;
 
@@ -107,78 +117,139 @@ export default async function HomePage() {
   const toppers = await getFeaturedToppers();
 
   return (
-    <main className="min-h-screen">
-      <div className="mx-auto max-w-7xl px-6 pb-32 md:px-10">
+    <main className="min-h-screen bg-[#F8F9FA]">
+      <div className="mx-auto max-w-7xl px-4 pb-32">
         {/* HERO */}
-        <section className="mt-16 mb-20">
-          <div className="mb-6 flex flex-wrap items-center gap-3">
-            <Badge variant="outline" className="rounded-full px-3 py-1 text-xs font-medium">
-              50+ Topper Copies
-            </Badge>
-            <Badge className="rounded-full px-3 py-1 text-xs font-medium">
-              Marks Wise &bull; Not Rank Wise
-            </Badge>
-          </div>
-
-          <h1 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
-            Score 120+ Marks in Each GS Paper
-            <br />
-            <span className="text-muted-foreground">
-              with 50+ Topper Answer Copies
-            </span>
-          </h1>
-
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">
-            India&apos;s first marks-wise UPSC topper answer copy compilation.
-            Learn the IBEC Method from toppers who scored in the top 1 percentile.
-            Verified copies across GS1&ndash;4 and Essay.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Button asChild size="lg" className="rounded-full px-8 shadow-lg shadow-primary/20">
-              <Link href="/toppers/toppers-copy-compilation">
-                Explore the Compilation &rarr;
-              </Link>
-            </Button>
-          </div>
-
-          <div className="mt-8 flex flex-wrap gap-6 text-xs text-muted-foreground">
-            <span>Instant Digital Access</span>
-            <span>Verified Copies</span>
-            <span>Lifetime Updates</span>
-            <span>PDF Format</span>
+        <section className="pt-16 pb-20">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-6">
+              <Sparkles size={12} />
+              50+ Verified Answer Copies
+            </div>
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
+              Score 120+ Marks
+              <br />
+              <span className="text-gray-500">
+                in Each GS Paper
+              </span>
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-gray-500 md:text-lg">
+              India&apos;s first marks-wise UPSC topper answer copy compilation.
+              Learn the IBEC Method from toppers who scored in the top 1 percentile.
+              Verified copies across GS1&ndash;4 and Essay.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button asChild size="lg" className="rounded-full px-8 shadow-lg">
+                <Link href="/toppers/toppers-copy-compilation">
+                  Explore the Compilation &rarr;
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+                <Link href="/year/2025">
+                  Browse Toppers
+                </Link>
+              </Button>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-6 text-xs text-gray-400">
+              <span>Instant Digital Access</span>
+              <span className="text-gray-300">·</span>
+              <span>Verified Copies</span>
+              <span className="text-gray-300">·</span>
+              <span>Lifetime Updates</span>
+              <span className="text-gray-300">·</span>
+              <span>PDF Format</span>
+            </div>
           </div>
 
           {/* BENEFIT CARDS */}
-          <div className="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               "Get answer copies of toppers in each paper (Verified Only)",
               "Handwritten Answers from 20+ toppers",
               "Includes Micro-diagrams, Data, Facts, Examples",
               "All GS Papers — GS1, GS2, GS3, GS4 & Essay Covered",
             ].map((text) => (
-              <Card key={text} className="rounded-2xl border-border/50">
-                <CardContent className="flex items-start gap-3 p-5">
-                  <span className="mt-0.5 shrink-0 text-primary">
-                    &#10003;
-                  </span>
-                  <p className="text-sm leading-6 text-muted-foreground">{text}</p>
-                </CardContent>
-              </Card>
+              <div key={text} className="bg-white border-2 border-gray-200 p-5 hover:border-black transition-all">
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 shrink-0 text-[#C4F9D7] font-bold">&#10003;</span>
+                  <p className="text-sm leading-6 text-gray-600">{text}</p>
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
+        {/* QUICK LINKS GRID */}
+        <section className="mb-20">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link
+              href="/year/2025"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <Trophy className="w-10 h-10 text-[#FFD700]" />
+                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">UPSC Toppers</h3>
+              <p className="text-sm text-gray-500">
+                Strategies, marks breakdowns, and insights from 280+ successful candidates.
+              </p>
+            </Link>
+
+            <Link
+              href="/toppers/toppers-copy-compilation"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <FileText className="w-10 h-10 text-[#C4F9D7]" />
+                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Answer Copies</h3>
+              <p className="text-sm text-gray-500">
+                50+ marks-wise compiled topper answer copies across GS1-4 and Essay.
+              </p>
+            </Link>
+
+            <Link
+              href="/optional/psir"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <BarChart3 className="w-10 h-10 text-[#D8D4FF]" />
+                <ArrowRight className="w-5 h-5 text-gray-300 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Optional Subjects</h3>
+              <p className="text-sm text-gray-500">
+                Score trends, topper strategies, and performance analysis for 18 subjects.
+              </p>
+            </Link>
+
+            <Link
+              href="/ask"
+              className="group bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] text-white p-6 hover:from-black hover:to-[#1A1A1A] transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <Sparkles className="w-10 h-10 text-[#C4F9D7]" />
+                <ArrowRight className="w-5 h-5 text-gray-500 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-lg font-bold mb-2">Ask AI</h3>
+              <p className="text-sm text-gray-400">
+                Get instant answers about any topper&apos;s strategy and preparation approach.
+              </p>
+            </Link>
+          </div>
+        </section>
+
         {/* IBEC METHOD */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-10">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-gray-400">
               The Framework
             </p>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               What Is the IBEC Method?
             </h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
+            <p className="mt-4 max-w-xl text-sm leading-7 text-gray-500">
               A proven answer-writing framework used by top 1% scorers. Four
               stages that transform average answers into high-scoring responses.
             </p>
@@ -186,27 +257,25 @@ export default async function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2">
             {IBEC_STEPS.map((step) => (
-              <Card key={step.letter} className="rounded-3xl border-border/50 transition duration-300 hover:-translate-y-[2px]">
-                <CardContent className="p-6 md:p-8">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-xl font-bold text-primary-foreground">
-                    {step.letter}
-                  </div>
-                  <h3 className="text-xl font-semibold tracking-tight">
-                    Learn the Perfect {step.title}
-                  </h3>
-                  <ul className="mt-5 space-y-3">
-                    {step.points.map((point) => (
-                      <li
-                        key={point}
-                        className="flex items-start gap-3 text-sm leading-6 text-muted-foreground"
-                      >
-                        <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              <div key={step.letter} className="bg-white border-2 border-gray-200 p-6 md:p-8 hover:border-black transition-all">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center bg-black text-xl font-bold text-white">
+                  {step.letter}
+                </div>
+                <h3 className="text-xl font-bold tracking-tight">
+                  Learn the Perfect {step.title}
+                </h3>
+                <ul className="mt-5 space-y-3">
+                  {step.points.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 text-sm leading-6 text-gray-500"
+                    >
+                      <span className="mt-0.5 shrink-0 text-[#C4F9D7] font-bold">&#10003;</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
 
@@ -220,12 +289,12 @@ export default async function HomePage() {
         </section>
 
         {/* FEATURED TOPPERS */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-10">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-gray-400">
               Featured Toppers
             </p>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               Learn from the Best
             </h2>
           </div>
@@ -235,27 +304,27 @@ export default async function HomePage() {
               <Link
                 key={topper.slug}
                 href={`/upsc-topper/${topper.slug}`}
-                className="flex items-center gap-4 rounded-2xl border border-transparent bg-transparent px-4 py-4 transition hover:border-border/50 hover:bg-card md:gap-6 md:px-6"
+                className="flex items-center gap-4 bg-white border-2 border-gray-200 px-4 py-4 hover:border-black transition-all md:gap-6 md:px-6"
               >
                 <img
                   src={topperImageSrc(topper)}
                   alt={`${topper.firstName} ${topper.lastName}`}
-                  className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-background md:h-14 md:w-14"
+                  className="h-12 w-12 shrink-0 rounded-xl border-2 border-gray-200 bg-white md:h-14 md:w-14"
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <h3 className="text-lg font-semibold md:text-xl">
+                    <h3 className="text-lg font-bold md:text-xl">
                       {topper.firstName} {topper.lastName}
                     </h3>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-gray-500">
                       AIR {topper.rank} &middot; {topper.year}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
+                  <p className="mt-0.5 text-sm text-gray-500">
                     {topper.optionalSubject} &middot; Total {topper.marks.total}
                   </p>
                 </div>
-                <span className="hidden shrink-0 text-sm text-muted-foreground md:block">
+                <span className="hidden shrink-0 text-sm text-gray-500 md:block">
                   View Profile &rarr;
                 </span>
               </Link>
@@ -265,7 +334,7 @@ export default async function HomePage() {
           <div className="mt-6">
             <Link
               href="/year/2025"
-              className="text-sm font-medium text-foreground underline underline-offset-4 transition hover:text-foreground/70"
+              className="text-sm font-medium text-black underline underline-offset-4 hover:text-gray-500 transition-colors"
             >
               Browse all 280+ topper profiles &rarr;
             </Link>
@@ -273,36 +342,34 @@ export default async function HomePage() {
         </section>
 
         {/* PAPER-WISE BREAKDOWN */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-10 text-center">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-gray-400">
               Paper-wise Expertise
             </p>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               What Each Paper Covers
             </h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
             {PAPER_BENEFITS.map((p) => (
-              <Card key={p.paper} className="rounded-3xl border-border/50">
-                <CardContent className="p-6 md:p-8">
-                  <Badge className="mb-4 rounded-full px-4 py-1 text-xs font-medium">
-                    {p.paper}
-                  </Badge>
-                  <ul className="space-y-4">
-                    {p.highlights.map((h) => (
-                      <li
-                        key={h}
-                        className="flex items-start gap-3 text-sm leading-6 text-muted-foreground"
-                      >
-                        <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              <div key={p.paper} className="bg-white border-2 border-gray-200 p-6 md:p-8 hover:border-black transition-all">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-4">
+                  {p.paper}
+                </div>
+                <ul className="space-y-4">
+                  {p.highlights.map((h) => (
+                    <li
+                      key={h}
+                      className="flex items-start gap-3 text-sm leading-6 text-gray-500"
+                    >
+                      <span className="mt-0.5 shrink-0 text-[#C4F9D7] font-bold">&#10003;</span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
 
@@ -316,12 +383,12 @@ export default async function HomePage() {
         </section>
 
         {/* BROWSE TOPPERS BY YEAR */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold tracking-tight">
+            <h2 className="text-2xl font-bold tracking-tight">
               Browse Toppers by Year
             </h2>
-            <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+            <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
               Explore structured profiles of 280+ UPSC toppers. Filter by rank,
               year, or subject.
             </p>
@@ -329,9 +396,13 @@ export default async function HomePage() {
 
           <div className="flex flex-wrap items-center gap-3">
             {YEARS.map((year) => (
-              <Button key={year} variant="outline" asChild className="rounded-full">
-                <Link href={`/year/${year}`}>{year}</Link>
-              </Button>
+              <Link
+                key={year}
+                href={`/year/${year}`}
+                className="inline-flex items-center px-5 py-2.5 border-2 border-gray-200 text-sm font-medium hover:border-black transition-all bg-white"
+              >
+                {year}
+              </Link>
             ))}
             <Button asChild className="rounded-full">
               <Link href="/year/2025">View All Toppers &rarr;</Link>
@@ -340,9 +411,9 @@ export default async function HomePage() {
         </section>
 
         {/* OPTIONAL SUBJECTS */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold tracking-tight">
+            <h2 className="text-2xl font-bold tracking-tight">
               Optional Subjects
             </h2>
           </div>
@@ -352,17 +423,17 @@ export default async function HomePage() {
               <Link
                 key={subject}
                 href={`/optional/${subject.toLowerCase()}`}
-                className="group border-b border-border pb-5 transition"
+                className="group border-b border-gray-200 pb-5 transition"
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold tracking-tight transition group-hover:translate-x-1 group-hover:text-primary">
+                  <h3 className="text-xl font-bold tracking-tight transition group-hover:translate-x-1">
                     {subject}
                   </h3>
-                  <span className="text-muted-foreground transition group-hover:translate-x-1">
+                  <span className="text-gray-400 transition group-hover:translate-x-1">
                     &rarr;
                   </span>
                 </div>
-                <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
                   Topper strategies, score trends, and performance analysis for{" "}
                   {subject}.
                 </p>
@@ -372,25 +443,23 @@ export default async function HomePage() {
         </section>
 
         {/* ASK AI CTA */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
-          <div className="overflow-hidden rounded-3xl border border-border/50 bg-card p-8 md:p-16">
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
+          <div className="border-2 border-gray-200 bg-white p-8 md:p-16">
             <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
               <div className="max-w-xl">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                  <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                  </svg>
+                <div className="mb-4 flex h-10 w-10 items-center justify-center bg-[#C4F9D7]">
+                  <Sparkles className="h-5 w-5 text-black" />
                 </div>
-                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
                   Ask AI About Any Topper
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 text-sm leading-7 text-gray-500">
                   Get instant answers about any UPSC topper&apos;s strategy, marks,
                   optional subject, or preparation approach. Powered by our
                   database of 280+ verified profiles.
                 </p>
               </div>
-              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg shadow-primary/20">
+              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg">
                 <Link href="/ask">
                   Ask a question &rarr;
                 </Link>
@@ -400,13 +469,13 @@ export default async function HomePage() {
         </section>
 
         {/* COMPILATION CTA */}
-        <section className="mb-20 border-t border-border pt-12 md:pt-16">
-          <div className="overflow-hidden rounded-3xl bg-primary p-8 md:p-16">
+        <section className="border-t border-gray-200 pt-12 md:pt-16">
+          <div className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8 md:p-16">
             <div className="max-w-2xl">
-              <h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-primary-foreground md:text-5xl">
+              <h2 className="text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
                 50+ Topper Answer Copies
               </h2>
-              <p className="mt-4 max-w-lg text-base leading-7 text-primary-foreground/70 md:text-lg md:leading-8">
+              <p className="mt-4 max-w-lg text-base leading-7 text-gray-400 md:text-lg md:leading-8">
                 Marks-wise compilation across GS1&ndash;4 and Essay. Learn the
                 IBEC Method from toppers who scored 120+ marks.
               </p>

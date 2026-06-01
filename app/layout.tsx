@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,11 @@ import Footer from "@/components/footer";
 import AskFloatingWidget from "@/components/AskFloatingWidget";
 import ProductFloatingWidget from "@/components/ProductFloatingWidget";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const space = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -17,17 +21,37 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UPSCPrepNotes — Structured UPSC preparation intelligence",
+  title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
   description:
-    "UPSCPrepNotes: topper strategies, marksheets, optional subject insights, and preparation intelligence for UPSC aspirants.",
+    "India's UPSC preparation intelligence platform. Access 280+ topper profiles, marks breakdowns, answer copies, optional subject analysis, and AI-powered preparation insights.",
   alternates: {
     canonical: "https://upscprepnotes.in",
   },
   openGraph: {
-    title: "UPSCPrepNotes — Structured UPSC preparation intelligence",
+    title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
     description:
-      "Structured topper profiles, marksheet analysis, optional subject trends, and preparation strategies.",
+      "Structured topper profiles, marksheet analysis, optional subject trends, and preparation strategies for UPSC aspirants.",
     url: "https://upscprepnotes.in",
+  },
+  keywords: [
+    "UPSC",
+    "UPSC CSE",
+    "UPSC toppers",
+    "IAS preparation",
+    "UPSC answer copies",
+    "UPSC marksheets",
+    "UPSC strategy",
+    "Civil Services Examination",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -37,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
+    <html lang="en" className={cn("font-sans", space.variable)}>
       <head>
         {/* Google Analytics */}
         <Script
@@ -88,8 +112,22 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${space.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
       >
+        {/* Announcement Strip */}
+        <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-2.5 px-3 sm:px-4 sticky top-0 z-50 border-b border-gray-800">
+          <a
+            href="/toppers/toppers-copy-compilation"
+            className="w-full text-[11px] sm:text-xs font-medium tracking-wide hover:text-gray-300 transition-colors cursor-pointer block text-center"
+          >
+            <span className="font-bold">50+ Topper Answer Copies</span>
+            <span className="text-white/60 mx-2">·</span>
+            <span className="text-[#C4F9D7] font-semibold">Marks-Wise Compilation</span>
+            <span className="text-white/60 mx-2">·</span>
+            <span>Get Instant Access →</span>
+          </a>
+        </div>
+
         <TooltipProvider>
           <Header />
           {children}
