@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ExitIntentPopup from "@/components/ExitIntentPopup";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -131,6 +132,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <ExitIntentPopup />
         </TooltipProvider>
       </body>
     </html>
