@@ -188,3 +188,12 @@
 .animate-scale-in {
   animation: scale-in 0.3s ease-out;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}

@@ -169,7 +169,7 @@ export default function SalesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSent, setLeadSent] = useState(false);
-  const { mounted, display } = useTimer();
+  const { mounted, display, spotsLeft } = useTimer();
 
   useEffect(() => {
     trackViewItem("Topper Answer Copy Compilation", 799);
@@ -182,131 +182,101 @@ export default function SalesPage() {
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi! I want my 3 free topper answer copies. My number is ${leadPhone}.`)}`;
     window.open(waUrl, "_blank");
     setLeadSent(true);
+    try { window.gtag?.("event", "generate_lead", { event_label: "sales-lead-form", value: 1 }); } catch {}
   }
 
   return (
     <>
-      {/* ANNOUNCEMENT BAR */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white">
-        <div className="mx-auto flex items-center justify-center gap-2 px-4 py-2.5 text-center text-xs font-medium sm:text-sm">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 sm:px-3">
-            Launch Offer
-          </span>
-          <span>₹799 bundle — price goes up to ₹4,999 soon</span>
-        </div>
-      </div>
-
-
-
       <main className="min-h-screen bg-white">
         {modalOpen && <PurchaseModal onClose={() => setModalOpen(false)} />}
 
         {/* HERO */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-28 pb-16 sm:pt-36 sm:pb-20">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-50 via-transparent to-transparent opacity-60" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent opacity-40" />
+        <section className="border-b border-gray-100 bg-white pt-24 pb-14 sm:pt-32 sm:pb-20">
+          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[11px] font-semibold tracking-wide text-emerald-700">Limited Launch — ₹799</span>
+            </div>
 
-          <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              {/* LEFT — Text */}
-              <div className="max-w-xl">
-                <div className="mb-5 flex flex-wrap items-center gap-2">
-                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-500/20">
-                    🎯 30+ Resources
-                  </Badge>
-                  <Badge variant="outline" className="rounded-full border-gray-200 px-3 py-1 text-[11px] font-semibold text-gray-500">
-                    Launched Feb 2026
-                  </Badge>
-                </div>
+            <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.15] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+              Score Higher with Verified&nbsp;Topper&nbsp;Copies
+            </h1>
 
-                <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-                  Complete UPSC
-                  <br />
-                  <span className="text-emerald-600">Preparation Bundle</span>
-                </h1>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-500 sm:text-base sm:leading-relaxed">
+              Strategy guides, topper answer copies, interview prep, ethics case studies & value-addition data — one complete bundle for your UPSC prep.
+            </p>
 
-                <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
-                  Strategy guides, topper answer copies, interview prep & supporting materials — everything you need in one ₹799 pack.
-                </p>
-
-                {/* Price */}
-                <div className="mt-6 flex items-baseline gap-3">
-                  <span className="text-4xl font-bold text-gray-900 sm:text-5xl">₹799</span>
-                  <span className="text-lg text-gray-400 line-through">₹4,999</span>
-                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
-                    Save 84%
-                  </Badge>
-                </div>
-                <p className="mt-1 text-sm text-gray-400">Launch price — limited time only</p>
-
-                <div className="mt-8">
-                  <Button
-                    size="lg"
-                    onClick={() => setModalOpen(true)}
-                    className="rounded-full bg-gray-900 px-10 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800 sm:px-16"
-                  >
-                    Buy Now — ₹799
-                  </Button>
-                </div>
-
-                {/* Trust badges */}
-                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-500">
-                  <span className="flex items-center gap-1.5">
-                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Instant PDF Access
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Verified Copies
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    Lifetime Updates
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    UPI / QR Payment
-                  </span>
-                </div>
+            {/* Price + Timer */}
+            <div className="mt-6">
+              <div className="flex items-baseline justify-center gap-2 sm:gap-3">
+                <span className="text-4xl font-bold text-gray-900 sm:text-5xl">₹799</span>
+                <span className="text-base text-gray-400 line-through sm:text-lg">₹4,999</span>
+                <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 sm:px-3 sm:text-xs">Save 84%</span>
               </div>
 
-              {/* RIGHT — Hero Image */}
-              <div className="relative hidden lg:block">
-                <div className="relative mx-auto aspect-[4/3] w-full max-w-lg overflow-hidden rounded-3xl border border-gray-100 bg-gray-50 shadow-2xl shadow-gray-200/50">
-                  {/* IMAGE SLOT: Place your hero image here */}
-                  {/* File: public/images/sales/hero-preview.jpg (800x600) */}
-                  <img
-                    src="/images/sales/hero-preview.jpg"
-                    alt="UPSC Preparation Bundle Preview"
-                    className="h-full w-full object-cover"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      target.style.display = "none";
-                      const parent = target.parentElement;
-                      if (parent) {
-                        parent.innerHTML = `
-                          <div class="flex h-full items-center justify-center p-8">
-                            <div class="text-center">
-                              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
-                                <svg class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                </svg>
-                              </div>
-                              <p class="text-base font-medium text-gray-900">Bundle Preview</p>
-                              <p class="mt-1 text-sm text-gray-500">Add your image here</p>
-                            </div>
-                          </div>
-                        `;
-                      }
-                    }}
-                  />
-                </div>
-                {/* Floating badge */}
-                <div className="absolute -bottom-3 -left-3 rounded-2xl bg-white px-5 py-3 shadow-lg shadow-gray-200/50 ring-1 ring-gray-100">
-                  <p className="text-sm font-semibold text-gray-900">21 Guides</p>
-                  <p className="text-xs text-gray-500">+ 10+ Resources</p>
-                </div>
+              {/* Urgency: Countdown timer */}
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <span className="text-xs text-gray-400 sm:text-sm">Offer expires in</span>
+                <span className={`inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 font-bold text-red-600 tabular-nums text-sm sm:text-base ${mounted ? "animate-pulse" : "opacity-0"}`}>
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {mounted ? display : "—"}
+                </span>
               </div>
+
+              {/* Scarcity: spots left */}
+              <p className="mt-1.5 text-xs text-gray-400">
+                Only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at launch price
+              </p>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-6 sm:mt-8">
+              <Button
+                size="lg"
+                data-track="sales-hero-cta"
+                onClick={() => setModalOpen(true)}
+                className="w-full rounded-full bg-emerald-600 px-10 py-5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500 sm:w-auto sm:px-14 sm:py-6 sm:text-base"
+              >
+                Claim Bundle at ₹799 →
+              </Button>
+            </div>
+
+            {/* What's included — social proof strip near CTA */}
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
+              <span className="flex items-center gap-1">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                21 Strategy Guides
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                3+ Topper Copies
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Interview Prep
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                50+ Case Studies
+              </span>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
+              <span className="flex items-center gap-1.5">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Instant PDF Access
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Verified Content
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                UPI / QR Payment
+              </span>
             </div>
           </div>
         </section>
@@ -380,10 +350,12 @@ export default function SalesPage() {
               <Button
                 onClick={() => setModalOpen(true)}
                 size="lg"
-                className="rounded-full bg-gray-900 px-10 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
+                data-track="sales-mid-cta"
+                className="rounded-full bg-emerald-600 px-10 py-6 text-base font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
               >
-                Get the Complete Bundle — ₹799
+                Claim Bundle at ₹799 →
               </Button>
+              <p className="mt-2 text-xs text-gray-400">Price moves to ₹4,999 after launch period</p>
             </div>
           </div>
         </section>
@@ -566,9 +538,9 @@ export default function SalesPage() {
               </div>
 
               <Card className="mt-8 overflow-hidden rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50">
-                <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 px-6 py-4 text-center">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
-                    Limited Launch Offer
+                <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 px-6 py-4 text-center">
+                  <p className="text-xs font-bold uppercase tracking-wider text-white">
+                    🔥 Flash Sale — Expires in {mounted ? display : "05:00"}
                   </p>
                 </div>
                 <CardContent className="p-8 text-center sm:p-10">
@@ -576,7 +548,8 @@ export default function SalesPage() {
                     <span className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">₹799</span>
                     <span className="text-lg text-gray-400 line-through">₹4,999</span>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">Save 84% — limited time only</p>
+                  <p className="mt-1 text-sm text-gray-500">Save 84% — only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at this price</p>
+                  <p className="mt-0.5 text-xs text-red-500">Offer expires in {mounted ? display : "—"}</p>
 
                   {/* Value comparison */}
                   <div className="mt-8 space-y-3 rounded-2xl bg-gray-50 p-5 text-left text-sm">
@@ -604,10 +577,11 @@ export default function SalesPage() {
 
                   <Button
                     size="lg"
+                    data-track="sales-pricing-cta"
                     onClick={() => setModalOpen(true)}
-                    className="mt-8 w-full rounded-full bg-gray-900 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
+                    className="mt-8 w-full rounded-full bg-emerald-600 py-6 text-base font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
                   >
-                    Buy Now — ₹799
+                    Claim Bundle at ₹799 →
                   </Button>
 
                   {/* Guarantee */}
@@ -645,7 +619,7 @@ export default function SalesPage() {
                 Enter your WhatsApp number and we&apos;ll send you 3 verified topper answer copies instantly. No purchase needed.
               </p>
 
-              <form onSubmit={handleLeadSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+              <form onSubmit={handleLeadSubmit} data-track="sales-lead-form" className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
                 <input
                   type="tel"
                   placeholder="+91 98765 43210"
@@ -657,6 +631,7 @@ export default function SalesPage() {
                 <Button
                   type="submit"
                   disabled={leadSent}
+                  data-track="sales-lead-submit"
                   className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 disabled:opacity-50"
                 >
                   {leadSent ? "✓ Sent! Check WhatsApp" : "Send Free Copies"}
@@ -693,22 +668,29 @@ export default function SalesPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="border-t border-gray-100 bg-gray-900 py-16 text-center sm:py-20">
+        <section className="border-t border-gray-100 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 text-center sm:py-20">
           <div className="mx-auto max-w-2xl px-4 sm:px-6">
+            <div className="mx-auto mb-6 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-4 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[11px] font-semibold tracking-wide text-emerald-300">Only {spotsLeft} bundles left at ₹799</span>
+            </div>
+
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to Supercharge Your Preparation?
+              Get the Bundle Before Price Goes&nbsp;Up
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-gray-400">
-              30+ resources. 21 strategy guides. Topper copies. Interview prep. All for ₹799 (will move to ₹4,999).
+              30+ resources • 21 strategy guides • Topper copies • Interview prep<br />
+              <span className="text-red-400">Offer expires in {mounted ? display : "—"} → ₹799 now</span>
             </p>
 
             <div className="mt-8">
               <Button
                 size="lg"
+                data-track="sales-final-cta"
                 onClick={() => setModalOpen(true)}
-                className="rounded-full bg-white px-12 py-6 text-base font-semibold text-gray-900 shadow-xl shadow-black/10 hover:bg-gray-100"
+                className="rounded-full bg-emerald-600 px-12 py-6 text-base font-bold text-white shadow-xl shadow-emerald-600/30 hover:bg-emerald-500"
               >
-                Buy Now — ₹799
+                Claim Bundle at ₹799 →
               </Button>
             </div>
 
@@ -719,18 +701,16 @@ export default function SalesPage() {
         </section>
 
         {/* STICKY BOTTOM BAR — Timer + Pricing */}
-        <div
-          className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]"
-        >
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-6 sm:py-3">
-            {/* Timer */}
-            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-gray-900 sm:text-sm">
+        <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-2 py-2 sm:px-6 sm:py-3">
+            {/* Timer (desktop only to avoid overlap on mobile) */}
+            <div className="hidden items-center gap-1.5 text-xs font-semibold text-gray-900 sm:flex sm:text-sm">
               {mounted ? (
                 <>
                   <svg className="h-3.5 w-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span className="hidden sm:inline">Ends in&nbsp;</span>
+                  <span>Ends in&nbsp;</span>
                   <span className="tabular-nums text-red-600">{display}</span>
                 </>
               ) : (
@@ -738,25 +718,27 @@ export default function SalesPage() {
               )}
             </div>
 
-            {/* Pricing (mobile) */}
-            <div className="flex items-center gap-2 sm:hidden">
-              <span className="text-[11px] text-gray-400 line-through">₹4,999</span>
-              <span className="text-base font-bold text-gray-900">₹799</span>
+            {/* Pricing */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-[10px] text-gray-400 line-through sm:text-sm">₹4,999</span>
+              <span className="text-sm font-bold text-gray-900 sm:text-lg">₹799</span>
+              {mounted && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-1.5 py-0.5 text-[10px] font-bold text-red-600 tabular-nums sm:hidden">
+                  <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {display}
+                </span>
+              )}
             </div>
 
-            {/* Pricing (desktop) */}
-            <div className="hidden items-center gap-2 sm:flex">
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-gray-900">UPSC Prep Bundle</span>
-              <span className="text-sm text-gray-400 line-through">₹4,999</span>
-              <span className="text-lg font-bold text-gray-900">₹799</span>
-            </div>
-
-            <Button
-              onClick={() => setModalOpen(true)}
-              className="shrink-0 rounded-full bg-gray-900 px-5 py-1.5 text-xs font-semibold hover:bg-gray-800 sm:px-8 sm:py-2 sm:text-sm"
-            >
-              Buy Now
-            </Button>
+              <Button
+                onClick={() => setModalOpen(true)}
+                data-track="sales-bottom-bar"
+                className="shrink-0 rounded-full bg-emerald-600 px-4 py-1.5 text-[11px] font-bold text-white shadow-sm hover:bg-emerald-500 sm:px-8 sm:py-2 sm:text-sm"
+              >
+                Buy at ₹799
+              </Button>
           </div>
         </div>
 
@@ -772,41 +754,45 @@ export default function SalesPage() {
 
 function useTimer() {
   const [mounted, setMounted] = useState(false);
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState("05:00");
+  const [spotsLeft, setSpotsLeft] = useState(42);
 
   useEffect(() => {
     setMounted(true);
-    // Set a real deadline: 30 days from first visit
-    const stored = localStorage.getItem("offerDeadline");
+    // 10-minute countdown per session
+    const stored = sessionStorage.getItem("offerDeadline10");
     let deadline: number;
 
     if (stored) {
       deadline = parseInt(stored, 10);
       if (deadline <= Date.now()) {
-        deadline = Date.now() + 30 * 24 * 60 * 60 * 1000;
-        localStorage.setItem("offerDeadline", String(deadline));
+        deadline = Date.now() + 10 * 60 * 1000;
+        sessionStorage.setItem("offerDeadline10", String(deadline));
       }
     } else {
-      deadline = Date.now() + 30 * 24 * 60 * 60 * 1000;
-      localStorage.setItem("offerDeadline", String(deadline));
+      deadline = Date.now() + 10 * 60 * 1000;
+      sessionStorage.setItem("offerDeadline10", String(deadline));
+    }
+
+    function format(remaining: number) {
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     }
 
     const update = () => {
       const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
       if (remaining <= 0) {
-        setDisplay("Offer ended");
+        setDisplay("00:00");
         return;
       }
-      const days = Math.floor(remaining / 86400);
-      const hours = Math.floor((remaining % 86400) / 3600);
-      const mins = Math.floor((remaining % 3600) / 60);
-      setDisplay(`${days}d ${hours}h ${mins}m`);
+      setDisplay(format(remaining));
     };
 
     update();
-    const interval = setInterval(update, 60000);
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  return { mounted, display };
+  return { mounted, display, spotsLeft };
 }

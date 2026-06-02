@@ -176,6 +176,7 @@ export default async function PYQIndexPage() {
             </div>
             <a
               href="/toppers/toppers-copy-compilation"
+              data-track="pyq-main-cta"
               className="inline-flex items-center gap-2 bg-[#C4F9D7] text-black font-bold px-8 py-4 hover:bg-white transition-colors shrink-0"
             >
               Explore Compilation <ArrowRight className="w-4 h-4" />

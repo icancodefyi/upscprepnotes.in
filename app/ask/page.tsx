@@ -290,7 +290,7 @@ function AskPage() {
               </svg>
               {quota ? `${quota.remaining} / 5` : "—"}
             </span>
-            <Link href="/toppers/toppers-copy-compilation" className="font-medium text-primary transition hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+            <Link href="/toppers/toppers-copy-compilation" data-track="ask-sidebar-cta" className="font-medium text-primary transition hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
               Get the Compilation →
             </Link>
           </div>
@@ -424,6 +424,7 @@ function AskPage() {
                               <div className="mt-6 rounded-xl border border-dashed border-zinc-200 bg-zinc-50/50 px-4 py-3">
                                 <Link
                                   href="/toppers/toppers-copy-compilation"
+                                  data-track="ask-after-answer-cta"
                                   className="flex items-center justify-between gap-2 text-xs text-zinc-500 transition hover:text-zinc-800"
                                 >
                                   <span>See actual answer copies with marks from these toppers →</span>

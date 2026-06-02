@@ -107,6 +107,7 @@ export default function ExitIntentPopup() {
                 dismiss();
                 window.location.href = bundleUrl;
               }}
+              data-track="exit-popup-cta"
               className="w-full rounded-full bg-gray-900 py-5 text-sm font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
             >
               {visitedSales ? "Buy Now — ₹799 →" : "Claim Bundle at ₹799 →"}

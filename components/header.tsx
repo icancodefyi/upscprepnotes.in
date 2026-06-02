@@ -32,6 +32,7 @@ export default function Header() {
             <Link
               key={item.label}
               href={item.href}
+              data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-answer-copies" : undefined}
               className="hover:text-black transition-colors"
             >
               {item.label}
@@ -57,6 +58,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
+                data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-mobile-answer-copies" : undefined}
                 className="block text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
               >
                 {item.label}

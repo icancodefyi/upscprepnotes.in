@@ -68,3 +68,7 @@ export function trackPurchase(
 export function trackGenerateLead() {
   gtagEvent("generate_lead", { value: 1 });
 }
+
+export function trackEvent(action: string, label?: string) {
+  gtagEvent(action, { event_label: label || action });
+}

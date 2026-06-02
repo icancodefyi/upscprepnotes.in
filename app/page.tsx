@@ -140,9 +140,9 @@ export default async function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild size="lg" className="rounded-full px-8 shadow-lg">
-                <Link href="/toppers/toppers-copy-compilation">
-                  Explore the Compilation &rarr;
-                </Link>
+              <Link data-track="home-hero-cta" href="/toppers/toppers-copy-compilation">
+                Explore the Compilation &rarr;
+              </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full px-8">
                 <Link href="/year/2025">
@@ -151,7 +151,7 @@ export default async function HomePage() {
               </Button>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
+              <span data-track="home-price-badge" className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
                 <span className="text-[10px] line-through">₹4,999</span>
                 <span>₹799 Bundle</span>
               </span>
@@ -203,7 +203,7 @@ export default async function HomePage() {
               </p>
             </Link>
 
-            <Link
+            <Link data-track="home-quick-link"
               href="/toppers/toppers-copy-compilation"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
             >
@@ -288,7 +288,7 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Button asChild className="rounded-full px-8">
-              <Link href="/toppers/toppers-copy-compilation">
+              <Link data-track="home-ibec-cta" href="/toppers/toppers-copy-compilation">
                 See Examples in the Compilation &rarr;
               </Link>
             </Button>
@@ -382,7 +382,7 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Button asChild className="rounded-full px-8">
-              <Link href="/toppers/toppers-copy-compilation">
+              <Link data-track="home-expertise-cta" href="/toppers/toppers-copy-compilation">
                 Start Learning &rarr;
               </Link>
             </Button>

@@ -183,6 +183,7 @@ export default async function PYQYearPage({ params }: Props) {
                 </div>
                 <a
                   href="/toppers/toppers-copy-compilation"
+                  data-track="pyq-view-copies"
                   className="inline-flex items-center gap-2 bg-black text-white font-bold px-6 py-3 hover:bg-gray-800 transition-colors shrink-0 text-sm"
                 >
                   View Copies <ArrowRight className="w-4 h-4" />
@@ -256,6 +257,7 @@ export default async function PYQYearPage({ params }: Props) {
                 </div>
                 <a
                   href="/toppers/toppers-copy-compilation"
+                  data-track="pyq-explore-compilation"
                   className="inline-flex items-center gap-2 bg-[#C4F9D7] text-black font-bold px-8 py-4 hover:bg-white transition-colors"
                 >
                   Explore Compilation <ArrowRight className="w-5 h-5" />
@@ -298,6 +300,7 @@ export default async function PYQYearPage({ params }: Props) {
                   </p>
                   <a
                     href="/toppers/toppers-copy-compilation"
+                    data-track="pyq-sidebar-bundle"
                     className="inline-flex items-center justify-center w-full bg-white text-gray-900 font-bold px-4 py-3 hover:bg-gray-100 transition-colors text-sm"
                   >
                     Buy Bundle — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
@@ -339,6 +342,7 @@ export default async function PYQYearPage({ params }: Props) {
                 </a>
                 <a
                   href="/toppers/toppers-copy-compilation"
+                  data-track="pyq-sidebar-browse"
                   className="flex items-center justify-between p-3 bg-[#C4F9D7]/20 border-2 border-[#C4F9D7] hover:border-black transition-all group"
                 >
                   <span className="text-sm font-bold text-black">

@@ -78,6 +78,18 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+
+              document.addEventListener('click', function(e) {
+                var el = e.target.closest('[data-track], a[href*="toppers-copy-compilation"], a[href*="toppers/toppers-copy-compilation"]');
+                if (!el) return;
+                var label = el.getAttribute('data-track') || 'bundle-cta';
+                var href = el.getAttribute('href') || '';
+                gtag('event', label, {
+                  event_label: label,
+                  link_url: href,
+                  link_text: el.innerText ? el.innerText.trim().substring(0, 100) : ''
+                });
+              });
             `,
           }}
         />
@@ -115,17 +127,17 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
       >
-        {/* Announcement Strip */}
-        <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-2.5 px-3 sm:px-4 sticky top-0 z-50 border-b border-gray-800">
+        {/* Announcement Strip — Marquee */}
+        <div className="group bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-2.5 sticky top-0 z-50 border-b border-gray-800 overflow-hidden">
           <a
             href="/toppers/toppers-copy-compilation"
-            className="w-full text-[11px] sm:text-xs font-medium tracking-wide hover:text-gray-300 transition-colors cursor-pointer block text-center"
+            className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer"
           >
-            <span className="font-bold">30+ UPSC Resources Bundle</span>
-            <span className="text-white/60 mx-2">·</span>
-            <span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span>
-            <span className="text-white/60 mx-2">·</span>
-            <span>₹799 Launch Offer →</span>
+            <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
+              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+            </div>
           </a>
         </div>
 

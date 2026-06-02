@@ -669,6 +669,7 @@ export default async function TopperPage({ params }: Props) {
           <div className="mt-8 text-center">
             <Link
               href="/toppers/toppers-copy-compilation"
+              data-track="topper-copies-cta"
               className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:brightness-110"
             >
               Get Compilation of All Answer Copies &rarr;
@@ -1255,7 +1256,7 @@ export default async function TopperPage({ params }: Props) {
                 </div>
               </div>
               <Button asChild size="lg" className="shrink-0 rounded-full bg-white px-8 text-sm font-semibold text-gray-900 shadow-lg shadow-black/10 hover:bg-gray-100">
-                <Link href="/toppers/toppers-copy-compilation">
+                <Link href="/toppers/toppers-copy-compilation" data-track="topper-banner-cta">
                   Get Bundle at ₹799 →
                 </Link>
               </Button>

@@ -66,6 +66,7 @@ export default function ScrollSlideIn() {
           <Link
             href="/toppers/toppers-copy-compilation"
             onClick={dismiss}
+            data-track="scroll-slide-in"
             className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-gray-800"
           >
             Get the Bundle →
