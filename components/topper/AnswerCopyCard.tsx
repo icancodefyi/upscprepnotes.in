@@ -31,15 +31,12 @@ export default function AnswerCopyCard({
         <Badge variant="outline" className="rounded-md px-2 py-0.5 text-[10px] uppercase tracking-wider">
           {paper}
         </Badge>
-        {available ? (
-          <Badge className="rounded-md px-2 py-0.5 text-[10px]">
-            Available
-          </Badge>
-        ) : (
-          <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
-            Coming Soon
-          </span>
-        )}
+        <Badge
+          variant={available ? "default" : "secondary"}
+          className="rounded-md px-2 py-0.5 text-[10px]"
+        >
+          {available && href ? "Available" : "In Compilation"}
+        </Badge>
       </div>
 
       <h3 className="mt-4 text-base font-semibold leading-snug">
@@ -62,7 +59,7 @@ export default function AnswerCopyCard({
       </div>
 
       <div className="mt-4 flex items-center text-sm font-medium text-foreground transition group-hover:translate-x-1">
-        {available && href ? "Access Copy" : "Check Compilation"} &rarr;
+        {available && href ? "Access Copy" : "Get in Bundle"} &rarr;
       </div>
     </Link>
   );

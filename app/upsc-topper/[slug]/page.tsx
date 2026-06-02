@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} UPSC AIR ${topper.rank} (${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} UPSC Answer Copy — AIR ${topper.rank} (${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
@@ -504,10 +504,13 @@ export default async function TopperPage({ params }: Props) {
               </div>
 
               <h1 className="max-w-4xl text-5xl font-bold tracking-tight md:text-7xl leading-[1.05]">
-                {topper.firstName} {topper.lastName}
+                {topper.firstName} {topper.lastName} — UPSC Answer Copies &amp; Strategy
               </h1>
               <p className="mt-3 text-2xl font-medium text-primary">
                 AIR {topper.rank} &middot; {topper.marks.total} Total Marks
+              </p>
+              <p className="mt-2 text-base text-muted-foreground">
+                Download {topper.firstName} {topper.lastName}&apos;s UPSC Mains answer copies, marks breakdown, and preparation strategy for GS Papers and {topper.optionalSubject || "Optional Subject"}.
               </p>
               {topper.bio && (
                 <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -641,12 +644,12 @@ export default async function TopperPage({ params }: Props) {
               </p>
 
               <h2 className="text-4xl font-semibold tracking-tight">
-                {topper.firstName} {topper.lastName} Answer Copies
+                {topper.firstName} {topper.lastName} Answer Copies: GS, Essay &amp; Optional
               </h2>
             </div>
 
             <div className="hidden max-w-sm text-sm leading-7 text-muted-foreground md:block">
-              Direct access to the answer copies that secured AIR {topper.rank}.
+              Get the answer copies that secured AIR {topper.rank}.
             </div>
           </div>
 
@@ -1033,13 +1036,7 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copies?`,
-                a:
-                  topper.answerCopies &&
-                  Object.values(topper.answerCopies).some(
-                    (arr: any[]) => arr && arr.length > 0,
-                  )
-                    ? `Answer copies for ${topper.firstName} ${topper.lastName} are listed in the Answer Copies section above.`
-                    : `Public answer copies for ${topper.firstName} ${topper.lastName} are not yet available. Check back soon.`,
+                a: `Answer copies for ${topper.firstName} ${topper.lastName} are available as part of our 50+ Topper Answer Copy Compilation. Check the Answer Copies section above for details.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
@@ -1242,11 +1239,12 @@ export default async function TopperPage({ params }: Props) {
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-lg">
                 <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
-                  Want to See {topper.firstName}&apos;s Actual Answer Copy?
+                  Get {topper.firstName} {topper.lastName}&apos;s Actual Answer Copy
                 </h2>
                 <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                  Get marks-wise answer copies from 50+ toppers across GS1–4
-                  and Essay. See exactly how they wrote their way to the top.
+                  Full marks-wise answer copies from 50+ toppers across GS1–4,
+                  Essay &amp; Optional. See exactly how they wrote their way to the top.
+                  Get instant access in the compilation.
                 </p>
               </div>
               <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg shadow-primary/20">
