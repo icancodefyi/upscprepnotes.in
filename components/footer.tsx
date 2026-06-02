@@ -63,6 +63,11 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Resources</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
+                <Link href="/upsc-full-form" className="hover:text-black transition-colors">
+                  UPSC Full Form
+                </Link>
+              </li>
+              <li>
                 <Link href="/year/2024" className="hover:text-black transition-colors">
                   2024 CSE
                 </Link>
