@@ -124,7 +124,7 @@ export default async function HomePage() {
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-6">
               <Sparkles size={12} />
-              50+ Verified Answer Copies
+              Topper Answer Copies
             </div>
             <h1 className="text-4xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
               Score 120+ Marks
@@ -206,7 +206,7 @@ export default async function HomePage() {
               </div>
               <h3 className="text-lg font-bold mb-2">Answer Copies</h3>
               <p className="text-sm text-gray-500">
-                50+ marks-wise compiled topper answer copies across GS1-4 and Essay.
+                Marks-wise compiled topper answer copies across GS1-4 and Essay.
               </p>
             </Link>
 
@@ -442,51 +442,9 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ASK AI CTA */}
-        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
-          <div className="border-2 border-gray-200 bg-white p-8 md:p-16">
-            <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-xl">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center bg-[#C4F9D7]">
-                  <Sparkles className="h-5 w-5 text-black" />
-                </div>
-                <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                  Ask AI About Any Topper
-                </h2>
-                <p className="mt-3 text-sm leading-7 text-gray-500">
-                  Get instant answers about any UPSC topper&apos;s strategy, marks,
-                  optional subject, or preparation approach. Powered by our
-                  database of 280+ verified profiles.
-                </p>
-              </div>
-              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg">
-                <Link href="/ask">
-                  Ask a question &rarr;
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
 
-        {/* COMPILATION CTA */}
-        <section className="border-t border-gray-200 pt-12 md:pt-16">
-          <div className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8 md:p-16">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
-                50+ Topper Answer Copies
-              </h2>
-              <p className="mt-4 max-w-lg text-base leading-7 text-gray-400 md:text-lg md:leading-8">
-                Marks-wise compilation across GS1&ndash;4 and Essay. Learn the
-                IBEC Method from toppers who scored 120+ marks.
-              </p>
-              <Button asChild variant="secondary" className="mt-8 rounded-full px-8">
-                <Link href="/toppers/toppers-copy-compilation">
-                  Learn More &rarr;
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+
+
 
       </div>
     </main>

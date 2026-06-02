@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import AskFloatingWidget from "@/components/AskFloatingWidget";
-import ProductFloatingWidget from "@/components/ProductFloatingWidget";
 
-const space = Space_Grotesk({
+
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -61,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", space.variable)}>
+    <html lang="en" className={cn("font-sans", plusJakarta.variable)}>
       <head>
         {/* Google Analytics */}
         <Script
@@ -112,7 +111,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${space.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
+        className={`${plusJakarta.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
       >
         {/* Announcement Strip */}
         <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-2.5 px-3 sm:px-4 sticky top-0 z-50 border-b border-gray-800">
@@ -124,7 +123,7 @@ export default function RootLayout({
             <span className="text-white/60 mx-2">·</span>
             <span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span>
             <span className="text-white/60 mx-2">·</span>
-            <span>₹999 Launch Offer →</span>
+            <span>₹799 Launch Offer →</span>
           </a>
         </div>
 
@@ -132,8 +131,6 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-          <AskFloatingWidget />
-          <ProductFloatingWidget />
         </TooltipProvider>
       </body>
     </html>
