@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-type NavItem = { label: string; href: string; tag?: "hot" | "new" };
+type NavItem = { label: string; href: string; tag?: "new" };
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Toppers", href: "/toppers" },
-  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation", tag: "hot" },
+  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
   { label: "Resources", href: "/resources", tag: "new" },
-  { label: "PYQs", href: "/pyq", tag: "hot" },
+  { label: "PYQs", href: "/pyq" },
   { label: "Ask AI", href: "/ask" },
 ];
 
@@ -38,9 +38,6 @@ export default function Header() {
               className="hover:text-black transition-colors flex items-center gap-1.5"
             >
               {item.label}
-              {item.tag === "hot" && (
-                <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">🔥</span>
-              )}
               {item.tag === "new" && (
                 <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">New</span>
               )}
@@ -70,9 +67,6 @@ export default function Header() {
                 className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
               >
                 {item.label}
-                {item.tag === "hot" && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">🔥</span>
-                )}
                 {item.tag === "new" && (
                   <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">New</span>
                 )}
