@@ -37,10 +37,10 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  // Compact data-dense format used by top-ranking competitors
-  let desc = `${name} UPSC AIR ${rank} (${year})`;
-  if (subject) desc += ` - ${subject}`;
-  if (total) desc += `. Total: ${total}`;
+  let desc = `Download ${name}'s actual UPSC answer copy PDF. AIR ${rank} (${year})`;
+  if (subject) desc += ` - ${subject} optional.`;
+  else desc += ".";
+  if (total) desc += ` Total: ${total}`;
   desc += ` | Written: ${written || "—"} | Interview: ${interview || "—"}.`;
   if (gs1) desc += ` GS1:${gs1}`;
   if (gs2) desc += ` GS2:${gs2}`;
@@ -48,7 +48,7 @@ function buildMetaDescription(topper: Record<string, any>): string {
   if (gs4) desc += ` GS4:${gs4}`;
   if (essay) desc += ` Essay:${essay}`;
   if (opt1 && subject) desc += ` ${subject.replace(/\s+/g, "")}:${opt1}`;
-  desc += " Rank-wise strategy & answer copies.";
+  desc += " See the actual answer sheets & preparation strategy.";
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;
@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} UPSC Answer Copy — AIR ${topper.rank} (${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} Answer Copy — UPSC Topper Answer Sheet (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
@@ -504,13 +504,13 @@ export default async function TopperPage({ params }: Props) {
               </div>
 
               <h1 className="max-w-4xl text-5xl font-bold tracking-tight md:text-7xl leading-[1.05]">
-                {topper.firstName} {topper.lastName} — UPSC Answer Copies &amp; Strategy
+                {topper.firstName} {topper.lastName} — Answer Copy &amp; Strategy
               </h1>
               <p className="mt-3 text-2xl font-medium text-primary">
                 AIR {topper.rank} &middot; {topper.marks.total} Total Marks
               </p>
               <p className="mt-2 text-base text-muted-foreground">
-                Download {topper.firstName} {topper.lastName}&apos;s UPSC Mains answer copies, marks breakdown, and preparation strategy for GS Papers and {topper.optionalSubject || "Optional Subject"}.
+                Download {topper.firstName} {topper.lastName}&apos;s actual UPSC Mains answer copy PDF. See the exact answer sheets, marks breakdown, and preparation strategy for GS Papers and {topper.optionalSubject || "Optional Subject"}.
               </p>
               {topper.bio && (
                 <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground">
@@ -582,6 +582,32 @@ export default async function TopperPage({ params }: Props) {
                   </Link>
                 </Button>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ANSWER COPY CTA — right after hero for maximum visibility */}
+        <section className="mb-16 mt-8">
+          <div className="overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/90 to-emerald-800/90 p-6 md:p-10">
+            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-lg">
+                <h2 className="text-lg font-bold text-white md:text-xl">
+                  Get {topper.firstName} {topper.lastName}&apos;s Actual Answer Copy
+                </h2>
+                <p className="mt-1.5 text-sm leading-6 text-emerald-100/80">
+                  Download the exact answer sheets {topper.firstName} wrote in the UPSC Mains exam — verified marks, real handwriting, actual structure.
+                </p>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-xl font-bold text-white">₹799</span>
+                  <span className="text-xs text-emerald-100/50 line-through">₹4,999</span>
+                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-200">Save 84%</span>
+                </div>
+              </div>
+              <Button asChild size="lg" className="shrink-0 rounded-full bg-white px-6 py-5 text-sm font-bold text-emerald-900 shadow-lg shadow-black/20 hover:bg-emerald-50">
+                <Link href="/toppers/toppers-copy-compilation" data-track="topper-hero-cta">
+                  Download Answer Copy at ₹799 →
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -1234,7 +1260,7 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* PRODUCT CTA */}
+        {/* PRODUCT CTA — Second banner (anchor text variety) */}
         <section className="mb-20 mt-20">
           <div className="overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-gray-900 to-gray-800 p-8 md:p-12">
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
@@ -1243,10 +1269,10 @@ export default async function TopperPage({ params }: Props) {
                   <span>Limited Launch Offer</span>
                 </div>
                 <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
-                  Get {topper.firstName} {topper.lastName}&apos;s Actual Answer Copy
+                  See {topper.firstName} {topper.lastName}&apos;s Full Answer Copy
                 </h2>
                 <p className="mt-2 text-sm leading-7 text-gray-400">
-                  Full marks-wise answer copies from 50+ toppers across GS1–4,
+                  Marks-wise answer copies from 50+ toppers across GS1–4,
                   Essay &amp; Optional. See exactly how they wrote their way to the top.
                 </p>
                 <div className="mt-3 flex items-baseline gap-2">
