@@ -202,90 +202,110 @@ export default function SalesPage() {
         {modalOpen && <PurchaseModal onClose={() => setModalOpen(false)} />}
 
         {/* HERO */}
-        <section className="relative overflow-hidden bg-gray-900 pt-28 pb-16 sm:pt-36 sm:pb-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/30 via-gray-900 to-gray-950" />
-          <div className="absolute top-0 left-1/4 h-px w-1/2 bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
-          <div className="absolute bottom-0 left-1/4 h-px w-1/2 bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-28 pb-16 sm:pt-36 sm:pb-20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-50 via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent opacity-40" />
 
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] font-semibold tracking-wider text-emerald-300">LIMITED LAUNCH OFFER</span>
+            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              {/* LEFT — Text */}
+              <div className="max-w-xl">
+                <div className="mb-5 flex flex-wrap items-center gap-2">
+                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-500/20">
+                    🎯 30+ Resources
+                  </Badge>
+                  <Badge variant="outline" className="rounded-full border-gray-200 px-3 py-1 text-[11px] font-semibold text-gray-500">
+                    Launched Feb 2026
+                  </Badge>
+                </div>
+
+                <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+                  Complete UPSC
+                  <br />
+                  <span className="text-emerald-600">Preparation Bundle</span>
+                </h1>
+
+                <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+                  Strategy guides, topper answer copies, interview prep & supporting materials — everything you need in one ₹799 pack.
+                </p>
+
+                {/* Price */}
+                <div className="mt-6 flex items-baseline gap-3">
+                  <span className="text-4xl font-bold text-gray-900 sm:text-5xl">₹799</span>
+                  <span className="text-lg text-gray-400 line-through">₹4,999</span>
+                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
+                    Save 84%
+                  </Badge>
+                </div>
+                <p className="mt-1 text-sm text-gray-400">Launch price — limited time only</p>
+
+                <div className="mt-8">
+                  <Button
+                    size="lg"
+                    onClick={() => setModalOpen(true)}
+                    className="rounded-full bg-gray-900 px-10 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800 sm:px-16"
+                  >
+                    Buy Now — ₹799
+                  </Button>
+                </div>
+
+                {/* Trust badges */}
+                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-500">
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Instant PDF Access
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Verified Copies
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Lifetime Updates
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    UPI / QR Payment
+                  </span>
+                </div>
               </div>
 
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Complete UPSC
-                <br />
-                <span className="text-emerald-400">Preparation Bundle</span>
-              </h1>
-
-              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-400 sm:text-lg">
-                21 strategy guides &middot; 3+ topper answer copies &middot; interview prep &middot; ethics case studies &middot; value-addition data
-              </p>
-
-              {/* Bundle contents strip */}
-              <div className="mx-auto mt-8 flex max-w-lg flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-3.5 w-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  21 Guides
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-3.5 w-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  3+ Topper Copies
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-3.5 w-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  Interview Prep
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-3.5 w-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  50+ Case Studies
-                </span>
-              </div>
-
-              {/* Price */}
-              <div className="mt-8 flex items-baseline justify-center gap-3">
-                <span className="text-5xl font-extrabold text-white sm:text-6xl">₹799</span>
-                <span className="text-lg text-gray-500 line-through">₹4,999</span>
-                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-400">
-                  84% OFF
-                </span>
-              </div>
-              <p className="mt-1 text-sm text-gray-500">Launch price — limited time only</p>
-
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <Button
-                  size="lg"
-                  onClick={() => setModalOpen(true)}
-                  className="w-full rounded-full bg-emerald-500 px-10 py-6 text-base font-bold text-white shadow-lg shadow-emerald-500/25 hover:bg-emerald-400 sm:w-auto sm:px-14"
-                >
-                  Buy Now — ₹799
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setModalOpen(true)}
-                  className="w-full rounded-full border-gray-700 px-8 py-6 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white sm:w-auto"
-                >
-                  See What&apos;s Inside
-                </Button>
-              </div>
-
-              {/* Trust */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-gray-500">
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  Instant PDF Access
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  Verified Copies
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg className="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  UPI / QR
-                </span>
+              {/* RIGHT — Hero Image */}
+              <div className="relative hidden lg:block">
+                <div className="relative mx-auto aspect-[4/3] w-full max-w-lg overflow-hidden rounded-3xl border border-gray-100 bg-gray-50 shadow-2xl shadow-gray-200/50">
+                  {/* IMAGE SLOT: Place your hero image here */}
+                  {/* File: public/images/sales/hero-preview.jpg (800x600) */}
+                  <img
+                    src="/images/sales/hero-preview.jpg"
+                    alt="UPSC Preparation Bundle Preview"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = "none";
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="flex h-full items-center justify-center p-8">
+                            <div class="text-center">
+                              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+                                <svg class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                              </div>
+                              <p class="text-base font-medium text-gray-900">Bundle Preview</p>
+                              <p class="mt-1 text-sm text-gray-500">Add your image here</p>
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </div>
+                {/* Floating badge */}
+                <div className="absolute -bottom-3 -left-3 rounded-2xl bg-white px-5 py-3 shadow-lg shadow-gray-200/50 ring-1 ring-gray-100">
+                  <p className="text-sm font-semibold text-gray-900">21 Guides</p>
+                  <p className="text-xs text-gray-500">+ 10+ Resources</p>
+                </div>
               </div>
             </div>
           </div>
