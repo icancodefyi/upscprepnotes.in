@@ -7,9 +7,9 @@ import { Menu, X } from "lucide-react";
 const NAV_ITEMS = [
   { label: "Toppers", href: "/toppers" },
   { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
-  { label: "Optional Subjects", href: "/optional/psir" },
-  { label: "Ask AI", href: "/ask" },
+  { label: "Resources", href: "/resources" },
   { label: "PYQs", href: "/pyq" },
+  { label: "Ask AI", href: "/ask" },
 ];
 
 export default function Header() {

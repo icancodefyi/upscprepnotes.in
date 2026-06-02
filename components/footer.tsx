@@ -63,8 +63,28 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Resources</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
+                <Link href="/resources" className="hover:text-black transition-colors">
+                  All Resources
+                </Link>
+              </li>
+              <li>
                 <Link href="/upsc-full-form" className="hover:text-black transition-colors">
                   UPSC Full Form
+                </Link>
+              </li>
+              <li>
+                <Link href="/upsc-syllabus" className="hover:text-black transition-colors">
+                  UPSC Syllabus
+                </Link>
+              </li>
+              <li>
+                <Link href="/upsc-free-material" className="hover:text-black transition-colors">
+                  Free UPSC Material
+                </Link>
+              </li>
+              <li>
+                <Link href="/upsc-full-form-hindi" className="hover:text-black transition-colors">
+                  UPSC Full Form (हिंदी)
                 </Link>
               </li>
               <li>

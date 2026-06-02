@@ -6,6 +6,9 @@ type Props = { params: Promise<{ slug: string }> };
 // Register content pages here
 const pages = {
   "upsc-full-form": () => import("@/data/content/upsc-full-form"),
+  "upsc-syllabus": () => import("@/data/content/upsc-syllabus"),
+  "upsc-free-material": () => import("@/data/content/upsc-free-material"),
+  "upsc-full-form-hindi": () => import("@/data/content/upsc-full-form-hindi"),
 } as const;
 
 export async function generateStaticParams() {

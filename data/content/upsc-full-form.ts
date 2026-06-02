@@ -38,6 +38,12 @@ const page: ContentPage = {
       body: "Reading strategy guides is useful. But seeing the **actual answer sheets** that toppers wrote in the exam hall is a different level of preparation. You get to see:\n\n- How they structure a 150-word answer in GS papers\n- Where they use diagrams, tables, and flowcharts\n- How they integrate current affairs with static subjects\n- What a 130+ marks answer looks like vs an average one\n- How much they write per question within the time limit\n\nThe Complete Bundle includes marks-wise answer copies from 50+ toppers across GS1-4, Essay, and Optional papers — exactly as they appeared in the UPSC evaluation.",
     },
   ],
+  relatedPages: [
+    { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
+    { title: "UPSC Syllabus 2026", href: "/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
+    { title: "UPSC Free Study Material", href: "/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
+    { title: "UPSC Full Form (हिंदी)", href: "/upsc-full-form-hindi", description: "UPSC का फुल फॉर्म, परीक्षाएं और तैयारी गाइड" },
+  ],
   faq: [
     {
       q: "What is the full form of UPSC?",
