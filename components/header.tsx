@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-const NAV_ITEMS = [
+type NavItem = { label: string; href: string; tag?: "hot" | "new" };
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Toppers", href: "/toppers" },
-  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
-  { label: "Resources", href: "/resources" },
-  { label: "PYQs", href: "/pyq" },
+  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation", tag: "hot" },
+  { label: "Resources", href: "/resources", tag: "new" },
+  { label: "PYQs", href: "/pyq", tag: "hot" },
   { label: "Ask AI", href: "/ask" },
 ];
 
@@ -27,15 +29,21 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
               href={item.href}
               data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-answer-copies" : undefined}
-              className="hover:text-black transition-colors"
+              className="hover:text-black transition-colors flex items-center gap-1.5"
             >
               {item.label}
+              {item.tag === "hot" && (
+                <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">🔥</span>
+              )}
+              {item.tag === "new" && (
+                <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">New</span>
+              )}
             </Link>
           ))}
         </nav>
@@ -59,9 +67,15 @@ export default function Header() {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-mobile-answer-copies" : undefined}
-                className="block text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
               >
                 {item.label}
+                {item.tag === "hot" && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">🔥</span>
+                )}
+                {item.tag === "new" && (
+                  <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">New</span>
+                )}
               </Link>
             ))}
           </div>
