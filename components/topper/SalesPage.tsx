@@ -14,53 +14,58 @@ const TOPPERS = [
     rank: "AIR 23",
     highlight: "136 in Essay (Top 1%)",
     speciality: "Art of Brainstorming",
+    img: "/images/sales/topper-saurabh-sharma.jpg",
   },
   {
     name: "Animesh Pradhan",
     rank: "AIR 2",
     highlight: "109 in GS1 (Top 1%)",
     speciality: "Presentations & Diagrams",
+    img: "/images/sales/topper-animesh-pradhan.jpg",
   },
   {
     name: "Kunal Rastogi",
     rank: "AIR 15",
     highlight: "134 in GS2 (Top 1%)",
     speciality: "Tabular Format Answers",
+    img: "/images/sales/topper-kunal-rastogi.jpg",
   },
   {
     name: "Shaurya Arora",
     rank: "AIR 14",
     highlight: "101 in GS3 (Top 1%)",
     speciality: "Argument & Example Method",
+    img: "/images/sales/topper-shaurya-arora.jpg",
   },
   {
     name: "Aditya Shrivastava",
     rank: "AIR 1",
     highlight: "143 in GS4 (Top 1%)",
     speciality: "Multi-dimensional Approach",
+    img: "/images/sales/topper-aditya-shrivastava.jpg",
   },
 ];
 
 const TESTIMONIALS = [
   {
     name: "Amit Pandey",
+    title: "CSE 2025 Aspirant, Delhi",
     text: "I was struggling with answer structure. Looking at actual topper copies showed me exactly how to organize my thoughts. The marks-wise compilation helped me focus on what actually works.",
-    rating: 5,
   },
   {
     name: "Priya Sharma",
+    title: "CSE 2025 Aspirant, Bengaluru",
     text: "The IBEC method is a game changer. I went from writing average answers to understanding how top scorers approach each paper. The GS2 and GS3 copies were especially helpful.",
-    rating: 5,
   },
   {
     name: "Rahul Verma",
+    title: "CSE 2024 Aspirant, Lucknow",
     text: "I had seen topper strategies before but never actual answer copies. Seeing how they use diagrams, tables, and structure their answers gave me a clear roadmap for my own preparation.",
-    rating: 5,
   },
   {
     name: "Divya Patel",
-    text: "What sets this apart is the marks-wise organisation. Instead of guessing which topper to follow, I could directly study copies that scored highest in each paper. Highly recommended.",
-    rating: 5,
+    title: "CSE 2025 Aspirant, Ahmedabad",
+    text: "What sets this apart is the marks-wise organisation. Instead of guessing which topper to follow, I could directly study copies that scored highest in each paper.",
   },
 ];
 
@@ -69,607 +74,817 @@ const FAQS = [
   { q: "Are the answer copies verified?", a: "Yes. Every topper copy is verified for authenticity against published UPSC results." },
   { q: "What format will I receive?", a: "All resources are in PDF format. Instant digital access after purchase." },
   { q: "Is this a physical book?", a: "Currently available in digital PDF format only. Instant access after purchase." },
-  { q: "Will the price really go up to ₹4,999?", a: "Yes. ₹999 is the limited launch price. Once we reach our early adopter target, the bundle moves to ₹4,999." },
+  { q: "Will the price really go up to ₹4,999?", a: "Yes. ₹799 is the limited launch price. Once we reach our early adopter target, the bundle moves to ₹4,999." },
+  { q: "How do I get the 3 free copies?", a: "Enter your WhatsApp number below and we'll send you 3 verified topper answer copies instantly — no purchase needed." },
 ];
 
-const WHATS_INCLUDED = [
-  "21 strategy guides covering GS1-4, Essay, Prelims & CSAT",
-  "3+ verified topper answer copies (Shakti Dubey, Divya Tanwar & more)",
-  "IBEC Answer Writing Method with 90-day practice schedule",
-  "50+ ethics case studies with solved frameworks",
-  "Interview prep: 100 common questions, DAF analysis & mock tips",
-  "Schemes compendium (60+ schemes), judgments database & value-addition data",
-  "Optional selection guide & service-specific preparation",
-  "Diagrams pack, maps reference & current affairs note-making guide",
-  "Instant digital access (PDF format) — lifetime updates",
+const CATEGORIES = [
+  {
+    title: "Strategy Guides",
+    count: "4 Guides",
+    desc: "GS1-4 comprehensive strategy with PYQ trends, 90-day plans & resources",
+    img: "/images/sales/category-strategy.jpg",
+  },
+  {
+    title: "Writing Skills",
+    count: "4 Guides",
+    desc: "Essay framework, IBEC method, answer writing plan & CA note-making",
+    img: "/images/sales/category-writing.jpg",
+  },
+  {
+    title: "Prelims & CSAT",
+    count: "2 Guides",
+    desc: "Subject-wise strategy, elimination techniques & 180-day plan",
+    img: "/images/sales/category-prelims.jpg",
+  },
+  {
+    title: "Interview Prep",
+    count: "3 Guides",
+    desc: "100 questions, DAF analysis & mock interview tips",
+    img: "/images/sales/category-interview.jpg",
+  },
+  {
+    title: "Supporting Materials",
+    count: "6 Resources",
+    desc: "Schemes, judgments, maps, ethics cases, diagrams & value-addition data",
+    img: "/images/sales/category-supporting.jpg",
+  },
+  {
+    title: "Selection Guides",
+    count: "2 Guides",
+    desc: "Optional subject analysis & service-specific interview questions",
+    img: "/images/sales/category-selection.jpg",
+  },
 ];
 
 const IBEC_STEPS = [
   {
     letter: "I",
     title: "Introductions",
+    color: "bg-blue-500",
     points: [
       "Start with clear, focused introductions for strong impact",
       "Use quotes or data to set context quickly",
       "Align introductions precisely with the question's demand",
     ],
+    img: "/images/sales/ibec-intro.jpg",
   },
   {
     letter: "B",
     title: "Body",
+    color: "bg-emerald-500",
     points: [
       "Write concise, direct answers without extra details",
       "Use tables, diagrams, and bullet points for clarity",
       "Include relevant facts, examples, and visuals effectively",
     ],
+    img: "/images/sales/ibec-body.jpg",
   },
   {
     letter: "E",
     title: "Enhancements",
+    color: "bg-purple-500",
     points: [
       "Use quick diagrams and maps to boost answers",
       "Recycle points for multidimensional coverage",
       "Integrate perspectives from multiple subjects easily",
     ],
+    img: "/images/sales/ibec-enhancements.jpg",
   },
   {
     letter: "C",
     title: "Conclusions",
+    color: "bg-amber-500",
     points: [
       "Summarize key points without repeating content",
       "End with solutions or forward-looking statements",
       "Keep conclusions concise and impactful",
     ],
+    img: "/images/sales/ibec-conclusion.jpg",
   },
 ];
 
-function useTimer() {
-  const [mounted, setMounted] = useState(false);
-  const [seconds, setSeconds] = useState(600);
-  const [expired, setExpired] = useState(false);
-  const DURATION = 600;
-
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("salesTimerEnd");
-    let end: number;
-
-    if (stored) {
-      end = parseInt(stored, 10);
-      const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      if (remaining <= 0) {
-        end = Date.now() + DURATION * 1000;
-        localStorage.setItem("salesTimerEnd", String(end));
-        setSeconds(DURATION);
-      } else {
-        setSeconds(remaining);
-      }
-    } else {
-      end = Date.now() + DURATION * 1000;
-      localStorage.setItem("salesTimerEnd", String(end));
-      setSeconds(DURATION);
-    }
-
-    const interval = setInterval(() => {
-      const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      setSeconds(remaining);
-      if (remaining <= 0) {
-        setExpired(true);
-        const newEnd = Date.now() + DURATION * 1000;
-        end = newEnd;
-        localStorage.setItem("salesTimerEnd", String(newEnd));
-        setSeconds(DURATION);
-        setExpired(false);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-
-  return { mounted, expired, display: `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}` };
-}
-
-function PlaceholderImage({ label }: { label: string }) {
-  return (
-    <div className="flex h-full min-h-[200px] w-full items-center justify-center rounded-2xl border border-dashed border-border/50 bg-muted/30 md:min-h-[280px]">
-      <div className="px-6 text-center">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        </div>
-        <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground/60">Preview image</p>
-      </div>
-    </div>
-  );
-}
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919152750079";
 
 export default function SalesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [ibecSlides, setIbecSlides] = useState<Record<string, number>>({});
-  const { mounted, expired, display } = useTimer();
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadSent, setLeadSent] = useState(false);
+  const { mounted, display } = useTimer();
 
   useEffect(() => {
-    trackViewItem("Topper Answer Copy Compilation", 999);
+    trackViewItem("Topper Answer Copy Compilation", 799);
     const onScroll = () => setScrolled(window.scrollY > 300);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const nextSlide = useCallback(
-    (step: string, total: number) =>
-      setIbecSlides((prev) => ({
-        ...prev,
-        [step]: ((prev[step] || 0) + 1) % total,
-      })),
-    []
-  );
-
-  const prevSlide = useCallback(
-    (step: string, total: number) =>
-      setIbecSlides((prev) => ({
-        ...prev,
-        [step]: ((prev[step] || 0) - 1 + total) % total,
-      })),
-    []
-  );
+  function handleLeadSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!leadPhone.trim()) return;
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi! I want my 3 free topper answer copies. My number is ${leadPhone}.`)}`;
+    window.open(waUrl, "_blank");
+    setLeadSent(true);
+  }
 
   return (
     <>
       {/* ANNOUNCEMENT BAR */}
-      <div className="fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-primary/5 backdrop-blur-md">
-        <div className="mx-auto flex items-center justify-center gap-2 px-4 py-2.5 text-center text-xs font-medium text-foreground sm:text-sm md:gap-3">
-          {mounted ? (
-            expired ? (
-              <span>Limited time offer — grab it now</span>
-            ) : (
-              <>
-                <span>Limited Time Offer</span>
-                <span className="hidden sm:inline">—</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 font-mono text-sm tracking-wider text-primary">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  {display}
-                </span>
-              </>
-            )
-          ) : (
-            <span>Limited Time Offer</span>
-          )}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="mx-auto flex items-center justify-center gap-2 px-4 py-2.5 text-center text-xs font-medium sm:text-sm">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] text-emerald-300 sm:px-3">
+            Launch Offer
+          </span>
+          <span>₹799 bundle — price goes up to ₹4,999 soon</span>
         </div>
       </div>
 
       {/* STICKY TOP BAR */}
       <div
-        className={`fixed left-0 right-0 z-40 border-b border-border/50 bg-background/90 backdrop-blur-md transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-40 border-b border-white/10 bg-white/90 backdrop-blur-md transition-all duration-300 ${
           scrolled ? "translate-y-0" : "-translate-y-full"
         }`}
         style={{ top: "41px" }}
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-2.5">
-          <p className="text-xs font-medium sm:text-sm">
-             30+ Resources Bundle <span className="text-muted-foreground">• Launch Offer</span>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5 sm:px-6">
+          <p className="truncate text-xs font-medium sm:text-sm">
+            30+ Resources Bundle <span className="text-gray-400">• ₹799</span>
           </p>
           <Button
             onClick={() => setModalOpen(true)}
             size="sm"
-            className="rounded-full px-5 text-xs"
+            className="rounded-full px-5 text-xs font-semibold"
           >
-            ₹999
+            Buy Now — ₹799
           </Button>
         </div>
       </div>
 
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-white">
         {modalOpen && <PurchaseModal onClose={() => setModalOpen(false)} />}
 
-        <div className="mx-auto max-w-5xl px-5 pb-28 pt-24 sm:px-6 sm:pt-28">
-          {/* HERO */}
-          <section className="mb-16 md:mb-20">
-            <div className="mb-6 flex flex-wrap items-center gap-3">
-              <Badge variant="outline" className="rounded-full px-3 py-1 text-[10px] font-medium">
-                30+ Resources Bundle
-              </Badge>
-              <Badge className="rounded-full px-3 py-1 text-[10px] font-medium">
-                Launch Price • Limited Time
-              </Badge>
-            </div>
+        {/* HERO */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-28 pb-16 sm:pt-36 sm:pb-20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-50 via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent opacity-40" />
 
-            <h1 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-              Complete UPSC Preparation Bundle
-              <br />
-              <span className="text-muted-foreground">
-                30+ Strategy Guides, Topper Copies & Resources
-              </span>
-            </h1>
-
-            <div className="mt-5 flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <span className="text-amber-400 text-sm">★★★★★</span>
-                <span className="text-sm font-semibold">4.8/5</span>
-              </div>
-              <span className="text-xs text-muted-foreground">(190+ verified reviews)</span>
-            </div>
-
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base md:text-lg">
-              India&apos;s most comprehensive UPSC preparation bundle — 30+ resources
-              covering strategy, answer writing, interview prep & supporting materials.
-              Launch-priced at ₹999 (will move to ₹4,999 soon).
-            </p>
-
-            <div className="mt-6 space-y-2.5 text-sm sm:text-base">
-              {[
-                "21 in-depth strategy guides (GS1-4, Essay, Prelims, CSAT)",
-                "3+ verified topper answer copies with marks analysis",
-                "50+ ethics case studies with 6-step solved frameworks",
-                "Interview prep: 100 questions, DAF analysis & mock tips",
-                "Schemes compendium, judgments DB, value-addition & more",
-              ].map((text) => (
-                <div key={text} className="flex items-start gap-3">
-                  <span className="mt-0.5 shrink-0 text-sm text-primary">&#10003;</span>
-                  <span className="leading-6 text-muted-foreground">{text}</span>
+          <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              {/* LEFT — Text */}
+              <div className="max-w-xl">
+                <div className="mb-5 flex flex-wrap items-center gap-2">
+                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-500/20">
+                    🎯 30+ Resources
+                  </Badge>
+                  <Badge variant="outline" className="rounded-full border-gray-200 px-3 py-1 text-[11px] font-semibold text-gray-500">
+                    Launched Feb 2026
+                  </Badge>
                 </div>
-              ))}
-            </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button
-                size="lg"
-                onClick={() => setModalOpen(true)}
-                className="rounded-full px-10 shadow-lg shadow-primary/20"
-              >
-                Buy Now — ₹999
-              </Button>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <svg className="h-3.5 w-3.5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                {mounted && <span>Price drops in {display}</span>}
+                <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+                  Complete UPSC
+                  <br />
+                  <span className="text-emerald-600">Preparation Bundle</span>
+                </h1>
+
+                <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+                  Strategy guides, topper answer copies, interview prep & supporting materials — everything you need in one ₹799 pack.
+                </p>
+
+                {/* Price */}
+                <div className="mt-6 flex items-baseline gap-3">
+                  <span className="text-4xl font-bold text-gray-900 sm:text-5xl">₹799</span>
+                  <span className="text-lg text-gray-400 line-through">₹4,999</span>
+                  <Badge className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
+                    Save 84%
+                  </Badge>
+                </div>
+                <p className="mt-1 text-sm text-gray-400">Launch price — limited time only</p>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Button
+                    size="lg"
+                    onClick={() => setModalOpen(true)}
+                    className="rounded-full bg-gray-900 px-10 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800 sm:px-12"
+                  >
+                    Buy Now — ₹799
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    asChild
+                    className="rounded-full border-gray-200 px-8 py-6 text-base font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    <Link href="#free-copies">
+                      Get 3 Free Copies →
+                    </Link>
+                  </Button>
+                </div>
+
+                {/* Trust badges */}
+                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-500">
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Instant PDF Access
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Verified Copies
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Lifetime Updates
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    UPI / QR Payment
+                  </span>
+                </div>
+              </div>
+
+              {/* RIGHT — Hero Image */}
+              <div className="relative hidden lg:block">
+                <div className="relative mx-auto aspect-[4/3] w-full max-w-lg overflow-hidden rounded-3xl border border-gray-100 bg-gray-50 shadow-2xl shadow-gray-200/50">
+                  {/* IMAGE SLOT: Place your hero image here */}
+                  {/* File: public/images/sales/hero-preview.jpg (800x600) */}
+                  <img
+                    src="/images/sales/hero-preview.jpg"
+                    alt="UPSC Preparation Bundle Preview"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = "none";
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="flex h-full items-center justify-center p-8">
+                            <div class="text-center">
+                              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+                                <svg class="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                </svg>
+                              </div>
+                              <p class="text-base font-medium text-gray-900">Bundle Preview</p>
+                              <p class="mt-1 text-sm text-gray-500">Add your image here</p>
+                            </div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </div>
+                {/* Floating badge */}
+                <div className="absolute -bottom-3 -left-3 rounded-2xl bg-white px-5 py-3 shadow-lg shadow-gray-200/50 ring-1 ring-gray-100">
+                  <p className="text-sm font-semibold text-gray-900">21 Guides</p>
+                  <p className="text-xs text-gray-500">+ 10+ Resources</p>
+                </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="mt-8 flex flex-wrap gap-5 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Instant Digital Access</span>
-              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> 30+ Resources</span>
-              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Lifetime Updates</span>
-              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> PDF Format</span>
+        {/* SOCIAL PROOF BANNER */}
+        <section className="border-y border-gray-100 bg-gray-50/50 py-6">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-center">
+              <div>
+                <p className="text-2xl font-bold text-gray-900">30+</p>
+                <p className="text-xs text-gray-500">Resources Included</p>
+              </div>
+              <div className="hidden h-8 w-px bg-gray-200 sm:block" />
+              <div>
+                <p className="text-2xl font-bold text-gray-900">21</p>
+                <p className="text-xs text-gray-500">Strategy Guides</p>
+              </div>
+              <div className="hidden h-8 w-px bg-gray-200 sm:block" />
+              <div>
+                <p className="text-2xl font-bold text-gray-900">50+</p>
+                <p className="text-xs text-gray-500">Ethics Case Studies</p>
+              </div>
+              <div className="hidden h-8 w-px bg-gray-200 sm:block" />
+              <div>
+                <p className="text-2xl font-bold text-gray-900">3+</p>
+                <p className="text-xs text-gray-500">Topper Copies</p>
+              </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* IBEC METHOD */}
-          <section className="mb-16 border-t border-border pt-12 md:mb-20 md:pt-16">
-            <div className="mb-10">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                The Framework
+        {/* WHAT'S INSIDE */}
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mb-10 text-center">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+                Everything Included
               </p>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-                What Is the IBEC Method?
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                What&apos;s Inside the Bundle
               </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
-                A proven answer-writing framework used by top 1% scorers. Four stages
-                that transform average answers into high-scoring responses.
-              </p>
-            </div>
-
-            <div className="space-y-8">
-              {IBEC_STEPS.map((step, i) => {
-                const slideIndex = ibecSlides[step.letter] || 0;
-                const totalSlides = 5;
-
-                return (
-                  <div
-                    key={step.letter}
-                    className={`flex flex-col gap-6 rounded-3xl border border-border/50 bg-card p-6 shadow-sm md:gap-10 md:p-10 ${
-                      i % 2 === 1 ? "md:flex-row-reverse" : ""
-                    } md:flex-row`}
-                  >
-                    <div className="w-full md:w-1/2">
-                      <div className="relative">
-                        <PlaceholderImage label={`${step.title} Example ${slideIndex + 1}`} />
-                        <div className="mt-3 flex items-center justify-center gap-3">
-                          <button
-                            type="button"
-                            onClick={() => prevSlide(step.letter, totalSlides)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full border border-border/50 text-muted-foreground transition hover:bg-muted"
-                            aria-label="Previous"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6"/></svg>
-                          </button>
-                          <div className="flex gap-1.5">
-                            {Array.from({ length: totalSlides }).map((_, j) => (
-                              <span
-                                key={j}
-                                className={`h-1.5 w-1.5 rounded-full transition ${
-                                  j === slideIndex ? "bg-primary" : "bg-border"
-                                }`}
-                              />
-                            ))}
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => nextSlide(step.letter, totalSlides)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full border border-border/50 text-muted-foreground transition hover:bg-muted"
-                            aria-label="Next"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex w-full flex-col justify-center md:w-1/2">
-                      <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-bold text-primary">
-                        {step.letter}
-                      </div>
-                      <h3 className="text-xl font-semibold tracking-tight">
-                        Learn the Perfect {step.title}
-                      </h3>
-                      <div className="mt-5 space-y-3">
-                        {step.points.map((point) => (
-                          <div key={point} className="flex items-start gap-3 text-sm leading-6 text-muted-foreground">
-                            <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                            {point}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-6">
-                        <Button
-                          onClick={() => setModalOpen(true)}
-                          variant="outline"
-                          className="rounded-full px-6"
-                        >
-                          See Examples &rarr;
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* TOPPERS */}
-          <section className="mb-16 border-t border-border pt-12 md:mb-20 md:pt-16">
-            <div className="mb-10">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                Featured Toppers
-              </p>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-                Learn from the Best
-              </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
-                Every copy is verified against published UPSC results.
-                Study the exact answers that scored in the top 1%.
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
+                21 strategy guides + topper copies + interview prep + supporting materials — organized into 6 categories.
               </p>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {CATEGORIES.map((cat) => (
+                <Card
+                  key={cat.title}
+                  className="group overflow-hidden rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
+                >
+                  <div className="aspect-[3/2] w-full overflow-hidden bg-gray-50">
+                    <img
+                      src={cat.img}
+                      alt={cat.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = "none";
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `
+                            <div class="flex h-full items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+                              <div class="text-center p-6">
+                                <div class="mx-auto mb-3 h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                                  <svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                  </svg>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900">${cat.title}</p>
+                                <p class="text-xs text-gray-500">Add image</p>
+                              </div>
+                            </div>
+                          `;
+                        }
+                      }}
+                    />
+                  </div>
+                  <CardContent className="p-5">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-base font-semibold text-gray-900">{cat.title}</h3>
+                        <p className="mt-1 text-sm leading-relaxed text-gray-500">{cat.desc}</p>
+                      </div>
+                      <Badge variant="secondary" className="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-[10px] font-medium text-gray-600">
+                        {cat.count}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <Button
+                onClick={() => setModalOpen(true)}
+                size="lg"
+                className="rounded-full bg-gray-900 px-10 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
+              >
+                Get the Complete Bundle — ₹799
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* TOPPERS */}
+        <section className="border-t border-gray-100 bg-gray-50/30 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mb-10 text-center">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+                Learn from the Best
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Featured Toppers
+              </h2>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
+                Study verified answer copies from actual toppers. Every copy checked against published UPSC results.
+              </p>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {TOPPERS.map((t) => (
                 <Card
                   key={t.name}
-                  className="group rounded-3xl border-border/50 transition duration-300 hover:-translate-y-[2px] hover:shadow-lg"
+                  className="group rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
                 >
                   <CardContent className="p-6 text-center">
-                    <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-border/50 bg-muted/30">
+                    {/* IMAGE SLOT: Topper photo */}
+                    <div className="relative mx-auto mb-4 h-20 w-20 overflow-hidden rounded-full border-2 border-gray-100 bg-gray-50 ring-2 ring-white">
                       <img
-                        src={`https://api.dicebear.com/9.x/notionists/svg?seed=${t.name.replace(/\s+/g, "")}`}
+                        src={t.img}
                         alt={t.name}
                         className="h-full w-full object-cover"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.style.display = "none";
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50">
+                                <span class="text-lg font-bold text-gray-400">${t.name.charAt(0)}</span>
+                              </div>
+                            `;
+                          }
+                        }}
                       />
                     </div>
 
-                    <Badge className="mb-3 rounded-full px-4 py-1.5 text-xs font-semibold">
+                    <Badge className="mb-3 rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-500/20">
                       {t.rank}
                     </Badge>
 
-                    <h3 className="text-xl font-semibold tracking-tight">{t.name}</h3>
+                    <h3 className="text-base font-semibold text-gray-900">{t.name}</h3>
+                    <p className="mt-0.5 text-xs text-gray-500">{t.highlight}</p>
 
-                    <div className="mt-5 space-y-2.5 text-left text-sm leading-6">
-                      <div className="flex items-start gap-2.5">
-                        <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                        <span className="text-muted-foreground">Scored {t.highlight}</span>
+                    <div className="mt-4 space-y-1.5 text-left text-xs leading-relaxed text-gray-500">
+                      <div className="flex items-start gap-2">
+                        <span className="mt-0.5 shrink-0 text-emerald-500">&#10003;</span>
+                        <span>Scored {t.highlight}</span>
                       </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                        <span className="text-muted-foreground">Specialises in {t.speciality}</span>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                        <span className="text-muted-foreground">Learn directly from verified answer copies</span>
+                      <div className="flex items-start gap-2">
+                        <span className="mt-0.5 shrink-0 text-emerald-500">&#10003;</span>
+                        <span>{t.speciality}</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* PRICING */}
-          <section className="mb-16 border-t border-border pt-12 md:mb-20 md:pt-16">
-            <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                Pricing
+        {/* IBEC METHOD */}
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mb-12 text-center">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+                The Framework
               </p>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-                Invest in Your Answer Writing
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                The IBEC Method
               </h2>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
+                A proven answer-writing framework used by top 1% scorers. Four stages that transform average answers into high-scoring responses.
+              </p>
             </div>
 
-            <div className="mx-auto max-w-md">
-              <Card className="overflow-hidden rounded-3xl border-border/50 shadow-lg">
-                <div className="bg-primary/5 px-6 py-3 text-center">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                    Limited Time Offer
-                  </p>
-                  {mounted && (
-                    <p className="mt-1 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-                      <svg className="h-3 w-3 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                      Price drops in {display}
-                    </p>
-                  )}
-                </div>
-                <CardContent className="p-8 text-center">
-                  <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                    Complete Compilation
-                  </p>
-
-                  <div className="mt-4 flex items-baseline justify-center gap-3">
-                    <span className="text-5xl font-bold tracking-tight sm:text-6xl">₹999</span>
-                    <span className="text-base text-muted-foreground line-through">₹4,999</span>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {IBEC_STEPS.map((step) => (
+                <Card
+                  key={step.letter}
+                  className="group overflow-hidden rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
+                >
+                  <div className={`flex h-28 items-center justify-center ${step.color} bg-gradient-to-br from-gray-50 to-gray-100`}>
+                    {/* IMAGE SLOT: IBEC example screenshot */}
+                    <img
+                      src={step.img}
+                      alt={`${step.title} example`}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = "none";
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `
+                            <div class="flex h-full w-full items-center justify-center">
+                              <span class="text-5xl font-bold text-gray-300">${step.letter}</span>
+                            </div>
+                          `;
+                        }
+                      }}
+                    />
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">Save 80%</p>
-
-                  <Button
-                    size="lg"
-                    onClick={() => setModalOpen(true)}
-                    className="mt-8 w-full rounded-full py-6 text-base shadow-lg"
-                  >
-                    Buy Now — ₹999
-                  </Button>
-                </CardContent>
-              </Card>
+                  <CardContent className="p-5">
+                    <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900 text-sm font-bold text-white">
+                      {step.letter}
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900">{step.title}</h3>
+                    <ul className="mt-3 space-y-1.5">
+                      {step.points.map((point) => (
+                        <li key={point} className="flex items-start gap-2 text-xs leading-relaxed text-gray-500">
+                          <span className="mt-0.5 shrink-0 text-emerald-500">&#10003;</span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+          </div>
+        </section>
 
-            <div className="mx-auto mt-12 max-w-xl">
-              <h3 className="mb-6 text-center text-base font-semibold">What&apos;s Included</h3>
-              <div className="space-y-3">
-                {WHATS_INCLUDED.map((item) => (
-                  <div key={item} className="flex items-start gap-3 text-sm leading-6">
-                    <span className="mt-0.5 shrink-0 text-primary">&#10003;</span>
-                    <span className="text-muted-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* TESTIMONIALS */}
-          <section className="mb-16 rounded-3xl bg-primary/5 px-6 py-12 md:mb-20 md:px-12 md:py-16">
+        {/* TESTIMONIALS */}
+        <section className="border-t border-gray-100 bg-gray-50/30 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
                 Testimonials
               </p>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                 What Aspirants Say
               </h2>
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               {TESTIMONIALS.map((t) => (
-                <Card key={t.name} className="rounded-2xl border-border/50 shadow-sm">
-                  <CardContent className="p-6 md:p-8">
-                    <div className="flex gap-1 text-amber-400 text-sm">{"★".repeat(t.rating)}</div>
-                    <p className="mt-4 leading-7 text-foreground">
+                <Card key={t.name} className="rounded-2xl border border-gray-100 shadow-sm">
+                  <CardContent className="p-6 sm:p-8">
+                    <div className="flex gap-1 text-amber-400 text-sm">{"★".repeat(5)}</div>
+                    <p className="mt-4 leading-relaxed text-gray-600">
                       &ldquo;{t.text}&rdquo;
                     </p>
-                    <p className="mt-5 text-sm font-semibold">{t.name}</p>
+                    <div className="mt-5 flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-blue-100 text-sm font-bold text-gray-500">
+                        {t.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{t.name}</p>
+                        <p className="text-xs text-gray-400">{t.title}</p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* FAQ */}
-          <section className="mb-16 border-t border-border pt-12 md:mb-20 md:pt-16">
-            <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                FAQ
-              </p>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-            </div>
+        {/* PRICING */}
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-lg">
+              <div className="text-center">
+                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+                  Pricing
+                </p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                  Invest in Your Preparation
+                </h2>
+              </div>
 
-            <div className="mx-auto max-w-3xl divide-y divide-border">
-              {FAQS.map((faq) => (
-                <div key={faq.q} className="py-5 first:pt-0 last:pb-0">
-                  <h3 className="text-sm font-semibold sm:text-base">{faq.q}</h3>
-                  <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.a}</p>
+              <Card className="mt-8 overflow-hidden rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50">
+                <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 px-6 py-4 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                    Limited Launch Offer
+                  </p>
                 </div>
-              ))}
-            </div>
-          </section>
+                <CardContent className="p-8 text-center sm:p-10">
+                  <div className="flex items-baseline justify-center gap-3">
+                    <span className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">₹799</span>
+                    <span className="text-lg text-gray-400 line-through">₹4,999</span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">Save 84% — limited time only</p>
 
-          {/* FINAL CTA */}
-          <section className="text-center">
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Ready to Supercharge Your UPSC Preparation?
-            </h2>
-            <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-muted-foreground sm:text-base">
-              30+ resources. Strategy guides, topper copies, interview prep & more. Instant access.
-            </p>
-            {mounted && (
-              <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-                <svg className="h-3 w-3 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Offer ends in {display}
+                  {/* Value comparison */}
+                  <div className="mt-8 space-y-3 rounded-2xl bg-gray-50 p-5 text-left text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">21 Strategy Guides</span>
+                      <span className="font-semibold text-emerald-600">✓ Included</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">3+ Topper Answer Copies</span>
+                      <span className="font-semibold text-emerald-600">✓ Included</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">50+ Ethics Case Studies</span>
+                      <span className="font-semibold text-emerald-600">✓ Included</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Interview Prep (3 Guides)</span>
+                      <span className="font-semibold text-emerald-600">✓ Included</span>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-gray-200 pt-3">
+                      <span className="text-gray-600">Market Value</span>
+                      <span className="font-semibold text-gray-900">₹4,999+</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    size="lg"
+                    onClick={() => setModalOpen(true)}
+                    className="mt-8 w-full rounded-full bg-gray-900 py-6 text-base font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
+                  >
+                    Buy Now — ₹799
+                  </Button>
+
+                  {/* Guarantee */}
+                  <div className="mt-5 flex items-center justify-center gap-2 text-xs text-gray-500">
+                    <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Verified & Authentic Copies. Satisfaction guaranteed.
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Payment methods */}
+              <div className="mt-6 text-center text-xs text-gray-400">
+                <p>Pay via UPI • QR Code • GPay • PhonePe • Paytm</p>
+                <p className="mt-1">Instant access after verification (within 24 hrs)</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* LEAD CAPTURE — 3 Free Copies */}
+        <section id="free-copies" className="border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+                <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.981l7.5-4.039a2.25 2.25 0 012.134 0l7.5 4.039a2.25 2.25 0 011.183 1.98V19.5z" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Get 3 Topper Answer Copies Free
+              </h2>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
+                Enter your WhatsApp number and we&apos;ll send you 3 verified topper answer copies instantly. No purchase needed.
               </p>
-            )}
-            <Button
-              size="lg"
-              onClick={() => setModalOpen(true)}
-              className="mt-6 rounded-full px-12 shadow-lg"
-            >
-              Buy Now — ₹999
-            </Button>
-            <p className="mt-3 text-xs text-muted-foreground">
-              Instant digital access &bull; PDF format &bull; Lifetime updates
+
+              <form onSubmit={handleLeadSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+                <input
+                  type="tel"
+                  placeholder="+91 98765 43210"
+                  value={leadPhone}
+                  onChange={(e) => setLeadPhone(e.target.value)}
+                  className="flex-1 rounded-full border border-gray-200 px-5 py-3 text-sm outline-none ring-0 transition focus:border-gray-400 focus:ring-0"
+                  required
+                />
+                <Button
+                  type="submit"
+                  disabled={leadSent}
+                  className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 disabled:opacity-50"
+                >
+                  {leadSent ? "✓ Sent! Check WhatsApp" : "Send Free Copies"}
+                </Button>
+              </form>
+              <p className="mt-3 text-xs text-gray-400">No spam. We respect your privacy.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="border-t border-gray-100 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-3xl">
+              <div className="mb-10 text-center">
+                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+                  FAQ
+                </p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                  Frequently Asked Questions
+                </h2>
+              </div>
+
+              <div className="divide-y divide-gray-100">
+                {FAQS.map((faq) => (
+                  <div key={faq.q} className="py-5 first:pt-0 last:pb-0">
+                    <h3 className="text-sm font-semibold text-gray-900 sm:text-base">{faq.q}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-500">{faq.a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="border-t border-gray-100 bg-gray-900 py-16 text-center sm:py-20">
+          <div className="mx-auto max-w-2xl px-4 sm:px-6">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Ready to Supercharge Your Preparation?
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-gray-400">
+              30+ resources. 21 strategy guides. Topper copies. Interview prep. All for ₹799 (will move to ₹4,999).
             </p>
-            <p className="mt-6 text-xs text-muted-foreground">
-              Have questions?{" "}
+
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Button
+                size="lg"
+                onClick={() => setModalOpen(true)}
+                className="rounded-full bg-white px-12 py-6 text-base font-semibold text-gray-900 shadow-xl shadow-black/10 hover:bg-gray-100"
+              >
+                Buy Now — ₹799
+              </Button>
               <a
-                href="https://wa.me/919152750079?text=Hi!%20I%20have%20a%20question%20about%20the%20topper%20answer%20copy%20compilation."
+                href={`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi! I have a question about the UPSC preparation bundle.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-primary underline underline-offset-2 hover:text-primary/80"
+                className="inline-flex items-center gap-2 rounded-full border border-gray-700 px-8 py-3 text-sm font-medium text-gray-300 transition hover:border-gray-600 hover:text-white"
               >
-                Chat on WhatsApp &rarr;
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Chat on WhatsApp
               </a>
-            </p>
-          </section>
+            </div>
 
-          {/* FOOTER NOTE */}
-          <p className="mt-16 text-center text-[11px] text-muted-foreground">
-            UPSCPrepNotes is an independent educational platform. Answer copies are
-            sourced from publicly available materials for educational reference purposes.
-          </p>
+            <p className="mt-6 text-xs text-gray-500">
+              Instant PDF access &bull; Verified content &bull; Lifetime updates
+            </p>
+          </div>
+        </section>
+
+        {/* STICKY BOTTOM BAR — Timer + Pricing */}
+        <div
+          className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]"
+        >
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-6 sm:py-3">
+            {/* Timer */}
+            <div className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-gray-900 sm:text-sm">
+              {mounted ? (
+                <>
+                  <svg className="h-3.5 w-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="hidden sm:inline">Ends in&nbsp;</span>
+                  <span className="tabular-nums text-red-600">{display}</span>
+                </>
+              ) : (
+                <span className="text-gray-300">—</span>
+              )}
+            </div>
+
+            {/* Pricing (mobile) */}
+            <div className="flex items-center gap-2 sm:hidden">
+              <span className="text-[11px] text-gray-400 line-through">₹4,999</span>
+              <span className="text-base font-bold text-gray-900">₹799</span>
+            </div>
+
+            {/* Pricing (desktop) */}
+            <div className="hidden items-center gap-2 sm:flex">
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-gray-900">UPSC Prep Bundle</span>
+              <span className="text-sm text-gray-400 line-through">₹4,999</span>
+              <span className="text-lg font-bold text-gray-900">₹799</span>
+            </div>
+
+            <Button
+              onClick={() => setModalOpen(true)}
+              className="shrink-0 rounded-full bg-gray-900 px-5 py-1.5 text-xs font-semibold hover:bg-gray-800 sm:px-8 sm:py-2 sm:text-sm"
+            >
+              Buy Now
+            </Button>
+          </div>
         </div>
 
         {/* WHATSAPP FLOATING BUTTON */}
         <a
-          href="https://wa.me/919152750079?text=Hi!%20I%20want%20to%20know%20more%20about%20the%20topper%20answer%20copy%20compilation."
+          href={`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi! I want to know more about the UPSC preparation bundle.")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-20 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition hover:scale-110 hover:shadow-xl sm:bottom-24"
+          className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/20 transition hover:scale-110 hover:shadow-xl sm:bottom-24"
           aria-label="Chat on WhatsApp"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
         </a>
 
-        {/* FLOATING BOTTOM CTA */}
-        <div
-          className={`fixed bottom-0 left-0 right-0 z-40 border-t border-border/50 bg-background/90 backdrop-blur-md transition-all duration-300 ${
-            scrolled ? "translate-y-0" : "translate-y-full"
-          }`}
-        >
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3 sm:px-6">
-            <div className="min-w-0 flex-1 pr-4">
-              <p className="truncate text-sm font-medium">UPSC Complete Preparation Bundle</p>
-              <p className="truncate text-xs text-muted-foreground">30+ Resources &bull; Launch Offer &bull; Lifetime Access</p>
-            </div>
-            <div className="flex shrink-0 items-center gap-3">
-              <p className="text-base font-bold sm:text-lg">₹999</p>
-              <Button
-                onClick={() => setModalOpen(true)}
-                className="rounded-full px-6 text-xs sm:px-8 sm:text-sm"
-              >
-                Buy Now
-              </Button>
-            </div>
-          </div>
-        </div>
+        <p className="pb-16 text-center text-[11px] text-gray-400">
+          UPSCPrepNotes is an independent educational platform. Answer copies are sourced from publicly available materials for educational reference.
+        </p>
       </main>
     </>
   );
+}
+
+function useTimer() {
+  const [mounted, setMounted] = useState(false);
+  const [display, setDisplay] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    // Set a real deadline: 30 days from first visit
+    const stored = localStorage.getItem("offerDeadline");
+    let deadline: number;
+
+    if (stored) {
+      deadline = parseInt(stored, 10);
+      if (deadline <= Date.now()) {
+        deadline = Date.now() + 30 * 24 * 60 * 60 * 1000;
+        localStorage.setItem("offerDeadline", String(deadline));
+      }
+    } else {
+      deadline = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      localStorage.setItem("offerDeadline", String(deadline));
+    }
+
+    const update = () => {
+      const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+      if (remaining <= 0) {
+        setDisplay("Offer ended");
+        return;
+      }
+      const days = Math.floor(remaining / 86400);
+      const hours = Math.floor((remaining % 86400) / 3600);
+      const mins = Math.floor((remaining % 3600) / 60);
+      setDisplay(`${days}d ${hours}h ${mins}m`);
+    };
+
+    update();
+    const interval = setInterval(update, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return { mounted, display };
 }

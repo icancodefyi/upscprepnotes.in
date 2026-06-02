@@ -120,11 +120,11 @@ export default function RootLayout({
             href="/toppers/toppers-copy-compilation"
             className="w-full text-[11px] sm:text-xs font-medium tracking-wide hover:text-gray-300 transition-colors cursor-pointer block text-center"
           >
-            <span className="font-bold">50+ Topper Answer Copies</span>
+            <span className="font-bold">30+ UPSC Resources Bundle</span>
             <span className="text-white/60 mx-2">·</span>
-            <span className="text-[#C4F9D7] font-semibold">Marks-Wise Compilation</span>
+            <span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span>
             <span className="text-white/60 mx-2">·</span>
-            <span>Get Instant Access →</span>
+            <span>₹999 Launch Offer →</span>
           </a>
         </div>
 
