@@ -1235,21 +1235,28 @@ export default async function TopperPage({ params }: Props) {
 
         {/* PRODUCT CTA */}
         <section className="mb-20 mt-20">
-          <div className="overflow-hidden rounded-3xl border border-border/50 bg-card p-8 md:p-12">
+          <div className="overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-gray-900 to-gray-800 p-8 md:p-12">
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-lg">
-                <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-400">
+                  <span>Limited Launch Offer</span>
+                </div>
+                <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
                   Get {topper.firstName} {topper.lastName}&apos;s Actual Answer Copy
                 </h2>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                <p className="mt-2 text-sm leading-7 text-gray-400">
                   Full marks-wise answer copies from 50+ toppers across GS1–4,
                   Essay &amp; Optional. See exactly how they wrote their way to the top.
-                  Get instant access in the compilation.
                 </p>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-white">₹799</span>
+                  <span className="text-sm text-gray-500 line-through">₹4,999</span>
+                  <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">Save 84%</span>
+                </div>
               </div>
-              <Button asChild size="lg" className="shrink-0 rounded-full px-8 shadow-lg shadow-primary/20">
+              <Button asChild size="lg" className="shrink-0 rounded-full bg-white px-8 text-sm font-semibold text-gray-900 shadow-lg shadow-black/10 hover:bg-gray-100">
                 <Link href="/toppers/toppers-copy-compilation">
-                  Get the Compilation →
+                  Get Bundle at ₹799 →
                 </Link>
               </Button>
             </div>

@@ -150,6 +150,13 @@ export default async function HomePage() {
                 </Link>
               </Button>
             </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
+                <span className="text-[10px] line-through">₹4,999</span>
+                <span>₹799 Bundle</span>
+              </span>
+              <span className="text-xs text-gray-400">Launch price — limited time</span>
+            </div>
             <div className="mt-8 flex flex-wrap gap-6 text-xs text-gray-400">
               <span>Instant Digital Access</span>
               <span className="text-gray-300">·</span>

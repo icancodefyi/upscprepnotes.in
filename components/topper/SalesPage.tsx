@@ -173,6 +173,7 @@ export default function SalesPage() {
 
   useEffect(() => {
     trackViewItem("Topper Answer Copy Compilation", 799);
+    try { localStorage.setItem("visited_sales_page", "1"); } catch {}
   }, []);
 
   function handleLeadSubmit(e: React.FormEvent) {

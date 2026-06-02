@@ -22,6 +22,7 @@ function getUtmParams(): string {
 export default function ExitIntentPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [visitedSales, setVisitedSales] = useState(false);
 
   const dismiss = useCallback(() => {
     setVisible(false);
@@ -32,6 +33,7 @@ export default function ExitIntentPopup() {
   useEffect(() => {
     try {
       if (localStorage.getItem(POPUP_HIDE_KEY)) return;
+      if (localStorage.getItem("visited_sales_page")) setVisitedSales(true);
     } catch {}
 
     let fired = false;
@@ -73,12 +75,25 @@ export default function ExitIntentPopup() {
             </svg>
           </div>
 
-          <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-            Wait! Don&apos;t Miss This
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-gray-500">
-            Get the <strong className="text-gray-900">Complete UPSC Preparation Bundle</strong> — 21 strategy guides, topper copies, interview prep & more.
-          </p>
+          {visitedSales ? (
+            <>
+              <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+                Still Thinking? Price Still ₹799
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                You checked the bundle — it&apos;s <strong className="text-gray-900">21 guides + topper copies + interview prep</strong> for just ₹799. Price moves to ₹4,999 soon.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+                Wait! Don&apos;t Miss This
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                Get the <strong className="text-gray-900">Complete UPSC Preparation Bundle</strong> — 21 strategy guides, topper copies, interview prep & more.
+              </p>
+            </>
+          )}
 
           <div className="mt-5 flex items-baseline justify-center gap-2">
             <span className="text-3xl font-bold text-gray-900">₹799</span>
@@ -94,7 +109,7 @@ export default function ExitIntentPopup() {
               }}
               className="w-full rounded-full bg-gray-900 py-5 text-sm font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
             >
-              Claim Bundle at ₹799 →
+              {visitedSales ? "Buy Now — ₹799 →" : "Claim Bundle at ₹799 →"}
             </Button>
             <a
               href={waUrl}

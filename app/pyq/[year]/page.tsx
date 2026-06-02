@@ -287,23 +287,20 @@ export default async function PYQYearPage({ params }: Props) {
 
               {/* Sidebar Conversion */}
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="bg-[#C4F9D7]/20 border-2 border-[#C4F9D7] p-5">
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <span className="text-xs font-bold text-gray-600">
-                      MOST POPULAR
-                    </span>
+                    <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">₹799 Launch</span>
+                    <span className="text-[11px] text-gray-500 line-through">₹4,999</span>
                   </div>
-                  <h4 className="font-bold mb-1">Answer Copy Compilation</h4>
-                  <p className="text-xs text-gray-600 mb-4">
-                    See how toppers wrote answers worth 450+ marks in GS and
-                    Essay.
+                  <h4 className="font-bold text-white mb-1">Complete Bundle</h4>
+                  <p className="text-xs text-gray-400 mb-4">
+                    21 strategy guides + topper copies + interview prep. Everything in one pack.
                   </p>
                   <a
                     href="/toppers/toppers-copy-compilation"
-                    className="inline-flex items-center justify-center w-full bg-black text-white font-bold px-4 py-3 hover:bg-gray-800 transition-colors text-sm"
+                    className="inline-flex items-center justify-center w-full bg-white text-gray-900 font-bold px-4 py-3 hover:bg-gray-100 transition-colors text-sm"
                   >
-                    View Now <ArrowRight className="w-3 h-3 ml-2" />
+                    Buy Bundle — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
                   </a>
                 </div>
               </div>

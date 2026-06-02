@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
+import ScrollSlideIn from "@/components/ScrollSlideIn";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -133,6 +134,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <ExitIntentPopup />
+          <ScrollSlideIn />
         </TooltipProvider>
       </body>
     </html>
