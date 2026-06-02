@@ -319,10 +319,18 @@ export default async function TopperPage({ params }: Props) {
       },
       {
         "@type": "Question",
-        name: `Where can I find ${topper.firstName} ${topper.lastName}'s answer copies?`,
+        name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Answer copies for ${topper.firstName} ${topper.lastName} are listed in the Answer Copies section above when available.`,
+          text: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Bundle which includes answer sheets from 50+ toppers across GS1-4, Essay and Optional papers at ₹799.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation with 50+ verified copies across all GS papers, Essay and Optional subjects. Get instant access at ₹799.`,
         },
       },
     ],
@@ -586,28 +594,93 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ANSWER COPY CTA — right after hero for maximum visibility */}
+        {/* ANSWER COPY PREVIEW — shows what's inside before the CTA */}
         <section className="mb-16 mt-8">
-          <div className="overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/90 to-emerald-800/90 p-6 md:p-10">
-            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-lg">
-                <h2 className="text-lg font-bold text-white md:text-xl">
-                  Get {topper.firstName} {topper.lastName}&apos;s Actual Answer Copy
-                </h2>
-                <p className="mt-1.5 text-sm leading-6 text-emerald-100/80">
-                  Download the exact answer sheets {topper.firstName} wrote in the UPSC Mains exam — verified marks, real handwriting, actual structure.
+          <div className="rounded-3xl border border-border/50 bg-card p-6 md:p-10">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  Answer Copy Preview
                 </p>
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-xl font-bold text-white">₹799</span>
-                  <span className="text-xs text-emerald-100/50 line-through">₹4,999</span>
-                  <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-200">Save 84%</span>
+                <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+                  {topper.firstName} {topper.lastName}&apos;s Answer Copy
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Preview mockup */}
+              <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-gray-50 to-gray-100">
+                <div className="p-5">
+                  <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="rounded-md bg-primary/10 px-2 py-0.5 font-medium text-primary">UPSC Mains {topper.year}</span>
+                    <span className="rounded-md bg-amber-100 px-2 py-0.5 font-medium text-amber-700">AIR {topper.rank}</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-3 w-full rounded bg-gray-200" />
+                    <div className="h-3 w-3/4 rounded bg-gray-200" />
+                    <div className="h-3 w-5/6 rounded bg-gray-200" />
+                    <div className="h-20 w-full rounded-lg bg-gray-200/70 p-3">
+                      <div className="mb-2 h-2.5 w-1/3 rounded bg-gray-300" />
+                      <div className="space-y-1.5">
+                        <div className="h-2 w-full rounded bg-gray-300/60" />
+                        <div className="h-2 w-11/12 rounded bg-gray-300/60" />
+                        <div className="h-2 w-4/5 rounded bg-gray-300/60" />
+                        <div className="h-2 w-3/4 rounded bg-gray-300/60" />
+                      </div>
+                    </div>
+                    <div className="h-3 w-2/3 rounded bg-gray-200" />
+                    <div className="h-3 w-5/6 rounded bg-gray-200" />
+                  </div>
+                  {/* Blur overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
+                    <span className="rounded-full bg-white/90 px-4 py-2 text-xs font-semibold text-gray-700 shadow-sm">
+                      Preview hidden — get full copy in bundle
+                    </span>
+                  </div>
                 </div>
               </div>
-              <Button asChild size="lg" className="shrink-0 rounded-full bg-white px-6 py-5 text-sm font-bold text-emerald-900 shadow-lg shadow-black/20 hover:bg-emerald-50">
-                <Link href="/toppers/toppers-copy-compilation" data-track="topper-hero-cta">
-                  Download Answer Copy at ₹799 →
-                </Link>
-              </Button>
+
+              {/* Details */}
+              <div className="flex flex-col justify-center">
+                <ul className="space-y-3">
+                  {[
+                    { label: "GS Paper 1", val: topper.marks.gs1 },
+                    { label: "GS Paper 2", val: topper.marks.gs2 },
+                    { label: "GS Paper 3", val: topper.marks.gs3 },
+                    { label: "GS Paper 4", val: topper.marks.gs4 },
+                    { label: "Essay", val: topper.marks.essay },
+                    { label: topper.optionalSubject || "Optional 1", val: topper.marks.optional1 },
+                  ].filter(s => s.val).map(s => (
+                    <li key={s.label} className="flex items-center justify-between border-b border-border/40 pb-2 text-sm">
+                      <span className="text-muted-foreground">{s.label}</span>
+                      <span className="font-semibold">{s.val} marks</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                  <p className="text-sm font-semibold text-emerald-800">
+                    This answer copy is part of the Complete Bundle
+                  </p>
+                  <p className="mt-1 text-xs text-emerald-700">
+                    Get {topper.firstName}&apos;s actual answer sheets + 50+ other topper copies, 21 strategy guides, interview prep & more at ₹799.
+                  </p>
+                </div>
+
+                <div className="mt-4">
+                  <Button asChild size="lg" className="w-full rounded-full bg-emerald-600 py-5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500">
+                    <Link href="/toppers/toppers-copy-compilation" data-track="topper-preview-cta">
+                      Download Full Answer Copy at ₹799 →
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1062,8 +1135,12 @@ export default async function TopperPage({ params }: Props) {
                 a: `${topper.firstName} scored ${topper.marks.written} marks in the written (mains) component.`,
               },
               {
-                q: `Where can I find ${topper.firstName} ${topper.lastName} answer copies?`,
-                a: `Answer copies for ${topper.firstName} ${topper.lastName} are available as part of our 50+ Topper Answer Copy Compilation. Check the Answer Copies section above for details.`,
+                q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
+                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Bundle (₹799) which includes answer sheets from 50+ toppers across GS1-4, Essay and Optional papers. Get the bundle to download the exact answer copy.`,
+              },
+              {
+                q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
+                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation — 50+ verified copies across all GS papers, Essay and Optional subjects. Click "Download Full Answer Copy" above to get instant access at ₹799.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
