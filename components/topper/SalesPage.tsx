@@ -13,35 +13,35 @@ const TOPPERS = [
     rank: "AIR 23",
     highlight: "136 in Essay (Top 1%)",
     speciality: "Art of Brainstorming",
-    img: "/images/sales/topper-saurabh-sharma.jpg",
+    img: "/images/sales/toppers/topper-saurabh-sharma.svg",
   },
   {
     name: "Animesh Pradhan",
     rank: "AIR 2",
     highlight: "109 in GS1 (Top 1%)",
     speciality: "Presentations & Diagrams",
-    img: "/images/sales/topper-animesh-pradhan.jpg",
+    img: "/images/sales/toppers/topper-animesh-pradhan.svg",
   },
   {
     name: "Kunal Rastogi",
     rank: "AIR 15",
     highlight: "134 in GS2 (Top 1%)",
     speciality: "Tabular Format Answers",
-    img: "/images/sales/topper-kunal-rastogi.jpg",
+    img: "/images/sales/toppers/topper-kunal-rastogi.svg",
   },
   {
     name: "Shaurya Arora",
     rank: "AIR 14",
     highlight: "101 in GS3 (Top 1%)",
     speciality: "Argument & Example Method",
-    img: "/images/sales/topper-shaurya-arora.jpg",
+    img: "/images/sales/toppers/topper-shaurya-arora.svg",
   },
   {
     name: "Aditya Shrivastava",
     rank: "AIR 1",
     highlight: "143 in GS4 (Top 1%)",
     speciality: "Multi-dimensional Approach",
-    img: "/images/sales/topper-aditya-shrivastava.jpg",
+    img: "/images/sales/toppers/topper-aditya-shrivastava.svg",
   },
 ];
 
@@ -82,37 +82,37 @@ const CATEGORIES = [
     title: "Strategy Guides",
     count: "4 Guides",
     desc: "GS1-4 comprehensive strategy with PYQ trends, 90-day plans & resources",
-    img: "/images/sales/category-strategy.jpg",
+    img: "/images/sales/categories/category-strategy.jpg",
   },
   {
     title: "Writing Skills",
     count: "4 Guides",
     desc: "Essay framework, IBEC method, answer writing plan & CA note-making",
-    img: "/images/sales/category-writing.jpg",
+    img: "/images/sales/categories/category-writing.jpg",
   },
   {
     title: "Prelims & CSAT",
     count: "2 Guides",
     desc: "Subject-wise strategy, elimination techniques & 180-day plan",
-    img: "/images/sales/category-prelims.jpg",
+    img: "/images/sales/categories/category-prelims.jpg",
   },
   {
     title: "Interview Prep",
     count: "3 Guides",
     desc: "100 questions, DAF analysis & mock interview tips",
-    img: "/images/sales/category-interview.jpg",
+    img: "/images/sales/categories/category-interview.jpg",
   },
   {
     title: "Supporting Materials",
     count: "6 Resources",
     desc: "Schemes, judgments, maps, ethics cases, diagrams & value-addition data",
-    img: "/images/sales/category-supporting.jpg",
+    img: "/images/sales/categories/category-supporting.jpg",
   },
   {
     title: "Selection Guides",
     count: "2 Guides",
     desc: "Optional subject analysis & service-specific interview questions",
-    img: "/images/sales/category-selection.jpg",
+    img: "/images/sales/categories/category-selection.jpg",
   },
 ];
 
@@ -126,7 +126,7 @@ const IBEC_STEPS = [
       "Use quotes or data to set context quickly",
       "Align introductions precisely with the question's demand",
     ],
-    img: "/images/sales/ibec-intro.jpg",
+    img: "/images/sales/ibec/ibec-intro.jpg",
   },
   {
     letter: "B",
@@ -137,7 +137,7 @@ const IBEC_STEPS = [
       "Use tables, diagrams, and bullet points for clarity",
       "Include relevant facts, examples, and visuals effectively",
     ],
-    img: "/images/sales/ibec-body.jpg",
+    img: "/images/sales/ibec/ibec-body.jpg",
   },
   {
     letter: "E",
@@ -148,7 +148,7 @@ const IBEC_STEPS = [
       "Recycle points for multidimensional coverage",
       "Integrate perspectives from multiple subjects easily",
     ],
-    img: "/images/sales/ibec-enhancements.jpg",
+    img: "/images/sales/ibec/ibec-enhancements.jpg",
   },
   {
     letter: "C",
@@ -159,7 +159,7 @@ const IBEC_STEPS = [
       "End with solutions or forward-looking statements",
       "Keep conclusions concise and impactful",
     ],
-    img: "/images/sales/ibec-conclusion.jpg",
+    img: "/images/sales/ibec/ibec-conclusion.jpg",
   },
 ];
 
