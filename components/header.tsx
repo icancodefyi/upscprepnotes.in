@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Toppers", href: "/year/2025" },
+  { label: "Toppers", href: "/toppers" },
   { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
   { label: "Optional Subjects", href: "/optional/psir" },
   { label: "Ask AI", href: "/ask" },

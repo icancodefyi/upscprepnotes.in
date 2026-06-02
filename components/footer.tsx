@@ -31,8 +31,8 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Platform</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
-                <Link href="/year/2025" className="hover:text-black transition-colors">
-                  UPSC Toppers
+                <Link href="/toppers" className="hover:text-black transition-colors">
+                  Browse All Toppers
                 </Link>
               </li>
               <li>

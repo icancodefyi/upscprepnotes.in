@@ -133,3 +133,22 @@ export async function getAllIndexedToppers() {
 
   return toppers;
 }
+
+export async function getAllToppersList() {
+  await connectDB();
+
+  const toppers = await TopperModel.find({ isIndexed: true })
+    .select("firstName lastName rank year optionalSubject slug isFeatured")
+    .sort({ year: -1, rank: 1 })
+    .lean();
+
+  return toppers.map((t: any) => ({
+    firstName: t.firstName,
+    lastName: t.lastName,
+    rank: t.rank,
+    year: t.year,
+    optionalSubject: t.optionalSubject || "",
+    slug: t.slug,
+    isFeatured: t.isFeatured || false,
+  }));
+}
