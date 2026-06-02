@@ -77,29 +77,97 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                send_page_view: true
+              });
+
+              var scrollDepths = {};
+              function trackScroll() {
+                var h = document.documentElement;
+                var p = Math.round(((h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight)) * 100);
+                var depths = [25, 50, 75, 90, 100];
+                for (var i = 0; i < depths.length; i++) {
+                  if (p >= depths[i] && !scrollDepths[depths[i]]) {
+                    scrollDepths[depths[i]] = true;
+                    gtag('event', 'scroll_depth', { depth: depths[i] + '%' });
+                  }
+                }
+              }
+              var scrollTimer;
+              window.addEventListener('scroll', function() {
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(trackScroll, 300);
+              });
 
               document.addEventListener('click', function(e) {
-                var el = e.target.closest('[data-track], a[href*="toppers-copy-compilation"], a[href*="toppers/toppers-copy-compilation"]');
+                var el = e.target.closest('a, button, [data-track]');
                 if (!el) return;
-                var label = el.getAttribute('data-track') || 'bundle-cta';
+                var tag = el.tagName.toLowerCase();
                 var href = el.getAttribute('href') || '';
-                gtag('event', label, {
-                  event_label: label,
+                var text = (el.innerText || '').trim().substring(0, 100);
+                var trackAttr = el.getAttribute('data-track') || '';
+                var isOutbound = href && href.indexOf(location.hostname) === -1 && href.indexOf('http') === 0;
+
+                gtag('event', 'click', {
+                  event_label: trackAttr || (tag === 'a' ? 'link' : 'button'),
                   link_url: href,
-                  link_text: el.innerText ? el.innerText.trim().substring(0, 100) : ''
+                  link_text: text,
+                  link_type: tag,
+                  is_outbound: isOutbound,
+                  page_path: location.pathname
                 });
+              });
+
+              document.addEventListener('submit', function(e) {
+                var el = e.target;
+                var text = (el.querySelector('button[type=submit], input[type=submit]') || {}).innerText || '';
+                gtag('event', 'form_submit', {
+                  event_label: el.getAttribute('data-track') || 'form',
+                  form_text: text.trim().substring(0, 100),
+                  page_path: location.pathname
+                });
+              });
+
+              var pageExitFired = false;
+              document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'hidden' && !pageExitFired) {
+                  pageExitFired = true;
+                  var st = window.scrollY || document.documentElement.scrollTop;
+                  var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                  gtag('event', 'page_exit', {
+                    scroll_depth: Math.round((st / Math.max(sh, 1)) * 100) + '%',
+                    time_on_page: Math.round((Date.now() - performance.now()) / 1000) + 's',
+                    page_path: location.pathname
+                  });
+                }
+              });
+
+              window.addEventListener('beforeunload', function() {
+                if (!pageExitFired) {
+                  gtag('event', 'page_exit', {
+                    depth: Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%',
+                    page_path: location.pathname
+                  });
+                }
               });
             `,
           }}
         />
 
-        {/* Umami Analytics */}
-        <script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="51e3b8aa-4637-4e44-abd3-b35c0d386331"
-        ></script>
+        {/* Microsoft Clarity — session recordings + heatmaps */}
+        <Script
+          id="microsoft-clarity"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "x0uxeg9kkg");
+            `,
+          }}
+        />
 
         {/* Organization Schema */}
         <Script
