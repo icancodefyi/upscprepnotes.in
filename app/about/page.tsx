@@ -1,17 +1,29 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "UPSCPrepNotes",
+  "description": "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
+  "url": "https://upscprepnotes.in",
+  "email": "hello@impiclabs.com",
+  "foundingDate": "2025",
+  "areaServed": "IN",
+  "knowsAbout": ["UPSC Civil Services Examination", "UPSC topper marks analysis", "UPSC optional subjects"],
+};
+
 export const metadata: Metadata = {
   title: "About — UPSCPrepNotes",
   description:
-    "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research.",
+    "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
   alternates: {
     canonical: "https://upscprepnotes.in/about",
   },
   openGraph: {
     title: "About — UPSCPrepNotes",
     description:
-      "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research.",
+      "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
     url: "https://upscprepnotes.in/about",
   },
 };
@@ -20,8 +32,13 @@ export default function AboutPage() {
   return (
     <LegalPage
       title="About"
-      description="UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research."
+      description="UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants."
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
+
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What is UPSCPrepNotes?</h2>
         <p className="leading-8 text-zinc-700">
@@ -38,9 +55,9 @@ export default function AboutPage() {
         </p>
         <p className="leading-8 text-zinc-700">
           Our platform covers 280+ topper profiles across 18 optional subjects,
-          spanning multiple years of the UPSC Civil Services Examination. Each
-          profile includes detailed marks breakdowns, preparation strategies,
-          answer copy resources, and contextual insights.
+          spanning four years (2022, 2023, 2024, 2025) of the UPSC Civil Services
+          Examination. Each profile includes detailed marks breakdowns, preparation
+          strategies, answer copy resources, and contextual insights.
         </p>
       </section>
 
@@ -84,23 +101,27 @@ export default function AboutPage() {
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Platform Features</h2>
         <p className="leading-8 text-zinc-700">
-          <strong>Topper Profiles:</strong> 280+ detailed profiles with full marks
+          <strong>Topper Profiles (280+):</strong> Detailed profiles with full marks
           breakdowns, preparation strategies, answer copy links, and JSON-LD structured
           data for search engines.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Year Archives:</strong> Browse all toppers from a given year with
+          <strong>Year Archives (2022-2025):</strong> Browse all toppers from a given year with
           aggregate statistics, score distributions, and optional subject trends.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Optional Subject Hubs:</strong> Dedicated pages for each optional
-          subject with topper lists, average scores, book recommendations, and
+          <strong>Optional Subject Hubs (8 subjects):</strong> Dedicated pages for PSIR, Public
+          Administration, Sociology, Geography, History, Anthropology, Mathematics, and
+          Philosophy with topper lists, average scores, book recommendations, and
           preparation insights.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Ask AI:</strong> An intelligent assistant trained on our topper
-          database that answers specific questions about marks, strategies, and
-          preparation approaches.
+          <strong>PYQ Archives (2023-2025):</strong> Downloadable previous year question
+          papers for Prelims and Mains with direct UPSC.gov.in PDF links.
+        </p>
+        <p className="leading-8 text-zinc-700">
+          <strong>Content Library (4 guides):</strong> In-depth pages on UPSC full form,
+          complete syllabus breakdown, free study material, and Hindi-language resources.
         </p>
       </section>
 
@@ -119,6 +140,61 @@ export default function AboutPage() {
           success by how well we help aspirants make data-backed decisions about
           their preparation.
         </p>
+      </section>
+
+      <section className="space-y-5">
+        <h2 className="text-2xl font-semibold">Frequently Asked Questions</h2>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold">Where does your topper data come from?</h3>
+            <p className="mt-2 leading-8 text-zinc-700">
+              All topper marks data is sourced from publicly available information on UPSC.gov.in
+              and verified secondary sources. We do not generate or fabricate any marks data. Each
+              profile references the source of its marks information.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold">How often is the data updated?</h3>
+            <p className="mt-2 leading-8 text-zinc-700">
+              New topper profiles are added as soon as official UPSC results are published and
+              marks data becomes available. Existing profiles are updated when corrections are
+              verified against official sources. Our last major update included 2024 and 2025
+              topper cohorts.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold">Is UPSCPrepNotes free to use?</h3>
+            <p className="mt-2 leading-8 text-zinc-700">
+              Yes. All topper profiles, year archives, optional subject hubs, PYQ archives,
+              content guides, and the AI assistant are freely accessible. The only paid offering
+              is the answer copy compilation bundle (₹799), which includes 50+ verified topper
+              answer copies across GS1-4 and Essay.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold">How many toppers are currently on the platform?</h3>
+            <p className="mt-2 leading-8 text-zinc-700">
+              We currently host 280+ topper profiles spanning 2022 to 2025, covering 18 optional
+              subjects. Each profile includes detailed marks breakdowns across GS papers, essay,
+              optional, and interview scores.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold">Which optional subjects do you cover?</h3>
+            <p className="mt-2 leading-8 text-zinc-700">
+              We have dedicated subject hubs for 8 optionals: PSIR, Public Administration,
+              Sociology, Geography, History, Anthropology, Mathematics, and Philosophy. These hubs
+              include topper lists, average scores, book recommendations, syllabus topics, and
+              preparation insights. Additional optionals are covered within topper profiles
+              even without dedicated hub pages.
+            </p>
+          </div>
+        </div>
       </section>
     </LegalPage>
   );

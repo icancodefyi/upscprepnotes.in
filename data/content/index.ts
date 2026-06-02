@@ -13,6 +13,7 @@ export type ContentPage = {
   slug: string;
   title: string;
   description: string;
+  lastUpdated: string; // ISO date string
   h1: string;
   intro: string;
   sections: ContentSection[];

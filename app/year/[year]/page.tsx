@@ -84,6 +84,10 @@ function computeInsights(toppers: TopperData[], year: number) {
   return insights;
 }
 
+export async function generateStaticParams() {
+  return [2022, 2023, 2024, 2025].map((year) => ({ year: String(year) }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { year } = await params;
   const yearNum = parseInt(year, 10);

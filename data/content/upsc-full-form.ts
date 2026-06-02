@@ -5,6 +5,7 @@ const page: ContentPage = {
   title: "UPSC Full Form — Union Public Service Commission (UPSC Meaning & Exam Guide)",
   description:
     "UPSC full form is Union Public Service Commission — India's central recruiting agency for civil services. Learn what UPSC stands for, exams it conducts, and how to prepare.",
+  lastUpdated: "2026-06-03",
   h1: "What is the Full Form of UPSC?",
   intro:
     "UPSC stands for the **Union Public Service Commission**. It is India's premier central recruiting agency responsible for conducting civil services examinations and selecting candidates for the country's top government positions including IAS, IPS, and IFS. Established under the Constitution of India, the UPSC operates independently to ensure fair and transparent recruitment to the nation's civil services.",

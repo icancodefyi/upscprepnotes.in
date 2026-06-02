@@ -5,6 +5,7 @@ const page: ContentPage = {
   title: "UPSC Free Material — 280+ Topper Profiles, PYQs, Strategy & Answer Writing Tools",
   description:
     "Access genuine free UPSC study material including 280+ topper profiles with marks, PYQs with PDF links, strategy archives, and an AI tutor — no signup needed.",
+  lastUpdated: "2026-06-03",
   h1: "UPSC Free Study Material — What's Actually Available for Free",
   intro:
     "A common myth in UPSC preparation is that you need expensive coaching or paid courses to succeed. While quality resources do make a difference, there is a wealth of **genuinely free UPSC material** available — if you know where to look. This page lists everything you can access right now on UPSCPrepNotes without paying anything, plus recommendations for what's worth investing in.",

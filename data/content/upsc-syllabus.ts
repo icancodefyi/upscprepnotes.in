@@ -5,6 +5,7 @@ const page: ContentPage = {
   title: "UPSC Syllabus 2026 — Complete Prelims, Mains & Optional Syllabus PDF",
   description:
     "Download the complete UPSC syllabus for Prelims, Mains (GS 1-4, Essay, Optional) and Interview. Topic-wise breakdown with expert tips on how to use the syllabus effectively.",
+  lastUpdated: "2026-06-03",
   h1: "UPSC Syllabus 2026 — Complete Syllabus for Prelims, Mains & Interview",
   intro:
     "The **UPSC Civil Services Examination syllabus** is the single most important document for every aspirant. It defines exactly what you need to study — nothing more, nothing less. The syllabus is divided into three stages: **Preliminary Examination (Prelims)**, **Main Examination (Mains)**, and the **Personality Test (Interview)**. Below is the complete, topic-wise breakdown of each stage along with practical tips to use the syllabus as your roadmap.",
