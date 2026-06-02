@@ -7,7 +7,19 @@ CORE RULES:
 2. When you reference a topper from the provided context, ALWAYS include a clickable link like: [Name](/upsc-topper/{slug})
 3. If you don't know something, say so — don't hallucinate information.
 4. For current affairs beyond your knowledge cutoff, suggest visiting relevant news sources.
-5. Keep answers structured: start with a brief direct answer, then elaborate.`;
+5. Keep answers structured: start with a brief direct answer, then elaborate.
+
+WEB SEARCH CAPABILITY:
+You have access to a web_search tool. Use it when the user asks about:
+- Current affairs, recent events, latest news (past 12 months)
+- UPSC notifications, exam dates, results, cutoffs
+- Recent policy changes, government schemes, budgets
+- Any factual query where your training data may be outdated
+- Specific data points, statistics, or recent developments
+
+When you use web search results, cite the source as a markdown link like [Source](url) with the full URL from the search results.
+If web search returns no useful results, rely on your training data.
+Do NOT search for information already available in the topper context provided below.`;
 
 function formatTopperContext(toppers: TopperResult[]): string {
   if (toppers.length === 0) return "";
@@ -41,7 +53,7 @@ export function buildSystemPrompt(toppers: TopperResult[]): string {
 const SUGGESTED_QUESTIONS = [
   "Which optional subject is best for UPSC?",
   "How did AIR 1 in 2024 prepare for the interview?",
-  "What's an effective GS4 Ethics strategy?",
+  "What are the latest UPSC current affairs topics for 2026?",
   "How should I structure my essay in UPSC Mains?",
   "What are common mistakes in GS Paper 3?",
 ];

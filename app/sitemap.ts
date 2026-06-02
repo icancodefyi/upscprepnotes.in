@@ -56,10 +56,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // Optional subject pages
+  const optionalSubjects = [
+    "psir", "public-administration", "mathematics", "sociology",
+    "geography", "philosophy", "anthropology", "history",
+  ];
+  const optionalPages: MetadataRoute.Sitemap = optionalSubjects.map((sub) => ({
+    url: `${baseUrl}/optional/${sub}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...contentPages,
     ...topperPages,
     ...pyqPages,
+    ...optionalPages,
   ];
 }

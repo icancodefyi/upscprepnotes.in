@@ -4,10 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import ExitIntentPopup from "@/components/ExitIntentPopup";
-import ScrollSlideIn from "@/components/ScrollSlideIn";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import AppShell from "@/components/AppShell";
 
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -195,26 +192,10 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
       >
-        {/* Announcement Strip — Marquee */}
-        <div className="group bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-2.5 sticky top-0 z-50 border-b border-gray-800 overflow-hidden">
-          <a
-            href="/toppers/toppers-copy-compilation"
-            className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer"
-          >
-            <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
-              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
-              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
-              <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
-            </div>
-          </a>
-        </div>
-
         <TooltipProvider>
-          <Header />
-          {children}
-          <Footer />
-          <ExitIntentPopup />
-          <ScrollSlideIn />
+          <AppShell>
+            {children}
+          </AppShell>
         </TooltipProvider>
       </body>
     </html>

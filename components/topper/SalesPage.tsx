@@ -120,7 +120,7 @@ const IBEC_STEPS = [
   {
     letter: "I",
     title: "Introductions",
-    color: "bg-blue-500",
+    color: "from-blue-500 to-blue-600",
     points: [
       "Start with clear, focused introductions for strong impact",
       "Use quotes or data to set context quickly",
@@ -131,7 +131,7 @@ const IBEC_STEPS = [
   {
     letter: "B",
     title: "Body",
-    color: "bg-emerald-500",
+    color: "from-emerald-500 to-emerald-600",
     points: [
       "Write concise, direct answers without extra details",
       "Use tables, diagrams, and bullet points for clarity",
@@ -142,7 +142,7 @@ const IBEC_STEPS = [
   {
     letter: "E",
     title: "Enhancements",
-    color: "bg-purple-500",
+    color: "from-purple-500 to-purple-600",
     points: [
       "Use quick diagrams and maps to boost answers",
       "Recycle points for multidimensional coverage",
@@ -153,7 +153,7 @@ const IBEC_STEPS = [
   {
     letter: "C",
     title: "Conclusions",
-    color: "bg-amber-500",
+    color: "from-amber-500 to-amber-600",
     points: [
       "Summarize key points without repeating content",
       "End with solutions or forward-looking statements",
@@ -214,7 +214,6 @@ export default function SalesPage() {
                 <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 sm:px-3 sm:text-xs">Save 84%</span>
               </div>
 
-              {/* Urgency: Countdown timer */}
               <div className="mt-3 flex items-center justify-center gap-2">
                 <span className="text-xs text-gray-400 sm:text-sm">Offer expires in</span>
                 <span className={`inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 font-bold text-red-600 tabular-nums text-sm sm:text-base ${mounted ? "animate-pulse" : "opacity-0"}`}>
@@ -225,7 +224,6 @@ export default function SalesPage() {
                 </span>
               </div>
 
-              {/* Scarcity: spots left */}
               <p className="mt-1.5 text-xs text-gray-400">
                 Only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at launch price
               </p>
@@ -243,7 +241,6 @@ export default function SalesPage() {
               </Button>
             </div>
 
-            {/* What's included — social proof strip near CTA */}
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
               <span className="flex items-center gap-1">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -263,7 +260,6 @@ export default function SalesPage() {
               </span>
             </div>
 
-            {/* Trust badges */}
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
               <span className="flex items-center gap-1.5">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -281,68 +277,58 @@ export default function SalesPage() {
           </div>
         </section>
 
-
-
-        {/* WHAT'S INSIDE */}
+        {/* WHAT'S INSIDE — Category Grid */}
         <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                Everything Included
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                What&apos;s Inside the Bundle
-              </h2>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Everything Included</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What&apos;s Inside the Bundle</h2>
               <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
-                21 strategy guides + topper copies + interview prep + supporting materials — organized into 6 categories.
+                21 strategy guides + topper copies + interview prep + supporting materials
               </p>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {CATEGORIES.map((cat) => (
-                <Card
+                <div
                   key={cat.title}
-                  className="group overflow-hidden rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
                 >
                   <div className="aspect-[3/2] w-full overflow-hidden bg-gray-50">
                     <img
                       src={cat.img}
                       alt={cat.title}
-                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       onError={(e) => {
                         const target = e.currentTarget;
                         target.style.display = "none";
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = `
-                            <div class="flex h-full items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-                              <div class="text-center p-6">
-                                <div class="mx-auto mb-3 h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                                  <svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                  </svg>
-                                </div>
-                                <p class="text-sm font-medium text-gray-900">${cat.title}</p>
-                                <p class="text-xs text-gray-500">Add image</p>
-                              </div>
-                            </div>
-                          `;
+                          const colors = [
+                            "from-emerald-50 to-emerald-100",
+                            "from-blue-50 to-blue-100",
+                            "from-purple-50 to-purple-100",
+                            "from-amber-50 to-amber-100",
+                            "from-rose-50 to-rose-100",
+                            "from-teal-50 to-teal-100",
+                          ];
+                          const idx = CATEGORIES.findIndex((c) => c.title === cat.title);
+                          parent.innerHTML = `<div class="flex h-full w-full items-center justify-center bg-gradient-to-br ${colors[idx % colors.length]}"><span class="text-6xl font-black text-gray-200">${cat.title.charAt(0)}</span></div>`;
                         }
                       }}
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  <CardContent className="p-5">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-base font-semibold text-gray-900">{cat.title}</h3>
-                        <p className="mt-1 text-sm leading-relaxed text-gray-500">{cat.desc}</p>
-                      </div>
-                      <Badge variant="secondary" className="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-[10px] font-medium text-gray-600">
-                        {cat.count}
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <div className="absolute right-3 top-3">
+                    <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-700 shadow-sm backdrop-blur-sm">
+                      {cat.count}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-gray-900">{cat.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-gray-500">{cat.desc}</p>
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -360,16 +346,12 @@ export default function SalesPage() {
           </div>
         </section>
 
-        {/* TOPPERS */}
-        <section className="border-t border-gray-100 bg-gray-50/30 py-16 sm:py-20">
+        {/* TOPPERS — Premium Cards */}
+        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                Learn from the Best
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Featured Toppers
-              </h2>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Learn from the Best</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Featured Toppers</h2>
               <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
                 Study verified answer copies from actual toppers. Every copy checked against published UPSC results.
               </p>
@@ -377,13 +359,18 @@ export default function SalesPage() {
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {TOPPERS.map((t) => (
-                <Card
+                <div
                   key={t.name}
-                  className="group rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  <CardContent className="p-6 text-center">
-                    {/* IMAGE SLOT: Topper photo */}
-                    <div className="relative mx-auto mb-4 h-20 w-20 overflow-hidden rounded-full border-2 border-gray-100 bg-gray-50 ring-2 ring-white">
+                  {/* Gradient header area */}
+                  <div className="relative h-28 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-500/10 via-transparent to-transparent" />
+                  </div>
+
+                  {/* Avatar — overlaps the gradient */}
+                  <div className="relative -mt-12 flex justify-center">
+                    <div className="h-24 w-24 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-lg ring-2 ring-gray-100">
                       <img
                         src={t.img}
                         alt={t.name}
@@ -393,22 +380,23 @@ export default function SalesPage() {
                           target.style.display = "none";
                           const parent = target.parentElement;
                           if (parent) {
-                            parent.innerHTML = `
-                              <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50">
-                                <span class="text-lg font-bold text-gray-400">${t.name.charAt(0)}</span>
-                              </div>
-                            `;
+                            parent.innerHTML = `<div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50"><span class="text-2xl font-bold text-gray-400">${t.name.charAt(0)}</span></div>`;
                           }
                         }}
                       />
                     </div>
+                  </div>
 
-                    <Badge className="mb-3 rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-600 hover:bg-emerald-500/20">
+                  {/* Rank badge */}
+                  <div className="mt-3 flex justify-center">
+                    <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-600">
                       {t.rank}
-                    </Badge>
+                    </span>
+                  </div>
 
-                    <h3 className="text-base font-semibold text-gray-900">{t.name}</h3>
-                    <p className="mt-0.5 text-xs text-gray-500">{t.highlight}</p>
+                  <div className="px-5 pb-5 text-center">
+                    <h3 className="mt-2 text-base font-bold text-gray-900">{t.name}</h3>
+                    <p className="text-xs text-gray-500">{t.highlight}</p>
 
                     <div className="mt-4 space-y-1.5 text-left text-xs leading-relaxed text-gray-500">
                       <div className="flex items-start gap-2">
@@ -420,59 +408,52 @@ export default function SalesPage() {
                         <span>{t.speciality}</span>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* IBEC METHOD */}
+        {/* IBEC METHOD — Full-bleed image showcase */}
         <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-12 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                The Framework
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                The IBEC Method
-              </h2>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">The Framework</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">The IBEC Method</h2>
               <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
-                A proven answer-writing framework used by top 1% scorers. Four stages that transform average answers into high-scoring responses.
+                A proven answer-writing framework used by top 1% scorers. Each stage builds on the last.
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {IBEC_STEPS.map((step) => (
-                <Card
+                <div
                   key={step.letter}
-                  className="group overflow-hidden rounded-2xl border border-gray-100 transition-all duration-200 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  <div className={`flex h-28 items-center justify-center ${step.color} bg-gradient-to-br from-gray-50 to-gray-100`}>
-                    {/* IMAGE SLOT: IBEC example screenshot */}
+                  {/* Image — full width, larger */}
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-gray-50">
                     <img
                       src={step.img}
                       alt={`${step.title} example`}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       onError={(e) => {
                         const target = e.currentTarget;
                         target.style.display = "none";
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = `
-                            <div class="flex h-full w-full items-center justify-center">
-                              <span class="text-5xl font-bold text-gray-300">${step.letter}</span>
-                            </div>
-                          `;
+                          parent.innerHTML = `<div class="flex h-full w-full items-center justify-center bg-gradient-to-br ${step.color}"><span class="text-6xl font-black text-white/30">${step.letter}</span></div>`;
                         }
                       }}
                     />
-                  </div>
-                  <CardContent className="p-5">
-                    <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900 text-sm font-bold text-white">
+                    {/* Letter badge overlay */}
+                    <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/90 text-sm font-bold text-gray-900 shadow-sm backdrop-blur-sm">
                       {step.letter}
                     </div>
-                    <h3 className="text-base font-semibold text-gray-900">{step.title}</h3>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-gray-900">{step.title}</h3>
                     <ul className="mt-3 space-y-1.5">
                       {step.points.map((point) => (
                         <li key={point} className="flex items-start gap-2 text-xs leading-relaxed text-gray-500">
@@ -481,44 +462,36 @@ export default function SalesPage() {
                         </li>
                       ))}
                     </ul>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         {/* TESTIMONIALS */}
-        <section className="border-t border-gray-100 bg-gray-50/30 py-16 sm:py-20">
+        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                Testimonials
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                What Aspirants Say
-              </h2>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Testimonials</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What Aspirants Say</h2>
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               {TESTIMONIALS.map((t) => (
-                <Card key={t.name} className="rounded-2xl border border-gray-100 shadow-sm">
-                  <CardContent className="p-6 sm:p-8">
-                    <div className="flex gap-1 text-amber-400 text-sm">{"★".repeat(5)}</div>
-                    <p className="mt-4 leading-relaxed text-gray-600">
-                      &ldquo;{t.text}&rdquo;
-                    </p>
-                    <div className="mt-5 flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-blue-100 text-sm font-bold text-gray-500">
-                        {t.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                        <p className="text-xs text-gray-400">{t.title}</p>
-                      </div>
+                <div key={t.name} className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md sm:p-8">
+                  <div className="flex gap-1 text-amber-400 text-sm">{"★".repeat(5)}</div>
+                  <p className="mt-4 leading-relaxed text-gray-600">&ldquo;{t.text}&rdquo;</p>
+                  <div className="mt-5 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-blue-100 text-sm font-bold text-gray-500">
+                      {t.name.charAt(0)}
                     </div>
-                  </CardContent>
-                </Card>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{t.name}</p>
+                      <p className="text-xs text-gray-400">{t.title}</p>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -529,21 +502,17 @@ export default function SalesPage() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-lg">
               <div className="text-center">
-                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                  Pricing
-                </p>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  Invest in Your Preparation
-                </h2>
+                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Pricing</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Invest in Your Preparation</h2>
               </div>
 
-              <Card className="mt-8 overflow-hidden rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50">
+              <div className="mt-8 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl shadow-gray-200/50">
                 <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 px-6 py-4 text-center">
                   <p className="text-xs font-bold uppercase tracking-wider text-white">
                     🔥 Flash Sale — Expires in {mounted ? display : "05:00"}
                   </p>
                 </div>
-                <CardContent className="p-8 text-center sm:p-10">
+                <div className="p-8 text-center sm:p-10">
                   <div className="flex items-baseline justify-center gap-3">
                     <span className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">₹799</span>
                     <span className="text-lg text-gray-400 line-through">₹4,999</span>
@@ -551,7 +520,6 @@ export default function SalesPage() {
                   <p className="mt-1 text-sm text-gray-500">Save 84% — only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at this price</p>
                   <p className="mt-0.5 text-xs text-red-500">Offer expires in {mounted ? display : "—"}</p>
 
-                  {/* Value comparison */}
                   <div className="mt-8 space-y-3 rounded-2xl bg-gray-50 p-5 text-left text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">21 Strategy Guides</span>
@@ -584,17 +552,15 @@ export default function SalesPage() {
                     Claim Bundle at ₹799 →
                   </Button>
 
-                  {/* Guarantee */}
                   <div className="mt-5 flex items-center justify-center gap-2 text-xs text-gray-500">
                     <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                     Verified & Authentic Copies. Satisfaction guaranteed.
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              {/* Payment methods */}
               <div className="mt-6 text-center text-xs text-gray-400">
                 <p>Pay via UPI • QR Code • GPay • PhonePe • Paytm</p>
                 <p className="mt-1">Instant access after verification (within 24 hrs)</p>
@@ -647,12 +613,8 @@ export default function SalesPage() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-3xl">
               <div className="mb-10 text-center">
-                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
-                  FAQ
-                </p>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  Frequently Asked Questions
-                </h2>
+                <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">FAQ</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
               </div>
 
               <div className="divide-y divide-gray-100">
@@ -700,10 +662,9 @@ export default function SalesPage() {
           </div>
         </section>
 
-        {/* STICKY BOTTOM BAR — Timer + Pricing */}
+        {/* STICKY BOTTOM BAR */}
         <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-2 py-2 sm:px-6 sm:py-3">
-            {/* Timer (desktop only to avoid overlap on mobile) */}
             <div className="hidden items-center gap-1.5 text-xs font-semibold text-gray-900 sm:flex sm:text-sm">
               {mounted ? (
                 <>
@@ -718,7 +679,6 @@ export default function SalesPage() {
               )}
             </div>
 
-            {/* Pricing */}
             <div className="flex items-center gap-1.5 sm:gap-2">
               <span className="text-[10px] text-gray-400 line-through sm:text-sm">₹4,999</span>
               <span className="text-sm font-bold text-gray-900 sm:text-lg">₹799</span>
@@ -732,17 +692,15 @@ export default function SalesPage() {
               )}
             </div>
 
-              <Button
-                onClick={() => setModalOpen(true)}
-                data-track="sales-bottom-bar"
-                className="shrink-0 rounded-full bg-emerald-600 px-4 py-1.5 text-[11px] font-bold text-white shadow-sm hover:bg-emerald-500 sm:px-8 sm:py-2 sm:text-sm"
-              >
-                Buy at ₹799
-              </Button>
+            <Button
+              onClick={() => setModalOpen(true)}
+              data-track="sales-bottom-bar"
+              className="shrink-0 rounded-full bg-emerald-600 px-4 py-1.5 text-[11px] font-bold text-white shadow-sm hover:bg-emerald-500 sm:px-8 sm:py-2 sm:text-sm"
+            >
+              Buy at ₹799
+            </Button>
           </div>
         </div>
-
-
 
         <p className="pb-16 text-center text-[11px] text-gray-400">
           UPSCPrepNotes is an independent educational platform. Answer copies are sourced from publicly available materials for educational reference.
@@ -759,7 +717,6 @@ function useTimer() {
 
   useEffect(() => {
     setMounted(true);
-    // 10-minute countdown per session
     const stored = sessionStorage.getItem("offerDeadline10");
     let deadline: number;
 

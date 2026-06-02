@@ -37,12 +37,52 @@ function getSessionId(): string {
   return id;
 }
 
-function formatTitle(title: string | undefined): string {
-  if (!title) return "Chat";
-  return title.length > 40 ? title.slice(0, 40) + "…" : title;
+const suggestedQuestions = getSuggestedQuestions();
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    ta.style.pointerEvents = "none";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    return true;
+  } catch {}
+  return false;
 }
 
-const suggestedQuestions = getSuggestedQuestions();
+function isSearchIndicator(content: string): boolean {
+  return content.startsWith("\uD83D\uDD0D");
+}
+
+function stripSearchIndicator(content: string): string {
+  const idx = content.indexOf("\n\n", content.indexOf("\uD83D\uDD0D"));
+  if (idx === -1) return content;
+  return content.slice(idx + 2);
+}
+
+function preprocessContent(content: string): string {
+  return content.replace(/\[source:\s*([^\]]+)\]/gi, (_, domain) => {
+    const d = domain.trim();
+    const url = d.startsWith("http") ? d : `https://${d}`;
+    return `[\uD83D\uDCCE ${d}](${url})`;
+  });
+}
+
+function formatTitle(title: string | undefined): string {
+  if (!title) return "Chat";
+  return title.length > 40 ? title.slice(0, 40) + "\u2026" : title;
+}
 
 function AskPage() {
   const searchParams = useSearchParams();
@@ -54,8 +94,8 @@ function AskPage() {
   const [streaming, setStreaming] = useState(false);
   const [quota, setQuota] = useState<{ remaining: number; canQuery: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [copiedId, setCopiedId] = useState<number | null>(null);
-  const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -82,14 +122,12 @@ function AskPage() {
     } catch {}
   }, []);
 
-  // Handle initial query param
   useEffect(() => {
     if (loading || initialQueryDone.current) return;
     const q = searchParams.get("q");
     if (q) {
       initialQueryDone.current = true;
       setInput(q);
-      // Wait a beat for everything to render, then submit
       setTimeout(() => {
         const form = document.querySelector("form");
         if (form) form.requestSubmit();
@@ -104,20 +142,15 @@ function AskPage() {
     })();
   }, [fetchConversations]);
 
-  // Auto-scroll
   useEffect(() => {
-    if (!showScrollBtn) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, streaming, showScrollBtn]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, streaming]);
 
-  // Track scroll position
-  const handleScroll = useCallback(() => {
-    const el = messagesContainerRef.current;
-    if (!el) return;
-    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    setShowScrollBtn(distFromBottom > 200);
-  }, []);
+  useEffect(() => {
+    if (!streaming && !loading) {
+      inputRef.current?.focus();
+    }
+  }, [streaming, loading]);
 
   async function newConversation() {
     try {
@@ -148,7 +181,7 @@ function AskPage() {
     setInput("");
     if (inputRef.current) inputRef.current.style.height = "auto";
     setStreaming(true);
-    setShowScrollBtn(false);
+    setIsSearching(false);
 
     try {
       const res = await fetch("/api/ai/ask", {
@@ -180,11 +213,22 @@ function AskPage() {
 
       const decoder = new TextDecoder();
       let fullContent = "";
+      let hasShownSearch = false;
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        fullContent += decoder.decode(value, { stream: true });
+        const chunk = decoder.decode(value, { stream: true });
+        fullContent += chunk;
+
+        if (!hasShownSearch && isSearchIndicator(fullContent)) {
+          setIsSearching(true);
+          hasShownSearch = true;
+        }
+        if (hasShownSearch && !isSearchIndicator(fullContent)) {
+          setIsSearching(false);
+        }
+
         setMessages((prev) => {
           const updated = [...prev];
           updated[updated.length - 1] = { role: "assistant", content: fullContent };
@@ -192,6 +236,7 @@ function AskPage() {
         });
       }
 
+      setIsSearching(false);
       await fetchConversations();
     } catch {
       setMessages((prev) => {
@@ -201,20 +246,20 @@ function AskPage() {
       });
     } finally {
       setStreaming(false);
+      setIsSearching(false);
     }
   }
 
-  async function copyContent(index: number, content: string) {
-    try {
-      await navigator.clipboard.writeText(content);
-      setCopiedId(index);
-      setTimeout(() => setCopiedId(null), 2000);
-    } catch {}
-  }
-
-  function scrollToBottom() {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    setShowScrollBtn(false);
+  async function handleCopy(index: number, content: string) {
+    let text = isSearchIndicator(content) ? stripSearchIndicator(content) : content;
+    text = text.replace(/\[source:\s*[^\]]+\]/gi, "")
+      .replace(/\[([^\]]*)\]\(https?:\/\/[^)]+\)/g, "$1")
+      .trim();
+    const ok = await copyToClipboard(text);
+    if (ok) {
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -225,37 +270,53 @@ function AskPage() {
   }
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen overflow-hidden bg-white">
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/50 md:hidden"
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
           onClick={() => setSidebarOpen(false)}
-          aria-hidden
         />
       )}
 
-      {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-zinc-200 bg-white transition-transform duration-200 md:relative md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-zinc-200 bg-white transition-transform duration-300 md:relative md:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        <div className="flex items-center justify-between border-b border-zinc-100 px-4 h-14 shrink-0">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded-lg bg-zinc-900 flex items-center justify-center">
+              <span className="text-white text-[10px] font-bold">PN</span>
+            </div>
+            <span className="text-sm font-bold tracking-tight text-zinc-800">Ask AI</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
         <div className="p-3">
           <button
             type="button"
             onClick={newConversation}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300"
           >
-            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
             </svg>
             New chat
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-2 pb-2 scrollbar-thin" aria-label="Conversation history">
+        <nav className="flex-1 overflow-y-auto px-2 pb-2 scrollbar-thin">
           {conversations.length === 0 ? (
-            <p className="px-3 pt-6 text-center text-xs text-zinc-400">No conversations yet</p>
+            <p className="px-3 pt-8 text-center text-xs text-zinc-400">No conversations yet</p>
           ) : (
             <div className="space-y-0.5">
               {conversations.map((conv) => (
@@ -266,13 +327,13 @@ function AskPage() {
                     loadConversation(conv.id);
                     setSidebarOpen(false);
                   }}
-                  className={`w-full truncate rounded-lg px-3 py-2.5 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                  className={`w-full truncate rounded-lg px-3 py-2.5 text-left text-sm transition ${
                     activeId === conv.id
                       ? "bg-zinc-100 font-medium text-zinc-900"
                       : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800"
                   }`}
                 >
-                  <svg className="-ml-0.5 mr-2 inline h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                  <svg className="-ml-0.5 mr-2 inline h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                   </svg>
                   {formatTitle(conv.title)}
@@ -282,62 +343,62 @@ function AskPage() {
           )}
         </nav>
 
-        <div className="border-t border-zinc-100 px-3 py-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-400" aria-label={`Quota: ${quota?.remaining ?? "—"} of 5 queries remaining`}>
-              <svg className="-mt-0.5 mr-1 inline h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+        <div className="border-t border-zinc-100 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-zinc-400">
+              <svg className="-mt-0.5 mr-1 inline h-3 w-3 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              {quota ? `${quota.remaining} / 5` : "—"}
+              {quota ? `${quota.remaining} / 5` : "\u2014"}
             </span>
-            <Link href="/toppers/toppers-copy-compilation" data-track="ask-sidebar-cta" className="font-medium text-primary transition hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
-              Get the Compilation →
+            <Link
+              href="/toppers/toppers-copy-compilation"
+              data-track="ask-sidebar-cta"
+              className="text-xs font-medium text-zinc-800 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-600 transition"
+            >
+              Get bundle \u2192
             </Link>
           </div>
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex flex-1 flex-col min-w-0">
-        {/* Mobile header */}
-        <header className="flex items-center justify-between border-b border-zinc-100 bg-white px-4 py-3 md:hidden">
+      <div className="flex flex-1 flex-col min-w-0 h-screen">
+        <header className="flex items-center justify-between border-b border-zinc-100 bg-white px-4 h-14 shrink-0 md:hidden">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="rounded-lg p-1 text-zinc-500 transition hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition"
             aria-label="Open sidebar"
           >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
-          <span className="text-sm font-medium text-zinc-700">Ask AI</span>
-          <Link href="/" className="text-xs text-zinc-400 transition hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+          <span className="text-sm font-semibold text-zinc-700">Ask AI</span>
+          <Link href="/" className="text-xs text-zinc-400 hover:text-zinc-600 transition">
             Home
           </Link>
         </header>
 
-        {/* Messages area */}
         <div
           ref={messagesContainerRef}
-          onScroll={handleScroll}
-          className="relative flex-1 overflow-y-auto bg-white scrollbar-thin"
+          className="flex-1 overflow-y-auto scrollbar-thin bg-white"
         >
           {loading ? (
             <div className="flex h-full items-center justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-primary" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-800" />
             </div>
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
               <div className="mx-auto w-full max-w-xl text-center">
-                <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100">
+                  <svg className="h-7 w-7 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                   </svg>
                 </div>
-                <h1 className="mb-1.5 text-xl font-semibold tracking-tight text-zinc-800">Ask UPSC AI</h1>
-                <p className="mb-8 text-sm text-zinc-400">
-                  Get answers from actual UPSC topper strategies
+                <h1 className="mb-1.5 text-xl font-bold tracking-tight text-zinc-800">Ask UPSC AI</h1>
+                <p className="mb-8 text-sm text-zinc-400 max-w-md mx-auto">
+                  Get answers drawn from actual UPSC topper strategies and live web search
                 </p>
                 <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Suggested questions">
                   {suggestedQuestions.map((q) => (
@@ -348,7 +409,7 @@ function AskPage() {
                         setInput(q);
                         setTimeout(() => inputRef.current?.focus(), 50);
                       }}
-                      className="rounded-lg border border-zinc-200 px-3.5 py-2 text-sm text-zinc-500 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                      className="rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-500 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-700"
                     >
                       {q}
                     </button>
@@ -362,72 +423,83 @@ function AskPage() {
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`animate-in fade-in-0 slide-in-from-bottom-2 ${
-                      msg.role === "assistant" ? "bg-zinc-50" : "bg-white"
+                    className={`${
+                      msg.role === "assistant" ? "bg-zinc-50/50" : "bg-white"
                     } border-b border-zinc-100 last:border-b-0`}
-                    style={{ animationDuration: "200ms" }}
                   >
-                    <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
-                      <div className="flex items-start gap-4">
+                    <div className="mx-auto max-w-3xl px-4 py-5 md:px-6 lg:px-8">
+                      <div className="flex items-start gap-3">
                         <div
-                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
                             msg.role === "assistant"
                               ? "bg-zinc-700 text-white"
                               : "bg-zinc-800 text-white"
                           }`}
-                          aria-hidden
                         >
                           {msg.role === "assistant" ? "AI" : "U"}
                         </div>
 
-                        <div className="min-w-0 flex-1 group">
+                        <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold text-zinc-500">
+                            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                               {msg.role === "assistant" ? "Assistant" : "You"}
                             </span>
-                            {msg.role === "assistant" && msg.content && (
-                              <button
-                                type="button"
-                                onClick={() => copyContent(i, msg.content)}
-                                className="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 rounded p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                                aria-label={copiedId === i ? "Copied" : "Copy response"}
-                              >
-                                {copiedId === i ? (
-                                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                  </svg>
-                                ) : (
-                                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                  </svg>
-                                )}
-                              </button>
-                            )}
                           </div>
                           {msg.role === "assistant" ? (
-                            <div className="prose prose-zinc prose-sm max-w-none mt-2 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
-                              <ReactMarkdown components={mdComponents}>{msg.content}</ReactMarkdown>
-                              {msg.sources && msg.sources.length > 0 && (
-                                  <div className="mt-6 flex flex-wrap items-center gap-2">
-                                  <span className="text-xs font-medium text-zinc-400">Sources:</span>
-                                  {msg.sources.map((s) => (
-                                    <Link
-                                      key={s.slug}
-                                      href={`/upsc-topper/${s.slug}`}
-                                      className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                                    >
-                                      {s.name}
-                                    </Link>
-                                  ))}
+                            <div className="mt-1.5">
+                              <div className="prose prose-zinc prose-sm max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                                <ReactMarkdown components={mdComponents}>{preprocessContent(msg.content)}</ReactMarkdown>
+                                {msg.sources && msg.sources.length > 0 && (
+                                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                                    <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Sources:</span>
+                                    {msg.sources.map((s) => (
+                                      <Link
+                                        key={s.slug}
+                                        href={`/upsc-topper/${s.slug}`}
+                                        className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
+                                      >
+                                        {s.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Copy button — always visible at bottom */}
+                              {msg.content && (
+                                <div className="flex justify-end mt-3">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopy(i, msg.content)}
+                                    className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
+                                  >
+                                    {copiedIndex === i ? (
+                                      <>
+                                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Copied
+                                      </>
+                                    ) : (
+                                      <>
+                                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                        </svg>
+                                        Copy
+                                      </>
+                                    )}
+                                  </button>
                                 </div>
                               )}
-                              <div className="mt-6 rounded-xl border border-dashed border-zinc-200 bg-zinc-50/50 px-4 py-3">
+
+                              {/* CTA after answer copies */}
+                              <div className="mt-2 rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-4 py-3">
                                 <Link
                                   href="/toppers/toppers-copy-compilation"
                                   data-track="ask-after-answer-cta"
                                   className="flex items-center justify-between gap-2 text-xs text-zinc-500 transition hover:text-zinc-800"
                                 >
-                                  <span>See actual answer copies with marks from these toppers →</span>
+                                  <span>See actual answer copies with marks from these toppers \u2192</span>
                                   <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                   </svg>
@@ -435,88 +507,87 @@ function AskPage() {
                               </div>
                             </div>
                           ) : (
-                            <p className="mt-2 text-sm leading-relaxed text-zinc-800">{msg.content}</p>
+                            <p className="mt-1.5 text-sm leading-relaxed text-zinc-800">{msg.content}</p>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
+
+                {/* Streaming indicator */}
                 {streaming && (
-                  <div className="bg-zinc-50 border-b border-zinc-100">
-                    <div className="mx-auto max-w-3xl px-4 py-6 md:px-6 lg:px-10">
-                      <div className="flex items-start gap-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-700 text-xs font-bold text-white" aria-hidden>
-                          AI
-                        </div>
+                  <div className="bg-zinc-50/50 border-b border-zinc-100">
+                    <div className="mx-auto max-w-3xl px-4 py-5 md:px-6 lg:px-8">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-700 text-[11px] font-bold text-white">AI</div>
                         <div className="min-w-0 flex-1">
-                          <span className="text-xs font-semibold text-zinc-500">Assistant</span>
-                          <div className="mt-2 pt-0.5">
-                            <span className="inline-flex gap-1">
-                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
-                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
-                              <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
-                            </span>
+                          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Assistant</span>
+                          <div className="mt-3">
+                            {isSearching ? (
+                              <div className="flex items-center gap-2">
+                                <div className="flex gap-1">
+                                  <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
+                                  <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
+                                  <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
+                                </div>
+                                <span className="text-xs text-zinc-400">Searching the web\u2026</span>
+                              </div>
+                            ) : (
+                              <div className="flex gap-1">
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" />
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 )}
+
                 <div ref={messagesEndRef} />
               </div>
-
-              {/* Scroll to bottom button */}
-              {showScrollBtn && (
-                <button
-                  type="button"
-                  onClick={scrollToBottom}
-                  className="sticky bottom-4 left-1/2 z-10 mx-auto flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-500 shadow-lg transition hover:bg-zinc-50 hover:text-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                  style={{ width: "fit-content" }}
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                  </svg>
-                  Scroll to bottom
-                </button>
-              )}
             </>
           )}
         </div>
 
-        {/* Input area */}
-        <div className="border-t border-zinc-100 bg-white px-4 py-4 md:px-6 lg:px-10">
+        <div className="border-t border-zinc-100 bg-white px-4 py-3 md:px-6 lg:px-8 shrink-0">
           <div className="mx-auto max-w-3xl">
-            <form onSubmit={handleSubmit} className="relative">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask a question…"
-                rows={1}
-                disabled={streaming || loading}
-                className="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 pr-12 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-300 focus:shadow-sm"
-                style={{ minHeight: "48px", maxHeight: "160px" }}
-                onInput={(e) => {
-                  const el = e.target as HTMLTextAreaElement;
-                  el.style.height = "auto";
-                  el.style.height = Math.min(el.scrollHeight, 160) + "px";
-                }}
-              />
+            <form onSubmit={handleSubmit} className="relative flex items-end gap-2">
+              <div className="relative flex-1">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask a question about UPSC preparation\u2026"
+                  rows={1}
+                  disabled={streaming || loading}
+                  className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 pr-10 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-300 focus:bg-white focus:shadow-sm"
+                  style={{ minHeight: "48px", maxHeight: "160px" }}
+                  onInput={(e) => {
+                    const el = e.target as HTMLTextAreaElement;
+                    el.style.height = "auto";
+                    el.style.height = Math.min(el.scrollHeight, 160) + "px";
+                  }}
+                />
+              </div>
               <button
                 type="submit"
                 disabled={streaming || loading || !input.trim()}
-                className="absolute right-1.5 bottom-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white transition hover:bg-zinc-800 active:scale-95 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-white transition hover:bg-zinc-800 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 aria-label="Send message"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
                 </svg>
               </button>
             </form>
-            <p className="mt-2 text-center text-[11px] text-zinc-300">
+            <p className="mt-1.5 text-center text-[11px] text-zinc-300">
               {quota ? `${quota.remaining} free queries remaining today` : ""}
+              {quota && quota.remaining <= 1 ? ` \u2014 Get unlimited access in the bundle` : ""}
             </p>
           </div>
         </div>
@@ -526,14 +597,33 @@ function AskPage() {
 }
 
 const mdComponents: Components = {
-  a: ({ href, children }) => (
-    <Link
-      href={href || "#"}
-      className="text-zinc-800 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500"
-    >
-      {children}
-    </Link>
-  ),
+  a: ({ href, children }) => {
+    const isExternal = href?.startsWith("http");
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600 ring-1 ring-zinc-200 hover:bg-zinc-200 hover:text-zinc-800 transition no-underline"
+        >
+          <span className="text-[13px] leading-none">\uD83D\uDCCE</span>
+          <span className="max-w-[220px] truncate">{children}</span>
+          <svg className="h-3 w-3 shrink-0 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      );
+    }
+    return (
+      <Link
+        href={href || "#"}
+        className="text-zinc-800 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500"
+      >
+        {children}
+      </Link>
+    );
+  },
   code: ({ className, children, ...props }) => {
     const isInline = !className?.includes("language-");
     if (isInline) {
