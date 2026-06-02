@@ -65,19 +65,23 @@ const TESTIMONIALS = [
 ];
 
 const FAQS = [
-  { q: "How many topper copies are included?", a: "50+ topper copies across GS1, GS2, GS3, GS4, and Essay papers." },
-  { q: "Are the copies verified?", a: "Yes. Every copy is verified for authenticity and marks accuracy against published UPSC results." },
-  { q: "What format will I receive?", a: "Individual PDFs for each paper, organized by topper and by subject. Instant digital access." },
+  { q: "How many items are included?", a: "30+ resources including 21 strategy guides, 3+ topper answer copies, 50+ ethics case studies, interview prep (100 questions, DAF analysis, mock tips), schemes compendium, value-addition data, maps reference, and more." },
+  { q: "Are the answer copies verified?", a: "Yes. Every topper copy is verified for authenticity against published UPSC results." },
+  { q: "What format will I receive?", a: "All resources are in PDF format. Instant digital access after purchase." },
   { q: "Is this a physical book?", a: "Currently available in digital PDF format only. Instant access after purchase." },
+  { q: "Will the price really go up to ₹4,999?", a: "Yes. ₹999 is the limited launch price. Once we reach our early adopter target, the bundle moves to ₹4,999." },
 ];
 
 const WHATS_INCLUDED = [
-  "GS1, GS2, GS3, GS4, and Essay answer copies",
-  "Handwritten copies from 5+ toppers in each paper",
-  "Marks-wise compilation — sorted by score, not by rank",
-  "Micro-diagrams, data, facts, maps, and case studies",
-  "Instant digital access (PDF format)",
-  "Lifetime updates — new copies added regularly",
+  "21 strategy guides covering GS1-4, Essay, Prelims & CSAT",
+  "3+ verified topper answer copies (Shakti Dubey, Divya Tanwar & more)",
+  "IBEC Answer Writing Method with 90-day practice schedule",
+  "50+ ethics case studies with solved frameworks",
+  "Interview prep: 100 common questions, DAF analysis & mock tips",
+  "Schemes compendium (60+ schemes), judgments database & value-addition data",
+  "Optional selection guide & service-specific preparation",
+  "Diagrams pack, maps reference & current affairs note-making guide",
+  "Instant digital access (PDF format) — lifetime updates",
 ];
 
 const IBEC_STEPS = [
@@ -246,7 +250,7 @@ export default function SalesPage() {
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-2.5">
           <p className="text-xs font-medium sm:text-sm">
-            50+ Topper Copies <span className="text-muted-foreground">• Marks Wise</span>
+             30+ Resources Bundle <span className="text-muted-foreground">• Launch Offer</span>
           </p>
           <Button
             onClick={() => setModalOpen(true)}
@@ -266,18 +270,18 @@ export default function SalesPage() {
           <section className="mb-16 md:mb-20">
             <div className="mb-6 flex flex-wrap items-center gap-3">
               <Badge variant="outline" className="rounded-full px-3 py-1 text-[10px] font-medium">
-                50+ Topper Copies
+                30+ Resources Bundle
               </Badge>
               <Badge className="rounded-full px-3 py-1 text-[10px] font-medium">
-                Marks Wise • Not Rank Wise
+                Launch Price • Limited Time
               </Badge>
             </div>
 
             <h1 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-              Score 120+ Marks in Each GS Paper
+              Complete UPSC Preparation Bundle
               <br />
               <span className="text-muted-foreground">
-                via 50+ Toppers Using the IBEC Method
+                30+ Strategy Guides, Topper Copies & Resources
               </span>
             </h1>
 
@@ -290,18 +294,18 @@ export default function SalesPage() {
             </div>
 
             <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base md:text-lg">
-              India&apos;s first marks-wise UPSC topper answer copy compilation.
-              Verified copies across GS1&ndash;4 and Essay. Learn the exact
-              technique that helped toppers score in the top 1 percentile.
+              India&apos;s most comprehensive UPSC preparation bundle — 30+ resources
+              covering strategy, answer writing, interview prep & supporting materials.
+              Launch-priced at ₹999 (will move to ₹4,999 soon).
             </p>
 
             <div className="mt-6 space-y-2.5 text-sm sm:text-base">
               {[
-                "Get answer copies of toppers in each paper (Verified ONLY)",
-                "Handwritten Answers from 20+ toppers",
-                "Includes Micro-diagrams, Data, Facts, Examples",
-                "All GS Papers — GS1, GS2, GS3, GS4 & Essay Covered",
-                "Learn the subject specific way of writing answers",
+                "21 in-depth strategy guides (GS1-4, Essay, Prelims, CSAT)",
+                "3+ verified topper answer copies with marks analysis",
+                "50+ ethics case studies with 6-step solved frameworks",
+                "Interview prep: 100 questions, DAF analysis & mock tips",
+                "Schemes compendium, judgments DB, value-addition & more",
               ].map((text) => (
                 <div key={text} className="flex items-start gap-3">
                   <span className="mt-0.5 shrink-0 text-sm text-primary">&#10003;</span>
@@ -326,7 +330,7 @@ export default function SalesPage() {
 
             <div className="mt-8 flex flex-wrap gap-5 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Instant Digital Access</span>
-              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Verified Copies</span>
+              <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> 30+ Resources</span>
               <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> Lifetime Updates</span>
               <span className="flex items-center gap-1.5"><span className="text-primary">&#10003;</span> PDF Format</span>
             </div>
@@ -589,10 +593,10 @@ export default function SalesPage() {
           {/* FINAL CTA */}
           <section className="text-center">
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Ready to Improve Your Answer Writing?
+              Ready to Supercharge Your UPSC Preparation?
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-muted-foreground sm:text-base">
-              50+ topper copies. Marks-wise organised. Instant access.
+              30+ resources. Strategy guides, topper copies, interview prep & more. Instant access.
             </p>
             {mounted && (
               <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
@@ -651,8 +655,8 @@ export default function SalesPage() {
         >
           <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3 sm:px-6">
             <div className="min-w-0 flex-1 pr-4">
-              <p className="truncate text-sm font-medium">50+ Topper Answer Copy Compilation</p>
-              <p className="truncate text-xs text-muted-foreground">Marks Wise &bull; IBEC Method &bull; Lifetime Access</p>
+              <p className="truncate text-sm font-medium">UPSC Complete Preparation Bundle</p>
+              <p className="truncate text-xs text-muted-foreground">30+ Resources &bull; Launch Offer &bull; Lifetime Access</p>
             </div>
             <div className="flex shrink-0 items-center gap-3">
               <p className="text-base font-bold sm:text-lg">₹999</p>
