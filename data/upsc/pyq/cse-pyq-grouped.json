@@ -1,12 +1,12 @@
 {
   "2023": {
-    "Mains – Essay": [
+    "Mains \u2013 Essay": [
       {
         "title": "Essay",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSM-23-ESSAY-180923.pdf"
       }
     ],
-    "Mains – General Studies": [
+    "Mains \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSM-23-GENERAL-STUDIES-PAPER-I-180923.pdf"
@@ -24,7 +24,7 @@
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSM-23-GENERAL-STUDIES-PAPER-IV-180923.pdf"
       }
     ],
-    "Mains – Optional": [
+    "Mains \u2013 Optional": [
       {
         "title": "Agricultural Paper I",
         "url": ""
@@ -402,11 +402,13 @@
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSM-23-ZOOLOGY-PAPER-II-29092023.pdf"
       }
     ],
-    "Prelims – General Studies": [
+    "Prelims \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_280523.pdf"
-      },
+      }
+    ],
+    "Prelims \u2013 CSAT": [
       {
         "title": "CSAT",
         "url": "https://www.upsc.gov.in/sites/default/files/QP_CS_Pre_Exam_2023_GENERAL_STUDIES_PAPER_II_280523.pdf"
@@ -414,13 +416,13 @@
     ]
   },
   "2024": {
-    "Mains – Essay": [
+    "Mains \u2013 Essay": [
       {
         "title": "Essay",
         "url": "https://www.upsc.gov.in/sites/default/files/QP_CSM_2024_ESSAY_03102024.pdf"
       }
     ],
-    "Mains – General Studies": [
+    "Mains \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/QP_CSM_2024_GenStud_I_03102024.pdf"
@@ -438,7 +440,7 @@
         "url": "https://www.upsc.gov.in/sites/default/files/QP_CSM_2024_GenStud_IV_03102024.pdf"
       }
     ],
-    "Mains – Optional": [
+    "Mains \u2013 Optional": [
       {
         "title": "Agriculture Paper I",
         "url": ""
@@ -828,13 +830,13 @@
         "url": ""
       }
     ],
-    "Prelims – General Studies": [
+    "Prelims \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSP-24-GENERAL-STUDIES-PAPER-I-180624.pdf"
       }
     ],
-    "Prelims – CSAT": [
+    "Prelims \u2013 CSAT": [
       {
         "title": "CSAT",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSP-24-GENERAL-STUDIES-PAPER-II-180624.pdf"
@@ -842,13 +844,13 @@
     ]
   },
   "2025": {
-    "Mains – Essay": [
+    "Mains \u2013 Essay": [
       {
         "title": "Essay",
         "url": "https://www.upsc.gov.in/sites/default/files/ESSAY-QP-CSM-25-010925.pdf"
       }
     ],
-    "Mains – General Studies": [
+    "Mains \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/GENERAL-STUDIES-PAPER%20I-QP-CSM-25-010925.pdf"
@@ -866,7 +868,7 @@
         "url": "https://www.upsc.gov.in/sites/default/files/GENERAL-STUDIES-PAPER-IV-QP-CSM-25-010925.pdf"
       }
     ],
-    "Mains – Optional": [
+    "Mains \u2013 Optional": [
       {
         "title": "Agriculture Paper I",
         "url": ""
@@ -1260,13 +1262,13 @@
         "url": ""
       }
     ],
-    "Prelims – General Studies": [
+    "Prelims \u2013 General Studies": [
       {
         "title": "GS PAPER I",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSP-25-GENERAL-STUDIES-PAPER-I-26052025.pdf"
       }
     ],
-    "Prelims – CSAT": [
+    "Prelims \u2013 CSAT": [
       {
         "title": "CSAT",
         "url": "https://www.upsc.gov.in/sites/default/files/QP-CSP-25-GENERAL-STUDIES-PAPER-II-26052025.pdf"
