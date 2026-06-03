@@ -26,6 +26,8 @@ const pdfSchema = new mongoose.Schema(
     brand: { type: String, default: "" },
     author: { type: String, default: "" },
     imagekitUrl: { type: String, default: "" },
+    downloadUrl: { type: String, default: "" },
+    sourceUrl: { type: String, default: "" },
     fileSize: { type: String, default: "" },
     pageCount: { type: Number, default: 0 },
     year: { type: Number },

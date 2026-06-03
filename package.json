@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed:featured": "node ./scripts/seed-featured.cjs",
-    "scrape:images": "node scripts/scrape-topper-images.mjs"
+    "scrape:images": "node scripts/scrape-topper-images.mjs",
+    "scrape:pdf-links": "node scripts/scrape-pdf-links.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",

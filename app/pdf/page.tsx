@@ -3,6 +3,14 @@ import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
 
+interface SearchParams {
+  category?: string;
+}
+
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
 export const metadata: Metadata = {
   title: "Free UPSC PDF Library — Test Series, Notes, Books & Magazines",
   description:
@@ -66,15 +74,21 @@ const CATEGORIES = [
   },
 ];
 
-export default async function PDFHubPage() {
+export default async function PDFHubPage({ searchParams }: Props) {
+  const { category } = await searchParams;
   await connectDB();
-  const pdfs = await PDFModel.find({}).sort({ createdAt: -1 }).lean();
-  const totalPdfs = pdfs.length;
 
-  const categories = CATEGORIES.map((cat) => ({
-    ...cat,
-    count: pdfs.filter((p: any) => p.category === cat.key).length,
-  }));
+  const filter = category ? { category } : {};
+  const pdfs = await PDFModel.find(filter).sort({ createdAt: -1 }).lean();
+  const totalResources = pdfs.reduce((sum: number, p: any) => sum + (p.resources?.length || 1), 0);
+
+  const categories = CATEGORIES.map((cat) => {
+    const catPdfs = pdfs.filter((p: any) => p.category === cat.key);
+    const itemCount = catPdfs.reduce((sum: number, p: any) => sum + Math.max(p.resources?.length || 0, 1), 0);
+    return { ...cat, count: itemCount };
+  });
+
+  const activeCategory = category ? CATEGORIES.find((c) => c.key === category) : null;
 
   return (
     <main className="min-h-screen bg-white">
@@ -90,48 +104,65 @@ export default async function PDFHubPage() {
           <p className="mt-4 max-w-2xl text-base leading-8 text-zinc-600">
             Download free UPSC study material curated from top coaching institutes.
             Test series, notes, books, magazines — all in one place.
-            <span className="block mt-1 text-sm text-zinc-400">{totalPdfs} resources available</span>
+            <span className="block mt-1 text-sm text-zinc-400">{totalResources.toLocaleString()} individual resources available</span>
           </p>
         </section>
 
         {/* CATEGORIES GRID */}
         <section className="mb-20">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat) => (
+          {activeCategory && (
+            <div className="mb-8 flex items-center gap-3">
               <Link
-                key={cat.key}
-                href={`/pdf/${cat.key}`}
-                className={`group rounded-xl border ${cat.color} p-6 transition-all hover:shadow-md`}
+                href="/pdf"
+                className="text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl">{cat.icon}</span>
-                  <span className={`text-xs font-semibold ${cat.textColor}`}>
-                    {cat.count} PDFs
-                  </span>
-                </div>
-                <h2 className="text-lg font-bold text-zinc-800 mb-2 group-hover:text-black transition-colors">
-                  {cat.label}
-                </h2>
-                <p className="text-sm leading-6 text-zinc-500">
-                  {cat.description}
-                </p>
+                &larr; All Categories
               </Link>
-            ))}
-          </div>
+              <span className="text-zinc-200">/</span>
+              <span className="text-sm font-bold text-zinc-800">
+                {activeCategory.icon} {activeCategory.label}
+              </span>
+              <span className="text-xs text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full font-medium">
+                {pdfs.length} PDFs
+              </span>
+            </div>
+          )}
+          {!activeCategory && (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.key}
+                  href={`/pdf?category=${cat.key}`}
+                  className={`group rounded-xl border ${cat.color} p-6 transition-all hover:shadow-md`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-3xl">{cat.icon}</span>
+                    <span className={`text-xs font-semibold ${cat.textColor}`}>
+                      {cat.count} items
+                    </span>
+                  </div>
+                  <h2 className="text-lg font-bold text-zinc-800 mb-2 group-hover:text-black transition-colors">
+                    {cat.label}
+                  </h2>
+                  <p className="text-sm leading-6 text-zinc-500">
+                    {cat.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
 
-        {/* RECENT PDFs */}
+        {/* PDF LIST */}
         {pdfs.length > 0 && (
           <section>
             <div className="flex items-center justify-between mb-8">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                  Recently Added
-                </p>
-              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                {activeCategory ? `${activeCategory.label}` : "Recently Added"}
+              </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {pdfs.slice(0, 12).map((pdf: any) => (
+              {pdfs.slice(0, 24).map((pdf: any) => (
                 <Link
                   key={pdf._id}
                   href={`/pdf/${pdf.slug}`}

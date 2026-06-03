@@ -13,6 +13,8 @@ const pdfSchema = new Schema(
     brand: { type: String, default: "" },
     author: { type: String, default: "" },
     imagekitUrl: { type: String, default: "" },
+    downloadUrl: { type: String, default: "" },
+    sourceUrl: { type: String, default: "" },
     fileSize: { type: String, default: "" },
     pageCount: { type: Number, default: 0 },
     year: { type: Number },
@@ -20,6 +22,15 @@ const pdfSchema = new Schema(
     tags: [{ type: String }],
     isFeatured: { type: Boolean, default: false },
     downloadCount: { type: Number, default: 0 },
+    resources: [
+      {
+        name: { type: String, required: true },
+        downloadUrl: { type: String, default: "" },
+        sourceUrl: { type: String, default: "" },
+        section: { type: String, default: "" },
+        language: { type: String, enum: ["en", "hi", "both"], default: "en" },
+      },
+    ],
   },
   { timestamps: true }
 );
