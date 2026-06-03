@@ -91,6 +91,12 @@ export default function ResourcesPage() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
+              href="/free-materials"
+              className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-blue-500"
+            >
+              Free Study Material <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <Link
               href="/toppers"
               className="inline-flex items-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-gray-800"
             >

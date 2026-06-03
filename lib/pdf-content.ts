@@ -22,63 +22,136 @@ function getSections(resources: PDFMeta["resources"]): Map<string, number> {
   return sections;
 }
 
-function getBrandKey(brand: string | null): string {
-  if (!brand) return "general";
-  return brand.toLowerCase().replace(/[^a-z]+/g, "-");
+function pickFirst<T>(arr: T[], count: number): T[] {
+  return arr.slice(0, count);
+}
+
+function sampleSectionItems(
+  resources: PDFMeta["resources"],
+  sectionName: string,
+  max: number
+): string[] {
+  if (!resources) return [];
+  const items = resources
+    .filter((r) => (r.section || "All Resources") === sectionName)
+    .map((r) => r.name);
+    return pickFirst(items, max);
 }
 
 export function generateWhatsIncluded(p: PDFMeta): string {
   const sections = getSections(p.resources);
   const totalItems = p.resources?.length || 0;
+  const brand = p.brand || "";
 
-  if (p.category === "test-series") {
-    const sectionList = Array.from(sections.entries())
-      .map(([name, count]) => `${name} (${count} test${count > 1 ? "s" : ""})`)
-      .join(", ");
-    return `This collection includes ${totalItems} individual test papers and solutions from ${p.brand || "leading UPSC coaching institutes"}. It covers ${sectionList}. Each test follows the actual UPSC pattern with detailed solutions and explanations.`;
+  if (p.category === "test-series" && sections.size > 0) {
+    const parts = Array.from(sections.entries())
+      .slice(0, 4)
+      .map(([name, count]) => `${count} ${name.toLowerCase()}`);
+    const summary = parts.join(", ");
+    const extra = sections.size > 4 ? ` and ${sections.size - 4} more sections` : "";
+    const firstSection = Array.from(sections.keys())[0];
+    const sampleItems = sampleSectionItems(p.resources, firstSection, 3);
+
+    let text = `This collection gives you ${summary}${extra} — ${totalItems} test papers in total`;
+    if (brand) text += ` from ${brand}`;
+    text += ". ";
+
+    if (sampleItems.length > 0) {
+      text += `In the ${firstSection.toLowerCase()} section alone, you get papers like "${sampleItems.join('", "')}". `;
+    }
+    text += "Each paper follows the actual UPSC pattern with detailed solutions that explain the reasoning behind every answer.";
+    return text;
   }
 
-  if (p.category === "notes") {
-    const topics = Array.from(sections.keys()).slice(0, 5).join(", ");
-    return `These ${p.brand || ""} notes contain ${totalItems} individual resources covering key UPSC topics. The material is organized into sections including ${topics}. Perfect for revision and concept clarity.`;
+  if (p.category === "notes" && sections.size > 0) {
+    const firstSec = Array.from(sections.entries())[0];
+    const sampleItems = sampleSectionItems(p.resources, firstSec[0], 4);
+    let text = `These notes`;
+    if (brand) text += ` by ${brand}`;
+    text += ` contain ${totalItems} topic-wise resources organized into ${sections.size} sections. `;
+
+    if (sampleItems.length > 0) {
+      text += `Topics include ${sampleItems.slice(0, 3).join(", ")}${sampleItems.length > 3 ? ", and more" : ""}. `;
+    }
+    text += "Designed for quick revision and concept clarity — use them alongside your standard textbooks to reinforce what you study.";
+    return text;
   }
 
   if (p.category === "books") {
-    return `This book${p.brand ? ` by ${p.brand}` : ""} is a standard reference for UPSC preparation. It covers the complete syllabus with detailed explanations, diagrams, and practice questions. Essential reading for both Prelims and Mains.`;
+    let text = "This book";
+    if (brand) text += ` by ${brand}`;
+    text += " is a well-known reference for UPSC preparation. It covers the subject comprehensively with clear explanations, diagrams, and practice material.";
+    if (totalItems > 1) {
+      text += ` The download includes ${totalItems} resources covering different chapters and topics.`;
+    }
+    return text;
   }
 
-  if (p.category === "magazines") {
-    return `This monthly magazine${p.brand ? ` from ${p.brand}` : ""} provides in-depth analysis of current affairs and contemporary issues relevant to UPSC. It covers government schemes, policies, and important developments across various sectors.`;
+  if (p.category === "magazines" && sections.size > 0) {
+    const firstSec = Array.from(sections.entries())[0];
+    const sampleItems = sampleSectionItems(p.resources, firstSec[0], 3);
+    let text = `This magazine`;
+    if (brand) text += ` from ${brand}`;
+    text += ` covers ${totalItems} topics across ${sections.size} sections. `;
+    if (sampleItems.length > 0) {
+      text += `It includes analysis on ${sampleItems.join(", ")} and more. `;
+    }
+    text += "Each issue focuses on current developments relevant to UPSC GS papers.";
+    return text;
   }
 
   if (p.category === "current-affairs") {
-    return `This current affairs compilation${p.brand ? ` by ${p.brand}` : ""} covers important national and international events. It includes ${totalItems} entries organized for easy revision. Essential for UPSC Prelims and Mains current affairs preparation.`;
+    let text = `This current affairs compilation`;
+    if (brand) text += ` by ${brand}`;
+    text += ` covers ${totalItems} important events and topics. `;
+    if (sections.size > 0) {
+      text += `It is organized into ${Array.from(sections.keys()).slice(0, 4).join(", ")}${sections.size > 4 ? " and more" : ""}. `;
+    }
+    text += "Use it to stay updated with national and international events for Prelims and Mains.";
+    return text;
   }
 
-  return `This study material${p.brand ? ` from ${p.brand}` : ""} includes ${totalItems} resources covering important UPSC topics. Ideal for comprehensive preparation.`;
+  let text = "This study material";
+  if (brand) text += ` from ${brand}`;
+  text += ` includes ${totalItems} resources`;
+  if (sections.size > 0) {
+    text += ` across ${Array.from(sections.keys()).slice(0, 3).join(", ")}`;
+  }
+  text += ". Ideal for UPSC preparation.";
+  return text;
 }
 
 export function generateHowToUse(p: PDFMeta): string {
   const sections = getSections(p.resources);
+  const sectionCount = sections.size;
+  const totalItems = p.resources?.length || 0;
 
   if (p.category === "test-series") {
-    const sectionCount = sections.size;
-    return `Plan to solve ${sectionCount > 1 ? "one section per week starting with the first topic" : "this test under timed conditions to simulate the actual exam"}. After completing each test, thoroughly review the solutions and note down mistakes. Track your progress across tests to identify weak areas. Re-attempt difficult questions after a gap of 2-3 weeks.`;
+    const firstSection = Array.from(sections.keys())[0] || "";
+    if (sectionCount > 3) {
+      return `Start with the ${firstSection.toLowerCase()} section — attempt one paper at a time under timed conditions. After completing all papers in a section, move to the next. Review solutions thoroughly after each test, noting recurring mistakes. With ${totalItems} papers across ${sectionCount} sections, pace yourself: aim for 2-3 tests per week. Revisit difficult questions after 2-3 weeks to check improvement.`;
+    }
+    return `Attempt each paper under strict timed conditions. After finishing, review the solutions in detail — focus on understanding why you got questions wrong, not just the correct answer. Track your scores across tests to spot weak areas.${totalItems > 5 ? ` With ${totalItems} papers available, you have enough material to practice consistently for several weeks.` : ""}`;
   }
 
   if (p.category === "notes") {
-    return "Use these notes alongside your standard textbooks. First read the chapter from the textbook, then revise using these notes for quick recall. Mark important points and create your own shorthand. Revisit these notes weekly to reinforce retention.";
+    const firstSection = Array.from(sections.keys())[0] || "";
+    return `Start with the ${firstSection.toLowerCase()} section. Read the corresponding chapter from your standard textbook first, then revise using these notes for quick recall. Mark points you find difficult and create your own shorthand.${sectionCount > 2 ? ` Move through all ${sectionCount} sections systematically.` : ""} Revisit these notes weekly — spaced repetition is key to retention.`;
   }
 
   if (p.category === "books") {
-    return "Read this book systematically chapter by chapter. Mark important sections and create notes for revision. For subjects like environment and geography, focus on diagrams and tables. Solve the practice questions at the end of each chapter.";
+    return "Read the book chapter by chapter. Mark important sections, definitions, and data points as you go. After finishing a chapter, close the book and recall the key points — this strengthens memory. For subjects with diagrams (geography, environment), trace and label them without looking. Revisit marked sections during revision phases.";
   }
 
-  if (p.category === "magazines" || p.category === "current-affairs") {
-    return "Read the magazine/compilation monthly to stay updated with current affairs. Mark issues relevant to GS papers. Create topic-wise notes from the material for revision before the exam. Focus on government schemes, reports, and policy changes.";
+  if (p.category === "magazines") {
+    return "Read the magazine issue by issue. For each article, note how it connects to the UPSC syllabus — which GS paper does it relate to? Create one-page summaries for each major topic. During revision, these summaries will save hours. Focus on government schemes, committee recommendations, and policy shifts — these are frequently asked in Prelims and Mains.";
   }
 
-  return "Go through the material systematically. Focus on understanding concepts rather than memorization. Revise periodically and practice answer writing using the knowledge gained.";
+  if (p.category === "current-affairs") {
+    return `Go through the compilation topic-wise. For each entry, ask: "Which GS paper does this belong to? Is it relevant for Prelims or Mains?" Make brief notes linking current events to static subjects.${totalItems > 20 ? ` With ${totalItems} entries, pace yourself — cover 5-10 entries per day.` : ""} Revise these notes weekly rather than re-reading the entire compilation.`;
+  }
+
+  return "Go through the material systematically. Focus on understanding concepts, not memorization. Revise periodically and practice applying what you learn through answer writing.";
 }
 
 export function generateKeyTopics(p: PDFMeta): string[] {
@@ -87,99 +160,67 @@ export function generateKeyTopics(p: PDFMeta): string[] {
 
   if (p.category === "test-series") {
     for (const section of sections.keys()) {
-      const topic = section
-        .replace(/test|paper|set|section/gi, "")
-        .trim();
-      if (topic.length > 2) topics.push(topic);
+      const cleaned = section.replace(/test|paper|set|section/gi, "").trim();
+      if (cleaned.length > 2) topics.push(cleaned);
     }
   }
 
   if (p.resources) {
-    for (const r of p.resources.slice(0, 12)) {
+    const seen = new Set<string>();
+    for (const r of p.resources) {
       const name = r.name.replace(/PDF|pdf|download|free/gi, "").trim();
-      if (name.length > 5 && !topics.includes(name)) {
+      if (name.length > 5 && !seen.has(name)) {
+        seen.add(name);
         topics.push(name);
       }
+      if (topics.length >= 10) break;
     }
   }
 
-  const generic = getGenericTopics(p.category, p.brand);
-  return [...new Set([...topics, ...generic])].slice(0, 8);
-}
-
-function getGenericTopics(category: string, brand: string | null): string[] {
-  const brandLower = brand?.toLowerCase() || "";
-
-  if (category === "test-series") {
-    const t = ["UPSC Prelims mock tests", "UPSC Mains practice papers", "answer writing practice"];
-    if (brandLower.includes("vision")) t.unshift("Vision IAS test series analysis");
-    if (brandLower.includes("forum")) t.unshift("Forum IAS test papers");
-    if (brandLower.includes("insights")) t.unshift("Insights IAS mock tests");
-    return t;
-  }
-
-  if (category === "notes") {
-    const t = ["UPSC revision notes", "concept clarity material", "quick revision guides"];
-    if (brandLower.includes("drishti")) t.unshift("Drishti IAS classroom notes");
-    if (brandLower.includes("mk") || brandLower.includes("yadav")) t.unshift("MK Yadav handwritten notes");
-    if (brandLower.includes("forum")) t.unshift("Forum IAS ethics notes");
-    return t;
-  }
-
-  if (category === "books") {
-    return ["UPSC reference books", "standard textbooks for civil services", "Prelims and Mains booklist"];
-  }
-
-  if (category === "magazines") {
-    const t = ["monthly current affairs", "government schemes analysis", "policy developments"];
-    if (brandLower.includes("yojana")) t.unshift("Yojana magazine analysis");
-    if (brandLower.includes("kurukshetra")) t.unshift("Kurukshetra rural development");
-    if (brandLower.includes("insights")) t.unshift("Insights Prime magazine");
-    if (brandLower.includes("vision")) t.unshift("Vision IAS monthly compilation");
-    return t;
-  }
-
-  if (category === "current-affairs") {
-    return ["daily current affairs", "yearly current affairs compilation", "national and international events"];
-  }
-
-  return ["UPSC study material", "civil services preparation"];
+  return [...new Set(topics)].slice(0, 10);
 }
 
 export function generateFAQs(p: PDFMeta): Array<{ q: string; a: string }> {
   const brand = p.brand || "this material";
-  const title = p.title;
+  const sections = getSections(p.resources);
+  const totalItems = p.resources?.length || 0;
 
   if (p.category === "test-series") {
+    const sectionList = Array.from(sections.keys()).slice(0, 3).join(", ");
     return [
       {
-        q: `How many tests are included in ${title}?`,
-        a: `This collection includes ${p.resources?.length || "multiple"} individual test papers. The tests are organized across different sections covering the complete UPSC syllabus.`,
+        q: `How many test papers are included?`,
+        a: `${totalItems} test papers across ${sections.size} sections: ${sectionList}${sections.size > 3 ? " and more" : ""}. Each paper comes with detailed solutions.`,
       },
       {
-        q: `Are solutions provided with ${brand} test series?`,
-        a: `Yes, detailed solutions and explanations are provided for each test paper. This helps you understand the reasoning behind each answer and learn from your mistakes.`,
+        q: `Are these tests based on the latest UPSC pattern?`,
+        a: `Yes. These tests follow the current UPSC exam pattern — both Prelims (objective) and Mains (descriptive) formats. The solutions include step-by-step reasoning.`,
       },
       {
-        q: `Is this ${title} suitable for both Prelims and Mains?`,
-        a: `${p.resources?.some(r => r.section?.toLowerCase().includes("mains")) ? "Yes, it covers both Prelims and Mains papers." : "This test series focuses on specific papers. Check the section breakdown above to see which papers are included."}`,
+        q: `Do I need to pay for these test papers?`,
+        a: `No — all ${totalItems} test papers in this collection are available for free download. Click the download button next to each paper to save it. If you want verified topper answer copies with real scores, check the ₹799 bundle.`,
+      },
+      {
+        q: `Can I use these for answer writing practice?`,
+        a: `Yes — especially the Mains papers. Attempt writing full answers under timed conditions, then compare with the solutions provided. This is one of the most effective ways to improve your answer writing.`,
       },
     ];
   }
 
   if (p.category === "notes") {
+    const sectionNames = Array.from(sections.keys()).slice(0, 3).join(", ");
     return [
       {
-        q: `Are these ${brand} notes sufficient for UPSC preparation?`,
-        a: `These notes are excellent for revision and concept clarity, but should be used alongside standard textbooks and current affairs reading for comprehensive preparation.`,
+        q: `Are these notes enough for UPSC preparation?`,
+        a: `These notes are great for revision, but pair them with standard textbooks for depth. Use the combination: textbook → notes → practice questions.`,
       },
       {
         q: `What topics do these notes cover?`,
-        a: `The notes cover ${Array.from(getSections(p.resources).keys()).slice(0, 3).join(", ")} and related areas. Each topic is explained in a concise manner suitable for quick revision.`,
+        a: `${totalItems} resources across ${sections.size} sections including ${sectionNames}. Each topic is presented in a concise format optimized for quick revision.`,
       },
       {
-        q: `Can I download these notes for offline study?`,
-        a: `Yes, all resources in this collection are available for download. You can save them for offline study and revision.`,
+        q: `Can I download and print these notes?`,
+        a: `Yes, all resources are free to download. Save them for offline study or print them — whatever works best for your preparation style.`,
       },
     ];
   }
@@ -187,45 +228,48 @@ export function generateFAQs(p: PDFMeta): Array<{ q: string; a: string }> {
   if (p.category === "books") {
     return [
       {
-        q: `Is ${title} recommended for UPSC preparation?`,
-        a: `Yes, ${title}${brand ? ` by ${brand}` : ""} is widely used by UPSC aspirants. It covers the essential topics required for both Prelims and Mains examination.`,
+        q: `Is this book useful for UPSC preparation?`,
+        a: `Yes${brand ? `, "${p.title}" by ${brand}` : ""} is a recommended reference for UPSC. It covers the subject in depth with clear explanations suitable for both Prelims and Mains.`,
       },
       {
-        q: `Which edition of this book is this?`,
-        a: `Please check the file details above for edition and publication information. The PDF includes the complete content as published.`,
+        q: `Should I read the full book or only specific chapters?`,
+        a: `Read the full book once to build a strong foundation. During revision, focus on chapters that align with the UPSC syllabus and your weak areas.`,
       },
       {
-        q: `Should I read the full book or specific chapters?`,
-        a: `It is recommended to read the full book at least once, then focus on specific chapters based on the UPSC syllabus and your preparation needs.`,
+        q: `Does this include practice questions?`,
+        a: `The book includes exercises and practice material. Work through them after completing each chapter to test your understanding.`,
       },
     ];
   }
 
   if (p.category === "magazines" || p.category === "current-affairs") {
+    const hasHindi = p.resources?.some((r) => r.language === "hi");
     return [
       {
-        q: `How is ${title} useful for UPSC?`,
-        a: `This compilation covers important current events and issues relevant to UPSC GS papers. It helps you stay updated with government schemes, policies, and international developments.`,
+        q: `How does this help with UPSC current affairs?`,
+        a: `This compilation${brand ? ` from ${brand}` : ""} covers important current events mapped to the UPSC syllabus. It saves you the effort of tracking news daily — everything is compiled topic-wise.`,
       },
       {
-        q: `How should I use this for current affairs preparation?`,
-        a: `Read it monthly and make topic-wise notes. Link the current affairs to static subjects in the syllabus. Focus on issues relevant to GS Paper 1, 2, and 3.`,
+        q: `What is the best way to use this material?`,
+        a: `Read topic by topic. For each issue, note its relevance to specific GS papers. Create brief one-page summaries for revision. Revise these summaries weekly.`,
       },
       {
-        q: `Is this available in both Hindi and English?`,
-        a: `${p.resources?.some(r => r.language === "hi") ? "Yes, this compilation includes resources in both Hindi and English." : "This compilation is primarily in English. Look for the Hindi tag next to individual resources for Hindi-language content."}`,
+        q: `Is this available in Hindi?`,
+        a: hasHindi
+          ? "Yes, this compilation includes resources in Hindi. Look for the 'HI' tag next to Hindi-language items in the resources section above."
+          : "This compilation is primarily in English. Some topics may have Hindi resources — check for the 'HI' tag in the resource list.",
       },
     ];
   }
 
   return [
     {
-      q: `What is included in ${title}?`,
-      a: `This collection includes UPSC study material${p.resources?.length ? ` with ${p.resources.length} individual resources` : ""}. Check the sections above for a complete breakdown.`,
+      q: `What is included in this collection?`,
+      a: `This collection includes ${totalItems} resources${sections.size > 0 ? ` across ${sections.size} sections` : ""}. Check the resources section above for the complete list with download links.`,
     },
     {
-      q: `Is this material free to download?`,
-      a: `Yes, all resources in this collection are available for free download. Click the download button next to each resource to save it.`,
+      q: `Is this really free to download?`,
+      a: "Yes — every resource here is available for free. No signup, no payment required. Just click the download button next to each item.",
     },
   ];
 }
@@ -235,44 +279,52 @@ export function generateStudyTips(p: PDFMeta): string[] {
 
   if (p.category === "test-series") {
     const tips = [
-      "Attempt tests under strict timed conditions to simulate the actual exam experience.",
-      "Review each test thoroughly — analyze mistakes, not just scores.",
-      "Create a mistake log and revisit it before the next test.",
+      "Attempt one paper under timed conditions without interruptions — simulate the real exam hall.",
+      "After marking, analyze each wrong answer: was it a concept gap, misinterpretation, or silly mistake?",
+      "Maintain a mistake log. Review it before each test to avoid repeating errors.",
     ];
     if (totalItems > 10) {
-      tips.push(`With ${totalItems} tests available, create a schedule to attempt 1-2 tests per week.`);
+      tips.push(`With ${totalItems} papers, create a study schedule: 2 tests per week with dedicated review days.`);
     }
     return tips;
   }
 
   if (p.category === "notes") {
     return [
-      "Use these notes for revision after completing each topic from standard textbooks.",
-      "Create your own shorthand and margin notes for faster revision.",
-      "Review these notes at least 3 times before the exam for maximum retention.",
+      "Read the relevant textbook chapter first, then revise using these notes — this dual approach improves retention significantly.",
+      "Use active recall: read a section, close the notes, and write down what you remember from memory.",
+      "Schedule weekly revision slots. Revisiting notes after 1 day, 1 week, and 1 month locks concepts into long-term memory.",
     ];
   }
 
   if (p.category === "books") {
     return [
-      "Read the book cover to cover once, then focus on weak areas.",
-      "Create chapter-wise summaries for quick revision before the exam.",
-      "Mark and revise important definitions, diagrams, and data points.",
+      "Read one chapter at a time. After each chapter, write a brief summary without looking at the book.",
+      "Pay special attention to diagrams, tables, and data points — these are gold for Prelims questions.",
+      "Mark pages you find difficult. Revisit them after completing the full book — concepts often click on second reading.",
     ];
   }
 
-  if (p.category === "magazines" || p.category === "current-affairs") {
+  if (p.category === "magazines") {
     return [
-      "Set aside dedicated time each week to read current affairs compilations.",
-      "Link current events to static syllabus topics for better retention.",
-      "Practice writing concise notes on important issues — this helps in Mains answer writing.",
+      "Don't just read — engage. For each article, write one paragraph connecting it to a GS paper or static topic.",
+      "Create a 'Current Affairs' notebook with topic-wise pages. Add relevant points from each magazine issue.",
+      "Focus on government schemes, committee recommendations, and policy changes — these are frequently tested in UPSC.",
+    ];
+  }
+
+  if (p.category === "current-affairs") {
+    return [
+      "Classify each event by GS paper relevance — this trains your brain to think like the exam.",
+      "Link current events to static subjects. For example, a climate summit → environment + geography + international relations.",
+      "Revise weekly, not monthly. A 30-minute weekly review of current affairs is more effective than a 4-hour session before the exam.",
     ];
   }
 
   return [
     "Go through the material systematically.",
-    "Revise periodically to reinforce learning.",
-    "Use alongside answer writing practice for best results.",
+    "Revise periodically using active recall techniques.",
+    "Practice applying concepts through answer writing.",
   ];
 }
 

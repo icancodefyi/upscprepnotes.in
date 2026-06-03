@@ -21,20 +21,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: "/pdf",
-        destination: "/free-materials",
-        permanent: true,
-      },
-      {
-        source: "/pdf/:path*",
-        destination: "/free-materials/:path*",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

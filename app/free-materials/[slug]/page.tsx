@@ -23,13 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pdf = await PDFModel.findOne({ slug }).lean();
   if (!pdf) return { title: "PDF Not Found" };
   const p = pdf as any;
+  const metaDesc = generateWhatsIncluded(p).slice(0, 160);
   return {
-    title: `${p.title} — Free PDF Download | UPSCPrepNotes`,
-    description: p.description || `Download ${p.title} free PDF. ${p.brand ? `${p.brand} — ` : ""}UPSC study material for Prelims and Mains preparation.`,
+    title: `${p.title} — Free Download | UPSCPrepNotes`,
+    description: metaDesc,
     alternates: { canonical: `https://upscprepnotes.in/free-materials/${slug}` },
     openGraph: {
-      title: `${p.title} — Free PDF Download`,
-      description: p.description,
+      title: `${p.title} — Free Download`,
+      description: metaDesc,
       url: `https://upscprepnotes.in/free-materials/${slug}`,
     },
   };
@@ -265,6 +266,55 @@ export default async function PDFDetailPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        {/* EXPLORE MORE */}
+        <section className="mb-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-4">
+            Explore More Free Resources
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Link
+              href="/toppers"
+              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
+            >
+              <span className="text-2xl">🏆</span>
+              <div>
+                <p className="text-sm font-semibold text-zinc-800">Topper Answer Copies</p>
+                <p className="text-xs text-zinc-500 mt-0.5">280+ verified topper profiles with marks and copies</p>
+              </div>
+            </Link>
+            <Link
+              href="/pyq"
+              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
+            >
+              <span className="text-2xl">📋</span>
+              <div>
+                <p className="text-sm font-semibold text-zinc-800">Previous Year Questions</p>
+                <p className="text-xs text-zinc-500 mt-0.5">310+ PYQ papers with detailed analysis</p>
+              </div>
+            </Link>
+            <Link
+              href="/free-materials"
+              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
+            >
+              <span className="text-2xl">📚</span>
+              <div>
+                <p className="text-sm font-semibold text-zinc-800">More Free Study Material</p>
+                <p className="text-xs text-zinc-500 mt-0.5">2,700+ resources across test series, notes, books, magazines</p>
+              </div>
+            </Link>
+            <Link
+              href="/resources"
+              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
+            >
+              <span className="text-2xl">📖</span>
+              <div>
+                <p className="text-sm font-semibold text-zinc-800">UPSC Guides</p>
+                <p className="text-xs text-zinc-500 mt-0.5">Full form, syllabus breakdown, free material guide</p>
+              </div>
+            </Link>
+          </div>
+        </section>
 
         {/* RELATED PDFs — same category */}
         <PDFRelated category={p.category} currentSlug={p.slug} currentTitle={p.title} />
