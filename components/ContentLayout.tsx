@@ -174,6 +174,27 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
           </section>
         )}
 
+        {/* Free Materials CTA */}
+        <section className="mt-16 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-100 border border-blue-200">
+              <span className="text-2xl">📚</span>
+            </div>
+            <div className="flex-1">
+              <h2 className="text-base font-bold text-blue-900">Free UPSC Study Material</h2>
+              <p className="mt-1 text-sm text-blue-700">
+                2,700+ resources — test series, notes, books, magazines. Download free from top coaching institutes.
+              </p>
+            </div>
+            <Link
+              href="/free-materials"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors"
+            >
+              Browse Free Materials &rarr;
+            </Link>
+          </div>
+        </section>
+
         <section className="mt-16 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-center sm:p-12">
           <h2 className="text-2xl font-bold text-white sm:text-3xl">{t.ctaFinal}</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-gray-400">{t.ctaFinalSub}</p>

@@ -247,6 +247,80 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* FREE STUDY MATERIALS */}
+        <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
+          <div className="mb-8">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-gray-400">
+              Free Resources
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              2,700+ Free Study Resources
+            </h2>
+            <p className="mt-3 max-w-lg text-sm leading-7 text-gray-500">
+              Download test series, notes, books, magazines, and current affairs compilations from top UPSC coaching institutes — all free.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Link
+              href="/free-materials?category=test-series"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-3xl">📝</span>
+                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  2,354 items
+                </span>
+              </div>
+              <h3 className="text-lg font-bold mb-2">Test Series</h3>
+              <p className="text-sm text-gray-500">
+                Vision IAS, Forum IAS, Insights IAS, Shankar IAS — prelims and mains papers with solutions.
+              </p>
+            </Link>
+
+            <Link
+              href="/free-materials?category=notes"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-3xl">📓</span>
+                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  204 items
+                </span>
+              </div>
+              <h3 className="text-lg font-bold mb-2">Notes &amp; Material</h3>
+              <p className="text-sm text-gray-500">
+                Drishti IAS, MK Yadav, Forum IAS Ethics — handwritten and compiled notes for quick revision.
+              </p>
+            </Link>
+
+            <Link
+              href="/free-materials?category=magazines"
+              className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-3xl">📰</span>
+                <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  167 items
+                </span>
+              </div>
+              <h3 className="text-lg font-bold mb-2">Magazines &amp; Current Affairs</h3>
+              <p className="text-sm text-gray-500">
+                Yojana, Kurukshetra, Vision IAS Monthly, daily and yearly current affairs compilations.
+              </p>
+            </Link>
+          </div>
+
+          <div className="mt-6">
+            <Link
+              href="/free-materials"
+              className="text-sm font-medium text-emerald-700 underline underline-offset-4 hover:text-emerald-600 transition-colors"
+            >
+              Browse all free study materials &rarr;
+            </Link>
+          </div>
+        </section>
+
         {/* IBEC METHOD */}
         <section className="mb-20 border-t border-gray-200 pt-12 md:pt-16">
           <div className="mb-10">

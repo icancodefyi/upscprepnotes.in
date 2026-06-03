@@ -298,7 +298,19 @@ export default async function PYQYearPage({ params }: Props) {
                   <p className="text-xs text-gray-400 mb-4">
                     21 strategy guides + topper copies + interview prep. Everything in one pack.
                   </p>
-                  <a
+                <a
+                  href="/free-materials"
+                  className="flex items-center justify-between p-3 bg-blue-50 border-2 border-blue-100 hover:border-blue-300 transition-all group"
+                >
+                  <span className="text-sm font-medium text-blue-700 group-hover:text-blue-900">
+                    Free Study Material
+                  </span>
+                  <ArrowRight
+                    size={14}
+                    className="text-blue-300 group-hover:text-blue-600 transform group-hover:translate-x-1 transition-all"
+                  />
+                </a>
+                <a
                     href="/toppers/toppers-copy-compilation"
                     data-track="pyq-sidebar-bundle"
                     className="inline-flex items-center justify-center w-full bg-white text-gray-900 font-bold px-4 py-3 hover:bg-gray-100 transition-colors text-sm"

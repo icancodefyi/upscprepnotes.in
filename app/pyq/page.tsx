@@ -159,6 +159,27 @@ export default async function PYQIndexPage() {
           </div>
         </section>
 
+        {/* Free Materials CTA */}
+        <section className="p-8 md:p-12 bg-white border-b-2 border-gray-100">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 max-w-4xl mx-auto">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-100 border border-blue-200">
+              <span className="text-2xl">📚</span>
+            </div>
+            <div className="flex-1">
+              <h2 className="text-base font-bold text-gray-900">Free Study Material</h2>
+              <p className="mt-1 text-sm text-gray-500">
+                Practice with test series, revise with notes, and stay updated with current affairs compilations — all free.
+              </p>
+            </div>
+            <Link
+              href="/free-materials"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors"
+            >
+              Browse Free Materials &rarr;
+            </Link>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8 md:p-12">
           <div className="flex flex-col md:flex-row items-center gap-8">
