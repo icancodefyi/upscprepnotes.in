@@ -9,7 +9,7 @@ type NavItem = { label: string; href: string; tag?: "new" };
 const NAV_ITEMS: NavItem[] = [
   { label: "Toppers", href: "/toppers" },
   { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
-  { label: "PDF Library", href: "/pdf" },
+  { label: "Free Materials", href: "/free-materials" },
   { label: "PYQs", href: "/pyq" },
   { label: "Ask AI", href: "/ask" },
 ];

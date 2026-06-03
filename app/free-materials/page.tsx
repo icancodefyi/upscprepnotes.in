@@ -12,14 +12,14 @@ interface Props {
 }
 
 export const metadata: Metadata = {
-  title: "Free UPSC PDF Library — Test Series, Notes, Books & Magazines",
+  title: "Free UPSC Study Material — Test Series, Notes, Books & Magazines",
   description:
     "Download free UPSC study material PDFs including test series from Vision IAS, Forum IAS, Insights IAS, notes by MK Yadav, Drishti IAS, and more. Updated daily.",
-  alternates: { canonical: "https://upscprepnotes.in/pdf" },
+  alternates: { canonical: "https://upscprepnotes.in/free-materials" },
   openGraph: {
-    title: "Free UPSC PDF Library — UPSCPrepNotes",
-    description: "Download free UPSC PDFs: test series, coaching notes, books, magazines, and current affairs compilations.",
-    url: "https://upscprepnotes.in/pdf",
+    title: "Free UPSC Study Material — UPSCPrepNotes",
+    description: "Download free UPSC study material: test series, coaching notes, books, magazines, and current affairs compilations.",
+    url: "https://upscprepnotes.in/free-materials",
   },
 };
 
@@ -99,7 +99,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
             Free Resource Library
           </p>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Free UPSC PDF Library
+            Free UPSC Study Material
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-8 text-zinc-600">
             Download free UPSC study material curated from top coaching institutes.
@@ -113,7 +113,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
           {activeCategory && (
             <div className="mb-8 flex items-center gap-3">
               <Link
-                href="/pdf"
+                href="/free-materials"
                 className="text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors"
               >
                 &larr; All Categories
@@ -132,7 +132,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
               {categories.map((cat) => (
                 <Link
                   key={cat.key}
-                  href={`/pdf?category=${cat.key}`}
+                  href={`/free-materials?category=${cat.key}`}
                   className={`group rounded-xl border ${cat.color} p-6 transition-all hover:shadow-md`}
                 >
                   <div className="flex items-center justify-between mb-4">
@@ -165,7 +165,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
               {pdfs.slice(0, 24).map((pdf: any) => (
                 <Link
                   key={pdf._id}
-                  href={`/pdf/${pdf.slug}`}
+                  href={`/free-materials/${pdf.slug}`}
                   className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
                 >
                   <div className="flex items-start gap-3">

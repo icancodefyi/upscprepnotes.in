@@ -4,6 +4,14 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
 import { Button } from "@/components/ui/button";
+import {
+  generateWhatsIncluded,
+  generateHowToUse,
+  generateKeyTopics,
+  generateStudyTips,
+  generateFAQs,
+  getCategoryLabel,
+} from "@/lib/pdf-content";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${p.title} — Free PDF Download | UPSCPrepNotes`,
     description: p.description || `Download ${p.title} free PDF. ${p.brand ? `${p.brand} — ` : ""}UPSC study material for Prelims and Mains preparation.`,
-    alternates: { canonical: `https://upscprepnotes.in/pdf/${slug}` },
+    alternates: { canonical: `https://upscprepnotes.in/free-materials/${slug}` },
     openGraph: {
       title: `${p.title} — Free PDF Download`,
       description: p.description,
-      url: `https://upscprepnotes.in/pdf/${slug}`,
+      url: `https://upscprepnotes.in/free-materials/${slug}`,
     },
   };
 }
@@ -48,14 +56,34 @@ export default async function PDFDetailPage({ params }: Props) {
   const downloadUrl = p.downloadUrl || p.imagekitUrl || "#";
   const sourceUrl = p.sourceUrl || "";
 
+  const whatsIncluded = generateWhatsIncluded(p);
+  const howToUse = generateHowToUse(p);
+  const keyTopics = generateKeyTopics(p);
+  const studyTips = generateStudyTips(p);
+  const faqs = generateFAQs(p);
+
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }),
+        }}
+      />
       <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-28">
         {/* BREADCRUMB */}
         <nav className="mb-10 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
           <Link href="/" className="hover:text-zinc-800 transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/pdf" className="hover:text-zinc-800 transition-colors">PDF Library</Link>
+          <Link href="/free-materials" className="hover:text-zinc-800 transition-colors">Free Materials</Link>
           <span>/</span>
           <span className="text-zinc-800 font-medium">{p.title}</span>
         </nav>
@@ -88,6 +116,48 @@ export default async function PDFDetailPage({ params }: Props) {
             <p className="mt-2 text-sm text-zinc-400">
               File size: {p.fileSize} {p.pageCount ? `· ${p.pageCount} pages` : ""}
             </p>
+          )}
+        </section>
+
+        {/* WHAT'S INCLUDED */}
+        <section className="mb-12">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
+            What&rsquo;s Included
+          </h2>
+          <p className="text-base leading-8 text-zinc-700">
+            {whatsIncluded}
+          </p>
+          {keyTopics.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {keyTopics.map((topic) => (
+                <span
+                  key={topic}
+                  className="text-xs bg-zinc-100 text-zinc-600 rounded-full px-3 py-1"
+                >
+                  {topic}
+                </span>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* HOW TO USE */}
+        <section className="mb-12 rounded-2xl bg-zinc-50 border border-zinc-200 p-6 sm:p-8">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
+            How to Use This for UPSC Prep
+          </h2>
+          <p className="text-base leading-8 text-zinc-700">
+            {howToUse}
+          </p>
+          {studyTips.length > 0 && (
+            <div className="mt-4 space-y-2">
+              {studyTips.map((tip, i) => (
+                <div key={i} className="flex items-start gap-2.5 text-sm text-zinc-600">
+                  <span className="text-emerald-600 mt-0.5 shrink-0">&#10003;</span>
+                  <span>{tip}</span>
+                </div>
+              ))}
+            </div>
           )}
         </section>
 
@@ -159,6 +229,42 @@ export default async function PDFDetailPage({ params }: Props) {
             </Button>
           </div>
         </section>
+
+        {/* FAQ */}
+        {faqs.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-lg font-bold text-zinc-800 mb-6">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-3">
+              {faqs.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group rounded-xl border border-zinc-200 bg-white overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between gap-3 px-5 py-3.5 cursor-pointer hover:bg-zinc-50 transition-colors list-none">
+                    <span className="text-sm font-semibold text-zinc-800 pr-4">
+                      {faq.q}
+                    </span>
+                    <svg
+                      className="w-4 h-4 text-zinc-400 shrink-0 transition-transform group-open:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <div className="border-t border-zinc-100 px-5 py-4">
+                    <p className="text-sm leading-7 text-zinc-600">
+                      {faq.a}
+                    </p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* RELATED PDFs — same category */}
         <PDFRelated category={p.category} currentSlug={p.slug} currentTitle={p.title} />
@@ -278,7 +384,7 @@ async function PDFRelated({
         {related.map((r: any) => (
           <Link
             key={r._id}
-            href={`/pdf/${r.slug}`}
+            href={`/free-materials/${r.slug}`}
             className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
           >
             <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-black transition-colors truncate">

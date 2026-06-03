@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/pdf`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/free-materials`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
   ];
 
   // Content pages — use real lastUpdated from data files
@@ -95,7 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // PDF resource pages
   const pdfs = await PDFModel.find({}).select("slug updatedAt").lean();
   const pdfPages: MetadataRoute.Sitemap = pdfs.map((p: any) => ({
-    url: `${baseUrl}/pdf/${p.slug}`,
+    url: `${baseUrl}/free-materials/${p.slug}`,
     lastModified: p.updatedAt || new Date(),
     changeFrequency: "weekly",
     priority: 0.8,

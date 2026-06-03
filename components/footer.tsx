@@ -56,8 +56,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pdf" className="hover:text-black transition-colors">
-                  PDF Library
+                <Link href="/free-materials" className="hover:text-black transition-colors">
+                  Free Materials
                 </Link>
               </li>
             </ul>
