@@ -55,6 +55,11 @@ export default function Footer() {
                   PYQs
                 </Link>
               </li>
+              <li>
+                <Link href="/pdf" className="hover:text-black transition-colors">
+                  PDF Library
+                </Link>
+              </li>
             </ul>
           </div>
 

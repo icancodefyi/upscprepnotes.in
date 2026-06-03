@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { PYQModel } from "@/models/pyq.model";
+import { PDFModel } from "@/models/pdf.model";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
 import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
@@ -39,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/disclaimer`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/pdf`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
   ];
 
   // Content pages — use real lastUpdated from data files
@@ -90,6 +92,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // PDF resource pages
+  const pdfs = await PDFModel.find({}).select("slug updatedAt").lean();
+  const pdfPages: MetadataRoute.Sitemap = pdfs.map((p: any) => ({
+    url: `${baseUrl}/pdf/${p.slug}`,
+    lastModified: p.updatedAt || new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
   // Year pages
   const yearPages: MetadataRoute.Sitemap = YEAR_KEYS.map((year) => ({
     url: `${baseUrl}/year/${year}`,
@@ -105,5 +116,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pyqPages,
     ...optionalPages,
     ...yearPages,
+    ...pdfPages,
   ];
 }

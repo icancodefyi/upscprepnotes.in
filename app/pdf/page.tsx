@@ -1,0 +1,183 @@
+import Link from "next/link";
+import type { Metadata } from "next";
+import { connectDB } from "@/lib/mongodb";
+import { PDFModel } from "@/models/pdf.model";
+
+export const metadata: Metadata = {
+  title: "Free UPSC PDF Library — Test Series, Notes, Books & Magazines",
+  description:
+    "Download free UPSC study material PDFs including test series from Vision IAS, Forum IAS, Insights IAS, notes by MK Yadav, Drishti IAS, and more. Updated daily.",
+  alternates: { canonical: "https://upscprepnotes.in/pdf" },
+  openGraph: {
+    title: "Free UPSC PDF Library — UPSCPrepNotes",
+    description: "Download free UPSC PDFs: test series, coaching notes, books, magazines, and current affairs compilations.",
+    url: "https://upscprepnotes.in/pdf",
+  },
+};
+
+const CATEGORIES = [
+  {
+    key: "test-series",
+    label: "Test Series",
+    description: "Vision IAS, Forum IAS, Insights IAS, Shankar IAS, and more — full-length prelims & mains test papers with solutions.",
+    icon: "📝",
+    color: "bg-blue-50 border-blue-200",
+    textColor: "text-blue-700",
+  },
+  {
+    key: "notes",
+    label: "Notes & Material",
+    description: "Handwritten and compiled notes by top educators — Drishti IAS, MK Yadav, Forum IAS Ethics, Sriram IAS Economy, and more.",
+    icon: "📓",
+    color: "bg-emerald-50 border-emerald-200",
+    textColor: "text-emerald-700",
+  },
+  {
+    key: "books",
+    label: "Books",
+    description: "Standard UPSC reference books — Manorama Yearbook, PMF IAS Environment, Oxford Atlas, Arihant Essays, and more.",
+    icon: "📚",
+    color: "bg-amber-50 border-amber-200",
+    textColor: "text-amber-700",
+  },
+  {
+    key: "magazines",
+    label: "Magazines",
+    description: "Monthly magazine compilations — Yojana, Kurukshetra, Insights Prime, Vision IAS Monthly, Pratiyogita Darpan.",
+    icon: "📰",
+    color: "bg-purple-50 border-purple-200",
+    textColor: "text-purple-700",
+  },
+  {
+    key: "current-affairs",
+    label: "Current Affairs",
+    description: "Daily current affairs compilations, yearly compilations, and monthly current affairs PDFs in Hindi & English.",
+    icon: "📰",
+    color: "bg-rose-50 border-rose-200",
+    textColor: "text-rose-700",
+  },
+  {
+    key: "optional",
+    label: "Optional Subjects",
+    description: "Subject-specific materials for Sociology, PSIR, Anthropology, Geography, Mathematics, Philosophy, and more.",
+    icon: "🎯",
+    color: "bg-indigo-50 border-indigo-200",
+    textColor: "text-indigo-700",
+  },
+];
+
+export default async function PDFHubPage() {
+  await connectDB();
+  const pdfs = await PDFModel.find({}).sort({ createdAt: -1 }).lean();
+  const totalPdfs = pdfs.length;
+
+  const categories = CATEGORIES.map((cat) => ({
+    ...cat,
+    count: pdfs.filter((p: any) => p.category === cat.key).length,
+  }));
+
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-24 md:py-32">
+        {/* HERO */}
+        <section className="mb-16">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
+            Free Resource Library
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Free UPSC PDF Library
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-8 text-zinc-600">
+            Download free UPSC study material curated from top coaching institutes.
+            Test series, notes, books, magazines — all in one place.
+            <span className="block mt-1 text-sm text-zinc-400">{totalPdfs} resources available</span>
+          </p>
+        </section>
+
+        {/* CATEGORIES GRID */}
+        <section className="mb-20">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((cat) => (
+              <Link
+                key={cat.key}
+                href={`/pdf/${cat.key}`}
+                className={`group rounded-xl border ${cat.color} p-6 transition-all hover:shadow-md`}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">{cat.icon}</span>
+                  <span className={`text-xs font-semibold ${cat.textColor}`}>
+                    {cat.count} PDFs
+                  </span>
+                </div>
+                <h2 className="text-lg font-bold text-zinc-800 mb-2 group-hover:text-black transition-colors">
+                  {cat.label}
+                </h2>
+                <p className="text-sm leading-6 text-zinc-500">
+                  {cat.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* RECENT PDFs */}
+        {pdfs.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                  Recently Added
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {pdfs.slice(0, 12).map((pdf: any) => (
+                <Link
+                  key={pdf._id}
+                  href={`/pdf/${pdf.slug}`}
+                  className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 mt-0.5">
+                      <span className="text-lg">
+                        {pdf.category === "test-series" ? "📝" : pdf.category === "notes" ? "📓" : pdf.category === "books" ? "📚" : pdf.category === "magazines" ? "📰" : "📄"}
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-black transition-colors truncate">
+                        {pdf.title}
+                      </h3>
+                      {pdf.brand && (
+                        <p className="mt-0.5 text-xs text-zinc-400">{pdf.brand}</p>
+                      )}
+                      <p className="mt-1 text-xs text-zinc-500 line-clamp-2">
+                        {pdf.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* CTA */}
+        <section className="mt-20 rounded-3xl bg-gradient-to-br from-zinc-900 to-zinc-800 p-8 text-center sm:p-12">
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+            Want Actual Topper Answer Copies Too?
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-zinc-400">
+            The ₹799 bundle includes 50+ verified topper answer copies plus 21 strategy guides.
+          </p>
+          <Link
+            href="/toppers/toppers-copy-compilation"
+            data-track="pdf-hub-cta"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-500"
+          >
+            Get the Bundle &rarr;
+          </Link>
+        </section>
+      </div>
+    </main>
+  );
+}
