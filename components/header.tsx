@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-type NavItem = { label: string; href: string; tag?: "new" };
+type NavItem = { label: string; href: string; tag?: "new"; dataTrack: string };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Toppers", href: "/toppers" },
-  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation" },
-  { label: "Free Materials", href: "/free-materials" },
-  { label: "PYQs", href: "/pyq" },
-  { label: "Ask AI", href: "/ask" },
+  { label: "Toppers", href: "/toppers", dataTrack: "nav-toppers" },
+  { label: "Answer Copies", href: "/toppers/toppers-copy-compilation", dataTrack: "nav-answer-copies" },
+  { label: "Free Materials", href: "/free-materials", dataTrack: "nav-free-materials" },
+  { label: "PYQs", href: "/pyq", dataTrack: "nav-pyq" },
+  { label: "Ask AI", href: "/ask", dataTrack: "nav-ask-ai" },
 ];
 
 export default function Header() {
@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className="sticky top-[36px] z-40 bg-[#F8F9FA] border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" data-track="nav-logo" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
             <span className="text-white text-xs font-bold">PN</span>
           </div>
@@ -34,7 +34,7 @@ export default function Header() {
             <Link
               key={item.label}
               href={item.href}
-              data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-answer-copies" : undefined}
+              data-track={item.dataTrack}
               className="hover:text-black transition-colors flex items-center gap-1.5"
             >
               {item.label}
@@ -47,6 +47,7 @@ export default function Header() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
+          data-track="nav-mobile-toggle"
           className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
           aria-label="Toggle menu"
         >
@@ -63,7 +64,7 @@ export default function Header() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                data-track={item.href === "/toppers/toppers-copy-compilation" ? "nav-mobile-answer-copies" : undefined}
+                data-track={item.dataTrack.replace("nav-", "nav-mobile-")}
                 className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
               >
                 {item.label}

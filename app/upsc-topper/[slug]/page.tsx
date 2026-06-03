@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { topperImageSrc } from "@/lib/utils";
+import TrackingProvider from "./TrackingProvider";
 
 export const revalidate = 86400;
 
@@ -330,6 +331,7 @@ export default async function TopperPage({ params }: Props) {
 
   return (
     <main className="min-h-screen">
+      <TrackingProvider name={`${topper.firstName} ${topper.lastName}`} />
       {/* JSON-LD Schemas */}
       <script
         type="application/ld+json"
@@ -347,13 +349,14 @@ export default async function TopperPage({ params }: Props) {
       <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-10">
         {/* BREADCRUMB */}
         <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          <Link href="/" className="transition hover:text-foreground">
+          <Link href="/" className="transition hover:text-foreground" data-track="topper-breadcrumb-home">
             Home
           </Link>
           <span>•</span>
           <Link
             href={`/year/${topper.year}`}
             className="transition hover:text-foreground"
+            data-track="topper-breadcrumb-year"
           >
             {topper.year}
           </Link>
@@ -361,6 +364,7 @@ export default async function TopperPage({ params }: Props) {
           <Link
             href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
             className="transition hover:text-foreground"
+            data-track="topper-breadcrumb-optional"
           >
             {topper.optionalSubject}
           </Link>
@@ -517,7 +521,7 @@ export default async function TopperPage({ params }: Props) {
               {/* ASK AI ABOUT THIS TOPPER */}
               <div className="mt-6">
                 <Button asChild variant="outline" className="w-full rounded-full border-primary/30 text-primary hover:bg-primary/5 hover:text-primary">
-                  <Link href={`/ask?q=Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`}>
+                  <Link href={`/ask?q=Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`} data-track="topper-ask-ai">
                     <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                     </svg>
@@ -533,6 +537,7 @@ export default async function TopperPage({ params }: Props) {
         <section className="mb-16 -mt-4">
           <Link
             href="/toppers/toppers-copy-compilation"
+            data-track="topper-hero-cta"
             className="group block rounded-3xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-6 transition-all duration-300 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-500/10"
           >
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
@@ -605,7 +610,7 @@ export default async function TopperPage({ params }: Props) {
           <div className="mb-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center text-sm">
             <span className="font-semibold text-emerald-800">₹11 per copy</span>
             <span className="text-emerald-700"> — all {topper.firstName}&apos;s answer sheets + 50+ topper copies &amp; 21 strategy guides in one bundle. </span>
-            <Link href="/toppers/toppers-copy-compilation" className="font-semibold text-emerald-800 underline underline-offset-2 hover:text-emerald-600">
+            <Link href="/toppers/toppers-copy-compilation" data-track="topper-inline-bundle" className="font-semibold text-emerald-800 underline underline-offset-2 hover:text-emerald-600">
               Get at ₹799 →
             </Link>
           </div>
@@ -1043,19 +1048,32 @@ export default async function TopperPage({ params }: Props) {
             <Button variant="outline" asChild className="rounded-full">
               <Link
                 href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
+                data-track="topper-explore-optional"
               >
                 All {topper.optionalSubject} Toppers →
               </Link>
             </Button>
 
             <Button variant="outline" asChild className="rounded-full">
-              <Link href={`/year/${topper.year}`}>
+              <Link href={`/year/${topper.year}`} data-track="topper-explore-year">
                 UPSC {topper.year} Toppers →
               </Link>
             </Button>
 
             <Button variant="outline" asChild className="rounded-full">
-              <Link href="/">All UPSC Toppers →</Link>
+              <Link href="/" data-track="topper-explore-all">All UPSC Toppers →</Link>
+            </Button>
+
+            <Button variant="outline" asChild className="rounded-full">
+              <Link href="/free-materials?category=optional" data-track="topper-explore-subject-materials">
+                Free {topper.optionalSubject} Materials →
+              </Link>
+            </Button>
+
+            <Button variant="outline" asChild className="rounded-full">
+              <Link href="/free-materials" data-track="topper-explore-free-materials">
+                All Free Study Material →
+              </Link>
             </Button>
           </div>
         </section>
@@ -1077,6 +1095,7 @@ export default async function TopperPage({ params }: Props) {
                 <Link
                   key={t.slug}
                   href={`/upsc-topper/${t.slug}`}
+                  data-track={`topper-related-${t.slug}`}
                   className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px] hover:border-primary/20"
                 >
                   <div className="flex items-center gap-4">
@@ -1125,6 +1144,7 @@ export default async function TopperPage({ params }: Props) {
                 <Link
                   key={t.slug}
                   href={`/upsc-topper/${t.slug}`}
+                  data-track={`topper-related-${t.slug}`}
                   className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px] hover:border-primary/20"
                 >
                   <div className="flex items-center gap-4">
@@ -1179,6 +1199,7 @@ export default async function TopperPage({ params }: Props) {
               <Link
                 key={related.slug}
                 href={`/upsc-topper/${related.slug}`}
+                data-track={`topper-related-${related.slug}`}
                 className="group rounded-[28px] border border-border/50 bg-card p-5 transition duration-300 hover:-translate-y-[2px] hover:border-primary/20"
               >
                 <div className="flex items-center gap-4">

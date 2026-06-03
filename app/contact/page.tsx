@@ -51,7 +51,7 @@ export default function ContactPage() {
         <p className="leading-8 text-zinc-700">
           Email:
           <br />
-          <a href="mailto:hello@impiclabs.com" className="text-blue-600 underline underline-offset-2">
+           <a href="mailto:hello@impiclabs.com" data-track="contact-email-link" className="text-blue-600 underline underline-offset-2">
             hello@impiclabs.com
           </a>
         </p>

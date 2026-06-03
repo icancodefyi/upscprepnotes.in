@@ -34,6 +34,7 @@ export default async function PYQIndexPage() {
         <div className="mb-8 pt-8">
           <Link
             href="/"
+            data-track="pyq-back-home"
             className="inline-flex items-center text-sm text-gray-500 hover:text-black transition-colors"
           >
             <ArrowRight className="w-4 h-4 mr-2 rotate-180" /> Back to Home
@@ -84,6 +85,7 @@ export default async function PYQIndexPage() {
               <Link
                 key={year}
                 href={`/pyq/${year}`}
+                data-track={`pyq-year-card-${year}`}
                 className="group bg-white border-2 border-gray-200 p-8 hover:border-black transition-all flex flex-col justify-between"
               >
                 <div className="text-5xl font-bold text-gray-300 group-hover:text-black/40 transition-colors mb-4">
@@ -173,6 +175,7 @@ export default async function PYQIndexPage() {
             </div>
             <Link
               href="/free-materials"
+              data-track="pyq-browse-free-materials"
               className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors"
             >
               Browse Free Materials &rarr;

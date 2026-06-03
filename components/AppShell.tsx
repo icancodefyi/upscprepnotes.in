@@ -5,6 +5,8 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import ScrollSlideIn from "@/components/ScrollSlideIn";
+import TimedBundleBanner from "@/components/TimedBundleBanner";
+import StickyBundleBar from "@/components/StickyBundleBar";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -29,10 +31,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <Header />
-      {children}
-      <Footer />
+      <div className="pb-16">{children}</div>
+      <div className="pb-16">
+        <Footer />
+      </div>
       <ExitIntentPopup />
       <ScrollSlideIn />
+      <TimedBundleBanner />
+      <StickyBundleBar />
     </>
   );
 }

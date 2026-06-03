@@ -46,6 +46,7 @@ export default async function ToppersPage() {
               </div>
               <Link
                 href="/free-materials"
+                data-track="toppers-free-materials-cta"
                 className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors"
               >
                 Browse Free Materials &rarr;

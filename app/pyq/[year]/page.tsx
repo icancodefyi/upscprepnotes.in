@@ -100,6 +100,7 @@ export default async function PYQYearPage({ params }: Props) {
               >
                 <a
                   href={paper.pdfUrl}
+                  data-track={`pyq-view-${paper.subject.toLowerCase().replace(/\s+/g, '-')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -110,7 +111,7 @@ export default async function PYQYearPage({ params }: Props) {
                 className="bg-black text-white hover:bg-gray-800"
                 asChild
               >
-                <a href={paper.pdfUrl} download>
+                <a href={paper.pdfUrl} data-track={`pyq-download-${paper.subject.toLowerCase().replace(/\s+/g, '-')}`} download>
                   <Download className="w-4 h-4 mr-2" /> Download
                 </a>
               </Button>
@@ -133,6 +134,7 @@ export default async function PYQYearPage({ params }: Props) {
         <div className="mb-8">
           <Link
             href="/pyq"
+            data-track="pyq-year-back"
             className="inline-flex items-center text-sm text-gray-500 hover:text-black transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to PYQ Archive
@@ -276,6 +278,7 @@ export default async function PYQYearPage({ params }: Props) {
                   <Link
                     key={y}
                     href={`/pyq/${y}`}
+                    data-track={`pyq-year-sidebar-${y}`}
                     className={`px-4 py-2 text-sm font-bold border-2 transition-all ${
                       y === year
                         ? "bg-black text-white border-black"
@@ -300,6 +303,7 @@ export default async function PYQYearPage({ params }: Props) {
                   </p>
                 <a
                   href="/free-materials"
+                  data-track="pyq-sidebar-free-materials"
                   className="flex items-center justify-between p-3 bg-blue-50 border-2 border-blue-100 hover:border-blue-300 transition-all group"
                 >
                   <span className="text-sm font-medium text-blue-700 group-hover:text-blue-900">
@@ -330,6 +334,7 @@ export default async function PYQYearPage({ params }: Props) {
               <div className="space-y-3">
                 <a
                   href="/toppers"
+                  data-track="pyq-related-toppers"
                   className="flex items-center justify-between p-3 bg-gray-50 border-2 border-gray-100 hover:border-black transition-all group"
                 >
                   <span className="text-sm font-medium text-gray-700 group-hover:text-black">
@@ -342,6 +347,7 @@ export default async function PYQYearPage({ params }: Props) {
                 </a>
                 <a
                   href="/optional"
+                  data-track="pyq-related-optional"
                   className="flex items-center justify-between p-3 bg-gray-50 border-2 border-gray-100 hover:border-black transition-all group"
                 >
                   <span className="text-sm font-medium text-gray-700 group-hover:text-black">

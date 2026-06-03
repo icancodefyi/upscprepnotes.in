@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl mb-6">
+            <Link href="/" data-track="footer-logo" className="flex items-center gap-2 font-bold text-xl mb-6">
               <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
                 <span className="text-white text-xs font-bold">PN</span>
               </div>
@@ -31,7 +31,7 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Platform</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
-                <Link href="/toppers" className="hover:text-black transition-colors">
+                <Link href="/toppers" data-track="footer-toppers" className="hover:text-black transition-colors">
                   Browse All Toppers
                 </Link>
               </li>
@@ -41,22 +41,22 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/optional/psir" className="hover:text-black transition-colors">
+                <Link href="/optional/psir" data-track="footer-optional-subjects" className="hover:text-black transition-colors">
                   Optional Subjects
                 </Link>
               </li>
               <li>
-                <Link href="/ask" className="hover:text-black transition-colors">
+                <Link href="/ask" data-track="footer-ask-ai" className="hover:text-black transition-colors">
                   Ask AI
                 </Link>
               </li>
               <li>
-                <Link href="/pyq" className="hover:text-black transition-colors">
+                <Link href="/pyq" data-track="footer-pyq" className="hover:text-black transition-colors">
                   PYQs
                 </Link>
               </li>
               <li>
-                <Link href="/free-materials" className="hover:text-black transition-colors">
+                <Link href="/free-materials" data-track="footer-free-materials" className="hover:text-black transition-colors">
                   Free Materials
                 </Link>
               </li>
@@ -68,52 +68,52 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Resources</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
-                <Link href="/resources" className="hover:text-black transition-colors">
+                <Link href="/resources" data-track="footer-all-resources" className="hover:text-black transition-colors">
                   All Resources
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-full-form" className="hover:text-black transition-colors">
+                <Link href="/upsc-full-form" data-track="footer-upsc-full-form" className="hover:text-black transition-colors">
                   UPSC Full Form
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-syllabus" className="hover:text-black transition-colors">
+                <Link href="/upsc-syllabus" data-track="footer-upsc-syllabus" className="hover:text-black transition-colors">
                   UPSC Syllabus
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-free-material" className="hover:text-black transition-colors">
+                <Link href="/upsc-free-material" data-track="footer-free-upsc-material" className="hover:text-black transition-colors">
                   Free UPSC Material
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-full-form-hindi" className="hover:text-black transition-colors">
+                <Link href="/upsc-full-form-hindi" data-track="footer-upsc-full-form-hindi" className="hover:text-black transition-colors">
                   UPSC Full Form (हिंदी)
                 </Link>
               </li>
               <li>
-                <Link href="/year/2024" className="hover:text-black transition-colors">
+                <Link href="/year/2024" data-track="footer-year-2024" className="hover:text-black transition-colors">
                   2024 CSE
                 </Link>
               </li>
               <li>
-                <Link href="/year/2023" className="hover:text-black transition-colors">
+                <Link href="/year/2023" data-track="footer-year-2023" className="hover:text-black transition-colors">
                   2023 CSE
                 </Link>
               </li>
               <li>
-                <Link href="/year/2022" className="hover:text-black transition-colors">
+                <Link href="/year/2022" data-track="footer-year-2022" className="hover:text-black transition-colors">
                   2022 CSE
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-black transition-colors">
+                <Link href="/about" data-track="footer-about" className="hover:text-black transition-colors">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-black transition-colors">
+                <Link href="/contact" data-track="footer-contact" className="hover:text-black transition-colors">
                   Contact
                 </Link>
               </li>
@@ -125,17 +125,17 @@ export default function Footer() {
             <h4 className="font-bold mb-4 text-sm">Legal</h4>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
-                <Link href="/privacy-policy" className="hover:text-black transition-colors">
+                <Link href="/privacy-policy" data-track="footer-privacy-policy" className="hover:text-black transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-black transition-colors">
+                <Link href="/terms" data-track="footer-terms" className="hover:text-black transition-colors">
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-black transition-colors">
+                <Link href="/disclaimer" data-track="footer-disclaimer" className="hover:text-black transition-colors">
                   Disclaimer
                 </Link>
               </li>

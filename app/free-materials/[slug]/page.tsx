@@ -83,9 +83,9 @@ export default async function PDFDetailPage({ params }: Props) {
       <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-28">
         {/* BREADCRUMB */}
         <nav className="mb-10 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-          <Link href="/" className="hover:text-zinc-800 transition-colors">Home</Link>
+          <Link href="/" data-track="pdf-detail-home" className="hover:text-zinc-800 transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/free-materials" className="hover:text-zinc-800 transition-colors">Free Materials</Link>
+          <Link href="/free-materials" data-track="pdf-detail-free-materials" className="hover:text-zinc-800 transition-colors">Free Materials</Link>
           <span>/</span>
           <span className="text-zinc-800 font-medium">{p.title}</span>
         </nav>
@@ -200,7 +200,7 @@ export default async function PDFDetailPage({ params }: Props) {
             {sourceUrl && (
               <p className="mt-3 text-xs text-zinc-400 text-center sm:text-left">
                 Source:{" "}
-                <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600">
+                <a href={sourceUrl} target="_blank" rel="noopener noreferrer" data-track="pdf-detail-source-link" className="underline hover:text-zinc-600">
                   pdfnotes.co
                 </a>
               </p>
@@ -276,6 +276,7 @@ export default async function PDFDetailPage({ params }: Props) {
           <div className="grid gap-3 sm:grid-cols-2">
             <Link
               href="/toppers"
+              data-track="pdf-detail-toppers"
               className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
             >
               <span className="text-2xl">🏆</span>
@@ -286,6 +287,7 @@ export default async function PDFDetailPage({ params }: Props) {
             </Link>
             <Link
               href="/pyq"
+              data-track="pdf-detail-pyq"
               className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
             >
               <span className="text-2xl">📋</span>
@@ -296,6 +298,7 @@ export default async function PDFDetailPage({ params }: Props) {
             </Link>
             <Link
               href="/free-materials"
+              data-track="pdf-detail-more-free-materials"
               className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
             >
               <span className="text-2xl">📚</span>
@@ -306,6 +309,7 @@ export default async function PDFDetailPage({ params }: Props) {
             </Link>
             <Link
               href="/resources"
+              data-track="pdf-detail-guides"
               className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
             >
               <span className="text-2xl">📖</span>
@@ -352,6 +356,7 @@ async function PDFRelated({
           <Link
             key={r._id}
             href={`/free-materials/${r.slug}`}
+            data-track={`pdf-detail-related-${r.slug}`}
             className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
           >
             <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-black transition-colors truncate">

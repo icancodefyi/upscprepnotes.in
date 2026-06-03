@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { IconStars } from "@tabler/icons-react";
 
 const HIDE_KEY = "slide_in_hidden";
 
@@ -37,7 +38,7 @@ export default function ScrollSlideIn() {
 
   return (
     <div className="fixed bottom-24 left-4 right-4 z-40 animate-in slide-in-from-bottom-8 fade-in duration-500 sm:left-auto sm:right-6 sm:w-80">
-      <div className="rounded-2xl border border-gray-100 bg-white shadow-xl shadow-gray-900/10">
+      <div className="rounded-2xl border border-gray-100 bg-white shadow-xl shadow-gray-900/5">
         <button
           onClick={dismiss}
           className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
@@ -51,23 +52,26 @@ export default function ScrollSlideIn() {
 
         <div className="p-4 pr-8">
           <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-xs font-bold text-emerald-700">₹</span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+              <IconStars size={15} />
+            </span>
             <div>
-              <p className="text-sm font-semibold text-gray-900">UPSC Prep Bundle</p>
-              <p className="text-xs text-gray-400">21 guides + topper copies</p>
+              <p className="text-sm font-semibold text-gray-900">Ultimate Bundle</p>
+              <p className="text-xs text-gray-400">72 resources + AI access</p>
             </div>
           </div>
 
           <div className="mt-3 flex items-baseline gap-1.5">
             <span className="text-lg font-bold text-gray-900">₹799</span>
-            <span className="text-xs text-gray-400 line-through">₹4,999</span>
+            <span className="text-xs text-gray-400 line-through">₹1,198</span>
+            <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-semibold text-amber-700">Save ₹399</span>
           </div>
 
           <Link
             href="/toppers/toppers-copy-compilation"
             onClick={dismiss}
             data-track="scroll-slide-in"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-gray-800"
+            className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-500"
           >
             Get the Bundle →
           </Link>

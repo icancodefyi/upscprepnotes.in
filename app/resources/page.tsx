@@ -43,7 +43,7 @@ export default function ResourcesPage() {
     <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
         <nav className="mb-8 text-xs text-gray-400">
-          <Link href="/" className="hover:text-gray-600 transition-colors">Home</Link>
+          <Link href="/" data-track="resources-breadcrumb-home" className="hover:text-gray-600 transition-colors">Home</Link>
           <span className="mx-2">/</span>
           <span className="text-gray-600">Resources</span>
         </nav>
@@ -60,6 +60,7 @@ export default function ResourcesPage() {
             <Link
               key={r.slug}
               href={`/${r.slug}`}
+              data-track={`resources-card-${r.slug}`}
               className="group rounded-2xl border border-gray-200 p-6 transition-all hover:border-emerald-200 hover:bg-emerald-50"
             >
               <div className="flex items-start justify-between gap-4">
@@ -92,24 +93,28 @@ export default function ResourcesPage() {
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href="/free-materials"
+              data-track="resources-free-materials"
               className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-blue-500"
             >
               Free Study Material <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/toppers"
+              data-track="resources-browse-toppers"
               className="inline-flex items-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-gray-800"
             >
               Browse Toppers <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/toppers/toppers-copy-compilation"
+              data-track="resources-view-bundle"
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-5 py-2.5 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100"
             >
               View Bundle <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/pyq"
+              data-track="resources-pyq-archive"
               className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-5 py-2.5 text-xs font-bold text-gray-600 transition-colors hover:border-gray-400"
             >
               PYQ Archive <ArrowRight className="h-3.5 w-3.5" />

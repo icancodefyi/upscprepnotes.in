@@ -115,6 +115,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
             <div className="mb-8 flex items-center gap-3">
               <Link
                 href="/free-materials"
+                data-track="free-materials-back-categories"
                 className="text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition-colors"
               >
                 &larr; All Categories
@@ -134,6 +135,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
                 <Link
                   key={cat.key}
                   href={`/free-materials?category=${cat.key}`}
+                  data-track={`free-materials-category-${cat.key}`}
                   className={`group rounded-xl border ${cat.color} p-6 transition-all hover:shadow-md`}
                 >
                   <div className="flex items-center justify-between mb-4">
@@ -180,6 +182,13 @@ export default async function PDFHubPage({ searchParams }: Props) {
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-500"
           >
             Get the Bundle &rarr;
+          </Link>
+          <Link
+            href="/toppers"
+            data-track="pdf-hub-toppers"
+            className="mt-3 inline-flex items-center gap-2 rounded-full border border-zinc-600 px-6 py-2.5 text-xs font-bold text-zinc-300 transition hover:border-zinc-400 hover:text-white sm:mt-4"
+          >
+            Browse Topper Profiles &rarr;
           </Link>
         </section>
       </div>

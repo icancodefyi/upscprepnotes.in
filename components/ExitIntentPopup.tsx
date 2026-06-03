@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState, useCallback, startTransition } from "react";
+import { IconStars } from "@tabler/icons-react";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919152750079";
 const POPUP_HIDE_KEY = "exit_popup_hidden";
@@ -33,7 +33,9 @@ export default function ExitIntentPopup() {
   useEffect(() => {
     try {
       if (localStorage.getItem(POPUP_HIDE_KEY)) return;
-      if (localStorage.getItem("visited_sales_page")) setVisitedSales(true);
+      if (localStorage.getItem("visited_sales_page")) {
+        startTransition(() => setVisitedSales(true));
+      }
     } catch {}
 
     let fired = false;
@@ -56,7 +58,7 @@ export default function ExitIntentPopup() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-300 rounded-3xl bg-white shadow-2xl">
+      <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-300 rounded-3xl bg-white shadow-xl">
         <button
           onClick={dismiss}
           className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-400 transition hover:bg-gray-200 hover:text-gray-600"
@@ -70,48 +72,46 @@ export default function ExitIntentPopup() {
 
         <div className="px-6 pt-12 pb-6 text-center sm:px-10">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100">
-            <svg className="h-7 w-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <IconStars size={28} className="text-emerald-600" />
           </div>
 
           {visitedSales ? (
             <>
               <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-                Still Thinking? Price Still ₹799
+                Still Thinking?
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                You checked the bundle — it&apos;s <strong className="text-gray-900">21 guides + topper copies + interview prep</strong> for just ₹799. Price moves to ₹4,999 soon.
+                You checked the bundle — <strong className="text-gray-900">21 guides + topper copies + AI access</strong> for just ₹799. That is ₹11 per resource.
               </p>
             </>
           ) : (
             <>
               <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-                Wait! Don&apos;t Miss This
+                Wait! Check This Before You Go
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                Get the <strong className="text-gray-900">Complete UPSC Preparation Bundle</strong> — 21 strategy guides, topper copies, interview prep & more.
+                Get the <strong className="text-gray-900">Ultimate Bundle</strong> — 50+ answer copies, 21 strategy guides, interview prep, ethics cases, and AI access.
               </p>
             </>
           )}
 
-          <div className="mt-5 flex items-baseline justify-center gap-2">
+          <div className="mt-5 flex items-baseline justify-center gap-2.5">
             <span className="text-3xl font-bold text-gray-900">₹799</span>
-            <span className="text-sm text-gray-400 line-through">₹4,999</span>
-            <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-600">Save 84%</span>
+            <span className="text-sm text-gray-400 line-through">₹1,198</span>
+            <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">Save ₹399</span>
           </div>
 
           <div className="mt-6 flex flex-col gap-2.5">
-            <Button
+            <button
               onClick={() => {
                 dismiss();
                 window.location.href = bundleUrl;
               }}
               data-track="exit-popup-cta"
-              className="w-full rounded-full bg-gray-900 py-5 text-sm font-semibold shadow-lg shadow-gray-900/20 hover:bg-gray-800"
+              className="w-full rounded-full bg-emerald-600 py-3.5 text-sm font-bold text-white transition-colors hover:bg-emerald-500"
             >
-              {visitedSales ? "Buy Now — ₹799 →" : "Claim Bundle at ₹799 →"}
-            </Button>
+              {visitedSales ? "Buy Now — ₹799" : "Claim Bundle at ₹799"}
+            </button>
             <a
               href={waUrl}
               target="_blank"
@@ -128,7 +128,7 @@ export default function ExitIntentPopup() {
             onClick={dismiss}
             className="mt-4 text-xs text-gray-400 underline underline-offset-2 hover:text-gray-600 transition-colors"
           >
-            No thanks, I&apos;ll continue browsing
+            No thanks, I will continue browsing
           </button>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
+import { trackViewItem } from "@/lib/analytics";
 
 export default function AskPageWrapper() {
   return (
@@ -152,6 +153,10 @@ function AskPage() {
     }
   }, [streaming, loading]);
 
+  useEffect(() => {
+    trackViewItem("Ask AI Page", 0);
+  }, []);
+
   async function newConversation() {
     try {
       const res = await fetch("/api/ai/conversations", {
@@ -284,7 +289,7 @@ function AskPage() {
         }`}
       >
         <div className="flex items-center justify-between border-b border-zinc-100 px-4 h-14 shrink-0">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" data-track="ask-sidebar-home" className="flex items-center gap-2">
             <div className="h-7 w-7 rounded-lg bg-zinc-900 flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">PN</span>
             </div>
@@ -293,6 +298,7 @@ function AskPage() {
           <button
             type="button"
             onClick={() => setSidebarOpen(false)}
+            data-track="ask-sidebar-close"
             className="md:hidden rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -305,6 +311,7 @@ function AskPage() {
           <button
             type="button"
             onClick={newConversation}
+            data-track="ask-new-chat"
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-50 hover:text-zinc-900 hover:border-zinc-300"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -319,10 +326,11 @@ function AskPage() {
             <p className="px-3 pt-8 text-center text-xs text-zinc-400">No conversations yet</p>
           ) : (
             <div className="space-y-0.5">
-              {conversations.map((conv) => (
+              {conversations.map((conv, idx) => (
                 <button
                   key={conv.id}
                   type="button"
+                  data-track={`ask-conversation-${idx}`}
                   onClick={() => {
                     loadConversation(conv.id);
                     setSidebarOpen(false);
@@ -367,6 +375,7 @@ function AskPage() {
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
+            data-track="ask-mobile-menu"
             className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition"
             aria-label="Open sidebar"
           >
@@ -375,7 +384,7 @@ function AskPage() {
             </svg>
           </button>
           <span className="text-sm font-semibold text-zinc-700">Ask AI</span>
-          <Link href="/" className="text-xs text-zinc-400 hover:text-zinc-600 transition">
+          <Link href="/" data-track="ask-mobile-home" className="text-xs text-zinc-400 hover:text-zinc-600 transition">
             Home
           </Link>
         </header>
@@ -401,10 +410,11 @@ function AskPage() {
                   Get answers drawn from actual UPSC topper strategies and live web search
                 </p>
                 <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Suggested questions">
-                  {suggestedQuestions.map((q) => (
+                  {suggestedQuestions.map((q, idx) => (
                     <button
                       key={q}
                       type="button"
+                      data-track={`ask-suggestion-${idx}`}
                       onClick={() => {
                         setInput(q);
                         setTimeout(() => inputRef.current?.focus(), 50);
@@ -452,10 +462,11 @@ function AskPage() {
                                 {msg.sources && msg.sources.length > 0 && (
                                   <div className="mt-5 flex flex-wrap items-center gap-2">
                                     <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Sources:</span>
-                                    {msg.sources.map((s) => (
+                                    {msg.sources.map((s, srcIdx) => (
                                       <Link
                                         key={s.slug}
                                         href={`/upsc-topper/${s.slug}`}
+                                        data-track={`ask-source-${srcIdx}`}
                                         className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
                                       >
                                         {s.name}
@@ -471,6 +482,7 @@ function AskPage() {
                                   <button
                                     type="button"
                                     onClick={() => handleCopy(i, msg.content)}
+                                    data-track={`ask-copy-${i}`}
                                     className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
                                   >
                                     {copiedIndex === i ? (
@@ -562,6 +574,7 @@ function AskPage() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
+                  data-track="ask-message-input"
                   placeholder="Ask a question about UPSC preparation\u2026"
                   rows={1}
                   disabled={streaming || loading}
@@ -577,6 +590,7 @@ function AskPage() {
               <button
                 type="submit"
                 disabled={streaming || loading || !input.trim()}
+                data-track="ask-send"
                 className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-white transition hover:bg-zinc-800 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 aria-label="Send message"
               >

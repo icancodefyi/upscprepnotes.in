@@ -438,7 +438,7 @@ export default async function SubjectPage({ params }: Props) {
       <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
         {/* BREADCRUMB */}
         <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
-          <Link href="/" className="transition hover:text-foreground">
+          <Link href="/" data-track="optional-breadcrumb-home" className="transition hover:text-foreground">
             Home
           </Link>
           <span>•</span>
@@ -591,6 +591,7 @@ export default async function SubjectPage({ params }: Props) {
                     <td className="p-4">
                       <Link
                         href={`/upsc-topper/${t.slug}`}
+                        data-track={`optional-topper-${t.slug}`}
                         className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
                       >
                         {t.firstName} {t.lastName}
@@ -612,6 +613,7 @@ export default async function SubjectPage({ params }: Props) {
           <div className="mt-8">
             <Link
               href="/"
+              data-track="optional-browse-all-toppers"
               className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
             >
               Browse All Toppers &rarr;
@@ -630,6 +632,7 @@ export default async function SubjectPage({ params }: Props) {
             <Link
               key={key}
               href={`/optional/${key}`}
+              data-track={`optional-other-${key}`}
               className="rounded-xl border border-black/[0.06] bg-zinc-50 p-4 text-sm font-medium transition hover:bg-zinc-100"
             >
               {info.name}

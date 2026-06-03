@@ -145,9 +145,9 @@ export default async function HomePage() {
               </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-                <Link href="/year/2025">
-                  Browse Toppers
-                </Link>
+              <Link data-track="home-hero-secondary" href="/year/2025">
+                Browse Toppers
+              </Link>
               </Button>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -189,7 +189,7 @@ export default async function HomePage() {
         {/* QUICK LINKS GRID */}
         <section className="mb-20">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link
+            <Link data-track="home-card-upsc-toppers"
               href="/year/2025"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
             >
@@ -217,7 +217,7 @@ export default async function HomePage() {
               </p>
             </Link>
 
-            <Link
+            <Link data-track="home-card-optional-subjects"
               href="/optional/psir"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
             >
@@ -231,7 +231,7 @@ export default async function HomePage() {
               </p>
             </Link>
 
-            <Link
+            <Link data-track="home-card-ask-ai"
               href="/ask"
               className="group bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] text-white p-6 hover:from-black hover:to-[#1A1A1A] transition-all"
             >
@@ -262,7 +262,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <Link
+            <Link data-track="home-free-test-series"
               href="/free-materials?category=test-series"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
             >
@@ -278,7 +278,7 @@ export default async function HomePage() {
               </p>
             </Link>
 
-            <Link
+            <Link data-track="home-free-notes-material"
               href="/free-materials?category=notes"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
             >
@@ -294,7 +294,7 @@ export default async function HomePage() {
               </p>
             </Link>
 
-            <Link
+            <Link data-track="home-free-magazines-current-affairs"
               href="/free-materials?category=magazines"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-emerald-500 transition-all"
             >
@@ -312,7 +312,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-6">
-            <Link
+            <Link data-track="home-browse-free-materials"
               href="/free-materials"
               className="text-sm font-medium text-emerald-700 underline underline-offset-4 hover:text-emerald-600 transition-colors"
             >
@@ -382,7 +382,7 @@ export default async function HomePage() {
 
           <div className="grid gap-3">
             {toppers.slice(0, 6).map((topper: any) => (
-              <Link
+              <Link data-track={`home-topper-${topper.slug}`}
                 key={topper.slug}
                 href={`/upsc-topper/${topper.slug}`}
                 className="flex items-center gap-4 bg-white border-2 border-gray-200 px-4 py-4 hover:border-black transition-all md:gap-6 md:px-6"
@@ -413,7 +413,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-6">
-            <Link
+            <Link data-track="home-browse-toppers"
               href="/year/2025"
               className="text-sm font-medium text-black underline underline-offset-4 hover:text-gray-500 transition-colors"
             >
@@ -477,7 +477,7 @@ export default async function HomePage() {
 
           <div className="flex flex-wrap items-center gap-3">
             {YEARS.map((year) => (
-              <Link
+              <Link data-track={`home-year-${year}`}
                 key={year}
                 href={`/year/${year}`}
                 className="inline-flex items-center px-5 py-2.5 border-2 border-gray-200 text-sm font-medium hover:border-black transition-all bg-white"
@@ -486,7 +486,7 @@ export default async function HomePage() {
               </Link>
             ))}
             <Button asChild className="rounded-full">
-              <Link href="/year/2025">View All Toppers &rarr;</Link>
+              <Link data-track="home-view-all-toppers" href="/year/2025">View All Toppers &rarr;</Link>
             </Button>
           </div>
         </section>
@@ -501,7 +501,7 @@ export default async function HomePage() {
 
           <div className="grid gap-x-16 gap-y-10 md:grid-cols-2">
             {OPTIONAL_SUBJECTS.map((subject) => (
-              <Link
+              <Link data-track={`home-optional-${subject.toLowerCase().replace(/\s+/g, '-')}`}
                 key={subject}
                 href={`/optional/${subject.toLowerCase()}`}
                 className="group border-b border-gray-200 pb-5 transition"

@@ -64,6 +64,7 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
             onChange={(e) => setQuery(e.target.value)}
             className="w-full rounded-2xl border border-gray-200 bg-white py-4 pl-12 pr-4 text-sm outline-none transition focus:border-gray-400 focus:ring-0"
             autoFocus
+            data-track="toppers-search-input"
           />
         </div>
       </div>
@@ -78,6 +79,7 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
             <Link
               key={t.slug}
               href={`/upsc-topper/${t.slug}`}
+              data-track={`toppers-card-${t.slug}`}
               className="group rounded-2xl border border-gray-100 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:shadow-md"
             >
               <div className="flex items-start justify-between">
