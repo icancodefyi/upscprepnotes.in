@@ -12,6 +12,7 @@ import {
   generateFAQs,
   getCategoryLabel,
 } from "@/lib/pdf-content";
+import ResourceSearch from "@/components/ResourceSearch";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -164,7 +165,7 @@ export default async function PDFDetailPage({ params }: Props) {
 
         {/* RESOURCES LIST (multi-item collections like test series) */}
         {p.resources && p.resources.length > 0 && (
-          <ResourcesSection resources={p.resources} slug={p.slug} />
+          <ResourceSearch resources={p.resources} slug={p.slug} />
         )}
 
         {/* DOWNLOAD SECTION (single item) */}
@@ -320,90 +321,6 @@ export default async function PDFDetailPage({ params }: Props) {
         <PDFRelated category={p.category} currentSlug={p.slug} currentTitle={p.title} />
       </div>
     </main>
-  );
-}
-
-function isWpdmUrl(url: string) {
-  return url.includes("pdfnotes.co/download/");
-}
-
-function ResourcesSection({ resources, slug }: { resources: any[]; slug: string }) {
-  // Group by section
-  const sections = new Map<string, any[]>();
-  for (const r of resources) {
-    const sec = r.section || "All Resources";
-    if (!sections.has(sec)) sections.set(sec, []);
-    sections.get(sec)!.push(r);
-  }
-
-  return (
-    <section className="mb-16">
-      <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-lg font-bold text-zinc-800">
-          Resources
-        </h2>
-        <span className="text-xs text-zinc-400 bg-zinc-100 px-2.5 py-1 rounded-full font-medium">
-          {resources.length} items
-        </span>
-      </div>
-      <div className="space-y-4">
-        {Array.from(sections.entries()).map(([sectionName, items]) => (
-          <details
-            key={sectionName}
-            className="group rounded-xl border border-zinc-200 bg-white overflow-hidden"
-            open={sections.size <= 2}
-          >
-            <summary className="flex items-center justify-between gap-3 px-5 py-3.5 cursor-pointer hover:bg-zinc-50 transition-colors list-none">
-              <div className="flex items-center gap-3 min-w-0">
-                <span className="text-sm font-semibold text-zinc-800 truncate">
-                  {sectionName}
-                </span>
-                <span className="text-xs text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full shrink-0 font-medium">
-                  {items.length}
-                </span>
-              </div>
-              <svg
-                className="w-4 h-4 text-zinc-400 shrink-0 transition-transform group-open:rotate-180"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <div className="border-t border-zinc-100 divide-y divide-zinc-50">
-              {items.map((r, idx) => {
-                const isWpdm = isWpdmUrl(r.downloadUrl);
-                return (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between gap-3 px-5 py-2.5 hover:bg-zinc-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      {r.language === "hi" && (
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase shrink-0 border border-zinc-200 rounded px-1.5 py-0.5 leading-none">
-                          HI
-                        </span>
-                      )}
-                      <span className="text-sm text-zinc-700 truncate">{r.name}</span>
-                    </div>
-                    <a
-                      href={r.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-track={`pdf-resource-dl-${slug}-${idx}`}
-                      className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-full px-3.5 py-1.5 transition-colors"
-                    >
-                      {isWpdm ? "Open →" : "Download ↓"}
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-          </details>
-        ))}
-      </div>
-    </section>
   );
 }
 

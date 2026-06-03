@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
+import FreeMaterialsSearch from "@/components/FreeMaterialsSearch";
 
 interface SearchParams {
   category?: string;
@@ -158,37 +159,10 @@ export default async function PDFHubPage({ searchParams }: Props) {
           <section>
             <div className="flex items-center justify-between mb-8">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                {activeCategory ? `${activeCategory.label}` : "Recently Added"}
+                {activeCategory ? `${activeCategory.label}` : "All Materials"}
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {pdfs.slice(0, 24).map((pdf: any) => (
-                <Link
-                  key={pdf._id}
-                  href={`/free-materials/${pdf.slug}`}
-                  className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="shrink-0 mt-0.5">
-                      <span className="text-lg">
-                        {pdf.category === "test-series" ? "📝" : pdf.category === "notes" ? "📓" : pdf.category === "books" ? "📚" : pdf.category === "magazines" ? "📰" : "📄"}
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-black transition-colors truncate">
-                        {pdf.title}
-                      </h3>
-                      {pdf.brand && (
-                        <p className="mt-0.5 text-xs text-zinc-400">{pdf.brand}</p>
-                      )}
-                      <p className="mt-1 text-xs text-zinc-500 line-clamp-2">
-                        {pdf.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <FreeMaterialsSearch pdfs={pdfs} />
           </section>
         )}
 
