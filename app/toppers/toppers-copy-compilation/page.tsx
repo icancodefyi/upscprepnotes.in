@@ -1,9 +1,9 @@
 import SalesPage from "@/components/topper/SalesPage";
 
 export const metadata = {
-  title: "UPSC Complete Preparation Bundle — 30+ Resources Including Topper Copies, Strategy & Interview Prep",
+  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — Get at ₹11/copy | UPSCPrepNotes",
   description:
-    "India's most comprehensive UPSC preparation bundle. 21 strategy guides, 50+ ethics case studies, interview prep, topper answer copies, schemes compendium & more. Launch price ₹999 (will move to ₹4,999).",
+    "Complete UPSC preparation bundle with 50+ verified topper answer copies (GS1-4, Essay, Optional) + 21 original strategy guides. Just ₹11 per copy — delivered via email. Pay via UPI.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
   },

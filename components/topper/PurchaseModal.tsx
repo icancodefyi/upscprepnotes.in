@@ -502,7 +502,7 @@ export default function PurchaseModal({ onClose }: Props) {
                   {product?.name} (₹{product?.price})
                 </strong>{" "}
                 has been recorded. We&apos;ll verify your payment and grant
-                access within 24 hours.
+                access within 2 hours.
               </p>
 
               <div className="mt-6 w-full rounded-2xl bg-muted/50 px-5 py-4 text-left text-sm">

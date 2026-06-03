@@ -6,17 +6,13 @@ import { Badge } from "@/components/ui/badge";
 interface Props {
   title: string;
   marks: number;
-  available: boolean;
   topperName: string;
-  href?: string | null;
 }
 
 export default function AnswerCopyCard({
   title,
   marks,
-  available,
   topperName,
-  href,
 }: Props) {
   const paper = title.split(" ")[0] || title;
   const isHighScore = marks >= 120;
@@ -24,19 +20,13 @@ export default function AnswerCopyCard({
 
   return (
     <Link
-      href={available && href ? href : "/toppers/toppers-copy-compilation"}
+      href="/toppers/toppers-copy-compilation"
       data-track="answer-card-bundle"
       className="group block rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:-translate-y-[2px] hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
     >
       <div className="flex items-start justify-between gap-3">
         <Badge variant="outline" className="rounded-md px-2 py-0.5 text-[10px] uppercase tracking-wider">
           {paper}
-        </Badge>
-        <Badge
-          variant={available ? "default" : "secondary"}
-          className="rounded-md px-2 py-0.5 text-[10px]"
-        >
-          {available && href ? "Available" : "In Compilation"}
         </Badge>
       </div>
 
@@ -60,7 +50,7 @@ export default function AnswerCopyCard({
       </div>
 
       <div className="mt-4 flex items-center text-sm font-medium text-foreground transition group-hover:translate-x-1">
-        {available && href ? "Access Copy" : "Get in Bundle"} &rarr;
+        View Answer Copy &rarr;
       </div>
     </Link>
   );

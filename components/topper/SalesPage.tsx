@@ -69,12 +69,15 @@ const TESTIMONIALS = [
 ];
 
 const FAQS = [
-  { q: "How many items are included?", a: "30+ resources including 21 strategy guides, 3+ topper answer copies, 50+ ethics case studies, interview prep (100 questions, DAF analysis, mock tips), schemes compendium, value-addition data, maps reference, and more." },
+  { q: "How many resources are included?", a: "50+ topper answer copies across GS1-4, Essay & Optional + 21 original strategy guides (booklist, prelims, answer writing, essay, optional, interview, ethics case studies, value-addition data, and more)." },
   { q: "Are the answer copies verified?", a: "Yes. Every topper copy is verified for authenticity against published UPSC results." },
-  { q: "What format will I receive?", a: "All resources are in PDF format. Instant digital access after purchase." },
-  { q: "Is this a physical book?", a: "Currently available in digital PDF format only. Instant access after purchase." },
-  { q: "Will the price really go up to ₹4,999?", a: "Yes. ₹799 is the limited launch price. Once we reach our early adopter target, the bundle moves to ₹4,999." },
-  { q: "How do I get the 3 free copies?", a: "Enter your WhatsApp number below and we'll send you 3 verified topper answer copies instantly — no purchase needed." },
+  { q: "How do I receive the bundle?", a: "Pay via UPI (scan QR or click to pay), upload your payment screenshot, and we'll email you the download link within 2 hours. The bundle is delivered as a single ZIP file with all PDFs organized by category." },
+  { q: "What format will I receive?", a: "All resources are in PDF format, delivered as a ZIP file via email after payment verification." },
+  { q: "Is this a physical book?", a: "Digital only. You get an instant download link after we verify your payment. No shipping, no delays." },
+  { q: "Can I buy individual topper copies?", a: "Individual copies are not sold separately. The bundle includes all 50+ topper copies for one price — best value if you're preparing across multiple papers." },
+  { q: "How long does delivery take?", a: "We verify payments manually within 2 hours (usually within 2-4 hours during business hours). You'll receive the download link via email once verified." },
+  { q: "What if I'm not satisfied?", a: "If the bundle doesn't meet your expectations, email us within 7 days and we'll refund your payment — no questions asked. We'd rather you be happy than keep your money." },
+  { q: "Do I get lifetime access?", a: "Yes. Once purchased, you get the download link plus any future updates to the bundle. No recurring fees." },
 ];
 
 const CATEGORIES = [
@@ -169,11 +172,15 @@ export default function SalesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSent, setLeadSent] = useState(false);
-  const { mounted, display, spotsLeft } = useTimer();
+
+  const [guideEmail, setGuideEmail] = useState("");
+  const [guideName, setGuideName] = useState("");
+  const [guideSubmitting, setGuideSubmitting] = useState(false);
+  const [guideDone, setGuideDone] = useState(false);
+  const [guideError, setGuideError] = useState("");
 
   useEffect(() => {
     trackViewItem("Topper Answer Copy Compilation", 799);
-    try { localStorage.setItem("visited_sales_page", "1"); } catch {}
   }, []);
 
   function handleLeadSubmit(e: React.FormEvent) {
@@ -185,6 +192,33 @@ export default function SalesPage() {
     try { window.gtag?.("event", "generate_lead", { event_label: "sales-lead-form", value: 1 }); } catch {}
   }
 
+  async function handleGuideSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setGuideError("");
+    if (!guideName.trim() || !guideEmail.trim()) {
+      setGuideError("Please enter your name and email.");
+      return;
+    }
+    setGuideSubmitting(true);
+    try {
+      const res = await fetch("/api/free-guides", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: guideName.trim(), email: guideEmail.trim() }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to submit");
+      }
+      setGuideDone(true);
+      try { window.gtag?.("event", "generate_lead", { event_label: "free-guides-form", value: 1 }); } catch {}
+    } catch (err: any) {
+      setGuideError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setGuideSubmitting(false);
+    }
+  }
+
   return (
     <>
       <main className="min-h-screen bg-white">
@@ -193,39 +227,23 @@ export default function SalesPage() {
         {/* HERO */}
         <section className="border-b border-gray-100 bg-white pt-24 pb-14 sm:pt-32 sm:pb-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-semibold tracking-wide text-emerald-700">Limited Launch — ₹799</span>
-            </div>
-
             <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.15] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              Score Higher with Verified&nbsp;Topper&nbsp;Copies
+              50+ Topper Answer Copies &amp; 21 Strategy Guides — One Complete Bundle
             </h1>
 
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-500 sm:text-base sm:leading-relaxed">
-              Strategy guides, topper answer copies, interview prep, ethics case studies & value-addition data — one complete bundle for your UPSC prep.
+              Every answer copy you see across this site — GS papers, Essay, Optional — all in one ZIP. Plus 21 original strategy guides not available anywhere else. Convenience, not exclusivity.
             </p>
 
-            {/* Price + Timer */}
+            {/* Price */}
             <div className="mt-6">
               <div className="flex items-baseline justify-center gap-2 sm:gap-3">
                 <span className="text-4xl font-bold text-gray-900 sm:text-5xl">₹799</span>
                 <span className="text-base text-gray-400 line-through sm:text-lg">₹4,999</span>
                 <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 sm:px-3 sm:text-xs">Save 84%</span>
               </div>
-
-              <div className="mt-3 flex items-center justify-center gap-2">
-                <span className="text-xs text-gray-400 sm:text-sm">Offer expires in</span>
-                <span className={`inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 font-bold text-red-600 tabular-nums text-sm sm:text-base ${mounted ? "animate-pulse" : "opacity-0"}`}>
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {mounted ? display : "—"}
-                </span>
-              </div>
-
-              <p className="mt-1.5 text-xs text-gray-400">
-                Only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at launch price
+              <p className="mt-1.5 text-sm font-medium text-emerald-600">
+                Just <span className="text-lg font-bold">₹11</span> per answer copy — less than a chai!
               </p>
             </div>
 
@@ -237,18 +255,18 @@ export default function SalesPage() {
                 onClick={() => setModalOpen(true)}
                 className="w-full rounded-full bg-emerald-600 px-10 py-5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500 sm:w-auto sm:px-14 sm:py-6 sm:text-base"
               >
-                Claim Bundle at ₹799 →
+                Get Complete Bundle at ₹799 →
               </Button>
             </div>
 
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
               <span className="flex items-center gap-1">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                21 Strategy Guides
+                50+ Topper Copies
               </span>
               <span className="flex items-center gap-1">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                3+ Topper Copies
+                21 Strategy Guides
               </span>
               <span className="flex items-center gap-1">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -256,14 +274,14 @@ export default function SalesPage() {
               </span>
               <span className="flex items-center gap-1">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                50+ Case Studies
+                Ethics Case Studies
               </span>
             </div>
 
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[11px] text-gray-400 sm:text-xs">
               <span className="flex items-center gap-1.5">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                Instant PDF Access
+                Delivered via Email (ZIP)
               </span>
               <span className="flex items-center gap-1.5">
                 <svg className="h-3 w-3 text-emerald-500 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -277,14 +295,157 @@ export default function SalesPage() {
           </div>
         </section>
 
-        {/* WHAT'S INSIDE — Category Grid */}
+        {/* FREE GUIDES — email capture */}
+        <section className="border-b border-gray-100 bg-gradient-to-b from-emerald-50/50 to-white py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              {!guideDone ? (
+                <>
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+                    <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Get 3 Free Strategy Guides — Instant Download
+                  </h2>
+                  <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
+                    Enter your name &amp; email and we&apos;ll send you 3 verified strategy guides instantly. No purchase needed. See what&apos;s inside the bundle before you buy.
+                  </p>
+
+                  <form onSubmit={handleGuideSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+                    <div className="flex flex-1 flex-col gap-3 sm:flex-row">
+                      <input
+                        type="text"
+                        placeholder="Your Name"
+                        value={guideName}
+                        onChange={(e) => setGuideName(e.target.value)}
+                        className="flex-1 rounded-full border border-gray-200 px-5 py-3 text-sm outline-none transition focus:border-gray-400"
+                        required
+                      />
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={guideEmail}
+                        onChange={(e) => setGuideEmail(e.target.value)}
+                        className="flex-1 rounded-full border border-gray-200 px-5 py-3 text-sm outline-none transition focus:border-gray-400"
+                        required
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      disabled={guideSubmitting}
+                      className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 disabled:opacity-50"
+                    >
+                      {guideSubmitting ? "Sending..." : "Send Free Guides"}
+                    </Button>
+                  </form>
+                  {guideError && (
+                    <p className="mt-3 text-sm text-red-500">{guideError}</p>
+                  )}
+                  <p className="mt-3 text-xs text-gray-400">No spam. Unsubscribe anytime. We&apos;ll also send the download link via email.</p>
+                </>
+              ) : (
+                <div className="py-4">
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+                    <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Your Guides Are Ready, {guideName.split(" ")[0]}!
+                  </h2>
+                  <p className="mx-auto mt-2 max-w-lg text-sm text-gray-500">
+                    Download them now. We&apos;ve also sent them to <strong>{guideEmail}</strong>.
+                  </p>
+
+                  <div className="mx-auto mt-8 grid max-w-md gap-3">
+                    <a
+                      href="/pdfs/free-guides/guide-answer-writing.pdf"
+                      target="_blank"
+                      className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:shadow-md"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">Answer Writing Strategy Guide</p>
+                        <p className="text-xs text-gray-500">PDF &bull; 251 KB</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">Download</span>
+                    </a>
+                    <a
+                      href="/pdfs/free-guides/guide-ibec-method.pdf"
+                      target="_blank"
+                      className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:shadow-md"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">IBEC Method — Answer Framework</p>
+                        <p className="text-xs text-gray-500">PDF &bull; 267 KB</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">Download</span>
+                    </a>
+                    <a
+                      href="/pdfs/free-guides/guide-gs1-strategy.pdf"
+                      target="_blank"
+                      className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:shadow-md"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">GS1 Strategy Guide</p>
+                        <p className="text-xs text-gray-500">PDF &bull; 248 KB</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">Download</span>
+                    </a>
+                  </div>
+
+                  <div className="mx-auto mt-8 max-w-md rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-center">
+                    <p className="text-sm font-semibold text-emerald-800">Want 50+ topper copies + all 21 guides?</p>
+                    <p className="mt-1 text-xs text-emerald-700">Get the Complete Bundle — just ₹11 per copy (₹799)</p>
+                    <Button
+                      onClick={() => setModalOpen(true)}
+                      size="lg"
+                      className="mt-4 rounded-full bg-emerald-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
+                    >
+                      Get Bundle at ₹799 →
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS — Delivery flow */}
         <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="mb-10 text-center">
+              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Simple Delivery</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How You Get the Bundle</h2>
+            </div>
+
+            <div className="mx-auto grid max-w-3xl gap-5 sm:grid-cols-3">
+              {[
+                { step: "1", title: "Pay via UPI", desc: "Scan the QR code or click to pay with GPay, PhonePe, Paytm. ₹799 one-time." },
+                { step: "2", title: "Upload Screenshot", desc: "Upload your payment confirmation. We verify it manually." },
+                { step: "3", title: "Get ZIP via Email", desc: "We email you the download link within 2 hours. Full bundle ready to download." },
+              ].map((item) => (
+                <div key={item.step} className="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-lg font-bold text-emerald-600">
+                    {item.step}
+                  </div>
+                  <h3 className="mt-4 text-base font-bold text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-500">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT'S INSIDE — Category Grid */}
+        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Everything Included</p>
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What&apos;s Inside the Bundle</h2>
               <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-gray-500">
-                21 strategy guides + topper copies + interview prep + supporting materials
+                50+ topper copies + 21 strategy guides + interview prep + supporting materials
               </p>
             </div>
 
@@ -339,15 +500,14 @@ export default function SalesPage() {
                 data-track="sales-mid-cta"
                 className="rounded-full bg-emerald-600 px-10 py-6 text-base font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
               >
-                Claim Bundle at ₹799 →
+                Get Complete Bundle at ₹799 →
               </Button>
-              <p className="mt-2 text-xs text-gray-400">Price moves to ₹4,999 after launch period</p>
             </div>
           </div>
         </section>
 
         {/* TOPPERS — Premium Cards */}
-        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Learn from the Best</p>
@@ -415,8 +575,8 @@ export default function SalesPage() {
           </div>
         </section>
 
-        {/* IBEC METHOD — Full-bleed image showcase */}
-        <section className="py-16 sm:py-20">
+        {/* IBEC METHOD */}
+        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-12 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">The Framework</p>
@@ -432,7 +592,6 @@ export default function SalesPage() {
                   key={step.letter}
                   className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  {/* Image — full width, larger */}
                   <div className="aspect-[4/3] w-full overflow-hidden bg-gray-50">
                     <img
                       src={step.img}
@@ -447,7 +606,6 @@ export default function SalesPage() {
                         }
                       }}
                     />
-                    {/* Letter badge overlay */}
                     <div className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/90 text-sm font-bold text-gray-900 shadow-sm backdrop-blur-sm">
                       {step.letter}
                     </div>
@@ -470,7 +628,7 @@ export default function SalesPage() {
         </section>
 
         {/* TESTIMONIALS */}
-        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
               <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Testimonials</p>
@@ -497,19 +655,19 @@ export default function SalesPage() {
           </div>
         </section>
 
-        {/* PRICING */}
-        <section className="py-16 sm:py-20">
+        {/* PRICING + DELIVERY */}
+        <section className="border-t border-gray-100 bg-gray-50/50 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-lg">
               <div className="text-center">
                 <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">Pricing</p>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Invest in Your Preparation</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Invest ₹11 Per Copy in Your Preparation</h2>
               </div>
 
               <div className="mt-8 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl shadow-gray-200/50">
                 <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 px-6 py-4 text-center">
                   <p className="text-xs font-bold uppercase tracking-wider text-white">
-                    🔥 Flash Sale — Expires in {mounted ? display : "05:00"}
+                    Complete Bundle — 50+ Topper Copies + 21 Strategy Guides
                   </p>
                 </div>
                 <div className="p-8 text-center sm:p-10">
@@ -517,16 +675,21 @@ export default function SalesPage() {
                     <span className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">₹799</span>
                     <span className="text-lg text-gray-400 line-through">₹4,999</span>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">Save 84% — only <span className="font-semibold text-gray-700">{spotsLeft} bundles</span> sold at this price</p>
-                  <p className="mt-0.5 text-xs text-red-500">Offer expires in {mounted ? display : "—"}</p>
+                  <p className="mt-1 text-sm font-medium text-emerald-600">
+                    <span className="text-lg font-bold">₹11/copy</span> — 50+ topper copies + 21 guides for less than a samosa each
+                  </p>
 
                   <div className="mt-8 space-y-3 rounded-2xl bg-gray-50 p-5 text-left text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">50+ Topper Answer Copies</span>
+                      <span className="font-semibold text-emerald-600">✓ Included</span>
+                    </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">21 Strategy Guides</span>
                       <span className="font-semibold text-emerald-600">✓ Included</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">3+ Topper Answer Copies</span>
+                      <span className="text-gray-600">Interview Prep (3 Guides)</span>
                       <span className="font-semibold text-emerald-600">✓ Included</span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -534,7 +697,7 @@ export default function SalesPage() {
                       <span className="font-semibold text-emerald-600">✓ Included</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Interview Prep (3 Guides)</span>
+                      <span className="text-gray-600">Value-Addition Data & Maps</span>
                       <span className="font-semibold text-emerald-600">✓ Included</span>
                     </div>
                     <div className="flex items-center justify-between border-t border-gray-200 pt-3">
@@ -543,27 +706,46 @@ export default function SalesPage() {
                     </div>
                   </div>
 
+                  {/* Delivery process */}
+                  <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-left">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800">How Delivery Works</p>
+                    <ol className="mt-3 space-y-2 text-sm text-emerald-700">
+                      <li className="flex items-start gap-2">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-200 text-[10px] font-bold text-emerald-800">1</span>
+                        Pay ₹799 via UPI (QR code or tap to pay)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-200 text-[10px] font-bold text-emerald-800">2</span>
+                        Upload your payment screenshot
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-200 text-[10px] font-bold text-emerald-800">3</span>
+                        We verify within 2 hours and email you the download link
+                      </li>
+                    </ol>
+                  </div>
+
                   <Button
                     size="lg"
                     data-track="sales-pricing-cta"
                     onClick={() => setModalOpen(true)}
                     className="mt-8 w-full rounded-full bg-emerald-600 py-6 text-base font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
                   >
-                    Claim Bundle at ₹799 →
+                    Get Complete Bundle at ₹799 →
                   </Button>
 
                   <div className="mt-5 flex items-center justify-center gap-2 text-xs text-gray-500">
                     <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    Verified & Authentic Copies. Satisfaction guaranteed.
+                    Verified & Authentic Copies. Delivered via email.
                   </div>
                 </div>
               </div>
 
               <div className="mt-6 text-center text-xs text-gray-400">
                 <p>Pay via UPI • QR Code • GPay • PhonePe • Paytm</p>
-                <p className="mt-1">Instant access after verification (within 24 hrs)</p>
+                <p className="mt-1">Delivered within 2 hours of payment verification</p>
               </div>
             </div>
           </div>
@@ -632,18 +814,19 @@ export default function SalesPage() {
         {/* FINAL CTA */}
         <section className="border-t border-gray-100 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 text-center sm:py-20">
           <div className="mx-auto max-w-2xl px-4 sm:px-6">
-            <div className="mx-auto mb-6 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-4 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-semibold tracking-wide text-emerald-300">Only {spotsLeft} bundles left at ₹799</span>
-            </div>
-
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Get the Bundle Before Price Goes&nbsp;Up
+              Get the Complete Bundle — All 50+ Copies &amp; 21 Strategy Guides
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-gray-400">
-              30+ resources • 21 strategy guides • Topper copies • Interview prep<br />
-              <span className="text-red-400">Offer expires in {mounted ? display : "—"} → ₹799 now</span>
+              50+ topper copies across GS1-4, Essay &amp; Optional • 21 original strategy guides • Interview prep • Ethics case studies
             </p>
+
+            <div className="mt-6 flex items-baseline justify-center gap-2">
+              <span className="text-4xl font-bold text-white">₹799</span>
+              <span className="text-lg text-gray-500 line-through">₹4,999</span>
+              <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">Save 84%</span>
+            </div>
+            <p className="mt-1 text-sm text-emerald-400">That&apos;s just <span className="font-bold">₹11</span> per copy — less than the price of a tea!</p>
 
             <div className="mt-8">
               <Button
@@ -652,12 +835,12 @@ export default function SalesPage() {
                 onClick={() => setModalOpen(true)}
                 className="rounded-full bg-emerald-600 px-12 py-6 text-base font-bold text-white shadow-xl shadow-emerald-600/30 hover:bg-emerald-500"
               >
-                Claim Bundle at ₹799 →
+                Get Complete Bundle at ₹799 →
               </Button>
             </div>
 
             <p className="mt-6 text-xs text-gray-500">
-              Instant PDF access &bull; Verified content &bull; Lifetime updates
+              Delivered via email (ZIP) &bull; Verified content &bull; Lifetime access &bull; <span className="text-emerald-400">100% Satisfaction or Refund</span>
             </p>
           </div>
         </section>
@@ -665,31 +848,10 @@ export default function SalesPage() {
         {/* STICKY BOTTOM BAR */}
         <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-2 py-2 sm:px-6 sm:py-3">
-            <div className="hidden items-center gap-1.5 text-xs font-semibold text-gray-900 sm:flex sm:text-sm">
-              {mounted ? (
-                <>
-                  <svg className="h-3.5 w-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>Ends in&nbsp;</span>
-                  <span className="tabular-nums text-red-600">{display}</span>
-                </>
-              ) : (
-                <span className="text-gray-300">—</span>
-              )}
-            </div>
-
             <div className="flex items-center gap-1.5 sm:gap-2">
               <span className="text-[10px] text-gray-400 line-through sm:text-sm">₹4,999</span>
               <span className="text-sm font-bold text-gray-900 sm:text-lg">₹799</span>
-              {mounted && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-1.5 py-0.5 text-[10px] font-bold text-red-600 tabular-nums sm:hidden">
-                  <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {display}
-                </span>
-              )}
+              <span className="hidden text-[10px] text-emerald-600 font-semibold sm:inline">(₹11/copy)</span>
             </div>
 
             <Button
@@ -708,48 +870,4 @@ export default function SalesPage() {
       </main>
     </>
   );
-}
-
-function useTimer() {
-  const [mounted, setMounted] = useState(false);
-  const [display, setDisplay] = useState("05:00");
-  const [spotsLeft, setSpotsLeft] = useState(42);
-
-  useEffect(() => {
-    setMounted(true);
-    const stored = sessionStorage.getItem("offerDeadline10");
-    let deadline: number;
-
-    if (stored) {
-      deadline = parseInt(stored, 10);
-      if (deadline <= Date.now()) {
-        deadline = Date.now() + 10 * 60 * 1000;
-        sessionStorage.setItem("offerDeadline10", String(deadline));
-      }
-    } else {
-      deadline = Date.now() + 10 * 60 * 1000;
-      sessionStorage.setItem("offerDeadline10", String(deadline));
-    }
-
-    function format(remaining: number) {
-      const mins = Math.floor(remaining / 60);
-      const secs = remaining % 60;
-      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    }
-
-    const update = () => {
-      const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
-      if (remaining <= 0) {
-        setDisplay("00:00");
-        return;
-      }
-      setDisplay(format(remaining));
-    };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return { mounted, display, spotsLeft };
 }
