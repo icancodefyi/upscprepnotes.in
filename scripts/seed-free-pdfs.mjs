@@ -1,18 +1,23 @@
-// Run: node scripts/seed-free-pdfs.mjs
+// Run: node -r dotenv/config scripts/seed-free-pdfs.mjs dotenv_config_path=.env.local
 // Seed freeAnswerCopyUrl for toppers that have scanned PDFs available
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/upscprepnotes";
+const MONGO_URI = process.env.MONGODB_URI;
+
+if (!MONGO_URI) {
+  console.error("MONGODB_URI not set. Run with: node -r dotenv/config scripts/seed-free-pdfs.mjs dotenv_config_path=.env.local");
+  process.exit(1);
+}
 
 const topperSchema = new mongoose.Schema({}, { strict: false, collection: "toppers" });
 const Topper = mongoose.model("Topper", topperSchema);
 
-// Add PDF URLs here once scans are ready:
-// Format: { slug: "divya-tanwar-rank-105-2022", url: "https://upscprepnotes.in/pdfs/answer-copies/divya-tanwar/gs1.pdf" }
-const SEED_DATA = [];
+const SEED_DATA = [
+  { slug: "divya-tanwar-rank-105-2022", url: "https://www.drishtiias.com/hindi/images/pdf/DIVYA-(438)-2021-GS.pdf" },
+];
 
 async function main() {
-  await mongoose.connect(MONGO_URI);
+  await mongoose.connect(MONGO_URI, { dbName: process.env.DB_NAME || "upscprepnotes" });
   console.log("Connected to MongoDB");
 
   for (const { slug, url } of SEED_DATA) {
