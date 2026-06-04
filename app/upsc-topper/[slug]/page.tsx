@@ -35,7 +35,7 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  let desc = `${name} Answer Copies & Resources.`;
+  let desc = `${name} UPSC Marksheet — AIR ${rank} (${year}). ${name} Answer Copies & Resources.`;
   if (essay) desc += ` ${name} Essay Copies — ${essay} Marks.`;
   if (gs1) desc += ` ${name} GS1 Copies — ${gs1} Marks.`;
   if (gs2) desc += ` ${name} GS2 Copies — ${gs2} Marks.`;
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Strategy & Answer Copy (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Optional Subject, Answer Copy & Strategy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
@@ -446,13 +446,13 @@ export default async function TopperPage({ params }: Props) {
               </div>
 
               <h1 className="max-w-4xl text-5xl font-bold tracking-tight md:text-7xl leading-[1.05]">
-                {topper.firstName} {topper.lastName} — Answer Copy &amp; Strategy
+                {topper.firstName} {topper.lastName} — UPSC Marksheet, {topper.optionalSubject || "Optional Subject"} Answer Copy &amp; Strategy
               </h1>
               <p className="mt-3 text-2xl font-medium text-primary">
                 AIR {topper.rank} &middot; {topper.marks.total} Total Marks
               </p>
               <p className="mt-2 text-base text-muted-foreground">
-                Download {topper.firstName} {topper.lastName}&apos;s actual UPSC Mains answer copy PDF. See the exact answer sheets, marks breakdown, and preparation strategy for GS Papers and {topper.optionalSubject || "Optional Subject"}.
+                {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject || "Optional Subject"} optional. Download {topper.firstName} {topper.lastName}&apos;s actual UPSC Mains answer copy PDF. See the exact answer sheets, marks breakdown, and preparation strategy for GS Papers, essay and {topper.optionalSubject || "Optional Subject"}.
               </p>
               {topper.bio && (
                 <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground">
