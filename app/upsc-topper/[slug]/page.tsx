@@ -38,9 +38,9 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  let desc = `Get ${name}'s actual UPSC answer copy PDF. AIR ${rank} (${year})`;
-  if (subject) desc += ` ${subject} optional.`;
-  if (total) desc += ` Total: ${total}`;
+  let desc = `UPSC ${name} marksheet — AIR ${rank} (${year})`;
+  if (total) desc += ` scored ${total} marks total.`;
+  if (subject) desc += ` Optional: ${subject}.`;
   desc += ` Written: ${written || "—"} Interview: ${interview || "—"}.`;
   if (gs1) desc += ` GS1:${gs1}`;
   if (gs2) desc += ` GS2:${gs2}`;
@@ -48,7 +48,7 @@ function buildMetaDescription(topper: Record<string, any>): string {
   if (gs4) desc += ` GS4:${gs4}`;
   if (essay) desc += ` Essay:${essay}`;
   if (opt1 && subject) desc += ` ${subject.replace(/\s+/g, "")}:${opt1}`;
-  desc += ` See the answer sheets + 50+ copies at just ₹11/copy.`;
+  desc += ` Preparation strategy, biography & answer copies at ₹11/copy.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;
@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} Answer Copy — UPSC Topper Answer Sheet (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Strategy & Answer Copy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
