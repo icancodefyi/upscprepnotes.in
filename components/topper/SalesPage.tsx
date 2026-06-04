@@ -183,7 +183,7 @@ export default function SalesPage() {
         {/* 1. HERO — Full-width with topper photo on right */}
         <section className="border-b border-black/[0.04]">
           <div className="mx-auto flex max-w-7xl flex-col lg:flex-row">
-            <div className="flex flex-col justify-center px-5 pt-20 pb-10 sm:px-8 lg:w-1/2 lg:py-28 lg:pl-12 xl:pl-16">
+            <div className="flex flex-col justify-center px-5 pt-16 pb-8 sm:px-8 lg:w-1/2 lg:py-20 lg:pl-12 xl:pl-16">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
                 Verified answer copies
               </p>
@@ -195,7 +195,12 @@ export default function SalesPage() {
               <p className="mt-4 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
                 50+ verified answer copies from AIR 1-50 toppers. 21 original strategy guides. One bundle delivered to your email.
               </p>
-              <div className="mt-7 flex items-center gap-4">
+              <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <span className="text-2xl font-bold tracking-tight text-gray-900">₹799</span>
+                <span className="text-sm text-gray-400 line-through">₹4,999</span>
+                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700">₹11 per copy</span>
+              </div>
+              <div className="mt-5 flex items-center gap-4">
                 <CTAButton onClick={() => openModal("Ultimate Bundle")} tracking="sales-hero-cta">
                   Get the bundle
                 </CTAButton>
