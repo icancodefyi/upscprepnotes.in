@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { IconMail, IconCheck, IconX, IconBell } from "@tabler/icons-react";
+import { trackClientEvent } from "@/lib/client-analytics";
 
 interface RequestCopyDialogProps {
   topperName: string;
@@ -17,8 +18,14 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    trackClientEvent("dialog_open", { dialog: "request_copy", topperSlug });
     return () => { document.body.style.overflow = "" };
   }, []);
+
+  const handleClose = useCallback(() => {
+    trackClientEvent("dialog_close", { dialog: "request_copy", topperSlug, step });
+    onOpenChange(false);
+  }, [onOpenChange, topperSlug, step]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,12 +40,15 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
 
       if (!res.ok) {
         setStep("error");
+        trackClientEvent("dialog_submit", { dialog: "request_copy", topperSlug, status: "error" });
         return;
       }
 
       setStep("sent");
+      trackClientEvent("dialog_submit", { dialog: "request_copy", topperSlug, status: "success" });
     } catch {
       setStep("error");
+      trackClientEvent("dialog_submit", { dialog: "request_copy", topperSlug, status: "error" });
     } finally {
       setLoading(false);
     }
@@ -46,12 +56,13 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl">
         {step === "form" && (
           <>
             <button
-              onClick={() => onOpenChange(false)}
+              onClick={handleClose}
+              data-track="request-copy-dialog-close"
               className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
             >
               <IconX size={18} />
@@ -79,6 +90,7 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => trackClientEvent("form_field_focus", { dialog: "request_copy", field: "email", topperSlug })}
                     placeholder="you@example.com"
                     className="w-full rounded-xl border border-border/50 bg-background py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary/30 focus:ring-1 focus:ring-primary/20"
                   />
@@ -88,6 +100,7 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
               <Button
                 type="submit"
                 disabled={loading}
+                data-track="request-copy-form-submit"
                 className="w-full rounded-full bg-amber-600 text-sm font-semibold text-white hover:bg-amber-700"
               >
                 {loading ? "Sending..." : "Notify Me When Available →"}
@@ -110,7 +123,8 @@ export function RequestCopyDialog({ topperName, topperSlug, onOpenChange }: Requ
               We&apos;ll email you at <strong>{email}</strong> the moment <strong>{topperName}&apos;s</strong> answer copy is available.
             </p>
             <Button
-              onClick={() => onOpenChange(false)}
+              onClick={handleClose}
+              data-track="request-copy-success-close"
               className="mt-6 rounded-full bg-amber-600 px-6 text-sm font-semibold text-white hover:bg-amber-700"
             >
               Got it

@@ -17,6 +17,7 @@ const navLinks = [
   { href: "/admin/new", label: "Add Topper" },
   { href: "/admin/pyq", label: "PYQ" },
   { href: "/admin/requests", label: "Requests" },
+  { href: "/admin/analytics", label: "Analytics" },
 ];
 
 export default async function ProtectedLayout({

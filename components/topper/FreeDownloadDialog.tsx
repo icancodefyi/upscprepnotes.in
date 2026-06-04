@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { IconDownload, IconMail, IconCheck, IconX } from "@tabler/icons-react";
+import { trackClientEvent } from "@/lib/client-analytics";
 
 interface FreeDownloadDialogProps {
   topperName: string;
@@ -18,8 +19,16 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = "" };
+    trackClientEvent("dialog_open", { dialog: "free_download", topperSlug });
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
+
+  const handleClose = useCallback(() => {
+    trackClientEvent("dialog_close", { dialog: "free_download", topperSlug, step, method: "button" });
+    onOpenChange(false);
+  }, [onOpenChange, topperSlug, step]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,13 +45,16 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
 
       if (!res.ok) {
         setStep("error");
+        trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, status: "error" });
         return;
       }
 
       setPdfUrl(data.pdfUrl);
       setStep("sent");
+      trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, status: "success" });
     } catch {
       setStep("error");
+      trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, status: "error" });
     } finally {
       setLoading(false);
     }
@@ -50,12 +62,13 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl">
         {step === "form" && (
           <>
             <button
-              onClick={() => onOpenChange(false)}
+              onClick={handleClose}
+              data-track="free-download-dialog-close"
               className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
             >
               <IconX size={18} />
@@ -83,19 +96,21 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={() => trackClientEvent("form_field_focus", { dialog: "free_download", field: "email", topperSlug })}
                     placeholder="you@example.com"
                     className="w-full rounded-xl border border-border/50 bg-background py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary/30 focus:ring-1 focus:ring-primary/20"
                   />
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-full bg-emerald-600 text-sm font-semibold text-white hover:bg-emerald-700"
-              >
-                {loading ? "Sending..." : "Send Download Link →"}
-              </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              data-track="free-download-form-submit"
+              className="w-full rounded-full bg-emerald-600 text-sm font-semibold text-white hover:bg-emerald-700"
+            >
+              {loading ? "Sending..." : "Send Download Link →"}
+            </Button>
 
               <p className="text-center text-xs text-muted-foreground">
                 We&apos;ll also send you the complete bundle offer. Unsubscribe anytime.
@@ -116,6 +131,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
             <a
               href={pdfUrl}
               download
+              data-track="free-download-pdf"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
             >
               <IconDownload size={16} />

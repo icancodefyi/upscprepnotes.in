@@ -78,6 +78,28 @@ export default function RootLayout({
                 send_page_view: true
               });
 
+              // --- own analytics backend ---
+              function getSessionId() {
+                var s = sessionStorage.getItem('_sid');
+                if (!s) { s = 's' + Date.now() + Math.random().toString(36).slice(2,8); sessionStorage.setItem('_sid', s); }
+                return s;
+              }
+              function getDeviceType() {
+                var ua = navigator.userAgent;
+                if (/Mobile|Android|iPhone|iP(od|hone)/i.test(ua) && !/iPad/i.test(ua)) return 'mobile';
+                if (/iPad|Tablet/i.test(ua)) return 'tablet';
+                return 'desktop';
+              }
+              function fireAnalytics(event, meta) {
+                try {
+                  var d = JSON.stringify({ event: event, pagePath: location.pathname, sessionId: getSessionId(), referrer: document.referrer || '', userAgent: navigator.userAgent || '', deviceType: getDeviceType(), metadata: meta || {} });
+                  var b = new Blob([d], { type: 'application/json' });
+                  navigator.sendBeacon('/api/analytics/event', b);
+                } catch(e) {}
+              }
+              fireAnalytics('page_view', { title: document.title });
+              // --- end own analytics ---
+
               var scrollDepths = {};
               function trackScroll() {
                 var h = document.documentElement;
@@ -87,6 +109,7 @@ export default function RootLayout({
                   if (p >= depths[i] && !scrollDepths[depths[i]]) {
                     scrollDepths[depths[i]] = true;
                     gtag('event', 'scroll_depth', { depth: depths[i] + '%' });
+                    fireAnalytics('scroll_depth', { depth: depths[i] + '%' });
                   }
                 }
               }
@@ -113,6 +136,8 @@ export default function RootLayout({
                   is_outbound: isOutbound,
                   page_path: location.pathname
                 });
+
+                fireAnalytics('click', { linkText: text, linkUrl: href, linkType: tag, trackAttr: trackAttr, isOutbound: isOutbound });
               });
 
               document.addEventListener('submit', function(e) {
@@ -123,28 +148,35 @@ export default function RootLayout({
                   form_text: text.trim().substring(0, 100),
                   page_path: location.pathname
                 });
+
+                fireAnalytics('form_submit', { formLabel: el.getAttribute('data-track') || 'form', formText: text.trim().substring(0, 100) });
               });
 
+              var pageLoadTime = Date.now();
               var pageExitFired = false;
               document.addEventListener('visibilitychange', function() {
                 if (document.visibilityState === 'hidden' && !pageExitFired) {
                   pageExitFired = true;
                   var st = window.scrollY || document.documentElement.scrollTop;
                   var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                  var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
+                  var dep = Math.round((st / Math.max(sh, 1)) * 100) + '%';
                   gtag('event', 'page_exit', {
-                    scroll_depth: Math.round((st / Math.max(sh, 1)) * 100) + '%',
-                    time_on_page: Math.round((Date.now() - performance.now()) / 1000) + 's',
+                    scroll_depth: dep,
+                    time_on_page: time,
                     page_path: location.pathname
                   });
+                  fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
                 }
               });
 
               window.addEventListener('beforeunload', function() {
                 if (!pageExitFired) {
-                  gtag('event', 'page_exit', {
-                    depth: Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%',
-                    page_path: location.pathname
-                  });
+                  pageExitFired = true;
+                  var dep = Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%';
+                  var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
+                  gtag('event', 'page_exit', { depth: dep, time_on_page: time, page_path: location.pathname });
+                  fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
                 }
               });
             `,

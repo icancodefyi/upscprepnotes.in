@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useCallback } from "react";
+import { useState, FormEvent, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import {
   trackAddPaymentInfo,
   trackPurchase,
 } from "@/lib/analytics";
+import { trackClientEvent } from "@/lib/client-analytics";
 
 const PRODUCTS = [
   { name: "Answer Copies", price: 549, desc: "50+ topper answer copies" },
@@ -35,6 +36,7 @@ function ProductCard({
     <button
       type="button"
       onClick={onSelect}
+      data-track={`purchase-select-${p.name.toLowerCase().replace(/\s+/g, "-")}`}
       className="group relative flex w-full items-center justify-between rounded-2xl border border-border/50 bg-card p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 sm:p-5"
     >
       {"bestValue" in p && p.bestValue && (
@@ -63,13 +65,25 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
   const [errMsg, setErrMsg] = useState("");
   const [imgPreview, setImgPreview] = useState<string | null>(null);
 
+  useEffect(() => {
+    const pName = product?.name || defaultProduct || "unknown";
+    trackClientEvent("purchase_modal_open", { product: pName, pagePath: window.location.pathname });
+  }, []);
+
+  const handleClose = useCallback(() => {
+    trackClientEvent("purchase_modal_close", { product: product?.name || "unknown", step, hasEmail: !!form.email });
+    onClose();
+  }, [onClose, product, step, form.email]);
+
   function selectProduct(p: (typeof PRODUCTS)[0]) {
     setProduct(p);
     setStep("form");
     trackAddToCart(p.name, p.price);
+    trackClientEvent("purchase_product_select", { product: p.name, price: p.price });
   }
 
   function handleBack() {
+    trackClientEvent("purchase_step_back", { from: step, product: product?.name || "unknown" });
     if (step === "form") {
       setStep("select");
       setProduct(null);
@@ -84,24 +98,29 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
 
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
       setErrMsg("All fields are required.");
+      trackClientEvent("purchase_form_error", { error: "required_fields_missing", product: product?.name || "unknown" });
       return;
     }
 
     setStep("payment");
+    trackClientEvent("purchase_form_submit", { product: product?.name || "unknown", hasEmail: !!form.email });
     if (product) {
       trackBeginCheckout(product.name, product.price);
       trackAddPaymentInfo(product.name, product.price);
+      trackClientEvent("purchase_checkout", { product: product.name, price: product.price });
     }
   }
 
   async function handlePayAndUpload() {
     if (!product || !screenshotFile) {
       setErrMsg("Please upload your payment screenshot.");
+      trackClientEvent("purchase_upload_error", { product: product?.name || "unknown", error: "no_screenshot" });
       return;
     }
 
     setStep("submitting");
     setErrMsg("");
+    trackClientEvent("purchase_submit_start", { product: product.name, price: product.price });
 
     try {
       const uploadForm = new FormData();
@@ -135,11 +154,13 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
       }
 
       setStep("done");
+      trackClientEvent("purchase_completed", { product: product.name, price: product.price });
       if (product) {
         trackPurchase(product.name, product.price, `txn_${Date.now()}`);
       }
     } catch {
       setErrMsg("Something went wrong. Please try again.");
+      trackClientEvent("purchase_submit_error", { product: product?.name || "unknown" });
       setStep("payment");
     }
   }
@@ -148,6 +169,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
       setScreenshotFile(file);
+      trackClientEvent("purchase_screenshot_upload", { hasFile: !!file, product: product?.name || "unknown" });
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => setImgPreview(reader.result as string);
@@ -156,7 +178,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
         setImgPreview(null);
       }
     },
-    []
+    [product]
   );
 
   const upiLink = process.env.NEXT_PUBLIC_UPI_ID
@@ -175,7 +197,8 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
         {/* Close button — fixed top-right on all steps */}
         <button
           type="button"
-          onClick={onClose}
+          onClick={handleClose}
+          data-track="purchase-modal-close"
           className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 text-muted-foreground backdrop-blur-sm transition hover:bg-muted hover:text-foreground sm:right-5 sm:top-5"
           aria-label="Close"
         >
@@ -277,6 +300,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, name: e.target.value })
                       }
+                      onFocus={() => trackClientEvent("purchase_form_focus", { field: "name", product: product?.name || "unknown" })}
                       className="h-12 rounded-2xl text-base sm:h-11 sm:text-sm"
                     />
                   </div>
@@ -292,6 +316,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, email: e.target.value })
                       }
+                      onFocus={() => trackClientEvent("purchase_form_focus", { field: "email", product: product?.name || "unknown" })}
                       className="h-12 rounded-2xl text-base sm:h-11 sm:text-sm"
                     />
                   </div>
@@ -307,6 +332,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, phone: e.target.value })
                       }
+                      onFocus={() => trackClientEvent("purchase_form_focus", { field: "phone", product: product?.name || "unknown" })}
                       className="h-12 rounded-2xl text-base sm:h-11 sm:text-sm"
                     />
                   </div>
@@ -318,6 +344,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                   <Button
                     type="submit"
                     size="lg"
+                    data-track="purchase-form-continue"
                     className="mt-2 w-full rounded-full py-4 text-base sm:py-3 sm:text-sm"
                   >
                     Continue to Pay ₹{product?.price}
@@ -349,6 +376,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                           href={upiLink}
                           target="_blank"
                           rel="noopener noreferrer"
+                          data-track="purchase-tap-to-pay"
                           className="whitespace-nowrap font-semibold text-primary underline underline-offset-2 transition hover:text-primary/80"
                         >
                           tap to pay via UPI
@@ -427,6 +455,7 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
                     onClick={handlePayAndUpload}
                     disabled={step === "submitting"}
                     size="lg"
+                    data-track="purchase-submit-verification"
                     className="w-full rounded-full py-4 text-base sm:py-3 sm:text-sm"
                   >
                     {step === "submitting" ? (
@@ -507,8 +536,9 @@ export default function PurchaseModal({ onClose, defaultProduct }: Props) {
               </p>
 
               <Button
-                onClick={onClose}
+                onClick={handleClose}
                 size="lg"
+                data-track="purchase-done-close"
                 className="mt-8 w-full rounded-full sm:mt-10 sm:w-auto sm:px-12"
               >
                 Done

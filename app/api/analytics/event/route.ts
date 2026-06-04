@@ -1,0 +1,41 @@
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import { AnalyticsEventModel } from "@/models/analytics-event.model";
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { event, pagePath, sessionId, referrer, userAgent, deviceType, metadata } = body;
+
+    if (!event || !pagePath || !sessionId) {
+      return NextResponse.json(
+        { success: false, error: "event, pagePath, and sessionId are required" },
+        { status: 400 }
+      );
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const visitorId = `${today}:${sessionId}`;
+
+    await connectDB();
+    await AnalyticsEventModel.create({
+      event,
+      pagePath,
+      sessionId,
+      visitorId,
+      referrer: referrer || "",
+      userAgent: userAgent || "",
+      deviceType: deviceType || "desktop",
+      metadata: metadata || {},
+      timestamp: new Date(),
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Analytics event error:", err);
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
