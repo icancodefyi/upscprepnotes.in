@@ -304,13 +304,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${subjectInfo.name} Optional — UPSCPrepNotes`,
-    description: subjectInfo.description,
+    title: `${subjectInfo.name} Optional Subject — UPSC CSE Preparation, Toppers & Strategy`,
+    description: `${subjectInfo.name} optional subject for UPSC. ${subjectInfo.description}`,
     alternates: {
       canonical: `https://upscprepnotes.in/optional/${subjectKey}`,
     },
     openGraph: {
-      title: `${subjectInfo.name} Optional — UPSCPrepNotes`,
+      title: `${subjectInfo.name} Optional Subject — UPSC CSE Preparation, Toppers & Strategy`,
       description: subjectInfo.description,
       url: `https://upscprepnotes.in/optional/${subjectKey}`,
     },
@@ -451,11 +451,11 @@ export default async function SubjectPage({ params }: Props) {
           </p>
 
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-            {subjectInfo.name}
+            {subjectInfo.name} — UPSC Optional Subject, Toppers &amp; Strategy
           </h1>
 
           <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-zinc-800">
-            {subjectInfo.description}
+            {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
           </p>
         </div>
 
