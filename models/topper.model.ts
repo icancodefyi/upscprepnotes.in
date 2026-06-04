@@ -69,6 +69,7 @@ const topperSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    freeAnswerCopyUrl: String,
   },
   {
     timestamps: true,

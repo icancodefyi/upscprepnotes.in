@@ -112,6 +112,7 @@ export function TopperForm({ topper }: TopperFormProps) {
 
   const [isFeatured, setIsFeatured] = useState(topper?.isFeatured || false);
   const [isIndexed, setIsIndexed] = useState(topper?.isIndexed || false);
+  const [freeAnswerCopyUrl, setFreeAnswerCopyUrl] = useState(topper?.freeAnswerCopyUrl || "");
 
   function setMarkField(field: string, value: number) {
     setMarks((prev) => ({ ...prev, [field]: value }));
@@ -147,6 +148,7 @@ export function TopperForm({ topper }: TopperFormProps) {
       image,
       isFeatured,
       isIndexed,
+      freeAnswerCopyUrl: freeAnswerCopyUrl || undefined,
     };
 
     try {
@@ -379,6 +381,17 @@ export function TopperForm({ topper }: TopperFormProps) {
                 </TooltipContent>
               </Tooltip>
             </label>
+          </div>
+          <div className="mt-4">
+            <Label htmlFor="freeAnswerCopyUrl">Free Download PDF URL</Label>
+            <Input
+              id="freeAnswerCopyUrl"
+              value={freeAnswerCopyUrl}
+              onChange={(e) => setFreeAnswerCopyUrl(e.target.value)}
+              placeholder="https://upscprepnotes.in/pdfs/answer-copies/..."
+              className="mt-1.5"
+            />
+            <p className="mt-1 text-xs text-zinc-400">Leave empty if no free PDF is available for this topper.</p>
           </div>
         </CardContent>
       </Card>

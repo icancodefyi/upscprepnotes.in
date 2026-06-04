@@ -55,6 +55,7 @@ export interface Topper {
   metadata: TopperMetadata;
   isFeatured: boolean;
   isIndexed: boolean;
+  freeAnswerCopyUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }

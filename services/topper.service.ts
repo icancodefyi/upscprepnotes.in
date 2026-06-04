@@ -56,6 +56,7 @@ function normalizeTopper(topper: any) {
 
     isFeatured: topper.isFeatured || false,
     isIndexed: topper.isIndexed || false,
+    freeAnswerCopyUrl: topper.freeAnswerCopyUrl || null,
   };
 }
 
