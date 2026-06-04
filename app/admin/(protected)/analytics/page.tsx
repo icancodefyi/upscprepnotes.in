@@ -46,6 +46,14 @@ type Stats = {
 const COLORS = ["#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#d1fae5", "#f59e0b", "#f97316", "#ef4444", "#8b5cf6"];
 const PIE_COLORS = ["#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#f59e0b", "#f97316", "#ef4444", "#8b5cf6", "#6366f1"];
 
+const TOPPER_AVATARS = [
+  "/images/sales/toppers/topper-aditya-shrivastava.svg",
+  "/images/sales/toppers/topper-animesh-pradhan.svg",
+  "/images/sales/toppers/topper-kunal-rastogi.svg",
+  "/images/sales/toppers/topper-saurabh-sharma.svg",
+  "/images/sales/toppers/topper-shaurya-arora.svg",
+];
+
 function formatNumber(n: number) {
   return n.toLocaleString("en-IN");
 }
@@ -287,9 +295,7 @@ export default function AnalyticsPage() {
                   e.event === "form_submit" ||
                   e.event === "dialog_submit"
                 );
-                const firstLetter = session.sessionId.charAt(0).toUpperCase();
-                const bgColors = ["bg-emerald-500", "bg-blue-500", "bg-amber-500", "bg-violet-500", "bg-rose-500", "bg-cyan-500", "bg-orange-500", "bg-pink-500"];
-                const colorIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % bgColors.length;
+                const avatarIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % TOPPER_AVATARS.length;
 
                 return (
                   <button
@@ -297,8 +303,9 @@ export default function AnalyticsPage() {
                     onClick={() => setSelectedJourney(session)}
                     className="group flex w-full items-center gap-4 rounded-2xl border border-black/[0.06] bg-white p-4 text-left transition hover:border-black/20 hover:shadow-sm"
                   >
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${bgColors[colorIdx]}`}>
-                      {firstLetter}
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={TOPPER_AVATARS[avatarIdx]} alt="" className="h-full w-full object-cover" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
@@ -402,9 +409,7 @@ function JourneyDetailModal({ session, onClose }: { session: SessionJourney | nu
     e.event === "form_submit" ||
     e.event === "dialog_submit"
   );
-  const firstLetter = session.sessionId.charAt(0).toUpperCase();
-  const bgColors = ["bg-emerald-500", "bg-blue-500", "bg-amber-500", "bg-violet-500", "bg-rose-500", "bg-cyan-500", "bg-orange-500", "bg-pink-500"];
-  const colorIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % bgColors.length;
+  const avatarIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % TOPPER_AVATARS.length;
 
   // deduplicate consecutive scroll_depth events
   const cleaned: typeof session.events = [];
@@ -424,8 +429,9 @@ function JourneyDetailModal({ session, onClose }: { session: SessionJourney | nu
         <div className="sticky top-0 z-10 border-b border-black/[0.06] bg-white/90 backdrop-blur-sm px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${bgColors[colorIdx]}`}>
-                {firstLetter}
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-zinc-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={TOPPER_AVATARS[avatarIdx]} alt="" className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Session Journey</p>
