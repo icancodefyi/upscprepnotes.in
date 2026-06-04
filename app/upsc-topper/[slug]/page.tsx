@@ -431,35 +431,8 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </div>
 
-        {/* HERO CTA */}
-        <section className="mt-10">
-          <Link
-            href="/toppers/toppers-copy-compilation"
-            data-track="topper-hero-cta"
-            className="flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border-2 border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-5 transition hover:border-emerald-300"
-          >
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700">
-                Get {topper.firstName}&apos;s Complete Answer Copy
-              </p>
-              <p className="mt-0.5 text-sm text-emerald-600">
-                All 6 papers + 50+ topper copies + 21 strategy guides — <span className="font-bold">₹11/copy</span>
-              </p>
-            </div>
-            <span className="shrink-0 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-500">
-              See Bundle at ₹799 &rarr;
-            </span>
-          </Link>
-        </section>
-
         {/* ANSWER COPIES */}
         <section className="mt-12">
-          <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center text-sm">
-            <span className="font-semibold text-emerald-800">₹11 per copy</span>
-            <span className="text-emerald-700"> — all answer sheets + 50+ topper copies &amp; 21 strategy guides in one bundle. </span>
-            <Link href="/toppers/toppers-copy-compilation" data-track="topper-inline-bundle" className="font-semibold text-emerald-800 underline underline-offset-2 hover:text-emerald-600">Get at ₹799 &rarr;</Link>
-          </div>
-
           <h2 className="text-xl font-semibold">
             {topper.firstName} {topper.lastName}&apos;s Answer Copies
           </h2>
@@ -478,18 +451,9 @@ export default async function TopperPage({ params }: Props) {
             ))}
           </div>
 
-          <div className="mt-6 text-center">
-            <Link
-              href="/toppers/toppers-copy-compilation"
-              data-track="topper-copies-cta"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
-            >
-              See Full Answer Copies in Bundle &rarr;
-            </Link>
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              All 6 papers — GS1-4, Essay &amp; Optional — <span className="font-bold text-primary">₹11/copy</span>
-            </p>
-          </div>
+          <p className="mt-4 text-xs text-center text-muted-foreground">
+            All 6 papers — GS1-4, Essay &amp; Optional — <span className="font-bold text-primary">₹11/copy</span> in the Complete Bundle
+          </p>
         </section>
 
         {/* MARKS TABLE */}
