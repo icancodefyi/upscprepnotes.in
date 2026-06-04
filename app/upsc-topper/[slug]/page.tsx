@@ -8,7 +8,6 @@ import {
   getToppersByRank,
   getToppersByYear,
 } from "@/services/topper.service";
-import AnswerCopyCard from "@/components/topper/AnswerCopyCard";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -106,15 +105,6 @@ export default async function TopperPage({ params }: Props) {
     if (slugMap[s]) return slugMap[s];
     return s.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
-
-  const answerCopyPapers = [
-    { key: "gs1", title: "GS1 Answer Copy", marks: topper.marks.gs1 },
-    { key: "gs2", title: "GS2 Answer Copy", marks: topper.marks.gs2 },
-    { key: "gs3", title: "GS3 Answer Copy", marks: topper.marks.gs3 },
-    { key: "gs4", title: "GS4 (Ethics) Answer Copy", marks: topper.marks.gs4 },
-    { key: "essay", title: "Essay Answer Copy", marks: topper.marks.essay },
-    { key: "optional", title: `${topper.optionalSubject} Answer Copy`, marks: topper.marks.optional1 },
-  ];
 
   // Strategy section restructuring
   function extractSections(markdown: string) {
@@ -431,29 +421,34 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </div>
 
-        {/* ANSWER COPIES */}
+        {/* ANSWER COPY DOWNLOAD */}
         <section className="mt-12">
-          <h2 className="text-xl font-semibold">
-            {topper.firstName} {topper.lastName}&apos;s Answer Copies
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Actual UPSC Mains answer sheets across all 6 papers
-          </p>
-
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {answerCopyPapers.map((p) => (
-              <AnswerCopyCard
-                key={p.key}
-                title={p.title}
-                marks={p.marks}
-                topperName={`${topper.firstName} ${topper.lastName}`}
-              />
-            ))}
+          <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-8 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700">
+              UPSC Mains Answer Copy
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-gray-900">
+              {topper.firstName} {topper.lastName}&apos;s Answer Copy PDF
+            </h2>
+            <p className="mt-2 text-sm text-gray-600 max-w-md mx-auto">
+              All 6 papers — GS1-4, Essay &amp; {topper.optionalSubject} — with marks breakdown. Part of the Complete Bundle (50+ toppers, 21 strategy guides).
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <span className="text-3xl font-bold text-gray-900">₹799</span>
+              <span className="text-sm text-gray-500 line-through">₹4,999</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">₹11/copy</span>
+            </div>
+            <Link
+              href="/toppers/toppers-copy-compilation"
+              data-track="topper-download-pdf"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3.5 text-sm font-bold text-white transition hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/25"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download {topper.firstName}&apos;s Answer Copy &rarr;
+            </Link>
           </div>
-
-          <p className="mt-4 text-xs text-center text-muted-foreground">
-            All 6 papers — GS1-4, Essay &amp; Optional — <span className="font-bold text-primary">₹11/copy</span> in the Complete Bundle
-          </p>
         </section>
 
         {/* MARKS TABLE */}
