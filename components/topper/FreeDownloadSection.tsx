@@ -1,34 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { FreeDownloadDialog } from "./FreeDownloadDialog";
+import { RequestCopyDialog } from "./RequestCopyDialog";
 
 interface FreeDownloadSectionProps {
   topperName: string;
   topperSlug: string;
   optionalSubject: string;
   freeAnswerCopyUrl?: string | null;
-}
-
-function Toast({ message, onClose }: { message: string; onClose: () => void }) {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 4000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div className="fixed bottom-24 left-1/2 z-50 w-[90vw] max-w-sm -translate-x-1/2 animate-in fade-in slide-in-from-bottom-4 rounded-xl border border-border/50 bg-gray-900 px-5 py-3.5 text-sm text-white shadow-xl">
-      <div className="flex items-start gap-3">
-        <span className="mt-0.5 shrink-0 text-amber-400">⏳</span>
-        <div className="min-w-0">
-          <p className="font-semibold">Coming Soon</p>
-          <p className="mt-0.5 text-gray-400 leading-relaxed">{message}</p>
-        </div>
-        <button onClick={onClose} className="ml-auto shrink-0 text-gray-500 hover:text-white">&times;</button>
-      </div>
-    </div>
-  );
 }
 
 export function FreeDownloadSection({
@@ -38,7 +19,7 @@ export function FreeDownloadSection({
   freeAnswerCopyUrl,
 }: FreeDownloadSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
+  const [requestOpen, setRequestOpen] = useState(false);
 
   return (
     <>
@@ -67,14 +48,14 @@ export function FreeDownloadSection({
                 </button>
               ) : (
                 <button
-                  onClick={() => setToast(`We are working on getting ${topperName}'s scanned answer copy for you. Check back soon!`)}
-                  data-track="topper-free-download-unavailable"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600/50 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-500/60"
+                  onClick={() => setRequestOpen(true)}
+                  data-track="topper-request-copy"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-amber-500"
                 >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
-                  Download Free Answer Copy
+                  Request Answer Copy
                 </button>
               )}
             </div>
@@ -114,7 +95,13 @@ export function FreeDownloadSection({
         />
       )}
 
-      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+      {requestOpen && !freeAnswerCopyUrl && (
+        <RequestCopyDialog
+          topperName={topperName}
+          topperSlug={topperSlug}
+          onOpenChange={setRequestOpen}
+        />
+      )}
     </>
   );
 }
