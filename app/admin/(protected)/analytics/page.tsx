@@ -46,13 +46,9 @@ type Stats = {
 const COLORS = ["#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#d1fae5", "#f59e0b", "#f97316", "#ef4444", "#8b5cf6"];
 const PIE_COLORS = ["#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#f59e0b", "#f97316", "#ef4444", "#8b5cf6", "#6366f1"];
 
-const TOPPER_AVATARS = [
-  "/images/sales/toppers/topper-aditya-shrivastava.svg",
-  "/images/sales/toppers/topper-animesh-pradhan.svg",
-  "/images/sales/toppers/topper-kunal-rastogi.svg",
-  "/images/sales/toppers/topper-saurabh-sharma.svg",
-  "/images/sales/toppers/topper-shaurya-arora.svg",
-];
+function dicebearUrl(seed: string) {
+  return `https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${encodeURIComponent(seed)}`;
+}
 
 function formatNumber(n: number) {
   return n.toLocaleString("en-IN");
@@ -295,8 +291,6 @@ export default function AnalyticsPage() {
                   e.event === "form_submit" ||
                   e.event === "dialog_submit"
                 );
-                const avatarIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % TOPPER_AVATARS.length;
-
                 return (
                   <button
                     key={session.sessionId}
@@ -305,7 +299,7 @@ export default function AnalyticsPage() {
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-100">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={TOPPER_AVATARS[avatarIdx]} alt="" className="h-full w-full object-cover" />
+                      <img src={dicebearUrl(session.sessionId)} alt="" className="h-full w-full object-cover" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
@@ -409,7 +403,7 @@ function JourneyDetailModal({ session, onClose }: { session: SessionJourney | nu
     e.event === "form_submit" ||
     e.event === "dialog_submit"
   );
-  const avatarIdx = session.sessionId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % TOPPER_AVATARS.length;
+  const avatarUrl = dicebearUrl(session.sessionId);
 
   // deduplicate consecutive scroll_depth events
   const cleaned: typeof session.events = [];
@@ -431,7 +425,7 @@ function JourneyDetailModal({ session, onClose }: { session: SessionJourney | nu
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-zinc-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={TOPPER_AVATARS[avatarIdx]} alt="" className="h-full w-full object-cover" />
+                <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Session Journey</p>

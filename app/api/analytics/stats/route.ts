@@ -75,8 +75,8 @@ export async function GET(req: NextRequest) {
       // Session journeys: last 20 sessions with full event sequence
       AnalyticsEventModel.aggregate([
         { $match: { timestamp: { $gte: since } } },
-        { $sort: { timestamp: -1 } },
-        { $group: { _id: "$sessionId", events: { $push: "$$ROOT" }, firstEvent: { $first: "$$ROOT.timestamp" }, eventCount: { $sum: 1 } } },
+        { $sort: { timestamp: 1 } },
+        { $group: { _id: "$sessionId", events: { $push: "$$ROOT" }, firstEvent: { $first: "$$ROOT.timestamp" }, lastEvent: { $last: "$$ROOT.timestamp" }, eventCount: { $sum: 1 } } },
         { $sort: { firstEvent: -1 } },
         { $limit: 20 },
         {
@@ -84,12 +84,12 @@ export async function GET(req: NextRequest) {
             sessionId: "$_id",
             eventCount: 1,
             firstEvent: 1,
-            lastEvent: { $arrayElemAt: ["$events.timestamp", -1] },
+            lastEvent: 1,
             deviceType: { $arrayElemAt: ["$events.deviceType", 0] },
             userAgent: { $arrayElemAt: ["$events.userAgent", 0] },
             events: {
               $map: {
-                input: { $reverseArray: "$events" },
+                input: "$events",
                 as: "e",
                 in: {
                   event: "$$e.event",
