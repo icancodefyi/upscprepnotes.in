@@ -9,7 +9,6 @@ import {
   getToppersByYear,
 } from "@/services/topper.service";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { topperImageSrc } from "@/lib/utils";
 import TrackingProvider from "./TrackingProvider";
@@ -421,33 +420,55 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </div>
 
-        {/* ANSWER COPY DOWNLOAD */}
+        {/* FREE ANSWER COPY + BUNDLE UPSALE */}
         <section className="mt-12">
-          <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-8 text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700">
-              UPSC Mains Answer Copy
-            </p>
-            <h2 className="mt-2 text-2xl font-bold text-gray-900">
-              {topper.firstName} {topper.lastName}&apos;s Answer Copy PDF
-            </h2>
-            <p className="mt-2 text-sm text-gray-600 max-w-md mx-auto">
-              All 6 papers — GS1-4, Essay &amp; {topper.optionalSubject} — with marks breakdown. Part of the Complete Bundle (50+ toppers, 21 strategy guides).
-            </p>
-            <div className="mt-6 flex items-center justify-center gap-3">
-              <span className="text-3xl font-bold text-gray-900">₹799</span>
-              <span className="text-sm text-gray-500 line-through">₹4,999</span>
-              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">₹11/copy</span>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* FREE DOWNLOAD */}
+            <div className="rounded-2xl border border-border/50 bg-card p-6 flex flex-col items-start">
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-700">Free Download</span>
+              <h2 className="mt-3 text-xl font-bold">
+                {topper.firstName} {topper.lastName}&apos;s Answer Copy
+              </h2>
+              <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+                One free GS paper answer copy from the actual UPSC Mains exam. See the exact handwriting, structure, and presentation that scored high marks.
+              </p>
+              <div className="mt-auto pt-6 w-full">
+                <Link
+                  href="/toppers/toppers-copy-compilation"
+                  data-track="topper-free-download"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-500"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download Free Answer Copy
+                </Link>
+              </div>
             </div>
-            <Link
-              href="/toppers/toppers-copy-compilation"
-              data-track="topper-download-pdf"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3.5 text-sm font-bold text-white transition hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/25"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download {topper.firstName}&apos;s Answer Copy &rarr;
-            </Link>
+
+            {/* BUNDLE UPSELL */}
+            <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 flex flex-col items-start">
+              <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Bundle</span>
+              <h2 className="mt-3 text-xl font-bold text-gray-900">
+                All 50+ Topper Answer Copies
+              </h2>
+              <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">
+                Get every paper (GS1-4, Essay, Optional) of {topper.firstName} + 50+ other toppers plus 21 strategy guides. All at just ₹11 per copy.
+              </p>
+              <div className="mt-3 flex items-center gap-3">
+                <span className="text-2xl font-bold text-gray-900">₹799</span>
+                <span className="text-sm text-gray-500 line-through">₹4,999</span>
+              </div>
+              <div className="mt-auto pt-4 w-full">
+                <Link
+                  href="/toppers/toppers-copy-compilation"
+                  data-track="topper-bundle-upsell"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+                >
+                  Get the Complete Bundle &rarr;
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -670,33 +691,6 @@ export default async function TopperPage({ params }: Props) {
             </div>
           </section>
         )}
-
-        {/* PRODUCT CTA — Final */}
-        <section className="mt-16 mb-8">
-          <div className="overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-gray-900 to-gray-800 p-6 md:p-8">
-            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-lg">
-                <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
-                  See {topper.firstName} {topper.lastName}&apos;s Full Answer Copy
-                </h2>
-                <p className="mt-2 text-sm leading-7 text-gray-400">
-                  {topper.firstName}&apos;s answer sheets + 50+ topper copies across GS1–4,
-                  Essay &amp; Optional. All papers, one bundle.
-                </p>
-                <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-white">₹799</span>
-                  <span className="text-sm text-gray-500 line-through">₹4,999</span>
-                  <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">Just ₹11/copy</span>
-                </div>
-              </div>
-              <Button asChild size="lg" className="shrink-0 rounded-full bg-white px-8 text-sm font-semibold text-gray-900 shadow-lg shadow-black/10 hover:bg-gray-100">
-                <Link href="/toppers/toppers-copy-compilation" data-track="topper-banner-cta">
-                  Get Bundle at ₹799 →
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
       </div>
     </main>
   );
