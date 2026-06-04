@@ -28,9 +28,6 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const rank = topper.rank;
   const year = topper.year;
   const subject = topper.optionalSubject || "";
-  const total = topper.marks?.total ?? "";
-  const written = topper.marks?.written ?? "";
-  const interview = topper.marks?.interview ?? "";
   const gs1 = topper.marks?.gs1 ?? "";
   const gs2 = topper.marks?.gs2 ?? "";
   const gs3 = topper.marks?.gs3 ?? "";
@@ -38,17 +35,15 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  let desc = `UPSC ${name} marksheet — AIR ${rank} (${year})`;
-  if (total) desc += ` scored ${total} marks total.`;
+  let desc = `${name} Answer Copies & Resources.`;
+  if (essay) desc += ` ${name} Essay Copies — ${essay} Marks.`;
+  if (gs1) desc += ` ${name} GS1 Copies — ${gs1} Marks.`;
+  if (gs2) desc += ` ${name} GS2 Copies — ${gs2} Marks.`;
+  if (gs3) desc += ` ${name} GS3 Copies — ${gs3} Marks.`;
+  if (gs4) desc += ` ${name} GS4 Copies — ${gs4} Marks.`;
+  if (opt1 && subject) desc += ` ${name} ${subject} Copies — ${opt1} Marks.`;
+  desc += ` UPSC AIR ${rank} (${year}).`;
   if (subject) desc += ` Optional: ${subject}.`;
-  desc += ` Written: ${written || "—"} Interview: ${interview || "—"}.`;
-  if (gs1) desc += ` GS1:${gs1}`;
-  if (gs2) desc += ` GS2:${gs2}`;
-  if (gs3) desc += ` GS3:${gs3}`;
-  if (gs4) desc += ` GS4:${gs4}`;
-  if (essay) desc += ` Essay:${essay}`;
-  if (opt1 && subject) desc += ` ${subject.replace(/\s+/g, "")}:${opt1}`;
-  desc += ` Preparation strategy, biography & answer copies at ₹11/copy.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;
