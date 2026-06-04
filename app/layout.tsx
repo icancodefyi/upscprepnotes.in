@@ -92,12 +92,15 @@ export default function RootLayout({
               }
               function fireAnalytics(event, meta) {
                 try {
+                  if (location.pathname.indexOf('/admin') === 0) return;
                   var d = JSON.stringify({ event: event, pagePath: location.pathname, sessionId: getSessionId(), referrer: document.referrer || '', userAgent: navigator.userAgent || '', deviceType: getDeviceType(), metadata: meta || {} });
                   var b = new Blob([d], { type: 'application/json' });
                   navigator.sendBeacon('/api/analytics/event', b);
                 } catch(e) {}
               }
-              fireAnalytics('page_view', { title: document.title });
+              if (location.pathname.indexOf('/admin') !== 0) {
+                fireAnalytics('page_view', { title: document.title });
+              }
               // --- end own analytics ---
 
               var scrollDepths = {};
