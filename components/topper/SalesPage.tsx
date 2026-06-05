@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import {
   IconArrowRight,
   IconCheck,
+  IconSparkles,
   IconStar,
   IconShieldCheck,
   IconBolt,
@@ -84,6 +85,44 @@ const HOW = [
   {
     verb: "Get Instant Access",
     detail: "Download link sent immediately on WhatsApp. Full bundle organized by paper.",
+  },
+];
+
+const TIERS = [
+  {
+    name: "Answer Copies",
+    price: 549,
+    desc: "50+ verified topper answer copies across GS1-4, Essay, and Optional papers.",
+    features: [
+      "50+ topper answer copies",
+      "GS1, GS2, GS3, GS4 papers",
+      "Essay & Optional copies",
+      "Marks-wise organization",
+    ],
+  },
+  {
+    name: "Ultimate Bundle",
+    price: 799,
+    desc: "Everything — answer copies, strategy guides, interview prep, ethics case studies, PLUS access to our AI trained for UPSC aspirants.",
+    features: [
+      "Everything in both packs",
+      "Access to AI trained for UPSC aspirants",
+      "72 resources total",
+      "Lifetime access & updates",
+      "₹11 per resource",
+    ],
+    popular: true,
+  },
+  {
+    name: "Strategy Pro",
+    price: 649,
+    desc: "21 original strategy guides, interview preparation, and ethics case studies.",
+    features: [
+      "21 original strategy guides",
+      "Interview preparation pack",
+      "Ethics case studies",
+      "Answer writing frameworks",
+    ],
   },
 ];
 
@@ -636,123 +675,140 @@ export default function SalesPage() {
             </div>
           </section>
         </FadeIn>
-        {/* SECTION 6: PRICING — Competitor-style comparison table */}
+        {/* SECTION 6: PRICING — Three tiers */}
         <FadeIn delay={40}>
-          <section className="border-b border-black/[0.04] bg-white py-16 sm:py-20">
+          <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
             <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
               <div className="mx-auto max-w-2xl text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
-                  INCLUDES
+                  Pricing
                 </p>
                 <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-gray-900 sm:text-3xl">
-                  Pick what you need
+                  Pick the pack that fits your prep
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                  Individual papers or the complete bundle — you decide.
+                  Start with answer copies, or get everything with the bundle
+                  including AI access.
                 </p>
               </div>
-              <div className="mt-10 overflow-x-auto">
-                <style>{`
-                  .comparison-table { border-collapse: separate; border-spacing: 0; min-width: 640px; width: 100%; }
-                  .comparison-table th, .comparison-table td { padding: 12px 14px; text-align: center; font-size: 13px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-                  .comparison-table th:first-child, .comparison-table td:first-child { text-align: left; position: sticky; left: 0; background: white; z-index: 2; }
-                  .comparison-table th { font-weight: 600; color: #111; background: #F9FAFB; font-size: 12px; }
-                  .comparison-table th:first-child { background: #F9FAFB; }
-                  .comparison-table .popular-col { background: #F0FDF4; }
-                  .comparison-table .popular-col:first-child { background: #F9FAFB; }
-                `}</style>
-                <table className="comparison-table">
-                  <thead>
-                    <tr>
-                      <th className="rounded-tl-xl border-t border-l border-black/[0.06]">INCLUDES</th>
-                      <th className="border-t border-black/[0.06]">ALL</th>
-                      <th className="border-t border-black/[0.06]">ESSAY</th>
-                      <th className="border-t border-black/[0.06]">GS 1</th>
-                      <th className="border-t border-black/[0.06]">GS 2</th>
-                      <th className="border-t border-black/[0.06]">GS 3</th>
-                      <th className="rounded-tr-xl border-t border-r border-black/[0.06]">GS 4</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="text-sm font-medium text-gray-900 border-l border-black/[0.06]">Price</td>
-                      <td className="popular-col font-bold text-gray-900"><span className="text-lg">₹799</span></td>
-                      <td className="font-medium text-gray-900">₹249</td>
-                      <td className="font-medium text-gray-900">₹249</td>
-                      <td className="font-medium text-gray-900">₹249</td>
-                      <td className="font-medium text-gray-900">₹249</td>
-                      <td className="font-medium text-gray-900 border-r border-black/[0.06]">₹249</td>
-                    </tr>
-                    <tr>
-                      <td className="text-sm text-gray-400 border-l border-black/[0.06]">Original</td>
-                      <td className="popular-col text-sm text-gray-400"><span className="line-through">₹4,999</span></td>
-                      <td className="text-sm text-gray-400"><span className="line-through">₹999</span></td>
-                      <td className="text-sm text-gray-400"><span className="line-through">₹999</span></td>
-                      <td className="text-sm text-gray-400"><span className="line-through">₹999</span></td>
-                      <td className="text-sm text-gray-400"><span className="line-through">₹999</span></td>
-                      <td className="text-sm text-gray-400 border-r border-black/[0.06]"><span className="line-through">₹999</span></td>
-                    </tr>
-                    <tr>
-                      <td className="border-l border-black/[0.06]"></td>
-                      {["ALL","ESSAY","GS 1","GS 2","GS 3","GS 4"].map((col, i) => (
-                        <td key={col} className={`${i === 0 ? "popular-col " : ""}${i === 5 ? "border-r border-black/[0.06]" : ""}`}>
-                          <a
-                            href={whatsappLink(col === "ALL" ? "Ultimate Bundle" : `${col} Copies`)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[11px] font-bold ${i === 0 ? "bg-emerald-600 text-white hover:bg-emerald-500" : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"}`}
-                          >
-                            BUY NOW
-                          </a>
-                        </td>
-                      ))}
-                    </tr>
-                    {[
-                      ["Keywords", true, true, true, true, true, true],
-                      ["Facts", true, true, true, true, true, true],
-                      ["Data", true, true, true, true, true, true],
-                      ["Maps", true, true, true, true, true, true],
-                      ["Diagrams", true, true, true, true, true, true],
-                      ["Micro Diagrams", false, false, true, true, true, true],
-                      ["Crisp Introductions", true, true, true, true, true, true],
-                      ["Forward Looking Conclusions", true, true, true, true, true, true],
-                      ["Bouncer Questions", true, false, true, true, true, true],
-                      ["5 Sec Diagram Collections", true, false, true, true, true, true],
-                    ].map(([feature, ...checks]) => (
-                      <tr key={feature as string}>
-                        <td className="text-sm text-gray-700 border-l border-black/[0.06]">{feature as string}</td>
-                        {(checks as boolean[]).map((ok, i) => (
-                          <td key={i} className={`${i === 0 ? "popular-col" : ""}${i === 5 ? "border-r border-black/[0.06]" : ""}`}>
-                            {ok ? (
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="mx-auto text-emerald-500"><polyline points="20 6 9 17 4 12" /></svg>
-                            ) : (
-                              <span className="text-gray-300">—</span>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="mx-auto mt-10 max-w-lg rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/60 to-white p-6 text-center sm:p-8">
-                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-emerald-600">🔥 Steal Deal — Only for Today</p>
-                <p className="mt-1 text-xs text-gray-400">Offer Ends Today</p>
-                <div className="mt-4 flex items-baseline justify-center gap-3">
-                  <span className="text-4xl font-extrabold tracking-[-0.03em] text-gray-900">₹799</span>
-                  <span className="text-lg font-semibold text-gray-400 line-through">₹4,999</span>
-                </div>
-                <div className="mt-5">
-                  <a
-                    href={whatsappLink("Ultimate Bundle")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] shadow-[0_4px_20px_-8px_rgba(5,150,105,0.4)] ${btn}`}
+              <div className="mt-12 grid gap-6 lg:grid-cols-3 lg:items-start">
+                {TIERS.map((tier) => (
+                  <div
+                    key={tier.name}
+                    className={`relative flex flex-col rounded-2xl border bg-white p-6 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.06)] sm:p-8 ${
+                      (tier as any).popular
+                        ? "border-emerald-200 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.1)] lg:-mt-4 lg:pb-10 lg:pt-12"
+                        : "border-black/[0.06]"
+                    }`}
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Get the Bundle
-                    <span className="rounded-full bg-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-100">₹100 off</span>
-                  </a>
+                    {(tier as any).popular && (
+                      <>
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-600 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">
+                          Best Value
+                        </span>
+                      </>
+                    )}
+                    <p className="text-sm font-bold text-gray-900">
+                      {tier.name}
+                    </p>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl font-bold tracking-[-0.03em] text-gray-900">
+                        ₹{tier.price}
+                      </span>
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-gray-500">
+                      {tier.desc}
+                    </p>
+                    <div className="mt-6 space-y-3 border-t border-black/[0.06] pt-6">
+                      {tier.features.map((f) => {
+                        const isAi = f.includes("AI");
+                        return (
+                          <div
+                            key={f}
+                            className={`flex items-center gap-2.5 ${isAi ? "-mx-3 rounded-lg bg-emerald-50/80 px-3 py-2" : ""}`}
+                          >
+                            {isAi ? (
+                              <IconSparkles
+                                size={14}
+                                className="shrink-0 text-emerald-600"
+                              />
+                            ) : (
+                              <IconCheck
+                                size={14}
+                                className="shrink-0 text-emerald-500"
+                              />
+                            )}
+                            <span
+                              className={`text-sm ${isAi ? "font-semibold text-emerald-800" : "text-gray-600"}`}
+                            >
+                              {f}
+                            </span>
+                            {isAi && (
+                              <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">
+                                Exclusive
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-8">
+                      {(tier as any).popular ? (
+                        <a
+                          href={whatsappLink(tier.name)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base ${btn}`}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                          Get the Bundle
+                          <span className="rounded-full bg-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-100">
+                            ₹100 off
+                          </span>
+                        </a>
+                      ) : (
+                        <a
+                          href={whatsappLink(tier.name)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`group inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 hover:border-gray-300 hover:bg-gray-50 sm:px-8 sm:py-4 sm:text-base ${btn}`}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                          Get the Bundle
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  <span className="text-xs font-medium text-emerald-700">
+                    WhatsApp purchase
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="text-emerald-600"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span className="text-xs font-medium text-emerald-700">
+                    7-day refund
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span className="text-xs font-medium text-gray-700">
+                    Verified copies
+                  </span>
                 </div>
               </div>
             </div>
