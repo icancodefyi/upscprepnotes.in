@@ -5,15 +5,13 @@ import Image from "next/image";
 import {
   IconArrowRight,
   IconCheck,
-  IconDownload,
-  IconMail,
-  IconUser,
   IconSparkles,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { trackViewItem } from "@/lib/analytics";
 import Link from "next/link";
 import PurchaseModal from "./PurchaseModal";
+import { UPILogo, GPayLogo, PhonePeLogo, PaytmLogo } from "@/components/logos";
 
 const CATEGORIES = [
   { slug: "prelims", title: "Prelims", count: "2 papers" },
@@ -343,19 +341,19 @@ export default function SalesPage() {
               </div>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
                 <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                  <UPILogo className="h-4 w-auto" />
                   <span className="text-xs font-medium text-gray-700">UPI</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <GPayLogo className="h-4 w-auto" />
                   <span className="text-xs font-medium text-gray-700">GPay</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                  <PhonePeLogo className="h-4 w-auto" />
                   <span className="text-xs font-medium text-gray-700">PhonePe</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <PaytmLogo className="h-4 w-auto" />
                   <span className="text-xs font-medium text-gray-700">Paytm</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5">
