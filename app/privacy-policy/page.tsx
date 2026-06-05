@@ -87,14 +87,28 @@ export default function PrivacyPolicyPage() {
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Cookies</h2>
         <p className="leading-8 text-zinc-700">
-          UPSCPrepNotes uses minimal cookies. Google Analytics sets first-party
-          cookies to distinguish unique visitors and track browsing sessions. These
-          cookies do not contain personally identifiable information.
+          UPSCPrepNotes uses limited first-party cookies to improve the platform
+          experience. Here is what we set:
         </p>
+        <ul className="list-disc pl-6 text-zinc-700 space-y-2">
+          <li>
+            <strong>_vid</strong> — a randomly generated visitor identifier that
+            persists for one year. It allows us to recognise returning users
+            across sessions and to provide continuity for features like the Ask
+            AI chat history. No personal information is stored in this cookie.
+          </li>
+          <li>
+            <strong>Google Analytics cookies</strong> — set by Google Analytics
+            (Measurement ID: G-Z58V360ESL) to distinguish unique visitors and
+            track browsing sessions. These cookies do not contain personally
+            identifiable information.
+          </li>
+        </ul>
         <p className="leading-8 text-zinc-700">
           You can configure your browser to reject cookies or notify you when a
           cookie is set. Disabling cookies will not affect your ability to browse
-          the platform, though analytics data may be less accurate.
+          the platform, though analytics data may be less accurate and your Ask
+          AI chat history will reset on each visit.
         </p>
       </section>
 
@@ -136,7 +150,7 @@ export default function PrivacyPolicyPage() {
           to review this policy periodically.
         </p>
         <p className="leading-8 text-zinc-700">
-          This policy was last updated on May 26, 2026.
+          This policy was last updated on June 5, 2026.
         </p>
       </section>
     </LegalPage>

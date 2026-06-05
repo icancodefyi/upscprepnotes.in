@@ -46,8 +46,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/ask" data-track="footer-ask-ai" className="hover:text-black transition-colors">
+                <Link href="/ask" data-track="footer-ask-ai" className="inline-flex items-center gap-1.5 hover:text-black transition-colors">
                   Ask AI
+                  <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
                 </Link>
               </li>
               <li>

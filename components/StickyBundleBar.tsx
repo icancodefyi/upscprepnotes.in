@@ -3,6 +3,16 @@
 import { useState, useEffect, startTransition } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { IconClock, IconBolt } from "@tabler/icons-react";
+import { trackClientEvent } from "@/lib/client-analytics";
+
+const WHATSAPP_NUMBER = "919152750079";
+
+function whatsappLink(tier: string) {
+  const msg = encodeURIComponent(
+    `Hi! I want to buy the "${tier}" on UPSCPrepNotes. Please share payment details.`
+  );
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+}
 
 function randomSeconds() {
   return 300 + Math.floor(Math.random() * 180);
@@ -34,7 +44,8 @@ export default function StickyBundleBar() {
 
   function handleClick() {
     if (pathname === "/toppers/toppers-copy-compilation") {
-      window.dispatchEvent(new CustomEvent("open-purchase-modal"));
+      trackClientEvent("whatsapp_click", { tier: "Ultimate Bundle", location: "global-sticky-bar" });
+      window.open(whatsappLink("Ultimate Bundle"), "_blank");
     } else {
       router.push("/toppers/toppers-copy-compilation");
     }

@@ -89,6 +89,15 @@ export default function RootLayout({
                   if (!s) { s = 's' + Date.now() + Math.random().toString(36).slice(2,8); sessionStorage.setItem('_sid', s); }
                   return s;
                 }
+                function getVisitorId() {
+                  try {
+                    var m = document.cookie.match(/(?:^|;\s*)_vid=([^;]*)/);
+                    if (m) return m[1];
+                    var id = 'v' + Date.now() + Math.random().toString(36).slice(2,12);
+                    document.cookie = '_vid=' + id + ';path=/;max-age=31536000;SameSite=Lax';
+                    return id;
+                  } catch(e) { return 'unknown'; }
+                }
                 function getDeviceType() {
                   var ua = navigator.userAgent;
                   if (/Mobile|Android|iPhone|iP(od|hone)/i.test(ua) && !/iPad/i.test(ua)) return 'mobile';
@@ -98,7 +107,7 @@ export default function RootLayout({
                 function fireAnalytics(event, meta) {
                   try {
                     if (location.pathname.indexOf('/admin') === 0) return;
-                    var d = JSON.stringify({ event: event, pagePath: location.pathname, sessionId: getSessionId(), referrer: document.referrer || '', userAgent: navigator.userAgent || '', deviceType: getDeviceType(), metadata: meta || {} });
+                    var d = JSON.stringify({ event: event, pagePath: location.pathname, sessionId: getSessionId(), visitorId: getVisitorId(), referrer: document.referrer || '', userAgent: navigator.userAgent || '', deviceType: getDeviceType(), metadata: meta || {} });
                     var b = new Blob([d], { type: 'application/json' });
                     navigator.sendBeacon('/api/analytics/event', b);
                   } catch(e) {}

@@ -5,7 +5,7 @@ import { AnalyticsEventModel } from "@/models/analytics-event.model";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { event, pagePath, sessionId, referrer, userAgent, deviceType, metadata } = body;
+    const { event, pagePath, sessionId, visitorId: clientVisitorId, referrer, userAgent, deviceType, metadata } = body;
 
     if (!event || !pagePath || !sessionId) {
       return NextResponse.json(
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const today = new Date().toISOString().slice(0, 10);
-    const visitorId = `${today}:${sessionId}`;
+    const visitorId = clientVisitorId || `${today}:${sessionId}`;
 
     await connectDB();
     await AnalyticsEventModel.create({

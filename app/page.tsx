@@ -239,7 +239,10 @@ export default async function HomePage() {
                 <Sparkles className="w-10 h-10 text-[#C4F9D7]" />
                 <ArrowRight className="w-5 h-5 text-gray-500 group-hover:translate-x-1 transition-transform" />
               </div>
-              <h3 className="text-lg font-bold mb-2">Ask AI</h3>
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-lg font-bold">Ask AI</h3>
+                <span className="rounded-full bg-emerald-500 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+              </div>
               <p className="text-sm text-gray-400">
                 Get instant answers about any topper&apos;s strategy and preparation approach.
               </p>

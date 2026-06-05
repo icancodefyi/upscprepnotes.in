@@ -79,43 +79,54 @@ export async function POST(request: NextRequest) {
 
     const encoder = new TextEncoder();
 
+    let wantsSearch = false;
+    let toolCallArgs: any = null;
+    let toolCallId = "";
+    let assistantContent = "";
+
     // Phase 1: Non-streaming call to decide if web search is needed
-    const firstResponse = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: groqMessages,
-      tools: [webSearchTool],
-      tool_choice: "auto",
-      stream: false,
-      temperature: 0.7,
-      max_tokens: 1024,
-    });
+    try {
+      const firstResponse = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: groqMessages,
+        tools: [webSearchTool],
+        tool_choice: "auto",
+        stream: false,
+        temperature: 0.7,
+        max_tokens: 1024,
+      });
 
-    const choice = firstResponse.choices?.[0];
-    const assistantMessage = choice?.message;
+      const choice = firstResponse.choices?.[0];
+      const assistantMessage = choice?.message;
+      assistantContent = assistantMessage?.content || "";
 
-    // If AI decided to search the web
-    const toolCalls = assistantMessage?.tool_calls;
-    if (toolCalls && toolCalls.length > 0) {
-      const toolCall = toolCalls[0];
-      let query = message;
+      const toolCalls = assistantMessage?.tool_calls;
+      if (toolCalls && toolCalls.length > 0) {
+        const tc = toolCalls[0];
+        toolCallId = tc.id;
+        try {
+          toolCallArgs = JSON.parse(tc.function.arguments);
+        } catch {}
+        if (toolCallArgs?.query) {
+          wantsSearch = true;
+        }
+      }
+    } catch (err) {
+      console.error("Tool call failed, falling back to no-search:", err);
+    }
 
-      try {
-        const args = JSON.parse(toolCall.function.arguments);
-        if (args.query) query = args.query;
-      } catch {}
+    if (wantsSearch) {
+      const query = toolCallArgs?.query || message;
 
-      // Start streaming immediately with search indicator
       const readable = new ReadableStream({
         async start(controller) {
           let fullContent = "";
 
           try {
-            // Step 1: Send "searching" indicator
             const indicator = `🔍 *Searching the web for "${query.replace(/"/g, '\\"')}"...*\n\n`;
             controller.enqueue(encoder.encode(indicator));
             fullContent += indicator;
 
-            // Step 2: Execute web search
             let formattedResults = "";
             try {
               const searchData = await searchWeb(query);
@@ -124,15 +135,14 @@ export async function POST(request: NextRequest) {
               console.error("Web search failed:", err);
             }
 
-            // Step 3: Add tool messages and get AI response
             groqMessages.push({
               role: "assistant",
               content: null,
-              tool_calls: toolCalls.map((tc: any) => ({
-                id: tc.id,
+              tool_calls: [{
+                id: toolCallId,
                 type: "function",
-                function: { name: tc.function.name, arguments: tc.function.arguments },
-              })),
+                function: { name: "web_search", arguments: JSON.stringify(toolCallArgs || { query }) },
+              }],
             });
 
             const toolContent = formattedResults
@@ -141,11 +151,10 @@ export async function POST(request: NextRequest) {
 
             groqMessages.push({
               role: "tool",
-              tool_call_id: toolCall.id,
+              tool_call_id: toolCallId,
               content: toolContent,
             });
 
-            // Phase 2: Streaming call with search results
             const secondStream = await groq.chat.completions.create({
               model: "llama-3.3-70b-versatile",
               messages: groqMessages,
@@ -183,9 +192,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // No tool calls — return content as stream
-    const content = assistantMessage?.content || "";
+    // No tool calls or tool call failed — return content as stream
     const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
+    const content = assistantContent || "I couldn't find an answer to that. Could you rephrase your question?";
     await saveMessage(cid, "assistant", content, sources);
 
     const readable = new ReadableStream({
