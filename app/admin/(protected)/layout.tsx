@@ -17,6 +17,7 @@ const navLinks = [
   { href: "/admin/new", label: "Add Topper" },
   { href: "/admin/pyq", label: "PYQ" },
   { href: "/admin/requests", label: "Requests" },
+  { href: "/admin/feedback", label: "Feedback" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/ai", label: "AI Chats" },
   { href: "/admin/settings", label: "Settings" },

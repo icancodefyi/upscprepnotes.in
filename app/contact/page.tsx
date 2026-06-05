@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import ContactFeedbackSection from "@/components/ContactFeedbackSection";
 
 const contactSchema = {
   "@context": "https://schema.org",
@@ -61,6 +62,8 @@ export default function ContactPage() {
           about the data we host.
         </p>
       </section>
+
+      <ContactFeedbackSection />
 
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What to Include in Your Message</h2>

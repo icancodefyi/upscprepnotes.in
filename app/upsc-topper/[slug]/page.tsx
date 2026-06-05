@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { topperImageSrc } from "@/lib/utils";
 import TrackingProvider from "./TrackingProvider";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
+import ReportButton from "@/components/ReportButton";
 
 export const revalidate = 86400;
 
@@ -418,6 +419,11 @@ export default async function TopperPage({ params }: Props) {
                   <span className="ml-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
                 </Link>
               </Button>
+            </div>
+
+            {/* REPORT */}
+            <div className="mt-3">
+              <ReportButton topperName={`${topper.firstName} ${topper.lastName}`} />
             </div>
           </div>
         </div>

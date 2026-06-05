@@ -7,6 +7,7 @@ import ExitIntentPopup from "@/components/ExitIntentPopup";
 import ScrollSlideIn from "@/components/ScrollSlideIn";
 import TimedBundleBanner from "@/components/TimedBundleBanner";
 import StickyBundleBar from "@/components/StickyBundleBar";
+import FeedbackFloatingWidget from "@/components/FeedbackFloatingWidget";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -39,6 +40,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <ScrollSlideIn />
       <TimedBundleBanner />
       <StickyBundleBar />
+      <FeedbackFloatingWidget />
     </>
   );
 }
