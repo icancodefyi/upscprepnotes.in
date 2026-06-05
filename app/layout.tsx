@@ -71,12 +71,15 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
+              var isAdmin = location.pathname.indexOf('/admin') === 0;
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
-                send_page_view: true
-              });
+              if (!isAdmin) {
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                  send_page_view: true
+                });
+              }
 
               // --- own analytics backend ---
               function getSessionId() {
@@ -111,7 +114,7 @@ export default function RootLayout({
                 for (var i = 0; i < depths.length; i++) {
                   if (p >= depths[i] && !scrollDepths[depths[i]]) {
                     scrollDepths[depths[i]] = true;
-                    gtag('event', 'scroll_depth', { depth: depths[i] + '%' });
+                    if (!isAdmin) gtag('event', 'scroll_depth', { depth: depths[i] + '%' });
                     fireAnalytics('scroll_depth', { depth: depths[i] + '%' });
                   }
                 }
@@ -131,7 +134,7 @@ export default function RootLayout({
                 var trackAttr = el.getAttribute('data-track') || '';
                 var isOutbound = href && href.indexOf(location.hostname) === -1 && href.indexOf('http') === 0;
 
-                gtag('event', 'click', {
+                if (!isAdmin) gtag('event', 'click', {
                   event_label: trackAttr || (tag === 'a' ? 'link' : 'button'),
                   link_url: href,
                   link_text: text,
@@ -146,7 +149,7 @@ export default function RootLayout({
               document.addEventListener('submit', function(e) {
                 var el = e.target;
                 var text = (el.querySelector('button[type=submit], input[type=submit]') || {}).innerText || '';
-                gtag('event', 'form_submit', {
+                if (!isAdmin) gtag('event', 'form_submit', {
                   event_label: el.getAttribute('data-track') || 'form',
                   form_text: text.trim().substring(0, 100),
                   page_path: location.pathname
@@ -164,7 +167,7 @@ export default function RootLayout({
                   var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                   var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
                   var dep = Math.round((st / Math.max(sh, 1)) * 100) + '%';
-                  gtag('event', 'page_exit', {
+                  if (!isAdmin) gtag('event', 'page_exit', {
                     scroll_depth: dep,
                     time_on_page: time,
                     page_path: location.pathname
@@ -178,7 +181,7 @@ export default function RootLayout({
                   pageExitFired = true;
                   var dep = Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%';
                   var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
-                  gtag('event', 'page_exit', { depth: dep, time_on_page: time, page_path: location.pathname });
+                  if (!isAdmin) gtag('event', 'page_exit', { depth: dep, time_on_page: time, page_path: location.pathname });
                   fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
                 }
               });
