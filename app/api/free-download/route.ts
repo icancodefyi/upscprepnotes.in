@@ -47,7 +47,6 @@ async function sendDownloadEmail(email: string, topperName: string, pdfUrl: stri
     html: userHtml,
   });
 
-  // Admin notification
   const adminHtml = `
     <p><strong>Free Download Lead</strong></p>
     <p>Email: ${email}</p>
@@ -68,9 +67,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, topperSlug } = body;
 
-    if (!email || !topperSlug) {
+    if (!topperSlug) {
       return NextResponse.json(
-        { error: "Email and topper slug are required." },
+        { error: "Topper slug is required." },
         { status: 400 }
       );
     }
@@ -85,20 +84,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await FreeDownloadLeadModel.create({
-      email,
-      topperSlug,
-      topperName: `${topper.firstName} ${topper.lastName}`,
-    });
-
-    try {
-      await sendDownloadEmail(
+    if (email) {
+      await FreeDownloadLeadModel.create({
         email,
-        `${topper.firstName} ${topper.lastName}`,
-        topper.freeAnswerCopyUrl
-      );
-    } catch (err) {
-      console.error("Download email send error:", err);
+        topperSlug,
+        topperName: `${topper.firstName} ${topper.lastName}`,
+      });
+
+      try {
+        await sendDownloadEmail(
+          email,
+          `${topper.firstName} ${topper.lastName}`,
+          topper.freeAnswerCopyUrl
+        );
+      } catch (err) {
+        console.error("Download email send error:", err);
+      }
     }
 
     return NextResponse.json(

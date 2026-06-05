@@ -138,7 +138,7 @@ export async function getAllIndexedToppers() {
 export async function getAllToppersList() {
   await connectDB();
 
-  const toppers = await TopperModel.find({ isIndexed: true })
+  const toppers = await TopperModel.find({})
     .select("firstName lastName rank year optionalSubject slug isFeatured")
     .sort({ year: -1, rank: 1 })
     .lean();
