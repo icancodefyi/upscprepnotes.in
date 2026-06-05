@@ -5,13 +5,9 @@ import {
   IconArrowRight,
   IconCheck,
   IconSparkles,
-  IconUser,
   IconStar,
   IconShieldCheck,
   IconBolt,
-  IconBooks,
-  IconWriting,
-  IconTarget,
   IconMoodSmile,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
@@ -320,7 +316,10 @@ export default function SalesPage() {
                   className={`inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-7 sm:py-3.5 sm:text-base ${btn}`}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Buy on WhatsApp — from ₹549
+                  Get the Bundle
+                  <span className="rounded-full bg-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-100">
+                    from ₹549
+                  </span>
                 </a>
                 <a
                   href="#previews"
@@ -597,9 +596,13 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* SECTION 5: WHAT'S INSIDE — Full breakdown */}
+        {/* SECTION 5: WHAT'S INSIDE — Checklist + previews */}
         <FadeIn delay={20}>
-          <section className="border-b border-black/[0.04] bg-gray-50/50 py-16 sm:py-20">
+          <style>{`
+            .hide-scrollbar::-webkit-scrollbar { display: none; }
+            .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          `}</style>
+          <section className="border-b border-black/[0.04] bg-white py-16 sm:py-20">
             <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
               <div className="mx-auto max-w-2xl text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
@@ -613,84 +616,55 @@ export default function SalesPage() {
                   what&apos;s relevant to you.
                 </p>
               </div>
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <div className="rounded-xl border border-black/[0.06] bg-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
-                    <IconWriting size={15} className="text-emerald-700" />
+              <div className="mx-auto mt-10 max-w-2xl divide-y divide-black/[0.06] rounded-xl border border-black/[0.06] bg-white">
+                {[
+                  { label: "GS Paper 1–4", count: "28 copies", detail: "Diagrams, keywords, examiner comments" },
+                  { label: "Essay Copies", count: "12 copies", detail: "AIR 2, AIR 16 essay structures with scores" },
+                  { label: "Optional Subjects", count: "8+ subjects", detail: "Sociology, PSIR, Geography, Anthropology & more" },
+                  { label: "Strategy Guides", count: "21 guides", detail: "Answer writing, time management, paper planning" },
+                  { label: "Interview Prep", count: "100+ Qs", detail: "DAF analysis, practice questions, personality test" },
+                  { label: "AI Assistant", count: "Exclusive", detail: "AI trained on these copies. Get instant evaluation." },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-4 px-5 py-4 sm:px-6 sm:py-5">
+                    <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="text-emerald-600"><polyline points="20 6 9 17 4 12" /></svg>
+                    </div>
+                    <div className="flex flex-1 items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{item.label}</p>
+                        <p className="mt-0.5 text-[12px] text-gray-400">{item.detail}</p>
+                      </div>
+                      <span className="shrink-0 whitespace-nowrap rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">
+                        {item.count}
+                      </span>
+                    </div>
                   </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    GS Paper 1–4
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    28 topper copies across all 4 GS papers. Includes diagrams,
-                    keywords, and examiner comments.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-black/[0.06] bg-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
-                    <IconBooks size={15} className="text-emerald-700" />
-                  </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    Essay Copies
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    12 topper essays with scoring breakdowns. See how AIR 2 and
-                    AIR 16 structured their essays.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-black/[0.06] bg-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
-                    <IconTarget size={15} className="text-emerald-700" />
-                  </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    Optional Subjects
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Answer copies from 8+ optional subjects including Sociology,
-                    PSIR, Geography, and more.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-black/[0.06] bg-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
-                    <IconSparkles size={15} className="text-emerald-700" />
-                  </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    Strategy Guides
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    21 original strategy guides covering answer writing
-                    frameworks, time management, and paper planning.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-black/[0.06] bg-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
-                    <IconUser size={15} className="text-emerald-700" />
-                  </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    Interview Prep
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Toppers&apos; DAF analysis, 100+ practice questions, and
-                    personality test strategies.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50/40 to-white p-5">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600">
-                    <IconBolt size={15} className="text-white" />
-                  </div>
-                  <p className="mt-4 text-sm font-bold text-gray-900">
-                    AI Assistant
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Access to our AI trained on these exact topper copies. Get
-                    your answers evaluated instantly.
-                  </p>
+                ))}
+              </div>
+              <div className="mx-auto mt-6 max-w-2xl">
+                <div className="flex items-center gap-3 overflow-x-auto pb-2 hide-scrollbar">
+                  <span className="shrink-0 text-[11px] font-medium text-gray-400">Previews:</span>
+                  {["ishita-kishore","garima-lohia","harshita-goyal","uma-harathi","divya-tanwar","ayan-jain","shivani-ettaboyina","vaishali-chopra"].map((slug) => (
+                    <div key={slug} className="h-14 w-10 shrink-0 overflow-hidden rounded-md border border-black/[0.06] bg-gray-50 sm:h-16 sm:w-12">
+                      <img
+                        src={`/previews/${slug}.png`}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          const img = e.currentTarget;
+                          if (!img.dataset.fallback) {
+                            img.dataset.fallback = "1";
+                            img.style.display = "none";
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
         </FadeIn>
-
         {/* SECTION 6: PRICING — Three tiers */}
         <FadeIn delay={40}>
           <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
@@ -777,9 +751,9 @@ export default function SalesPage() {
                           className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base ${btn}`}
                         >
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                          Buy on WhatsApp @ ₹{(tier as any).price - 100}
+                          Get the Bundle
                           <span className="rounded-full bg-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-100">
-                            ₹{tier.price} off
+                            ₹100 off
                           </span>
                         </a>
                       ) : (
@@ -790,7 +764,7 @@ export default function SalesPage() {
                           className={`group inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 hover:border-gray-300 hover:bg-gray-50 sm:px-8 sm:py-4 sm:text-base ${btn}`}
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                          Buy on WhatsApp
+                          Get the Bundle
                         </a>
                       )}
                     </div>
@@ -915,7 +889,7 @@ export default function SalesPage() {
                         className={`inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] ${btn}`}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Buy on WhatsApp @ ₹699
+                        Get the Bundle
                         <span className="rounded-full bg-emerald-800/40 px-2 py-0.5 text-[10px] font-bold text-emerald-100">
                           ₹100 off
                         </span>
@@ -956,7 +930,7 @@ export default function SalesPage() {
             className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Buy on WhatsApp
+            Get the Bundle
             <IconArrowRight size="14" />
           </a>
         </div>
