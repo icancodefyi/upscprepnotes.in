@@ -85,7 +85,7 @@ function dicebearUrl(seed: string): string {
   return `https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${encodeURIComponent(seed)}`;
 }
 
-type SourceType = "government" | "official" | "academic" | "coaching" | "reference" | "community";
+type SourceType = "government" | "official" | "academic" | "coaching" | "reference" | "community" | "topper";
 
 type SourceChip = {
   domain: string;
@@ -103,6 +103,7 @@ const SOURCE_TYPE_ORDER: Record<SourceType, number> = {
   coaching: 3,
   reference: 4,
   community: 5,
+  topper: 6,
 };
 
 const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
@@ -112,6 +113,7 @@ const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
   coaching: "Coaching",
   reference: "Reference",
   community: "Community",
+  topper: "Topper",
 };
 
 const GOVERNMENT_DOMAINS = [
@@ -191,6 +193,20 @@ function classifySources(content: string): SourceChip[] {
   return chips;
 }
 
+function getMergedSources(msg: Message): SourceChip[] {
+  const webSources = classifySources(msg.content);
+  const topperSources: SourceChip[] = (msg.sources || []).map((s) => ({
+    domain: `topper/${s.slug}`,
+    label: s.name,
+    type: "topper" as SourceType,
+    url: `/upsc-topper/${s.slug}`,
+    title: s.name,
+  }));
+  const merged = [...webSources, ...topperSources];
+  merged.sort((a, b) => SOURCE_TYPE_ORDER[a.type] - SOURCE_TYPE_ORDER[b.type]);
+  return merged;
+}
+
 const SOURCE_TYPE_COLORS: Record<SourceType, { bg: string; text: string; dot: string }> = {
   government: { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-500" },
   official: { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-500" },
@@ -198,6 +214,7 @@ const SOURCE_TYPE_COLORS: Record<SourceType, { bg: string; text: string; dot: st
   coaching: { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-500" },
   reference: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
   community: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
+  topper: { bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-500" },
 };
 
 function AskPage() {
@@ -614,32 +631,32 @@ function AskPage() {
                       </div>
                     ) : (
                       <div className="border-b border-zinc-100 last:border-b-0">
-                        {/* Source chips bar — compact */}
-                        {classifySources(msg.content).length > 0 && (
+                        {/* Source chips bar — unified web + topper sources */}
+                        {getMergedSources(msg).length > 0 && (
                           <div className="mx-auto max-w-4xl px-4 pt-5 md:px-6 lg:px-8">
                             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-2">
                               <svg className="h-3.5 w-3.5 shrink-0 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                               </svg>
                               <span className="mr-1 whitespace-nowrap text-xs font-medium text-zinc-500">
-                                {classifySources(msg.content).length} sources
+                                {getMergedSources(msg).length} sources
                               </span>
-                              {classifySources(msg.content).slice(0, 4).map((src) => (
+                              {getMergedSources(msg).slice(0, 4).map((src) => (
                                 <button
-                                  key={src.domain}
-                                  onClick={() => setSelectedSources(classifySources(msg.content))}
+                                  key={`${src.type}-${src.domain}`}
+                                  onClick={() => setSelectedSources(getMergedSources(msg))}
                                   className="inline-flex shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-600 transition hover:border-zinc-300 hover:bg-zinc-50"
                                 >
                                   <span className={`h-1.5 w-1.5 rounded-full ${SOURCE_TYPE_COLORS[src.type].dot}`} />
                                   <span className="max-w-[80px] truncate">{src.label}</span>
                                 </button>
                               ))}
-                              {classifySources(msg.content).length > 4 && (
+                              {getMergedSources(msg).length > 4 && (
                                 <button
-                                  onClick={() => setSelectedSources(classifySources(msg.content))}
+                                  onClick={() => setSelectedSources(getMergedSources(msg))}
                                   className="inline-flex shrink-0 items-center gap-1 rounded-md border border-dashed border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-500 transition hover:border-zinc-400 hover:text-zinc-700"
                                 >
-                                  +{classifySources(msg.content).length - 4}
+                                  +{getMergedSources(msg).length - 4}
                                 </button>
                               )}
                               {/* Trust indicator */}
@@ -665,23 +682,6 @@ function AskPage() {
                               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400 [&_p]:leading-[1.75] [&_p]:my-4 [&_li]:leading-[1.75] [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:mt-6 [&_h3]:mb-2 [&_blockquote]:border-l-[3px] [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-zinc-500 [&_blockquote]:my-6 [&_ul]:my-4 [&_ul]:space-y-2 [&_ol]:my-4 [&_ol]:space-y-2">
                                 <ReactMarkdown components={mdComponents}>{preprocessContent(msg.content)}</ReactMarkdown>
                               </div>
-
-                              {/* Topper sources */}
-                              {msg.sources && msg.sources.length > 0 && (
-                                <div className="mt-6 flex flex-wrap items-center gap-2">
-                                  <span className="text-xs font-medium text-zinc-400">Topper references</span>
-                                  {msg.sources.map((s, srcIdx) => (
-                                    <Link
-                                      key={s.slug}
-                                      href={`/upsc-topper/${s.slug}`}
-                                      data-track={`ask-source-${srcIdx}`}
-                                      className="inline-flex items-center gap-1 rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs font-medium text-zinc-600 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800"
-                                    >
-                                      {s.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
 
                               {/* Copy */}
                               {msg.content && (
@@ -879,8 +879,14 @@ function SourceDrawerModal({ sources, onClose }: { sources: SourceChip[] | null;
             return (
               <div key={i} className="flex items-start gap-3 rounded-xl border border-zinc-100 bg-white p-3.5 transition hover:border-zinc-200">
                 <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${colors.bg}`}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://www.google.com/s2/favicons?domain=${src.domain}&sz=16`} alt="" className="h-4 w-4 rounded" />
+                  {src.type === "topper" ? (
+                    <svg className="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={`https://www.google.com/s2/favicons?domain=${src.domain}&sz=16`} alt="" className="h-4 w-4 rounded" />
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
