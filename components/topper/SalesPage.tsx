@@ -167,43 +167,41 @@ export default function SalesPage() {
       <main className="min-h-screen bg-white">
         {modalOpen && <PurchaseModal onClose={() => setModalOpen(false)} defaultProduct={modalProduct} />}
 
-        {/* 1. HERO — Warm, visual, trustworthy */}
+        {/* 1. HERO — Tight, urgent, clear */}
         <section className="relative overflow-hidden border-b border-black/[0.04]">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/40 via-white to-amber-50/30" />
           <div className="relative mx-auto flex max-w-7xl flex-col lg:flex-row">
             <div className="flex flex-col justify-center px-5 pt-20 pb-12 sm:px-8 lg:w-1/2 lg:py-28 lg:pl-12 xl:pl-16">
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-semibold text-emerald-800">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                Used by 1,200+ UPSC aspirants
-              </div>
-              <h1 className="mt-4 max-w-2xl text-[clamp(1.75rem,5.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-gray-900">
-                Score higher with real topper answer copies — straight from UPSC Mains.
-              </h1>
-              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
-                Every PDF in this bundle comes from a verified topper who scored in the top 50. Study the exact structure, language, and presentation that earned them 140+ marks.
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <CTAButton onClick={() => openModal("Ultimate Bundle")} tracking="sales-hero-cta">
-                  Get the bundle — ₹799
-                </CTAButton>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-gray-500 shadow-[0_1px_3px_-1px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04]">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  7-day money-back
-                </span>
-              </div>
-              <div className="mt-8 flex items-center gap-4 text-xs text-gray-400">
-                <div className="flex -space-x-2">
-                  {["/avatars/avatar-1.jpg", "/avatars/avatar-2.jpg", "/avatars/avatar-3.jpg"].map((src, i) => (
-                    <div key={i} className="h-7 w-7 overflow-hidden rounded-full ring-2 ring-white">
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="flex -space-x-1.5">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-5 w-5 overflow-hidden rounded-full ring-2 ring-white">
                       <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300" />
                     </div>
                   ))}
                 </div>
-                <span><strong className="text-gray-700">2,300+</strong> bundles delivered</span>
+                <span><strong className="text-gray-800">2,300+</strong> bundles delivered</span>
+              </div>
+              <h1 className="mt-4 max-w-2xl text-[clamp(1.75rem,5.5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-gray-900">
+                50+ verified topper answer copies + 21 strategy guides. ₹799.
+              </h1>
+              <p className="mt-3 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
+                See the exact answer sheets, language, and structure that earned Garima Lohia (AIR 2), Ayan Jain (AIR 16) and 50+ others 140+ marks in UPSC Mains.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <CTAButton onClick={() => openModal("Ultimate Bundle")} tracking="sales-hero-cta">
+                  Buy Bundle — ₹799
+                </CTAButton>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
+                <span className="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><polyline points="20 6 9 17 4 12"/></svg>72 resources</span>
+                <span className="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>7-day refund</span>
+                <span className="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><path d="M12 6v6l4 2"/></svg>2-hour delivery</span>
+                <span className="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>UPI / GPay</span>
               </div>
             </div>
             <div className="flex min-h-[320px] items-center justify-center bg-gradient-to-br from-gray-50/80 to-white px-4 py-8 lg:min-h-[500px] lg:w-1/2 lg:px-8">
-              <div className="w-full max-w-sm -rotate-[1deg] transform transition-transform duration-300 hover:rotate-0">
+              <div className="w-full max-w-sm">
                 <div className="rounded-2xl bg-white shadow-[0_8px_32px_-12px_rgba(0,0,0,0.12)] ring-1 ring-black/[0.03]">
                   <div className="flex items-center justify-between border-b border-black/[0.06] px-5 pt-5 pb-3">
                     <div>
@@ -423,6 +421,23 @@ export default function SalesPage() {
           UPSCPrepNotes is an independent platform. Answer copies sourced from publicly available materials for educational reference.
         </p>
       </main>
+
+      {/* Mobile Sticky CTA */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/[0.06] bg-white/95 backdrop-blur-md lg:hidden">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex flex-col">
+            <span className="text-lg font-bold tracking-tight text-gray-900">₹799</span>
+            <span className="text-[10px] text-gray-400">72 resources · 7-day refund</span>
+          </div>
+          <button
+            onClick={() => openModal("Ultimate Bundle")}
+            className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97]"
+          >
+            Get Bundle
+            <IconArrowRight size="14" />
+          </button>
+        </div>
+      </div>
     </>
   );
 }
