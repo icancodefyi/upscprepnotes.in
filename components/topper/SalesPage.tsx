@@ -249,9 +249,75 @@ export default function SalesPage() {
           </div>
         </section>
 
-
-
-        {/* 6. PRICING — Three tiers */}
+        {/* 2. PREVIEW GALLERY — See what's inside */}
+        <FadeIn delay={20}>
+          <section className="border-b border-black/[0.04] bg-white py-16 sm:py-20">
+            <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
+                    Inside the Bundle
+                  </p>
+                  <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
+                    Preview actual topper copies
+                  </h2>
+                </div>
+                <div className="hidden text-xs text-gray-400 sm:block">
+                  Scroll to see more →
+                </div>
+              </div>
+              <div className="mt-8 flex gap-5 overflow-x-auto pb-4 scrollbar-none">
+                {[
+                  { name: "Garima Lohia", rank: "AIR 2", subject: "Essay", score: "141/250", year: "2022" },
+                  { name: "Ayan Jain", rank: "AIR 16", subject: "GS Paper 2", score: "118/250", year: "2023" },
+                  { name: "Manika Gupta", rank: "AIR 372", subject: "GS Paper 1", score: "112/250", year: "2023" },
+                  { name: "Komal Meena", rank: "AIR 765", subject: "Essay", score: "129/250", year: "2022" },
+                  { name: "Divya Tanwar", rank: "AIR 105", subject: "GS Paper 3", score: "121/250", year: "2022" },
+                ].map((p) => (
+                  <div
+                    key={p.name}
+                    className="flex w-[260px] shrink-0 flex-col rounded-xl border border-black/[0.06] bg-white shadow-[0_2px_8px_-6px_rgba(0,0,0,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.12)]"
+                  >
+                    <div className="flex items-center justify-between border-b border-black/[0.04] px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-400">
+                          {p.subject} · {p.year}
+                        </p>
+                        <p className="truncate text-sm font-bold text-gray-900">
+                          {p.name}
+                        </p>
+                      </div>
+                      <span className="shrink-0 text-[10px] font-bold text-emerald-600">{p.rank}</span>
+                    </div>
+                    <div className="flex flex-col gap-3 px-4 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl font-extrabold tracking-tight text-gray-900">{p.score.split("/")[0]}</span>
+                        <span className="text-[11px] text-gray-400">/ {p.score.split("/")[1]}</span>
+                      </div>
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600"
+                          style={{ width: `${(parseInt(p.score.split("/")[0]) / parseInt(p.score.split("/")[1])) * 100}%` }}
+                        />
+                      </div>
+                      <div className="mt-1 space-y-1.5">
+                        <div className="h-2 w-full rounded bg-gray-100" />
+                        <div className="h-2 w-[85%] rounded bg-gray-100" />
+                        <div className="h-2 w-[70%] rounded bg-gray-100" />
+                        <div className="h-2 w-[90%] rounded bg-gray-100" />
+                        <div className="h-2 w-[60%] rounded bg-gray-100" />
+                      </div>
+                    </div>
+                    <div className="mt-auto border-t border-black/[0.04] px-4 py-2.5">
+                      <span className="text-[10px] font-medium text-emerald-600">Included in bundle</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </FadeIn>
+        {/* 3. PRICING — Three tiers */}
         <FadeIn delay={40}>
           <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
             <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
@@ -365,7 +431,7 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* 7. FAQ */}
+        {/* 4. FAQ */}
         <FadeIn delay={20}>
           <section className="border-b border-black/[0.04] bg-gray-50 py-24 sm:py-28">
             <div className="mx-auto max-w-3xl px-5 sm:px-8 lg:px-12">
@@ -382,7 +448,7 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* 8. FINAL CTA */}
+        {/* 5. FINAL CTA */}
         <FadeIn delay={30}>
           <section className="bg-gray-900 py-24 text-center sm:py-32">
             <div className="mx-auto max-w-2xl px-5 sm:px-8">
