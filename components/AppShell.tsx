@@ -3,11 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import ExitIntentPopup from "@/components/ExitIntentPopup";
-import ScrollSlideIn from "@/components/ScrollSlideIn";
-import TimedBundleBanner from "@/components/TimedBundleBanner";
 import StickyBundleBar from "@/components/StickyBundleBar";
-import FeedbackFloatingWidget from "@/components/FeedbackFloatingWidget";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -36,11 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="pb-16">
         <Footer />
       </div>
-      <ExitIntentPopup />
-      <ScrollSlideIn />
-      <TimedBundleBanner />
       <StickyBundleBar />
-      <FeedbackFloatingWidget />
     </>
   );
 }
