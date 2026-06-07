@@ -79,9 +79,11 @@ export default function Header() {
     <header className="sticky top-[36px] z-40 bg-[#F8F9FA] border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
         <Link href="/" data-track="nav-logo" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
-            <span className="text-white text-xs font-bold">PN</span>
-          </div>
+          <img
+            src="/logo.png"
+            alt="UPSCPrepNotes"
+            className="h-8 w-auto"
+          />
           <span className="font-bold text-lg tracking-tight">
             UPSCPrepNotes
           </span>

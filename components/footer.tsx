@@ -8,9 +8,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" data-track="footer-logo" className="flex items-center gap-2 font-bold text-xl mb-6">
-              <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
-                <span className="text-white text-xs font-bold">PN</span>
-              </div>
+              <img src="/logo.png" alt="UPSCPrepNotes" className="h-8 w-auto" />
               <span>UPSCPrepNotes</span>
             </Link>
             <p className="text-gray-500 text-sm leading-6">

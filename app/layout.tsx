@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
   description:
     "India's UPSC preparation intelligence platform. Access 280+ topper profiles, marks breakdowns, answer copies, optional subject analysis, and AI-powered preparation insights.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   alternates: {
     canonical: "https://upscprepnotes.in",
   },
@@ -29,6 +33,7 @@ export const metadata: Metadata = {
     description:
       "Structured topper profiles, marksheet analysis, optional subject trends, and preparation strategies for UPSC aspirants.",
     url: "https://upscprepnotes.in",
+    images: [{ url: "/logo.png", width: 512, height: 512 }],
   },
   keywords: [
     "UPSC",
