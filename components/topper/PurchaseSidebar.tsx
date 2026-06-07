@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import UpiQrCode from "@/components/ui/UpiQrCode";
 
 const UPI_ID = "rakhangezaid8@pingpay";
 const WHATSAPP = "919152750079";
@@ -10,7 +11,6 @@ interface Props {
 }
 
 export default function PurchaseSidebar({ topperName }: Props) {
-  const [copied, setCopied] = useState(false);
   const [showUpi, setShowUpi] = useState(false);
 
   function handleUpi() {
@@ -25,12 +25,6 @@ export default function PurchaseSidebar({ topperName }: Props) {
     }
   }
 
-  function copyUpi() {
-    navigator.clipboard.writeText(UPI_ID);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
   const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the Complete Bundle (₹799) with ${topperName}'s answer copy. Please share payment details.`)}`;
 
   return (
@@ -39,18 +33,8 @@ export default function PurchaseSidebar({ topperName }: Props) {
       <p className="mt-0.5 text-[10px] text-emerald-700/70">+ 50+ topper copies in the Complete Bundle</p>
       <div className="mt-3 flex flex-col gap-1.5">
         {showUpi ? (
-          <div className="rounded-lg bg-white border border-emerald-200 p-3 text-center">
-            <p className="text-[10px] text-gray-500 mb-1">Pay via any UPI app</p>
-            <div className="flex items-center justify-center gap-2">
-              <code className="text-sm font-bold text-gray-900">{UPI_ID}</code>
-              <button
-                onClick={copyUpi}
-                className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-bold text-white hover:bg-emerald-500"
-              >
-                {copied ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <p className="text-[9px] text-gray-400 mt-1.5">Amount: ₹799 | Open GPay/PhonePe and pay to this ID</p>
+          <div className="rounded-lg bg-white border border-emerald-200 p-4 text-center">
+            <UpiQrCode upiId={UPI_ID} amount={799} note={`Bundle - ${topperName}`} size={180} />
           </div>
         ) : (
           <button
