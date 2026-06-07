@@ -552,97 +552,139 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* SECTION 4: THE GAP — Real before/after comparison */}
+        {/* SECTION 4: THE GAP — Right vs Wrong comparison */}
         <FadeIn delay={30}>
           <section className="border-b border-black/[0.04] bg-white py-20 sm:py-24">
-            <div className="mx-auto max-w-4xl px-5 sm:px-8 lg:px-12">
+            <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
               <div className="text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
                   The gap
                 </p>
                 <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
-                  Same question. Same syllabus. Totally different marks.
+                  Two answers. Same question. 60 marks apart.
                 </h2>
-                <p className="mt-2 text-sm text-gray-500 max-w-xl mx-auto">
-                  Both answers below are on the same essay topic. One scored 80. The other scored 141.
-                  The difference isn't what they studied — it's how they wrote.
+                <p className="mt-2 text-sm text-gray-500 max-w-lg mx-auto">
+                  The difference isn't what you know — it's how you present it.
                 </p>
               </div>
 
-              <div className="mt-12 grid gap-8 lg:grid-cols-2">
-                {/* BEFORE — 80-mark answer */}
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-[11px] font-bold text-red-600">✕</span>
-                    <span className="text-sm font-bold text-red-600">Typical 80-mark answer</span>
-                    <span className="ml-auto rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">80 / 250</span>
-                  </div>
-                  <div className="rounded-xl border border-red-200 bg-red-50/30 p-5">
-                    <div className="rounded-lg bg-white p-4 shadow-sm">
-                      <p className="text-[11px] leading-relaxed text-gray-700">
-                        &ldquo;Urbanization is the process of population shift from rural to urban areas.
-                        It is happening rapidly in India. Many people are moving to cities for jobs
-                        and better facilities. Local governance is important for managing this.
-                        The 73rd and 74th Constitutional Amendments gave power to local bodies.
-                        However, there are many challenges like lack of funds and corruption.&rdquo;
-                      </p>
+              <div className="mt-12 grid gap-6 lg:grid-cols-5">
+                {/* WRONG — takes 2 cols */}
+                <div className="lg:col-span-2 lg:pt-8">
+                  <div className="rounded-2xl border border-red-200/60 bg-white shadow-[0_2px_12px_-6px_rgba(0,0,0,0.04)]">
+                    <div className="flex items-center justify-between border-b border-red-100/60 bg-red-50/50 px-5 py-3.5 rounded-t-2xl">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-100">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="text-red-500"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-red-700">80–100 marks</p>
+                          <p className="text-[10px] text-red-400">Typical coaching-style answer</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-extrabold text-red-500">80</p>
+                        <p className="text-[9px] text-red-300 -mt-0.5">/ 250</p>
+                      </div>
                     </div>
-                    <div className="mt-3 space-y-1.5">
+                    <div className="p-5 space-y-3.5">
                       {[
-                        { text: "Textbook opening — no hook, no context", type: "struct" },
-                        { text: "Zero data or example to back the claim", type: "data" },
-                        { text: 'No argument — just "this is important"', type: "arg" },
-                      ].map(({ text }) => (
-                        <div key={text} className="flex items-start gap-2 rounded-md bg-red-100/60 px-3 py-2">
-                          <span className="mt-0.5 text-[10px] text-red-400">→</span>
-                          <span className="text-[11px] text-red-700">{text}</span>
+                        { icon: "📝", label: "Structure", desc: "Textbook intro — 'Urbanization is the process of...' No hook, no angle. Reads like a class notes copy." },
+                        { icon: "📊", label: "Evidence", desc: "Zero data, examples, or case studies. Claims are stated but never backed." },
+                        { icon: "🎯", label: "Argument", desc: "No central thesis. Just lists facts about urbanization without a point of view." },
+                        { icon: "✏️", label: "Language", desc: "Passive, generic — could be written by anyone. No examiner would remember it." },
+                      ].map(({ icon, label, desc }) => (
+                        <div key={label} className="flex gap-3">
+                          <span className="mt-0.5 text-sm">{icon}</span>
+                          <div>
+                            <p className="text-xs font-bold text-gray-800">{label}</p>
+                            <p className="text-[12px] leading-relaxed text-gray-500">{desc}</p>
+                          </div>
                         </div>
                       ))}
+                    </div>
+                    <div className="border-t border-red-100/60 bg-red-50/30 px-5 py-3 rounded-b-2xl">
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 flex-1 rounded-full bg-red-200">
+                          <div className="h-1.5 w-[32%] rounded-full bg-red-400" />
+                        </div>
+                        <span className="text-[10px] font-bold text-red-500">32%</span>
+                      </div>
+                      <p className="text-[10px] text-red-400 mt-1">Score utilization</p>
                     </div>
                   </div>
                 </div>
 
-                {/* AFTER — 141-mark answer */}
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-[11px] font-bold text-emerald-600">✓</span>
-                    <span className="text-sm font-bold text-emerald-600">Garima Lohia&apos;s 141-mark answer</span>
-                    <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-600">141 / 250</span>
+                {/* VS divider — 1 col */}
+                <div className="hidden lg:flex items-center justify-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-black/[0.06] bg-white shadow-sm">
+                    <span className="text-xs font-extrabold text-gray-400">VS</span>
                   </div>
-                  <div className="rounded-xl border border-emerald-200 bg-emerald-50/30 p-5">
-                    <div className="rounded-lg bg-white p-4 shadow-sm">
-                      <p className="text-[11px] leading-relaxed text-gray-700">
-                        &ldquo;Urbanization in India has outpaced institutional capacity. Local
-                        governance, particularly through urban local bodies, plays a critical
-                        role in bridging this gap. Consider this: while 34% of India&apos;s
-                        population lives in urban areas, they contribute 63% of the GDP — yet
-                        ULBs account for barely 1% of the GDP. The 74th Amendment envisioned
-                        devolution, but the reality remains fragmented.&rdquo;
-                      </p>
+                </div>
+
+                {/* RIGHT — takes 2 cols */}
+                <div className="lg:col-span-2">
+                  <div className="rounded-2xl border-2 border-emerald-300/60 bg-white shadow-[0_4px_20px_-8px_rgba(5,150,105,0.12)]">
+                    <div className="flex items-center justify-between border-b border-emerald-100/60 bg-gradient-to-r from-emerald-50/80 to-emerald-50/30 px-5 py-3.5 rounded-t-2xl">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="text-emerald-600"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-emerald-700">130–150 marks</p>
+                          <p className="text-[10px] text-emerald-400">Actual topper answer structure</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-extrabold text-emerald-600">141</p>
+                        <p className="text-[9px] text-emerald-300 -mt-0.5">/ 250</p>
+                      </div>
                     </div>
-                    <div className="mt-3 space-y-1.5">
+                    <div className="p-5 space-y-3.5">
                       {[
-                        { text: "Direct, confident opening — thesis in first sentence", type: "struct" },
-                        { text: "34% vs 63% — real data makes the point instantly", type: "data" },
-                        { text: "One clear argument: capacity vs reality", type: "arg" },
-                      ].map(({ text }) => (
-                        <div key={text} className="flex items-start gap-2 rounded-md bg-emerald-100/60 px-3 py-2">
-                          <span className="mt-0.5 text-[10px] text-emerald-500">→</span>
-                          <span className="text-[11px] text-emerald-800">{text}</span>
+                        { icon: "📝", label: "Structure", desc: "Confident opening with a thesis — 'Urbanization in India has outpaced institutional capacity.' Sets up the argument immediately." },
+                        { icon: "📊", label: "Evidence", desc: "Hard data: '34% population produces 63% GDP, yet ULBs account for 1% of GDP.' Numbers do the convincing." },
+                        { icon: "🎯", label: "Argument", desc: "Clear throughline: capacity vs reality. Every sentence builds on the central tension." },
+                        { icon: "✏️", label: "Language", desc: "Active, precise, authoritative — sounds like someone who owns the material, not someone memorising it." },
+                        { icon: "🔍", label: "Presentation", desc: "Short paragraphs, varied sentence length, natural flow from problem → evidence → implication." },
+                      ].map(({ icon, label, desc }) => (
+                        <div key={label} className="flex gap-3">
+                          <span className="mt-0.5 text-sm">{icon}</span>
+                          <div>
+                            <p className="text-xs font-bold text-gray-800">{label}</p>
+                            <p className="text-[12px] leading-relaxed text-gray-500">{desc}</p>
+                          </div>
                         </div>
                       ))}
+                    </div>
+                    <div className="border-t border-emerald-100/60 bg-emerald-50/30 px-5 py-3 rounded-b-2xl">
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 flex-1 rounded-full bg-emerald-200">
+                          <div className="h-1.5 w-[84%] rounded-full bg-emerald-500" />
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-600">84%</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <p className="text-[10px] text-emerald-400 mt-1">Score utilization</p>
+                        <span className="text-[9px] font-medium text-emerald-500">+52 marks vs average</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-10 rounded-xl border border-black/[0.06] bg-gradient-to-r from-emerald-50/40 to-amber-50/30 p-6 text-center">
-                <p className="text-sm font-semibold text-gray-800">
-                  75% of the marks come from presentation, structure, and examples — not from how much you know.
-                </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  The bundle shows you exactly how toppers structure every paper. Not theory — real copies.
-                </p>
+              <div className="mx-auto mt-10 max-w-xl">
+                <div className="relative rounded-xl border border-black/[0.06] bg-gradient-to-r from-emerald-50/50 via-white to-amber-50/30 p-5 text-center">
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-black px-4 py-1">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white">The lesson</span>
+                  </div>
+                  <p className="mt-2 text-sm font-semibold text-gray-800">
+                    Examiners don&apos;t reward how much you studied. They reward how well you communicate what you know.
+                  </p>
+                  <p className="mt-1.5 text-xs text-gray-500">
+                    The bundle shows you the exact structure, language, and data that top scorers use — so you can apply it to your answers.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
