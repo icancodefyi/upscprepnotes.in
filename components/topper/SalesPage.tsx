@@ -76,16 +76,16 @@ const TOPPERS = [
 
 const HOW = [
   {
-    verb: "Message",
-    detail: "Tap the WhatsApp button below and say 'Hi'. We'll respond within minutes.",
+    verb: "Pay via UPI",
+    detail: "Tap 'Pay ₹799' to open GPay/PhonePe. Complete the payment in your UPI app.",
   },
   {
-    verb: "Pay & Save",
-    detail: "Pay via UPI on WhatsApp. Get an exclusive ₹100 discount + free bonus resources.",
+    verb: "Share Transaction ID",
+    detail: "Enter your UTR number and email below. We verify your payment instantly.",
   },
   {
-    verb: "Get Instant Access",
-    detail: "Download link sent immediately on WhatsApp. Full bundle organized by paper.",
+    verb: "Get Download Link",
+    detail: "We email the download link within 2 hours. Full bundle organized by paper.",
   },
 ];
 
@@ -152,24 +152,24 @@ function paidWhatsAppLink(tier: string, email: string, utr: string) {
 
 const FAQS = [
   {
-    q: "What exactly do I get?",
-    a: "50+ verified topper answer copies across GS1-4, Essay and Optional papers. 21 original strategy guides. Interview prep materials. Ethics case studies. Access to our AI trained for UPSC aspirants. All delivered as PDFs in a single ZIP file.",
+    q: "Are these the actual UPSC answer sheets?",
+    a: "Yes. All 50+ copies are real UPSC Mains answer sheets from verified toppers (AIR 1–1249). Each copy includes the original scorecard for verification.",
   },
   {
-    q: "How is delivery different from free copies online?",
-    a: "This is a curated compilation with marks-wise organization and topper commentary. The 21 strategy guides are original content you won't find on any free platform.",
+    q: "How is this different from free answer copies on Telegram?",
+    a: "Free copies are scattered, unverified, and low-quality scans. This is a curated compilation organized by paper and marks — with original strategy guides, examiner commentary, and AI access that no free source provides.",
   },
   {
-    q: "Can I buy individual papers?",
-    a: "We offer three packs: Answer Copies (₹549), Strategy Pro (₹649), and the Ultimate Bundle (₹799). Individual papers are not available. The Ultimate Bundle gives you 72 resources at ₹11 per copy and saves you ₹399 over buying separate packs.",
+    q: "How will I receive the files?",
+    a: "After payment verification, we email you a download link. The bundle comes as a single ZIP file organized by paper (GS1–4, Essay, Optional). You get lifetime access and free updates.",
   },
   {
     q: "What if I am not satisfied?",
     a: "Email us within 7 days of receiving the download link. We will refund your payment. No questions asked.",
   },
   {
-    q: "How long does delivery take?",
-    a: "Most verifications complete within 2 hours. You receive an email with the download link once confirmed.",
+    q: "Can I pay via GPay or PhonePe?",
+    a: 'Yes. Tap the "Pay ₹799" button anywhere on the page to open your UPI app. You can also manually pay to rakhangezaid8@pingpay via GPay, PhonePe, or any UPI app.',
   },
 ];
 
@@ -323,17 +323,17 @@ export default function SalesPage() {
                 </span>
               </div>
               <h1 className="mt-4 max-w-2xl text-[clamp(1.75rem,5.5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-gray-900">
-                Write 140+ mark answers.
+                50+ UPSC Topper
                 <br />
                 <span className="bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent">
-                  Study 50+ verified
+                  Answer Copies
                 </span>{" "}
-                topper copies.
+                — ₹799
               </h1>
               <p className="mt-3 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
-                See the exact structure, language, and presentation that earned
-                Garima Lohia (AIR 2), Ayan Jain (AIR 16), and 50+ others their
-                top scores.
+                Actual UPSC Mains answer sheets from Garima Lohia (AIR 2),
+                Ayan Jain (AIR 16), Ishita Kishore (AIR 1) and 50+ toppers.
+                GS1–4, Essay, Optional papers with marks. Delivered as PDFs.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <a
@@ -695,153 +695,90 @@ export default function SalesPage() {
             </div>
           </section>
         </FadeIn>
-        {/* SECTION 6: PRICING — Three tiers */}
+        {/* SECTION 6: WHAT YOU GET — Single bundle offer */}
         <FadeIn delay={40}>
           <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
             <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
               <div className="mx-auto max-w-2xl text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
-                  Pricing
+                  The Complete Bundle
                 </p>
                 <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-gray-900 sm:text-3xl">
-                  Pick the pack that fits your prep
+                  72 resources for ₹799
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                  Start with answer copies, or get everything with the bundle
-                  including AI access.
+                  Everything you need in one pack. No tiers, no upselling.
                 </p>
               </div>
-              <div className="mt-12 grid gap-6 lg:grid-cols-3 lg:items-start">
-                {TIERS.map((tier) => (
-                  <div
-                    key={tier.name}
-                    className={`relative flex flex-col rounded-2xl border bg-white p-6 shadow-[0_2px_12px_-6px_rgba(0,0,0,0.06)] sm:p-8 ${
-                      (tier as any).popular
-                        ? "border-emerald-200 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.1)] lg:-mt-4 lg:pb-10 lg:pt-12"
-                        : "border-black/[0.06]"
-                    }`}
-                  >
-                    {(tier as any).popular && (
-                      <>
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-600 px-4 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">
-                          Best Value
-                        </span>
-                      </>
-                    )}
-                    <p className="text-sm font-bold text-gray-900">
-                      {tier.name}
-                    </p>
-                    <div className="mt-3 flex items-baseline gap-2.5">
-                      <span className="text-4xl font-bold tracking-[-0.03em] text-gray-900">
-                        ₹{tier.price}
+              <div className="mx-auto mt-10 max-w-lg">
+                <div className="rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.1)] sm:p-8">
+                  <div className="text-center">
+                    <span className="inline-block rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-700">
+                      One Bundle
+                    </span>
+                    <div className="mt-4 flex items-baseline justify-center gap-2">
+                      <span className="text-5xl font-bold tracking-[-0.03em] text-gray-900">
+                        ₹799
                       </span>
+                      <span className="text-sm text-gray-400 line-through">₹1,198</span>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                      {tier.desc}
-                    </p>
-                    <div className="mt-6 space-y-3 border-t border-black/[0.06] pt-6">
-                      {tier.features.map((f) => {
-                        const isAi = f.includes("AI");
-                        return (
-                          <div
-                            key={f}
-                            className={`flex items-center gap-2.5 ${isAi ? "-mx-3 rounded-lg bg-emerald-50/80 px-3 py-2" : ""}`}
-                          >
-                            {isAi ? (
-                              <IconSparkles
-                                size={14}
-                                className="shrink-0 text-emerald-600"
-                              />
-                            ) : (
-                              <IconCheck
-                                size={14}
-                                className="shrink-0 text-emerald-500"
-                              />
-                            )}
-                            <span
-                              className={`text-sm ${isAi ? "font-semibold text-emerald-800" : "text-gray-600"}`}
-                            >
-                              {f}
-                            </span>
-                            {isAi && (
-                              <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700">
-                                Exclusive
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-8 space-y-2.5">
-                      {(tier as any).popular ? (
-                        <>
-                        <a
-                          href={upiDeepLink(799, "Ultimate Bundle")}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-track="upi-pricing-popular"
-                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base ${btn}`}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
-                          Pay ₹799 via UPI
-                        </a>
-                        <a
-                          href={whatsappLink(tier.name)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-track="whatsapp-pricing-popular"
-                          onClick={() => trackWhatsApp(tier.name, "pricing-popular")}
-                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-7 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300 hover:bg-gray-50 sm:px-8 sm:py-3.5 sm:text-base ${btn}`}
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                          Chat on WhatsApp
-                        </a>
-                        </>
-                      ) : (
-                        <a
-                          href={whatsappLink(tier.name)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-track="whatsapp-pricing-default"
-                          onClick={() => trackWhatsApp(tier.name, "pricing-default")}
-                          className={`group inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 hover:border-gray-300 hover:bg-gray-50 sm:px-8 sm:py-4 sm:text-base ${btn}`}
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                          Get the Bundle
-                        </a>
-                      )}
-                    </div>
+                    <p className="mt-1 text-xs text-gray-400">₹11 per resource · 50+ topper copies included</p>
                   </div>
-                ))}
-              </div>
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-                <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  <span className="text-xs font-medium text-emerald-700">
-                    WhatsApp purchase
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="text-emerald-600"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  <span className="text-xs font-medium text-emerald-700">
-                    7-day refund
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span className="text-xs font-medium text-gray-700">
-                    Verified copies
-                  </span>
+                  <div className="mt-6 space-y-3 border-t border-black/[0.06] pt-6">
+                    {[
+                      "50+ actual topper answer copy PDFs (GS1–4, Essay, Optional)",
+                      "21 original strategy guides by rank holders",
+                      "Interview preparation pack with 100+ questions",
+                      "Ethics case studies with model answers",
+                      "AI assistant trained on these copies for instant feedback",
+                      "Organised by paper, marks, and year — ready to download",
+                      "Lifetime access + free updates",
+                    ].map((f) => (
+                      <div key={f} className="flex items-start gap-3">
+                        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="text-emerald-600"><polyline points="20 6 9 17 4 12" /></svg>
+                        </div>
+                        <span className="text-sm text-gray-600">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-8 space-y-2.5">
+                    <a
+                      href={upiDeepLink(799, "Ultimate Bundle")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-track="upi-offer"
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base ${btn}`}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
+                      Pay ₹799 — Get Instant Access
+                    </a>
+                    <a
+                      href={whatsappLink("Ultimate Bundle")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-track="whatsapp-offer"
+                      onClick={() => trackWhatsApp("Ultimate Bundle", "offer")}
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-7 py-3 text-sm font-semibold text-gray-600 hover:border-gray-300 hover:bg-gray-50 sm:px-8 sm:py-3.5 sm:text-base ${btn}`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-emerald-600"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      Chat on WhatsApp
+                    </a>
+                  </div>
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
+                      7-day refund
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      Verified copies
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C4.5 2 2 7 2 12c0 3 1 6 3 8l-1 3 4-1c2 1 4 2 7 2 7 0 10-5 10-10S19 2 12 2z"/></svg>
+                      UPI / GPay / PhonePe
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -876,19 +813,19 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* SECTION 8: PAYMENT — UPI + UTR confirmation */}
+        {/* SECTION 8: PAYMENT — Pay via UPI + confirm */}
         <FadeIn delay={20}>
           <section className="border-b border-black/[0.04] bg-white py-16 sm:py-20">
             <div className="mx-auto max-w-2xl px-5 sm:px-8 lg:px-12">
               <div className="text-center">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
-                  Already Paid?
+                  How to Pay
                 </p>
                 <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
-                  Submit Your Payment and Get Instant Access
+                  Pay ₹799 via UPI — Get Instant Access
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Paid via UPI? Enter your transaction ID below. We will email your download link immediately.
+                  Step 1: Pay ₹799 to the UPI ID below. Step 2: Enter your details and UTR to receive the download link.
                 </p>
               </div>
 
