@@ -65,7 +65,7 @@ async function sendDownloadEmail(email: string, topperName: string, pdfUrl: stri
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, topperSlug } = body;
+    const { email, topperSlug, name } = body;
 
     if (!topperSlug) {
       return NextResponse.json(
@@ -89,6 +89,7 @@ export async function POST(request: NextRequest) {
         email,
         topperSlug,
         topperName: `${topper.firstName} ${topper.lastName}`,
+        name: name || "",
       });
 
       try {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { IconDownload, IconX, IconCheck } from "@tabler/icons-react";
 import { trackClientEvent } from "@/lib/client-analytics";
 
@@ -11,37 +11,45 @@ interface FreeDownloadDialogProps {
 }
 
 export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: FreeDownloadDialogProps) {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [dialogError, setDialogError] = useState("");
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    trackClientEvent("dialog_open", { dialog: "free_download", topperSlug });
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) {
+      setDialogError("Email is required");
+      return;
+    }
+    setLoading(true);
+    setDialogError("");
 
-    fetch("/api/free-download", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ topperSlug }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.pdfUrl) {
-          setPdfUrl(data.pdfUrl);
-        } else {
-          setError(data.error || "Not available");
-        }
-      })
-      .catch(() => setError("Something went wrong"))
-      .finally(() => setLoading(false));
+    try {
+      const res = await fetch("/api/free-download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), topperSlug, name: name.trim() || undefined }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+      setPdfUrl(data.pdfUrl);
+      setSubmitted(true);
+      trackClientEvent("free_download_lead", { topperSlug, topperName });
+    } catch (err: any) {
+      setDialogError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [topperSlug]);
-
-  const handleDownload = useCallback(() => {
+  function handleDownload() {
     if (!downloaded) {
       setDownloaded(true);
       trackClientEvent("file_download", {
@@ -51,66 +59,100 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
         source: "free_download_dialog",
       });
     }
-  }, [downloaded, topperSlug, topperName]);
-
-  const handleClose = useCallback(() => {
-    trackClientEvent("dialog_close", { dialog: "free_download", topperSlug, method: "button" });
-    onOpenChange(false);
-  }, [onOpenChange, topperSlug]);
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl">
         <button
-          onClick={handleClose}
-          data-track="free-download-dialog-close"
+          onClick={() => onOpenChange(false)}
           className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
         >
           <IconX size={18} />
         </button>
 
-        {loading && (
-          <div className="py-12 text-center">
-            <div className="mx-auto mb-4 h-12 w-12 animate-pulse rounded-xl bg-emerald-100" />
-            <div className="mx-auto mb-2 h-5 w-48 animate-pulse rounded bg-gray-200" />
-            <div className="mx-auto h-4 w-56 animate-pulse rounded bg-gray-100" />
-          </div>
-        )}
-
-        {!loading && !error && (
+        {!submitted ? (
+          <>
+            <div className="text-center mb-6">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                <IconDownload size={24} className="text-emerald-600" />
+              </div>
+              <h2 className="text-lg font-semibold">Get Your Free Answer Copy</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Enter your email to receive the download link for <strong>{topperName}</strong>&apos;s answer copy.
+              </p>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div>
+                <label className="text-xs font-medium text-gray-700">Name <span className="text-gray-400">(optional)</span></label>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-700">Email *</label>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  type="email"
+                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  placeholder="We will send the download link here"
+                />
+              </div>
+              {dialogError && (
+                <p className="text-xs text-red-500">{dialogError}</p>
+              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all"
+              >
+                {loading ? "Sending..." : "Get Download Link"}
+              </button>
+            </form>
+            <p className="mt-3 text-center text-[10px] text-muted-foreground">
+              We&apos;ll email you the PDF. No spam, unsubscribe anytime.
+            </p>
+          </>
+        ) : (
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-              <IconDownload size={24} className="text-emerald-600" />
+              <IconCheck size={24} className="text-emerald-600" />
             </div>
-            <h2 className="text-lg font-semibold">Download Free Answer Copy</h2>
+            <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              One free answer copy of <strong>{topperName}</strong> — no email required.
+              We sent the download link for <strong>{topperName}</strong>&apos;s answer copy to <strong>{email}</strong>.
             </p>
-            <a
-              href={pdfUrl}
-              download
-              onClick={handleDownload}
-              data-track="free-download-pdf"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3.5 text-sm font-bold text-white transition-colors hover:bg-emerald-500"
-            >
-              <IconDownload size={16} />
-              Download Now
-            </a>
-            <p className="mt-4 text-xs text-muted-foreground">
-              Want more? <strong className="text-emerald-600 cursor-pointer" onClick={handleClose}>Get 50+ topper copies</strong> in the complete bundle.
-            </p>
-          </div>
-        )}
-
-        {!loading && error && (
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100">
-              <IconX size={24} className="text-red-500" />
-            </div>
-            <h2 className="text-lg font-semibold">Not available yet</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              We don&apos;t have a free download for <strong>{topperName}</strong> yet.
+            {pdfUrl && (
+              <div className="mt-4">
+                <a
+                  href={pdfUrl}
+                  download
+                  onClick={handleDownload}
+                  data-track="free-download-pdf"
+                  className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 transition-colors"
+                >
+                  <IconDownload size={16} />
+                  Download Now
+                </a>
+                <p className="mt-2 text-[10px] text-muted-foreground">
+                  (Link also sent to your email)
+                </p>
+              </div>
+            )}
+            <p className="mt-6 text-xs text-muted-foreground">
+              Want more?{" "}
+              <button
+                onClick={() => onOpenChange(false)}
+                className="text-emerald-600 font-semibold underline cursor-pointer"
+              >
+                Get 50+ topper copies in the complete bundle
+              </button>
             </p>
           </div>
         )}
