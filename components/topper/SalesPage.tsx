@@ -552,74 +552,97 @@ export default function SalesPage() {
           </section>
         </FadeIn>
 
-        {/* SECTION 4: PAIN → SOLUTION — Why 80 ≠ 140 */}
+        {/* SECTION 4: THE GAP — Real before/after comparison */}
         <FadeIn delay={30}>
           <section className="border-b border-black/[0.04] bg-white py-20 sm:py-24">
-            <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-              <div className="mx-auto max-w-3xl">
-                <div className="text-center">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
-                    The gap
-                  </p>
-                  <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
-                    You know the syllabus. But do you know what a 140-mark
-                    answer looks like?
-                  </h2>
-                </div>
-                <div className="mt-10 grid gap-6 sm:grid-cols-2">
-                  <div className="rounded-xl border border-red-200/60 bg-red-50/40 p-5">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-red-500">
-                      80–100 marks
-                    </p>
-                    <div className="mt-2 space-y-2 text-sm leading-relaxed text-gray-600">
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-red-300">✕</span>
-                        Generic structure, copied from coaching notes
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-red-300">✕</span>
-                        No real-world examples or data
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-red-300">✕</span>
-                        Poor presentation, no diagram usage
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-red-300">✕</span>
-                        Wasting time on random Telegram PDFs
+            <div className="mx-auto max-w-4xl px-5 sm:px-8 lg:px-12">
+              <div className="text-center">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
+                  The gap
+                </p>
+                <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
+                  Same question. Same syllabus. Totally different marks.
+                </h2>
+                <p className="mt-2 text-sm text-gray-500 max-w-xl mx-auto">
+                  Both answers below are on the same essay topic. One scored 80. The other scored 141.
+                  The difference isn't what they studied — it's how they wrote.
+                </p>
+              </div>
+
+              <div className="mt-12 grid gap-8 lg:grid-cols-2">
+                {/* BEFORE — 80-mark answer */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-[11px] font-bold text-red-600">✕</span>
+                    <span className="text-sm font-bold text-red-600">Typical 80-mark answer</span>
+                    <span className="ml-auto rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">80 / 250</span>
+                  </div>
+                  <div className="rounded-xl border border-red-200 bg-red-50/30 p-5">
+                    <div className="rounded-lg bg-white p-4 shadow-sm">
+                      <p className="text-[11px] leading-relaxed text-gray-700">
+                        &ldquo;Urbanization is the process of population shift from rural to urban areas.
+                        It is happening rapidly in India. Many people are moving to cities for jobs
+                        and better facilities. Local governance is important for managing this.
+                        The 73rd and 74th Constitutional Amendments gave power to local bodies.
+                        However, there are many challenges like lack of funds and corruption.&rdquo;
                       </p>
                     </div>
-                  </div>
-                  <div className="rounded-xl border border-emerald-200/60 bg-emerald-50/40 p-5">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-600">
-                      130–150 marks
-                    </p>
-                    <div className="mt-2 space-y-2 text-sm leading-relaxed text-gray-600">
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-emerald-400">✓</span>
-                        Clear argument structure with flow
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-emerald-400">✓</span>
-                        Relevant examples from current affairs
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-emerald-400">✓</span>
-                        Diagrams, keywords, presentation
-                      </p>
-                      <p className="flex items-start gap-2">
-                        <span className="mt-0.5 text-emerald-400">✓</span>
-                        Study from verified topper copies
-                      </p>
+                    <div className="mt-3 space-y-1.5">
+                      {[
+                        { text: "Textbook opening — no hook, no context", type: "struct" },
+                        { text: "Zero data or example to back the claim", type: "data" },
+                        { text: 'No argument — just "this is important"', type: "arg" },
+                      ].map(({ text }) => (
+                        <div key={text} className="flex items-start gap-2 rounded-md bg-red-100/60 px-3 py-2">
+                          <span className="mt-0.5 text-[10px] text-red-400">→</span>
+                          <span className="text-[11px] text-red-700">{text}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-                <div className="mt-8 rounded-xl border border-black/[0.06] bg-gradient-to-r from-emerald-50/30 to-amber-50/30 p-5 text-center">
-                  <p className="text-sm font-semibold text-gray-800">
-                    The difference between 80 and 140 isn&apos;t luck —
-                    it&apos;s structure, language, and presentation.
-                  </p>
+
+                {/* AFTER — 141-mark answer */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-[11px] font-bold text-emerald-600">✓</span>
+                    <span className="text-sm font-bold text-emerald-600">Garima Lohia&apos;s 141-mark answer</span>
+                    <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-600">141 / 250</span>
+                  </div>
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50/30 p-5">
+                    <div className="rounded-lg bg-white p-4 shadow-sm">
+                      <p className="text-[11px] leading-relaxed text-gray-700">
+                        &ldquo;Urbanization in India has outpaced institutional capacity. Local
+                        governance, particularly through urban local bodies, plays a critical
+                        role in bridging this gap. Consider this: while 34% of India&apos;s
+                        population lives in urban areas, they contribute 63% of the GDP — yet
+                        ULBs account for barely 1% of the GDP. The 74th Amendment envisioned
+                        devolution, but the reality remains fragmented.&rdquo;
+                      </p>
+                    </div>
+                    <div className="mt-3 space-y-1.5">
+                      {[
+                        { text: "Direct, confident opening — thesis in first sentence", type: "struct" },
+                        { text: "34% vs 63% — real data makes the point instantly", type: "data" },
+                        { text: "One clear argument: capacity vs reality", type: "arg" },
+                      ].map(({ text }) => (
+                        <div key={text} className="flex items-start gap-2 rounded-md bg-emerald-100/60 px-3 py-2">
+                          <span className="mt-0.5 text-[10px] text-emerald-500">→</span>
+                          <span className="text-[11px] text-emerald-800">{text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              <div className="mt-10 rounded-xl border border-black/[0.06] bg-gradient-to-r from-emerald-50/40 to-amber-50/30 p-6 text-center">
+                <p className="text-sm font-semibold text-gray-800">
+                  75% of the marks come from presentation, structure, and examples — not from how much you know.
+                </p>
+                <p className="mt-1 text-xs text-gray-500">
+                  The bundle shows you exactly how toppers structure every paper. Not theory — real copies.
+                </p>
               </div>
             </div>
           </section>
