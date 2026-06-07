@@ -1,22 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { IconDownload, IconX, IconCheck } from "@tabler/icons-react";
+import { IconDownload, IconX, IconCheck, IconClock } from "@tabler/icons-react";
 import { trackClientEvent } from "@/lib/client-analytics";
 
 interface FreeDownloadDialogProps {
   topperName: string;
   topperSlug: string;
+  freeAnswerCopyUrl?: string | null;
   onOpenChange: (open: boolean) => void;
 }
 
-export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: FreeDownloadDialogProps) {
+export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, onOpenChange }: FreeDownloadDialogProps) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [available, setAvailable] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [dialogError, setDialogError] = useState("");
 
@@ -33,15 +35,22 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
       const res = await fetch("/api/free-download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), topperSlug, name: name.trim() || undefined }),
+        body: JSON.stringify({
+          email: email.trim(),
+          topperSlug,
+          name: name.trim() || undefined,
+          source: "topper_page",
+          sourceUrl: window.location.href,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
       }
-      setPdfUrl(data.pdfUrl);
+      setAvailable(data.available);
+      if (data.pdfUrl) setPdfUrl(data.pdfUrl);
       setSubmitted(true);
-      trackClientEvent("free_download_lead", { topperSlug, topperName });
+      trackClientEvent("free_download_lead", { topperSlug, topperName, available: data.available });
     } catch (err: any) {
       setDialogError(err.message);
     } finally {
@@ -80,7 +89,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
               </div>
               <h2 className="text-lg font-semibold">Get Your Free Answer Copy</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Enter your email to receive the download link for <strong>{topperName}</strong>&apos;s answer copy.
+                Enter your email to receive <strong>{topperName}</strong>&apos;s answer copy.
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -116,10 +125,10 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
               </button>
             </form>
             <p className="mt-3 text-center text-[10px] text-muted-foreground">
-              We&apos;ll email you the PDF. No spam, unsubscribe anytime.
+              No spam, unsubscribe anytime.
             </p>
           </>
-        ) : (
+        ) : available ? (
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
               <IconCheck size={24} className="text-emerald-600" />
@@ -140,9 +149,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
                   <IconDownload size={16} />
                   Download Now
                 </a>
-                <p className="mt-2 text-[10px] text-muted-foreground">
-                  (Link also sent to your email)
-                </p>
               </div>
             )}
             <p className="mt-6 text-xs text-muted-foreground">
@@ -153,6 +159,32 @@ export function FreeDownloadDialog({ topperName, topperSlug, onOpenChange }: Fre
               >
                 Get 50+ topper copies in the complete bundle
               </button>
+            </p>
+          </div>
+        ) : (
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">
+              <IconClock size={24} className="text-amber-600" />
+            </div>
+            <h2 className="text-lg font-semibold">We&apos;re Working on It!</h2>
+            <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+              Thanks for requesting <strong>{topperName}</strong>&apos;s answer copy. We&apos;re sourcing it and will email it to you shortly.
+            </p>
+            <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-4 text-left">
+              <p className="text-xs font-semibold text-amber-800">🎁 Complementary Offer</p>
+              <p className="mt-1 text-xs text-amber-700 leading-relaxed">
+                If we can&apos;t deliver within 48 hours, we&apos;ll give you <strong>free access to our premium strategy guides</strong> (worth ₹649) as a thank-you.
+              </p>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              In the meantime,{" "}
+              <button
+                onClick={() => onOpenChange(false)}
+                className="text-emerald-600 font-semibold underline cursor-pointer"
+              >
+                browse the complete bundle
+              </button>
+              {" "}with 50+ topper copies.
             </p>
           </div>
         )}

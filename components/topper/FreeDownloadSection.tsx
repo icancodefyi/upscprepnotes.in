@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FreeDownloadDialog } from "./FreeDownloadDialog";
-import { RequestCopyDialog } from "./RequestCopyDialog";
 
 interface FreeDownloadSectionProps {
   topperName: string;
@@ -19,7 +18,6 @@ export function FreeDownloadSection({
   freeAnswerCopyUrl,
 }: FreeDownloadSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [requestOpen, setRequestOpen] = useState(false);
 
   return (
     <>
@@ -35,29 +33,16 @@ export function FreeDownloadSection({
               One free GS paper answer copy from the actual UPSC Mains exam. See the exact handwriting, structure, and presentation that scored high marks.
             </p>
             <div className="mt-auto pt-6 w-full">
-              {freeAnswerCopyUrl ? (
-                <button
-                  onClick={() => setDialogOpen(true)}
-                  data-track="topper-free-download"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-500"
-                >
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  Download Free Answer Copy
-                </button>
-              ) : (
-                <button
-                  onClick={() => setRequestOpen(true)}
-                  data-track="topper-request-copy"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-amber-500"
-                >
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                  </svg>
-                  Request Answer Copy
-                </button>
-              )}
+              <button
+                onClick={() => setDialogOpen(true)}
+                data-track="topper-free-download"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-500"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download Free Answer Copy
+              </button>
             </div>
           </div>
 
@@ -87,19 +72,12 @@ export function FreeDownloadSection({
         </div>
       </section>
 
-      {dialogOpen && freeAnswerCopyUrl && (
+      {dialogOpen && (
         <FreeDownloadDialog
           topperName={topperName}
           topperSlug={topperSlug}
+          freeAnswerCopyUrl={freeAnswerCopyUrl}
           onOpenChange={setDialogOpen}
-        />
-      )}
-
-      {requestOpen && !freeAnswerCopyUrl && (
-        <RequestCopyDialog
-          topperName={topperName}
-          topperSlug={topperSlug}
-          onOpenChange={setRequestOpen}
         />
       )}
     </>
