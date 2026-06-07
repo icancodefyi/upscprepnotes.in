@@ -13,7 +13,6 @@ interface FreeDownloadDialogProps {
 
 export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, onOpenChange }: FreeDownloadDialogProps) {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +37,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
         body: JSON.stringify({
           email: email.trim(),
           topperSlug,
-          name: name.trim() || undefined,
           source: "topper_page",
           sourceUrl: window.location.href,
         }),
@@ -93,15 +91,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
-              <div>
-                <label className="text-xs font-medium text-gray-700">Name <span className="text-gray-400">(optional)</span></label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-                  placeholder="Your name"
-                />
-              </div>
               <div>
                 <label className="text-xs font-medium text-gray-700">Email *</label>
                 <input
