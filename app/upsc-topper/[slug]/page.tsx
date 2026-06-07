@@ -345,12 +345,14 @@ export default async function TopperPage({ params }: Props) {
         <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
           {/* LEFT */}
           <div>
-            <div className="overflow-hidden rounded-2xl border border-border/50 bg-card">
-              <img
-                src={topperImageSrc(topper)}
-                alt={`${topper.firstName} ${topper.lastName}`}
-                className="w-full bg-muted"
-              />
+            <div className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card">
+              <div className="aspect-[3/4]">
+                <img
+                  src={topperImageSrc(topper)}
+                  alt={`${topper.firstName} ${topper.lastName}`}
+                  className="h-full w-full bg-muted object-cover transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.08]"
+                />
+              </div>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2">
               <div className="rounded-xl border border-border/50 bg-card p-3 text-center">
