@@ -8,9 +8,10 @@ interface Props {
   topperName: string;
   year: number;
   rank: number;
+  onImageClick?: (src: string) => void;
 }
 
-export default function SampleAnswerCarousel({ topperName, year, rank }: Props) {
+export default function SampleAnswerCarousel({ topperName, year, rank, onImageClick }: Props) {
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % SAMPLE_COUNT), []);
@@ -20,8 +21,10 @@ export default function SampleAnswerCarousel({ topperName, year, rank }: Props) 
     return () => clearInterval(timer);
   }, [next]);
 
+  const imgSrc = `/sample-answers/${current + 1}.png`;
+
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer" onClick={() => onImageClick?.(imgSrc)}>
       <div className="relative overflow-hidden rounded-xl bg-black/[0.02]">
         <div
           className="flex transition-transform duration-500 ease-in-out"

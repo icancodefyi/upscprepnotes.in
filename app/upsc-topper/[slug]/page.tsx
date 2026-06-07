@@ -15,6 +15,8 @@ import TrackingProvider from "./TrackingProvider";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import PurchaseSidebar from "@/components/topper/PurchaseSidebar";
+import ExitPopup from "@/components/topper/ExitPopup";
+import LiveCounter from "@/components/topper/LiveCounter";
 import ReportButton from "@/components/ReportButton";
 
 export const revalidate = 86400;
@@ -318,7 +320,8 @@ export default async function TopperPage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen">
+    <>
+      <main className="min-h-screen">
       <TrackingProvider name={`${topper.firstName} ${topper.lastName}`} />
       <script
         type="application/ld+json"
@@ -391,6 +394,11 @@ export default async function TopperPage({ params }: Props) {
                 {topper.bio}
               </p>
             )}
+
+            {/* Social proof */}
+            <div className="mt-4 flex items-center text-xs">
+              <LiveCounter />
+            </div>
 
             {/* WIKI TABLE */}
             <div className="mt-5 rounded-xl border border-border/50 bg-card">
@@ -664,6 +672,8 @@ export default async function TopperPage({ params }: Props) {
           </section>
         )}
       </div>
-    </main>
+      </main>
+      <ExitPopup />
+    </>
   );
 }

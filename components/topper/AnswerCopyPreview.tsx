@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import SampleAnswerCarousel from "./SampleAnswerCarousel";
+import ImageLightbox from "@/components/ui/ImageLightbox";
 
 const PREVIEW_SLUGS = new Set([
   "ishita-kishore", "garima-lohia", "harshita-goyal",
@@ -22,8 +24,10 @@ interface Props {
 }
 
 export default function AnswerCopyPreview({ topper }: Props) {
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const name = `${topper.firstName} ${topper.lastName}`;
   const hasPreview = PREVIEW_SLUGS.has(topper.slug);
+  const previewSrc = `/previews/${topper.slug}.png`;
 
   return (
     <section className="mt-12">
@@ -39,11 +43,11 @@ export default function AnswerCopyPreview({ topper }: Props) {
         </span>
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card">
+      <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group">
         {hasPreview ? (
-          <div className="relative">
+          <div className="relative cursor-pointer" onClick={() => setLightboxImg(previewSrc)}>
             <img
-              src={`/previews/${topper.slug}.png`}
+              src={previewSrc}
               alt={`${name} answer copy preview`}
               className="w-full object-contain max-h-[500px]"
             />
@@ -62,11 +66,19 @@ export default function AnswerCopyPreview({ topper }: Props) {
             </div>
           </div>
         ) : (
-          <SampleAnswerCarousel topperName={name} year={topper.year} rank={topper.rank} />
+          <SampleAnswerCarousel
+            topperName={name}
+            year={topper.year}
+            rank={topper.rank}
+            onImageClick={(src) => setLightboxImg(src)}
+          />
         )}
 
         <div className="absolute top-3 left-3 z-10 rounded-md bg-amber-500/90 px-2 py-1 shadow-sm">
           <p className="text-[9px] font-bold uppercase tracking-wider text-white">Preview</p>
+        </div>
+        <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-md bg-white/90 px-2 py-1 shadow-sm">
+          <p className="text-[9px] font-medium text-gray-600">Click to zoom</p>
         </div>
       </div>
 
@@ -90,6 +102,12 @@ export default function AnswerCopyPreview({ topper }: Props) {
           </Link>
         </div>
       </div>
+      <p className="mt-1 text-[11px] text-center text-muted-foreground/60">Click the preview to zoom in</p>
+
+      {lightboxImg && (
+        <ImageLightbox src={lightboxImg} alt={`${name} answer copy`} onClose={() => setLightboxImg(null)} />
+      )}
     </section>
   );
 }
+

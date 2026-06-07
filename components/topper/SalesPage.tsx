@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { trackViewItem } from "@/lib/analytics";
 import { trackClientEvent } from "@/lib/client-analytics";
 import Link from "next/link";
+import LiveCounter from "@/components/topper/LiveCounter";
 
 const TOPPERS = [
   {
@@ -376,93 +377,44 @@ export default function SalesPage() {
                   UPI / GPay
                 </span>
               </div>
+              <div className="mt-3 text-xs">
+                <LiveCounter />
+              </div>
             </div>
             <div className="flex min-h-[320px] items-center justify-center bg-gradient-to-br from-gray-50/80 to-white px-4 py-8 lg:min-h-[500px] lg:w-1/2 lg:px-8">
               <div className="relative w-full max-w-sm">
-                <div className="absolute -right-1 bottom-0 h-[90%] w-[98%] rounded-2xl border border-black/[0.04] bg-gray-50/50 shadow-[0_4px_16px_-8px_rgba(0,0,0,0.06)]" />
-                <div className="absolute -right-0.5 bottom-0.5 h-[95%] w-[99%] rounded-2xl border border-black/[0.04] bg-gray-50/80 shadow-[0_4px_16px_-8px_rgba(0,0,0,0.08)]" />
-                <div className="relative rounded-2xl bg-white shadow-[0_8px_32px_-12px_rgba(0,0,0,0.12)] ring-1 ring-black/[0.03]">
-                  <div className="flex items-center justify-between border-b border-black/[0.06] bg-gradient-to-r from-emerald-50 to-white px-5 pt-5 pb-3">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-400">
-                        UPSC CSE Mains 2022
-                      </p>
-                      <p className="text-sm font-bold text-gray-900">
-                        Essay Paper
-                      </p>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  {TOPPERS.filter((_, i) => i < 6).map((t, i) => (
+                    <div
+                      key={t.name}
+                      className="group relative overflow-hidden rounded-xl border border-black/[0.06] bg-gray-50 shadow-sm"
+                      style={{ animationDelay: `${i * 80}ms` }}
+                    >
+                      <div className="aspect-[3/4]">
+                        <img
+                          src={t.previewImageUrl!}
+                          alt={t.name}
+                          className="h-full w-full object-cover transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.05]"
+                          onError={(e) => {
+                            const img = e.currentTarget;
+                            if (!img.dataset.fallback) {
+                              img.dataset.fallback = "1";
+                              img.style.display = "none";
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2 pt-6">
+                        <p className="text-[11px] font-bold text-white drop-shadow-sm leading-tight">{t.name}</p>
+                        <p className="text-[9px] text-white/70">{t.rank} · {t.subject}</p>
+                      </div>
                     </div>
-                    <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[9px] font-bold text-emerald-700">
-                      AIR 2
-                    </span>
-                  </div>
-                  <div className="absolute right-4 top-16 rounded-lg bg-emerald-600 px-2.5 py-1 text-center shadow-sm">
-                    <p className="text-[9px] font-bold uppercase tracking-wider text-emerald-200">
-                      Score
+                  ))}
+                  <div className="col-span-2 flex items-center justify-center rounded-xl border border-dashed border-emerald-200 bg-emerald-50/50 p-3">
+                    <p className="text-[11px] font-semibold text-emerald-700 text-center leading-relaxed">
+                      +50 more toppers<br />
+                      <span className="text-emerald-500 font-normal">GS1–4 · Essay · Optional</span>
                     </p>
-                    <p className="text-lg font-extrabold leading-none text-white">
-                      141
-                    </p>
-                    <p className="text-[8px] text-emerald-300">/ 250</p>
-                  </div>
-                  <div className="px-5 pt-4 pb-2">
-                    <div className="flex items-center gap-2 border-b border-black/[0.04] pb-2">
-                      <div className="flex h-5 w-5 items-center justify-center rounded bg-emerald-100 text-[9px] font-bold text-emerald-700">
-                        Q
-                      </div>
-                      <span className="text-[10px] font-medium text-gray-500">
-                        Essay Question
-                      </span>
-                    </div>
-                    <div className="mt-3 space-y-2.5">
-                      <p className="text-[11px] leading-relaxed text-gray-600">
-                        &ldquo;In the context of rapid urbanization, discuss the
-                        role of local governance in ensuring equitable access to
-                        public goods.&rdquo;
-                      </p>
-                      <div className="border-l-2 border-emerald-300 bg-emerald-50/60 pl-3 py-2">
-                        <p className="text-[10px] italic leading-relaxed text-gray-700">
-                          Urbanization in India has outpaced institutional
-                          capacity. Local governance, particularly through urban
-                          local bodies, plays a critical role in bridging this
-                          gap&hellip;
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mx-5 rounded-lg bg-amber-50/60 px-3 py-2 ring-1 ring-amber-200/30">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-semibold text-amber-700">
-                        Examiner&apos;s note:
-                      </span>
-                      <span className="text-[8px] text-amber-500">
-                        Excellent structure &amp; examples
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between px-5 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <div className="flex -space-x-1">
-                        <div className="h-4 w-4 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 ring-1 ring-white" />
-                        <div className="h-4 w-4 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 ring-1 ring-white" />
-                        <div className="h-4 w-4 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 ring-1 ring-white" />
-                      </div>
-                      <span className="text-[10px] text-gray-400">
-                        Garima Lohia
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[9px] text-gray-400">
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                      </svg>
-                      Verified copy
-                    </div>
                   </div>
                 </div>
               </div>
