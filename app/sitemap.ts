@@ -8,6 +8,7 @@ import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
 import freeMaterialPage from "@/data/content/upsc-free-material";
 import fullFormHindiPage from "@/data/content/upsc-full-form-hindi";
+import answerWritingPage from "@/data/content/how-to-write-upsc-mains-answers";
 
 const OPTIONAL_SUBJECTS = [
   "psir", "public-administration", "mathematics", "sociology",
@@ -19,6 +20,7 @@ const CONTENT_SLUGS = [
   "upsc-syllabus",
   "upsc-free-material",
   "upsc-full-form-hindi",
+  "how-to-write-upsc-mains-answers",
 ];
 
 const YEAR_KEYS = ["2022", "2023", "2024", "2025"];
@@ -49,6 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "upsc-syllabus": syllabusPage.lastUpdated,
     "upsc-free-material": freeMaterialPage.lastUpdated,
     "upsc-full-form-hindi": fullFormHindiPage.lastUpdated,
+    "how-to-write-upsc-mains-answers": answerWritingPage.lastUpdated,
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
     url: `${baseUrl}/${slug}`,

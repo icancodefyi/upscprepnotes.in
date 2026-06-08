@@ -55,6 +55,15 @@ export default function PurchaseSidebar({ topperName }: Props) {
           Chat on WhatsApp
         </a>
       </div>
+      <a
+        href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi! I want to see ${topperName}'s sample answer copy before paying. From: upscprepnotes.in`)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 flex items-center justify-center gap-1.5 text-[10px] font-medium text-emerald-600 hover:text-emerald-500 transition-colors"
+      >
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        See sample first — Pay after
+      </a>
     </div>
   );
 }

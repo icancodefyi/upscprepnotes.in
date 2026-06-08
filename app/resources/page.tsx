@@ -4,6 +4,7 @@ import upscFullForm from "@/data/content/upsc-full-form";
 import upscSyllabus from "@/data/content/upsc-syllabus";
 import upscFreeMaterial from "@/data/content/upsc-free-material";
 import upscFullFormHindi from "@/data/content/upsc-full-form-hindi";
+import answerWriting from "@/data/content/how-to-write-upsc-mains-answers";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -35,6 +36,11 @@ const resources = [
     ...upscFullFormHindi,
     badge: "हिंदी",
     readTime: "5 min",
+  },
+  {
+    ...answerWriting,
+    badge: "Guide",
+    readTime: "8 min",
   },
 ];
 
