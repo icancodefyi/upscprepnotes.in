@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 
 const WHATSAPP_NUMBER = "919152750079";
 
+const SITE = "upscprepnotes.in";
+
 function whatsappLink(tier: string) {
   const msg = encodeURIComponent(
-    `Hi! I want to buy the "${tier}" on UPSCPrepNotes. Please share payment details.`
+    `Hi! I want to buy the "${tier}" on UPSCPrepNotes (${SITE}). Please share payment details.`
   );
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
 }

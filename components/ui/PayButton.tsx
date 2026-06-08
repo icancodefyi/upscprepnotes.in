@@ -35,7 +35,7 @@ export default function PayButton({
     }
   }
 
-  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the "${note}" on UPSCPrepNotes. Please share payment details.`)}`;
+  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the "${note}" on UPSCPrepNotes (upscprepnotes.in). Please share payment details.`)}`;
 
   return (
     <>
@@ -92,7 +92,7 @@ export default function PayButton({
             </div>
 
             <p className="mt-3 text-center text-[10px] text-gray-400">
-              7-day refund · Lifetime access · Delivered as PDFs
+              7-day refund · Lifetime access · Actual handwritten copies
             </p>
           </div>
         </div>

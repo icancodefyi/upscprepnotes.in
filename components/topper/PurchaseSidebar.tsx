@@ -25,7 +25,7 @@ export default function PurchaseSidebar({ topperName }: Props) {
     }
   }
 
-  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the Complete Bundle (₹799) with ${topperName}'s answer copy. Please share payment details.`)}`;
+  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the Complete Bundle (₹799) with ${topperName}'s answer copy. From: upscprepnotes.in. Please share payment details.`)}`;
 
   return (
     <div className="mt-4 rounded-xl border-2 border-emerald-600/20 bg-emerald-50 p-4">
