@@ -2,24 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async rewrites() {
-    return [
-      {
-        source: "/upsc-full-form",
-        destination: "/content/upsc-full-form",
-      },
-      {
-        source: "/upsc-syllabus",
-        destination: "/content/upsc-syllabus",
-      },
-      {
-        source: "/upsc-free-material",
-        destination: "/content/upsc-free-material",
-      },
-      {
-        source: "/upsc-full-form-hindi",
-        destination: "/content/upsc-full-form-hindi",
-      },
+    const contentSlugs = [
+      "upsc-full-form",
+      "upsc-syllabus",
+      "upsc-free-material",
+      "upsc-full-form-hindi",
+      "how-to-write-upsc-mains-answers",
     ];
+    return contentSlugs.map((slug) => ({
+      source: `/${slug}`,
+      destination: `/content/${slug}`,
+    }));
   },
 };
 
