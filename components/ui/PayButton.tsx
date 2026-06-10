@@ -16,7 +16,7 @@ interface Props {
 
 export default function PayButton({
   amount,
-  note = "Ultimate Bundle",
+  note = "Ultimate Compilation",
   className = "",
   tracking,
   children,

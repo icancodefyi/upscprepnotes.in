@@ -20,9 +20,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer"
         >
           <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
-            <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
-            <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
-            <span><span className="font-bold">30+ UPSC Resources Bundle</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+            <span><span className="font-bold">30+ UPSC Resources Compilation</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+            <span><span className="font-bold">30+ UPSC Resources Compilation</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
+            <span><span className="font-bold">30+ UPSC Resources Compilation</span><span className="text-white/60 mx-2">·</span><span className="text-[#C4F9D7] font-semibold">21 Guides + Topper Copies</span><span className="text-white/60 mx-2">·</span><span>₹799 Launch Offer →</span></span>
           </div>
         </a>
       </div>

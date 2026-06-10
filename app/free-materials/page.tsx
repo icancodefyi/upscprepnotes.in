@@ -174,14 +174,14 @@ export default async function PDFHubPage({ searchParams }: Props) {
             Want Actual Topper Answer Copies Too?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-zinc-400">
-            The ₹799 bundle includes 50+ verified topper answer copies plus 21 strategy guides.
+            The ₹799 compilation includes 50+ verified topper answer copies plus 21 strategy guides.
           </p>
           <Link
             href="/toppers/toppers-copy-compilation"
             data-track="pdf-hub-cta"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-500"
           >
-            Get the Bundle &rarr;
+            Get the Compilation &rarr;
           </Link>
           <Link
             href="/toppers"

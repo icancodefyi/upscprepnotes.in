@@ -146,7 +146,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
                 onClick={() => onOpenChange(false)}
                 className="text-emerald-600 font-semibold underline cursor-pointer"
               >
-                Get 50+ topper copies in the complete bundle
+                Get 50+ topper copies in the complete compilation
               </button>
             </p>
           </div>
@@ -171,7 +171,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
                 onClick={() => onOpenChange(false)}
                 className="text-emerald-600 font-semibold underline cursor-pointer"
               >
-                browse the complete bundle
+                browse the complete compilation
               </button>
               {" "}with 50+ topper copies.
             </p>

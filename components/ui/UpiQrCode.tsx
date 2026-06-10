@@ -8,7 +8,7 @@ interface Props {
   size?: number;
 }
 
-export default function UpiQrCode({ upiId, amount, name = "UPSCPrepNotes", note = "Ultimate Bundle", size = 220 }: Props) {
+export default function UpiQrCode({ upiId, amount, name = "UPSCPrepNotes", note = "Ultimate Compilation", size = 220 }: Props) {
   const uri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(uri)}&margin=12`;
 

@@ -549,7 +549,7 @@ function AskPage() {
               data-track="ask-sidebar-cta"
               className="text-xs font-medium text-zinc-700 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-600"
             >
-              Get bundle \u2192
+              Get compilation \u2192
             </Link>
           </div>
         </div>

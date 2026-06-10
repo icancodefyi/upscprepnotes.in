@@ -67,7 +67,7 @@ This is completely free, no login required, no daily limits.`,
     },
     {
       heading: "Free vs Paid — What You Get for ₹799",
-      body: `| Resource | Free | Bundle (₹799) |
+      body: `| Resource | Free | Compilation (₹799) |
 |----------|------|---------------|
 | Topper Profiles (280+) | ✅ Full access | ✅ Included |
 | PYQ Papers (2023-2025) | ✅ Full access | ✅ Included |
@@ -79,7 +79,7 @@ This is completely free, no login required, no daily limits.`,
 | **Ethics Case Studies** | ❌ Not available | ✅ 50+ solved case studies |
 | **Value-Addition Data** | ❌ Not available | ✅ Schemes, judgments, maps |
 
-**The Complete Bundle** includes everything in the right column:
+**The Complete Compilation** includes everything in the right column:
 
 ✅ **50+ Topper Answer Copies** — GS1-4, Essay, Optional — actual scanned copies with verified marks  
 ✅ **21 Strategy Guides** — Subject-wise, topic-wise detailed guides by rank holders  
@@ -87,7 +87,7 @@ This is completely free, no login required, no daily limits.`,
 ✅ **Ethics Case Studies** — 50+ solved case studies with step-by-step frameworks  
 ✅ **Value-Addition Data** — Key schemes, Supreme Court judgments, maps, diagrams  
 
-At **₹799** (launch price, moving to ₹4,999), this bundle replaces months of hunting for scattered resources online. The free material covers strategy and reference — the bundle gives you the **actual answer sheets** that no free resource provides.`,
+At **₹799** (launch price, moving to ₹4,999), this compilation replaces months of hunting for scattered resources online. The free material covers strategy and reference — the compilation gives you the **actual answer sheets** that no free resource provides.`,
     },
   ],
   relatedPages: [
@@ -102,8 +102,8 @@ At **₹799** (launch price, moving to ₹4,999), this bundle replaces months of
       a: "Yes. UPSCPrepNotes offers 280+ topper profiles, PYQs with PDF links, strategy archives, and an AI tutor — all completely free with no registration required.",
     },
     {
-      q: "Why should I buy the bundle if free material is available?",
-      a: "Free material covers strategy and reference data. The bundle contains actual answer copies — the handwritten sheets toppers submitted in the exam — which no free resource provides. These are essential to understand answer structure, presentation, and time management.",
+      q: "Why should I buy the compilation if free material is available?",
+      a: "Free material covers strategy and reference data. The compilation contains actual answer copies — the handwritten sheets toppers submitted in the exam — which no free resource provides. These are essential to understand answer structure, presentation, and time management.",
     },
     {
       q: "Are the topper profiles on this site accurate?",
@@ -114,8 +114,8 @@ At **₹799** (launch price, moving to ₹4,999), this bundle replaces months of
       a: "No. All free resources — topper profiles, PYQs, strategy guides, and the AI tutor — are accessible without creating an account or providing any personal information.",
     },
     {
-      q: "How is the bundle different from free YouTube content?",
-      a: "YouTube videos give you advice. The bundle gives you the actual answer sheets that scored top marks. There's a difference between hearing someone describe a good answer and seeing one with your own eyes.",
+      q: "How is the compilation different from free YouTube content?",
+      a: "YouTube videos give you advice. The compilation gives you the actual answer sheets that scored top marks. There's a difference between hearing someone describe a good answer and seeing one with your own eyes.",
     },
   ],
 };

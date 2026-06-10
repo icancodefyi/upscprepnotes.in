@@ -52,7 +52,7 @@ export default function ExitIntentPopup() {
 
   const utm = getUtmParams();
   const bundleUrl = `/toppers/toppers-copy-compilation${utm}`;
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi! I'm interested in the UPSC preparation bundle. From: upscprepnotes.in")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi! I'm interested in the UPSC preparation compilation. From: upscprepnotes.in")}`;
 
   if (!visible) return null;
 
@@ -81,7 +81,7 @@ export default function ExitIntentPopup() {
                 Still Thinking?
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                You checked the bundle — <strong className="text-gray-900">21 guides + topper copies + AI access</strong> for just ₹799. That is ₹11 per resource.
+                You checked the compilation — <strong className="text-gray-900">21 guides + topper copies + AI access</strong> for just ₹799. That is ₹11 per resource.
               </p>
             </>
           ) : (
@@ -90,7 +90,7 @@ export default function ExitIntentPopup() {
                 Wait! Check This Before You Go
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                Get the <strong className="text-gray-900">Ultimate Bundle</strong> — 50+ answer copies, 21 strategy guides, interview prep, ethics cases, and AI access.
+                Get the <strong className="text-gray-900">Ultimate Compilation</strong> — 50+ answer copies, 21 strategy guides, interview prep, ethics cases, and AI access.
               </p>
             </>
           )}
@@ -110,7 +110,7 @@ export default function ExitIntentPopup() {
               data-track="exit-popup-cta"
               className="w-full rounded-full bg-emerald-600 py-3.5 text-sm font-bold text-white transition-colors hover:bg-emerald-500"
             >
-              {visitedSales ? "Buy Now — ₹799" : "Claim Bundle at ₹799"}
+              {visitedSales ? "Buy Now — ₹799" : "Claim Compilation at ₹799"}
             </button>
             <a
               href={waUrl}

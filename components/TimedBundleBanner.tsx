@@ -60,7 +60,7 @@ export default function TimedBundleBanner() {
             data-track="timed-banner"
             className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-800"
           >
-            See the bundle →
+            See the compilation →
           </Link>
         </div>
       </div>

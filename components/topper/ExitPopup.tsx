@@ -22,7 +22,7 @@ export default function ExitPopup() {
 
   if (!show) return null;
 
-  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi, I want the Complete Bundle (₹799). From: upscprepnotes.in. Please share payment details.")}`;
+  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi, I want the Complete Compilation (₹799). From: upscprepnotes.in. Please share payment details.")}`;
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">

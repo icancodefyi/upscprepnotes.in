@@ -170,7 +170,7 @@ export default function AboutPage() {
             <p className="mt-2 leading-8 text-zinc-700">
               Yes. All topper profiles, year archives, optional subject hubs, PYQ archives,
               content guides, and the AI assistant are freely accessible. The only paid offering
-              is the answer copy compilation bundle (₹799), which includes 50+ verified topper
+              is the answer copy compilation (₹799), which includes 50+ verified topper
               answer copies across GS1-4 and Essay.
             </p>
           </div>

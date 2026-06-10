@@ -297,7 +297,7 @@ export default async function PYQYearPage({ params }: Props) {
                     <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">₹799 Launch</span>
                     <span className="text-[11px] text-gray-500 line-through">₹4,999</span>
                   </div>
-                  <h4 className="font-bold text-white mb-1">Complete Bundle</h4>
+                  <h4 className="font-bold text-white mb-1">Complete Compilation</h4>
                   <p className="text-xs text-gray-400 mb-4">
                     21 strategy guides + topper copies + interview prep. Everything in one pack.
                   </p>
@@ -319,7 +319,7 @@ export default async function PYQYearPage({ params }: Props) {
                     data-track="pyq-sidebar-bundle"
                     className="inline-flex items-center justify-center w-full bg-white text-gray-900 font-bold px-4 py-3 hover:bg-gray-100 transition-colors text-sm"
                   >
-                    Buy Bundle — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
+                    Buy Compilation — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
                   </a>
                 </div>
               </div>

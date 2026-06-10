@@ -17,7 +17,7 @@ export default function PurchaseSidebar({ topperName }: Props) {
     const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);
     if (isMobile) {
       window.open(
-        `upi://pay?pa=${UPI_ID}&pn=UpscPrepNotes&am=799&cu=INR&tn=Bundle%20-%20${encodeURIComponent(topperName)}`,
+        `upi://pay?pa=${UPI_ID}&pn=UpscPrepNotes&am=799&cu=INR&tn=Compilation%20-%20${encodeURIComponent(topperName)}`,
         "_blank"
       );
     } else {
@@ -25,16 +25,16 @@ export default function PurchaseSidebar({ topperName }: Props) {
     }
   }
 
-  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the Complete Bundle (₹799) with ${topperName}'s answer copy. From: upscprepnotes.in. Please share payment details.`)}`;
+  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hi, I want the Complete Compilation (₹799) with ${topperName}'s answer copy. From: upscprepnotes.in. Please share payment details.`)}`;
 
   return (
     <div className="mt-4 rounded-xl border-2 border-emerald-600/20 bg-emerald-50 p-4">
       <p className="text-xs font-bold text-emerald-800 tracking-tight">Get {topperName}&apos;s Answer Copy</p>
-      <p className="mt-0.5 text-[10px] text-emerald-700/70">+ 50+ topper copies in the Complete Bundle</p>
+      <p className="mt-0.5 text-[10px] text-emerald-700/70">+ 50+ topper copies in the Complete Compilation</p>
       <div className="mt-3 flex flex-col gap-1.5">
         {showUpi ? (
           <div className="rounded-lg bg-white border border-emerald-200 p-4 text-center">
-            <UpiQrCode upiId={UPI_ID} amount={799} note={`Bundle - ${topperName}`} size={180} />
+            <UpiQrCode upiId={UPI_ID} amount={799} note={`Compilation - ${topperName}`} size={180} />
           </div>
         ) : (
           <button

@@ -20,7 +20,7 @@ export default function StickyBundleBar() {
 
   function handleClick() {
     if (pathname === "/toppers/toppers-copy-compilation") {
-      window.open(whatsappLink("Ultimate Bundle"), "_blank");
+      window.open(whatsappLink("Ultimate Compilation"), "_blank");
     } else {
       router.push("/toppers/toppers-copy-compilation");
     }
@@ -40,8 +40,8 @@ export default function StickyBundleBar() {
           data-track="global-sticky-bar"
           className="shrink-0 rounded-full bg-emerald-600 px-3.5 py-1.5 text-[11px] font-bold text-white transition-colors hover:bg-emerald-500 sm:px-6 sm:py-2 sm:text-sm"
         >
-          <span className="sm:hidden">Bundle</span>
-          <span className="hidden sm:inline">Get the Bundle — ₹799</span>
+          <span className="sm:hidden">Compilation</span>
+          <span className="hidden sm:inline">Get the Compilation — ₹799</span>
         </button>
       </div>
     </div>

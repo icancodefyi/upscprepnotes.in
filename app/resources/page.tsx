@@ -94,7 +94,7 @@ export default function ResourcesPage() {
         <section className="mt-16 rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-6 sm:p-8">
           <h2 className="text-xl font-bold text-gray-900">Not What You&apos;re Looking For?</h2>
           <p className="mt-2 text-sm leading-6 text-gray-500">
-            These pages cover fundamentals and free resources. If you&apos;re ready to practice with actual topper answer copies, check out the bundle.
+            These pages cover fundamentals and free resources. If you&apos;re ready to practice with actual topper answer copies, check out the compilation.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
@@ -116,7 +116,7 @@ export default function ResourcesPage() {
               data-track="resources-view-bundle"
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-5 py-2.5 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100"
             >
-              View Bundle <ArrowRight className="h-3.5 w-3.5" />
+              View Compilation <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/pyq"

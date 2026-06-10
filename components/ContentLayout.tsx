@@ -7,13 +7,9 @@ import type { Components } from "react-markdown";
 
 const DEFAULTS = {
   ctaIntro: "Preparing for UPSC? Get actual answer copies from 50+ toppers with verified marks.",
-  ctaIntroBtn: "Get the Bundle at ₹799 →",
-  ctaMid: "🎯 Study Actual Topper Answer Copies — Not Just Strategy Guides",
-  ctaMidSub: "21 strategy guides • 50+ topper copies • Interview prep • Ethics case studies — all at ₹799.",
-  ctaMidBtn: "Get the Complete Bundle →",
-  ctaFinal: "Get 50+ Topper Answer Copies at ₹799",
-  ctaFinalSub: "Actual answer sheets with verified marks + 21 strategy guides + interview prep. Price moves to ₹4,999 after launch.",
-  ctaFinalBtn: "Claim Bundle at ₹799 →",
+ctaIntroBtn: "Get the Compilation at ₹799 →",
+  ctaMidBtn: "Get the Complete Compilation →",
+  ctaFinalBtn: "Claim Compilation at ₹799 →",
 };
 
 const markdownComponents: Components = {

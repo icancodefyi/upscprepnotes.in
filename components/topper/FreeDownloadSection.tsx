@@ -46,9 +46,9 @@ export function FreeDownloadSection({
             </div>
           </div>
 
-          {/* BUNDLE UPSELL */}
+          {/* COMPILATION UPSELL */}
           <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 flex flex-col items-start">
-            <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Bundle</span>
+            <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
             <h2 className="mt-3 text-xl font-bold text-gray-900">
               All 50+ Topper Answer Copies
             </h2>
@@ -65,7 +65,7 @@ export function FreeDownloadSection({
                 data-track="topper-bundle-upsell"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
               >
-                Get the Complete Bundle &rarr;
+                Get the Complete Compilation &rarr;
               </Link>
             </div>
           </div>

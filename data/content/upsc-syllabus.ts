@@ -133,7 +133,7 @@ Preparation for the interview requires mock sessions, current affairs revision, 
 | Answer Writing Practice | The syllabus is useless without application |
 | Topper Answer Copies | See how top scorers structure answers within the syllabus framework |
 
-The **Complete Bundle** includes strategy guides mapped to every syllabus section, plus actual answer copies showing you exactly how to structure answers within the UPSC evaluation framework.`,
+The **Complete Compilation** includes strategy guides mapped to every syllabus section, plus actual answer copies showing you exactly how to structure answers within the UPSC evaluation framework.`,
     },
   ],
   relatedPages: [

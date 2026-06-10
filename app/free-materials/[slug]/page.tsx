@@ -208,14 +208,14 @@ export default async function PDFDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* BUNDLE UPSELL */}
+        {/* COMPILATION UPSELL */}
         <section className="mb-16 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-100 border border-emerald-200 shrink-0">
               <span className="text-3xl">⭐</span>
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-emerald-900">Want More? Get the Complete Bundle</h2>
+              <h2 className="text-lg font-bold text-emerald-900">Want More? Get the Complete Compilation</h2>
               <p className="mt-1 text-sm text-emerald-700">
                 50+ verified topper answer copies + 21 strategy guides + interview prep + ethics case studies — all at ₹799.
               </p>
@@ -226,7 +226,7 @@ export default async function PDFDetailPage({ params }: Props) {
               className="shrink-0 rounded-full bg-emerald-600 px-8 text-sm font-bold text-white hover:bg-emerald-500 shadow-lg shadow-emerald-600/25"
             >
               <Link href="/toppers/toppers-copy-compilation" data-track={`pdf-upsell-${p.slug}`}>
-                Get Bundle ₹799 &rarr;
+                Get Compilation ₹799 &rarr;
               </Link>
             </Button>
           </div>

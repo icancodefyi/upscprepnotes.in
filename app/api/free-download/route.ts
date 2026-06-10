@@ -34,9 +34,9 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrl: str
         </div>
         <hr style="border:none;border-top:2px solid #f0f0f0;margin:28px 0" />
         <div style="background:#f0fdf4;border-radius:12px;padding:24px;text-align:center">
-          <p style="margin:0 0 8px;font-size:13px;color:#065f46">Want more? Get <strong style="font-size:15px">50+ topper answer copies + 21 strategy guides</strong> in one bundle.</p>
+          <p style="margin:0 0 8px;font-size:13px;color:#065f46">Want more? Get <strong style="font-size:15px">50+ topper answer copies + 21 strategy guides</strong> in one compilation.</p>
           <p style="margin:0 0 16px;font-size:13px;color:#065f46">All papers — GS1-4, Essay &amp; Optional. Just <strong>₹11 per copy</strong> (₹799 total).</p>
-          <a href="${BUNDLE_URL}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get Complete Bundle at ₹799 →</a>
+          <a href="${BUNDLE_URL}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get Complete Compilation at ₹799 →</a>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested a free download on UPSCPrepNotes.in</p>
       </div>
@@ -67,7 +67,7 @@ async function sendUnavailableEmail(email: string, topperName: string) {
         <div style="background:#f0fdf4;border-radius:12px;padding:24px;text-align:center;margin-bottom:24px">
           <p style="margin:0 0 8px;font-size:13px;color:#065f46;font-weight:600">🎁 Complementary Offer</p>
           <p style="margin:0 0 12px;font-size:13px;color:#065f46;line-height:1.5">If we can't deliver ${topperName}'s copy within 48 hours, we'll give you <strong>free access to our premium strategy guides</strong> (worth ₹649) as a thank-you.</p>
-          <a href="${BUNDLE_URL}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Browse the Bundle →</a>
+          <a href="${BUNDLE_URL}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Browse the Compilation →</a>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">— UPSCPrepNotes Team</p>
       </div>

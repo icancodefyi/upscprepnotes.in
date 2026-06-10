@@ -248,7 +248,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Bundle which includes answer sheets from 50+ toppers across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total).`,
+          text: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Compilation which includes answer sheets from 50+ toppers across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total).`,
         },
       },
       {
@@ -256,7 +256,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation with 50+ verified copies across all GS papers, Essay and Optional subjects. Get the bundle at ₹799 — just ₹11 per copy.`,
+          text: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation with 50+ verified copies across all GS papers, Essay and Optional subjects. Get the compilation at ₹799 — just ₹11 per copy.`,
         },
       },
     ],
@@ -576,11 +576,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Bundle — 50+ topper copies across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total). Get the bundle to access the exact answer copy.`,
+                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Compilation — 50+ topper copies across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total). Get the compilation to access the exact answer copy.`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation — 50+ verified copies across all GS papers, Essay and Optional subjects. Get the entire bundle at ₹799 (just ₹11 per copy).`,
+                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation — 50+ verified copies across all GS papers, Essay and Optional subjects. Get the entire compilation at ₹799 (just ₹11 per copy).`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,

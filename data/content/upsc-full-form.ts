@@ -36,7 +36,7 @@ const page: ContentPage = {
     },
     {
       heading: "Why Study Actual Topper Answer Copies?",
-      body: "Reading strategy guides is useful. But seeing the **actual answer sheets** that toppers wrote in the exam hall is a different level of preparation. You get to see:\n\n- How they structure a 150-word answer in GS papers\n- Where they use diagrams, tables, and flowcharts\n- How they integrate current affairs with static subjects\n- What a 130+ marks answer looks like vs an average one\n- How much they write per question within the time limit\n\nThe Complete Bundle includes marks-wise answer copies from 50+ toppers across GS1-4, Essay, and Optional papers — exactly as they appeared in the UPSC evaluation.",
+      body: "Reading strategy guides is useful. But seeing the **actual answer sheets** that toppers wrote in the exam hall is a different level of preparation. You get to see:\n\n- How they structure a 150-word answer in GS papers\n- Where they use diagrams, tables, and flowcharts\n- How they integrate current affairs with static subjects\n- What a 130+ marks answer looks like vs an average one\n- How much they write per question within the time limit\n\nThe Complete Compilation includes marks-wise answer copies from 50+ toppers across GS1-4, Essay, and Optional papers — exactly as they appeared in the UPSC evaluation.",
     },
   ],
   relatedPages: [
@@ -68,7 +68,7 @@ const page: ContentPage = {
     },
     {
       q: "Can I download UPSC topper answer copies?",
-      a: "Yes, actual answer copy PDFs from 50+ UPSC toppers are available in the Complete Bundle — covering GS1-4, Essay, and Optional papers with verified marks.",
+      a: "Yes, actual answer copy PDFs from 50+ UPSC toppers are available in the Complete Compilation — covering GS1-4, Essay, and Optional papers with verified marks.",
     },
   ],
 };

@@ -56,7 +56,7 @@ export default function ScrollSlideIn() {
               <IconStars size={15} />
             </span>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Ultimate Bundle</p>
+              <p className="text-sm font-semibold text-gray-900">Ultimate Compilation</p>
               <p className="text-xs text-gray-400">72 resources + AI access</p>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function ScrollSlideIn() {
             data-track="scroll-slide-in"
             className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-500"
           >
-            Get the Bundle →
+            Get the Compilation →
           </Link>
         </div>
       </div>
