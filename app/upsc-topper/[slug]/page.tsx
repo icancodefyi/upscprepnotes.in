@@ -39,14 +39,9 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  let desc = `${name} AIR ${rank} (${year}) — Free answer copy download & UPSC marksheet. `;
-  if (essay) desc += `Essay ${essay} marks. `;
-  if (gs1) desc += `GS1 ${gs1} marks. `;
-  if (gs2) desc += `GS2 ${gs2} marks. `;
-  if (gs3) desc += `GS3 ${gs3} marks. `;
-  if (gs4) desc += `GS4 ${gs4} marks. `;
-  if (opt1 && subject) desc += `${subject} ${opt1} marks. `;
-  desc += `Download ${name}'s actual UPSC answer copy PDF free.`;
+  const papers = [essay && `Essay ${essay}`, gs1 && `GS1 ${gs1}`, gs2 && `GS2 ${gs2}`, gs3 && `GS3 ${gs3}`, gs4 && `GS4 ${gs4}`, opt1 && subject && `${subject} ${opt1}`].filter(Boolean);
+  const marksStr = papers.length > 0 ? ` (${papers.slice(0, 3).join(" · ")})` : "";
+  let desc = `Free ${name} AIR ${rank} UPSC answer copy PDF download${marksStr}. See actual handwriting, structure & presentation that scored high marks. Enter email to get the free PDF instantly.`;
   if (subject) desc += ` Optional: ${subject}.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
@@ -65,7 +60,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} — UPSC Answer Copy PDF Free Download, Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} Answer Copy PDF — Free Download, UPSC Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
@@ -248,7 +243,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Compilation which includes answer sheets from 50+ toppers across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total).`,
+          text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set with all papers is in the Complete Compilation with 50+ topper copies at ₹11 per copy.`,
         },
       },
       {
@@ -256,7 +251,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation with 50+ verified copies across all GS papers, Essay and Optional subjects. Get the compilation at ₹799 — just ₹11 per copy.`,
+          text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full compilation with all papers is available at ₹799.`,
         },
       },
     ],
@@ -699,11 +694,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Complete Compilation</a> — 50+ topper copies across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total). Get the compilation to access the exact answer copy.`,
+                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Complete Compilation</a> with 50+ topper copies at just ₹11 per copy (₹799 total).`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Topper Answer Copy Compilation</a> — 50+ verified copies across all GS papers, Essay and Optional subjects. Get the entire compilation at ₹799 (just ₹11 per copy).`,
+                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full compilation with all papers (GS1-4, Essay, Optional) is in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Topper Answer Copy Compilation</a> at ₹799.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
