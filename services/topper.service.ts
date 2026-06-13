@@ -154,3 +154,21 @@ export async function getAllToppersList() {
     isFeatured: t.isFeatured || false,
   }));
 }
+
+export async function getAllToppersWithMarks() {
+  await connectDB();
+  const toppers = await TopperModel.find({})
+    .select("firstName lastName rank year optionalSubject slug marks")
+    .sort({ rank: 1 })
+    .lean();
+
+  return toppers.map((t: any) => ({
+    firstName: t.firstName,
+    lastName: t.lastName,
+    rank: t.rank,
+    year: t.year,
+    optionalSubject: t.optionalSubject || "",
+    slug: t.slug,
+    marks: t.marks || {},
+  }));
+}

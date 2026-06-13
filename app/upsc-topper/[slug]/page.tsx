@@ -39,9 +39,15 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  const papers = [essay && `Essay ${essay}`, gs1 && `GS1 ${gs1}`, gs2 && `GS2 ${gs2}`, gs3 && `GS3 ${gs3}`, gs4 && `GS4 ${gs4}`, opt1 && subject && `${subject} ${opt1}`].filter(Boolean);
-  const marksStr = papers.length > 0 ? ` (${papers.slice(0, 3).join(" · ")})` : "";
-  let desc = `Free ${name} AIR ${rank} UPSC answer copy PDF download${marksStr}. See actual handwriting, structure & presentation that scored high marks. Enter email to get the free PDF instantly.`;
+  const total = topper.marks?.total ?? "";
+  let desc = `${name} AIR ${rank} UPSC marksheet: Total ${total}`;
+  if (essay) desc += ` · Essay ${essay}`;
+  if (gs1) desc += ` · GS1 ${gs1}`;
+  if (gs2) desc += ` · GS2 ${gs2}`;
+  if (gs3) desc += ` · GS3 ${gs3}`;
+  if (gs4) desc += ` · GS4 ${gs4}`;
+  if (opt1 && subject) desc += ` · ${subject} ${opt1}`;
+  desc += `. See the full marks breakdown across all papers & download a free answer copy PDF.`;
   if (subject) desc += ` Optional: ${subject}.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
@@ -381,6 +387,23 @@ export default async function TopperPage({ params }: Props) {
             <p className="mt-1 text-lg text-primary font-medium">
               AIR {topper.rank} &middot; {topper.marks.total} Total Marks
             </p>
+
+            {/* MARKS AT A GLANCE — visible above fold for marksheet intent */}
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {[
+                { label: "Written", value: topper.marks.written, show: topper.marks.written > 0 },
+                { label: "Interview", value: topper.marks.interview, show: topper.marks.interview > 0 },
+                { label: "Total", value: topper.marks.total, show: topper.marks.total > 0, highlight: true },
+                { label: "Essay", value: topper.marks.essay, show: topper.marks.essay > 0 },
+                { label: "Best GS", value: Math.max(topper.marks.gs1 || 0, topper.marks.gs2 || 0, topper.marks.gs3 || 0, topper.marks.gs4 || 0), show: (topper.marks.gs1 || topper.marks.gs2 || topper.marks.gs3 || topper.marks.gs4) > 0 },
+                { label: topper.optionalSubject?.split(" ").slice(0, 2).join(" ") || "Optional", value: topper.marks.optional1 || topper.marks.optional2, show: (topper.marks.optional1 || topper.marks.optional2) > 0 },
+              ].filter(c => c.show).slice(0, 6).map((c) => (
+                <div key={c.label} className={`rounded-lg border ${c.highlight ? "border-emerald-200 bg-emerald-50" : "border-border/50 bg-card"} p-2.5 text-center`}>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
+                  <p className={`text-base font-bold ${c.highlight ? "text-emerald-700" : ""}`}>{c.value}</p>
+                </div>
+              ))}
+            </div>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers, essay and {topper.optionalSubject}.
             </p>
