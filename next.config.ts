@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
       "upsc-free-material",
       "upsc-full-form-hindi",
       "how-to-write-upsc-mains-answers",
+      "upsc-topper-answer-copies",
     ];
     return contentSlugs.map((slug) => ({
       source: `/${slug}`,

@@ -18,9 +18,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
+  title: {
+    default: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
+    template: "%s | UPSCPrepNotes",
+  },
   description:
-    "India's UPSC preparation intelligence platform. Access 280+ topper profiles, marks breakdowns, answer copies, optional subject analysis, and AI-powered preparation insights.",
+    "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies (GS1–4, Essay, Optional), marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
+  metadataBase: new URL("https://upscprepnotes.in"),
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
@@ -31,9 +35,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
     description:
-      "Structured topper profiles, marksheet analysis, optional subject trends, and preparation strategies for UPSC aspirants.",
+      "Structured topper profiles, marksheet analysis, 50+ handwritten answer copies, optional subject trends, and preparation strategies for UPSC aspirants.",
     url: "https://upscprepnotes.in",
+    siteName: "UPSCPrepNotes",
     images: [{ url: "/logo.png", width: 512, height: 512 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
+    description:
+      "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ handwritten answer copies, optional analysis.",
   },
   keywords: [
     "UPSC",
@@ -41,9 +52,12 @@ export const metadata: Metadata = {
     "UPSC toppers",
     "IAS preparation",
     "UPSC answer copies",
+    "topper answer sheets",
     "UPSC marksheets",
     "UPSC strategy",
     "Civil Services Examination",
+    "handwritten answer copies",
+    "topper compilation",
   ],
   robots: {
     index: true,
@@ -239,7 +253,34 @@ export default function RootLayout({
                 width: 512,
                 height: 512,
               },
-              sameAs: [],
+              sameAs: [
+                "https://www.youtube.com/@upscprepnotes",
+                "https://www.instagram.com/upscprepnotes.in/",
+              ],
+            }),
+          }}
+        />
+
+        {/* WebSite Schema */}
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "UPSCPrepNotes",
+              url: "https://upscprepnotes.in",
+              description:
+                "India's UPSC preparation intelligence platform. Access 280+ topper profiles, marks breakdowns, answer copies, and optional subject analysis.",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate: "https://upscprepnotes.in/search?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
             }),
           }}
         />

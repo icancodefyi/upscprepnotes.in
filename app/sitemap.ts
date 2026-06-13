@@ -21,6 +21,7 @@ const CONTENT_SLUGS = [
   "upsc-free-material",
   "upsc-full-form-hindi",
   "how-to-write-upsc-mains-answers",
+  "upsc-topper-answer-copies",
 ];
 
 const YEAR_KEYS = ["2022", "2023", "2024", "2025"];
@@ -47,11 +48,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Content pages — use real lastUpdated from data files
   const contentMap: Record<string, string> = {
-    "upsc-full-form": fullFormPage.lastUpdated,
-    "upsc-syllabus": syllabusPage.lastUpdated,
-    "upsc-free-material": freeMaterialPage.lastUpdated,
-    "upsc-full-form-hindi": fullFormHindiPage.lastUpdated,
-    "how-to-write-upsc-mains-answers": answerWritingPage.lastUpdated,
+  "upsc-full-form": fullFormPage.lastUpdated,
+  "upsc-syllabus": syllabusPage.lastUpdated,
+  "upsc-free-material": freeMaterialPage.lastUpdated,
+  "upsc-full-form-hindi": fullFormHindiPage.lastUpdated,
+  "how-to-write-upsc-mains-answers": answerWritingPage.lastUpdated,
+  "upsc-topper-answer-copies": "2026-06-13",
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
     url: `${baseUrl}/${slug}`,
