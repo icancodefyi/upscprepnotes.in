@@ -18,6 +18,7 @@ import PurchaseSidebar from "@/components/topper/PurchaseSidebar";
 import ExitPopup from "@/components/topper/ExitPopup";
 import LiveCounter from "@/components/topper/LiveCounter";
 import ReportButton from "@/components/ReportButton";
+import StrategyPaywall from "@/components/topper/StrategyPaywall";
 
 export const revalidate = 86400;
 
@@ -475,6 +476,64 @@ export default async function TopperPage({ params }: Props) {
           freeAnswerCopyUrls={topper.freeAnswerCopyUrls}
         />
 
+        {/* STRATEGY — moved up, first 2 sections visible, rest blurred */}
+        {topper.strategy && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Preparation Strategy</h2>
+            <p className="mt-1 text-sm text-muted-foreground">How they prepared for UPSC CSE {topper.year}</p>
+            <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
+              <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
+                {Object.keys(structuredStrategy).length > 0 ? (
+                  <>
+                    {/* First 2 sections — fully visible */}
+                    {Object.entries(structuredStrategy).slice(0, 2).map(
+                      ([heading, content], i) => (
+                        <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
+                          <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
+                          <div className="mt-2">
+                            <ReactMarkdown>
+                              {deduplicateContent(content)}
+                            </ReactMarkdown>
+                          </div>
+                        </section>
+                      ),
+                    )}
+                    {/* Remaining sections — blurred with paywall */}
+                    {Object.keys(structuredStrategy).length > 2 && (
+                      <div className="relative mt-4">
+                        <div className="overflow-hidden" style={{ maxHeight: "320px" }}>
+                          <div className="blur-sm opacity-30 pointer-events-none select-none">
+                            {Object.entries(structuredStrategy).slice(2).map(
+                              ([heading, content], i) => (
+                                <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
+                                  <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
+                                  <div className="mt-2">
+                                    <ReactMarkdown>
+                                      {deduplicateContent(content)}
+                                    </ReactMarkdown>
+                                  </div>
+                                </section>
+                              ),
+                            )}
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+                        </div>
+                        <StrategyPaywall
+                          topperName={`${topper.firstName} ${topper.lastName}`}
+                          topperSlug={topper.slug}
+                          blurredCount={Object.keys(structuredStrategy).length - 2}
+                        />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <ReactMarkdown>{topper.strategy}</ReactMarkdown>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* VISIBLE COMPILATION UPSELL — money page link, visible without dialog interaction */}
         <section className="mt-12">
           <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6">
@@ -666,34 +725,6 @@ export default async function TopperPage({ params }: Props) {
                   <p className="text-sm leading-6">{insight}</p>
                 </div>
               ))}
-            </div>
-          </section>
-        )}
-
-        {/* STRATEGY */}
-        {topper.strategy && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Preparation Strategy</h2>
-            <p className="mt-1 text-sm text-muted-foreground">How they prepared for UPSC CSE {topper.year}</p>
-            <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
-              <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
-                {Object.keys(structuredStrategy).length > 0 ? (
-                  Object.entries(structuredStrategy).map(
-                    ([heading, content], i) => (
-                      <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
-                        <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
-                        <div className="mt-2">
-                          <ReactMarkdown>
-                            {deduplicateContent(content)}
-                          </ReactMarkdown>
-                        </div>
-                      </section>
-                    ),
-                  )
-                ) : (
-                  <ReactMarkdown>{topper.strategy}</ReactMarkdown>
-                )}
-              </div>
             </div>
           </section>
         )}
