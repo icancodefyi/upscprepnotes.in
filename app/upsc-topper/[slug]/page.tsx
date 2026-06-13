@@ -39,14 +39,14 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
 
-  let desc = `${name} UPSC Marksheet — AIR ${rank} (${year}). ${name} Answer Copies & Resources.`;
-  if (essay) desc += ` ${name} Essay Copies — ${essay} Marks.`;
-  if (gs1) desc += ` ${name} GS1 Copies — ${gs1} Marks.`;
-  if (gs2) desc += ` ${name} GS2 Copies — ${gs2} Marks.`;
-  if (gs3) desc += ` ${name} GS3 Copies — ${gs3} Marks.`;
-  if (gs4) desc += ` ${name} GS4 Copies — ${gs4} Marks.`;
-  if (opt1 && subject) desc += ` ${name} ${subject} Copies — ${opt1} Marks.`;
-  desc += ` UPSC AIR ${rank} (${year}).`;
+  let desc = `${name} AIR ${rank} (${year}) — Free answer copy download & UPSC marksheet. `;
+  if (essay) desc += `Essay ${essay} marks. `;
+  if (gs1) desc += `GS1 ${gs1} marks. `;
+  if (gs2) desc += `GS2 ${gs2} marks. `;
+  if (gs3) desc += `GS3 ${gs3} marks. `;
+  if (gs4) desc += `GS4 ${gs4} marks. `;
+  if (opt1 && subject) desc += `${subject} ${opt1} marks. `;
+  desc += `Download ${name}'s actual UPSC answer copy PDF free.`;
   if (subject) desc += ` Optional: ${subject}.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Optional Subject, Answer Copy & Strategy (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} — UPSC Answer Copy PDF Free Download, Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
