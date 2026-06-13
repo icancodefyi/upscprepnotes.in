@@ -70,6 +70,7 @@ const topperSchema = new Schema(
       default: false,
     },
     freeAnswerCopyUrl: String,
+    freeAnswerCopyUrls: [String],
   },
   {
     timestamps: true,

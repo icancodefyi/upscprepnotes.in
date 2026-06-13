@@ -113,6 +113,7 @@ export function TopperForm({ topper }: TopperFormProps) {
   const [isFeatured, setIsFeatured] = useState(topper?.isFeatured || false);
   const [isIndexed, setIsIndexed] = useState(topper?.isIndexed || false);
   const [freeAnswerCopyUrl, setFreeAnswerCopyUrl] = useState(topper?.freeAnswerCopyUrl || "");
+  const [freeAnswerCopyUrls, setFreeAnswerCopyUrls] = useState<string[]>(topper?.freeAnswerCopyUrls?.length ? topper.freeAnswerCopyUrls : []);
 
   function setMarkField(field: string, value: number) {
     setMarks((prev) => ({ ...prev, [field]: value }));
@@ -149,6 +150,7 @@ export function TopperForm({ topper }: TopperFormProps) {
       isFeatured,
       isIndexed,
       freeAnswerCopyUrl: freeAnswerCopyUrl || undefined,
+      freeAnswerCopyUrls: freeAnswerCopyUrls.length > 0 ? freeAnswerCopyUrls : undefined,
     };
 
     try {
@@ -382,16 +384,29 @@ export function TopperForm({ topper }: TopperFormProps) {
               </Tooltip>
             </label>
           </div>
-          <div className="mt-4">
-            <Label htmlFor="freeAnswerCopyUrl">Free Download PDF URL</Label>
-            <Input
-              id="freeAnswerCopyUrl"
-              value={freeAnswerCopyUrl}
-              onChange={(e) => setFreeAnswerCopyUrl(e.target.value)}
-              placeholder="https://upscprepnotes.in/pdfs/answer-copies/..."
-              className="mt-1.5"
-            />
-            <p className="mt-1 text-xs text-zinc-400">Leave empty if no free PDF is available for this topper.</p>
+          <div className="mt-4 space-y-3">
+            <div>
+              <Label htmlFor="freeAnswerCopyUrl">Free Download PDF URL (single, fallback)</Label>
+              <Input
+                id="freeAnswerCopyUrl"
+                value={freeAnswerCopyUrl}
+                onChange={(e) => setFreeAnswerCopyUrl(e.target.value)}
+                placeholder="https://upscprepnotes.in/pdfs/answer-copies/..."
+                className="mt-1.5"
+              />
+            </div>
+            <div>
+              <Label htmlFor="freeAnswerCopyUrls">Free Download PDF URLs (multiple — one per line)</Label>
+              <textarea
+                id="freeAnswerCopyUrls"
+                value={freeAnswerCopyUrls.join("\n")}
+                onChange={(e) => setFreeAnswerCopyUrls(e.target.value.split("\n").map(s => s.trim()).filter(Boolean))}
+                placeholder={`https://upscprepnotes.in/pdfs/answer-copies/gs1.pdf\nhttps://upscprepnotes.in/pdfs/answer-copies/gs2.pdf`}
+                className="mt-1.5 flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                rows={4}
+              />
+              <p className="mt-1 text-xs text-zinc-400">One URL per line. This takes priority over the single URL field above.</p>
+            </div>
           </div>
         </CardContent>
       </Card>

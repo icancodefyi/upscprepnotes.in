@@ -389,6 +389,12 @@ export default async function TopperPage({ params }: Props) {
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers, essay and {topper.optionalSubject}.
             </p>
+            <p className="mt-2 text-sm leading-6">
+              <Link href="/toppers/toppers-copy-compilation" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
+                Get the Complete Compilation →
+              </Link>
+              <span className="text-muted-foreground"> — all {topper.firstName}&apos;s answer copies + 50+ toppers across GS1–4, Essay &amp; Optional. ₹799 only.</span>
+            </p>
             {topper.bio && (
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {topper.bio}
@@ -448,7 +454,37 @@ export default async function TopperPage({ params }: Props) {
           topperSlug={topper.slug}
           optionalSubject={topper.optionalSubject}
           freeAnswerCopyUrl={topper.freeAnswerCopyUrl}
+          freeAnswerCopyUrls={topper.freeAnswerCopyUrls}
         />
+
+        {/* VISIBLE COMPILATION UPSELL — money page link, visible without dialog interaction */}
+        <section className="mt-12">
+          <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6">
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
+                <h2 className="mt-2 text-lg font-bold text-gray-900">
+                  {topper.firstName}&apos;s Answer Copies + 50+ Toppers
+                </h2>
+                <p className="mt-1 text-sm text-gray-600">
+                  Every paper (GS1-4, Essay, Optional) of {topper.firstName} plus 50+ other toppers. All at just ₹11 per copy.
+                </p>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="text-2xl font-bold text-gray-900">₹799</span>
+                  <span className="text-sm text-gray-500 line-through">₹4,999</span>
+                  <span className="text-xs text-emerald-700 font-semibold">83% off</span>
+                </div>
+              </div>
+              <Link
+                href="/toppers/toppers-copy-compilation"
+                data-track="topper-compilation-upsell-body"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+              >
+                Get the Complete Compilation &rarr;
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <AnswerCopyPreview topper={topper} />
 
@@ -515,6 +551,93 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
+        {/* RELATED TOPPERS — moved higher for internal linking value */}
+        {sameYearToppers.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">UPSC {topper.year} Toppers</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Browse answer copies and strategies of other UPSC {topper.year} rank holders</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {sameYearToppers.map((t: any) => (
+                <Link
+                  key={t.slug}
+                  href={`/upsc-topper/${t.slug}`}
+                  data-track={`topper-related-${t.slug}`}
+                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
+                >
+                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">AIR {t.rank}</p>
+                    <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
+                    <p className="text-xs text-muted-foreground truncate">{t.optionalSubject}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-4">
+              <Link href={`/year/${topper.year}`} data-track="topper-view-all-year" className="text-sm text-primary font-medium hover:underline">
+                View All UPSC {topper.year} Toppers &rarr;
+              </Link>
+            </div>
+          </section>
+        )}
+
+        {sameRankToppers.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">Also AIR {topper.rank} Holders</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Other UPSC toppers who secured AIR {topper.rank}</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {sameRankToppers.map((t: any) => (
+                <Link
+                  key={t.slug}
+                  href={`/upsc-topper/${t.slug}`}
+                  data-track={`topper-samerank-${t.slug}`}
+                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
+                >
+                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">{t.year}</p>
+                    <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
+                    <p className="text-xs text-muted-foreground truncate">{t.optionalSubject}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {relatedToppers.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">Related {topper.optionalSubject} Toppers</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Toppers who chose {topper.optionalSubject} as their optional subject</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedToppers.map((related: any) => (
+                <Link
+                  key={related.slug}
+                  href={`/upsc-topper/${related.slug}`}
+                  data-track={`topper-related-${related.slug}`}
+                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
+                >
+                  <img src={topperImageSrc(related)} alt={`${related.firstName} ${related.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">AIR {related.rank} &bull; {related.year}</p>
+                    <p className="text-sm font-semibold truncate">{related.firstName} {related.lastName}</p>
+                    <p className="text-xs text-muted-foreground truncate">{related.optionalSubject}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-4">
+              <Link
+                href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
+                data-track="topper-explore-related"
+                className="text-sm text-primary font-medium hover:underline"
+              >
+                View All {topper.optionalSubject} Toppers &rarr;
+              </Link>
+            </div>
+          </section>
+        )}
+
         {/* INSIGHTS */}
         {topper.insights?.length > 0 && (
           <section className="mt-12">
@@ -576,11 +699,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the Complete Compilation — 50+ topper copies across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total). Get the compilation to access the exact answer copy.`,
+                a: `Yes. ${topper.firstName} ${topper.lastName}'s actual UPSC Mains answer copy PDF is available in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Complete Compilation</a> — 50+ topper copies across GS1-4, Essay and Optional papers at just ₹11 per copy (₹799 total). Get the compilation to access the exact answer copy.`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the Topper Answer Copy Compilation — 50+ verified copies across all GS papers, Essay and Optional subjects. Get the entire compilation at ₹799 (just ₹11 per copy).`,
+                a: `${topper.firstName} ${topper.lastName}'s UPSC answer copy is part of the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Topper Answer Copy Compilation</a> — 50+ verified copies across all GS papers, Essay and Optional subjects. Get the entire compilation at ₹799 (just ₹11 per copy).`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
@@ -591,7 +714,9 @@ export default async function TopperPage({ params }: Props) {
             ].map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">
                 <h3 className="text-sm font-semibold">{faq.q}</h3>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+                <div className="mt-1 text-sm leading-6 text-muted-foreground prose prose-zinc max-w-none prose-a:text-emerald-600 prose-a:font-semibold">
+                  <ReactMarkdown>{faq.a}</ReactMarkdown>
+                </div>
               </div>
             ))}
           </div>
@@ -601,6 +726,9 @@ export default async function TopperPage({ params }: Props) {
         <section className="mt-12">
           <h2 className="text-xl font-semibold">Explore More</h2>
           <div className="mt-4 flex flex-wrap gap-2">
+            <Button variant="outline" asChild className="rounded-full text-xs h-9">
+              <Link href="/toppers/toppers-copy-compilation" data-track="topper-explore-compilation">Complete Compilation (₹799) &rarr;</Link>
+            </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} data-track="topper-explore-optional">All {topper.optionalSubject} Toppers &rarr;</Link>
             </Button>
@@ -618,62 +746,6 @@ export default async function TopperPage({ params }: Props) {
             </Button>
           </div>
         </section>
-
-        {/* RELATED TOPPERS */}
-        {sameYearToppers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">UPSC {topper.year} Toppers</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {sameYearToppers.map((t: any) => (
-                <Link
-                  key={t.slug}
-                  href={`/upsc-topper/${t.slug}`}
-                  data-track={`topper-related-${t.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">AIR {t.rank}</p>
-                    <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{t.optionalSubject}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {relatedToppers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">Related {topper.optionalSubject} Toppers</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedToppers.map((related: any) => (
-                <Link
-                  key={related.slug}
-                  href={`/upsc-topper/${related.slug}`}
-                  data-track={`topper-related-${related.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <img src={topperImageSrc(related)} alt={`${related.firstName} ${related.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">AIR {related.rank} &bull; {related.year}</p>
-                    <p className="text-sm font-semibold truncate">{related.firstName} {related.lastName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{related.optionalSubject}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-4">
-              <Link
-                href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
-                data-track="topper-explore-related"
-                className="text-sm text-primary font-medium hover:underline"
-              >
-                View All {topper.optionalSubject} Toppers &rarr;
-              </Link>
-            </div>
-          </section>
-        )}
       </div>
       </main>
       <ExitPopup />

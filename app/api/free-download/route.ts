@@ -18,8 +18,23 @@ async function getTransporter() {
   });
 }
 
-async function sendAvailableEmail(email: string, topperName: string, pdfUrl: string) {
+function buildDownloadLinksHtml(urls: string[]): string {
+  if (urls.length === 0) return "";
+  if (urls.length === 1) {
+    return `<div style="text-align:center;margin-bottom:28px">
+      <a href="${urls[0]}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download Answer Copy →</a>
+    </div>`;
+  }
+  const items = urls.map((url, i) =>
+    `<tr><td style="padding:6px 0"><a href="${url}" style="color:#059669;font-weight:600;font-size:14px">Copy ${i + 1} →</a></td></tr>`
+  ).join("");
+  return `<table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:28px">${items}</table>`;
+}
+
+async function sendAvailableEmail(email: string, topperName: string, pdfUrls: string[]) {
   const transporter = await getTransporter();
+
+  const linksHtml = buildDownloadLinksHtml(pdfUrls);
 
   const html = `
     <!DOCTYPE html>
@@ -28,10 +43,8 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrl: str
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Free Download is Ready!</h1>
-        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here's the free answer copy of <strong>${topperName}</strong> you requested.</p>
-        <div style="text-align:center;margin-bottom:28px">
-          <a href="${pdfUrl}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download Answer Copy →</a>
-        </div>
+        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here ${pdfUrls.length > 1 ? "are the free answer copies" : "is the free answer copy"} of <strong>${topperName}</strong> you requested.</p>
+        ${linksHtml}
         <hr style="border:none;border-top:2px solid #f0f0f0;margin:28px 0" />
         <div style="background:#f0fdf4;border-radius:12px;padding:24px;text-align:center">
           <p style="margin:0 0 8px;font-size:13px;color:#065f46">Want more? Get <strong style="font-size:15px">50+ topper answer copies + 21 strategy guides</strong> in one compilation.</p>
@@ -47,7 +60,7 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrl: str
   await transporter.sendMail({
     from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
     to: email,
-    subject: `Your Free Answer Copy — ${topperName}`,
+    subject: pdfUrls.length > 1 ? `Your Free Answer Copies — ${topperName}` : `Your Free Answer Copy — ${topperName}`,
     html,
   });
 }
@@ -128,7 +141,12 @@ export async function POST(request: NextRequest) {
     }
 
     const topperName = `${topper.firstName} ${topper.lastName}`;
-    const available = !!topper.freeAnswerCopyUrl;
+    const pdfUrls: string[] = topper.freeAnswerCopyUrls?.length
+      ? topper.freeAnswerCopyUrls
+      : topper.freeAnswerCopyUrl
+        ? [topper.freeAnswerCopyUrl]
+        : [];
+    const available = pdfUrls.length > 0;
 
     await FreeDownloadLeadModel.create({
       email,
@@ -142,7 +160,7 @@ export async function POST(request: NextRequest) {
 
     try {
       if (available) {
-        await sendAvailableEmail(email, topperName, topper.freeAnswerCopyUrl);
+        await sendAvailableEmail(email, topperName, pdfUrls);
       } else {
         await sendUnavailableEmail(email, topperName);
       }
@@ -155,7 +173,8 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         available,
-        pdfUrl: available ? topper.freeAnswerCopyUrl : null,
+        pdfUrls,
+        pdfUrl: pdfUrls[0] || null,
         topperName,
       },
       { status: 201 }

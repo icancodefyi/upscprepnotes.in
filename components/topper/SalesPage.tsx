@@ -359,7 +359,7 @@ export default function SalesPage() {
             <div className="flex min-h-[320px] items-center justify-center bg-gradient-to-br from-gray-50/80 to-white px-4 py-8 lg:min-h-[500px] lg:w-1/2 lg:px-8">
               <div className="relative w-full max-w-sm">
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                  {TOPPERS.filter((_, i) => i < 6).map((t, i) => (
+                  {TOPPERS.filter((_, i) => i < 4).map((t, i) => (
                     <div
                       key={t.name}
                       className="group relative overflow-hidden rounded-xl border border-black/[0.06] bg-gray-50 shadow-sm"

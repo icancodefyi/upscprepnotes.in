@@ -56,6 +56,7 @@ export interface Topper {
   isFeatured: boolean;
   isIndexed: boolean;
   freeAnswerCopyUrl?: string;
+  freeAnswerCopyUrls?: string[];
   createdAt: Date;
   updatedAt: Date;
 }

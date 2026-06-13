@@ -79,16 +79,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, email } = body;
 
-    if (!name || !email) {
+    if (!email) {
       return NextResponse.json(
-        { error: "Name and email are required." },
+        { error: "Email is required." },
         { status: 400 }
       );
     }
 
     await connectDB();
 
-    await FreeGuideLeadModel.create({ name, email });
+    await FreeGuideLeadModel.create({ name: name || "Guest", email });
 
     try {
       await sendGuideEmail(name, email);

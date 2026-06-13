@@ -9,6 +9,7 @@ interface FreeDownloadSectionProps {
   topperSlug: string;
   optionalSubject: string;
   freeAnswerCopyUrl?: string | null;
+  freeAnswerCopyUrls?: string[];
 }
 
 export function FreeDownloadSection({
@@ -16,6 +17,7 @@ export function FreeDownloadSection({
   topperSlug,
   optionalSubject,
   freeAnswerCopyUrl,
+  freeAnswerCopyUrls,
 }: FreeDownloadSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -77,6 +79,7 @@ export function FreeDownloadSection({
           topperName={topperName}
           topperSlug={topperSlug}
           freeAnswerCopyUrl={freeAnswerCopyUrl}
+          freeAnswerCopyUrls={freeAnswerCopyUrls}
           onOpenChange={setDialogOpen}
         />
       )}
