@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TOPPERS, FAQS, FEATURES, WHATSAPP_NUMBER, SITE, TIER } from "./sales-page-data";
 import PayButton from "@/components/ui/PayButton";
 
@@ -52,13 +53,15 @@ export default function SalesPageContent() {
           <div className="flex min-h-[320px] items-center justify-center bg-gradient-to-br from-gray-50/80 to-white px-4 py-8 lg:min-h-[500px] lg:w-1/2 lg:px-8">
             <div className="relative w-full max-w-sm">
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                {TOPPERS.filter((_, i) => i < 4).map((t, i) => (
+                {TOPPERS.filter((_, i) => i < 4).map((t) => (
                   <div key={t.name} className="group relative overflow-hidden rounded-xl border border-black/[0.06] bg-gray-50 shadow-sm">
-                    <div className="aspect-[3/4]">
-                      <img src={t.previewImageUrl!} alt={t.name} className="h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.05]" />
-                    </div>
+                    <Link href={`/upsc-topper/${t.slug}`} className="block">
+                      <div className="aspect-[3/4]">
+                        <img src={t.previewImageUrl} alt={t.name} className="h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.05]" />
+                      </div>
+                    </Link>
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2 pt-6">
-                      <p className="text-[11px] font-bold text-white drop-shadow-sm leading-tight">{t.name}</p>
+                      <Link href={`/upsc-topper/${t.slug}`} className="text-[11px] font-bold text-white drop-shadow-sm leading-tight hover:underline">{t.name}</Link>
                       <p className="text-[9px] text-white/70">{t.rank} · {t.subject}</p>
                     </div>
                   </div>
@@ -85,16 +88,15 @@ export default function SalesPageContent() {
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {TOPPERS.filter(t => t.previewImageUrl).map((t) => {
-              const initials = t.name.split(" ").map(w => w[0]).join("").slice(0, 2);
               return (
                 <div key={t.name} className="group relative overflow-hidden rounded-xl border border-black/[0.06] bg-gray-50">
                   <div className="aspect-[3/4]">
-                    <button type="button" data-preview-url={t.previewImageUrl!} className="h-full w-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50">
-                      <img src={t.previewImageUrl!} alt={`Preview: ${t.name}`} className="h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]" />
+                    <button type="button" data-preview-url={t.previewImageUrl} className="h-full w-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50">
+                      <img src={t.previewImageUrl} alt={`Preview: ${t.name}`} className="h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03]" />
                     </button>
                   </div>
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 pt-8">
-                    <p className="text-sm font-bold text-white drop-shadow-sm">{t.name}</p>
+                    <Link href={`/upsc-topper/${t.slug}`} className="text-sm font-bold text-white drop-shadow-sm hover:underline">{t.name}</Link>
                     <p className="text-[11px] text-white/80">{t.rank} · {t.subject}</p>
                   </div>
                 </div>
@@ -236,7 +238,20 @@ export default function SalesPageContent() {
         </div>
       </section>
 
-      <p className="text-center text-xs text-gray-400 pb-8">UPSCPrepNotes is an independent platform. Answer copies sourced from publicly available materials for educational reference.</p>
+      <div className="bg-gray-50 border-b border-black/[0.04]">
+        <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+            <Link href="/upsc-topper-answer-copies" className="text-gray-500 hover:text-gray-900 transition-colors">Guide to Topper Answer Copies</Link>
+            <span className="text-gray-300">·</span>
+            <Link href="/upsc-topper-answer-copies#faq" className="text-gray-500 hover:text-gray-900 transition-colors">FAQ about Answer Copies</Link>
+            <span className="text-gray-300">·</span>
+            <Link href="/how-to-write-upsc-mains-answers" className="text-gray-500 hover:text-gray-900 transition-colors">How to Write UPSC Mains Answers</Link>
+            <span className="text-gray-300">·</span>
+            <Link href="/free-materials" className="text-gray-500 hover:text-gray-900 transition-colors">Free Study Materials</Link>
+          </div>
+        </div>
+      </div>
+      <p className="text-center text-xs text-gray-400 pb-8 pt-6">UPSCPrepNotes is an independent platform. Answer copies sourced from publicly available materials for educational reference.</p>
     </main>
   );
 }

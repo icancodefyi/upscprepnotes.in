@@ -1,12 +1,25 @@
-export const TOPPERS = [
-  { name: "Ishita Kishore", rank: "AIR 1", subject: "PSIR", year: "2022", previewImageUrl: "/previews/ishita-kishore.png" },
-  { name: "Garima Lohia", rank: "AIR 2", subject: "Commerce & Accountancy", year: "2022", previewImageUrl: "/previews/garima-lohia.png" },
-  { name: "Harshita Goyal", rank: "AIR 2", subject: "PSIR", year: "2024", previewImageUrl: "/previews/harshita-goyal.png" },
-  { name: "Uma Harathi", rank: "AIR 3", subject: "Anthropology", year: "2022", previewImageUrl: "/previews/uma-harathi.png" },
-  { name: "Divya Tanwar", rank: "AIR 105", subject: "Hindi Literature", year: "2022", previewImageUrl: "/previews/divya-tanwar.png" },
-  { name: "Ayan Jain", rank: "AIR 16", subject: "Mathematics", year: "2023", previewImageUrl: "/previews/ayan-jain.png" },
-  { name: "Shivani Ettaboyina", rank: "AIR 11", subject: "Anthropology", year: "2024", previewImageUrl: "/previews/shivani-ettaboyina.png" },
-  { name: "Vaishali Chopra", rank: "AIR 23", subject: "Mathematics", year: "2022", previewImageUrl: "/previews/vaishali-chopra.png" },
+export interface TopperData {
+  name: string;
+  rank: string;
+  subject: string;
+  year: string;
+  previewImageUrl: string;
+  slug: string;
+}
+
+export function topperSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "-");
+}
+
+export const TOPPERS: TopperData[] = [
+  { name: "Ishita Kishore", slug: "ishita-kishore", rank: "AIR 1", subject: "PSIR", year: "2022", previewImageUrl: "/previews/ishita-kishore.png" },
+  { name: "Garima Lohia", slug: "garima-lohia", rank: "AIR 2", subject: "Commerce & Accountancy", year: "2022", previewImageUrl: "/previews/garima-lohia.png" },
+  { name: "Harshita Goyal", slug: "harshita-goyal", rank: "AIR 2", subject: "PSIR", year: "2024", previewImageUrl: "/previews/harshita-goyal.png" },
+  { name: "Uma Harathi", slug: "uma-harathi", rank: "AIR 3", subject: "Anthropology", year: "2022", previewImageUrl: "/previews/uma-harathi.png" },
+  { name: "Divya Tanwar", slug: "divya-tanwar", rank: "AIR 105", subject: "Hindi Literature", year: "2022", previewImageUrl: "/previews/divya-tanwar.png" },
+  { name: "Ayan Jain", slug: "ayan-jain", rank: "AIR 16", subject: "Mathematics", year: "2023", previewImageUrl: "/previews/ayan-jain.png" },
+  { name: "Shivani Ettaboyina", slug: "shivani-ettaboyina", rank: "AIR 11", subject: "Anthropology", year: "2024", previewImageUrl: "/previews/shivani-ettaboyina.png" },
+  { name: "Vaishali Chopra", slug: "vaishali-chopra", rank: "AIR 23", subject: "Mathematics", year: "2022", previewImageUrl: "/previews/vaishali-chopra.png" },
 ];
 
 export const FAQS = [
