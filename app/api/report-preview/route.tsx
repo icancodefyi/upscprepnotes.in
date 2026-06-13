@@ -278,6 +278,63 @@ const Report = () => (
       </ReactPDF.View>
       <Footer />
     </ReactPDF.Page>
+    <ReactPDF.Page size="A4" style={S.page}>
+      <Header />
+      <ReactPDF.Text style={S.st}>More from UPSCPrepNotes</ReactPDF.Text>
+      <ReactPDF.View style={{ borderTopWidth: 0.5, borderTopColor: E, marginBottom: 16 }} />
+      <ReactPDF.Text style={{ fontSize: 10, color: "#444", lineHeight: 1.8, marginBottom: 16 }}>
+        This report is part of our Topper Intelligence series. You can access similar deep-dive strategy reports for 280+ rank holders, along with verified answer copies and preparation resources.
+      </ReactPDF.Text>
+      <ReactPDF.View style={{ marginBottom: 12, backgroundColor: "#f9f9f9", padding: 14, borderRadius: 4 }}>
+        <ReactPDF.Text style={{ fontSize: 12, fontWeight: 600, color: "#111", marginBottom: 8 }}>50+ Topper Answer Copies</ReactPDF.Text>
+        <ReactPDF.Text style={{ fontSize: 9, color: "#555", lineHeight: 1.7, marginBottom: 6 }}>
+          Actual handwritten UPSC Mains answer sheets from AIR 1–1249. Organized by paper (GS1–4, Essay, Optional) with mark sheets. Includes 21 original strategy guides, interview pack, ethics case studies, and AI assistant.
+        </ReactPDF.Text>
+        <ReactPDF.Link src={`https://${BRAND.website}/toppers/toppers-copy-compilation`} style={{ color: E, fontSize: 9, fontWeight: 600, textDecoration: "none" }}>
+          View compilation {"\u2192"}
+        </ReactPDF.Link>
+      </ReactPDF.View>
+      <ReactPDF.View style={{ marginBottom: 12, backgroundColor: "#f9f9f9", padding: 14, borderRadius: 4 }}>
+        <ReactPDF.Text style={{ fontSize: 12, fontWeight: 600, color: "#111", marginBottom: 8 }}>Free UPSC Resources</ReactPDF.Text>
+        <ReactPDF.Text style={{ fontSize: 9, color: "#555", lineHeight: 1.7, marginBottom: 6 }}>
+          280+ topper profiles with detailed strategies, PYQs with answer keys, free study materials, and an AI tutor — all free, no registration required.
+        </ReactPDF.Text>
+        <ReactPDF.Link src={`https://${BRAND.website}/free-materials`} style={{ color: E, fontSize: 9, fontWeight: 600, textDecoration: "none" }}>
+          Browse free resources {"\u2192"}
+        </ReactPDF.Link>
+      </ReactPDF.View>
+      <ReactPDF.View style={{ marginBottom: 12, backgroundColor: "#f9f9f9", padding: 14, borderRadius: 4 }}>
+        <ReactPDF.Text style={{ fontSize: 12, fontWeight: 600, color: "#111", marginBottom: 8 }}>Strategy Reports for Every Topper</ReactPDF.Text>
+        <ReactPDF.Text style={{ fontSize: 9, color: "#555", lineHeight: 1.7, marginBottom: 6 }}>
+          Marks breakdown, preparation strategy, and key takeaways for every rank holder on our platform. Each report is individually compiled from interviews and published content.
+        </ReactPDF.Text>
+        <ReactPDF.Link src={`https://${BRAND.website}/toppers/toppers-copy-compilation`} style={{ color: E, fontSize: 9, fontWeight: 600, textDecoration: "none" }}>
+          Explore all reports {"\u2192"}
+        </ReactPDF.Link>
+      </ReactPDF.View>
+      <ReactPDF.View style={{ marginTop: 8, flexDirection: "row", justifyContent: "center", gap: 24 }}>
+        <ReactPDF.View style={{ alignItems: "center" }}>
+          <ReactPDF.Text style={{ fontSize: 20, fontWeight: 700, color: E }}>280+</ReactPDF.Text>
+          <ReactPDF.Text style={{ fontSize: 7, color: "#999", letterSpacing: 2, textTransform: "uppercase", marginTop: 2 }}>Topper profiles</ReactPDF.Text>
+        </ReactPDF.View>
+        <ReactPDF.View style={{ alignItems: "center" }}>
+          <ReactPDF.Text style={{ fontSize: 20, fontWeight: 700, color: E }}>50+</ReactPDF.Text>
+          <ReactPDF.Text style={{ fontSize: 7, color: "#999", letterSpacing: 2, textTransform: "uppercase", marginTop: 2 }}>Answer copies</ReactPDF.Text>
+        </ReactPDF.View>
+        <ReactPDF.View style={{ alignItems: "center" }}>
+          <ReactPDF.Text style={{ fontSize: 20, fontWeight: 700, color: E }}>₹0</ReactPDF.Text>
+          <ReactPDF.Text style={{ fontSize: 7, color: "#999", letterSpacing: 2, textTransform: "uppercase", marginTop: 2 }}>Free resources</ReactPDF.Text>
+        </ReactPDF.View>
+      </ReactPDF.View>
+      <ReactPDF.View style={{ backgroundColor: E50, padding: 14, marginTop: 20, borderRadius: 4, alignItems: "center" }}>
+        <ReactPDF.Text style={{ fontSize: 9, color: "#444", lineHeight: 1.7, textAlign: "center" }}>
+          <ReactPDF.Link src={`https://wa.me/${BRAND.phone.replace(/[^0-9]/g, "")}`} style={{ color: E, fontWeight: 600, textDecoration: "none" }}>Chat on WhatsApp</ReactPDF.Link>
+          {" \u00b7 "}
+          <ReactPDF.Link src={`https://${BRAND.website}`} style={{ color: E, fontWeight: 600, textDecoration: "none" }}>{BRAND.website}</ReactPDF.Link>
+        </ReactPDF.Text>
+      </ReactPDF.View>
+      <Footer />
+    </ReactPDF.Page>
   </ReactPDF.Document>
 );
 
