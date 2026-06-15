@@ -179,7 +179,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "Answer Copies Compilation",
     payAmount: 799,
-    link: "/toppers/toppers-copy-compilation",
+    link: null,
     comingSoon: false,
   },
   {
@@ -310,6 +310,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "3 Tests",
     badgeColor: "amber",
     gradient: "bg-emerald-600",
+    image: "/images/products/ias-baba-aiomt-1-3.png",
     features: [
       "3 All India Open Mock Tests",
       "UPSC-standard difficulty level",
@@ -341,6 +342,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "5 Tests",
     badgeColor: "emerald",
     gradient: "bg-emerald-700",
+    image: "/images/products/ias-baba-mains-tests-1-5.png",
     features: [
       "5 full-length GS Mains tests (GS 1-4)",
       "UPSC Mains pattern questions",
@@ -372,6 +374,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "16 Tests",
     badgeColor: "emerald",
     gradient: "bg-purple-600",
+    image: "/images/products/csk-csat-micro-tests-1-16.png",
     features: [
       "16 topic-wise CSAT micro tests",
       "Covers comprehension, reasoning, maths, DI",

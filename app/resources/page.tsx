@@ -112,11 +112,11 @@ export default function ResourcesPage() {
               Browse Toppers <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
-              href="/toppers/toppers-copy-compilation"
+              href="/store"
               data-track="resources-view-bundle"
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-5 py-2.5 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100"
             >
-              View Compilation <ArrowRight className="h-3.5 w-3.5" />
+              Browse Store <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/pyq"

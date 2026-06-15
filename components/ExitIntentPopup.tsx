@@ -51,7 +51,7 @@ export default function ExitIntentPopup() {
   }, [dismissed]);
 
   const utm = getUtmParams();
-  const bundleUrl = `/toppers/toppers-copy-compilation${utm}`;
+  const bundleUrl = `/store${utm}`;
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hi! I'm interested in the UPSC preparation compilation. From: upscprepnotes.in")}`;
 
   if (!visible) return null;

@@ -225,8 +225,8 @@ export default async function PDFDetailPage({ params }: Props) {
               size="lg"
               className="shrink-0 rounded-full bg-emerald-600 px-8 text-sm font-bold text-white hover:bg-emerald-500 shadow-lg shadow-emerald-600/25"
             >
-              <Link href="/toppers/toppers-copy-compilation" data-track={`pdf-upsell-${p.slug}`}>
-                Get Compilation ₹799 &rarr;
+              <Link href="/store" data-track={`pdf-upsell-${p.slug}`}>
+                Browse Store ₹799 &rarr;
               </Link>
             </Button>
           </div>

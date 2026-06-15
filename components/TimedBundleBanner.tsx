@@ -55,12 +55,12 @@ export default function TimedBundleBanner() {
           <p className="mt-0.5 text-xs text-gray-400">50+ topper copies + 21 guides + AI</p>
 
           <Link
-            href="/toppers/toppers-copy-compilation"
+            href="/store"
             onClick={dismiss}
             data-track="timed-banner"
             className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-gray-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-gray-800"
           >
-            See the compilation →
+            Browse Store →
           </Link>
         </div>
       </div>

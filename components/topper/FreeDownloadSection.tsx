@@ -63,11 +63,11 @@ export function FreeDownloadSection({
             </div>
             <div className="mt-auto pt-4 w-full">
               <Link
-                href="/toppers/toppers-copy-compilation"
+                href="/store"
                 data-track="topper-bundle-upsell"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
               >
-                Get the Complete Compilation &rarr;
+                Browse Store &rarr;
               </Link>
             </div>
           </div>

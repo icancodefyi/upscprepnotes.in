@@ -34,8 +34,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/toppers/toppers-copy-compilation" data-track="footer-answer-copies" className="hover:text-black transition-colors">
-                  Answer Copies
+                <Link href="/store" data-track="footer-store" className="hover:text-black transition-colors">
+                  Store
                 </Link>
               </li>
               <li>

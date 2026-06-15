@@ -179,7 +179,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               <p className="text-xs text-gray-500 mt-0.5">All papers — GS1-4, Essay, Optional. ₹799 only.</p>
               <button
                 onClick={() => {
-                  window.open("/toppers/toppers-copy-compilation", "_blank");
+                  window.open("/store", "_blank");
                   onOpenChange(false);
                 }}
                 className="mt-2 w-full rounded-full bg-gray-900 px-4 py-2 text-xs font-bold text-white hover:bg-gray-800 transition-colors"

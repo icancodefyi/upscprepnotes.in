@@ -545,11 +545,11 @@ function AskPage() {
               {quota ? `${quota.remaining} / 5 today` : "\u2014"}
             </span>
             <Link
-              href="/toppers/toppers-copy-compilation"
+              href="/store"
               data-track="ask-sidebar-cta"
               className="text-xs font-medium text-zinc-700 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-600"
             >
-              Get compilation \u2192
+              Browse Store \u2192
             </Link>
           </div>
         </div>
@@ -741,14 +741,14 @@ function AskPage() {
                   <div className="border-t border-zinc-100">
                     <div className="mx-auto max-w-4xl px-4 py-4 md:px-6 lg:px-8">
                       <Link
-                        href="/toppers/toppers-copy-compilation"
+                        href="/store"
                         data-track="ask-after-answer-cta"
                         className="inline-flex items-center gap-2 text-xs text-zinc-400 transition hover:text-zinc-700"
                       >
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        See actual answer copies with marks from these toppers
+                        Browse the Store for answer copies &amp; more
                       </Link>
                     </div>
                   </div>
@@ -849,7 +849,7 @@ function AskPage() {
               {quota ? `${quota.remaining} free queries remaining today` : ""}
               {quota && quota.remaining <= 1 ? ` \u2014 ` : ""}
               {quota && quota.remaining <= 1 ? (
-                <Link href="/toppers/toppers-copy-compilation" className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Get unlimited</Link>
+                <Link href="/store" className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Get unlimited</Link>
               ) : ""}
             </p>
           </div>

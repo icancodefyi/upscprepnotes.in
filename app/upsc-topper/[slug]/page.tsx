@@ -409,8 +409,8 @@ export default async function TopperPage({ params }: Props) {
               {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers, essay and {topper.optionalSubject}.
             </p>
             <p className="mt-2 text-sm leading-6">
-              <Link href="/toppers/toppers-copy-compilation" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
-                Get the Complete Compilation →
+              <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
+                Browse Store →
               </Link>
               <span className="text-muted-foreground"> — all {topper.firstName}&apos;s answer copies + 50+ toppers across GS1–4, Essay &amp; Optional. ₹799 only.</span>
             </p>
@@ -553,11 +553,11 @@ export default async function TopperPage({ params }: Props) {
                 </div>
               </div>
               <Link
-                href="/toppers/toppers-copy-compilation"
+                href="/store"
                 data-track="topper-compilation-upsell-body"
                 className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
               >
-                Get the Complete Compilation &rarr;
+                Browse Store &rarr;
               </Link>
             </div>
           </div>
@@ -748,11 +748,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Complete Compilation</a> with 50+ topper copies at just ₹11 per copy (₹799 total).`,
+                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Browse Store</a> with 50+ topper copies at just ₹11 per copy (₹799 total).`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full compilation with all papers (GS1-4, Essay, Optional) is in the <a href="/toppers/toppers-copy-compilation" class="text-emerald-600 font-semibold underline">Topper Answer Copy Compilation</a> at ₹799.`,
+                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full compilation with all papers (GS1-4, Essay, Optional) is in the <a href="/store" class="text-emerald-600 font-semibold underline">Browse Store</a> at ₹799.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
@@ -776,7 +776,7 @@ export default async function TopperPage({ params }: Props) {
           <h2 className="text-xl font-semibold">Explore More</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/toppers/toppers-copy-compilation" data-track="topper-explore-compilation">Complete Compilation (₹799) &rarr;</Link>
+              <Link href="/store" data-track="topper-explore-compilation">Browse Store (₹799) &rarr;</Link>
             </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} data-track="topper-explore-optional">All {topper.optionalSubject} Toppers &rarr;</Link>

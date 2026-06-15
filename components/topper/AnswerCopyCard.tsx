@@ -20,7 +20,7 @@ export default function AnswerCopyCard({
 
   return (
     <Link
-      href="/toppers/toppers-copy-compilation"
+      href="/store"
       data-track="answer-card-bundle"
       className="group block rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:-translate-y-[2px] hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
     >

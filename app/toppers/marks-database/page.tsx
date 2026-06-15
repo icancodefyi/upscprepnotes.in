@@ -83,10 +83,10 @@ export default async function MarksDatabasePage() {
               Get the Complete Compilation — 50+ topper answer copies in a single PDF bundle with marks insights, handwriting analysis, and time management strategies.
             </p>
             <Link
-              href="/toppers/toppers-copy-compilation"
+              href="/store"
               className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-amber-500 transition-colors"
             >
-              Get the Complete Compilation &rarr;
+              Browse Store &rarr;
             </Link>
           </div>
         </div>

@@ -68,12 +68,12 @@ export default function ScrollSlideIn() {
           </div>
 
           <Link
-            href="/toppers/toppers-copy-compilation"
+            href="/store"
             onClick={dismiss}
             data-track="scroll-slide-in"
             className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-500"
           >
-            Get the Compilation →
+            Browse Store →
           </Link>
         </div>
       </div>

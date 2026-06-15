@@ -313,11 +313,11 @@ export default async function YearPage({ params }: Props) {
               </div>
             </div>
             <Link
-              href="/toppers/toppers-copy-compilation"
+              href="/store"
               data-track="year-compilation-upsell"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
             >
-              Get the Complete Compilation &rarr;
+              Browse Store &rarr;
             </Link>
           </div>
         </div>

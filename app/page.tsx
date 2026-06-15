@@ -134,14 +134,12 @@ export default async function HomePage() {
               </span>
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-gray-500 md:text-lg">
-              India&apos;s first marks-wise UPSC topper answer copy compilation.
-              Learn the IBEC Method from toppers who scored in the top 1 percentile.
-              Verified copies across GS1&ndash;4 and Essay.
+              39 premium UPSC products — notes bundles, test series, teacher materials, and original compilations starting at ₹99.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild size="lg" className="rounded-full px-8 shadow-lg">
-              <Link data-track="home-hero-cta" href="/toppers/toppers-copy-compilation">
-                Explore the Compilation &rarr;
+              <Link data-track="home-hero-cta" href="/store">
+                Browse the Store &rarr;
               </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full px-8">
@@ -152,10 +150,9 @@ export default async function HomePage() {
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <span data-track="home-price-badge" className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
-                <span className="text-[10px] line-through">₹4,999</span>
-                <span>₹799 Compilation</span>
+                <span>39 Products</span>
               </span>
-              <span className="text-xs text-gray-400">Launch price — limited time</span>
+              <span className="text-xs text-gray-400">Notes, Test Series, Teacher Materials & More</span>
             </div>
             <div className="mt-8 flex flex-wrap gap-6 text-xs text-gray-400">
               <span>Instant Digital Access</span>
@@ -186,6 +183,89 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* STORE CATEGORIES */}
+        <section className="mb-20">
+          <div className="mb-6">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-gray-400">
+              Premium Store
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Curated UPSC Products
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-gray-500">
+              39 products across 5 categories — all verified, organized, and ready to download instantly.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 p-6 text-white transition hover:shadow-lg hover:scale-[1.02]"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">10 Products</p>
+              <h3 className="mt-2 text-lg font-bold">Notes Bundles</h3>
+              <p className="mt-1 text-sm text-white/80">GS1-4, Polity, History, Ethics, Geography & more</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                Browse Notes <ArrowRight size={13} />
+              </span>
+            </Link>
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-6 text-white transition hover:shadow-lg hover:scale-[1.02]"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">9 Products</p>
+              <h3 className="mt-2 text-lg font-bold">By Teachers</h3>
+              <p className="mt-1 text-sm text-white/80">Mrunal, Satyam Gandhi, Madhav, Antriksh & more</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                Browse Teachers <ArrowRight size={13} />
+              </span>
+            </Link>
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 p-6 text-white transition hover:shadow-lg hover:scale-[1.02]"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">8 Products</p>
+              <h3 className="mt-2 text-lg font-bold">Test Series</h3>
+              <p className="mt-1 text-sm text-white/80">VisionIAS, OnlyIAS, IAS BABA, VP 2026 & more</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                Browse Tests <ArrowRight size={13} />
+              </span>
+            </Link>
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 p-6 text-white transition hover:shadow-lg hover:scale-[1.02]"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">5 Products</p>
+              <h3 className="mt-2 text-lg font-bold">Originals</h3>
+              <p className="mt-1 text-sm text-white/80">Strategy reports, answer copies & combo bundles</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                Browse Originals <ArrowRight size={13} />
+              </span>
+            </Link>
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-500 to-rose-700 p-6 text-white transition hover:shadow-lg hover:scale-[1.02]"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">2 Products</p>
+              <h3 className="mt-2 text-lg font-bold">Optionals</h3>
+              <p className="mt-1 text-sm text-white/80">Geography & Anthropology complete bundles</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-white/70 group-hover:text-white transition-colors">
+                Browse Optionals <ArrowRight size={13} />
+              </span>
+            </Link>
+            <Link
+              href="/store"
+              className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-gray-200 p-6 text-gray-400 transition hover:border-gray-300 hover:text-gray-600"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest">View All</p>
+              <h3 className="mt-2 text-lg font-bold text-gray-900 group-hover:text-black">All 39 Products</h3>
+              <p className="mt-1 text-sm">Starting at ₹99 — instant PDF delivery</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold group-hover:text-black transition-colors">
+                Visit Store <ArrowRight size={13} />
+              </span>
+            </Link>
+          </div>
+        </section>
+
         {/* QUICK LINKS GRID */}
         <section className="mb-20">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -204,16 +284,16 @@ export default async function HomePage() {
             </Link>
 
             <Link data-track="home-quick-link"
-              href="/toppers/toppers-copy-compilation"
+              href="/store"
               className="group bg-white border-2 border-gray-200 p-6 hover:border-black transition-all"
             >
               <div className="flex items-center justify-between mb-4">
                 <FileText className="w-10 h-10 text-[#C4F9D7]" />
                 <ArrowRight className="w-5 h-5 text-gray-300 group-hover:translate-x-1 transition-transform" />
               </div>
-              <h3 className="text-lg font-bold mb-2">Answer Copies</h3>
+              <h3 className="text-lg font-bold mb-2">Premium Store</h3>
               <p className="text-sm text-gray-500">
-                Marks-wise compiled topper answer copies across GS1-4 and Essay.
+                39 curated products — notes bundles, test series, optionals, and teacher materials.
               </p>
             </Link>
 
@@ -365,8 +445,8 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Button asChild className="rounded-full px-8">
-              <Link data-track="home-ibec-cta" href="/toppers/toppers-copy-compilation">
-                See Examples in the Compilation &rarr;
+              <Link data-track="home-ibec-cta" href="/store">
+                Browse Products &rarr;
               </Link>
             </Button>
           </div>
@@ -459,8 +539,8 @@ export default async function HomePage() {
 
           <div className="mt-10 text-center">
             <Button asChild className="rounded-full px-8">
-              <Link data-track="home-expertise-cta" href="/toppers/toppers-copy-compilation">
-                Start Learning &rarr;
+              <Link data-track="home-expertise-cta" href="/store">
+                Browse Store &rarr;
               </Link>
             </Button>
           </div>

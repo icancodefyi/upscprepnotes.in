@@ -1,15 +1,14 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import type { ContentPage } from "@/data/content";
 import type { Components } from "react-markdown";
 
 const DEFAULTS = {
-  ctaIntro: "Preparing for UPSC? Get actual answer copies from 50+ toppers with verified marks.",
-ctaIntroBtn: "Get the Compilation at ₹799 →",
-  ctaMidBtn: "Get the Complete Compilation →",
-  ctaFinalBtn: "Claim Compilation at ₹799 →",
+  ctaIntro: "Preparing for UPSC? Browse 39 premium products — notes bundles, test series, and teacher materials at ₹99 onwards.",
+  ctaIntroBtn: "Browse Store →",
+  ctaMidBtn: "Browse Store →",
+  ctaFinalBtn: "Explore Store →",
 };
 
 const markdownComponents: Components = {
@@ -102,11 +101,13 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
         {/* Inline CTA after intro */}
         <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
           <p className="text-sm font-semibold text-emerald-900">{t.ctaIntro}</p>
-          <Button asChild size="sm" className="mt-3 rounded-full bg-emerald-600 px-6 text-xs font-bold text-white hover:bg-emerald-500">
-            <Link href="/toppers/toppers-copy-compilation" data-track="content-cta-intro">
-              {t.ctaIntroBtn}
-            </Link>
-          </Button>
+          <Link
+            href="/store"
+            data-track="content-cta-intro"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
+          >
+            {t.ctaIntroBtn}
+          </Link>
         </div>
 
         {page.sections.map((section, i) => (
@@ -122,11 +123,13 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
               <div className="mt-8 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5">
                 <p className="text-sm font-semibold text-emerald-900">{t.ctaMid}</p>
                 <p className="mt-1 text-xs text-emerald-700">{t.ctaMidSub}</p>
-                <Button asChild size="sm" className="mt-3 rounded-full bg-emerald-600 px-6 text-xs font-bold text-white hover:bg-emerald-500">
-                  <Link href="/toppers/toppers-copy-compilation" data-track={`content-cta-mid-${i}`}>
-                    {t.ctaMidBtn}
-                  </Link>
-                </Button>
+                <Link
+                  href="/store"
+                  data-track={`content-cta-mid-${i}`}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
+                >
+                  {t.ctaMidBtn}
+                </Link>
               </div>
             )}
           </section>
@@ -194,11 +197,13 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
         <section className="mt-16 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-center sm:p-12">
           <h2 className="text-2xl font-bold text-white sm:text-3xl">{t.ctaFinal}</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-gray-400">{t.ctaFinalSub}</p>
-          <Button asChild size="lg" className="mt-6 rounded-full bg-emerald-600 px-10 py-5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500">
-            <Link href="/toppers/toppers-copy-compilation" data-track="content-cta-final">
-              {t.ctaFinalBtn}
-            </Link>
-          </Button>
+          <Link
+            href="/store"
+            data-track="content-cta-final"
+            className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-10 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500 transition-colors"
+          >
+            {t.ctaFinalBtn}
+          </Link>
         </section>
       </article>
     </main>

@@ -57,7 +57,7 @@ export default function ExitPopup() {
 
         <div className="mt-5 space-y-2.5">
           <Link
-            href="/toppers/toppers-copy-compilation"
+            href="/store"
             onClick={() => setShow(false)}
             className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500"
           >
