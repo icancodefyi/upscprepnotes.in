@@ -20,7 +20,7 @@ import LiveCounter from "@/components/topper/LiveCounter";
 import ReportButton from "@/components/ReportButton";
 import StrategyPaywall from "@/components/topper/StrategyPaywall";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{
