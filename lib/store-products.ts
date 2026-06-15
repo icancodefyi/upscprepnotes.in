@@ -1598,6 +1598,34 @@ export const PRODUCTS: StoreProduct[] = [
     link: null,
     comingSoon: false,
   },
+  {
+    slug: "test-1-rupee",
+    title: "Test Product (₹1)",
+    tagline: "For testing checkout flow only",
+    description: "Use this product to test the complete purchase flow from cart to payment to download.",
+    longDescription: [
+      "This is a test product for verifying the DodoPayments checkout integration.",
+      "₹1 will be charged to your card. The order will be created and you will receive a confirmation email.",
+      "Supports UPI, debit/credit cards, and netbanking through DodoPayments.",
+    ],
+    price: 1,
+    originalPrice: null,
+    rating: null,
+    reviewCount: null,
+    badge: "Test",
+    badgeColor: "gray",
+    gradient: "bg-gray-600",
+    features: [
+      "Complete checkout flow test",
+      "DodoPayments overlay payment",
+      "Order creation and webhook verification",
+      "Confirmation email delivery test",
+    ],
+    payNote: "Test Product",
+    payAmount: 1,
+    link: null,
+    comingSoon: false,
+  },
 ];
 
 export function getProductBySlug(slug: string): StoreProduct | undefined {
