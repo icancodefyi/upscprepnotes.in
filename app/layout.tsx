@@ -29,9 +29,7 @@ export const metadata: Metadata = {
     icon: "/logo.png",
     apple: "/logo.png",
   },
-  alternates: {
-    canonical: "https://upscprepnotes.in",
-  },
+  alternates: {},
   openGraph: {
     title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
     description:
