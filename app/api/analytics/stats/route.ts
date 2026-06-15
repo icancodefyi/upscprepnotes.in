@@ -28,6 +28,12 @@ export async function GET(req: NextRequest) {
       topClicks,
       recentEvents,
       sessionJourneys,
+      deviceBreakdown,
+      hourlyActivity,
+      referrers,
+      scrollDepths,
+      topExits,
+      dialogData,
     ] = await Promise.all([
       AnalyticsEventModel.countDocuments({ timestamp: { $gte: since } }),
       AnalyticsEventModel.distinct("sessionId", { timestamp: { $gte: since } }).then(
@@ -103,21 +109,53 @@ export async function GET(req: NextRequest) {
           },
         },
       ]),
+      // Device breakdown
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since } } },
+        { $group: { _id: "$deviceType", count: { $sum: 1 } } },
+      ]),
+      // Hourly activity
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since } } },
+        { $group: { _id: { $hour: "$timestamp" }, count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ]),
+      // Referrers
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since }, referrer: { $ne: "" } } },
+        { $group: { _id: "$referrer", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ]),
+      // Scroll depth distribution
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since }, event: "scroll_depth" } },
+        { $group: { _id: "$metadata.depth", count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ]),
+      // Top exit pages
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since }, event: "page_exit" } },
+        { $group: { _id: "$pagePath", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 15 },
+      ]),
+      // Dialog interactions
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since }, event: { $in: ["dialog_open", "dialog_close", "dialog_submit"] } } },
+        { $group: { _id: { event: "$event", dialog: "$metadata.dialog" }, count: { $sum: 1 } } },
+      ]),
     ]);
 
     // today stats
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    const todayEvents = await AnalyticsEventModel.countDocuments({
-      timestamp: { $gte: todayStart },
-    });
-    const todaySessions = (
-      await AnalyticsEventModel.distinct("sessionId", {
-        timestamp: { $gte: todayStart },
-      })
-    ).length;
+    const [todayEvents, todaySessions] = await Promise.all([
+      AnalyticsEventModel.countDocuments({ timestamp: { $gte: todayStart } }),
+      AnalyticsEventModel.distinct("sessionId", { timestamp: { $gte: todayStart } }).then(r => r.length),
+    ]);
 
-    // unique visitors (persistent cookie-based ID)
+    // unique visitors
     const uniqueVisitors = (
       await AnalyticsEventModel.distinct("visitorId", {
         timestamp: { $gte: since },
@@ -126,10 +164,17 @@ export async function GET(req: NextRequest) {
     ).length;
 
     // page views count
-    const pageViews = await AnalyticsEventModel.countDocuments({
-      event: "page_view",
-      timestamp: { $gte: since },
-    });
+    const [pageViews, returningVisitors] = await Promise.all([
+      AnalyticsEventModel.countDocuments({ event: "page_view", timestamp: { $gte: since } }),
+      // Returning visitors count
+      AnalyticsEventModel.aggregate([
+        { $match: { timestamp: { $gte: since }, visitorId: { $exists: true, $ne: "unknown" } } },
+        { $group: { _id: "$visitorId", sessions: { $addToSet: "$sessionId" } } },
+        { $project: { visitorId: "$_id", sessionCount: { $size: "$sessions" } } },
+        { $match: { sessionCount: { $gt: 1 } } },
+        { $count: "count" },
+      ]).then(r => r[0]?.count || 0),
+    ]);
 
     // User journeys: last 20 unique visitors with all their events (cross-session)
     const userJourneys = await AnalyticsEventModel.aggregate([
@@ -172,32 +217,22 @@ export async function GET(req: NextRequest) {
     ]);
 
     // AI conversation counts
-    const aiConversations = await AskConversationModel.countDocuments({
-      createdAt: { $gte: since },
-    });
-    const aiMessagesAgg = await AskConversationModel.aggregate([
-      { $match: { createdAt: { $gte: since } } },
-      { $project: { msgCount: { $size: "$messages" } } },
-      { $group: { _id: null, total: { $sum: "$msgCount" } } },
+    const [aiConversations, aiMessagesAgg] = await Promise.all([
+      AskConversationModel.countDocuments({ createdAt: { $gte: since } }),
+      AskConversationModel.aggregate([
+        { $match: { createdAt: { $gte: since } } },
+        { $project: { msgCount: { $size: "$messages" } } },
+        { $group: { _id: null, total: { $sum: "$msgCount" } } },
+      ]),
     ]);
     const aiMessages = aiMessagesAgg[0]?.total || 0;
 
-    // key metrics
-    const [whatsappClicks, fileDownloads, salesPageViews, convertingUsers] =
+    // key metrics + bounce rate
+    const [whatsappClicks, fileDownloads, salesPageViews, convertingUsers, bounceSessions] =
       await Promise.all([
-        AnalyticsEventModel.countDocuments({
-          event: "whatsapp_click",
-          timestamp: { $gte: since },
-        }),
-        AnalyticsEventModel.countDocuments({
-          event: "file_download",
-          timestamp: { $gte: since },
-        }),
-        AnalyticsEventModel.countDocuments({
-          event: "page_view",
-          pagePath: "/toppers/toppers-copy-compilation",
-          timestamp: { $gte: since },
-        }),
+        AnalyticsEventModel.countDocuments({ event: "whatsapp_click", timestamp: { $gte: since } }),
+        AnalyticsEventModel.countDocuments({ event: "file_download", timestamp: { $gte: since } }),
+        AnalyticsEventModel.countDocuments({ event: "page_view", pagePath: "/toppers/toppers-copy-compilation", timestamp: { $gte: since } }),
         AnalyticsEventModel.aggregate([
           { $match: { timestamp: { $gte: since }, visitorId: { $exists: true, $ne: "unknown" } } },
           { $group: { _id: "$visitorId", events: { $push: "$$ROOT" } } },
@@ -210,14 +245,11 @@ export async function GET(req: NextRequest) {
                 { "events.event": "dialog_submit" },
                 {
                   events: {
-                    $elemMatch: {
-                      event: "click",
-                      $or: [
-                        { "metadata.trackAttr": { $regex: "bundle", $options: "i" } },
-                        { "metadata.trackAttr": { $regex: "download", $options: "i" } },
-                        { "metadata.trackAttr": { $regex: "purchase", $options: "i" } },
-                      ],
-                    },
+                    $elemMatch: { event: "click", $or: [
+                      { "metadata.trackAttr": { $regex: "bundle", $options: "i" } },
+                      { "metadata.trackAttr": { $regex: "download", $options: "i" } },
+                      { "metadata.trackAttr": { $regex: "purchase", $options: "i" } },
+                    ]},
                   },
                 },
               ],
@@ -225,7 +257,24 @@ export async function GET(req: NextRequest) {
           },
           { $count: "count" },
         ]).then((r) => (r[0]?.count || 0)),
+        // Bounce sessions (single page_view session)
+        AnalyticsEventModel.aggregate([
+          { $match: { timestamp: { $gte: since } } },
+          { $group: { _id: "$sessionId", events: { $push: "$event" } } },
+          { $addFields: { onlyPageView: { $eq: [{ $size: "$events" }, 1] }, firstEvent: { $arrayElemAt: ["$events", 0] } } },
+          { $match: { onlyPageView: true, firstEvent: "page_view" } },
+          { $count: "count" },
+        ]).then(r => r[0]?.count || 0),
       ]);
+
+    // Conversion funnel (unique visitors per stage)
+    const funnelStages = await Promise.all([
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "page_view", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "dialog_open", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "free_download_lead", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "file_download", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "whatsapp_click", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+    ]);
 
     return NextResponse.json({
       success: true,
@@ -249,6 +298,15 @@ export async function GET(req: NextRequest) {
         recentEvents,
         sessionJourneys,
         userJourneys,
+        deviceBreakdown,
+        hourlyActivity,
+        referrers,
+        scrollDepths,
+        topExits,
+        dialogData,
+        funnelStages,
+        returningVisitors,
+        bounceSessions,
       },
     });
   } catch (err) {
