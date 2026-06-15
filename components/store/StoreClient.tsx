@@ -52,8 +52,6 @@ export default function StoreClient() {
       const prods = visibleProducts.filter((p) => p.category === key);
       if (prods.length) groups.push({ label: labels[key], products: prods });
     }
-    const uncategorized = visibleProducts.filter((p) => !p.category);
-    if (uncategorized.length) groups.push({ label: "Other", products: uncategorized });
     return groups;
   }, [category, visibleProducts]);
 
