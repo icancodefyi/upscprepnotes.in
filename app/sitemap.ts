@@ -64,11 +64,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Topper profile pages (from MongoDB)
   const toppers = await TopperModel.find({ isIndexed: true })
-    .select("slug updatedAt")
+    .select("slug")
     .lean();
   const topperPages: MetadataRoute.Sitemap = toppers.map((t: any) => ({
     url: `${baseUrl}/upsc-topper/${t.slug}`,
-    lastModified: t.updatedAt || new Date(),
+    lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.8,
   }));

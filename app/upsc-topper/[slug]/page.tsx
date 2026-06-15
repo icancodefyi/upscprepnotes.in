@@ -304,6 +304,8 @@ export default async function TopperPage({ params }: Props) {
     description: buildMetaDescription(topper),
     jobTitle: `UPSC CSE ${topper.year} AIR ${topper.rank}`,
     url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+    datePublished: "2025-01-01",
+    dateModified: new Date().toISOString().split("T")[0],
     knowsAbout: [
       { "@type": "Thing", name: `UPSC CSE ${topper.year}` },
       { "@type": "Thing", name: topper.optionalSubject },
