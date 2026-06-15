@@ -187,31 +187,11 @@ export default function RootLayout({
                 });
 
                 var pageLoadTime = Date.now();
-                var pageExitFired = false;
-                document.addEventListener('visibilitychange', function() {
-                  if (document.visibilityState === 'hidden' && !pageExitFired) {
-                    pageExitFired = true;
-                    var st = window.scrollY || document.documentElement.scrollTop;
-                    var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                    var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
-                    var dep = Math.round((st / Math.max(sh, 1)) * 100) + '%';
-                    if (!isAdmin) gtag('event', 'page_exit', {
-                      scroll_depth: dep,
-                      time_on_page: time,
-                      page_path: location.pathname
-                    });
-                    fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
-                  }
-                });
-
                 window.addEventListener('beforeunload', function() {
-                  if (!pageExitFired) {
-                    pageExitFired = true;
-                    var dep = Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%';
-                    var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
-                    if (!isAdmin) gtag('event', 'page_exit', { depth: dep, time_on_page: time, page_path: location.pathname });
-                    fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
-                  }
+                  var dep = Math.round((window.scrollY / Math.max(document.documentElement.scrollHeight - document.documentElement.clientHeight, 1)) * 100) + '%';
+                  var time = Math.round((Date.now() - pageLoadTime) / 1000) + 's';
+                  if (!isAdmin) gtag('event', 'page_exit', { depth: dep, time_on_page: time, page_path: location.pathname });
+                  fireAnalytics('page_exit', { scrollDepth: dep, timeOnPage: time });
                 });
               }
             `,

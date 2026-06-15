@@ -140,7 +140,7 @@ export default function CartSlideover({ open, onClose }: Props) {
             <div className="mt-4">
               <PayButton
                 amount={totalAmount}
-                note={items.map((i) => i.product.payNote).join(", ")}
+                items={items.map((i) => ({ slug: i.product.slug, quantity: i.quantity, price: i.product.price }))}
                 tracking="cart-checkout"
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-500"
               >

@@ -51,3 +51,6 @@ scripts/.*.cache.json
 
 # downloaded premium materials (4.5 GB)
 /public/downloads/
+
+# product zips (6.9 GB)
+/private/zips/

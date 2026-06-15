@@ -9,7 +9,7 @@ import {
 type FunnelStage = [number, number, number, number, number];
 type Stats = {
   totalEvents: number; totalSessions: number; uniqueVisitors: number; pageViews: number;
-  todayEvents: number; todaySessions: number;
+  todayEvents: number; todaySessions: number; todayPageViews: number;
   whatsappClicks: number; fileDownloads: number; salesPageViews: number; conversions: number;
   aiConversations: number; aiMessages: number;
   returningVisitors: number; bounceSessions: number;
@@ -102,13 +102,13 @@ export default function AnalyticsPage() {
   const maxHourly = Math.max(...hourlyData.map(h => h.count), 1);
 
   // Pre-compute all template literals to avoid TSX parser issues
-  const heroToday = formatNumber(stats.todaySessions) + " sessions";
-  const heroTotal = formatNumber(stats.uniqueVisitors) + " unique visitors";
-  const heroPages = stats.totalSessions + " sessions";
+  const heroToday = formatNumber(stats.todayPageViews) + " page views today";
+  const heroTotal = formatNumber(stats.pageViews) + " page views total";
+  const heroPages = formatNumber(stats.uniqueVisitors) + " unique visitors";
   const heroBounce = stats.bounceSessions + " of " + stats.totalSessions + " sessions";
   const heroConversion = stats.conversions + " converting users";
   const heroReturning = stats.returningVisitors + " of " + stats.uniqueVisitors;
-  const heroWhatsApp = stats.fileDownloads + " file downloads";
+  const heroWhatsApp = formatNumber(stats.whatsappClicks) + " clicks";
   const funnelPct = stats.funnelStages[0] > 0 ? (stats.funnelStages[1] / stats.funnelStages[0] * 100).toFixed(0) : "0";
   const leadPct = stats.funnelStages[0] > 0 ? (stats.funnelStages[2] / stats.funnelStages[0] * 100).toFixed(0) : "0";
   const submitRate = "Submit rate: " + funnelPct + "%";
@@ -147,14 +147,14 @@ export default function AnalyticsPage() {
 
       {/* ===== HERO METRICS ===== */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <HeroCard label="Today" value={formatNumber(stats.todayEvents)} sub={heroToday} />
-        <HeroCard label="Total Events" value={formatNumber(stats.totalEvents)} sub={heroTotal} />
-        <HeroCard label="Page Views" value={formatNumber(stats.pageViews)} sub={heroPages} />
+        <HeroCard label="Today" value={formatNumber(stats.todayPageViews)} sub={heroToday} accent />
+        <HeroCard label="Page Views" value={formatNumber(stats.pageViews)} sub={heroTotal} />
+        <HeroCard label="Unique Visitors" value={formatNumber(stats.uniqueVisitors)} sub={heroPages} />
         <HeroCard label="Bounce Rate" value={bounceRate + "%"} sub={heroBounce} />
         <HeroCard label="Conversion Rate" value={conversionRate + "%"} sub={heroConversion} accent />
         <HeroCard label="Returning Visitors" value={returningPct + "%"} sub={heroReturning} />
-        <HeroCard label="WhatsApp Clicks" value={formatNumber(stats.whatsappClicks)} sub={heroWhatsApp} accent />
-        <HeroCard label="Sales Page Views" value={formatNumber(stats.salesPageViews)} sub="/toppers-copy-compilation" />
+        <HeroCard label="WhatsApp Clicks" value={formatNumber(stats.whatsappClicks)} sub={heroWhatsApp} />
+        <HeroCard label="File Downloads" value={formatNumber(stats.fileDownloads)} sub="all time" />
       </div>
 
       {/* ===== CHARTS ROW 1 ===== */}
@@ -162,8 +162,8 @@ export default function AnalyticsPage() {
         {/* DAILY TIMELINE */}
         <div className="lg:col-span-2 rounded-xl border border-zinc-200 bg-white p-5">
           <div className="mb-4">
-            <h2 className="text-sm font-semibold">Events Over Time</h2>
-            <p className="text-xs text-zinc-400">Daily event count</p>
+            <h2 className="text-sm font-semibold">Daily Page Views</h2>
+            <p className="text-xs text-zinc-400">Page views per day</p>
           </div>
           {timelineData.length === 0 ? (
             <div className="flex h-48 items-center justify-center text-sm text-zinc-400">No data yet</div>
@@ -214,7 +214,7 @@ export default function AnalyticsPage() {
         <div className="rounded-xl border border-zinc-200 bg-white p-5">
           <div className="mb-4">
             <h2 className="text-sm font-semibold">Hourly Activity</h2>
-            <p className="text-xs text-zinc-400">Event distribution across 24 hours</p>
+            <p className="text-xs text-zinc-400">Event distribution across 24 hours (IST)</p>
           </div>
           <div className="grid grid-cols-24 gap-1">
             {hourlyData.map(h => {

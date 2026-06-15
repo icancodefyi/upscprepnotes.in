@@ -23,6 +23,8 @@
     "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dodopayments": "^2.38.1",
+    "dodopayments-checkout": "^1.9.4",
     "groq-sdk": "^1.2.0",
     "lucide-react": "^1.16.0",
     "mongodb": "^7.2.0",

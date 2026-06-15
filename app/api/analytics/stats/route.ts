@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
         { $sort: { count: -1 } },
       ]),
       AnalyticsEventModel.aggregate([
-        { $match: { timestamp: { $gte: since } } },
+        { $match: { timestamp: { $gte: since }, event: "page_view" } },
         {
           $group: {
             _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
@@ -114,10 +114,10 @@ export async function GET(req: NextRequest) {
         { $match: { timestamp: { $gte: since } } },
         { $group: { _id: "$deviceType", count: { $sum: 1 } } },
       ]),
-      // Hourly activity
+      // Hourly activity (IST)
       AnalyticsEventModel.aggregate([
         { $match: { timestamp: { $gte: since } } },
-        { $group: { _id: { $hour: "$timestamp" }, count: { $sum: 1 } } },
+        { $group: { _id: { $hour: { date: "$timestamp", timezone: "Asia/Kolkata" } }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
       ]),
       // Referrers
@@ -150,9 +150,10 @@ export async function GET(req: NextRequest) {
     // today stats
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    const [todayEvents, todaySessions] = await Promise.all([
+    const [todayEvents, todaySessions, todayPageViews] = await Promise.all([
       AnalyticsEventModel.countDocuments({ timestamp: { $gte: todayStart } }),
       AnalyticsEventModel.distinct("sessionId", { timestamp: { $gte: todayStart } }).then(r => r.length),
+      AnalyticsEventModel.countDocuments({ event: "page_view", timestamp: { $gte: todayStart } }),
     ]);
 
     // unique visitors
@@ -257,11 +258,23 @@ export async function GET(req: NextRequest) {
           },
           { $count: "count" },
         ]).then((r) => (r[0]?.count || 0)),
-        // Bounce sessions (single page_view session)
+        // Bounce sessions (single page_view excluding exit events)
         AnalyticsEventModel.aggregate([
           { $match: { timestamp: { $gte: since } } },
           { $group: { _id: "$sessionId", events: { $push: "$event" } } },
-          { $addFields: { onlyPageView: { $eq: [{ $size: "$events" }, 1] }, firstEvent: { $arrayElemAt: ["$events", 0] } } },
+          {
+            $addFields: {
+              cleanEvents: {
+                $filter: { input: "$events", as: "e", cond: { $ne: ["$$e", "page_exit"] } }
+              }
+            }
+          },
+          {
+            $addFields: {
+              onlyPageView: { $eq: [{ $size: "$cleanEvents" }, 1] },
+              firstEvent: { $arrayElemAt: ["$cleanEvents", 0] }
+            }
+          },
           { $match: { onlyPageView: true, firstEvent: "page_view" } },
           { $count: "count" },
         ]).then(r => r[0]?.count || 0),
@@ -285,6 +298,7 @@ export async function GET(req: NextRequest) {
         pageViews,
         todayEvents,
         todaySessions,
+        todayPageViews,
         whatsappClicks,
         fileDownloads,
         salesPageViews,

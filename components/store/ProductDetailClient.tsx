@@ -184,7 +184,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <div className="flex flex-wrap gap-3">
                   <PayButton
                     amount={product.payAmount}
-                    note={product.payNote}
+                    items={[{ slug: product.slug, quantity: 1, price: product.price }]}
                     tracking={`buy-${product.slug}`}
                     className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
                   >

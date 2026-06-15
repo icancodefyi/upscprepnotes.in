@@ -35,6 +35,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dodopayments:
+        specifier: ^2.38.1
+        version: 2.38.1
+      dodopayments-checkout:
+        specifier: ^1.9.4
+        version: 1.9.4
       groq-sdk:
         specifier: ^1.2.0
         version: 1.2.0
@@ -377,6 +383,12 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iframe-resizer/core@5.5.9':
+    resolution: {integrity: sha512-HacDQx81pgHlmY48tRogcX02TOXfvjllJzI+xfVYmvEXhxoViyi9yEobhNQEt8Mq6NmrH1vHhz6FRfQ9uBTsjQ==}
+
+  '@iframe-resizer/parent@5.5.9':
+    resolution: {integrity: sha512-DfNb9KlOf7WyCNOM2xWPGxJfWtqA/gg7sjHvqvD4k6cfpntPXrKfCd3WdOPNKA980urGkhOdM9Ye0unV2gnYYw==}
 
   '@imagekit/nodejs@7.6.1':
     resolution: {integrity: sha512-KOYYuchTBt/VgNnmb8oG9w1TH3mT2otZiKMFmmX6kE6AnSUjV5XAmlLiAEBzktwOHtYKdXwA2ao7ScIYFDwn1Q==}
@@ -2022,6 +2034,9 @@ packages:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
     engines: {node: '>= 0.4'}
 
+  auto-console-group@1.3.0:
+    resolution: {integrity: sha512-W/G5jy1ZPeVYPyqOVGND7EjbzrsLgRD3s+1QegXfJ7bYlphFxjqG60rviFXWw0d2YCj0Clc7hU5/nTqrBEhBIw==}
+
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
@@ -2484,6 +2499,14 @@ packages:
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
+
+  dodopayments-checkout@1.9.4:
+    resolution: {integrity: sha512-FNvmU2vYwys4fqgWa8o3cHaKy1QkJo+Q+pq3yxUpTuHYa1aoa0xjTJHiFN/A0ariAP1xXY1Ob/a+Mwhqy23SCA==}
+    engines: {node: '>=18.0.0'}
+
+  dodopayments@2.38.1:
+    resolution: {integrity: sha512-OjrwIjPG/k1W7SApH/E5uKMZSm/7jqjZTGZAdvHX9FKMN9tQf0lbT4thDw5i9Q/C0IVsr/5ZKEWjW7GNeyv1hA==}
+    hasBin: true
 
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
@@ -5299,6 +5322,15 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
+  '@iframe-resizer/core@5.5.9':
+    dependencies:
+      auto-console-group: 1.3.0
+
+  '@iframe-resizer/parent@5.5.9':
+    dependencies:
+      '@iframe-resizer/core': 5.5.9
+      auto-console-group: 1.3.0
+
   '@imagekit/nodejs@7.6.1':
     dependencies:
       standardwebhooks: 1.0.0
@@ -6986,6 +7018,8 @@ snapshots:
 
   async-function@1.0.0: {}
 
+  auto-console-group@1.3.0: {}
+
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
@@ -7393,6 +7427,14 @@ snapshots:
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
+
+  dodopayments-checkout@1.9.4:
+    dependencies:
+      '@iframe-resizer/parent': 5.5.9
+
+  dodopayments@2.38.1:
+    dependencies:
+      standardwebhooks: 1.0.0
 
   dom-serializer@2.0.0:
     dependencies:
