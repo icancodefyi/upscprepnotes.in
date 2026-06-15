@@ -9,7 +9,7 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 import { PRODUCTS, INSTITUTES } from "@/lib/store-products";
-import type { Institute } from "@/lib/store-products";
+import type { Institute, ProductCategory } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
@@ -37,6 +37,24 @@ export default function StoreClient() {
         : PRODUCTS.filter((p) => p.category === category && !p.comingSoon),
     [category]
   );
+
+  const groupedByCategory = useMemo(() => {
+    if (category !== "all") return null;
+    const groups: { label: string; products: typeof PRODUCTS }[] = [];
+    const order: ProductCategory[] = ["notes-bundle", "teacher-brand", "test-series", "optional", "original"];
+    const labels: Record<ProductCategory, string> = {
+      "notes-bundle": "Notes Bundles",
+      "teacher-brand": "By Teachers",
+      "test-series": "Test Series",
+      "optional": "Optionals",
+      "original": "Originals",
+    };
+    for (const key of order) {
+      const prods = visibleProducts.filter((p) => p.category === key);
+      if (prods.length) groups.push({ label: labels[key], products: prods });
+    }
+    return groups;
+  }, [category, visibleProducts]);
 
   const institutesWithProducts = useMemo(
     () =>
@@ -131,30 +149,41 @@ export default function StoreClient() {
               )}
 
               {/* ─── Product Grid ─── */}
-              <section>
-                {category === "all" && (
-                  <h2 className="text-base font-bold text-gray-900 mb-3">
-                    All Products <span className="font-normal text-gray-400">({visibleProducts.length})</span>
-                  </h2>
-                )}
-                {category !== "all" && (
+              {category === "all" && groupedByCategory ? (
+                <>
+                  {groupedByCategory.map((group) => (
+                    <section key={group.label} className="mb-10">
+                      <h2 className="text-base font-bold text-gray-900 mb-3">
+                        {group.label}{" "}
+                        <span className="font-normal text-gray-400">({group.products.length})</span>
+                      </h2>
+                      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {group.products.map((product) => (
+                          <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </>
+              ) : (
+                <section>
                   <h2 className="text-base font-bold text-gray-900 mb-3">
                     {CATEGORY_TABS.find((t) => t.key === category)?.label}{" "}
                     <span className="font-normal text-gray-400">({visibleProducts.length})</span>
                   </h2>
-                )}
-                {visibleProducts.length === 0 ? (
-                  <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed border-gray-200">
-                    <p className="text-sm text-gray-400">No products in this category yet.</p>
-                  </div>
-                ) : (
-                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {visibleProducts.map((product) => (
-                      <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
-                    ))}
-                  </div>
-                )}
-              </section>
+                  {visibleProducts.length === 0 ? (
+                    <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed border-gray-200">
+                      <p className="text-sm text-gray-400">No products in this category yet.</p>
+                    </div>
+                  ) : (
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {visibleProducts.map((product) => (
+                        <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
+                      ))}
+                    </div>
+                  )}
+                </section>
+              )}
             </>
           )}
 
