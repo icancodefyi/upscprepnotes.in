@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 
-const VPS_URL = process.env.VPS_URL || "http://72.60.99.68:8080";
+const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
 
 const ZIP_NAMES: Record<string, string> = {
   "gs1-notes-bundle": "GS1-Notes-Bundle.zip",
