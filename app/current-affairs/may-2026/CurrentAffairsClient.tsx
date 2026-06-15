@@ -85,7 +85,7 @@ function CopyBtn({ text }: { text: string }) {
   );
 }
 
-export default function CurrentAffairsPage() {
+export default function CurrentAffairsPage({ hideHero }: { hideHero?: boolean }) {
   const data = MAY_2026;
   const totalItems = data.sections.reduce((a, s) => a + s.items.length, 0);
   const sessionRef = useRef(sessionId());
@@ -302,56 +302,54 @@ Q2: ... and so on for all 5 questions.`;
 
   return (
     <main style={{ backgroundColor: CANVAS, minHeight: "100vh" }}>
-      {/* ===== DARK HERO ===== */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: DARK_INDIGO }}>
-        {/* Starfield */}
-        <div className="absolute inset-0 opacity-40" style={{
-          backgroundImage: `radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.6), transparent),
-                            radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4), transparent),
-                            radial-gradient(1.5px 1.5px at 50% 15%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 70% 45%, rgba(255,255,255,0.3), transparent),
-                            radial-gradient(1.5px 1.5px at 85% 75%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.3), transparent),
-                            radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.4), transparent),
-                            radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 60% 50%, rgba(255,255,255,0.25), transparent),
-                            radial-gradient(1.5px 1.5px at 45% 35%, rgba(255,255,255,0.4), transparent)`
-        }} />
-        {/* Sticker orbs */}
-        <div className="absolute -right-16 top-6 hidden sm:block w-40 h-40 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: STICKER.sky }} />
-        <div className="absolute -left-20 bottom-6 hidden sm:block w-28 h-28 rounded-full opacity-15 blur-3xl" style={{ backgroundColor: STICKER.purple }} />
-        <div className="absolute right-1/3 bottom-4 hidden sm:block w-16 h-16 rounded-full opacity-25 blur-2xl" style={{ backgroundColor: STICKER.orange }} />
-
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32 relative">
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-[12px] font-semibold tracking-[0.125px] text-white">
-            Monthly Edition
-          </span>
-          <h1 className="mt-6 text-[54px] font-bold leading-[1.04] tracking-[-1.875px] text-white sm:text-[64px] sm:tracking-[-2.125px]">
-            {data.month} {data.year}
-          </h1>
-          <p className="mt-4 max-w-xl text-[16px] leading-[1.5]" style={{ color: "rgba(255,255,255,0.65)" }}>
-            UPSC Monthly Current Affairs — {data.sections.length} sections, {totalItems} topics.
-            Each topic includes key facts, data points, and context structured for quick revision.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link href="/api/generate-current-affairs?month=may-2026"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold text-white transition-all hover:scale-95 active:scale-90"
-              style={{ backgroundColor: NOTION_BLUE }}>
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download PDF
-            </Link>
-            <Link href="/store"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition-all hover:scale-95 active:scale-90"
-              style={{ backgroundColor: SURFACE, color: INK, boxShadow: "0 0.175px 1.041px rgba(0,0,0,0.01),0 0.8px 2.925px rgba(0,0,0,0.02),0 2.025px 7.847px rgba(0,0,0,0.027),0 4px 18px rgba(0,0,0,0.04)" }}>
-              Browse Store
-            </Link>
+      {!hideHero && (
+        <section className="relative overflow-hidden" style={{ backgroundColor: DARK_INDIGO }}>
+          <div className="absolute inset-0 opacity-40" style={{
+            backgroundImage: `radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.6), transparent),
+                              radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4), transparent),
+                              radial-gradient(1.5px 1.5px at 50% 15%, rgba(255,255,255,0.5), transparent),
+                              radial-gradient(1px 1px at 70% 45%, rgba(255,255,255,0.3), transparent),
+                              radial-gradient(1.5px 1.5px at 85% 75%, rgba(255,255,255,0.5), transparent),
+                              radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.3), transparent),
+                              radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.4), transparent),
+                              radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.5), transparent),
+                              radial-gradient(1.5px 1.5px at 60% 50%, rgba(255,255,255,0.25), transparent),
+                              radial-gradient(1px 1px at 45% 35%, rgba(255,255,255,0.4), transparent)`
+          }} />
+          <div className="absolute -right-16 top-6 hidden sm:block w-40 h-40 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: STICKER.sky }} />
+          <div className="absolute -left-20 bottom-6 hidden sm:block w-28 h-28 rounded-full opacity-15 blur-3xl" style={{ backgroundColor: STICKER.purple }} />
+          <div className="absolute right-1/3 bottom-4 hidden sm:block w-16 h-16 rounded-full opacity-25 blur-2xl" style={{ backgroundColor: STICKER.orange }} />
+          <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32 relative">
+            <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-[12px] font-semibold tracking-[0.125px] text-white">
+              Monthly Edition
+            </span>
+            <h1 className="mt-6 text-[54px] font-bold leading-[1.04] tracking-[-1.875px] text-white sm:text-[64px] sm:tracking-[-2.125px]">
+              {data.month} {data.year}
+            </h1>
+            <p className="mt-4 max-w-xl text-[16px] leading-[1.5]" style={{ color: "rgba(255,255,255,0.65)" }}>
+              UPSC Monthly Current Affairs — {data.sections.length} sections, {totalItems} topics.
+              Each topic includes key facts, data points, and context structured for quick revision.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/api/generate-current-affairs?month=may-2026"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold text-white transition-all hover:scale-95 active:scale-90"
+                style={{ backgroundColor: NOTION_BLUE }}>
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download PDF
+              </Link>
+              <Link href="/store"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition-all hover:scale-95 active:scale-90"
+                style={{ backgroundColor: SURFACE, color: INK, boxShadow: "0 0.175px 1.041px rgba(0,0,0,0.01),0 0.8px 2.925px rgba(0,0,0,0.02),0 2.025px 7.847px rgba(0,0,0,0.027),0 4px 18px rgba(0,0,0,0.04)" }}>
+                Browse Store
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <div className="mx-auto max-w-6xl px-6 -mt-8 relative z-10 pb-20">
+      <div className={`mx-auto max-w-6xl px-6 relative z-10 pb-20 ${hideHero ? "pt-8" : "-mt-8"}`}>
         {/* ===== SEARCH ===== */}
         <div className="relative mb-6" style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}`, borderRadius: 8 }}>
           <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: INK_FAINT }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -4,13 +4,11 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 
-type NavItem = { label: string; href: string; tag?: "new"; dataTrack: string };
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "Store", href: "/store", dataTrack: "nav-store", tag: "new" },
-  { label: "Toppers", href: "/toppers", dataTrack: "nav-toppers" },
-  { label: "Current Affairs", href: "/current-affairs", dataTrack: "nav-current-affairs" },
-  { label: "Ask AI", href: "/ask", dataTrack: "nav-ask-ai" },
+const CURRENT_AFFAIRS_SUB = [
+  { label: "Current Affairs Hub", href: "/current-affairs" },
+  { label: "May 2026 Edition", href: "/current-affairs/may-2026" },
+  { label: "2025 Yearly Compilation", href: "/current-affairs/2025" },
+  { label: "Download PDFs", href: "/current-affairs/download" },
 ];
 
 const FREE_MATERIALS_CATEGORIES = [
@@ -106,13 +104,11 @@ export default function Header() {
           >
             Toppers
           </Link>
-          <Link
-            href="/current-affairs"
-            data-track="nav-current-affairs"
-            className="hover:text-black transition-colors"
-          >
-            Current Affairs
-          </Link>
+          <NavDropdown label="Current Affairs" dataTrack="nav-current-affairs">
+            {CURRENT_AFFAIRS_SUB.map((item) => (
+              <DropdownItem key={item.href} href={item.href} label={item.label} />
+            ))}
+          </NavDropdown>
 
           <NavDropdown label="Free Materials" dataTrack="nav-free-materials">
             {FREE_MATERIALS_CATEGORIES.map((cat) => (
@@ -173,14 +169,21 @@ export default function Header() {
             >
               Toppers
             </Link>
-            <Link
-              href="/current-affairs"
-              onClick={() => setMobileOpen(false)}
-              data-track="nav-mobile-current-affairs"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
-            >
-              Current Affairs
-            </Link>
+            <div className="py-2">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Current Affairs</p>
+              <div className="ml-2 space-y-1">
+                {CURRENT_AFFAIRS_SUB.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block text-sm text-gray-600 hover:text-black py-1"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
             <div className="py-2">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Free Materials</p>

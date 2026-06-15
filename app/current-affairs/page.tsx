@@ -98,8 +98,37 @@ export default function CurrentAffairsHub() {
           </p>
         </div>
 
+        {/* Editorial Intro */}
+        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
+          <h2 className="text-sm font-bold text-[#000000e8]">Why Current Affairs Matter for UPSC</h2>
+          <div className="mt-3 space-y-3 text-sm leading-relaxed text-[#615d59]">
+            <p>
+              Current affairs form the backbone of UPSC preparation. With 30-40% of Prelims questions, 
+              every Mains General Studies paper, and the entire Interview stage drawing from recent events, 
+              a structured current affairs strategy can make the difference between qualifying and 
+              ranking. Yet most aspirants struggle with information overload — reading multiple newspapers, 
+              following too many sources, and failing to connect events to the syllabus.
+            </p>
+            <p>
+              That is why we built UPSCPrepNotes current affairs differently. Each monthly edition distills 
+              thousands of news items into 55 tightly curated topics across 11 UPSC-relevant sections — 
+              National News, International Relations, Economy, Environment, Science &amp; Technology, 
+              Government Schemes, Important Reports, Awards, Appointments, Obituaries, and Sports. 
+              Every topic includes key facts, data points, and context structured for quick revision. 
+              No fluff, no filler — just what you need for Prelims, Mains, and Interview.
+            </p>
+            <p>
+              Beyond monthly compilations, we offer AI-powered explanations that break down complex 
+              events, interactive quizzes for self-assessment, and downloadable PDFs for offline study. 
+              Our 2025 yearly compilation brings together all 12 months in one place — over 850 events 
+              tagged by section for targeted revision. Whether you are preparing for the 2026 cycle or 
+              building your foundation for 2027, our current affairs coverage adapts to your pace.
+            </p>
+          </div>
+        </div>
+
         {/* Editions */}
-        <div className="mt-16 grid gap-4 sm:grid-cols-2">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
           <Link
             href="/current-affairs/may-2026"
             className="group rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
