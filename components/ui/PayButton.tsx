@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UpiQrCode from "./UpiQrCode";
 
 const UPI_ID = "rakhangezaid8@pingpay";
@@ -22,6 +22,17 @@ export default function PayButton({
   children,
 }: Props) {
   const [showUpi, setShowUpi] = useState(false);
+
+  useEffect(() => {
+    if (showUpi) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showUpi]);
 
   function handlePay() {
     const isMobile = /iPhone|Android|iPad/i.test(navigator.userAgent);

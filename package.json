@@ -9,7 +9,8 @@
     "lint": "eslint",
     "seed:featured": "node ./scripts/seed-featured.cjs",
     "scrape:images": "node scripts/scrape-topper-images.mjs",
-    "scrape:pdf-links": "node scripts/scrape-pdf-links.mjs"
+    "scrape:pdf-links": "node scripts/scrape-pdf-links.mjs",
+    "generate-pdfs": "npx tsx scripts/generate-current-affairs-pdfs.tsx"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",

@@ -172,3 +172,22 @@ export async function getAllToppersWithMarks() {
     marks: t.marks || {},
   }));
 }
+
+export async function getAllStoreToppers() {
+  await connectDB();
+
+  const toppers = await TopperModel.find({})
+    .select("firstName lastName rank year optionalSubject slug ProfileImage")
+    .sort({ year: -1, rank: 1 })
+    .lean();
+
+  return toppers.map((t: any) => ({
+    firstName: t.firstName,
+    lastName: t.lastName,
+    rank: t.rank,
+    year: t.year,
+    optionalSubject: t.optionalSubject || "",
+    slug: t.slug,
+    ProfileImage: t.ProfileImage || "",
+  }));
+}

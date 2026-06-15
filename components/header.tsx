@@ -7,6 +7,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 type NavItem = { label: string; href: string; tag?: "new"; dataTrack: string };
 
 const NAV_ITEMS: NavItem[] = [
+  { label: "Store", href: "/store", dataTrack: "nav-store", tag: "new" },
   { label: "Toppers", href: "/toppers", dataTrack: "nav-toppers" },
   { label: "Answer Copies", href: "/toppers/toppers-copy-compilation", dataTrack: "nav-answer-copies" },
   { label: "Ask AI", href: "/ask", dataTrack: "nav-ask-ai" },
@@ -91,6 +92,14 @@ export default function Header() {
 
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
           <Link
+            href="/store"
+            data-track="nav-store"
+            className="flex items-center gap-1.5 hover:text-black transition-colors"
+          >
+            Store
+            <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+          </Link>
+          <Link
             href="/toppers"
             data-track="nav-toppers"
             className="hover:text-black transition-colors"
@@ -147,6 +156,15 @@ export default function Header() {
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white">
           <div className="px-4 py-4 space-y-3">
+            <Link
+              href="/store"
+              onClick={() => setMobileOpen(false)}
+              data-track="nav-mobile-store"
+              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
+            >
+              Store
+              <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+            </Link>
             <Link
               href="/toppers"
               onClick={() => setMobileOpen(false)}

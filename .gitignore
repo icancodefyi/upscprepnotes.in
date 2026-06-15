@@ -48,3 +48,6 @@ skills/
 upscprepnotes.in-Performance-on-Search-2026-06-04/public/pdfs/answer-copies/
 scripts/*.cache.json
 scripts/.*.cache.json
+
+# downloaded premium materials (4.5 GB)
+/public/downloads/
