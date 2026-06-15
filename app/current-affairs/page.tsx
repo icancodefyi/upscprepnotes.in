@@ -12,35 +12,37 @@ type QuizQuestion = {
   explanation: string;
 };
 
-const SECTION_COLORS: Record<string, string> = {
-  "National News": "bg-blue-500",
-  "International Relations & Summits": "bg-indigo-500",
-  "Economy & Finance": "bg-emerald-500",
-  "Environment & Ecology": "bg-teal-500",
-  "Science & Technology": "bg-violet-500",
-  "Government Schemes & Policies": "bg-amber-500",
-  "Important Reports & Indices": "bg-rose-500",
-  "Awards & Honours": "bg-yellow-500",
-  "Appointments": "bg-cyan-500",
-  "Obituaries": "bg-gray-400",
-  "Sports": "bg-orange-500",
-  "Summits, Conferences & Important Days": "bg-pink-500",
+const CANVAS = "#f6f5f4";
+const SURFACE = "#ffffff";
+const INK = "#000000";
+const INK_SECONDARY = "#31302e";
+const INK_MUTED = "#615d59";
+const INK_FAINT = "#a39e98";
+const HAIRLINE = "#e6e6e6";
+const NOTION_BLUE = "#0075de";
+const DARK_INDIGO = "#213183";
+
+const STICKER: Record<string, string> = {
+  sky: "#62aef0", purple: "#d6b6f6", pink: "#ff64c8",
+  orange: "#dd5b00", teal: "#2a9d99", green: "#1aae39",
 };
 
-const SECTION_BG: Record<string, string> = {
-  "National News": "bg-blue-50",
-  "International Relations & Summits": "bg-indigo-50",
-  "Economy & Finance": "bg-emerald-50",
-  "Environment & Ecology": "bg-teal-50",
-  "Science & Technology": "bg-violet-50",
-  "Government Schemes & Policies": "bg-amber-50",
-  "Important Reports & Indices": "bg-rose-50",
-  "Awards & Honours": "bg-yellow-50",
-  "Appointments": "bg-cyan-50",
-  "Obituaries": "bg-gray-100",
-  "Sports": "bg-orange-50",
-  "Summits, Conferences & Important Days": "bg-pink-50",
+const SECTION_DOTS: Record<string, string> = {
+  "National News": STICKER.sky,
+  "International Relations & Summits": STICKER.purple,
+  "Economy & Finance": STICKER.green,
+  "Environment & Ecology": STICKER.teal,
+  "Science & Technology": STICKER.orange,
+  "Government Schemes & Policies": STICKER.pink,
+  "Important Reports & Indices": STICKER.sky,
+  "Awards & Honours": STICKER.purple,
+  "Appointments": STICKER.teal,
+  "Obituaries": INK_FAINT,
+  "Sports": STICKER.orange,
+  "Summits, Conferences & Important Days": STICKER.pink,
 };
+
+function dotColor(title: string) { return SECTION_DOTS[title] || INK_FAINT; }
 
 function extractKeyData(body: string): string[] {
   const patterns = [
@@ -49,77 +51,44 @@ function extractKeyData(body: string): string[] {
     /\b\d+(?:th|st|nd|rd)\s*(?:rank|position|place)?/gi,
     /(?:rank|position|No\.)\s*#?\d+/gi,
     /\$\s*[\d,]+(?:\s*(?:billion|trillion|million))?/gi,
-    /\d[\d,]*\s*(?:MW|GW|sq\s*km)/gi,
   ];
   const results = new Set<string>();
   for (const pat of patterns) {
     const matches = body.match(pat);
     if (matches) matches.forEach((m) => results.add(m.trim()));
   }
-  return [...results].slice(0, 5);
+  return [...results].slice(0, 4);
 }
 
-function generateSessionId(): string {
+function sessionId() {
   return `ca-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function SectionTab({
-  title, active, onClick
-}: {
-  title: string; active: boolean; onClick: () => void;
-}) {
+function PillBadge({ children }: { children: React.ReactNode }) {
   return (
-    <button
-      onClick={onClick}
-      className={`shrink-0 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
-        active
-          ? "bg-[#1a1a2e] text-white shadow-sm"
-          : "bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-gray-300 hover:text-gray-900"
-      }`}
-    >
-      {title}
-    </button>
+    <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[12px] font-semibold tracking-[0.125px] text-white">
+      {children}
+    </span>
   );
 }
 
-function Dot({ filled }: { filled: boolean }) {
-  return (
-    <span
-      className={`inline-block h-2 w-2 rounded-full transition-all ${
-        filled ? "bg-[#1a1a2e] scale-125" : "bg-gray-200"
-      }`}
-    />
-  );
-}
-
-function CopyButton({ text }: { text: string }) {
+function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
-      onClick={() => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      }}
-      className="flex items-center gap-1 text-[11px] font-medium text-gray-400 hover:text-gray-600 transition"
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
+      className="flex items-center gap-1 text-[13px] font-medium transition"
+      style={{ color: INK_FAINT }}
     >
-      {copied ? (
-        <>Copied</>
-      ) : (
-        <>
-          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          Copy
-        </>
-      )}
+      {copied ? "Copied" : "Copy"}
     </button>
   );
 }
 
 export default function CurrentAffairsPage() {
   const data = MAY_2026;
-  const totalItems = data.sections.reduce((acc, s) => acc + s.items.length, 0);
+  const totalItems = data.sections.reduce((a, s) => a + s.items.length, 0);
+  const sessionRef = useRef(sessionId());
 
   const [activeSection, setActiveSection] = useState(0);
   const [viewAll, setViewAll] = useState(false);
@@ -127,88 +96,48 @@ export default function CurrentAffairsPage() {
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const [quizState, setQuizState] = useState<Record<number, {
     status: "idle" | "loading" | "ready" | "submitted";
-    questions: QuizQuestion[];
-    answers: number[];
-    score: number | null;
+    questions: QuizQuestion[]; answers: number[]; score: number | null;
   }>>({});
-  const [readingProgress, setReadingProgress] = useState(0);
 
   const tabsRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const sessionIdRef = useRef(generateSessionId());
 
   const toggleCard = useCallback((key: string) => {
-    setExpandedCards((prev) => ({ ...prev, [key]: !prev[key] }));
+    setExpandedCards((p) => ({ ...p, [key]: !p[key] }));
   }, []);
 
   const section = data.sections[activeSection];
-  const sectionColor = SECTION_COLORS[section?.title] || "bg-gray-400";
 
-  // Search
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
     const q = searchQuery.toLowerCase();
-    const results: { sectionIndex: number; itemIndex: number; headline: string; body: string }[] = [];
-    data.sections.forEach((s, si) => {
-      s.items.forEach((item, ii) => {
-        if (item.headline.toLowerCase().includes(q) || item.body.toLowerCase().includes(q)) {
-          results.push({ sectionIndex: si, itemIndex: ii, headline: item.headline, body: item.body });
-        }
-      });
-    });
-    return results;
+    const r: { si: number; ii: number; hl: string; body: string }[] = [];
+    data.sections.forEach((s, si) => s.items.forEach((item, ii) => {
+      if (item.headline.toLowerCase().includes(q) || item.body.toLowerCase().includes(q))
+        r.push({ si, ii, hl: item.headline, body: item.body });
+    }));
+    return r;
   }, [searchQuery, data]);
 
-  // Keyboard nav
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (viewAll || searchQuery) return;
-      if (e.key === "ArrowLeft") {
-        setActiveSection((prev) => Math.max(0, prev - 1));
-      } else if (e.key === "ArrowRight") {
-        setActiveSection((prev) => Math.min(data.sections.length - 1, prev + 1));
-      }
+      if (e.key === "ArrowLeft") setActiveSection((p) => Math.max(0, p - 1));
+      if (e.key === "ArrowRight") setActiveSection((p) => Math.min(data.sections.length - 1, p + 1));
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [viewAll, searchQuery, data.sections.length]);
 
-  // Reading progress
-  useEffect(() => {
-    function handleScroll() {
-      const el = contentRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      if (total <= 0) {
-        setReadingProgress(100);
-        return;
-      }
-      const scrolled = -rect.top;
-      const pct = Math.min(100, Math.max(0, Math.round((scrolled / total) * 100)));
-      setReadingProgress(pct);
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Scroll active tab into view
   useEffect(() => {
     if (viewAll) return;
     const tabs = tabsRef.current;
-    if (!tabs) return;
-    const active = tabs.querySelector(`[data-active="true"]`);
+    const active = tabs?.querySelector(`[data-active="true"]`);
     if (active) active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   }, [activeSection, viewAll]);
 
-  // Generate quiz
   async function generateQuiz(sectionIndex: number) {
     const s = data.sections[sectionIndex];
-    setQuizState((prev) => ({
-      ...prev,
-      [sectionIndex]: { status: "loading", questions: [], answers: [], score: null },
-    }));
-
+    setQuizState((p) => ({ ...p, [sectionIndex]: { status: "loading", questions: [], answers: [], score: null } }));
     const prompt = `You are a UPSC exam question generator. Create exactly 5 multiple choice questions based on these current affairs topics:
 
 ${s.items.map((item, i) => `${i + 1}. ${item.headline}: ${item.body.slice(0, 200)}`).join("\n\n")}
@@ -229,180 +158,96 @@ Q2: ... and so on for all 5 questions.`;
       const res = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: prompt, sessionId: sessionIdRef.current }),
+        body: JSON.stringify({ message: prompt, sessionId: sessionRef.current }),
       });
       if (!res.ok) throw new Error("API error");
-
       const reader = res.body?.getReader();
       if (!reader) throw new Error("No reader");
-
-      let fullText = "";
-      const decoder = new TextDecoder();
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        fullText += decoder.decode(value, { stream: true });
-      }
-
-      const questions = parseQuizQuestions(fullText);
-      if (questions.length === 0) throw new Error("Could not parse questions");
-
-      setQuizState((prev) => ({
-        ...prev,
-        [sectionIndex]: { status: "ready", questions, answers: new Array(5).fill(-1), score: null },
-      }));
+      let text = "";
+      const dec = new TextDecoder();
+      while (true) { const { done, value } = await reader.read(); if (done) break; text += dec.decode(value, { stream: true }); }
+      const questions = parseQuiz(text);
+      if (!questions.length) throw new Error("parse fail");
+      setQuizState((p) => ({ ...p, [sectionIndex]: { status: "ready", questions, answers: new Array(5).fill(-1), score: null } }));
     } catch {
-      setQuizState((prev) => ({ ...prev, [sectionIndex]: { status: "idle", questions: [], answers: [], score: null } }));
+      setQuizState((p) => ({ ...p, [sectionIndex]: { status: "idle", questions: [], answers: [], score: null } }));
     }
   }
 
-  function submitQuiz(sectionIndex: number) {
-    const qs = quizState[sectionIndex];
-    if (!qs || qs.questions.length === 0) return;
-    const score = qs.answers.reduce((acc, ans, i) => (ans === qs.questions[i].correct ? acc + 1 : acc), 0);
-    setQuizState((prev) => ({
-      ...prev,
-      [sectionIndex]: { ...prev[sectionIndex], status: "submitted", score },
-    }));
+  function submitQuiz(si: number) {
+    const qs = quizState[si];
+    if (!qs || !qs.questions.length) return;
+    const score = qs.answers.reduce((a, ans, i) => (ans === qs.questions[i].correct ? a + 1 : a), 0);
+    setQuizState((p) => ({ ...p, [si]: { ...p[si], status: "submitted", score } }));
   }
 
-  function renderSectionContent(s: typeof section, si: number) {
-    const dot = SECTION_COLORS[s.title] || "bg-gray-400";
-    const bg = SECTION_BG[s.title] || "bg-gray-50";
+  function SectionContent({ s, si }: { s: typeof section; si: number }) {
+    const dot = dotColor(s.title);
     const quiz = quizState[si];
-
     return (
-      <div key={si} className="mb-16 last:mb-0">
+      <div className="mb-20 last:mb-0">
         <div className="flex items-center gap-3 mb-6">
-          <span className={`h-3 w-3 rounded-full ${dot}`} />
-          <h2 className="text-lg font-bold tracking-tight text-[#1a1a2e]">
-            {s.title}
-          </h2>
-          <span className="ml-auto text-xs text-gray-400">{s.items.length} items</span>
+          <span className="h-3 w-3 rounded-full" style={{ backgroundColor: dot }} />
+          <h2 className="text-[22px] font-bold tracking-[-0.25px]" style={{ color: INK }}>{s.title}</h2>
+          <span style={{ color: INK_FAINT }} className="ml-auto text-[14px]">{s.items.length} items</span>
         </div>
-
         <div className="grid gap-4 sm:grid-cols-2">
           {s.items.map((item, ii) => {
             const key = `${si}-${ii}`;
             const expanded = expandedCards[key];
-            const keyData = extractKeyData(item.body);
-
+            const kd = extractKeyData(item.body);
             return (
-              <div
-                key={ii}
-                className="group rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-100 transition hover:shadow-md"
-              >
+              <div key={ii} className="rounded-xl p-5 transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]" style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}` }}>
                 <div className="flex items-start justify-between gap-3">
-                  <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded text-[10px] font-bold text-white ${dot}`}>
-                    {ii + 1}
-                  </span>
-                  <h3 className="flex-1 text-sm font-bold leading-snug text-[#1a1a2e]">
-                    {item.headline}
-                  </h3>
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded text-[10px] font-bold text-white" style={{ backgroundColor: dot }}>{ii + 1}</span>
+                  <h3 className="flex-1 text-[15px] font-bold leading-snug tracking-[-0.125px]" style={{ color: INK }}>{item.headline}</h3>
                 </div>
-
-                <div className="relative">
-                  <p className={`mt-3 text-xs leading-[1.7] text-gray-500 transition-all ${expanded ? "" : "line-clamp-2"}`}>
-                    {item.body}
-                  </p>
-                  {item.body.length > 180 && (
-                    <button
-                      onClick={() => toggleCard(key)}
-                      className="mt-1 text-[11px] font-semibold text-gray-400 hover:text-gray-600 transition"
-                    >
-                      {expanded ? "Show less" : "Read more"}
-                    </button>
-                  )}
-                </div>
-
-                {keyData.length > 0 && (
+                <p className={`mt-3 text-[14px] leading-[1.5] transition-all`} style={{ color: INK_MUTED }}>{expanded ? item.body : item.body.length > 180 ? `${item.body.slice(0, 180)}…` : item.body}</p>
+                {item.body.length > 180 && (
+                  <button onClick={() => toggleCard(key)} className="mt-1 text-[13px] font-medium transition" style={{ color: INK_FAINT }}>{expanded ? "Show less" : "Read more"}</button>
+                )}
+                {kd.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {keyData.map((d, di) => (
-                      <span key={di} className="rounded-md bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-500 ring-1 ring-gray-100">
-                        {d}
-                      </span>
+                    {kd.map((d, di) => (
+                      <span key={di} className="rounded px-2 py-0.5 text-[12px] font-medium" style={{ backgroundColor: CANVAS, border: `1px solid ${HAIRLINE}`, color: INK_MUTED }}>{d}</span>
                     ))}
                   </div>
                 )}
-
-                <div className="mt-3 flex items-center gap-3 pt-3 border-t border-gray-50">
-                  <Link
-                    href={`/ask?q=${encodeURIComponent(`Tell me more about: ${item.headline} (UPSC current affairs context)`)}`}
-                    className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 hover:text-emerald-700 transition"
-                  >
-                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                    Ask AI
-                  </Link>
-                  <CopyButton text={`${item.headline}\n\n${item.body.slice(0, 300)}`} />
+                <div className="mt-3 flex items-center gap-4 pt-3" style={{ borderTop: `1px solid ${HAIRLINE}` }}>
+                  <Link href={`/ask?q=${encodeURIComponent(`Tell me more about: ${item.headline}`)}`} className="flex items-center gap-1 text-[13px] font-medium transition" style={{ color: NOTION_BLUE }}>Ask AI</Link>
+                  <CopyBtn text={`${item.headline}\n\n${item.body.slice(0, 300)}`} />
                 </div>
               </div>
             );
           })}
         </div>
-
         {/* Quiz */}
-        <div className={`mt-6 rounded-xl ${bg} p-5 sm:p-6`}>
+        <div className="mt-6 rounded-xl p-5 sm:p-6" style={{ backgroundColor: CANVAS, border: `1px solid ${HAIRLINE}` }}>
           {(!quiz || quiz.status === "idle") && (
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold text-[#1a1a2e]">Test yourself</p>
-                <p className="text-xs text-gray-500 mt-0.5">Generate 5 MCQs from this section</p>
+                <p className="text-[15px] font-bold" style={{ color: INK }}>Test yourself</p>
+                <p className="text-[14px] mt-0.5" style={{ color: INK_MUTED }}>Generate 5 MCQs from this section</p>
               </div>
-              <button
-                onClick={() => generateQuiz(si)}
-                className="rounded-lg bg-[#1a1a2e] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#2a2a4e]"
-              >
-                Generate Quiz
-              </button>
+              <button onClick={() => generateQuiz(si)} className="rounded-full px-5 py-2 text-[14px] font-semibold text-white transition hover:scale-95" style={{ backgroundColor: NOTION_BLUE }}>Generate Quiz</button>
             </div>
           )}
-
-          {quiz?.status === "loading" && (
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600" />
-              Generating questions...
-            </div>
-          )}
-
+          {quiz?.status === "loading" && <div className="flex items-center gap-3 text-[14px]" style={{ color: INK_MUTED }}><span className="h-4 w-4 animate-spin rounded-full border-2" style={{ borderColor: HAIRLINE, borderTopColor: NOTION_BLUE }} />Generating questions…</div>}
           {quiz?.status === "ready" && (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-bold text-[#1a1a2e]">5 MCQs · Select the correct answer</p>
-                <button
-                  onClick={() => submitQuiz(si)}
-                  disabled={quiz.answers.every((a) => a === -1)}
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-40"
-                >
-                  Check Answers
-                </button>
+                <p className="text-[15px] font-bold" style={{ color: INK }}>5 MCQs · Select the correct answer</p>
+                <button onClick={() => submitQuiz(si)} disabled={quiz.answers.every((a) => a === -1)} className="rounded-full px-5 py-2 text-[13px] font-semibold text-white transition hover:scale-95 disabled:opacity-40" style={{ backgroundColor: NOTION_BLUE }}>Check Answers</button>
               </div>
               {quiz.questions.map((q, qi) => (
-                <div key={qi} className="rounded-lg bg-white p-4 shadow-sm">
-                  <p className="text-sm font-bold text-[#1a1a2e]">Q{qi + 1}. {q.question}</p>
+                <div key={qi} className="rounded-lg p-4" style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}` }}>
+                  <p className="text-[15px] font-bold" style={{ color: INK }}>Q{qi + 1}. {q.question}</p>
                   <div className="mt-3 space-y-2">
                     {q.options.map((opt, oi) => {
-                      const selected = quiz.answers[qi] === oi;
-                      const isCorrect = q.correct === oi;
+                      const sel = quiz.answers[qi] === oi;
                       return (
-                        <button
-                          key={oi}
-                          onClick={() => {
-                            if (quiz.status !== "ready") return;
-                            const newAnswers = [...quiz.answers];
-                            newAnswers[qi] = oi;
-                            setQuizState((prev) => ({
-                              ...prev,
-                              [si]: { ...prev[si], answers: newAnswers },
-                            }));
-                          }}
-                          className={`w-full rounded-lg border px-3 py-2 text-left text-xs transition ${
-                            selected
-                              ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                              : "border-gray-100 bg-white text-gray-600 hover:border-gray-200"
-                          }`}
-                        >
+                        <button key={oi} onClick={() => { if (quiz.status !== "ready") return; const a = [...quiz.answers]; a[qi] = oi; setQuizState((p) => ({ ...p, [si]: { ...p[si], answers: a } })); }}
+                          className="w-full rounded-lg border px-3 py-2 text-left text-[14px] transition" style={{ borderColor: sel ? NOTION_BLUE : HAIRLINE, backgroundColor: sel ? "#e8f4ff" : SURFACE, color: sel ? NOTION_BLUE : INK_SECONDARY }}>
                           <span className="font-medium">{String.fromCharCode(65 + oi)}</span> {opt}
                         </button>
                       );
@@ -412,49 +257,37 @@ Q2: ... and so on for all 5 questions.`;
               ))}
             </div>
           )}
-
           {quiz?.status === "submitted" && (
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-sm font-bold text-[#1a1a2e]">
-                    You scored {quiz.score ?? "?"} / {quiz.questions.length}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    {quiz.score === 5 ? "Perfect!" : quiz.score !== null && quiz.score >= 3 ? "Good job!" : "Keep practicing"}
-                  </p>
+                  <p className="text-[15px] font-bold" style={{ color: INK }}>You scored {quiz.score ?? "?"} / {quiz.questions.length}</p>
+                  <p className="text-[14px] mt-0.5" style={{ color: INK_MUTED }}>{quiz.score === 5 ? "Perfect!" : quiz.score !== null && quiz.score >= 3 ? "Good job!" : "Keep practicing"}</p>
                 </div>
-                <button
-                  onClick={() => generateQuiz(si)}
-                  className="rounded-lg bg-[#1a1a2e] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#2a2a4e]"
-                >
-                  Retry
-                </button>
+                <button onClick={() => generateQuiz(si)} className="rounded-full px-5 py-2 text-[13px] font-semibold text-white transition hover:scale-95" style={{ backgroundColor: NOTION_BLUE }}>Retry</button>
               </div>
               {quiz.questions.map((q, qi) => {
-                const selected = quiz.answers[qi];
-                const correct = q.correct;
+                const sel = quiz.answers[qi];
+                const corr = q.correct;
                 return (
-                  <div key={qi} className={`rounded-lg bg-white p-4 shadow-sm mb-3 ${selected === correct ? "ring-1 ring-emerald-200" : "ring-1 ring-red-200"}`}>
-                    <p className="text-sm font-bold text-[#1a1a2e]">Q{qi + 1}. {q.question}</p>
+                  <div key={qi} className="rounded-lg p-4 mb-3" style={{ backgroundColor: SURFACE, border: `1px solid ${sel === corr ? "#1aae39" : "#ff64c8"}`, borderLeftWidth: 3 }}>
+                    <p className="text-[15px] font-bold" style={{ color: INK }}>Q{qi + 1}. {q.question}</p>
                     <div className="mt-2 space-y-1.5">
                       {q.options.map((opt, oi) => {
-                        const isSelected = selected === oi;
-                        const isCorrect = correct === oi;
-                        let cls = "rounded px-3 py-1.5 text-xs border ";
-                        if (isCorrect) cls += "border-emerald-400 bg-emerald-50 text-emerald-700";
-                        else if (isSelected && !isCorrect) cls += "border-red-300 bg-red-50 text-red-700";
-                        else cls += "border-gray-100 text-gray-500";
+                        const isSel = sel === oi, isCorr = corr === oi;
+                        let bg = SURFACE, bc = HAIRLINE, c = INK_SECONDARY;
+                        if (isCorr) { bg = "#e8fae8"; bc = "#1aae39"; c = "#1aae39"; }
+                        else if (isSel && !isCorr) { bg = "#fde8f0"; bc = "#ff64c8"; c = "#ff64c8"; }
                         return (
-                          <div key={oi} className={cls}>
+                          <div key={oi} className="rounded border px-3 py-1.5 text-[14px]" style={{ backgroundColor: bg, borderColor: bc, color: c }}>
                             <span className="font-medium">{String.fromCharCode(65 + oi)}</span> {opt}
-                            {isCorrect && <span className="ml-2 text-emerald-600 font-semibold">✓</span>}
-                            {isSelected && !isCorrect && <span className="ml-2 text-red-500 font-semibold">✗</span>}
+                            {isCorr && <span className="ml-2 font-semibold" style={{ color: "#1aae39" }}>✓</span>}
+                            {isSel && !isCorr && <span className="ml-2 font-semibold" style={{ color: "#ff64c8" }}>✗</span>}
                           </div>
                         );
                       })}
                     </div>
-                    <p className="mt-2 text-[11px] text-gray-500 italic">{q.explanation}</p>
+                    <p className="mt-2 text-[13px] italic" style={{ color: INK_FAINT }}>{q.explanation}</p>
                   </div>
                 );
               })}
@@ -465,148 +298,104 @@ Q2: ... and so on for all 5 questions.`;
     );
   }
 
-  const showSearchResults = searchResults !== null && searchQuery.trim().length > 0;
+  const showSearch = searchResults !== null && searchQuery.trim().length > 0;
 
   return (
-    <main className="min-h-screen bg-[#faf9f7]">
-      {/* ===== READING PROGRESS ===== */}
-      <div className="fixed top-[36px] left-0 right-0 z-50 h-0.5 bg-gray-200">
-        <div
-          className="h-full bg-emerald-500 transition-all duration-300"
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
-
-      <div ref={contentRef} className="mx-auto max-w-5xl px-5 py-14 sm:py-16">
-
-        {/* ===== HERO ===== */}
-        <header className="mb-8">
-          <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Monthly Edition
-          </div>
-          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-[#1a1a2e] sm:text-4xl">
+    <main style={{ backgroundColor: CANVAS, minHeight: "100vh" }}>
+      {/* ===== DARK HERO ===== */}
+      <section style={{ backgroundColor: DARK_INDIGO }} className="relative overflow-hidden">
+        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28 relative">
+          <PillBadge>Monthly Edition</PillBadge>
+          <h1 className="mt-5 text-[54px] font-bold leading-[1.04] tracking-[-1.875px] text-white sm:text-[64px] sm:tracking-[-2.125px]">
             {data.month} {data.year}
           </h1>
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
-            <span className="font-medium text-[#1a1a2e]">UPSC Monthly Current Affairs</span>
-            <span className="text-gray-300">·</span>
-            <span>{data.sections.length} sections</span>
-            <span className="text-gray-300">·</span>
-            <span>{totalItems} topics</span>
-          </div>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <Link
-              href="/api/generate-current-affairs?month=may-2026"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#2a2a4e]"
-            >
+          <p className="mt-4 max-w-xl text-[16px] leading-[1.5]" style={{ color: "rgba(255,255,255,0.7)" }}>
+            UPSC Monthly Current Affairs — {data.sections.length} sections, {totalItems} topics.
+            Each topic includes key facts, data points, and context structured for quick revision.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link href="/api/generate-current-affairs?month=may-2026" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold text-white transition hover:scale-95" style={{ backgroundColor: NOTION_BLUE }}>
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Download PDF
             </Link>
-            <Link
-              href="/store"
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 transition hover:border-gray-300 hover:text-[#1a1a2e]"
-            >
-              Browse Store →
+            <Link href="/store" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition hover:scale-95" style={{ backgroundColor: SURFACE, color: INK, boxShadow: "0 0.175px 1.041px rgba(0,0,0,0.01),0 0.8px 2.925px rgba(0,0,0,0.02),0 2.025px 7.847px rgba(0,0,0,0.027),0 4px 18px rgba(0,0,0,0.04)" }}>
+              Browse Store
             </Link>
           </div>
-        </header>
+          {/* Sticker decorations */}
+          <div className="absolute -right-12 top-8 hidden sm:block opacity-30" style={{ color: STICKER.sky, fontSize: 120 }}>●</div>
+          <div className="absolute -left-8 bottom-12 hidden sm:block opacity-20" style={{ color: STICKER.purple, fontSize: 80 }}>●</div>
+          <div className="absolute right-24 bottom-8 hidden sm:block opacity-25" style={{ color: STICKER.orange, fontSize: 48 }}>●</div>
+        </div>
+      </section>
 
+      <div className="mx-auto max-w-6xl px-6 -mt-8 relative z-10 pb-20">
         {/* ===== SEARCH ===== */}
-        <div className="relative mb-6">
-          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="relative mb-6" style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}`, borderRadius: 8 }}>
+          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: INK_FAINT }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <input
-            type="text"
-            placeholder="Search across all 55 topics..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-[#1a1a2e] placeholder-gray-400 shadow-sm transition focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100"
+          <input type="text" placeholder="Search across all 55 topics…" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full py-2.5 pl-10 pr-4 text-[15px] outline-none rounded" style={{ backgroundColor: "transparent", color: INK }}
           />
           {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: INK_FAINT }}>✕</button>
           )}
         </div>
 
-        {/* ===== VIEW TOGGLE + TABS ===== */}
-        <div className="sticky top-[calc(36px+theme(spacing.4))] z-40 -mx-5 px-5 sm:mx-0 sm:px-0 bg-[#faf9f7] pb-3">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="flex items-center gap-1 rounded-lg bg-gray-200/60 p-0.5">
-              <button
-                onClick={() => setViewAll(false)}
-                className={`rounded-md px-3 py-1 text-[11px] font-semibold transition ${
-                  !viewAll ? "bg-white text-[#1a1a2e] shadow-sm" : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
+        {/* ===== TOGGLE + TABS ===== */}
+        <div className="sticky top-[calc(36px+theme(spacing.4))] z-40 pb-3" style={{ backgroundColor: CANVAS }}>
+          <div className="flex items-center gap-4 mb-3">
+            <div className="flex items-center gap-0.5 rounded-lg p-0.5" style={{ backgroundColor: HAIRLINE }}>
+              <button onClick={() => setViewAll(false)} className="rounded-md px-3 py-1 text-[12px] font-semibold transition"
+                style={{ backgroundColor: !viewAll ? SURFACE : "transparent", color: !viewAll ? INK : INK_MUTED, boxShadow: !viewAll ? "0 1px 3px rgba(0,0,0,0.06)" : "none" }}>
                 Tabbed
               </button>
-              <button
-                onClick={() => setViewAll(true)}
-                className={`rounded-md px-3 py-1 text-[11px] font-semibold transition ${
-                  viewAll ? "bg-white text-[#1a1a2e] shadow-sm" : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
+              <button onClick={() => setViewAll(true)} className="rounded-md px-3 py-1 text-[12px] font-semibold transition"
+                style={{ backgroundColor: viewAll ? SURFACE : "transparent", color: viewAll ? INK : INK_MUTED, boxShadow: viewAll ? "0 1px 3px rgba(0,0,0,0.06)" : "none" }}>
                 View All
               </button>
             </div>
-            {!viewAll && (
-              <span className="text-[11px] text-gray-400">
-                <kbd className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[10px]">←</kbd>
-                <kbd className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] ml-0.5">→</kbd>
-                navigate
-              </span>
-            )}
+            {!viewAll && <span className="text-[12px]" style={{ color: INK_FAINT }}>← → navigate</span>}
           </div>
-
           {!viewAll && (
             <div ref={tabsRef} className="flex gap-2 overflow-x-auto scrollbar-none">
               {data.sections.map((s, i) => (
-                <SectionTab
-                  key={i}
-                  title={s.title}
-                  active={i === activeSection}
-                  onClick={() => setActiveSection(i)}
-                />
+                <button key={i} data-active={i === activeSection} onClick={() => setActiveSection(i)}
+                  className="shrink-0 rounded-[8px] px-3.5 py-1.5 text-[12px] font-semibold transition whitespace-nowrap"
+                  style={{
+                    backgroundColor: i === activeSection ? DARK_INDIGO : SURFACE,
+                    color: i === activeSection ? "#fff" : INK_SECONDARY,
+                    border: i === activeSection ? "none" : `1px solid ${HAIRLINE}`,
+                  }}>
+                  {s.title}
+                </button>
               ))}
             </div>
           )}
         </div>
 
         {/* ===== SEARCH RESULTS ===== */}
-        {showSearchResults && (
+        {showSearch && (
           <div className="mt-4 mb-8">
             {searchResults.length === 0 ? (
-              <p className="text-sm text-gray-400 py-8 text-center">No results found for &quot;{searchQuery}&quot;</p>
+              <p className="text-[14px] py-8 text-center" style={{ color: INK_FAINT }}>No results for &ldquo;{searchQuery}&rdquo;</p>
             ) : (
               <div className="space-y-2">
-                <p className="text-xs text-gray-400">{searchResults.length} result{searchResults.length !== 1 ? "s" : ""} for &quot;{searchQuery}&quot;</p>
+                <p className="text-[14px]" style={{ color: INK_FAINT }}>{searchResults.length} result{searchResults.length !== 1 ? "s" : ""} for &ldquo;{searchQuery}&rdquo;</p>
                 <div className="space-y-2">
                   {searchResults.map((r, i) => (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setSearchQuery("");
-                        setActiveSection(r.sectionIndex);
-                        setViewAll(false);
-                      }}
-                      className="w-full rounded-xl bg-white p-4 text-left shadow-sm ring-1 ring-gray-100 transition hover:shadow-md"
-                    >
-                      <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
-                        <span className={`h-2 w-2 rounded-full ${SECTION_COLORS[data.sections[r.sectionIndex].title] || "bg-gray-400"}`} />
-                        {data.sections[r.sectionIndex].title}
+                    <button key={i} onClick={() => { setSearchQuery(""); setActiveSection(r.si); setViewAll(false); }}
+                      className="w-full rounded-xl p-4 text-left transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
+                      style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}` }}>
+                      <div className="flex items-center gap-2 text-[13px] mb-1" style={{ color: INK_FAINT }}>
+                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: dotColor(data.sections[r.si].title) }} />
+                        {data.sections[r.si].title}
                       </div>
-                      <p className="text-sm font-semibold text-[#1a1a2e]">{r.headline}</p>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-1">{r.body}</p>
+                      <p className="text-[15px] font-semibold tracking-[-0.125px]" style={{ color: INK }}>{r.hl}</p>
+                      <p className="text-[14px] mt-1 line-clamp-1" style={{ color: INK_MUTED }}>{r.body}</p>
                     </button>
                   ))}
                 </div>
@@ -616,133 +405,92 @@ Q2: ... and so on for all 5 questions.`;
         )}
 
         {/* ===== CONTENT ===== */}
-        {!showSearchResults && (
+        {!showSearch && (
           <>
             {viewAll ? (
-              /* View All: render all sections */
               <div className="mt-6 space-y-4">
-                {data.sections.map((s, si) => renderSectionContent(s, si))}
+                {data.sections.map((s, si) => <SectionContent key={si} s={s} si={si} />)}
               </div>
             ) : (
-              /* Tabbed: render active section */
               <div className="mt-6" key={activeSection}>
-                {renderSectionContent(section, activeSection)}
+                <SectionContent s={section} si={activeSection} />
               </div>
             )}
 
             {/* ===== PREV / NEXT ===== */}
-            {!viewAll && !showSearchResults && (
-              <div className="mt-8 flex items-center justify-between gap-4 border-t border-gray-200 pt-6">
-                <button
-                  onClick={() => setActiveSection(Math.max(0, activeSection - 1))}
-                  disabled={activeSection === 0}
-                  className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-white hover:text-[#1a1a2e] disabled:opacity-30 disabled:pointer-events-none"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                  Previous
+            {!viewAll && (
+              <div className="mt-8 flex items-center justify-between gap-4 pt-6" style={{ borderTop: `1px solid ${HAIRLINE}` }}>
+                <button onClick={() => setActiveSection(Math.max(0, activeSection - 1))} disabled={activeSection === 0}
+                  className="flex items-center gap-1.5 rounded-[8px] px-4 py-2 text-[14px] font-medium transition disabled:opacity-30" style={{ color: INK_SECONDARY, border: `1px solid ${HAIRLINE}`, backgroundColor: SURFACE }}>
+                  ← Previous
                 </button>
-                <div className="hidden sm:flex items-center gap-1">
+                <div className="hidden sm:flex items-center gap-1.5">
                   {data.sections.map((_, i) => (
-                    <button key={i} onClick={() => setActiveSection(i)}>
-                      <Dot filled={i === activeSection} />
-                    </button>
+                    <button key={i} onClick={() => setActiveSection(i)} className="h-2 w-2 rounded-full transition"
+                      style={{ backgroundColor: i === activeSection ? DARK_INDIGO : HAIRLINE }} />
                   ))}
                 </div>
-                <button
-                  onClick={() => setActiveSection(Math.min(data.sections.length - 1, activeSection + 1))}
-                  disabled={activeSection === data.sections.length - 1}
-                  className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-white hover:text-[#1a1a2e] disabled:opacity-30 disabled:pointer-events-none"
-                >
-                  Next
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
+                <button onClick={() => setActiveSection(Math.min(data.sections.length - 1, activeSection + 1))} disabled={activeSection === data.sections.length - 1}
+                  className="flex items-center gap-1.5 rounded-[8px] px-4 py-2 text-[14px] font-medium transition disabled:opacity-30" style={{ color: INK_SECONDARY, border: `1px solid ${HAIRLINE}`, backgroundColor: SURFACE }}>
+                  Next →
                 </button>
               </div>
             )}
 
             {/* ===== FOOTER ===== */}
-            <footer className="mt-14 rounded-2xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-100 sm:p-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-emerald-600">
+            <footer className="mt-16 rounded-xl p-8 text-center sm:p-10" style={{ backgroundColor: SURFACE, border: `1px solid ${HAIRLINE}` }}>
+              <span className="inline-flex items-center rounded-full border px-3 py-1 text-[12px] font-semibold" style={{ borderColor: NOTION_BLUE, color: NOTION_BLUE }}>
                 Prepare smarter
-              </p>
-              <h2 className="mt-2 text-xl font-bold text-[#1a1a2e] sm:text-2xl">
-                Get the full PDF + more
-              </h2>
-              <p className="mt-2 text-sm text-gray-500">
-                Download the complete {data.month} {data.year} edition as a PDF for offline study,
-                or browse our store for curated UPSC products.
+              </span>
+              <h2 className="mt-4 text-[26px] font-bold tracking-[-0.625px]" style={{ color: INK }}>Get the full PDF + more</h2>
+              <p className="mt-2 text-[15px]" style={{ color: INK_MUTED }}>
+                Download the complete {data.month} {data.year} edition as a PDF for offline study, or browse our store for curated UPSC products.
               </p>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                <Link
-                  href="/api/generate-current-affairs?month=may-2026"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2a2a4e]"
-                >
+                <Link href="/api/generate-current-affairs?month=may-2026"
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold text-white transition hover:scale-95" style={{ backgroundColor: NOTION_BLUE }}>
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   Download PDF
                 </Link>
-                <Link
-                  href="/store"
-                  className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-6 py-3 text-sm font-medium text-gray-600 transition hover:border-gray-300 hover:text-[#1a1a2e]"
-                >
+                <Link href="/store" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition hover:scale-95"
+                  style={{ backgroundColor: SURFACE, color: INK, border: `1px solid ${HAIRLINE}`, boxShadow: "0 0.175px 1.041px rgba(0,0,0,0.01),0 0.8px 2.925px rgba(0,0,0,0.02),0 2.025px 7.847px rgba(0,0,0,0.027),0 4px 18px rgba(0,0,0,0.04)" }}>
                   Browse Store →
                 </Link>
               </div>
-              <p className="mt-5 text-xs text-gray-400">
-                UPSCPrepNotes · {data.month} {data.year} Edition · Updated monthly
-              </p>
+              <p className="mt-5 text-[14px]" style={{ color: INK_FAINT }}>UPSCPrepNotes · {data.month} {data.year} Edition · Updated monthly</p>
             </footer>
           </>
         )}
       </div>
 
-      <style>{`
-        .scrollbar-none::-webkit-scrollbar { display: none; }
-        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .animate-spin { animation: spin 0.8s linear infinite; }
-      `}</style>
+      <style>{`.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: spin 0.8s linear infinite; }`}</style>
     </main>
   );
 }
 
-function parseQuizQuestions(text: string): QuizQuestion[] {
+function parseQuiz(text: string): QuizQuestion[] {
   const questions: QuizQuestion[] = [];
   const blocks = text.split(/(?=Q\d+:)/g);
-
   for (const block of blocks) {
     if (!block.trim()) continue;
-
-    const qMatch = block.match(/Q\d+:\s*(.+?)(?:\n|$)/);
-    const aMatch = block.match(/A\)\s*(.+?)(?:\n|$)/);
-    const bMatch = block.match(/B\)\s*(.+?)(?:\n|$)/);
-    const cMatch = block.match(/C\)\s*(.+?)(?:\n|$)/);
-    const dMatch = block.match(/D\)\s*(.+?)(?:\n|$)/);
-    const correctMatch = block.match(/Correct Answer:\s*([A-D])/i);
-    const explanationMatch = block.match(/Explanation:\s*(.+?)(?:\n|$)/);
-
-    if (!qMatch || !aMatch || !bMatch || !cMatch || !dMatch || !correctMatch) continue;
-
-    const correctMap: Record<string, number> = { A: 0, B: 1, C: 2, D: 3 };
-    const correctIndex = correctMap[correctMatch[1].toUpperCase()];
-
-    if (correctIndex === undefined) continue;
-
-    questions.push({
-      id: questions.length + 1,
-      question: qMatch[1].trim(),
-      options: [aMatch[1].trim(), bMatch[1].trim(), cMatch[1].trim(), dMatch[1].trim()],
-      correct: correctIndex,
-      explanation: explanationMatch ? explanationMatch[1].trim() : "",
-    });
-
+    const q = block.match(/Q\d+:\s*(.+?)(?:\n|$)/);
+    const a = block.match(/A\)\s*(.+?)(?:\n|$)/);
+    const b = block.match(/B\)\s*(.+?)(?:\n|$)/);
+    const c = block.match(/C\)\s*(.+?)(?:\n|$)/);
+    const d = block.match(/D\)\s*(.+?)(?:\n|$)/);
+    const cr = block.match(/Correct Answer:\s*([A-D])/i);
+    const ex = block.match(/Explanation:\s*(.+?)(?:\n|$)/);
+    if (!q || !a || !b || !c || !d || !cr) continue;
+    const ci: Record<string, number> = { A: 0, B: 1, C: 2, D: 3 };
+    const idx = ci[cr[1].toUpperCase()];
+    if (idx === undefined) continue;
+    questions.push({ id: questions.length + 1, question: q[1].trim(), options: [a[1].trim(), b[1].trim(), c[1].trim(), d[1].trim()], correct: idx, explanation: ex ? ex[1].trim() : "" });
     if (questions.length >= 5) break;
   }
-
   return questions;
 }
