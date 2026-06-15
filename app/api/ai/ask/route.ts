@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     // Phase 1: Non-streaming call to decide if web search is needed
     try {
       const firstResponse = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: "llama-3.1-8b-instant",
         messages: groqMessages,
         tools: [webSearchTool],
         tool_choice: "auto",
@@ -111,8 +111,28 @@ export async function POST(request: NextRequest) {
           wantsSearch = true;
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Tool call failed, falling back to no-search:", err);
+      // Attempt to recover from native function-call format (Llama's <function=...>)
+      let failedGen: string | null = null;
+      try {
+        const raw = err?.error?.failed_generation || err?.failed_generation;
+        if (typeof raw === "string") {
+          failedGen = raw;
+        } else if (typeof err.message === "string") {
+          const jsonPart = err.message.match(/\{.*\}/);
+          if (jsonPart) failedGen = JSON.parse(jsonPart[0])?.error?.failed_generation;
+        }
+      } catch {}
+      if (failedGen) {
+        assistantContent = failedGen.replace(/<function=[\s\S]*?<\/function>/g, "").replace(/<function=[\s\S]*$/, "").trim();
+        const nativeMatch = failedGen.match(/<function=web_search=\{"query":\s*"([^"]+)"\}><\/function>/);
+        if (nativeMatch) {
+          wantsSearch = true;
+          toolCallArgs = { query: nativeMatch[1] };
+          toolCallId = "native-fallback";
+        }
+      }
     }
 
     if (wantsSearch) {

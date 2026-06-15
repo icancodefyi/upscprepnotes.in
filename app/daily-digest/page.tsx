@@ -201,30 +201,43 @@ export default function DailyDigestPage() {
         <section>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Today's Topic</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Reading</span>
               <h2 className="mt-1 text-2xl font-bold tracking-tight text-[#1a1a2e] sm:text-3xl">
-                Current Affairs — Topper's Lens
+                Monthly Current Affairs
               </h2>
-              <p className="mt-1 text-sm text-[#8b8882]">One topic. Structured like a topper would write it.</p>
+              <p className="mt-1 text-sm text-[#8b8882]">May 2026 edition — 11 sections, 55 topics.</p>
             </div>
+            <Link href="/current-affairs" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition">
+              Read full edition <span className="text-lg leading-none">→</span>
+            </Link>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-2xl border-2 border-dashed border-[#d4d0c8] bg-white p-10 text-center transition hover:border-emerald-400 hover:bg-emerald-50/30 sm:p-14">
-            <div className="mx-auto max-w-sm">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
-                <svg className="h-7 w-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="mt-5 text-lg font-bold text-[#1a1a2e]">Today's analysis coming soon</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#8b8882]">
-                Each morning: one current affairs topic with a model answer, structure, diagrams, and related answer copies — 
-                written the way a topper would approach it.
-              </p>
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-[#8b8882]">
-                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                Your analysis will appear here tomorrow
-              </div>
+          <div className="mt-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+            <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-[#e8e5e0]">
+              {[
+                ["🇮🇳", "National News", "Quantum Mission Phase 2, GDP 7.2%, DPDP Rules, New Criminal Laws, RE 250 GW"],
+                ["🌐", "International Relations", "Indian Ocean Conference, India-EU FTA, India-Japan Nuclear Deal, BRICS, Italy Pact"],
+                ["💰", "Economy & Finance", "Repo Rate 6.25%, Forex $750B, SEBI ESG, GST ₹2.5L Cr, Monetisation 85%"],
+                ["🌿", "Environment", "Third NDC, Great Indian Bustard, GRAP Stage 4, Forest Report, Ganges Dolphin"],
+                ["🔬", "Science & Tech", "ISRO RLV Landing, DRDO Hypersonic, CSIR mRNA, Supercomputing 30 PF, 15 Exoplanets"],
+                ["📋", "Schemes & Policies", "Ayushman Cover Seniors, PM-KISAN 20, PMAY-U 2Cr, NEP CBCS by 2027, SWAMIH 2.0"],
+              ].map((item, i) => {
+                const [emoji, title, summary] = item;
+                return (
+                  <div key={i} className="flex items-start gap-3 p-4 sm:p-5">
+                    <span className="mt-0.5 text-lg">{emoji}</span>
+                    <div>
+                      <p className="text-sm font-bold text-[#1a1a2e]">{title}</p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-[#8b8882]">{summary}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="border-t border-[#e8e5e0] px-4 py-3 text-center sm:hidden">
+              <Link href="/current-affairs" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition">
+                Read full edition →
+              </Link>
             </div>
           </div>
         </section>

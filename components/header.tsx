@@ -9,6 +9,7 @@ type NavItem = { label: string; href: string; tag?: "new"; dataTrack: string };
 const NAV_ITEMS: NavItem[] = [
   { label: "Store", href: "/store", dataTrack: "nav-store", tag: "new" },
   { label: "Toppers", href: "/toppers", dataTrack: "nav-toppers" },
+  { label: "Current Affairs", href: "/current-affairs", dataTrack: "nav-current-affairs" },
   { label: "Ask AI", href: "/ask", dataTrack: "nav-ask-ai" },
 ];
 
@@ -105,6 +106,13 @@ export default function Header() {
           >
             Toppers
           </Link>
+          <Link
+            href="/current-affairs"
+            data-track="nav-current-affairs"
+            className="hover:text-black transition-colors"
+          >
+            Current Affairs
+          </Link>
 
           <NavDropdown label="Free Materials" dataTrack="nav-free-materials">
             {FREE_MATERIALS_CATEGORIES.map((cat) => (
@@ -164,6 +172,14 @@ export default function Header() {
               className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
             >
               Toppers
+            </Link>
+            <Link
+              href="/current-affairs"
+              onClick={() => setMobileOpen(false)}
+              data-track="nav-mobile-current-affairs"
+              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
+            >
+              Current Affairs
             </Link>
 
             <div className="py-2">
