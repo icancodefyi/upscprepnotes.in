@@ -1,11 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
-import { getZipPath, slugToDir } from "@/lib/order-utils";
 
-const ZIP_DIR = join(process.cwd(), "private", "zips");
+const VPS_URL = process.env.VPS_URL || "http://72.60.99.68:8080";
+
+const ZIP_NAMES: Record<string, string> = {
+  "gs1-notes-bundle": "GS1-Notes-Bundle.zip",
+  "gs2-notes-bundle": "GS2-Notes-Bundle.zip",
+  "gs3-notes-bundle": "GS3-Notes-Bundle.zip",
+  "ethics-gs4-bundle": "Ethics-GS4-Bundle.zip",
+  "prelims-prep-pack": "Prelims-Prep-Pack.zip",
+  "polity-foundation": "Polity-Foundation.zip",
+  "history-pack": "History-Pack.zip",
+  "air-10-mains-notes": "AIR-10-Mains-Notes.zip",
+  "abhijit-ray-prelims-bundle": "Abhijit-Ray-Prelims-Bundle.zip",
+  "environment-short-notes": "Environment-Short-Notes.zip",
+  "mrunal-economy-complete": "Mrunal-Economy.zip",
+  "satyam-gandhi-mains-complete": "Satyam-Gandhi-Mains.zip",
+  "asad-zuberi-air86-complete": "Asad-Zuberi-AIR86-Complete.zip",
+  "madhav-air16-complete": "Madhav-AIR16-Complete.zip",
+  "prahaar-complete": "PRAHAAR-Complete.zip",
+  "antriksh-gs-notes": "Antriksh-GS-Notes.zip",
+  "dr-shivin-geography": "Dr-Shivin-Geography.zip",
+  "anthropology-bundle": "Anthropology-Bundle.zip",
+  "geography-bundle": "Geography-Bundle.zip",
+  "vp-2026-test-series": "VP-2026-Test-Series.zip",
+  "visionias-test-series": "VisionIAS-Test-Series.zip",
+  "only-ias-test-series": "Only-IAS-Test-Series.zip",
+  "csk-csat-complete": "CSK-CSAT-Micro-Tests.zip",
+  "ias-baba-test-series": "IAS-BABA-Test-Series.zip",
+  "dhyeya-ias-prelims-tests": "Dhyeya-IAS-Prelims-Tests.zip",
+  "ipm-prelims-test-series": "IPM-Prelims-Test-Series.zip",
+};
 
 export async function GET(
   request: NextRequest,
@@ -22,64 +48,13 @@ export async function GET(
     }
 
     const single = request.nextUrl.searchParams.get("slug");
+    const targetSlug = single || order.items?.[0]?.slug;
 
-    if (single) {
-      const dirName = slugToDir(single);
-      const fileDir = join(process.cwd(), "public", "downloads", dirName);
-
-      if (!existsSync(fileDir)) {
-        return NextResponse.json({ error: "Product files not found" }, { status: 404 });
-      }
-
-      const { readdirSync } = await import("fs");
-      const files = readdirSync(fileDir).filter((f) => f.endsWith(".pdf") || f.endsWith(".zip"));
-
-      if (files.length === 0) {
-        return NextResponse.json({ error: "No files available" }, { status: 404 });
-      }
-
-      if (files.length === 1) {
-        const filePath = join(fileDir, files[0]);
-        const buf = readFileSync(filePath);
-        return new NextResponse(buf, {
-          headers: {
-            "Content-Type": "application/pdf",
-            "Content-Disposition": `attachment; filename="${encodeURIComponent(files[0])}"`,
-            "Content-Length": String(buf.length),
-          },
-        });
-      }
-
-      const zipPath = getZipPath(single);
-      if (zipPath && existsSync(zipPath)) {
-        const buf = readFileSync(zipPath);
-        return new NextResponse(buf, {
-          headers: {
-            "Content-Type": "application/zip",
-            "Content-Disposition": `attachment; filename="${dirName}.zip"`,
-            "Content-Length": String(buf.length),
-          },
-        });
-      }
-
-      return NextResponse.json({ error: "Files not available for download" }, { status: 404 });
+    if (!targetSlug || !ZIP_NAMES[targetSlug]) {
+      return NextResponse.json({ error: "Product file not found" }, { status: 404 });
     }
 
-    const zipPath = getZipPath(order.items[0]?.slug || "");
-    if (!zipPath || !existsSync(zipPath)) {
-      return NextResponse.json({ error: "Download files not found" }, { status: 404 });
-    }
-
-    const buf = readFileSync(zipPath);
-    const filename = `${slugToDir(order.items[0]?.slug || "download")}.zip`;
-
-    return new NextResponse(buf, {
-      headers: {
-        "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "Content-Length": String(buf.length),
-      },
-    });
+    return NextResponse.redirect(`${VPS_URL}/${ZIP_NAMES[targetSlug]}`, 302);
   } catch (err) {
     console.error("Download error:", err);
     return NextResponse.json({ error: "Download failed" }, { status: 500 });
