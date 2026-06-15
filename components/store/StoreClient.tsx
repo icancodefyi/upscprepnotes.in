@@ -242,15 +242,15 @@ function ProductCard({
       {/* Product Image */}
       <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} className="block">
         {product.image ? (
-          <div className="relative bg-gray-50">
+          <div className="relative h-44 overflow-hidden bg-gray-50">
             <img
               src={product.image}
               alt={product.title}
-              className="w-full transition duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
             />
             {product.badge && (
               <span
-                className={`absolute left-3 top-3 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm ${
+                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shadow-sm ${
                   product.badgeColor === "emerald"
                     ? "bg-emerald-600 text-white"
                     : product.badgeColor === "amber"
@@ -262,53 +262,52 @@ function ProductCard({
               </span>
             )}
             {product.originalPrice && (
-              <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-emerald-700 shadow-sm">
+              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 shadow-sm">
                 -{Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
             )}
           </div>
         ) : (
-          <div className={`relative flex h-52 items-center justify-center ${product.gradient}`}>
+          <div className={`relative flex h-44 items-center justify-center ${product.gradient}`}>
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 
             {comingSoon ? (
               <div className="relative text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/20">
-                  <span className="text-2xl font-black tracking-tight text-white">?</span>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                  <span className="text-xl font-black tracking-tight text-white">?</span>
                 </div>
-                <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-white/50">Coming Soon</p>
+                <p className="mt-1.5 text-[9px] font-bold uppercase tracking-widest text-white/50">Coming Soon</p>
               </div>
             ) : (
-              <div className="relative px-4 text-center">
+              <div className="relative px-3 text-center">
                 {product.slug === "top-10-rankers-strategy" && (
-                  <div className="flex flex-wrap justify-center gap-1.5">
+                  <div className="flex flex-wrap justify-center gap-1">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                      <span key={n} className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-sm font-bold text-white backdrop-blur-sm">{n}</span>
+                      <span key={n} className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 text-xs font-bold text-white backdrop-blur-sm">{n}</span>
                     ))}
                   </div>
                 )}
                 {product.slug === "all-strategy-reports" && (
                   <div className="text-center">
-                    <span className="text-4xl font-black text-white drop-shadow-sm">280+</span>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-white/70">Reports</p>
+                    <span className="text-3xl font-black text-white drop-shadow-sm">280+</span>
+                    <p className="mt-0.5 text-[9px] font-bold uppercase tracking-widest text-white/70">Reports</p>
                   </div>
                 )}
                 {product.slug === "answer-copies-compilation" && (
                   <div className="text-center">
-                    <div className="mx-auto flex items-center justify-center gap-1">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-80"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="-ml-3 opacity-60"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <div className="mx-auto flex items-center justify-center gap-0.5">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-80"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="-ml-2 opacity-60"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     </div>
-                    <p className="mt-2 text-xs font-bold uppercase tracking-wider text-white">50+ Answer Copies</p>
+                    <p className="mt-1 text-[11px] font-bold uppercase tracking-wider text-white">50+ Answer Copies</p>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Badge */}
             {product.badge && (
               <span
-                className={`absolute left-3 top-3 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider shadow-sm ${
+                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shadow-sm ${
                   product.badgeColor === "emerald"
                     ? "bg-emerald-600 text-white"
                     : product.badgeColor === "amber"
@@ -320,9 +319,8 @@ function ProductCard({
               </span>
             )}
 
-            {/* Discount */}
             {product.originalPrice && (
-              <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-emerald-700 shadow-sm">
+              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 shadow-sm">
                 -{Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
             )}
@@ -331,54 +329,54 @@ function ProductCard({
       </Link>
 
       {/* Info */}
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3">
         <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined}>
-          <h3 className="text-sm font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
+          <h3 className="text-xs font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
         </Link>
 
-        <div className="mt-2 flex items-center gap-3">
-          <span className="text-base font-bold text-gray-900">₹{product.price}</span>
+        <div className="mt-1.5 flex items-center gap-2">
+          <span className="text-sm font-bold text-gray-900">₹{product.price}</span>
           {product.originalPrice && (
-            <span className="text-xs text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
+            <span className="text-[11px] text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
           )}
         </div>
 
         {product.rating && (
-          <div className="mt-1.5 flex items-center gap-1">
+          <div className="mt-1 flex items-center gap-1">
             <span className="inline-flex items-center gap-0.5">
               {[1, 2, 3, 4, 5].map((s) => (
                 <IconStarFilled
                   key={s}
-                  size={11}
+                  size={10}
                   className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200"}
                 />
               ))}
             </span>
-            <span className="text-[11px] font-medium text-gray-500">{product.rating}</span>
-            <span className="text-[11px] text-gray-300">({product.reviewCount})</span>
+            <span className="text-[10px] font-medium text-gray-500">{product.rating}</span>
+            <span className="text-[10px] text-gray-300">({product.reviewCount})</span>
           </div>
         )}
 
-        <div className="mt-3">
+        <div className="mt-auto pt-2">
           {comingSoon ? (
-            <div className="w-full rounded-md border border-dashed border-gray-200 py-2 text-center text-xs font-medium text-gray-400">
+            <div className="w-full rounded-md border border-dashed border-gray-200 py-1.5 text-center text-[11px] font-medium text-gray-400">
               Coming Soon
             </div>
           ) : product.link ? (
             <Link
               href={product.link}
-              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-gray-900 py-2 text-xs font-semibold text-white transition hover:bg-amber-600"
+              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-amber-600"
             >
-              <IconShoppingCart size={13} />
+              <IconShoppingCart size={12} />
               View Product
             </Link>
           ) : (
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-gray-900 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
+              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-emerald-600"
             >
-              <IconShoppingCart size={13} />
+              <IconShoppingCart size={12} />
               Add to Cart
             </button>
           )}
