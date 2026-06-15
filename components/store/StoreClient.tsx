@@ -6,10 +6,9 @@ import {
   IconShoppingCart,
   IconStarFilled,
   IconSearch,
-  IconChevronRight,
 } from "@tabler/icons-react";
-import { PRODUCTS, INSTITUTES } from "@/lib/store-products";
-import type { Institute, ProductCategory } from "@/lib/store-products";
+import { PRODUCTS } from "@/lib/store-products";
+import type { ProductCategory } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
@@ -56,14 +55,6 @@ export default function StoreClient() {
     return groups;
   }, [category, visibleProducts]);
 
-  const institutesWithProducts = useMemo(
-    () =>
-      INSTITUTES.filter((i) =>
-        PRODUCTS.some((p) => p.institute === i.slug)
-      ),
-    []
-  );
-
   const filtered = useMemo(() => {
     if (!search.trim()) return null;
     const q = search.toLowerCase();
@@ -90,6 +81,7 @@ export default function StoreClient() {
                 <IconSearch size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" />
                 <input
                   type="text"
+                  data-track="store-search"
                   placeholder="Search..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -124,6 +116,7 @@ export default function StoreClient() {
                   <button
                     key={tab.key}
                     type="button"
+                    data-track={`store-tab-${tab.key}`}
                     onClick={() => setCategory(tab.key)}
                     className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                       category === tab.key
@@ -135,18 +128,6 @@ export default function StoreClient() {
                   </button>
                 ))}
               </div>
-
-              {/* ─── Institutes Grid ─── */}
-              {category === "all" && (
-                <section className="mb-10">
-                  <h2 className="text-base font-bold text-gray-900 mb-3">Browse by Institute</h2>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {institutesWithProducts.map((inst) => (
-                      <InstituteCard key={inst.slug} institute={inst} />
-                    ))}
-                  </div>
-                </section>
-              )}
 
               {/* ─── Product Grid ─── */}
               {category === "all" && groupedByCategory ? (
@@ -200,28 +181,6 @@ export default function StoreClient() {
   );
 }
 
-function InstituteCard({ institute }: { institute: Institute }) {
-  return (
-    <Link
-      href={`/store/institutes/${institute.slug}`}
-      className={`flex items-center gap-4 rounded-xl ${institute.gradient} p-5 text-white transition hover:scale-[1.02] hover:shadow-md`}
-    >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/20 text-base font-bold backdrop-blur-sm">
-        {institute.logo.startsWith("/") ? (
-          <img src={institute.logo} alt={institute.name} className="h-full w-full object-contain p-1.5" />
-        ) : (
-          institute.logo
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        <h3 className="text-sm font-bold">{institute.name}</h3>
-        <p className="mt-0.5 text-xs text-white/70 truncate">{institute.description}</p>
-      </div>
-      <IconChevronRight size={18} className="shrink-0 text-white/50" />
-    </Link>
-  );
-}
-
 function ProductCard({
   product,
   onAddedToCart,
@@ -240,7 +199,7 @@ function ProductCard({
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white transition hover:border-gray-200 hover:shadow-sm">
       {/* Product Image */}
-      <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} className="block">
+      <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} className="block" data-track={`store-card-img-${product.slug}`}>
         {product.image ? (
           <div className="relative h-44 overflow-hidden bg-gray-50">
             <img
@@ -268,7 +227,7 @@ function ProductCard({
             )}
           </div>
         ) : (
-          <div className={`relative flex h-44 items-center justify-center ${product.gradient}`}>
+          <div className={`relative flex h-44 items-center justify-center ${product.gradient}`} data-track={`store-card-img-${product.slug}`}>
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 
             {comingSoon ? (
@@ -330,7 +289,7 @@ function ProductCard({
 
       {/* Info */}
       <div className="flex flex-1 flex-col p-3">
-        <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined}>
+        <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} data-track={`store-card-title-${product.slug}`}>
           <h3 className="text-xs font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
         </Link>
 
@@ -359,12 +318,13 @@ function ProductCard({
 
         <div className="mt-auto pt-2">
           {comingSoon ? (
-            <div className="w-full rounded-md border border-dashed border-gray-200 py-1.5 text-center text-[11px] font-medium text-gray-400">
+            <div className="w-full rounded-md border border-dashed border-gray-200 py-1.5 text-center text-[11px] font-medium text-gray-400" data-track={`store-card-comingsoon-${product.slug}`}>
               Coming Soon
             </div>
           ) : product.link ? (
             <Link
               href={product.link}
+              data-track={`store-card-view-${product.slug}`}
               className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-amber-600"
             >
               <IconShoppingCart size={12} />
@@ -373,6 +333,7 @@ function ProductCard({
           ) : (
             <button
               type="button"
+              data-track={`store-card-addtocart-${product.slug}`}
               onClick={handleAddToCart}
               className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-emerald-600"
             >

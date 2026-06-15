@@ -44,6 +44,7 @@ function InstituteContent({
         <div className="mb-6 flex items-center justify-between">
           <Link
             href="/store"
+            data-track="institute-back-to-store"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-800"
           >
             <IconArrowLeft size={15} />
@@ -116,7 +117,7 @@ function ProductCard({
         )}
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="text-sm font-semibold text-gray-900 leading-snug">{product.title}</h3>
+        <h3 className="text-sm font-semibold text-gray-900 leading-snug" data-track={`institute-card-${product.slug}`}>{product.title}</h3>
         <p className="mt-0.5 text-xs text-gray-400 line-clamp-2">{product.tagline}</p>
         <div className="flex-1" />
         <div className="mt-3 flex items-center justify-between">
@@ -129,6 +130,7 @@ function ProductCard({
         </div>
         <button
           type="button"
+          data-track={`institute-addtocart-${product.slug}`}
           onClick={onAddToCart}
           className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-md bg-gray-900 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
         >

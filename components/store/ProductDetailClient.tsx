@@ -34,6 +34,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
         <div className="mb-6 flex items-center justify-between">
           <Link
             href="/store"
+            data-track="detail-back-to-store"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-800"
           >
             <IconArrowLeft size={15} />
@@ -172,6 +173,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               <div className="mt-6">
                 <Link
                   href={product.link}
+                  data-track={`detail-view-${product.slug}`}
                   className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-500"
                 >
                   View Full Product Details
@@ -191,6 +193,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                   </PayButton>
                   <button
                     type="button"
+                    data-track={`detail-addtocart-${product.slug}`}
                     onClick={handleAddToCart}
                     className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-gray-900 hover:text-gray-900"
                   >
@@ -215,6 +218,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <Link
                   key={r.slug}
                   href={`/store/${r.slug}`}
+                  data-track={`detail-related-${r.slug}`}
                   className="group rounded-lg border border-gray-100 bg-white p-4 transition hover:border-gray-200 hover:shadow-sm"
                 >
                   <div className={`flex h-24 items-center justify-center rounded-lg ${r.gradient}`}>

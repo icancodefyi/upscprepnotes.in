@@ -45,6 +45,7 @@ export default function CartSlideover({ open, onClose }: Props) {
           </div>
           <button
             onClick={onClose}
+            data-track="cart-close"
             className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           >
             <IconX size={18} />
@@ -62,6 +63,7 @@ export default function CartSlideover({ open, onClose }: Props) {
               <Link
                 href="/store"
                 onClick={onClose}
+                data-track="cart-browse-store"
                 className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-800"
               >
                 Browse Store
@@ -82,6 +84,7 @@ export default function CartSlideover({ open, onClose }: Props) {
                     <Link
                       href={`/store/${item.product.slug}`}
                       onClick={onClose}
+                      data-track={`cart-item-${item.product.slug}`}
                       className="line-clamp-1 text-sm font-bold text-gray-900 hover:text-emerald-700"
                     >
                       {item.product.title}
@@ -90,6 +93,7 @@ export default function CartSlideover({ open, onClose }: Props) {
                     <div className="mt-2 flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
+                        data-track={`cart-qty-dec-${item.product.slug}`}
                         className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-50"
                       >
                         {item.quantity === 1 ? <IconTrash size={12} /> : <IconMinus size={12} />}
@@ -99,6 +103,7 @@ export default function CartSlideover({ open, onClose }: Props) {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
+                        data-track={`cart-qty-inc-${item.product.slug}`}
                         className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-50"
                       >
                         <IconPlus size={12} />
