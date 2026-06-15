@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import StickyBundleBar from "@/components/StickyBundleBar";
+import StoreToast from "@/components/StoreToast";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -28,11 +28,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <Header />
-      <div className="pb-16">{children}</div>
-      <div className="pb-16">
+      <div>{children}</div>
+      <div>
         <Footer />
       </div>
-      <StickyBundleBar />
+      <StoreToast />
     </>
   );
 }

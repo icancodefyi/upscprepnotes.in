@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 const PDF_MAP: Record<string, string> = {
   "may-2026": "may-2026.pdf",
+  "2025": "2025.pdf",
 };
 
 export async function GET(request: Request) {
