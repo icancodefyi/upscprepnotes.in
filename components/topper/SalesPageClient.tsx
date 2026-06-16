@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import PayButton from "@/components/ui/PayButton";
 import { trackViewItem } from "@/lib/analytics";
-import { trackClientEvent } from "@/lib/client-analytics";
-import { WHATSAPP_NUMBER, SITE, TIER, PRICE } from "./sales-page-data";
+import { PRICE } from "./sales-page-data";
 
 export default function SalesPageClient({ children }: { children: React.ReactNode }) {
   const [previewImg, setPreviewImg] = useState<string | null>(null);
@@ -87,50 +86,7 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
     return () => form.removeEventListener("submit", handler);
   }, []);
 
-  useEffect(() => {
-    const form = document.getElementById("payment-form") as HTMLFormElement;
-    if (!form) return;
-    const handler = async (e: Event) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      const submit = document.getElementById("payment-submit") as HTMLButtonElement;
-      const success = document.getElementById("payment-success");
-      submit.disabled = true;
-      submit.textContent = "Processing...";
-      try {
-        const r = await fetch("/api/customer", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: data.name, email: data.email, utr: data.utr, product: "Ultimate Compilation", amount: PRICE, screenshotUrl: "" }),
-        });
-        if (!r.ok) throw new Error("Failed");
-        form.innerHTML = `<div class="text-center py-8"><div class="mx-auto w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-4"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="text-emerald-600"><polyline points="20 6 9 17 4 12"/></svg></div><p class="font-bold text-gray-900">Payment Received!</p><p class="text-sm text-gray-500 mt-1">We will email your download link within 2 hours.</p></div>`;
-        try { window.gtag?.("event", "purchase", { transaction_id: data.email, value: PRICE, currency: "INR" }); } catch {}
-      } catch {
-        const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! I paid for "${TIER}" on ${SITE}. UTR: ${data.utr}. Email: ${data.email}. Please send the download link.`)}`;
-        window.open(wa, "_blank");
-      } finally { submit.disabled = false; submit.textContent = "Confirm Payment — Get Download Link"; }
-    };
-    form.addEventListener("submit", handler);
-    return () => form.removeEventListener("submit", handler);
-  }, []);
 
-  function trackWA(tier: string, location: string) {
-    trackClientEvent("whatsapp_click", { tier, location });
-  }
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const link = target.closest("[data-track^='whatsapp']");
-      if (link) {
-        const href = (link as HTMLAnchorElement).href || "";
-        const tier = href.includes("Ultimate") ? TIER : TIER;
-        trackWA(tier, link.getAttribute("data-track") || "unknown");
-      }
-    };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  }, []);
 
   return (
     <>

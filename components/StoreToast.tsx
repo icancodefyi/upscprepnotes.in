@@ -139,7 +139,7 @@ export default function StoreToast() {
 
               <div className="mt-4 flex items-center justify-between gap-3">
                 <div className="text-[11px] text-gray-500 leading-tight">
-                  <span className="font-semibold text-emerald-400">1,459</span>
+                  <span className="font-semibold text-emerald-400">1,459+</span>
                   <br />
                   downloads this month
                 </div>

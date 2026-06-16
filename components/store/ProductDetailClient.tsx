@@ -202,7 +202,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                   </button>
                 </div>
                 <p className="text-xs text-gray-400">
-                  PDF delivered via WhatsApp after payment. 7-day refund.
+                  Instant download after payment. 7-day refund.
                 </p>
               </div>
             )}

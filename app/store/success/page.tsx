@@ -143,7 +143,7 @@ function SuccessInner() {
           </li>
           <li className="flex items-start gap-2">
             <IconCheck size={13} className="mt-0.5 shrink-0" />
-            Need help? Reply to the email or WhatsApp +919152750079
+            Need help? Reply to the email for support
           </li>
         </ul>
       </div>

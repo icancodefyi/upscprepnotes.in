@@ -75,7 +75,7 @@ export async function sendOrderConfirmationEmail(
         <a href="${downloadUrl}" style="display:block;text-align:center;background:#059669;color:#fff;text-decoration:none;padding:14px 24px;border-radius:12px;font-size:16px;font-weight:700;margin:24px 0">Download Your Files</a>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">This link is unique to you. Do not share it.</p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
-        <p style="color:#999;font-size:12px;text-align:center;margin:0">Need help? Reply to this email or WhatsApp +919152750079</p>
+        <p style="color:#999;font-size:12px;text-align:center;margin:0">Need help? Reply to this email for support</p>
       </div>
     </body>
     </html>
