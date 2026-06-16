@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, X, ChevronDown, Search } from "lucide-react";
+import CartIcon from "@/components/store/CartIcon";
+import CartSlideover from "@/components/store/CartSlideover";
 
 const CURRENT_AFFAIRS_SUB = [
   { label: "Current Affairs Hub", href: "/current-affairs" },
@@ -71,11 +74,24 @@ function NavDropdown({
   );
 }
 
-export default function Header() {
+export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!query.trim()) return;
+    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    setSearchOpen(false);
+    setQuery("");
+  }
 
   return (
-    <header className="sticky top-[36px] z-40 bg-[#F8F9FA] border-b border-gray-100">
+    <header className={`sticky z-40 bg-[#F8F9FA] border-b border-gray-100 ${bannerOpen ? "top-[36px]" : "top-0"}`}>
       <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
         <Link href="/" data-track="nav-logo" className="flex items-center gap-2">
           <img
@@ -138,29 +154,69 @@ export default function Header() {
           </Link>
         </nav>
 
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          data-track="nav-mobile-toggle"
-          className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Desktop Search */}
+        <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center">
+          <div className={`flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-all ${searchOpen ? "w-64" : "w-40"}`}>
+            <Search size={14} className="text-gray-400" />
+            <input
+              ref={searchRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setSearchOpen(true)}
+              onBlur={() => setSearchOpen(false)}
+              placeholder="Search toppers, topics..."
+              className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+            />
+          </div>
+        </form>
+
+        <div className="flex items-center gap-2">
+          <CartIcon onClick={() => setCartOpen(true)} />
+
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            data-track="nav-mobile-toggle"
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
+
+      <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* Mobile Nav */}
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white">
           <div className="px-4 py-4 space-y-3">
-            <Link
-              href="/store"
-              onClick={() => setMobileOpen(false)}
-              data-track="nav-mobile-store"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
-            >
-              Store
-              <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
-            </Link>
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+              <Search size={16} className="text-gray-400" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search toppers, topics..."
+                className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+              />
+            </form>
+
+            <div className="flex items-center justify-between py-2">
+              <Link
+                href="/store"
+                onClick={() => setMobileOpen(false)}
+                data-track="nav-mobile-store"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors"
+              >
+                Store
+                <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+              </Link>
+              <div onClick={() => setMobileOpen(false)}>
+                <CartIcon onClick={() => setCartOpen(true)} />
+              </div>
+            </div>
+
             <Link
               href="/toppers"
               onClick={() => setMobileOpen(false)}

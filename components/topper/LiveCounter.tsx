@@ -3,37 +3,24 @@
 import { useEffect, useState } from "react";
 
 export default function LiveCounter() {
-  const [count, setCount] = useState(47);
-  const [ready, setReady] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/stats/downloads")
       .then((r) => r.json())
-      .then((data) => {
-        setCount(data.count);
-        setReady(true);
-      })
-      .catch(() => setReady(true));
+      .then((data) => setCount(data.count))
+      .catch(() => setCount(null));
   }, []);
 
-  useEffect(() => {
-    if (!ready) return;
-    const id = setInterval(() => {
-      setCount((c) => c + Math.floor(Math.random() * 3) + 1);
-    }, 8000 + Math.random() * 4000);
-    return () => clearInterval(id);
-  }, [ready]);
-
-  if (!ready) return null;
+  if (count === null) return null;
 
   return (
-    <span className="inline-flex items-center gap-1.5">
-      <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-      </span>
-      <span className="font-bold text-emerald-600 tabular-nums">{count}</span>
-      <span className="text-gray-400">downloads in past 30 min</span>
+    <span className="inline-flex items-center gap-1.5 text-xs text-gray-500">
+      <svg className="h-3.5 w-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      </svg>
+      <span className="font-semibold text-gray-700 tabular-nums">{count.toLocaleString("en-IN")}+</span>
+      <span>downloads this month</span>
     </span>
   );
 }
