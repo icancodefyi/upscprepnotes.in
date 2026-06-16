@@ -1,6 +1,12 @@
+// Run: node -r dotenv/config scripts/debug-purchase.mjs dotenv_config_path=.env.local
 import mongoose from "mongoose";
 
-const UPSC_MONGO = "MONGODB_URI_FROM_ENV/upscprepnotes";
+const UPSC_MONGO = process.env.MONGODB_URI;
+if (!UPSC_MONGO) {
+  console.error("MONGODB_URI not set. Run with: node -r dotenv/config scripts/debug-purchase.mjs dotenv_config_path=.env.local");
+  process.exit(1);
+}
+
 const SINCE = new Date(Date.now() - 14 * 86400000);
 
 async function main() {

@@ -1,8 +1,14 @@
+// Run: IMAGEKIT_PRIVATE_KEY='private_key' node -r dotenv/config scripts/upload-bundle.mjs dotenv_config_path=.env.local
 import { mkdirSync, writeFileSync, readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { ImageKit } from "@imagekit/nodejs";
 
-const PRIVATE_KEY = "IMAGEKIT_FROM_ENV";
+const PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY;
+
+if (!PRIVATE_KEY) {
+  console.error("IMAGEKIT_PRIVATE_KEY not set. Run with: IMAGEKIT_PRIVATE_KEY='...' node -r dotenv/config scripts/upload-bundle.mjs dotenv_config_path=.env.local");
+  process.exit(1);
+}
 
 const imagekit = new ImageKit({
   privateKey: PRIVATE_KEY,

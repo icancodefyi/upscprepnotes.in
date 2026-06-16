@@ -1,8 +1,16 @@
 // Deep analytics + conversion audit — last 14 days
+// Run: node -r dotenv/config scripts/analytics-deep.mjs dotenv_config_path=.env.local
 import mongoose from "mongoose";
 
-const UPSC_MONGO = "MONGODB_URI_FROM_ENV/upscprepnotes";
-const AIRLIST_MONGO = "MONGODB_URI_FROM_ENV/airlist";
+const UPSC_MONGO = process.env.MONGODB_URI;
+const airlistUri = UPSC_MONGO?.replace("/upscprepnotes?", "/airlist?")?.replace("/upscprepnotes", "/airlist");
+const AIRLIST_MONGO = process.env.AIRLIST_MONGO_URI || airlistUri || "";
+
+if (!UPSC_MONGO || !AIRLIST_MONGO) {
+  console.error("MONGODB_URI / AIRLIST_MONGO_URI not set. Run with: node -r dotenv/config scripts/analytics-deep.mjs dotenv_config_path=.env.local");
+  process.exit(1);
+}
+
 const SINCE = new Date(Date.now() - 14 * 86400000);
 
 console.log("📊 Deep Analytics — Last 14 Days\n");

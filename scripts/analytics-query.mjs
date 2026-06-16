@@ -1,8 +1,16 @@
 // Fetch analytics from both DBs — last 3 days
+// Run: node -r dotenv/config scripts/analytics-query.mjs dotenv_config_path=.env.local
 import mongoose from "mongoose";
 
-const UPSC_MONGO = "MONGODB_URI_FROM_ENV/upscprepnotes";
-const AIRLIST_MONGO = "MONGODB_URI_FROM_ENV/airlist";
+const UPSC_MONGO = process.env.MONGODB_URI;
+const airlistUri = UPSC_MONGO?.replace("/upscprepnotes?", "/airlist?")?.replace("/upscprepnotes", "/airlist");
+const AIRLIST_MONGO = process.env.AIRLIST_MONGO_URI || airlistUri || "";
+
+if (!UPSC_MONGO || !AIRLIST_MONGO) {
+  console.error("MONGODB_URI / AIRLIST_MONGO_URI not set. Run with: node -r dotenv/config scripts/analytics-query.mjs dotenv_config_path=.env.local");
+  process.exit(1);
+}
+
 const SINCE = new Date(Date.now() - 3 * 86400000);
 
 async function queryUpscprepnotes() {
