@@ -274,6 +274,15 @@ export default function CurrentAffairsHub() {
           <p>UPSCPrepNotes · Monthly &amp; Yearly Current Affairs for UPSC · Free PDF Downloads</p>
         </footer>
       </div>
-    </main>
+      <section className="py-12 bg-gradient-to-b from-zinc-50 to-white">
+      <div className="mx-auto max-w-3xl text-center px-4">
+        <h2 className="text-lg font-semibold text-zinc-800">Connect current affairs to your syllabus</h2>
+        <p className="mt-2 text-sm text-zinc-500">Ask our AI Mentor to map today's news to GS papers and PYQ themes.</p>
+        <Link href="/ask" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800">
+          Ask AI Mentor &rarr;
+        </Link>
+      </div>
+    </section>
+  </main>
   );
 }

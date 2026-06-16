@@ -798,6 +798,9 @@ export default async function TopperPage({ params }: Props) {
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href="/free-materials" data-track="topper-explore-free-materials">All Free Study Material &rarr;</Link>
             </Button>
+            <Button variant="outline" asChild className="rounded-full text-xs h-9">
+              <Link href="/ask" data-track="topper-ask-ai-mentor">Ask AI Mentor &rarr;</Link>
+            </Button>
           </div>
         </section>
       </div>

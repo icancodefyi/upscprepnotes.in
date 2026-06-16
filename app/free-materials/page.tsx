@@ -192,6 +192,15 @@ export default async function PDFHubPage({ searchParams }: Props) {
           </Link>
         </section>
       </div>
-    </main>
+      <section className="py-12 bg-gradient-to-b from-zinc-50 to-white">
+      <div className="mx-auto max-w-3xl text-center px-4">
+        <h2 className="text-lg font-semibold text-zinc-800">Can't find what you need?</h2>
+        <p className="mt-2 text-sm text-zinc-500">Ask our AI Mentor to recommend the best free resources for your current preparation stage.</p>
+        <Link href="/ask" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800">
+          Ask AI Mentor &rarr;
+        </Link>
+      </div>
+    </section>
+  </main>
   );
 }

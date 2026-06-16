@@ -609,7 +609,7 @@ function AskPage() {
           <button type="button" onClick={() => setSidebarOpen(true)} data-track="ask-mobile-menu" className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition" aria-label="Open sidebar">
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
           </button>
-          <span className="text-sm font-semibold text-zinc-700">Ask AI</span>
+          <span className="text-sm font-semibold text-zinc-700">AI Mentor</span>
           <Link href="/" data-track="ask-mobile-home" className="text-xs text-zinc-400 hover:text-zinc-600 transition">Home</Link>
         </header>
 

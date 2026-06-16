@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import StoreToast from "@/components/StoreToast";
+import AskMentorButton from "@/components/AskMentorButton";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,6 +33,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div>
         <Footer />
       </div>
+      <AskMentorButton />
       <StoreToast />
     </>
   );
