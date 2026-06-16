@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { markPopup } from "@/lib/popup-state";
 
 const STAGE_KEY = "store-toast-stage";
 const COUPON_KEY = "store-coupon-code";
@@ -40,20 +41,28 @@ export default function StoreDialog() {
     if (savedStage === "claimed" && savedCoupon) {
       setCouponCode(savedCoupon);
       setStage("claimed");
+      markPopup("storeDialog", "shown");
       return;
     }
 
     if (savedStage === "coupon" || savedStage === "dismissed") {
-      const timer = setTimeout(() => setStage("coupon"), 20000);
+      const timer = setTimeout(() => {
+        setStage("coupon");
+        markPopup("storeDialog", "shown");
+      }, 20000);
       return () => clearTimeout(timer);
     }
 
-    const timer = setTimeout(() => setStage("browse"), 15000);
+    const timer = setTimeout(() => {
+      setStage("browse");
+      markPopup("storeDialog", "shown");
+    }, 15000);
     return () => clearTimeout(timer);
   }, []);
 
   function dismiss() {
     setStage(null);
+    markPopup("storeDialog", "dismissed");
     if (stage === "browse") {
       localStorage.setItem(STAGE_KEY, "dismissed");
     }

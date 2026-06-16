@@ -1,13 +1,8 @@
 "use client";
 
 import Script from "next/script";
-import { useCookieConsent } from "@/components/CookieConsent";
 
 export default function AnalyticsScripts() {
-  const { consent } = useCookieConsent();
-
-  if (consent !== true) return null;
-
   return (
     <>
       <Script
@@ -45,7 +40,7 @@ export default function AnalyticsScripts() {
               }
               function getVisitorId() {
                 try {
-                  var m = document.cookie.match(/(?:^|;\\s*)_vid=([^;]*)/);
+                  var m = document.cookie.match(/(?:^|;\s*)_vid=([^;]*)/);
                   if (m) return m[1];
                   var id = 'v' + Date.now() + Math.random().toString(36).slice(2,12);
                   document.cookie = '_vid=' + id + ';path=/;max-age=31536000;SameSite=Lax';

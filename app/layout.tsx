@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AppShell from "@/components/AppShell";
 import AuthProvider from "@/components/AuthProvider";
 import AnalyticsScripts from "@/components/AnalyticsScripts";
-import CookieConsent from "@/components/CookieConsent";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -140,7 +139,6 @@ export default function RootLayout({
             <AppShell>
               {children}
             </AppShell>
-            <CookieConsent />
           </AuthProvider>
         </TooltipProvider>
       </body>

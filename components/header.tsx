@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, X, ChevronDown, Search } from "lucide-react";
 import CartIcon from "@/components/store/CartIcon";
@@ -24,6 +24,14 @@ const FREE_MATERIALS_CATEGORIES = [
 ];
 
 const PYQ_YEARS = ["2023", "2024", "2025"];
+
+interface SearchResult {
+  title: string;
+  subtitle?: string;
+  href: string;
+  category: "Topper" | "Store" | "Page";
+  meta?: string;
+}
 
 function DropdownItem({ href, label, onClick }: { href: string; label: string; onClick?: () => void }) {
   return (
@@ -74,20 +82,160 @@ function NavDropdown({
   );
 }
 
+function SearchSuggestions({
+  results,
+  query,
+  activeIndex,
+  onSelect,
+}: {
+  results: SearchResult[];
+  query: string;
+  activeIndex: number;
+  onSelect: () => void;
+}) {
+  const router = useRouter();
+  const grouped = results.reduce((acc, r) => {
+    if (!acc[r.category]) acc[r.category] = [];
+    acc[r.category].push(r);
+    return acc;
+  }, {} as Record<string, SearchResult[]>);
+
+  const order = ["Topper", "Store", "Page"];
+
+  return (
+    <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-black/[0.06] bg-white p-2 shadow-xl">
+      {results.length === 0 ? (
+        <div className="px-3 py-4 text-center text-sm text-gray-400">
+          No results for &ldquo;{query}&rdquo;
+        </div>
+      ) : (
+        <div className="max-h-[70vh] overflow-auto">
+          {order.map(
+            (cat) =>
+              grouped[cat] && (
+                <div key={cat} className="mb-2 last:mb-0">
+                  <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                    {cat}
+                  </p>
+                  {grouped[cat].map((r, idx) => {
+                    const globalIndex = results.indexOf(r);
+                    const isActive = globalIndex === activeIndex;
+                    return (
+                      <Link
+                        key={`${r.href}-${idx}`}
+                        href={r.href}
+                        onClick={onSelect}
+                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm transition ${
+                          isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-gray-50"
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium">{r.title}</p>
+                          {r.subtitle && (
+                            <p className={`truncate text-xs ${isActive ? "text-emerald-600/80" : "text-gray-400"}`}>
+                              {r.subtitle}
+                            </p>
+                          )}
+                        </div>
+                        {r.meta && (
+                          <span className="ml-3 shrink-0 text-xs font-semibold text-emerald-600">
+                            {r.meta}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              ),
+          )}
+          <Link
+            href={`/search?q=${encodeURIComponent(query)}`}
+            onClick={onSelect}
+            className="block rounded-xl px-3 py-2 text-center text-xs font-medium text-emerald-600 hover:bg-emerald-50"
+          >
+            View all results for &ldquo;{query}&rdquo;
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const fetchResults = useCallback(async (q: string) => {
+    if (!q.trim()) {
+      setResults([]);
+      setActiveIndex(-1);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}`);
+      const data = await res.json();
+      setResults(data.results || []);
+      setActiveIndex(-1);
+    } catch {
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => fetchResults(query), 180);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, fetchResults]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    if (activeIndex >= 0 && results[activeIndex]) {
+      router.push(results[activeIndex].href);
+    } else {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    }
     setSearchOpen(false);
     setQuery("");
+    setResults([]);
+    setActiveIndex(-1);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === "Escape") {
+      setSearchOpen(false);
+    }
   }
 
   return (
@@ -155,21 +303,40 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
         </nav>
 
         {/* Desktop Search */}
-        <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center">
-          <div className={`flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-all ${searchOpen ? "w-64" : "w-40"}`}>
-            <Search size={14} className="text-gray-400" />
-            <input
-              ref={searchRef}
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setSearchOpen(true)}
-              onBlur={() => setSearchOpen(false)}
-              placeholder="Search toppers, topics..."
-              className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+        <div ref={searchContainerRef} className="hidden md:block relative">
+          <form onSubmit={handleSearchSubmit}>
+            <div className={`flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-all ${searchOpen ? "w-72" : "w-44"}`}>
+              <Search size={14} className="text-gray-400" />
+              <input
+                ref={searchRef}
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => setSearchOpen(true)}
+                onKeyDown={handleKeyDown}
+                placeholder="Search..."
+                className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+                autoComplete="off"
+              />
+              {loading && (
+                <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600" />
+              )}
+            </div>
+          </form>
+          {searchOpen && query.trim().length > 0 && (
+            <SearchSuggestions
+              results={results}
+              query={query}
+              activeIndex={activeIndex}
+              onSelect={() => {
+                setSearchOpen(false);
+                setQuery("");
+                setResults([]);
+                setActiveIndex(-1);
+              }}
             />
-          </div>
-        </form>
+          )}
+        </div>
 
         <div className="flex items-center gap-2">
           <CartIcon onClick={() => setCartOpen(true)} />
@@ -197,7 +364,7 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search toppers, topics..."
+                placeholder="Search toppers, products, pages..."
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
               />
             </form>
