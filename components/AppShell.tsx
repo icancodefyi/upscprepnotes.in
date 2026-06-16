@@ -1,13 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import StoreToast from "@/components/StoreToast";
+import StoreDialog from "@/components/StoreDialog";
 import AskMentorButton from "@/components/AskMentorButton";
+import { trackClientEvent } from "@/lib/client-analytics";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname && !pathname.startsWith("/ask")) {
+      trackClientEvent("page_view", { path: pathname });
+    }
+  }, [pathname]);
 
   if (pathname?.startsWith("/ask")) {
     return <>{children}</>;
@@ -34,7 +42,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <Footer />
       </div>
       <AskMentorButton />
-      <StoreToast />
+      <StoreDialog />
     </>
   );
 }
