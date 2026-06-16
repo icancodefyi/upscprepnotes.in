@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       conversations.map(async (conv: IAskConversation) => {
         const analyticsEvents = await AnalyticsEventModel.find({
           sessionId: conv.sessionId,
-          event: { $in: ["whatsapp_click", "file_download", "page_view"] },
+          event: { $in: ["checkout_completed", "file_download", "page_view"] },
         })
           .sort({ timestamp: -1 })
           .limit(10)

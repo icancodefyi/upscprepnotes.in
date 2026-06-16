@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { DodoPayments } from "dodopayments";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
+import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken, sendOrderConfirmationEmail, sendAdminNotification } from "@/lib/order-utils";
 
 const dodo = new DodoPayments({
@@ -61,6 +62,18 @@ export async function POST(request: NextRequest) {
           email: customerEmail || existing.email,
           dodoPaymentId: paymentId,
         });
+        try {
+          await AnalyticsEventModel.create({
+            event: "checkout_completed",
+            pagePath: "/store/success",
+            sessionId: "server",
+            visitorId: "server",
+            referrer: "",
+            userAgent: "",
+            deviceType: "server",
+            metadata: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug) },
+          });
+        } catch {}
         if (customerEmail) {
           try {
             await sendOrderConfirmationEmail(customerEmail, existing._id.toString().slice(-8).toUpperCase(), existing.items, downloadUrl);
@@ -102,6 +115,19 @@ export async function POST(request: NextRequest) {
     });
 
     const downloadUrl = `https://upscprepnotes.in/api/download/${downloadToken}`;
+
+    try {
+      await AnalyticsEventModel.create({
+        event: "checkout_completed",
+        pagePath: "/store/success",
+        sessionId: "server",
+        visitorId: "server",
+        referrer: "",
+        userAgent: "",
+        deviceType: "server",
+        metadata: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug) },
+      });
+    } catch {}
 
     if (customerEmail) {
       try {

@@ -216,7 +216,7 @@ export default function AdminAIPage() {
                 <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-600">Session: {selected.sessionId.slice(0, 16)}…</span>
                 {selected.analyticsEvents.length > 0 && (
                   <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700">
-                    {selected.analyticsEvents.filter(e => e.event === "whatsapp_click").length} WhatsApp clicks
+                    {selected.analyticsEvents.filter(e => e.event === "checkout_completed").length} checkout completed
                   </span>
                 )}
                 {selected.analyticsEvents.filter(e => e.event === "file_download").length > 0 && (

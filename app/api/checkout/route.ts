@@ -3,6 +3,7 @@ import { DodoPayments } from "dodopayments";
 import { PRODUCTS } from "@/lib/store-products";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
+import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken } from "@/lib/order-utils";
 
 function shortRef() {
@@ -98,6 +99,19 @@ export async function POST(request: NextRequest) {
     await OrderModel.findByIdAndUpdate(order._id, {
       dodoSessionId: session.session_id,
     });
+
+    try {
+      await AnalyticsEventModel.create({
+        event: "checkout_started",
+        pagePath: "/store",
+        sessionId: "server",
+        visitorId: "server",
+        referrer: "",
+        userAgent: "",
+        deviceType: "server",
+        metadata: { ref, total, items: resolvedItems.map(i => i.slug) },
+      });
+    } catch {}
 
     return NextResponse.json({
       checkoutUrl: session.checkout_url,

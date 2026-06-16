@@ -229,9 +229,10 @@ export async function GET(req: NextRequest) {
     const aiMessages = aiMessagesAgg[0]?.total || 0;
 
     // key metrics + bounce rate
-    const [whatsappClicks, fileDownloads, salesPageViews, convertingUsers, bounceSessions] =
+    const [checkoutCompletions, checkoutStarts, fileDownloads, salesPageViews, convertingUsers, bounceSessions] =
       await Promise.all([
-        AnalyticsEventModel.countDocuments({ event: "whatsapp_click", timestamp: { $gte: since } }),
+        AnalyticsEventModel.countDocuments({ event: "checkout_completed", timestamp: { $gte: since } }),
+        AnalyticsEventModel.countDocuments({ event: "checkout_started", timestamp: { $gte: since } }),
         AnalyticsEventModel.countDocuments({ event: "file_download", timestamp: { $gte: since } }),
         AnalyticsEventModel.countDocuments({ event: "page_view", pagePath: "/toppers/toppers-copy-compilation", timestamp: { $gte: since } }),
         AnalyticsEventModel.aggregate([
@@ -240,7 +241,8 @@ export async function GET(req: NextRequest) {
           {
             $match: {
               $or: [
-                { "events.event": "whatsapp_click" },
+                { "events.event": "checkout_completed" },
+                { "events.event": "checkout_started" },
                 { "events.event": "file_download" },
                 { "events.event": "form_submit" },
                 { "events.event": "dialog_submit" },
@@ -287,8 +289,8 @@ export async function GET(req: NextRequest) {
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "dialog_open", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "free_guide_lead", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "free_download_lead", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
-      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "file_download", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
-      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "whatsapp_click", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "checkout_started", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "checkout_completed", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
     ]);
 
     return NextResponse.json({
@@ -301,7 +303,8 @@ export async function GET(req: NextRequest) {
         todayEvents,
         todaySessions,
         todayPageViews,
-        whatsappClicks,
+        checkoutCompletions,
+        checkoutStarts,
         fileDownloads,
         salesPageViews,
         conversions: convertingUsers,

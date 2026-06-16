@@ -18,7 +18,7 @@ type DialogAuditSession = {
 type Stats = {
   totalEvents: number; totalSessions: number; uniqueVisitors: number; pageViews: number;
   todayEvents: number; todaySessions: number; todayPageViews: number;
-  whatsappClicks: number; fileDownloads: number; salesPageViews: number; conversions: number;
+  checkoutCompletions: number; checkoutStarts: number; fileDownloads: number; salesPageViews: number; conversions: number;
   aiConversations: number; aiMessages: number;
   returningVisitors: number; bounceSessions: number;
   eventsByType: { _id: string; count: number }[];
@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
   const bounceRate = stats ? (stats.totalSessions > 0 ? (stats.bounceSessions / stats.totalSessions * 100).toFixed(1) : "0") : "0";
   const returningPct = stats ? (stats.uniqueVisitors > 0 ? (stats.returningVisitors / stats.uniqueVisitors * 100).toFixed(1) : "0") : "0";
   const conversionRate = stats ? (stats.uniqueVisitors > 0 ? (stats.conversions / stats.uniqueVisitors * 100).toFixed(1) : "0") : "0";
-  const funnelLabels = ["Visitors", "Opened Dialog", "Free Guide Lead", "Free Download Lead", "Downloaded", "WhatsApp"];
+  const funnelLabels = ["Visitors", "Opened Dialog", "Free Guide Lead", "Free Download Lead", "Checkout Started", "Checkout Completed"];
 
 
   if (loading && !stats) {
@@ -134,7 +134,8 @@ export default function AnalyticsPage() {
   const heroBounce = stats.bounceSessions + " of " + stats.totalSessions + " sessions";
   const heroConversion = stats.conversions + " converting users";
   const heroReturning = stats.returningVisitors + " of " + stats.uniqueVisitors;
-  const heroWhatsApp = formatNumber(stats.whatsappClicks) + " clicks";
+  const heroCheckout = formatNumber(stats.checkoutCompletions) + " completed";
+  const heroCheckoutStarts = formatNumber(stats.checkoutStarts) + " started";
   const funnelPct = stats.funnelStages[0] > 0 ? (stats.funnelStages[1] / stats.funnelStages[0] * 100).toFixed(0) : "0";
   const leadPct = stats.funnelStages[0] > 0 ? (stats.funnelStages[2] / stats.funnelStages[0] * 100).toFixed(0) : "0";
   const submitRate = "Submit rate: " + funnelPct + "%";
@@ -179,7 +180,8 @@ export default function AnalyticsPage() {
         <HeroCard label="Bounce Rate" value={bounceRate + "%"} sub={heroBounce} />
         <HeroCard label="Conversion Rate" value={conversionRate + "%"} sub={heroConversion} accent />
         <HeroCard label="Returning Visitors" value={returningPct + "%"} sub={heroReturning} />
-        <HeroCard label="WhatsApp Clicks" value={formatNumber(stats.whatsappClicks)} sub={heroWhatsApp} />
+        <HeroCard label="Checkout Starts" value={formatNumber(stats.checkoutStarts)} sub={heroCheckoutStarts} />
+        <HeroCard label="Checkout Completed" value={formatNumber(stats.checkoutCompletions)} sub={heroCheckout} />
         <HeroCard label="File Downloads" value={formatNumber(stats.fileDownloads)} sub="all time" />
       </div>
 
