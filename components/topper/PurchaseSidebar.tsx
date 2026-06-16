@@ -1,6 +1,6 @@
 "use client";
 
-import PayButton from "@/components/ui/PayButton";
+import Link from "next/link";
 
 interface Props {
   topperName: string;
@@ -8,14 +8,26 @@ interface Props {
 
 export default function PurchaseSidebar({ topperName }: Props) {
   return (
-    <div className="mt-4 rounded-xl border-2 border-emerald-600/20 bg-emerald-50 p-4">
-      <p className="text-xs font-bold text-emerald-800 tracking-tight">Get {topperName}&apos;s Answer Copy</p>
-      <p className="mt-0.5 text-[10px] text-emerald-700/70">+ 50+ topper copies in the Complete Compilation</p>
-      <div className="mt-3 flex flex-col gap-1.5">
-        <PayButton amount={799} productSlug="all-strategy-reports" tracking="dodo-sidebar" className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-500 active:scale-[0.97]">
-          Pay ₹799 — Instant Access
-        </PayButton>
+    <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <div className="flex items-start gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-100">
+          <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+          </svg>
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-semibold text-zinc-800">Get {topperName}&apos;s Answer Copy</p>
+          <p className="mt-0.5 text-[10px] text-zinc-500">+ 50+ topper copies in the complete compilation</p>
+        </div>
       </div>
+      <Link
+        href="/store/answer-copies-compilation"
+        data-track="topper-sidebar-buy-answer-copies"
+        className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.97]"
+      >
+        Buy Now — ₹799
+      </Link>
+      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Instant PDF download · Lifetime access</p>
     </div>
   );
 }

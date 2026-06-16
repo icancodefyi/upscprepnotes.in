@@ -10,6 +10,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
 import { trackViewItem } from "@/lib/analytics";
 import { trackClientEvent, getVisitorId } from "@/lib/client-analytics";
+import ProductRecommendations from "@/components/ProductRecommendations";
 
 export default function AskPageWrapper() {
   return (
@@ -669,6 +670,7 @@ function AskPage() {
                                 )}
                               </div>
                             )}
+                            <ProductRecommendations />
                           </div>
                         </div>
                       </div>
@@ -681,9 +683,7 @@ function AskPage() {
                   <div className="border-b border-zinc-100 last:border-b-0">
                     <div className="py-5 relative">
                       <div className="absolute left-0 top-[14px]">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-sm">
-                          <span className="text-[8px] font-bold tracking-tight text-white">M</span>
-                        </div>
+                        <img src="/logo.png" alt="" className="h-9 w-9 rounded-full bg-white shadow-sm ring-1 ring-zinc-100" />
                       </div>
                       <div className="pl-11">
                         <div className="prose prose-zinc max-w-none prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-zinc-700 prose-pre:rounded-lg prose-pre:bg-zinc-900 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">

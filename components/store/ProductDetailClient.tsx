@@ -43,9 +43,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
           <CartIcon onClick={() => setCartOpen(true)} />
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-5">
-          {/* Left: Image */}
-          <div className="lg:col-span-2">
+        <div className="grid gap-10 lg:grid-cols-5 lg:items-start">
+          {/* Left: Image + content */}
+          <div className="lg:col-span-3">
             {product.image ? (
               <div className="overflow-hidden rounded-xl bg-gray-50">
                 <img
@@ -75,76 +75,34 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 )}
               </div>
             )}
-          </div>
 
-          {/* Right: Info */}
-          <div className="lg:col-span-3">
-            {product.badge && (
-              <span
-                className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${
-                  product.badgeColor === "emerald"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : product.badgeColor === "amber"
-                    ? "bg-amber-50 text-amber-700"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              >
-                {product.badge}
-              </span>
-            )}
-
-            <h1 className="mt-3 text-2xl font-bold text-gray-900 sm:text-3xl">{product.title}</h1>
-            <p className="mt-1.5 text-gray-500">{product.tagline}</p>
-
-            {product.rating && (
-              <div className="mt-3 flex items-center gap-2">
-                <span className="inline-flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <IconStarFilled
-                      key={s}
-                      size={15}
-                      className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200"}
-                    />
-                  ))}
-                </span>
-                <span className="text-sm font-medium text-gray-700">{product.rating}</span>
-                <span className="text-sm text-gray-400">({product.reviewCount} reviews)</span>
+            <div className="mt-8">
+              <h2 className="text-base font-bold text-gray-900">About this product</h2>
+              <div className="mt-3 space-y-3">
+                {product.longDescription.map((para, i) => (
+                  <p key={i} className="text-sm leading-relaxed text-gray-500">{para}</p>
+                ))}
               </div>
-            )}
-
-            <div className="mt-6 flex items-baseline gap-3">
-              <span className="text-2xl font-bold text-gray-900">₹{product.price}</span>
-              {product.originalPrice && (
-                <>
-                  <span className="text-sm text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-                  <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
-                    {Math.round((1 - product.price / product.originalPrice) * 100)}% off
-                  </span>
-                </>
-              )}
-            </div>
-
-            <div className="mt-5 space-y-3 border-t border-gray-100 pt-5">
-              {product.longDescription.map((para, i) => (
-                <p key={i} className="text-sm leading-relaxed text-gray-500">{para}</p>
-              ))}
             </div>
 
             {product.features.length > 0 && (
-              <ul className="mt-4 space-y-2">
-                {product.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
-                    <IconCheck size={15} className="mt-0.5 shrink-0 text-emerald-600" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-8">
+                <h2 className="text-base font-bold text-gray-900">What you get</h2>
+                <ul className="mt-3 space-y-2">
+                  {product.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
+                      <IconCheck size={15} className="mt-0.5 shrink-0 text-emerald-600" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
 
             {/* What's Included */}
             {product.files && product.files.length > 0 && (
-              <div className="mt-5 border-t border-gray-100 pt-5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">What's Included</h3>
+              <div className="mt-8">
+                <h2 className="text-base font-bold text-gray-900">What's Included</h2>
                 <p className="mt-1 text-xs text-gray-400">
                   {product.fileCount} files · {product.totalSizeMB} MB total
                 </p>
@@ -159,34 +117,124 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               </div>
             )}
             {!product.files && product.fileCount && (
-              <div className="mt-5 border-t border-gray-100 pt-5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">What's Included</h3>
+              <div className="mt-8">
+                <h2 className="text-base font-bold text-gray-900">What's Included</h2>
                 <p className="mt-1 text-sm text-gray-600">{product.fileCount} files · {product.totalSizeMB} MB total</p>
               </div>
             )}
 
-            {product.comingSoon ? (
-              <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-dashed border-gray-300 bg-gray-50 px-5 py-2.5 text-sm font-medium text-gray-400">
-                Coming Soon
+            {/* Preview / sample section */}
+            {!product.comingSoon && (
+              <div className="mt-8 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-5 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-gray-800">Instant preview after purchase</p>
+                <p className="mt-1 text-xs text-gray-500">Every PDF opens in your browser. Download and keep forever.</p>
               </div>
-            ) : product.link ? (
-              <div className="mt-6">
-                <Link
-                  href={product.link}
-                  data-track={`detail-view-${product.slug}`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-amber-500"
+            )}
+          </div>
+
+          {/* Right: Sticky purchase card */}
+          <div className="lg:col-span-2">
+            <div className="sticky top-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+              {product.badge && (
+                <span
+                  className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${
+                    product.badgeColor === "emerald"
+                      ? "bg-emerald-50 text-emerald-700"
+                      : product.badgeColor === "amber"
+                      ? "bg-amber-50 text-amber-700"
+                      : "bg-gray-100 text-gray-500"
+                  }`}
                 >
-                  View Full Product Details
-                </Link>
+                  {product.badge}
+                </span>
+              )}
+
+              <h1 className="mt-3 text-2xl font-bold text-gray-900 sm:text-3xl">{product.title}</h1>
+              <p className="mt-1.5 text-gray-500">{product.tagline}</p>
+
+              {product.rating && (
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <IconStarFilled
+                        key={s}
+                        size={15}
+                        className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200"}
+                      />
+                    ))}
+                  </span>
+                  <span className="text-sm font-medium text-gray-700">{product.rating}</span>
+                  <span className="text-sm text-gray-400">({product.reviewCount} reviews)</span>
+                </div>
+              )}
+
+              <div className="mt-5 flex items-baseline gap-3">
+                <span className="text-2xl font-bold text-gray-900">₹{product.price}</span>
+                {product.originalPrice && (
+                  <>
+                    <span className="text-sm text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
+                    <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                      {Math.round((1 - product.price / product.originalPrice) * 100)}% off
+                    </span>
+                  </>
+                )}
               </div>
-            ) : (
-              <div className="mt-6 space-y-3">
-                <div className="flex flex-wrap gap-3">
+
+              {/* Trust badges */}
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
+                  <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span className="text-[10px] font-medium text-gray-600">Instant download</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
+                  <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span className="text-[10px] font-medium text-gray-600">7-day refund</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
+                  <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-[10px] font-medium text-gray-600">Lifetime access</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
+                  <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <span className="text-[10px] font-medium text-gray-600">1,400+ students</span>
+                </div>
+              </div>
+
+              {product.comingSoon ? (
+                <div className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 bg-gray-50 px-5 py-2.5 text-sm font-medium text-gray-400">
+                  Coming Soon
+                </div>
+              ) : product.link ? (
+                <div className="mt-6">
+                  <Link
+                    href={product.link}
+                    data-track={`detail-view-${product.slug}`}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
+                  >
+                    View Full Product Details
+                  </Link>
+                </div>
+              ) : (
+                <div className="mt-6 space-y-3">
                   <PayButton
                     amount={product.payAmount}
                     items={[{ slug: product.slug, quantity: 1, price: product.price }]}
                     tracking={`buy-${product.slug}`}
-                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-zinc-800 active:scale-[0.97]"
                   >
                     <IconShoppingCart size={16} />
                     Buy Now — ₹{product.price}
@@ -195,17 +243,18 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                     type="button"
                     data-track={`detail-addtocart-${product.slug}`}
                     onClick={handleAddToCart}
-                    className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-gray-900 hover:text-gray-900"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-gray-900 hover:text-gray-900"
                   >
                     <IconShoppingBag size={16} />
                     Add to Cart
                   </button>
                 </div>
-                <p className="text-xs text-gray-400">
-                  Instant download after payment. 7-day refund.
-                </p>
-              </div>
-            )}
+              )}
+
+              <p className="mt-3 text-center text-[10px] text-gray-400">
+                Secure payment · PDF delivered instantly
+              </p>
+            </div>
           </div>
         </div>
 

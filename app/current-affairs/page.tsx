@@ -247,7 +247,7 @@ export default function CurrentAffairsHub() {
               <span>📝</span>
               <span>Previous Year Questions (PYQ)</span>
             </Link>
-            <Link href="/ask" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
+            <Link href="/ask" data-track="ai-mentor-cta" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
               <span>🤖</span>
               <span>Ask AI — UPSC Query Assistant</span>
             </Link>

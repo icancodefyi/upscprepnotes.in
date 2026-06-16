@@ -5,6 +5,7 @@ import { IconX, IconMinus, IconPlus, IconTrash, IconShoppingBag } from "@tabler/
 import { useCart } from "@/lib/cart-context";
 import PayButton from "@/components/ui/PayButton";
 import Link from "next/link";
+import { PRODUCTS } from "@/lib/store-products";
 
 interface Props {
   open: boolean;
@@ -121,6 +122,9 @@ export default function CartSlideover({ open, onClose }: Props) {
 
         {items.length > 0 && (
           <div className="border-t border-gray-200 px-5 py-4">
+            {/* Cross-sell */}
+            <CartCrossSell cartSlugs={items.map((i) => i.product.slug)} />
+
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between text-gray-500">
                 <span>Subtotal ({totalItems} items)</span>
@@ -154,5 +158,41 @@ export default function CartSlideover({ open, onClose }: Props) {
         )}
       </div>
     </>
+  );
+}
+
+function CartCrossSell({ cartSlugs }: { cartSlugs: string[] }) {
+  const { addItem } = useCart();
+  const recommendations = PRODUCTS.filter(
+    (p) => !p.comingSoon && !cartSlugs.includes(p.slug) && ["top-10-rankers-strategy", "answer-copies-compilation", "all-strategy-reports"].includes(p.slug)
+  ).slice(0, 2);
+
+  if (recommendations.length === 0) return null;
+
+  return (
+    <div className="mb-4 rounded-xl border border-gray-100 bg-gray-50 p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Frequently bought together</p>
+      <div className="mt-2 space-y-2">
+        {recommendations.map((product) => (
+          <div key={product.slug} className="flex items-center gap-2">
+            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${product.gradient}`}>
+              <span className="text-[10px] font-black text-white">{product.title.charAt(0)}</span>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-semibold text-gray-800">{product.title}</p>
+              <p className="text-[10px] text-gray-500">₹{product.price}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => addItem(product)}
+              data-track={`cart-crossell-${product.slug}`}
+              className="rounded-md bg-white px-2 py-1 text-[10px] font-semibold text-gray-700 shadow-sm transition hover:bg-gray-100"
+            >
+              Add
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

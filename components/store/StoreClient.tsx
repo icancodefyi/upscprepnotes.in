@@ -13,6 +13,8 @@ import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
 
+type SortOption = "featured" | "price-low" | "price-high" | "rating";
+
 type CategoryTab = "all" | "original" | "notes-bundle" | "teacher-brand" | "test-series" | "optional";
 
 const CATEGORY_TABS: { key: CategoryTab; label: string }[] = [
@@ -27,15 +29,26 @@ const CATEGORY_TABS: { key: CategoryTab; label: string }[] = [
 export default function StoreClient() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryTab>("all");
+  const [sort, setSort] = useState<SortOption>("featured");
   const [cartOpen, setCartOpen] = useState(false);
 
-  const visibleProducts = useMemo(
-    () =>
+  const visibleProducts = useMemo(() => {
+    const filtered =
       category === "all"
         ? PRODUCTS.filter((p) => !p.comingSoon)
-        : PRODUCTS.filter((p) => p.category === category && !p.comingSoon),
-    [category]
-  );
+        : PRODUCTS.filter((p) => p.category === category && !p.comingSoon);
+
+    switch (sort) {
+      case "price-low":
+        return [...filtered].sort((a, b) => a.price - b.price);
+      case "price-high":
+        return [...filtered].sort((a, b) => b.price - a.price);
+      case "rating":
+        return [...filtered].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      default:
+        return filtered;
+    }
+  }, [category, sort]);
 
   const groupedByCategory = useMemo(() => {
     if (category !== "all") return null;
@@ -94,6 +107,31 @@ export default function StoreClient() {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-8">
+          {/* Hero */}
+          {category === "all" && !search && (
+            <div className="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-6 text-white sm:p-8">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="max-w-md">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Best Seller</p>
+                  <h2 className="mt-1 text-xl font-bold sm:text-2xl">All Strategy Reports</h2>
+                  <p className="mt-2 text-sm text-zinc-300">280+ topper strategies, marks analysis, and answer copies. Everything you need in one bundle.</p>
+                  <div className="mt-4 flex items-center gap-3">
+                    <Link href="/store/all-strategy-reports" data-track="store-hero-cta"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-zinc-900 transition hover:bg-zinc-100"
+                    >
+                      View Bundle — ₹799
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </Link>
+                    <span className="text-[11px] text-zinc-400">₹27,720 value</span>
+                  </div>
+                </div>
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-3xl font-black text-white sm:h-28 sm:w-28">
+                  280+
+                </div>
+              </div>
+            </div>
+          )}
+
           {filtered ? (
             <>
               {filtered.length === 0 ? (
@@ -110,23 +148,39 @@ export default function StoreClient() {
             </>
           ) : (
             <>
-              {/* ─── Category Tabs ─── */}
-              <div className="mb-6 flex flex-wrap items-center gap-2">
-                {CATEGORY_TABS.map((tab) => (
-                  <button
-                    key={tab.key}
-                    type="button"
-                    data-track={`store-tab-${tab.key}`}
-                    onClick={() => setCategory(tab.key)}
-                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-                      category === tab.key
-                        ? "bg-gray-900 text-white"
-                        : "bg-gray-100 text-gray-500 hover:bg-gray-200"
-                    }`}
+              {/* ─── Category Tabs + Sort ─── */}
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  {CATEGORY_TABS.map((tab) => (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      data-track={`store-tab-${tab.key}`}
+                      onClick={() => setCategory(tab.key)}
+                      className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                        category === tab.key
+                          ? "bg-gray-900 text-white"
+                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-400">Sort by</span>
+                  <select
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value as SortOption)}
+                    data-track="store-sort"
+                    className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs text-gray-600 outline-none focus:border-gray-400"
                   >
-                    {tab.label}
-                  </button>
-                ))}
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                  </select>
+                </div>
               </div>
 
               {/* ─── Product Grid ─── */}
@@ -290,7 +344,7 @@ function ProductCard({
       {/* Info */}
       <div className="flex flex-1 flex-col p-3">
         <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} data-track={`store-card-title-${product.slug}`}>
-          <h3 className="text-xs font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
         </Link>
 
         <div className="mt-1.5 flex items-center gap-2">
@@ -331,15 +385,24 @@ function ProductCard({
               View Product
             </Link>
           ) : (
-            <button
-              type="button"
-              data-track={`store-card-addtocart-${product.slug}`}
-              onClick={handleAddToCart}
-              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-emerald-600"
-            >
-              <IconShoppingCart size={12} />
-              Add to Cart
-            </button>
+            <div className="flex flex-col gap-1.5">
+              <Link
+                href={`/store/${product.slug}`}
+                data-track={`store-card-buy-${product.slug}`}
+                className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-zinc-800"
+              >
+                <IconShoppingCart size={12} />
+                Buy Now
+              </Link>
+              <button
+                type="button"
+                data-track={`store-card-addtocart-${product.slug}`}
+                onClick={handleAddToCart}
+                className="flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-white py-1.5 text-[11px] font-medium text-gray-600 transition hover:border-gray-300 hover:text-gray-800"
+              >
+                Add to Cart
+              </button>
+            </div>
           )}
         </div>
       </div>
