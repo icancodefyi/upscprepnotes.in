@@ -244,6 +244,7 @@ export async function GET(req: NextRequest) {
                 { "events.event": "file_download" },
                 { "events.event": "form_submit" },
                 { "events.event": "dialog_submit" },
+                { "events.event": "free_guide_lead" },
                 {
                   events: {
                     $elemMatch: { event: "click", $or: [
@@ -284,6 +285,7 @@ export async function GET(req: NextRequest) {
     const funnelStages = await Promise.all([
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "page_view", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "dialog_open", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
+      AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "free_guide_lead", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "free_download_lead", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "file_download", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),
       AnalyticsEventModel.distinct("visitorId", { timestamp: { $gte: since }, event: "whatsapp_click", visitorId: { $exists: true, $ne: "unknown" } }).then(r => r.length),

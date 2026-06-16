@@ -6,7 +6,15 @@ import {
 } from "recharts";
 
 // Types
-type FunnelStage = [number, number, number, number, number];
+type FunnelStage = [number, number, number, number, number, number];
+type Lead = {
+  name: string; email: string; createdAt: string; source: string;
+  topperSlug?: string; topperName?: string;
+};
+type DialogAuditSession = {
+  sessionId: string; visitorId: string;
+  events: { event: string; pagePath: string; timestamp: string; metadata: Record<string, unknown> }[];
+};
 type Stats = {
   totalEvents: number; totalSessions: number; uniqueVisitors: number; pageViews: number;
   todayEvents: number; todaySessions: number; todayPageViews: number;
@@ -49,6 +57,9 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
   const [lastUpdated, setLastUpdated] = useState("");
+  const [leads, setLeads] = useState<{ freeGuide: Lead[]; freeDownload: Lead[] } | null>(null);
+  const [dialogAudit, setDialogAudit] = useState<DialogAuditSession[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
 
   const fetchStats = useCallback(async (d: number) => {
     setLoading(true);
@@ -63,11 +74,26 @@ export default function AnalyticsPage() {
 
   useEffect(() => { fetchStats(days); }, [days, fetchStats]);
 
+  const fetchLeads = useCallback(async (d: number) => {
+    setLeadsLoading(true);
+    try {
+      const res = await fetch(`/api/admin/leads?days=${d}`);
+      const data = await res.json();
+      if (data.success) {
+        setLeads(data.leads);
+        setDialogAudit(data.dialogAudit || []);
+      }
+    } catch (e) { console.error("Failed to fetch leads", e); }
+    finally { setLeadsLoading(false); }
+  }, []);
+
+  useEffect(() => { fetchLeads(days); }, [days, fetchLeads]);
+
   // Derived metrics
   const bounceRate = stats ? (stats.totalSessions > 0 ? (stats.bounceSessions / stats.totalSessions * 100).toFixed(1) : "0") : "0";
   const returningPct = stats ? (stats.uniqueVisitors > 0 ? (stats.returningVisitors / stats.uniqueVisitors * 100).toFixed(1) : "0") : "0";
   const conversionRate = stats ? (stats.uniqueVisitors > 0 ? (stats.conversions / stats.uniqueVisitors * 100).toFixed(1) : "0") : "0";
-  const funnelLabels = ["Visitors", "Opened Dialog", "Free Lead", "Downloaded", "WhatsApp"];
+  const funnelLabels = ["Visitors", "Opened Dialog", "Free Guide Lead", "Free Download Lead", "Downloaded", "WhatsApp"];
 
 
   if (loading && !stats) {
@@ -250,7 +276,7 @@ export default function AnalyticsPage() {
                     <span className="font-semibold tabular-nums text-zinc-900">{formatNumber(count)} <span className="text-zinc-400 font-normal">({pct.toFixed(1)}%)</span></span>
                   </div>
                   <div className="relative h-6 w-full rounded-md bg-zinc-100 overflow-hidden">
-                    <div className="h-full rounded-md transition-all duration-500" style={{ width: `${pct}%`, background: i === 4 ? "#059669" : ["#18181b", "#52525b", "#a1a1aa", "#d4d4d8"][i] || "#e4e4e7" }} />
+                    <div className="h-full rounded-md transition-all duration-500" style={{ width: `${pct}%`, background: i === 5 ? "#059669" : ["#18181b", "#52525b", "#a1a1aa", "#d4d4d8", "#e4e4e7"][i] || "#f4f4f5" }} />
                   </div>
                   {i > 0 && drop > 0 && (
                     <p className="mt-0.5 text-[10px] text-red-500">-{drop.toFixed(0)}% drop from previous</p>
@@ -503,6 +529,128 @@ export default function AnalyticsPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* ===== LEADS + DIALOG AUDIT ===== */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* FREE GUIDE LEADS */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-5">
+          <div className="mb-4">
+            <h2 className="text-sm font-semibold">Free Guide Leads</h2>
+            <p className="text-xs text-zinc-400">Users who requested the 3 free guides</p>
+          </div>
+          {leadsLoading ? (
+            <p className="text-xs text-zinc-400">Loading...</p>
+          ) : leads && leads.freeGuide.length > 0 ? (
+            <div className="max-h-80 overflow-y-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-zinc-100 text-zinc-400 sticky top-0 bg-white">
+                    <th className="pb-2 pr-3 font-medium">Name</th>
+                    <th className="pb-2 pr-3 font-medium">Email</th>
+                    <th className="pb-2 font-medium text-right">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leads.freeGuide.map((l, i) => (
+                    <tr key={i} className="border-b border-zinc-50 hover:bg-zinc-50 transition">
+                      <td className="py-1.5 pr-3 font-medium text-zinc-800 truncate max-w-[100px]">{l.name}</td>
+                      <td className="py-1.5 pr-3 text-zinc-600 truncate max-w-[160px]">{l.email}</td>
+                      <td className="py-1.5 text-right text-zinc-400 tabular-nums whitespace-nowrap">{new Date(l.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-xs text-zinc-400">No free guide leads</p>
+          )}
+          {leads && <p className="mt-3 text-[10px] text-zinc-400">Total: {leads.freeGuide.length} leads</p>}
+        </div>
+
+        {/* FREE DOWNLOAD LEADS */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-5">
+          <div className="mb-4">
+            <h2 className="text-sm font-semibold">Free Download Leads</h2>
+            <p className="text-xs text-zinc-400">Users who requested topper answer copies</p>
+          </div>
+          {leadsLoading ? (
+            <p className="text-xs text-zinc-400">Loading...</p>
+          ) : leads && leads.freeDownload.length > 0 ? (
+            <div className="max-h-80 overflow-y-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-zinc-100 text-zinc-400 sticky top-0 bg-white">
+                    <th className="pb-2 pr-3 font-medium">Email</th>
+                    <th className="pb-2 pr-3 font-medium">Topper</th>
+                    <th className="pb-2 font-medium text-right">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leads.freeDownload.map((l, i) => (
+                    <tr key={i} className="border-b border-zinc-50 hover:bg-zinc-50 transition">
+                      <td className="py-1.5 pr-3 text-zinc-600 truncate max-w-[140px]">{l.email}</td>
+                      <td className="py-1.5 pr-3 text-zinc-800 truncate max-w-[120px]">{l.topperName}</td>
+                      <td className="py-1.5 text-right text-zinc-400 tabular-nums whitespace-nowrap">{new Date(l.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-xs text-zinc-400">No free download leads</p>
+          )}
+          {leads && <p className="mt-3 text-[10px] text-zinc-400">Total: {leads.freeDownload.length} leads</p>}
+        </div>
+      </div>
+
+      {/* ===== DIALOG AUDIT LOG ===== */}
+      <div className="rounded-xl border border-zinc-200 bg-white p-5">
+        <div className="mb-4">
+          <h2 className="text-sm font-semibold">Dialog Audit Log</h2>
+          <p className="text-xs text-zinc-400">Recent dialog interaction sessions (open → close/submit → download)</p>
+        </div>
+        {leadsLoading ? (
+          <p className="text-xs text-zinc-400">Loading...</p>
+        ) : dialogAudit.length === 0 ? (
+          <p className="text-xs text-zinc-400">No dialog sessions</p>
+        ) : (
+          <div className="space-y-3">
+            {dialogAudit.slice(0, 15).map((session) => {
+              const dialogEvents = session.events.filter(e => e.event.startsWith("dialog_") || e.event === "free_download_lead" || e.event === "file_download");
+              const opened = dialogEvents.find(e => e.event === "dialog_open");
+              const closed = dialogEvents.find(e => e.event === "dialog_close");
+              const submitted = dialogEvents.find(e => e.event === "dialog_submit");
+              const downloaded = dialogEvents.find(e => e.event === "file_download");
+              const emailVal = submitted?.metadata?.email || dialogEvents.find(e => e.event === "free_download_lead")?.metadata?.email || "";
+              const email = typeof emailVal === "string" ? emailVal : "";
+              const topperVal = opened?.metadata?.topperName || "";
+              const topper = typeof topperVal === "string" ? topperVal : "";
+              return (
+                <div key={session.sessionId} className="rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 text-xs">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-zinc-400 text-[10px] truncate max-w-[120px]">{session.sessionId.slice(0, 16)}...</span>
+                      <span className="text-zinc-300">|</span>
+                      <span className="font-medium text-zinc-700">{topper || "Unknown topper"}</span>
+                    </div>
+                    {email && <span className="text-emerald-600 font-medium truncate max-w-[180px]">{email}</span>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {opened && <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-0.5 text-[10px] text-zinc-700">Opened</span>}
+                    {submitted && <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] text-emerald-700">Submitted</span>}
+                    {!submitted && closed && <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-[10px] text-red-700">Closed (no submit)</span>}
+                    {downloaded && <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] text-blue-700">Downloaded</span>}
+                    <span className="text-zinc-400 ml-auto tabular-nums">{new Date(opened?.timestamp || "").toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
+                  </div>
+                  {email && (
+                    <p className="mt-1 text-[10px] text-zinc-500">Email: {email}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

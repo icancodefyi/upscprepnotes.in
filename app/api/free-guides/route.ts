@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
+import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import nodemailer from "nodemailer";
 
 const GUIDES = [
@@ -89,6 +90,21 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     await FreeGuideLeadModel.create({ name: name || "Guest", email });
+
+    try {
+      await AnalyticsEventModel.create({
+        event: "free_guide_lead",
+        pagePath: "/",
+        sessionId: "server",
+        visitorId: "server",
+        referrer: "",
+        userAgent: "",
+        deviceType: "server",
+        metadata: { email, name: name || "Guest" },
+      });
+    } catch (err) {
+      console.error("Analytics event creation error:", err);
+    }
 
     try {
       await sendGuideEmail(name, email);

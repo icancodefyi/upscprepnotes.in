@@ -58,8 +58,8 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
       else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
       setSubmitted(true);
-      trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, topperName, status: data.available ? "delivered" : "pending" });
-      trackClientEvent("free_download_lead", { topperSlug, topperName, available: data.available, count: data.pdfUrls?.length || 1 });
+      trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, topperName, status: data.available ? "delivered" : "pending", email: email.trim() });
+      trackClientEvent("free_download_lead", { topperSlug, topperName, available: data.available, count: data.pdfUrls?.length || 1, email: email.trim() });
     } catch (err: any) {
       setDialogError(err.message);
     } finally {
