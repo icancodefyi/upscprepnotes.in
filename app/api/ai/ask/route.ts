@@ -11,6 +11,7 @@ import {
   getConversation,
 } from "@/lib/ai/quota";
 import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
+import { auth } from "@/lib/auth";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -44,21 +45,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
     }
 
-    const quota = await getQuota(sessionId);
+    const session = await auth();
+    const userId = session?.user?.id || null;
+
+    const quota = await getQuota(sessionId, userId);
     if (!quota.canQuery) {
       return NextResponse.json(
-        { error: "Free queries exhausted. Purchase any compilation for unlimited access." },
+        { error: quota.isAuthenticated ? "Daily limit reached. Upgrade for unlimited access." : "Free limit reached. Sign in for 20 queries/day or purchase for unlimited." },
         { status: 429 },
       );
     }
 
     let cid = conversationId;
     if (!cid) {
-      cid = await createConversation(sessionId, message);
+      cid = await createConversation(sessionId, userId, message);
     }
 
     await saveMessage(cid, "user", message);
-    await incrementQuota(sessionId);
+    await incrementQuota(sessionId, userId);
 
     const conv = await getConversation(cid);
     if (conv && conv.messages.length === 1) {

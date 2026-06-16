@@ -9,6 +9,9 @@ import fullFormPage from "@/data/content/upsc-full-form";
 import freeMaterialPage from "@/data/content/upsc-free-material";
 import fullFormHindiPage from "@/data/content/upsc-full-form-hindi";
 import answerWritingPage from "@/data/content/how-to-write-upsc-mains-answers";
+import syllabusHindiPage from "@/data/content/upsc-syllabus-hindi";
+import freeMaterialHindiPage from "@/data/content/upsc-free-material-hindi";
+import answerWritingHindiPage from "@/data/content/how-to-write-upsc-mains-answers-hindi";
 
 const OPTIONAL_SUBJECTS = [
   "psir", "public-administration", "mathematics", "sociology",
@@ -22,6 +25,9 @@ const CONTENT_SLUGS = [
   "upsc-full-form-hindi",
   "how-to-write-upsc-mains-answers",
   "upsc-topper-answer-copies",
+  "upsc-syllabus-hindi",
+  "upsc-free-material-hindi",
+  "how-to-write-upsc-mains-answers-hindi",
 ];
 
 const YEAR_KEYS = ["2022", "2023", "2024", "2025"];
@@ -48,6 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/current-affairs/may-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     { url: `${baseUrl}/current-affairs/2025`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/current-affairs/download`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/search`, lastModified: new Date(), changeFrequency: "daily", priority: 0.6 },
   ];
 
   // Content pages — use real lastUpdated from data files
@@ -58,6 +65,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   "upsc-full-form-hindi": fullFormHindiPage.lastUpdated,
   "how-to-write-upsc-mains-answers": answerWritingPage.lastUpdated,
   "upsc-topper-answer-copies": "2026-06-13",
+  "upsc-syllabus-hindi": "2026-06-16",
+  "upsc-free-material-hindi": "2026-06-16",
+  "how-to-write-upsc-mains-answers-hindi": "2026-06-16",
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
     url: `${baseUrl}/${slug}`,

@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listConversations, createConversation, getQuota } from "@/lib/ai/quota";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const sessionId = request.nextUrl.searchParams.get("sessionId");
 
-  if (!sessionId) {
-    return NextResponse.json({ conversations: [], quota: { remaining: 5, canQuery: true } });
-  }
-
   try {
+    const session = await auth();
+    const userId = session?.user?.id || null;
+
     const [conversations, quota] = await Promise.all([
-      listConversations(sessionId),
-      getQuota(sessionId),
+      listConversations(sessionId || "", userId),
+      getQuota(sessionId || "", userId),
     ]);
 
     return NextResponse.json({ conversations, quota });
   } catch (err) {
     console.error("Conversations error:", err);
-    return NextResponse.json({ conversations: [], quota: { remaining: 5, canQuery: true } });
+    return NextResponse.json({
+      conversations: [],
+      quota: { remaining: 5, canQuery: true, isAuthenticated: false },
+    });
   }
 }
 
@@ -28,7 +31,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Session ID required" }, { status: 400 });
     }
 
-    const id = await createConversation(sessionId);
+    const session = await auth();
+    const userId = session?.user?.id || null;
+
+    const id = await createConversation(sessionId, userId);
     return NextResponse.json({ id }, { status: 201 });
   } catch (err) {
     console.error("Create conversation error:", err);

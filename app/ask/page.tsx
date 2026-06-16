@@ -1,10 +1,12 @@
 "use client";
 
-import { Suspense, useState, useEffect, useRef, useCallback } from "react";
+import { Suspense, useState, useEffect, useRef, useCallback, useMemo, Fragment } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
 import { trackViewItem } from "@/lib/analytics";
 import { trackClientEvent, getVisitorId } from "@/lib/client-analytics";
@@ -64,7 +66,7 @@ function isSearchIndicator(content: string): boolean {
 
 function stripSearchIndicator(content: string): string {
   const idx = content.indexOf("\n\n", content.indexOf("\uD83D\uDD0D"));
-  if (idx === -1) return content;
+  if (idx === -1) return "";
   return content.slice(idx + 2);
 }
 
@@ -77,8 +79,14 @@ function preprocessContent(content: string): string {
 }
 
 function formatTitle(title: string | undefined): string {
-  if (!title) return "Chat";
-  return title.length > 40 ? title.slice(0, 40) + "\u2026" : title;
+  if (!title) return "New conversation";
+  let t = title;
+  const prefixes = ["Tell me more about ", "What is ", "What are ", "How did ", "How should ", "How do ", "Explain ", "What's "];
+  for (const p of prefixes) {
+    if (t.startsWith(p)) { t = t.slice(p.length); break; }
+  }
+  t = t.charAt(0).toUpperCase() + t.slice(1);
+  return t.length > 35 ? t.slice(0, 35) + "\u2026" : t;
 }
 
 function dicebearUrl(seed: string): string {
@@ -97,23 +105,12 @@ type SourceChip = {
 };
 
 const SOURCE_TYPE_ORDER: Record<SourceType, number> = {
-  government: 0,
-  official: 1,
-  academic: 2,
-  coaching: 3,
-  reference: 4,
-  community: 5,
-  topper: 6,
+  government: 0, official: 1, academic: 2, coaching: 3, reference: 4, community: 5, topper: 6,
 };
 
 const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
-  government: "Government",
-  official: "Official",
-  academic: "Academic",
-  coaching: "Coaching",
-  reference: "Reference",
-  community: "Community",
-  topper: "Topper",
+  government: "Government", official: "Official", academic: "Academic", coaching: "Coaching",
+  reference: "Reference", community: "Community", topper: "Topper",
 };
 
 const GOVERNMENT_DOMAINS = [
@@ -136,36 +133,21 @@ const COACHING_DOMAINS = [
 ];
 
 const KNOWN_DOMAIN_LABELS: Record<string, string> = {
-  "vajiramandravi.com": "Vajiram & Ravi",
-  "visionias.in": "Vision IAS",
-  "nextias.com": "Next IAS",
-  "drishtiias.com": "Drishti IAS",
-  "forumias.com": "Forum IAS",
-  "insightsonindia.com": "Insights on India",
-  "iasbaba.com": "IAS Baba",
-  "byjus.com": "BYJU'S",
-  "unacademy.com": "Unacademy",
-  "ncert.nic.in": "NCERT",
-  "nios.ac.in": "NIOS",
-  "upsc.gov.in": "UPSC",
-  "pib.gov.in": "PIB",
-  "prsindia.org": "PRS India",
+  "vajiramandravi.com": "Vajiram & Ravi", "visionias.in": "Vision IAS",
+  "nextias.com": "Next IAS", "drishtiias.com": "Drishti IAS",
+  "forumias.com": "Forum IAS", "insightsonindia.com": "Insights on India",
+  "iasbaba.com": "IAS Baba", "byjus.com": "BYJU'S",
+  "unacademy.com": "Unacademy", "ncert.nic.in": "NCERT",
+  "nios.ac.in": "NIOS", "upsc.gov.in": "UPSC",
+  "pib.gov.in": "PIB", "prsindia.org": "PRS India",
 };
 
 function classifyDomain(domain: string): SourceType {
   const d = domain.toLowerCase().replace(/^www\./, "");
-  for (const g of GOVERNMENT_DOMAINS) {
-    if (d === g || d.endsWith("." + g)) return "government";
-  }
-  for (const o of OFFICIAL_DOMAINS) {
-    if (d === o || d.endsWith("." + o)) return "official";
-  }
-  for (const c of COACHING_DOMAINS) {
-    if (d === c || d.endsWith("." + c)) return "coaching";
-  }
-  for (const a of ACADEMIC_DOMAINS) {
-    if (d.endsWith(a)) return "academic";
-  }
+  for (const g of GOVERNMENT_DOMAINS) { if (d === g || d.endsWith("." + g)) return "government"; }
+  for (const o of OFFICIAL_DOMAINS) { if (d === o || d.endsWith("." + o)) return "official"; }
+  for (const c of COACHING_DOMAINS) { if (d === c || d.endsWith("." + c)) return "coaching"; }
+  for (const a of ACADEMIC_DOMAINS) { if (d.endsWith(a)) return "academic"; }
   return "reference";
 }
 
@@ -179,12 +161,11 @@ function classifySources(content: string): SourceChip[] {
     if (seen.has(domain)) continue;
     seen.add(domain);
     const type = classifyDomain(domain);
-    const label = KNOWN_DOMAIN_LABELS[domain] || match[1].trim() || domain.split(".")[0];
-    const cleanDomain = domain.replace(/^https?:\/\//, "");
+    const linkText = match[1].trim();
+    const genericLabels = new Set(["source", "sources", "link", "website", "here", "article", "page"]);
+    const label = KNOWN_DOMAIN_LABELS[domain] || (!genericLabels.has(linkText.toLowerCase()) ? linkText : domain.split(".")[0]);
     chips.push({
-      domain,
-      label,
-      type,
+      domain, label, type,
       url: match[0].match(/\(([^)]+)\)/)?.[1] || `https://${domain}`,
       title: label,
     });
@@ -196,11 +177,8 @@ function classifySources(content: string): SourceChip[] {
 function getMergedSources(msg: Message): SourceChip[] {
   const webSources = classifySources(msg.content);
   const topperSources: SourceChip[] = (msg.sources || []).map((s) => ({
-    domain: `topper/${s.slug}`,
-    label: s.name,
-    type: "topper" as SourceType,
-    url: `/upsc-topper/${s.slug}`,
-    title: s.name,
+    domain: `topper/${s.slug}`, label: s.name, type: "topper" as SourceType,
+    url: `/upsc-topper/${s.slug}`, title: s.name,
   }));
   const merged = [...webSources, ...topperSources];
   merged.sort((a, b) => SOURCE_TYPE_ORDER[a.type] - SOURCE_TYPE_ORDER[b.type]);
@@ -217,18 +195,54 @@ const SOURCE_TYPE_COLORS: Record<SourceType, { bg: string; text: string; dot: st
   topper: { bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-500" },
 };
 
+function groupConversations(convs: Conversation[]) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const yesterday = today - 86400000;
+  const weekAgo = today - 7 * 86400000;
+
+  const groups: { label: string; items: Conversation[] }[] = [
+    { label: "Today", items: [] },
+    { label: "Yesterday", items: [] },
+    { label: "This Week", items: [] },
+    { label: "Earlier", items: [] },
+  ];
+
+  for (const c of convs) {
+    const t = new Date(c.updatedAt).getTime();
+    if (t >= today) groups[0].items.push(c);
+    else if (t >= yesterday) groups[1].items.push(c);
+    else if (t >= weekAgo) groups[2].items.push(c);
+    else groups[3].items.push(c);
+  }
+
+  return groups.filter(g => g.items.length > 0);
+}
+
+function faviconUrl(domain: string): string {
+  const d = domain.replace(/^https?:\/\//, "").split("/")[0];
+  return `https://www.google.com/s2/favicons?domain=${d}&sz=16`;
+}
+
 function AskPage() {
   const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [streamingMessage, setStreamingMessage] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
-  const [quota, setQuota] = useState<{ remaining: number; canQuery: boolean } | null>(null);
+  const [searchedOnce, setSearchedOnce] = useState(false);
+  const [quota, setQuota] = useState<{ remaining: number; canQuery: boolean; isAuthenticated: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [showQuotaModal, setShowQuotaModal] = useState(false);
+  const [quotaExhausted, setQuotaExhausted] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
+  const [searchPhase, setSearchPhase] = useState("");
   const [searchResults, setSearchResults] = useState<{ domain: string; label: string; status: "fetching" | "done" }[]>([]);
   const [selectedSources, setSelectedSources] = useState<SourceChip[] | null>(null);
   const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
@@ -236,6 +250,8 @@ function AskPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const initialQueryDone = useRef(false);
+
+  const groupedConversations = useMemo(() => groupConversations(conversations), [conversations]);
 
   const fetchConversations = useCallback(async () => {
     try {
@@ -283,14 +299,43 @@ function AskPage() {
   }, [messages, streaming]);
 
   useEffect(() => {
-    if (!streaming && !loading) {
-      inputRef.current?.focus();
-    }
+    if (!streaming && !loading) inputRef.current?.focus();
   }, [streaming, loading]);
 
   useEffect(() => {
     trackViewItem("Ask AI Page", 0);
   }, []);
+
+  // Migrate anonymous conversations and resend pending message when user signs in
+  useEffect(() => {
+    if (status === "authenticated" && pendingMessage) {
+      (async () => {
+        try {
+          await fetch("/api/ai/migrate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId: getAskSessionId() }),
+          });
+          await fetchConversations();
+        } catch {}
+      })();
+    }
+  }, [status, fetchConversations, pendingMessage]);
+
+  // Resend pending message after migration completes
+  const migrationDone = useRef(false);
+  useEffect(() => {
+    if (status === "authenticated" && pendingMessage && !migrationDone.current) {
+      migrationDone.current = true;
+      setInput(pendingMessage);
+      setPendingMessage(null);
+      setShowQuotaModal(false);
+      setTimeout(() => {
+        const form = document.querySelector("form");
+        if (form) form.requestSubmit();
+      }, 300);
+    }
+  }, [status, pendingMessage]);
 
   async function newConversation() {
     try {
@@ -304,6 +349,7 @@ function AskPage() {
       setActiveId(id);
       setMessages([]);
       setInput("");
+      setFollowUpQuestions([]);
       await fetchConversations();
       setTimeout(() => inputRef.current?.focus(), 100);
     } catch {}
@@ -315,38 +361,44 @@ function AskPage() {
     if (!text || streaming) return;
 
     const userMsg: Message = { role: "user", content: text };
-    const assistantMsg: Message = { role: "assistant", content: "" };
 
-    setMessages((prev) => [...prev, userMsg, assistantMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     if (inputRef.current) inputRef.current.style.height = "auto";
     setStreaming(true);
+    setStreamingMessage(null);
+    setSearchedOnce(false);
     setIsSearching(false);
+    setSearchPhase("");
+    setFollowUpQuestions([]);
 
     trackClientEvent("ask_question", {
-      messageLength: text.length,
-      conversationId: activeId || "new",
-      hasHistory: messages.length > 0,
+      messageLength: text.length, conversationId: activeId || "new", hasHistory: messages.length > 0,
     });
 
     try {
       const res = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          sessionId: getAskSessionId(),
-          conversationId: activeId,
-        }),
+        body: JSON.stringify({ message: text, sessionId: getAskSessionId(), conversationId: activeId }),
       });
+
+      if (res.status === 429) {
+        const errBody = await res.json().catch(() => ({}));
+        setPendingMessage(text);
+        setShowQuotaModal(true);
+        setQuotaExhausted(true);
+        setStreamingMessage(null);
+        setQuota((prev) => prev ? { ...prev, remaining: 0, canQuery: false } : prev);
+        trackClientEvent("ask_error", { status: 429, error: errBody.error || "quota_exhausted" });
+        setStreaming(false);
+        return;
+      }
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: "assistant", content: err.error || `Error ${res.status}` };
-          return updated;
-        });
+        setMessages((prev) => [...prev, { role: "assistant", content: err.error || `Error ${res.status}` }]);
+        setStreamingMessage(null);
         trackClientEvent("ask_error", { status: res.status, error: err.error || "unknown" });
         setStreaming(false);
         return;
@@ -361,20 +413,21 @@ function AskPage() {
       const decoder = new TextDecoder();
       let fullContent = "";
       let hasShownSearch = false;
+      let sourceLabelsShown = false;
 
-      // Fake progressive source discovery for UX
       const searchTimer = setTimeout(() => {
+        setSearchedOnce(true);
         setIsSearching(true);
+        setSearchPhase("Gathering sources...");
         const chips = classifySources(fullContent);
-        if (chips.length > 0) {
-          setSearchResults(chips.map((c) => ({ domain: c.domain, label: c.label, status: "done" as const })));
+        if (chips.length > 1) {
+          setSearchResults(chips.slice(1).map((c) => ({ domain: c.domain, label: c.label, status: "done" as const })));
+          setSearchPhase("Analyzing sources...");
+          sourceLabelsShown = true;
         } else {
-          setSearchResults([
-            { domain: "", label: "Searching sources", status: "fetching" },
-          ]);
+          setSearchResults([{ domain: "", label: "Searching UPSC websites", status: "fetching" }]);
         }
       }, 800);
-      let searchDone = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -382,58 +435,60 @@ function AskPage() {
         const chunk = decoder.decode(value, { stream: true });
         fullContent += chunk;
 
+        // Detect search indicator and strip it from display content
         if (!hasShownSearch && isSearchIndicator(fullContent)) {
+          setSearchedOnce(true);
           setIsSearching(true);
+          setSearchPhase("Searching the web...");
           hasShownSearch = true;
         }
-        if (hasShownSearch && !isSearchIndicator(fullContent)) {
-          setIsSearching(false);
-          if (!searchDone) {
-            searchDone = true;
-            clearTimeout(searchTimer);
-            const chips = classifySources(fullContent);
-            setSearchResults(chips.length > 1
-              ? chips.slice(1).map((c) => ({ domain: c.domain, label: c.label, status: "done" as const }))
-              : [{ domain: "", label: "Consulted sources", status: "done" as const }],
-            );
-            setTimeout(() => {
-              setIsSearching(false);
-              setSearchResults([]);
-            }, 1200);
+
+        const displayContentRaw = stripSearchIndicator(fullContent);
+
+        // When real content starts arriving after the search indicator
+        if (hasShownSearch && displayContentRaw.trim() && !sourceLabelsShown) {
+          clearTimeout(searchTimer);
+          const chips = classifySources(fullContent);
+          if (chips.length > 1) {
+            setSearchResults(chips.slice(1).map((c) => ({ domain: c.domain, label: c.label, status: "done" as const })));
+          } else {
+            setSearchResults([{ domain: "", label: "Consulted UPSC resources", status: "done" as const }]);
           }
+          setSearchedOnce(true);
+          setIsSearching(false);
+          setSearchPhase("");
+          setSearchResults([]);
+          sourceLabelsShown = true;
         }
 
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: "assistant", content: fullContent };
-          return updated;
-        });
+        setStreamingMessage(displayContentRaw || fullContent);
       }
 
       clearTimeout(searchTimer);
       setIsSearching(false);
+      setSearchPhase("");
       setSearchResults([]);
+
+      setMessages((prev) => [...prev, { role: "assistant", content: fullContent }]);
+      setStreamingMessage(null);
+
       await fetchConversations();
 
-      // Set follow-up questions from suggested list
       const shuffled = [...suggestedQuestions].sort(() => Math.random() - 0.5);
       setFollowUpQuestions(shuffled.slice(0, 4));
 
       trackClientEvent("ask_response", {
-        responseLength: fullContent.length,
-        conversationId: newId || activeId || "unknown",
-        wasSearching: hasShownSearch,
+        responseLength: fullContent.length, conversationId: newId || activeId || "unknown", wasSearching: hasShownSearch,
       });
     } catch {
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = { role: "assistant", content: "Something went wrong." };
-        return updated;
-      });
+      setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong." }]);
+      setStreamingMessage(null);
       trackClientEvent("ask_error", { error: "fetch_crash" });
     } finally {
       setStreaming(false);
+      setStreamingMessage(null);
       setIsSearching(false);
+      setSearchPhase("");
     }
   }
 
@@ -443,141 +498,122 @@ function AskPage() {
       .replace(/\[([^\]]*)\]\(https?:\/\/[^)]+\)/g, "$1")
       .trim();
     const ok = await copyToClipboard(text);
-    if (ok) {
-      setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
-    }
+    if (ok) { setCopiedIndex(index); setTimeout(() => setCopiedIndex(null), 2000); }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSubmit(); }
   }
 
   return (
     <div className="flex h-screen overflow-hidden bg-white">
       <SourceDrawerModal sources={selectedSources} onClose={() => setSelectedSources(null)} />
+
+      {/* Quota exhausted modal */}
+      {showQuotaModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowQuotaModal(false)} />
+          <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-zinc-800">Daily limit reached</h3>
+              <button type="button" onClick={() => setShowQuotaModal(false)} className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition" aria-label="Close">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <p className="mb-5 text-sm text-zinc-500 leading-relaxed">
+              You&apos;ve used all your queries for today. Sign in to get <span className="font-semibold text-zinc-700">20 queries/day</span> instead of 5.
+            </p>
+            <button type="button" onClick={() => { signIn("google"); setShowQuotaModal(false); }}
+              className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:border-zinc-300"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Sign in with Google
+            </button>
+            <p className="mt-3 text-center text-xs text-zinc-400">
+              Already signed in? <Link href="/store" className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Get unlimited queries</Link>
+            </p>
+          </div>
+        </div>
+      )}
       {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <div className="fixed inset-0 z-30 bg-black/40 md:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-zinc-100 bg-white transition-transform duration-300 md:relative md:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between border-b border-zinc-100 px-4 h-14 shrink-0">
-          <Link href="/" data-track="ask-sidebar-home" className="flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-zinc-900 flex items-center justify-center">
-              <span className="text-white text-[10px] font-bold">PN</span>
-            </div>
-            <span className="text-sm font-semibold tracking-tight text-zinc-800">Ask AI</span>
+      {/* Sidebar — quiet, low contrast */}
+      <aside className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-zinc-100 bg-white transition-transform duration-300 md:relative md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="flex items-center justify-between px-3 h-12 shrink-0 border-b border-zinc-50">
+          <Link href="/" className="flex items-center">
+            <img src="/logo.png" alt="UPSCPrepNotes" className="h-10 w-auto" />
           </Link>
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(false)}
-            data-track="ask-sidebar-close"
-            className="md:hidden rounded-md p-1.5 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+          <button type="button" onClick={() => setSidebarOpen(false)} data-track="ask-sidebar-close" className="md:hidden p-1 text-zinc-300 hover:text-zinc-500 transition">
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
-        <div className="p-3">
-          <button
-            type="button"
-            onClick={newConversation}
-            data-track="ask-new-chat"
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:border-zinc-300 hover:text-zinc-900"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-            </svg>
+        <div className="px-2 pb-2">
+          <button type="button" onClick={newConversation} data-track="ask-new-chat" className="flex w-full items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-zinc-400 transition hover:bg-zinc-50 hover:text-zinc-600">
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
             New chat
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-2 pb-2 scrollbar-thin">
+        <nav className="flex-1 overflow-y-auto px-1.5 pb-2 scrollbar-thin">
           {conversations.length === 0 ? (
-            <p className="px-3 pt-8 text-center text-xs text-zinc-400">No conversations yet</p>
+            <p className="px-3 pt-6 text-center text-xs text-zinc-300">No conversations</p>
           ) : (
-            <div className="space-y-0.5">
-              {conversations.map((conv, idx) => (
-                <button
-                  key={conv.id}
-                  type="button"
-                  data-track={`ask-conversation-${idx}`}
-                  onClick={() => {
-                    loadConversation(conv.id);
-                    setSidebarOpen(false);
-                  }}
-                  className={`group w-full rounded-lg px-3 py-2.5 text-left text-sm transition ${
-                    activeId === conv.id
-                      ? "bg-zinc-100 font-medium text-zinc-900"
-                      : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <svg className={`shrink-0 h-3.5 w-3.5 ${activeId === conv.id ? "text-zinc-600" : "text-zinc-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                    </svg>
-                    <span className="truncate">{formatTitle(conv.title)}</span>
+            <div className="space-y-3">
+              {groupedConversations.map((group) => (
+                <div key={group.label}>
+                  <p className="px-2.5 pb-0.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">{group.label}</p>
+                  <div className="space-y-0.5">
+                    {group.items.slice(0, 8).map((conv, idx) => (
+                      <button key={conv.id} type="button" data-track={`ask-conversation-${idx}`}
+                        onClick={() => { loadConversation(conv.id); setSidebarOpen(false); }}
+                        className={`group w-full rounded-lg px-2.5 py-1.5 text-left text-sm transition ${activeId === conv.id ? "bg-zinc-100 text-zinc-800 font-medium" : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"}`}
+                      >
+                        <span className="truncate block">{formatTitle(conv.title)}</span>
+                      </button>
+                    ))}
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           )}
         </nav>
 
-        <div className="border-t border-zinc-100 px-4 py-3">
-          <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 text-xs text-zinc-400">
-              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              {quota ? `${quota.remaining} / 5 today` : "\u2014"}
-            </span>
-            <Link
-              href="/store"
-              data-track="ask-sidebar-cta"
-              className="text-xs font-medium text-zinc-700 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-600"
-            >
-              Browse Store \u2192
-            </Link>
-          </div>
+        {/* Auth */}
+        <div className="border-t border-zinc-50 px-2 py-2">
+          {session?.user ? (
+            <div className="flex items-center gap-2 px-2.5 py-1.5">
+              {session.user.image && (
+                <img src={session.user.image} alt="" className="h-5 w-5 rounded-full" />
+              )}
+              <span className="flex-1 truncate text-xs text-zinc-500">{session.user.email}</span>
+              <button type="button" onClick={() => signOut({ callbackUrl: "/ask" })} className="text-[11px] text-zinc-400 hover:text-zinc-600 transition">
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => signIn("google")} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-zinc-500 transition hover:bg-zinc-50 hover:text-zinc-700">
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Sign in with Google
+              <span className="ml-auto text-[11px] text-zinc-300">20 queries/day</span>
+            </button>
+          )}
         </div>
       </aside>
 
+      {/* Main */}
       <div className="flex flex-1 flex-col min-w-0 h-screen">
         <header className="flex items-center justify-between border-b border-zinc-100 bg-white px-4 h-14 shrink-0 md:hidden">
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(true)}
-            data-track="ask-mobile-menu"
-            className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition"
-            aria-label="Open sidebar"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
+          <button type="button" onClick={() => setSidebarOpen(true)} data-track="ask-mobile-menu" className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition" aria-label="Open sidebar">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
           </button>
           <span className="text-sm font-semibold text-zinc-700">Ask AI</span>
-          <Link href="/" data-track="ask-mobile-home" className="text-xs text-zinc-400 hover:text-zinc-600 transition">
-            Home
-          </Link>
+          <Link href="/" data-track="ask-mobile-home" className="text-xs text-zinc-400 hover:text-zinc-600 transition">Home</Link>
         </header>
 
-        <div
-          ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-thin bg-white"
-        >
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto scrollbar-thin bg-white">
           {loading ? (
             <div className="flex h-full items-center justify-center">
               <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-800" />
@@ -585,122 +621,54 @@ function AskPage() {
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
               <div className="mx-auto w-full max-w-xl text-center">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100">
-                  <svg className="h-7 w-7 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                  </svg>
-                </div>
-                <h1 className="mb-1.5 text-xl font-bold tracking-tight text-zinc-800">Ask UPSC AI</h1>
-                <p className="mb-8 text-sm text-zinc-400 max-w-md mx-auto">
-                  Get answers drawn from actual UPSC topper strategies and live web search
+                <h1 className="mb-3 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">Train Like AIR 1</h1>
+                <p className="mb-10 text-base text-zinc-500 max-w-md mx-auto leading-relaxed">
+                  Learn from toppers. Practice like toppers. Write like toppers.
                 </p>
-                <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Suggested questions">
-                  {suggestedQuestions.map((q, idx) => (
-                    <button
-                      key={q}
-                      type="button"
-                      data-track={`ask-suggestion-${idx}`}
-                      onClick={() => {
-                        setInput(q);
-                        setTimeout(() => inputRef.current?.focus(), 50);
-                      }}
-                      className="rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-500 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-700"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
           ) : (
             <>
-              <div className="mx-auto max-w-4xl">
+              <div className="mx-auto max-w-[720px] px-4">
                 {messages.map((msg, i) => (
-                  <div key={i} className={msg.role === "assistant" ? "bg-white" : "bg-white"}>
+                  <div key={i}>
                     {msg.role === "user" ? (
-                      <div className="mx-auto max-w-3xl px-4 py-4 md:px-6 lg:px-8 flex justify-end">
-                        <div className="flex items-start gap-3 flex-row-reverse max-w-[85%] md:max-w-[70%]">
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-200">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={dicebearUrl(`user-${i}`)} alt="" className="h-full w-full object-cover" />
-                          </div>
-                          <div className="rounded-2xl bg-zinc-800 px-4 py-2.5 text-sm leading-relaxed text-white shadow-sm">
-                            {msg.content}
-                          </div>
+                      <div className="py-4 pl-8 flex justify-end">
+                        <div className="rounded-2xl bg-zinc-800 px-4 py-2.5 text-sm leading-relaxed text-white max-w-[75%]">
+                          {msg.content}
                         </div>
                       </div>
                     ) : (
                       <div className="border-b border-zinc-100 last:border-b-0">
-                        {/* Source chips bar — unified web + topper sources */}
-                        {getMergedSources(msg).length > 0 && (
-                          <div className="mx-auto max-w-4xl px-4 pt-5 md:px-6 lg:px-8">
-                            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-2">
-                              <svg className="h-3.5 w-3.5 shrink-0 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                              </svg>
-                              <span className="mr-1 whitespace-nowrap text-xs font-medium text-zinc-500">
-                                {getMergedSources(msg).length} sources
-                              </span>
-                              {getMergedSources(msg).slice(0, 4).map((src) => (
-                                <button
-                                  key={`${src.type}-${src.domain}`}
-                                  onClick={() => setSelectedSources(getMergedSources(msg))}
-                                  className="inline-flex shrink-0 items-center gap-1 rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-600 transition hover:border-zinc-300 hover:bg-zinc-50"
-                                >
-                                  <span className={`h-1.5 w-1.5 rounded-full ${SOURCE_TYPE_COLORS[src.type].dot}`} />
-                                  <span className="max-w-[80px] truncate">{src.label}</span>
-                                </button>
-                              ))}
-                              {getMergedSources(msg).length > 4 && (
-                                <button
-                                  onClick={() => setSelectedSources(getMergedSources(msg))}
-                                  className="inline-flex shrink-0 items-center gap-1 rounded-md border border-dashed border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-500 transition hover:border-zinc-400 hover:text-zinc-700"
-                                >
-                                  +{getMergedSources(msg).length - 4}
-                                </button>
-                              )}
-                              {/* Trust indicator */}
-                              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-xs text-emerald-600 sm:inline-flex">
-                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                                Verified
-                              </span>
-                            </div>
+                        <div className="py-5 relative">
+                          <div className="absolute left-0 top-[14px]">
+                            <img src="/logo.png" alt="" className="h-9 w-9 rounded-full bg-white shadow-sm ring-1 ring-zinc-100" />
                           </div>
-                        )}
-
-                        {/* Answer content */}
-                        <div className="mx-auto max-w-4xl px-4 py-5 md:px-6 lg:px-8">
-                          <div className="flex items-start gap-4">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-sm mt-1">
-                              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                              </svg>
+                          <div className="pl-11">
+                            <div className="prose prose-zinc max-w-none prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-zinc-700 prose-pre:rounded-lg prose-pre:bg-zinc-900 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                              <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>{preprocessContent(msg.content)}</ReactMarkdown>
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-200/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-normal prose-pre:rounded-xl prose-pre:bg-zinc-800 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400 [&_p]:leading-[1.75] [&_p]:my-4 [&_li]:leading-[1.75] [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:mt-6 [&_h3]:mb-2 [&_blockquote]:border-l-[3px] [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-zinc-500 [&_blockquote]:my-6 [&_ul]:my-4 [&_ul]:space-y-2 [&_ol]:my-4 [&_ol]:space-y-2">
-                                <ReactMarkdown components={mdComponents}>{preprocessContent(msg.content)}</ReactMarkdown>
-                              </div>
-
-                              {/* Copy */}
-                              {msg.content && (
-                                <div className="mt-4 flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => handleCopy(i, msg.content)}
-                                    data-track={`ask-copy-${i}`}
-                                    className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs text-zinc-400 transition hover:text-zinc-600 hover:bg-zinc-100"
+                            {msg.content && (
+                              <div className="mt-4 flex items-center gap-1 text-[11px]">
+                                <button type="button" onClick={() => handleCopy(i, msg.content)} data-track={`ask-copy-${i}`}
+                                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
+                                >
+                                  {copiedIndex === i ? (
+                                    <><svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied</>
+                                  ) : (
+                                    <><svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>Copy</>
+                                  )}
+                                </button>
+                                {getMergedSources(msg).length > 0 && (
+                                  <button type="button" onClick={() => setSelectedSources(getMergedSources(msg))}
+                                    className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
                                   >
-                                    {copiedIndex === i ? (
-                                      <><svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>Copied</>
-                                    ) : (
-                                      <><svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>Copy</>
-                                    )}
+                                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                                    {getMergedSources(msg).length} source{getMergedSources(msg).length !== 1 ? "s" : ""}
                                   </button>
-                                </div>
-                              )}
-                            </div>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -708,98 +676,82 @@ function AskPage() {
                   </div>
                 ))}
 
-                {/* Follow-up questions */}
-                {!streaming && followUpQuestions.length > 0 && messages.length > 0 && (
-                  <div className="border-t border-zinc-100">
-                    <div className="mx-auto max-w-4xl px-4 py-5 md:px-6 lg:px-8">
-                      <p className="mb-3 text-xs font-medium text-zinc-500">Related questions</p>
-                      <div className="flex flex-wrap gap-2">
-                        {followUpQuestions.map((q, qi) => (
-                          <button
-                            key={qi}
-                            type="button"
-                            data-track={`ask-followup-${qi}`}
-                            onClick={() => {
-                              setInput(q);
-                              setTimeout(() => {
-                                const form = document.querySelector("form");
-                                if (form) form.requestSubmit();
-                              }, 100);
-                            }}
-                            className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800"
-                          >
-                            {q}
-                          </button>
-                        ))}
+                {/* Streaming assistant message */}
+                {streamingMessage && (
+                  <div className="border-b border-zinc-100 last:border-b-0">
+                    <div className="py-5 relative">
+                      <div className="absolute left-0 top-[14px]">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-sm">
+                          <span className="text-[8px] font-bold tracking-tight text-white">M</span>
+                        </div>
+                      </div>
+                      <div className="pl-11">
+                        <div className="prose prose-zinc max-w-none prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-zinc-700 prose-pre:rounded-lg prose-pre:bg-zinc-900 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>{preprocessContent(streamingMessage)}</ReactMarkdown>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* CTA after answer */}
-                {!streaming && messages.length > 0 && messages[messages.length - 1]?.role === "assistant" && (
-                  <div className="border-t border-zinc-100">
-                    <div className="mx-auto max-w-4xl px-4 py-4 md:px-6 lg:px-8">
-                      <Link
-                        href="/store"
-                        data-track="ask-after-answer-cta"
-                        className="inline-flex items-center gap-2 text-xs text-zinc-400 transition hover:text-zinc-700"
-                      >
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                {/* Research progress — shown only while searching, hidden the instant content arrives */}
+                {streaming && isSearching && (
+                  <div className="mx-auto max-w-[720px] px-4 py-4">
+                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                        <svg className="h-3.5 w-3.5 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        Browse the Store for answer copies &amp; more
-                      </Link>
-                    </div>
-                  </div>
-                )}
-
-                {/* Premium research state */}
-                {streaming && isSearching && searchResults.length > 0 && (
-                  <div className="bg-white border-t border-zinc-100">
-                    <div className="mx-auto max-w-4xl px-4 py-4 md:px-6 lg:px-8">
-                      <div className="flex items-center gap-2 text-xs text-zinc-500">
-                        <div className="flex gap-1">
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-500" />
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-500 [animation-delay:0.15s]" />
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-500 [animation-delay:0.3s]" />
-                        </div>
-                        <span className="font-medium text-emerald-600">Researching</span>
-                        <span className="text-zinc-300 mx-1">·</span>
+                        <span>{searchPhase || "Researching..."}</span>
+                        <span className="text-zinc-200 mx-1">·</span>
                         <div className="flex items-center gap-2 overflow-x-auto scrollbar-none max-w-[400px]">
-                          {searchResults.map((r, ri) => (
-                            <span key={ri} className="inline-flex shrink-0 items-center gap-1">
-                              {r.status === "done" ? (
-                                <svg className="h-3 w-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                              ) : (
-                                <span className="h-2 w-2 animate-pulse rounded-full bg-zinc-300" />
-                              )}
-                              <span className={r.status === "done" ? "text-zinc-600" : "text-zinc-400"}>{r.label}</span>
+                          {searchResults.length === 0 ? (
+                            <span className="flex gap-1">
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200" />
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200 [animation-delay:0.15s]" />
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200 [animation-delay:0.3s]" />
                             </span>
-                          ))}
+                          ) : (
+                            searchResults.map((r, ri) => (
+                              <span key={ri} className="inline-flex shrink-0 items-center gap-1">
+                                {r.status === "done" ? (
+                                  <svg className="h-3 w-3 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                ) : (
+                                  <span className="h-2 w-2 animate-pulse rounded-full bg-zinc-200" />
+                                )}
+                                <span className={r.status === "done" ? "text-zinc-400" : "text-zinc-300"}>{r.label}</span>
+                              </span>
+                            ))
+                          )}
                         </div>
                       </div>
                     </div>
+                )}
+
+                {/* Web search used — tiny muted row after streaming, replaces search banner */}
+                {!streaming && searchedOnce && messages.length > 0 && (
+                  <div className="mx-auto max-w-[720px] px-4 pb-2">
+                    <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      Web search used
+                    </div>
                   </div>
                 )}
 
-                {/* Streaming indicator (idle) */}
+                {/* Streaming indicator — dot animation while streaming but not searching */}
                 {streaming && !isSearching && (
-                  <div className="bg-white">
-                    <div className="mx-auto max-w-4xl px-4 py-4 md:px-6 lg:px-8">
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600">
-                          <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                          </svg>
-                        </div>
-                        <div className="flex gap-1">
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400" />
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.15s]" />
-                          <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:0.3s]" />
-                        </div>
+                  <div className="mx-auto max-w-[720px] px-4 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800">
+                        <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      </div>
+                      <div className="flex gap-1">
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300" />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.15s]" />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.3s]" />
                       </div>
                     </div>
                   </div>
@@ -811,47 +763,40 @@ function AskPage() {
           )}
         </div>
 
-        <div className="border-t border-zinc-100 bg-white px-4 py-3 md:px-6 lg:px-8 shrink-0">
-          <div className="mx-auto max-w-4xl">
-            <form onSubmit={handleSubmit} className="relative flex items-end gap-2">
-              <div className="relative flex-1">
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
+        {/* Input area */}
+        <div className="border-t border-zinc-100 bg-white px-4 pt-3 pb-3 md:px-8 shrink-0">
+          <div className="mx-auto max-w-[720px] px-4">
+            <form onSubmit={handleSubmit} className="relative">
+              <div className="rounded-xl border border-zinc-200 bg-white shadow-sm transition focus-within:border-zinc-300 focus-within:shadow-md">
+                <textarea ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}
                   data-track="ask-message-input"
-                  placeholder="Ask a question about UPSC preparation\u2026"
-                  rows={1}
-                  disabled={streaming || loading}
-                  className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 pr-10 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-300 focus:bg-white focus:shadow-sm"
-                  style={{ minHeight: "48px", maxHeight: "160px" }}
-                  onInput={(e) => {
-                    const el = e.target as HTMLTextAreaElement;
-                    el.style.height = "auto";
-                    el.style.height = Math.min(el.scrollHeight, 160) + "px";
-                  }}
+                  placeholder="Train like AIR 1 — ask anything"
+                  rows={1} disabled={streaming || loading}
+                  className="w-full resize-none bg-transparent px-4 py-2.5 pr-9 text-sm outline-none transition placeholder:text-zinc-400"
+                  style={{ minHeight: "42px", maxHeight: "120px" }}
+                  onInput={(e) => { const el = e.target as HTMLTextAreaElement; el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 120) + "px"; }}
                 />
+                <button type="submit" disabled={streaming || loading || !input.trim()} data-track="ask-send"
+                  className="absolute right-3 bottom-2 flex h-6 w-6 items-center justify-center rounded-md text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                  aria-label="Send message"
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" /></svg>
+                </button>
               </div>
-              <button
-                type="submit"
-                disabled={streaming || loading || !input.trim()}
-                data-track="ask-send"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-white transition hover:bg-zinc-800 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
-                aria-label="Send message"
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
-                </svg>
-              </button>
             </form>
-            <p className="mt-2 text-center text-[11px] text-zinc-300">
-              {quota ? `${quota.remaining} free queries remaining today` : ""}
-              {quota && quota.remaining <= 1 ? ` \u2014 ` : ""}
-              {quota && quota.remaining <= 1 ? (
-                <Link href="/store" className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Get unlimited</Link>
-              ) : ""}
-            </p>
+            {quota && (
+              <p className="mt-1.5 text-center text-[11px] text-zinc-400">
+                {quota.isAuthenticated
+                  ? `${quota.remaining} of 20 queries remaining today`
+                  : `${quota.remaining} of 5 free queries remaining today`}
+                {quota.remaining <= 1 && !quota.isAuthenticated && (
+                  <> — <button type="button" onClick={() => signIn("google")} className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Sign in for 20</button></>
+                )}
+                {quota.remaining <= 1 && quota.isAuthenticated && (
+                  <> — <Link href="/store" className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500">Get unlimited</Link></>
+                )}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -868,9 +813,7 @@ function SourceDrawerModal({ sources, onClose }: { sources: SourceChip[] | null;
         <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
           <h3 className="text-sm font-semibold text-zinc-800">Sources</h3>
           <button onClick={onClose} className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition" aria-label="Close">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-5 space-y-3">
@@ -878,36 +821,23 @@ function SourceDrawerModal({ sources, onClose }: { sources: SourceChip[] | null;
             const colors = SOURCE_TYPE_COLORS[src.type];
             return (
               <div key={i} className="flex items-start gap-3 rounded-xl border border-zinc-100 bg-white p-3.5 transition hover:border-zinc-200">
-                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${colors.bg}`}>
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${colors.bg}`}>
                   {src.type === "topper" ? (
-                    <svg className="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    <svg className="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                   ) : (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={`https://www.google.com/s2/favicons?domain=${src.domain}&sz=16`} alt="" className="h-4 w-4 rounded" />
+                    <img src={faviconUrl(src.domain)} alt="" className="h-4 w-4 rounded" />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-zinc-800">{src.label}</span>
-                    <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-medium ${colors.bg} ${colors.text}`}>
-                      {SOURCE_TYPE_LABEL[src.type]}
-                    </span>
+                    <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-medium ${colors.bg} ${colors.text}`}>{SOURCE_TYPE_LABEL[src.type]}</span>
                   </div>
                   <p className="mt-0.5 text-xs text-zinc-400">{src.domain}</p>
                   {src.reason && <p className="mt-1 text-xs text-zinc-500">{src.reason}</p>}
                 </div>
-                <a
-                  href={src.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 transition"
-                  aria-label="Open source"
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
+                <a href={src.url} target="_blank" rel="noopener noreferrer" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 transition" aria-label="Open source">
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 </a>
               </div>
             );
@@ -915,25 +845,10 @@ function SourceDrawerModal({ sources, onClose }: { sources: SourceChip[] | null;
         </div>
         <div className="border-t border-zinc-100 px-5 py-3 flex items-center justify-between text-xs text-zinc-400">
           <span>{sources.length} source{sources.length !== 1 ? "s" : ""}</span>
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-              {sources.filter(s => s.type === "government").length} Gov
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-              {sources.filter(s => s.type === "coaching").length} Coaching
-            </span>
-          </div>
         </div>
       </div>
     </div>
   );
-}
-
-function faviconUrl(domain: string): string {
-  const d = domain.replace(/^https?:\/\//, "").split("/")[0];
-  return `https://www.google.com/s2/favicons?domain=${d}&sz=16`;
 }
 
 const mdComponents: Components = {
@@ -944,66 +859,32 @@ const mdComponents: Components = {
       const domain = href.replace(/^https?:\/\//, "").split("/")[0];
       const favicon = faviconUrl(href);
       return (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 border-b border-zinc-200 px-1 pb-0.5 text-xs text-zinc-500 no-underline transition hover:border-zinc-400 hover:text-zinc-800"
+        <a href={href} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center border-b border-zinc-200 px-1 pb-0.5 transition hover:border-zinc-400"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={favicon} alt="" className="h-3.5 w-3.5 shrink-0 rounded" width={14} height={14} />
-          <span className="max-w-[180px] truncate font-medium">{children}</span>
         </a>
       );
     }
-    return (
-      <Link
-        href={href || "#"}
-        className="font-medium text-zinc-800 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-600"
-      >
-        {children}
-      </Link>
-    );
+    return <Link href={href || "#"} className="text-zinc-600 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-500">{children}</Link>;
   },
   code: ({ className, children, ...props }) => {
     const isInline = !className?.includes("language-");
     if (isInline) {
-      return (
-        <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm font-normal text-zinc-700" {...props}>
-          {children}
-        </code>
-      );
+      return <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm text-zinc-600" {...props}>{children}</code>;
     }
-    return (
-      <pre className="my-5 overflow-x-auto rounded-xl bg-zinc-900 p-4 text-sm leading-relaxed text-zinc-100">
-        <code className={className} {...props}>
-          {children}
-        </code>
-      </pre>
-    );
+    return <pre className="my-4 overflow-x-auto rounded-lg bg-zinc-900 p-4 text-sm leading-relaxed text-zinc-100"><code className={className} {...props}>{children}</code></pre>;
   },
-  ul: ({ children }) => <ul className="my-5 space-y-2 pl-6 list-disc marker:text-zinc-300">{children}</ul>,
-  ol: ({ children }) => <ol className="my-5 space-y-2 pl-6 list-decimal marker:text-zinc-400">{children}</ol>,
-  li: ({ children }) => <li className="text-sm leading-[1.75] text-zinc-700 pl-1.5">{children}</li>,
-  p: ({ children }) => <p className="my-4 text-sm leading-[1.75] text-zinc-700 first:mt-0 last:mb-0">{children}</p>,
-  h1: ({ children }) => <h1 className="mt-8 mb-4 text-lg font-bold tracking-tight text-zinc-900">{children}</h1>,
-  h2: ({ children }) => <h2 className="mt-8 mb-3 text-base font-semibold tracking-tight text-zinc-900">{children}</h2>,
-  h3: ({ children }) => <h3 className="mt-6 mb-2 text-sm font-semibold tracking-tight text-zinc-900">{children}</h3>,
-  blockquote: ({ children }) => (
-    <blockquote className="my-6 border-l-[3px] border-zinc-300 pl-5 text-sm leading-[1.75] text-zinc-500 italic">{children}</blockquote>
-  ),
-  hr: () => <hr className="my-8 border-zinc-100" />,
-  table: ({ children }) => (
-    <div className="my-6 overflow-x-auto rounded-xl border border-zinc-200">
-      <table className="min-w-full text-sm border-collapse">{children}</table>
-    </div>
-  ),
-  th: ({ children }) => (
-    <th className="border-r border-b border-zinc-200 bg-zinc-50 px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-zinc-600 last:border-r-0">
-      {children}
-    </th>
-  ),
-  td: ({ children }) => (
-    <td className="border-r border-b border-zinc-100 px-4 py-2.5 text-sm text-zinc-600 last:border-r-0">{children}</td>
-  ),
+  ul: ({ children }) => <ul className="my-3 space-y-1 pl-5 list-disc marker:text-zinc-300">{children}</ul>,
+  ol: ({ children }) => <ol className="my-3 space-y-1 pl-5 list-decimal marker:text-zinc-400">{children}</ol>,
+  li: ({ children }) => <li className="text-[16px] leading-[1.7] text-zinc-800 pl-1">{children}</li>,
+  p: ({ children }) => <p className="my-3 text-[16px] leading-[1.7] text-zinc-800 first:mt-0 last:mb-0">{children}</p>,
+  h1: ({ children }) => <h1 className="mt-6 mb-3 text-base font-bold tracking-tight text-zinc-900">{children}</h1>,
+  h2: ({ children }) => <h2 className="mt-6 mb-2 text-sm font-semibold tracking-tight text-zinc-900">{children}</h2>,
+  h3: ({ children }) => <h3 className="mt-5 mb-2 text-sm font-medium tracking-tight text-zinc-900">{children}</h3>,
+  blockquote: ({ children }) => <blockquote className="my-4 border-l-[3px] border-zinc-200 pl-4 text-[16px] leading-[1.7] text-zinc-600 italic">{children}</blockquote>,
+  hr: () => <hr className="my-5 border-zinc-100" />,
+  table: ({ children }) => <div className="my-5 overflow-x-auto rounded-lg border border-zinc-200"><table className="min-w-full text-sm border-collapse">{children}</table></div>,
+  th: ({ children }) => <th className="border-r border-b border-zinc-200 bg-zinc-50 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wider text-zinc-500 last:border-r-0">{children}</th>,
+  td: ({ children }) => <td className="border-r border-b border-zinc-100 px-3 py-2 text-sm text-zinc-600 last:border-r-0">{children}</td>,
 };

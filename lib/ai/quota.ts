@@ -2,34 +2,83 @@ import { connectDB } from "@/lib/mongodb";
 import { AskSessionModel, AskConversationModel } from "@/models/ask.model";
 
 const FREE_QUOTA = 5;
+const AUTH_QUOTA = 20;
 
-export async function getQuota(sessionId: string): Promise<{
+export async function getQuota(
+  sessionId: string,
+  userId?: string | null,
+): Promise<{
   remaining: number;
   canQuery: boolean;
+  isAuthenticated: boolean;
 }> {
   await connectDB();
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const maxQuota = userId ? AUTH_QUOTA : FREE_QUOTA;
+
+  if (userId) {
+    const { UserModel } = await import("@/models/user.model");
+    const user = await UserModel.findOne({ _id: userId });
+    if (!user) {
+      return { remaining: AUTH_QUOTA, canQuery: true, isAuthenticated: true };
+    }
+    const isNewDay = !user.lastQueryAt || user.lastQueryAt < today;
+    const usedToday = isNewDay ? 0 : user.queriesToday;
+    const remaining = Math.max(0, AUTH_QUOTA - usedToday);
+    return { remaining, canQuery: remaining > 0, isAuthenticated: true };
+  }
 
   const session = await AskSessionModel.findOne({ sessionId });
 
   if (!session) {
-    return { remaining: FREE_QUOTA, canQuery: true };
+    return { remaining: FREE_QUOTA, canQuery: true, isAuthenticated: false };
   }
 
   const isNewDay = !session.lastQueryAt || session.lastQueryAt < today;
   const usedToday = isNewDay ? 0 : session.queriesToday;
   const remaining = Math.max(0, FREE_QUOTA - usedToday);
 
-  return { remaining, canQuery: remaining > 0 };
+  return { remaining, canQuery: remaining > 0, isAuthenticated: false };
 }
 
-export async function incrementQuota(sessionId: string): Promise<void> {
+export async function incrementQuota(
+  sessionId: string,
+  userId?: string | null,
+): Promise<void> {
   await connectDB();
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  if (userId) {
+    const { UserModel } = await import("@/models/user.model");
+    const user = await UserModel.findOne({ _id: userId });
+    if (!user) {
+      await UserModel.create({
+        _id: userId,
+        email: "unknown",
+        name: "User",
+        queriesToday: 1,
+        lastQueryAt: new Date(),
+      });
+      return;
+    }
+    const isNewDay = !user.lastQueryAt || user.lastQueryAt < today;
+    if (isNewDay) {
+      await UserModel.updateOne(
+        { _id: userId },
+        { $set: { queriesToday: 1, lastQueryAt: new Date() } },
+      );
+    } else {
+      await UserModel.updateOne(
+        { _id: userId },
+        { $inc: { queriesToday: 1 }, $set: { lastQueryAt: new Date() } },
+      );
+    }
+    return;
+  }
 
   const session = await AskSessionModel.findOne({ sessionId });
 
@@ -86,10 +135,13 @@ export async function updateConversationTitle(
 
 export async function listConversations(
   sessionId: string,
+  userId?: string | null,
 ): Promise<{ id: string; title: string; updatedAt: Date }[]> {
   await connectDB();
 
-  const conversations = await AskConversationModel.find({ sessionId })
+  const filter = userId ? { userId } : { sessionId };
+
+  const conversations = await AskConversationModel.find(filter)
     .select("title updatedAt")
     .sort({ updatedAt: -1 })
     .lean();
@@ -127,6 +179,7 @@ export async function getConversation(
 
 export async function createConversation(
   sessionId: string,
+  userId?: string | null,
   firstMessage?: string,
 ): Promise<string> {
   await connectDB();
@@ -137,6 +190,7 @@ export async function createConversation(
 
   const conversation = await AskConversationModel.create({
     sessionId,
+    userId: userId || null,
     title,
     messages: [],
   });

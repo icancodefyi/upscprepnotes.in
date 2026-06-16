@@ -11,6 +11,9 @@ const pages = {
   "upsc-full-form-hindi": () => import("@/data/content/upsc-full-form-hindi"),
   "how-to-write-upsc-mains-answers": () => import("@/data/content/how-to-write-upsc-mains-answers"),
   "upsc-topper-answer-copies": () => import("@/data/content/upsc-topper-answer-copies"),
+  "upsc-syllabus-hindi": () => import("@/data/content/upsc-syllabus-hindi"),
+  "upsc-free-material-hindi": () => import("@/data/content/upsc-free-material-hindi"),
+  "how-to-write-upsc-mains-answers-hindi": () => import("@/data/content/how-to-write-upsc-mains-answers-hindi"),
 } as const;
 
 export async function generateStaticParams() {

@@ -183,6 +183,8 @@ export default async function HomePage() {
           </div>
         </section>
 
+
+
         {/* STORE CATEGORIES */}
         <section className="mb-20">
           <div className="mb-6">
