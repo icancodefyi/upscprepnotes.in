@@ -80,11 +80,16 @@ function stripSearchIndicator(content: string): string {
 }
 
 function preprocessContent(content: string): string {
-  return content.replace(/\[source:\s*([^\]]+)\]/gi, (_, domain) => {
-    const d = domain.trim();
+  let result = content;
+  result = result.replace(/\[source:\s*([^\]]+)\]/gi, (_, domain) => {
+    const d = domain.trim().replace(/\s+/g, "");
     const url = d.startsWith("http") ? d : `https://${d}`;
     return `[${d}](${url})`;
   });
+  result = result.replace(/\[([^\]]+)\]\(\s+([^)\s]+)\s*\)/gi, (_, text, url) => {
+    return `[${text}](${url.replace(/\s+/g, "")})`;
+  });
+  return result;
 }
 
 function formatTitle(title: string | undefined): string {
@@ -1544,13 +1549,15 @@ function SourceDrawerModal({
 const mdComponents: Components = {
   a: ({ href, children }) => {
     if (!href) return <span>{children}</span>;
-    const isExternal = href.startsWith("http");
+    const cleanHref = href.replace(/\s+/g, "").trim();
+    if (!cleanHref) return <span>{children}</span>;
+    const isExternal = cleanHref.startsWith("http");
     if (isExternal) {
-      const domain = href.replace(/^https?:\/\//, "").split("/")[0];
-      const favicon = faviconUrl(href);
+      const domain = cleanHref.replace(/^https?:\/\//, "").split("/")[0];
+      const favicon = faviconUrl(cleanHref);
       return (
         <a
-          href={href}
+          href={cleanHref}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center border-b border-zinc-200 px-1 pb-0.5 transition hover:border-zinc-400"
@@ -1567,7 +1574,7 @@ const mdComponents: Components = {
     }
     return (
       <Link
-        href={href || "#"}
+        href={cleanHref || "#"}
         className="text-zinc-600 underline underline-offset-2 decoration-zinc-300 transition hover:decoration-zinc-500"
       >
         {children}
