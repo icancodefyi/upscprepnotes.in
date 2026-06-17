@@ -125,6 +125,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "all-strategy-reports",
     title: "All Strategy Reports",
+    image: "/images/products/all-strategy-reports.png",
     tagline: "All 280+ topper strategies bundled",
     description: "Every topper's complete strategy, marks analysis, and paper breakdown in one bundle.",
     longDescription: [
