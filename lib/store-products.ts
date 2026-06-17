@@ -237,6 +237,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "insight-ias-prelims-tests-1-10",
     title: "Insight IAS Prelims Tests 1-10",
+      image: "/images/products/insight-ias-prelims-tests-1-10.png",
     tagline: "Full-length GS Prelims test series by Insight IAS",
     description: "10 full-length GS Prelims tests with answer keys. Covers complete syllabus as per latest UPSC pattern.",
     longDescription: [
@@ -268,6 +269,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "only-ias-pt-tests-1-10",
     title: "Only IAS PT Tests 1-10",
+      image: "/images/products/only-ias-pt-tests-1-10.png",
     tagline: "Prelims test series by Only IAS",
     description: "10 full-length Prelims tests designed by Only IAS faculty. Covers GS Paper 1 with detailed solutions.",
     longDescription: [
@@ -1605,6 +1607,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "mains-test-series-combo",
     title: "Mains Test Series Combo",
+      image: "/images/products/mains-test-series-combo.png",
     tagline: "66 tests from 4 top coaching brands at 40% off",
     description: "VP 2026 + VisionIAS + Only IAS + IAS BABA Mains tests bundled together. The ultimate Mains answer writing practice repository.",
     longDescription: [
