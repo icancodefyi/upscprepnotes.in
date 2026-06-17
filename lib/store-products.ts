@@ -95,6 +95,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "top-10-rankers-strategy",
     title: "Top 10 Rankers Strategy",
+    image: "/images/products/top-10-rankers-strategy.png",
     tagline: "AIR 1-10 complete strategies in one PDF",
     description: "Full strategies, marks analysis, paper-by-paper breakdowns, and score deep dives for AIR 1 through AIR 10.",
     longDescription: [
@@ -156,6 +157,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "answer-copies-compilation",
     title: "Answer Copies Compilation",
+    image: "/images/products/answer-copies-compilation.png",
     tagline: "50+ handwritten answer sheets",
     description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay, Optional papers.",
     longDescription: [
@@ -393,6 +395,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "places-in-news",
     title: "Places in News",
+    image: "/images/products/places-in-news.png",
     tagline: "Complete Places in News compilation by Sudarshan Gurjar",
     description: "Comprehensive compilation of all places in news for UPSC — geography, current affairs, and map-based questions covered.",
     longDescription: [
@@ -424,6 +427,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "government-schemes-compilation",
     title: "Government Schemes Compilation",
+    image: "/images/products/government-schemes-compilation.png",
     tagline: "All important government schemes for UPSC 2026",
     description: "Comprehensive compilation of all central government schemes, categorized by ministry and sector.",
     longDescription: [
