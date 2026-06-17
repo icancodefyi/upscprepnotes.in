@@ -487,8 +487,8 @@ export default async function TopperPage({ params }: Props) {
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
                 {Object.keys(structuredStrategy).length > 0 ? (
                   <>
-                    {/* First 2 sections — fully visible */}
-                    {Object.entries(structuredStrategy).slice(0, 2).map(
+                    {/* First 4 sections — fully visible for SEO depth */}
+                    {Object.entries(structuredStrategy).slice(0, 4).map(
                       ([heading, content], i) => (
                         <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
                           <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
@@ -501,11 +501,11 @@ export default async function TopperPage({ params }: Props) {
                       ),
                     )}
                     {/* Remaining sections — blurred with paywall */}
-                    {Object.keys(structuredStrategy).length > 2 && (
+                    {Object.keys(structuredStrategy).length > 4 && (
                       <div className="relative mt-4">
                         <div className="overflow-hidden" style={{ maxHeight: "320px" }}>
                           <div className="blur-sm opacity-30 pointer-events-none select-none">
-                            {Object.entries(structuredStrategy).slice(2).map(
+                            {Object.entries(structuredStrategy).slice(4).map(
                               ([heading, content], i) => (
                                 <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
                                   <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
@@ -523,7 +523,7 @@ export default async function TopperPage({ params }: Props) {
                         <StrategyPaywall
                           topperName={`${topper.firstName} ${topper.lastName}`}
                           topperSlug={topper.slug}
-                          blurredCount={Object.keys(structuredStrategy).length - 2}
+                          blurredCount={Object.keys(structuredStrategy).length - 4}
                         />
                       </div>
                     )}
