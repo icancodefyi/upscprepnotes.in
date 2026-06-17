@@ -1280,94 +1280,172 @@ function AskPage() {
         </div>
 
         {/* Input area */}
-        <div className="border-t border-zinc-100 bg-white px-6 py-4 shrink-0">
-          <div className="mx-auto max-w-3xl">
-            <form onSubmit={handleSubmit}>
-              <div
-                className="
-        relative
-        rounded-3xl
-        border border-zinc-200
-        bg-white
-        shadow-sm
-        transition-all
-        duration-200
-        focus-within:border-zinc-300
-        focus-within:shadow-lg
-      "
-              >
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Train like AIR 1 — ask anything"
-                  rows={1}
-                  disabled={streaming || loading}
-                  className="
+       <div className="shrink-0 border-t border-zinc-100 bg-white px-4 pt-4 pb-3 md:px-6">
+  <div className="mx-auto max-w-3xl">
+
+    {/* Quick Actions */}
+    <div className="mb-3 flex flex-wrap items-center justify-center gap-5 text-xs text-zinc-500">
+      <button
+        type="button"
+        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
+      >
+        PYQ Analysis
+      </button>
+
+      <button
+        type="button"
+        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
+      >
+        Answer Review
+      </button>
+
+      <button
+        type="button"
+        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
+      >
+        Current Affairs
+      </button>
+
+      <button
+        type="button"
+        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
+      >
+        AIR Strategy
+      </button>
+    </div>
+
+    <form onSubmit={handleSubmit}>
+      <div
+        className="
+          relative
+          overflow-hidden
+          rounded-[20px]
+          border
+          border-zinc-200
+          bg-white
+          shadow-sm
+          transition-all
+          duration-200
+          focus-within:border-zinc-300
+          focus-within:shadow-md
+        "
+      >
+        <textarea
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={streaming || loading}
+          rows={1}
+          placeholder="Ask about UPSC preparation..."
+          className="
+            block
             w-full
             resize-none
+            border-0
             bg-transparent
-            px-6
-            py-4
+            px-5
+            py-3
             pr-16
             text-[15px]
             leading-6
             text-zinc-900
-            placeholder:text-zinc-400
             outline-none
+            placeholder:text-zinc-400
           "
-                  style={{
-                    minHeight: "60px",
-                    maxHeight: "180px",
-                  }}
-                  onInput={(e) => {
-                    const el = e.target as HTMLTextAreaElement;
-                    el.style.height = "auto";
-                    el.style.height = Math.min(el.scrollHeight, 180) + "px";
-                  }}
-                />
+          style={{
+            minHeight: "52px",
+            maxHeight: "220px",
+          }}
+          onInput={(e) => {
+            const el = e.currentTarget;
+            el.style.height = "52px";
+            el.style.height =
+              Math.min(el.scrollHeight, 220) + "px";
+          }}
+        />
 
-                <button
-                  type="submit"
-                  disabled={streaming || loading || !input.trim()}
-                  className="
+        <button
+          type="submit"
+          disabled={streaming || loading || !input.trim()}
+          aria-label="Send message"
+          className="
             absolute
             right-3
-            bottom-3
+            top-1/2
+            -translate-y-1/2
             flex
-            h-10
-            w-10
+            h-8
+            w-8
             items-center
             justify-center
             rounded-full
             bg-zinc-900
             text-white
-            transition
+            transition-all
+            duration-200
+            hover:scale-105
             hover:bg-zinc-800
+            active:scale-95
+            disabled:scale-100
             disabled:bg-zinc-200
             disabled:text-zinc-400
             disabled:cursor-not-allowed
           "
-                >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M5 12h14m-7-7l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2.5}
+              d="M5 12h14m-7-7l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    {quota && (
+      <p className="mt-2 text-center text-[11px] text-zinc-400">
+        {quota.isAuthenticated
+          ? `${quota.remaining} of 20 queries remaining today`
+          : `${quota.remaining} of 5 free queries remaining today`}
+
+        {quota.remaining <= 1 && !quota.isAuthenticated && (
+          <>
+            {" "}
+            —{" "}
+            <button
+              type="button"
+              onClick={() => signIn("google")}
+              className="text-zinc-500 underline underline-offset-2 hover:text-zinc-700"
+            >
+              Sign in for 20/day
+            </button>
+          </>
+        )}
+
+        {quota.remaining <= 1 && quota.isAuthenticated && (
+          <>
+            {" "}
+            —{" "}
+            <Link
+              href="/store"
+              className="text-zinc-500 underline underline-offset-2 hover:text-zinc-700"
+            >
+              Browse premium resources
+            </Link>
+          </>
+        )}
+      </p>
+    )}
+  </div>
+</div>
       </div>
     </div>
   );
