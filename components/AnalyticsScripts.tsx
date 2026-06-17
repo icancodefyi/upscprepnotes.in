@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-export default function AnalyticsScripts() {
+export default function AnalyticsScripts({ isInternal }: { isInternal?: boolean }) {
   return (
     <>
       <Script
@@ -19,7 +19,8 @@ export default function AnalyticsScripts() {
               if (location.search.indexOf('optex=1') !== -1) { localStorage.setItem('_optex', '1'); window.history.replaceState({}, '', location.pathname); }
               if (location.search.indexOf('optex=0') !== -1) { localStorage.removeItem('_optex'); window.history.replaceState({}, '', location.pathname); }
               var selfExclude = localStorage.getItem('_optex') === '1';
-              if (selfExclude || isAdmin) return;
+              var isInternalUser = ${!!isInternal};
+              if (selfExclude || isAdmin || isInternalUser) return;
 
               // Google Analytics
               window.dataLayer = window.dataLayer || [];
