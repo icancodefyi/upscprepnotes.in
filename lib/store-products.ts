@@ -299,6 +299,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "ias-baba-aiomt-1-3",
     title: "IAS BABA AIOMT 1-3",
+      image: "/images/products/ias-baba-aiomt-1-3.png",
     tagline: "AIOMT series by IAS BABA — Prelims",
     description: "3 All India Open Mock Tests for GS Prelims. Benchmark your preparation against thousands of aspirants.",
     longDescription: [
@@ -331,6 +332,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "ias-baba-mains-tests-1-5",
     title: "IAS BABA Mains Tests 1-5",
+      image: "/images/products/ias-baba-mains-tests-1-5.png",
     tagline: "GS Mains answer writing practice by IAS BABA",
     description: "5 full-length GS Mains test papers covering GS 1-4. Essential for Mains answer writing practice.",
     longDescription: [
@@ -363,6 +365,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "csk-csat-micro-tests-1-16",
     title: "CSK's CSAT Micro Tests 1-16",
+      image: "/images/products/csk-csat-micro-tests-1-16.png",
     tagline: "Complete CSAT practice with 16 topic-wise micro tests",
     description: "16 micro tests covering all CSAT topics — comprehension, reasoning, maths, and data interpretation.",
     longDescription: [
@@ -459,6 +462,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "gs1-notes-bundle",
     title: "GS 1 Complete Notes Bundle",
+      image: "/images/products/gs1-notes-bundle.png",
     tagline: "22 comprehensive notes for GS 1 Mains",
     description: "Complete GS 1 notes compilation featuring topper and teacher notes covering Indian Heritage & Culture, Modern & World History, Geography, and Indian Society.",
     longDescription: [
@@ -506,6 +510,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "gs2-notes-bundle",
     title: "GS 2 Complete Notes Bundle",
+      image: "/images/products/gs2-notes-bundle.png",
     tagline: "17 comprehensive notes for GS 2 Mains",
     description: "Complete GS 2 notes compilation covering Indian Polity, Governance, International Relations, and Social Justice from top rankers and teachers.",
     longDescription: [
@@ -553,6 +558,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "gs3-notes-bundle",
     title: "GS 3 Complete Notes Bundle",
+      image: "/images/products/gs3-notes-bundle.png",
     tagline: "19 comprehensive notes for GS 3 Mains",
     description: "Complete GS 3 notes compilation covering Economy, Agriculture, Environment, Science & Tech, Internal Security, and Disaster Management.",
     longDescription: [
@@ -600,6 +606,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "ethics-gs4-bundle",
     title: "Ethics & GS 4 Bundle",
+      image: "/images/products/ethics-gs4-bundle.png",
     tagline: "13 comprehensive notes for Ethics, Integrity & Aptitude",
     description: "Complete GS 4 notes covering Ethics theory, case studies, and topper approaches from AIR 9, AIR 10, AIR 16, AIR 86, and PRAHAAR.",
     longDescription: [
@@ -647,6 +654,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "prelims-prep-pack",
     title: "Prelims Prep Pack",
+      image: "/images/products/prelims-prep-pack.png",
     tagline: "10 files covering every Prelims subject",
     description: "Comprehensive Prelims preparation pack with Abhijit Ray's high-yield notes plus Ancient History, Environment, and World History.",
     longDescription: [
@@ -692,6 +700,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "polity-foundation",
     title: "Polity Foundation Notes",
+      image: "/images/products/polity-foundation.png",
     tagline: "2 comprehensive files — complete Indian Polity coverage",
     description: "Detailed Polity Foundation notes covering every aspect of the Indian Constitution, system of government, and key institutions.",
     longDescription: [
@@ -729,6 +738,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "history-pack",
     title: "History Pack",
+      image: "/images/products/history-pack.png",
     tagline: "4 files covering Ancient, Medieval, Modern & World History",
     description: "Complete history coverage for UPSC — Ancient, Medieval, Modern India, and World History in one pack.",
     longDescription: [
@@ -768,6 +778,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "air-10-mains-notes",
     title: "AIR 10 Mains Notes",
+      image: "/images/products/air-10-mains-notes.png",
     tagline: "Complete GS Mains notes from AIR 10 — all 4 papers",
     description: "Handwritten and typed notes covering GS 1-4 from a top-10 rank holder. Essential for Mains answer writing approach.",
     longDescription: [
@@ -807,6 +818,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "abhijit-ray-prelims-bundle",
     title: "Abhijit Ray Prelims Bundle",
+      image: "/images/products/abhijit-ray-prelims-bundle.png",
     tagline: "6 high-yield subject notes for Prelims",
     description: "Abhijit Ray's curated prelims notes across 6 subjects.",
     longDescription: [
@@ -848,6 +860,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "environment-short-notes",
     title: "Environment Short Notes",
+      image: "/images/products/environment-short-notes.png",
     tagline: "Concise environment notes for Prelims & Mains",
     description: "Comprehensive yet concise environment notes covering ecology, biodiversity, climate change, and environmental legislations.",
     longDescription: [
@@ -884,6 +897,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "mrunal-economy-complete",
     title: "Mrunal Economics Complete",
+      image: "/images/products/mrunal-economy-complete.png",
     tagline: "Complete economics by Mrunal Patel",
     description: "Mrunal Patel's comprehensive economics notes covering Micro, Macro, Indian Economy, Budget & Economic Survey.",
     longDescription: [
@@ -920,6 +934,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "satyam-gandhi-mains-complete",
     title: "Satyam Gandhi Mains Complete",
+      image: "/images/products/satyam-gandhi-mains-complete.png",
     tagline: "GS 1-3 Mains notes by Satyam Gandhi (AIR 82)",
     description: "Detailed GS Mains notes by Satyam Gandhi (AIR 82) covering GS 1, GS 2, and GS 3 with Essay insights.",
     longDescription: [
@@ -958,6 +973,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "asad-zuberi-air86-complete",
     title: "Asad Zuberi AIR 86 Complete",
+      image: "/images/products/asad-zuberi-air86-complete.png",
     tagline: "Full notes package by Asad Zuberi (AIR 86)",
     description: "Complete GS 1-4, Ethics, and Geography notes from AIR 86 rank holder Asad Zuberi.",
     longDescription: [
@@ -1005,6 +1021,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "madhav-air16-complete",
     title: "Madhav AIR 16 Complete",
+      image: "/images/products/madhav-air16-complete.png",
     tagline: "Full GS 1-4 notes by Madhav (AIR 16)",
     description: "Complete GS 1-4 notes with committees compilation by Madhav (AIR 16, CSE 2024).",
     longDescription: [
@@ -1052,6 +1069,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "prahaar-complete",
     title: "PRAHAAR Complete",
+      image: "/images/products/prahaar-complete.png",
     tagline: "GS 1-4 complete notes by PRAHAAR",
     description: "Comprehensive GS notes series by PRAHAAR covering all 4 Mains papers with 15 detailed files.",
     longDescription: [
@@ -1099,6 +1117,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "antriksh-gs-notes",
     title: "Antriksh GS Notes",
+      image: "/images/products/antriksh-gs-notes.png",
     tagline: "5 focused GS notes by Antriksh",
     description: "Targeted GS notes by Antriksh covering Modern History, Geography, Governance, IR, and Disaster Management.",
     longDescription: [
@@ -1139,6 +1158,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "dr-shivin-geography",
     title: "Dr. Shivin's Geography",
+      image: "/images/products/dr-shivin-geography.png",
     tagline: "Complete Geography notes by Dr. Shivin",
     description: "Extensive geography reference covering Physical, Human, and Indian Geography by Dr. Shivin.",
     longDescription: [
@@ -1175,6 +1195,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "anthropology-bundle",
     title: "Anthropology Optional Bundle",
+      image: "/images/products/anthropology-bundle.png",
     tagline: "14 files — complete Anthropology coverage by Laghima Tiwari (AIR 176) & Dr. Apala Mishra (AIR 9)",
     description: "Comprehensive Anthropology optional notes with test papers by rank holders.",
     longDescription: [
@@ -1222,6 +1243,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "geography-bundle",
     title: "Geography Optional Bundle",
+      image: "/images/products/geography-bundle.png",
     tagline: "4 files covering Physical, Human & Indian Geography",
     description: "Complete Geography optional notes from Dr. Shivin, Asad Zuberi (AIR 86), and Rushikesh.",
     longDescription: [
@@ -1261,6 +1283,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "vp-2026-test-series",
     title: "VP 2026 Test Series",
+      image: "/images/products/vp-2026-test-series.png",
     tagline: "20 bilingual Mains tests covering GS 1-4",
     description: "Full-length Mains test series by VP 2026 — 20 tests with bilingual (English + Hindi) question papers.",
     longDescription: [
@@ -1308,6 +1331,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "visionias-test-series",
     title: "VisionIAS Test Series",
+      image: "/images/products/visionias-test-series.png",
     tagline: "24 tests — FLTs, Socio tests, PTS & Rishabh Guidance",
     description: "Comprehensive Mains test series by VisionIAS including Socio FLTs, Rishabh Guidance, and PTS.",
     longDescription: [
@@ -1355,6 +1379,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "only-ias-test-series",
     title: "Only IAS Test Series",
+      image: "/images/products/only-ias-test-series.png",
     tagline: "14 Prelims tests by Only IAS",
     description: "Comprehensive Prelims test series by Only IAS — 14 full-length and AIOMT papers.",
     longDescription: [
@@ -1402,6 +1427,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "csk-csat-complete",
     title: "CSK's CSAT Micro Tests 1-26",
+      image: "/images/products/csk-csat-complete.png",
     tagline: "26 topic-wise CSAT micro tests",
     description: "Complete CSAT practice with 26 topic-wise micro tests covering comprehension, reasoning, maths, and data interpretation.",
     longDescription: [
@@ -1449,6 +1475,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "ias-baba-test-series",
     title: "IAS BABA Test Series",
+      image: "/images/products/ias-baba-test-series.png",
     tagline: "8 tests — AIOMT (Prelims) + Mains tests",
     description: "Complete IAS BABA test series with 3 AIOMT Prelims + 5 Mains tests.",
     longDescription: [
@@ -1492,6 +1519,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "dhyeya-ias-prelims-tests",
     title: "Dhyeya IAS Prelims Tests",
+      image: "/images/products/dhyeya-ias-prelims-tests.png",
     tagline: "4 full-length Prelims tests by Dhyeya IAS",
     description: "Full-length Prelims test papers by Dhyeya IAS with detailed answer keys.",
     longDescription: [
@@ -1531,6 +1559,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "ipm-prelims-test-series",
     title: "IPM Prelims Test Series",
+      image: "/images/products/ipm-prelims-test-series.png",
     tagline: "10 full-length Prelims tests by IPM",
     description: "Comprehensive Prelims test series by IPM — 10 tests covering the complete GS syllabus.",
     longDescription: [
