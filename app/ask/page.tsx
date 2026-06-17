@@ -1280,39 +1280,8 @@ function AskPage() {
         </div>
 
         {/* Input area */}
-       <div className="shrink-0 border-t border-zinc-100 bg-white px-4 pt-4 pb-3 md:px-6">
+       <div className="shrink-0 border-t border-zinc-100 bg-white px-4 pt-4 pb-4 md:px-6">
   <div className="mx-auto max-w-3xl">
-
-    {/* Quick Actions */}
-    <div className="mb-3 flex flex-wrap items-center justify-center gap-5 text-xs text-zinc-500">
-      <button
-        type="button"
-        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
-      >
-        PYQ Analysis
-      </button>
-
-      <button
-        type="button"
-        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
-      >
-        Answer Review
-      </button>
-
-      <button
-        type="button"
-        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
-      >
-        Current Affairs
-      </button>
-
-      <button
-        type="button"
-        className="underline underline-offset-4 decoration-zinc-200 hover:text-zinc-900 hover:decoration-zinc-500 transition"
-      >
-        AIR Strategy
-      </button>
-    </div>
 
     <form onSubmit={handleSubmit}>
       <div
