@@ -620,12 +620,99 @@ function AskPage() {
               <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-800" />
             </div>
           ) : messages.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center px-6">
-              <div className="mx-auto w-full max-w-xl text-center">
-                <h1 className="mb-3 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">Train Like AIR 1</h1>
-                <p className="mb-10 text-base text-zinc-500 max-w-md mx-auto leading-relaxed">
-                  Learn from toppers. Practice like toppers. Write like toppers.
-                </p>
+            <div className="flex h-full flex-col overflow-y-auto">
+              <div className="mx-auto w-full max-w-2xl px-4 py-8 md:py-12">
+                <div className="text-center mb-8">
+                  <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+                    Ask India&apos;s First UPSC AI Mentor
+                  </h1>
+                  <p className="mt-2 text-sm text-zinc-500 leading-relaxed max-w-md mx-auto">
+                    Learn from 280+ topper strategies, PYQs, answer copies, and current affairs — powered by real data.
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-3 font-medium">Popular actions</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { label: "Analyze a PYQ", prompt: "Analyze UPSC 2024 GS1 Paper Q1 on urbanization challenges" },
+                        { label: "Find AIR Strategy", prompt: "What was AIR 1 Shakti Dubey's preparation strategy?" },
+                        { label: "Review my answer", prompt: "How should I structure an answer on climate finance for UPSC?" },
+                        { label: "Current affairs", prompt: "What are the most important current affairs topics for UPSC 2026?" },
+                      ].map((action) => (
+                        <button
+                          key={action.label}
+                          type="button"
+                          onClick={() => { setInput(action.prompt); inputRef.current?.focus(); }}
+                          className="group text-left rounded-xl border border-zinc-200 bg-white px-4 py-3 transition hover:border-zinc-400 hover:shadow-sm"
+                        >
+                          <p className="text-sm font-medium text-zinc-800 group-hover:text-zinc-900">{action.label}</p>
+                          <p className="mt-0.5 text-xs text-zinc-400 line-clamp-1">{action.prompt}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-3 font-medium">Trending topics</p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        "Census 2026",
+                        "India-Middle East Corridor",
+                        "Uniform Civil Code",
+                        "AI Governance",
+                        "Climate Finance",
+                        "Digital India Act",
+                        "One Nation One Election",
+                        "India-China Relations",
+                      ].map((topic) => (
+                        <button
+                          key={topic}
+                          type="button"
+                          onClick={() => { setInput(`Explain the ${topic} topic for UPSC preparation`); inputRef.current?.focus(); }}
+                          className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:border-zinc-400 hover:text-zinc-900"
+                        >
+                          {topic}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-3 font-medium">Top questions</p>
+                    <div className="space-y-1.5">
+                      {suggestedQuestions.slice(0, 4).map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          onClick={() => { setInput(q); inputRef.current?.focus(); }}
+                          className="group w-full text-left rounded-xl border border-zinc-200 bg-white px-4 py-2.5 transition hover:border-zinc-400 hover:shadow-sm"
+                        >
+                          <p className="text-sm text-zinc-700 group-hover:text-zinc-900">{q}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Link
+                    href="/year/2025"
+                    data-track="ask-empty-topper-cards"
+                    className="group block rounded-xl border border-zinc-200 bg-white p-4 transition hover:border-zinc-400 hover:shadow-sm"
+                  >
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-3 font-medium">Recently added</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                        <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-zinc-800">AIR 1 Strategy — Shakti Dubey (2024)</p>
+                        <p className="text-xs text-zinc-400">Complete analysis available</p>
+                      </div>
+                      <svg className="h-4 w-4 shrink-0 text-zinc-300 group-hover:text-zinc-500 group-hover:translate-x-0.5 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (
@@ -758,6 +845,24 @@ function AskPage() {
                 )}
 
                 <div ref={messagesEndRef} />
+
+                {!streaming && followUpQuestions.length > 0 && (
+                  <div className="mt-4 mb-2">
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-2 font-medium">Follow up</p>
+                    <div className="flex flex-wrap gap-2">
+                      {followUpQuestions.map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          onClick={() => { setInput(q); inputRef.current?.focus(); }}
+                          className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-600 transition hover:border-zinc-400 hover:text-zinc-900"
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}
