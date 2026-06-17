@@ -16,6 +16,8 @@ export default function AnalyticsScripts() {
           __html: `
             (function() {
               var isAdmin = location.pathname.indexOf('/admin') === 0;
+              if (location.search.indexOf('optex=1') !== -1) { localStorage.setItem('_optex', '1'); window.history.replaceState({}, '', location.pathname); }
+              if (location.search.indexOf('optex=0') !== -1) { localStorage.removeItem('_optex'); window.history.replaceState({}, '', location.pathname); }
               var selfExclude = localStorage.getItem('_optex') === '1';
               if (selfExclude || isAdmin) return;
 
