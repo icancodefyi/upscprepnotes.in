@@ -8,19 +8,79 @@ import {
   BookOpen,
   Target,
   Sparkles,
+  Search,
+  BarChart3,
+  PenLine,
+  Lightbulb,
+  ChevronDown,
 } from "lucide-react";
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How many years of PYQs should I solve for UPSC?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Most toppers recommend solving at least the last 10 years' PYQs for Prelims and at least 5 years for Mains. However, solving 15-20 years of papers gives you a comprehensive understanding of UPSC's question patterns and helps identify high-yield topics across all subjects.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Are PYQs enough to clear UPSC Prelims?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "PYQs are essential but not sufficient. They help you understand the exam pattern, question difficulty, and topic weighting, but you need standard textbooks (NCERTs, Laxmikanth, Spectrum, etc.) and current affairs for comprehensive coverage. PYQs should form about 30% of your preparation strategy, not 100%.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Where can I download UPSC previous year question papers PDF?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You can download official UPSC previous year question papers PDF for free on UPSCPrepNotes. We provide Prelims (GS + CSAT) and Mains (Essay + GS 1-4) papers for years 2022–2025. Each paper is available in its original PDF format as released by the UPSC commission.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does UPSC repeat questions from previous years?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "UPSC rarely repeats exact questions, but they frequently repeat themes and concepts. For example, questions on Fundamental Rights, Panchayati Raj, and Climate Change appear in different forms across years. Analyzing PYQs helps you identify these recurring themes and prepare accordingly.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Should I solve Prelims and Mains PYQs together?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. Prelims and Mains require different approaches. Solve Prelims PYQs during your Prelims preparation phase (focus on speed, accuracy, and elimination techniques). Solve Mains PYQs during your Mains answer writing practice (focus on structure, depth, and time management).",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How should I analyze UPSC PYQs for maximum benefit?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Start by categorizing questions by subject and topic. Identify which subjects carry the most weight. Note the year-wise distribution — some topics cycle in importance. Track the difficulty level and question format changes. Finally, align your study plan to prioritize high-weightage and frequently tested topics.",
+      },
+    },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "UPSC Previous Year Question Papers (PYQ) - Prelims & Mains PDF",
+  title: "UPSC Previous Year Question Papers (PYQ) PDF - Prelims & Mains Free Download",
   description:
-    "Download official UPSC Civil Services Examination Previous Year Question Papers (PYQ) for Prelims and Mains. Archive of GS, CSAT, Essay, and Optional papers.",
+    "Download official UPSC Civil Services Examination Previous Year Question Papers (PYQ) PDF for Prelims and Mains. Free archive of GS, CSAT, Essay, and Optional papers from 2022-2025.",
   alternates: {
     canonical: "https://upscprepnotes.in/pyq",
   },
   openGraph: {
-    title: "UPSC PYQ Archive - Download Official Question Papers",
+    title: "UPSC PYQ Archive PDF - Free Download Official Question Papers",
     description:
-      "Access the complete archive of UPSC CSE Previous Year Questions. Essential for understanding the exam pattern and trends.",
+      "Access the complete archive of UPSC CSE Previous Year Questions PDF. Essential for understanding exam pattern, topic weighting, and trends.",
   },
 };
 
@@ -45,22 +105,24 @@ export default async function PYQIndexPage() {
         <div className="max-w-4xl mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-6">
             <FileText size={12} />
-            Free Question Papers
+            Free Question Papers PDF
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
             UPSC{" "}
             <span className="bg-[#C4F9D7] px-2 border border-black">
               Previous Year Papers
-            </span>
+            </span>{" "}
+            PDF
           </h1>
           <p className="text-gray-600 text-lg md:text-xl leading-relaxed max-w-3xl mb-8">
-            Download official UPSC Civil Services Examination question papers.
-            Access Prelims (GS + CSAT) and Mains (Essay + GS 1-4 + Optional) papers.
+            Download official UPSC Civil Services Examination previous year question papers PDF
+            for Prelims (GS + CSAT) and Mains (Essay + GS 1-4 + Optional subjects). 
+            Free archive of UPSC PYQ PDF downloads from 2022 to 2025.
           </p>
 
           <div className="flex flex-wrap gap-6 text-sm text-gray-500">
             <span className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">3</span>
+              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">3+</span>
               Years Archive
             </span>
             <span className="flex items-center gap-2">
@@ -69,7 +131,7 @@ export default async function PYQIndexPage() {
             </span>
             <span className="flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">Free</span>
-              Download
+              PDF Download
             </span>
           </div>
         </div>
@@ -105,61 +167,123 @@ export default async function PYQIndexPage() {
           </div>
         </section>
 
-        {/* SEO Content */}
-        <section className="grid md:grid-cols-12 gap-12 border-t border-gray-200 pt-16 mb-20">
-          <div className="md:col-span-7">
-            <h2 className="text-3xl font-bold mb-6">Why Solve PYQs?</h2>
-            <div className="text-gray-600 leading-relaxed">
-              <p className="mb-4 text-lg">
-                Previous Year Questions (PYQs) are the compass for your UPSC preparation. They help you understand the demand of the examination and the mindset of the paper setters.
-              </p>
-              <ul className="space-y-4 mb-6">
-                <li className="flex items-start gap-3">
-                  <Target className="w-5 h-5 text-[#C4F9D7] mt-0.5 shrink-0" />
-                  <span><strong>Identify Themes:</strong> UPSC often repeats themes. Analyzing PYQs helps you identify high-yield topics.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BookOpen className="w-5 h-5 text-[#C4F9D7] mt-0.5 shrink-0" />
-                  <span><strong>Understand Pattern:</strong> Get accustomed to the changing nature of questions, especially in Prelims.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Target className="w-5 h-5 text-[#C4F9D7] mt-0.5 shrink-0" />
-                  <span><strong>Self Assessment:</strong> Solving past papers in a simulated environment is the best way to test your preparation level.</span>
-                </li>
-              </ul>
-            </div>
+        {/* Paper Categories */}
+        <section className="mb-20 border-t border-gray-200 pt-16">
+          <h2 className="text-3xl font-bold mb-6">UPSC PYQ PDF Categories</h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-3xl">
+            Our UPSC previous year question papers PDF archive covers every paper released by the commission. 
+            Download individual PDFs for each examination component.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: FileText, title: "Prelims GS Paper 1", desc: "General Studies including History, Geography, Polity, Economy, Science & Technology, Environment, and Current Affairs." },
+              { icon: FileText, title: "Prelims CSAT Paper 2", desc: "Civil Services Aptitude Test covering Comprehension, Interpersonal Skills, Logical Reasoning, and Quantitative Aptitude." },
+              { icon: FileText, title: "Mains Essay Paper", desc: "Two essays to be written on philosophical, social, and contemporary topics totaling 250 marks." },
+              { icon: FileText, title: "Mains GS Paper 1", desc: "Indian Heritage & Culture, History, Geography of India and the World, and Society." },
+              { icon: FileText, title: "Mains GS Paper 2", desc: "Governance, Constitution, Polity, Social Justice, and International Relations." },
+              { icon: FileText, title: "Mains GS Paper 3", desc: "Technology, Economic Development, Biodiversity, Environment, Security, and Disaster Management." },
+            ].map((item) => (
+              <div key={item.title} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-[#C4F9D7] text-black border border-black shrink-0">
+                    <item.icon size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-1">{item.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+        </section>
 
-          <div className="md:col-span-5 space-y-6">
-            <div className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-[#C4F9D7] text-black border border-black">
-                  <BookOpen size={24} />
+        {/* Why Solve PYQs */}
+        <section className="mb-20 border-t border-gray-200 pt-16">
+          <div className="max-w-4xl">
+            <h2 className="text-3xl font-bold mb-6">Why Solve UPSC Previous Year Papers?</h2>
+            <p className="text-gray-600 text-lg mb-8">
+              Previous Year Questions (PYQs) are the most reliable tool for UPSC preparation. 
+              They reveal the examiner&apos;s mindset, topic weighting, and evolving question patterns. 
+              Every serious aspirant must integrate PYQ analysis into their study routine.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {[
+                { icon: Target, title: "Identify High-Yield Topics", desc: "UPSC consistently tests certain themes across years. PYQs reveal which topics carry the most marks, helping you prioritize your study time effectively." },
+                { icon: BarChart3, title: "Understand Question Trends", desc: "Track how question formats evolve — from direct factual recall to application-based and analytical questions. Adapt your preparation accordingly." },
+                { icon: PenLine, title: "Practice Time Management", desc: "Solving full papers under timed conditions builds the speed and accuracy needed for both Prelims (200 questions in 2 hours) and Mains (3-hour papers)." },
+                { icon: Search, title: "Self-Assessment & Gap Analysis", desc: "Identify your weak areas by analyzing which questions you get wrong. PYQ practice reveals knowledge gaps that textbooks alone cannot highlight." },
+                { icon: Lightbulb, title: "Develop Answer Writing Skills", desc: "For Mains, PYQs are the best answer writing practice. Structure your responses to match UPSC's expectations — introduction, body, conclusion with relevant examples." },
+                { icon: BookOpen, title: "Build Exam Confidence", desc: "Regular PYQ practice reduces exam anxiety. Familiarity with the paper pattern, difficulty level, and question style builds the confidence needed on exam day." },
+              ].map((item) => (
+                <div key={item.title} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-black text-white shrink-0">
+                      <item.icon size={22} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-1">{item.title}</h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">Prelims Analysis</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    Focus on the options as well. Often, options from previous years become questions in future years.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-black text-white">
-                  <FileText size={24} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">Mains Answer Writing</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    Practice answer writing using PYQs to align your content and structure with UPSC standards.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
+
+        {/* How to Use PYQs */}
+        <section className="mb-20 border-t border-gray-200 pt-16">
+          <h2 className="text-3xl font-bold mb-6">How to Use UPSC PYQs Effectively</h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-3xl">
+            Simply downloading UPSC previous year question papers PDF is not enough. 
+            Follow this systematic approach to maximize your learning from every paper.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {[
+              { step: "01", title: "Categorize & Analyze", desc: "Group questions by subject and topic. Create a topic-wise frequency chart to identify which areas UPSC tests most often. This data-driven approach ensures you focus on high-yield topics first." },
+              { step: "02", title: "Solve & Review", desc: "Attempt each paper under exam conditions — strictly timed, no distractions. After solving, review every incorrect answer in detail. Maintain an error log tracking recurring mistakes." },
+              { step: "03", title: "Align Your Strategy", desc: "Use PYQ insights to refine your study plan. Increase time on frequently tested topics, adjust your note-making style to match question demands, and practice answer writing for identified weak areas." },
+            ].map((item) => (
+              <div key={item.step} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
+                <span className="text-5xl font-black text-gray-200 mb-4 block">{item.step}</span>
+                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="mb-20 border-t border-gray-200 pt-16">
+          <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions about UPSC PYQs</h2>
+          <div className="max-w-4xl space-y-4">
+            {[
+              { q: "How many years of PYQs should I solve for UPSC?", a: "Most toppers recommend at least 10 years of Prelims PYQs and 5 years of Mains PYQs. For comprehensive coverage, 15-20 years is ideal. This helps you identify all recurring themes and question patterns." },
+              { q: "Are PYQs enough to clear UPSC Prelims?", a: "PYQs are essential but not sufficient alone. They should form about 30% of your preparation. You still need NCERTs, standard reference books, and current affairs for full syllabus coverage." },
+              { q: "Does UPSC repeat questions?", a: "UPSC rarely repeats exact questions but frequently repeats themes. Concepts from Polity (Fundamental Rights, DPSPs), Environment (Climate Change, Conservation), and Modern History appear in different forms across years." },
+              { q: "Should I solve Prelims and Mains PYQs differently?", a: "Yes. Prelims PYQs focus on speed, accuracy, and elimination techniques. Mains PYQs focus on answer structure, depth of content, and time management across 3-hour papers." },
+              { q: "Where can I download UPSC previous year question papers PDF?", a: "You can download UPSC previous year question papers PDF for free right here on UPSCPrepNotes. We provide official PDFs for Prelims (GS + CSAT) and Mains (Essay + GS 1-4) for 2022, 2023, 2024, and 2025." },
+              { q: "How do I analyze PYQs for topic weighting?", a: "Create a spreadsheet with columns for year, subject, topic, and marks. After solving 5+ years of papers, sort by topic to see which areas carry the most weight. Allocate study time proportionally to this data." },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-white border-2 border-gray-200 [&>summary]:open:border-black">
+                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-bold hover:bg-gray-50 transition-colors">
+                  {faq.q}
+                  <ChevronDown className="w-4 h-4 shrink-0 group-open:rotate-180 transition-transform" />
+                </summary>
+                <div className="px-5 pb-5 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-4">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
 
         {/* Free Materials CTA */}
         <section className="p-8 md:p-12 bg-white border-b-2 border-gray-100">

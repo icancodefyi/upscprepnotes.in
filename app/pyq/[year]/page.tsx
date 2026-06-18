@@ -17,6 +17,12 @@ import {
   TrendingUp,
   Star,
   Target,
+  ChevronDown,
+  HelpCircle,
+  ExternalLink,
+  BookOpen,
+  BarChart3,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -281,6 +287,182 @@ export default async function PYQYearPage({ params }: Props) {
                 </div>
               </section>
             )}
+
+            {/* Paper Structure & Breakdown */}
+            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-1">
+                <BarChart3 className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Breakdown</span>
+              </div>
+              <h2 className="text-2xl font-bold mb-4">UPSC CSE {year} Paper Structure & Breakdown</h2>
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                  The UPSC Civil Services Examination {year} consisted of two stages: Prelims and Mains. 
+                  The Prelims included two objective-type papers — General Studies (GS) Paper 1 and CSAT (Paper 2). 
+                  GS Paper 1 covered History, Geography, Polity, Economy, Science & Technology, Environment, and Current Affairs. 
+                  CSAT tested comprehension, logical reasoning, and quantitative aptitude.
+                </p>
+                <p>
+                  The Mains examination comprised 9 papers: Essay (one paper with two essays), GS Paper 1 (Heritage, History, Geography, Society), 
+                  GS Paper 2 (Polity, Governance, International Relations), GS Paper 3 (Economy, Environment, Security, Technology), 
+                  GS Paper 4 (Ethics, Integrity, Aptitude), two Optional Subject papers, and two language papers (qualifying in nature). 
+                  Each GS paper carried 250 marks, totaling 1750 marks for the written segment.
+                </p>
+                <div className="bg-gray-50 border border-gray-200 p-5 mt-4">
+                  <h3 className="font-bold mb-3 text-base">Quick Stats: {year} Papers</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>
+                      <span className="text-2xl font-black">{prelimsPapers.length}</span>
+                      <p className="text-xs text-gray-500">Prelims Papers</p>
+                    </div>
+                    <div>
+                      <span className="text-2xl font-black">{mainsPapers.length}</span>
+                      <p className="text-xs text-gray-500">Mains Papers</p>
+                    </div>
+                    <div>
+                      <span className="text-2xl font-black">{papers.length}</span>
+                      <p className="text-xs text-gray-500">Total Papers</p>
+                    </div>
+                    <div>
+                      <span className="text-2xl font-black">{year}</span>
+                      <p className="text-xs text-gray-500">Exam Year</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* How to Use These Papers */}
+            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-1">
+                <Lightbulb className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Guide</span>
+              </div>
+              <h2 className="text-2xl font-bold mb-4">How to Use the {year} Question Papers for Maximum Benefit</h2>
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <div className="flex items-start gap-4">
+                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
+                  <div>
+                    <h3 className="font-bold">Start with Prelims Papers</h3>
+                    <p className="text-sm">Attempt GS Paper 1 under timed conditions (2 hours, 100 questions). Review each incorrect answer and note the topic. Repeat with CSAT. Track your accuracy percentage and identify weak subjects for focused revision.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
+                  <div>
+                    <h3 className="font-bold">Analyze Mains Paper Demands</h3>
+                    <p className="text-sm">Read each GS paper thoroughly before attempting to write. Note the keyword demands — "Discuss", "Analyze", "Critically examine" each requires a different answer structure. Create a mind map of topics tested across all four GS papers to understand the syllabus coverage.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
+                  <div>
+                    <h3 className="font-bold">Practice Answer Writing</h3>
+                    <p className="text-sm">Select 5 questions from each GS paper and write full answers within the word limit (150-200 words for 10-mark, 200-250 for 15-mark questions). Compare your answers with topper copies to improve structure and content quality.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Answer Keys & Solutions */}
+            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-1">
+                <HelpCircle className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Solutions</span>
+              </div>
+              <h2 className="text-2xl font-bold mb-4">Answer Keys & Solutions for {year} Papers</h2>
+              <p className="text-gray-700 mb-4">
+                After solving the papers, check your answers against reliable answer keys. For Prelims, 
+                compare with answer keys published by leading coaching institutes. For Mains, review 
+                model answers to understand the expected content depth and structure.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <a
+                  href="/store"
+                  data-track="pyq-answer-keys-store"
+                  className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 hover:border-black transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="w-5 h-5 text-gray-500" />
+                    <div>
+                      <span className="font-bold text-sm">Topper Answer Copies</span>
+                      <p className="text-xs text-gray-500">See how AIR-1 to AIR-10 wrote answers</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <a
+                  href="/free-materials"
+                  data-track="pyq-answer-keys-free"
+                  className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 hover:border-black transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-gray-500" />
+                    <div>
+                      <span className="font-bold text-sm">Free Study Materials</span>
+                      <p className="text-xs text-gray-500">Notes, test series & current affairs</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </section>
+
+            {/* FAQ */}
+            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+              <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions about UPSC CSE {year} Papers</h2>
+              <div className="space-y-3">
+                {[
+                  { q: `What is included in the UPSC CSE ${year} question papers PDF?`, a: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` },
+                  { q: `Where can I find solutions for UPSC ${year} question papers?`, a: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies to understand answer writing standards.` },
+                  { q: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, a: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied for incorrect answers.` },
+                  { q: `What topics were emphasized in the ${year} Mains GS papers?`, a: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples. GS Paper 4 (Ethics) featured longer case studies requiring multi-stakeholder analysis.` },
+                ].map((faq, i) => (
+                  <details key={i} className="group border border-gray-200 [&>summary]:open:border-black">
+                    <summary className="flex items-center justify-between p-4 cursor-pointer list-none font-bold text-sm hover:bg-gray-50 transition-colors">
+                      {faq.q}
+                      <ChevronDown className="w-4 h-4 shrink-0 group-open:rotate-180 transition-transform" />
+                    </summary>
+                    <div className="px-4 pb-4 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-3">
+                      {faq.a}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+
+            {/* FAQ Schema */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: `What is included in the UPSC CSE ${year} question papers PDF?`,
+                      acceptedAnswer: { "@type": "Answer", text: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` }
+                    },
+                    {
+                      "@type": "Question",
+                      name: `Where can I find solutions for UPSC ${year} question papers?`,
+                      acceptedAnswer: { "@type": "Answer", text: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies.` }
+                    },
+                    {
+                      "@type": "Question",
+                      name: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`,
+                      acceptedAnswer: { "@type": "Answer", text: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied.` }
+                    },
+                    {
+                      "@type": "Question",
+                      name: `What topics were emphasized in the ${year} Mains GS papers?`,
+                      acceptedAnswer: { "@type": "Answer", text: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples.` }
+                    },
+                  ]
+                })
+              }}
+            />
 
             {/* CTA */}
             <section className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8">
