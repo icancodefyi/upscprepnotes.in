@@ -84,21 +84,21 @@ export default function StoreClient() {
       <div className="mx-auto min-h-screen bg-white">
         {/* ─── Store Header ─── */}
         <div className="border-b border-gray-100">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3 sm:px-4 sm:py-4">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Store</h1>
-              <p className="text-sm text-gray-400">{PRODUCTS.filter((p) => !p.comingSoon).length} products</p>
+              <h1 className="text-lg font-bold text-gray-900 sm:text-xl">Store</h1>
+              <p className="text-[11px] text-gray-400 sm:text-sm">{PRODUCTS.filter((p) => !p.comingSoon).length} products</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <div className="relative">
-                <IconSearch size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" />
+                <IconSearch size={13} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-300 sm:size-[15px] sm:left-3" />
                 <input
                   type="text"
                   data-track="store-search"
                   placeholder="Search..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-40 rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-sm outline-none transition focus:w-56 focus:border-gray-300 focus:bg-white"
+                  className="w-32 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-7 pr-2 text-xs outline-none transition focus:w-40 focus:border-gray-300 focus:bg-white sm:w-40 sm:py-2 sm:pl-8 sm:pr-3 sm:text-sm sm:focus:w-56"
                 />
               </div>
               <CartIcon onClick={() => setCartOpen(true)} />
@@ -106,26 +106,26 @@ export default function StoreClient() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
           {/* Hero */}
           {category === "all" && !search && (
-            <div className="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-6 text-white sm:p-8">
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-5 text-white sm:mb-8 sm:p-8">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="max-w-md">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Best Seller</p>
-                  <h2 className="mt-1 text-xl font-bold sm:text-2xl">All Strategy Reports</h2>
-                  <p className="mt-2 text-sm text-zinc-300">280+ topper strategies, marks analysis, and answer copies. Everything you need in one bundle.</p>
-                  <div className="mt-4 flex items-center gap-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 sm:text-[11px]">Best Seller</p>
+                  <h2 className="mt-1 text-lg font-bold sm:text-2xl">All Strategy Reports</h2>
+                  <p className="mt-1.5 text-xs text-zinc-300 sm:mt-2 sm:text-sm">280+ topper strategies, marks analysis, and answer copies. Everything you need in one bundle.</p>
+                  <div className="mt-3 flex items-center gap-2 sm:mt-4 sm:gap-3">
                     <Link href="/store/all-strategy-reports" data-track="store-hero-cta"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-zinc-900 transition hover:bg-zinc-100"
+                      className="inline-flex items-center gap-1 rounded-xl bg-white px-4 py-2 text-[11px] font-bold text-zinc-900 transition hover:bg-zinc-100 sm:px-5 sm:py-2.5 sm:text-xs"
                     >
                       View Bundle — ₹799
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                      <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </Link>
-                    <span className="text-[11px] text-zinc-400">₹27,720 value</span>
+                    <span className="text-[10px] text-zinc-400 sm:text-[11px]">₹27,720 value</span>
                   </div>
                 </div>
-                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-3xl font-black text-white sm:h-28 sm:w-28">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-2xl font-black text-white sm:h-28 sm:w-28 sm:text-3xl">
                   280+
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function StoreClient() {
                   <p className="text-sm text-gray-400">No products match your search.</p>
                 </div>
               ) : (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                   {filtered.map((product) => (
                     <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
                   ))}
@@ -192,7 +192,7 @@ export default function StoreClient() {
                         {group.label}{" "}
                         <span className="font-normal text-gray-400">({group.products.length})</span>
                       </h2>
-                      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                         {group.products.map((product) => (
                           <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
                         ))}
@@ -211,7 +211,7 @@ export default function StoreClient() {
                       <p className="text-sm text-gray-400">No products in this category yet.</p>
                     </div>
                   ) : (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                       {visibleProducts.map((product) => (
                         <ProductCard key={product.slug} product={product} onAddedToCart={() => setCartOpen(true)} />
                       ))}
@@ -252,10 +252,9 @@ function ProductCard({
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white transition hover:border-gray-200 hover:shadow-sm">
-      {/* Product Image */}
       <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} className="block" data-track={`store-card-img-${product.slug}`}>
         {product.image ? (
-          <div className="relative h-44 overflow-hidden bg-gray-50">
+          <div className="relative h-36 overflow-hidden bg-gray-50 sm:h-44">
             <img
               src={product.image}
               alt={product.title}
@@ -265,7 +264,7 @@ function ProductCard({
             />
             {product.badge && (
               <span
-                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shadow-sm ${
+                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider shadow-sm sm:text-[9px] ${
                   product.badgeColor === "emerald"
                     ? "bg-emerald-600 text-white"
                     : product.badgeColor === "amber"
@@ -277,44 +276,44 @@ function ProductCard({
               </span>
             )}
             {product.originalPrice && (
-              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 shadow-sm">
+              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-emerald-700 shadow-sm sm:text-[9px]">
                 -{Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
             )}
           </div>
         ) : (
-          <div className={`relative flex h-44 items-center justify-center ${product.gradient}`} data-track={`store-card-img-${product.slug}`}>
+          <div className={`relative flex h-36 items-center justify-center sm:h-44 ${product.gradient}`} data-track={`store-card-img-${product.slug}`}>
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 
             {comingSoon ? (
               <div className="relative text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
-                  <span className="text-xl font-black tracking-tight text-white">?</span>
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/20 sm:h-12 sm:w-12">
+                  <span className="text-lg font-black tracking-tight text-white sm:text-xl">?</span>
                 </div>
-                <p className="mt-1.5 text-[9px] font-bold uppercase tracking-widest text-white/50">Coming Soon</p>
+                <p className="mt-1 text-[8px] font-bold uppercase tracking-widest text-white/50 sm:mt-1.5 sm:text-[9px]">Coming Soon</p>
               </div>
             ) : (
               <div className="relative px-3 text-center">
                 {product.slug === "top-10-rankers-strategy" && (
                   <div className="flex flex-wrap justify-center gap-1">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                      <span key={n} className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 text-xs font-bold text-white backdrop-blur-sm">{n}</span>
+                      <span key={n} className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/20 text-[11px] font-bold text-white backdrop-blur-sm sm:h-7 sm:w-7 sm:text-xs">{n}</span>
                     ))}
                   </div>
                 )}
                 {product.slug === "all-strategy-reports" && (
                   <div className="text-center">
-                    <span className="text-3xl font-black text-white drop-shadow-sm">280+</span>
-                    <p className="mt-0.5 text-[9px] font-bold uppercase tracking-widest text-white/70">Reports</p>
+                    <span className="text-2xl font-black text-white drop-shadow-sm sm:text-3xl">280+</span>
+                    <p className="mt-0.5 text-[8px] font-bold uppercase tracking-widest text-white/70 sm:text-[9px]">Reports</p>
                   </div>
                 )}
                 {product.slug === "answer-copies-compilation" && (
                   <div className="text-center">
                     <div className="mx-auto flex items-center justify-center gap-0.5">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-80"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="-ml-2 opacity-60"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-80 sm:w-[22px] sm:h-[22px]"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="-ml-1.5 opacity-60 sm:w-[22px] sm:h-[22px]"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     </div>
-                    <p className="mt-1 text-[11px] font-bold uppercase tracking-wider text-white">50+ Answer Copies</p>
+                    <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white sm:text-[11px]">50+ Answer Copies</p>
                   </div>
                 )}
               </div>
@@ -322,7 +321,7 @@ function ProductCard({
 
             {product.badge && (
               <span
-                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shadow-sm ${
+                className={`absolute left-2 top-2 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider shadow-sm sm:text-[9px] ${
                   product.badgeColor === "emerald"
                     ? "bg-emerald-600 text-white"
                     : product.badgeColor === "amber"
@@ -335,7 +334,7 @@ function ProductCard({
             )}
 
             {product.originalPrice && (
-              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 shadow-sm">
+              <span className="absolute right-2 top-2 rounded-full bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-emerald-700 shadow-sm sm:text-[9px]">
                 -{Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
             )}
@@ -343,64 +342,63 @@ function ProductCard({
         )}
       </Link>
 
-      {/* Info */}
-      <div className="flex flex-1 flex-col p-3">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-3">
         <Link href={comingSoon ? "#" : `/store/${product.slug}`} tabIndex={comingSoon ? -1 : undefined} data-track={`store-card-title-${product.slug}`}>
-          <h3 className="text-sm font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700">{product.title}</h3>
+          <h3 className="text-xs font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700 sm:text-sm">{product.title}</h3>
         </Link>
 
-        <div className="mt-1.5 flex items-center gap-2">
-          <span className="text-sm font-bold text-gray-900">₹{product.price}</span>
+        <div className="mt-1 flex items-center gap-1.5 sm:mt-1.5 sm:gap-2">
+          <span className="text-xs font-bold text-gray-900 sm:text-sm">₹{product.price}</span>
           {product.originalPrice && (
-            <span className="text-[11px] text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
+            <span className="text-[10px] text-gray-400 line-through sm:text-[11px]">₹{product.originalPrice.toLocaleString("en-IN")}</span>
           )}
         </div>
 
         {product.rating && (
-          <div className="mt-1 flex items-center gap-1">
+          <div className="mt-0.5 flex items-center gap-1 sm:mt-1">
             <span className="inline-flex items-center gap-0.5">
               {[1, 2, 3, 4, 5].map((s) => (
                 <IconStarFilled
                   key={s}
-                  size={10}
-                  className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200"}
+                  size={9}
+                  className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200 sm:size-[10px]"}
                 />
               ))}
             </span>
-            <span className="text-[10px] font-medium text-gray-500">{product.rating}</span>
-            <span className="text-[10px] text-gray-300">({product.reviewCount})</span>
+            <span className="text-[9px] font-medium text-gray-500 sm:text-[10px]">{product.rating}</span>
+            <span className="text-[9px] text-gray-300 sm:text-[10px]">({product.reviewCount})</span>
           </div>
         )}
 
-        <div className="mt-auto pt-2">
+        <div className="mt-auto pt-1.5 sm:pt-2">
           {comingSoon ? (
-            <div className="w-full rounded-md border border-dashed border-gray-200 py-1.5 text-center text-[11px] font-medium text-gray-400" data-track={`store-card-comingsoon-${product.slug}`}>
+            <div className="w-full rounded-md border border-dashed border-gray-200 py-1 text-center text-[10px] font-medium text-gray-400 sm:py-1.5 sm:text-[11px]" data-track={`store-card-comingsoon-${product.slug}`}>
               Coming Soon
             </div>
           ) : product.link ? (
             <Link
               href={product.link}
               data-track={`store-card-view-${product.slug}`}
-              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-amber-600"
+              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1 text-[10px] font-semibold text-white transition hover:bg-amber-600 sm:py-1.5 sm:text-[11px]"
             >
-              <IconShoppingCart size={12} />
+              <IconShoppingCart size={10} />
               View Product
             </Link>
           ) : (
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1 sm:gap-1.5">
               <Link
                 href={`/store/${product.slug}`}
                 data-track={`store-card-buy-${product.slug}`}
-                className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1.5 text-[11px] font-semibold text-white transition hover:bg-zinc-800"
+                className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1 text-[10px] font-semibold text-white transition hover:bg-zinc-800 sm:py-1.5 sm:text-[11px]"
               >
-                <IconShoppingCart size={12} />
+                <IconShoppingCart size={10} />
                 Buy Now
               </Link>
               <button
                 type="button"
                 data-track={`store-card-addtocart-${product.slug}`}
                 onClick={handleAddToCart}
-                className="flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-white py-1.5 text-[11px] font-medium text-gray-600 transition hover:border-gray-300 hover:text-gray-800"
+                className="flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-white py-1 text-[10px] font-medium text-gray-600 transition hover:border-gray-300 hover:text-gray-800 sm:py-1.5 sm:text-[11px]"
               >
                 Add to Cart
               </button>

@@ -1308,6 +1308,28 @@ function AskPage() {
           )}
         </div>
 
+        {/* Purchase banner shown after a few messages */}
+        {messages.length >= 2 && !streaming && (
+          <div className="mx-auto max-w-[720px] w-full px-4 pb-3">
+            <Link
+              href="/store/all-strategy-reports"
+              data-track="ask-purchase-banner"
+              className="flex items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-emerald-500 hover:to-teal-500"
+            >
+              <div className="flex items-center gap-2.5">
+                <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-xs font-bold">Get All 280+ Strategy Reports</p>
+                  <p className="text-[10px] text-emerald-100">One-time payment · Lifetime access · ₹27,720 value at ₹799</p>
+                </div>
+              </div>
+              <span className="shrink-0 rounded-lg bg-white/20 px-2.5 py-1 text-[11px] font-bold">Shop Now →</span>
+            </Link>
+          </div>
+        )}
+
         {/* Input area */}
        <div className="shrink-0 border-t border-zinc-100 bg-white px-4 pt-4 pb-4 md:px-6">
   <div className="mx-auto max-w-3xl">

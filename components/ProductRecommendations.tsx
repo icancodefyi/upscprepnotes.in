@@ -52,31 +52,40 @@ export default function ProductRecommendations({
   if (recs.length === 0) return null;
 
   return (
-    <div className="mt-5 rounded-xl border border-zinc-100 bg-zinc-50/50 p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">{title}</p>
+    <div className="mt-5 rounded-xl border border-emerald-100 bg-emerald-50/80 p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700">{title}</p>
       <div className="mt-2 space-y-2">
         {recs.map(({ product, reason }) => (
           <Link
             key={product.slug}
             href={`/store/${product.slug}`}
             data-track={`recommendation-${product.slug}`}
-            className="flex items-center gap-3 rounded-lg bg-white p-2.5 transition hover:shadow-sm"
+            className="flex items-center gap-3 rounded-lg bg-white p-2.5 transition hover:shadow-sm hover:border-emerald-200 border border-transparent"
           >
             <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${product.gradient}`}>
               <span className="text-xs font-black text-white">{product.title.charAt(0)}</span>
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold text-zinc-800">{product.title}</p>
-              <p className="text-[10px] text-zinc-400">{reason}</p>
+              <p className="text-[10px] text-emerald-600 font-medium">{reason}</p>
             </div>
-            <div className="text-right">
-              <p className="text-xs font-bold text-zinc-900">₹{product.price}</p>
+            <div className="text-right shrink-0">
+              <p className="text-xs font-bold text-emerald-800">₹{product.price}</p>
               {product.originalPrice && (
                 <p className="text-[9px] text-zinc-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</p>
               )}
             </div>
           </Link>
         ))}
+      </div>
+      <div className="mt-2 text-center">
+        <Link
+          href="/store"
+          data-track="recommendations-browse-all"
+          className="text-[10px] font-medium text-emerald-600 hover:text-emerald-700 underline underline-offset-2"
+        >
+          Browse all products →
+        </Link>
       </div>
     </div>
   );

@@ -77,7 +77,7 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
               setQuery(e.target.value);
               setPage(1);
             }}
-            className="w-full rounded-2xl border border-gray-200 bg-white py-4 pl-12 pr-4 text-sm outline-none transition focus:border-gray-400 focus:ring-0"
+            className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-gray-400 focus:ring-0 sm:py-4"
             autoFocus
             data-track="toppers-search-input"
           />
@@ -90,7 +90,7 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
         </div>
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {paginated.map((t) => (
               <Link
                 key={t.slug}

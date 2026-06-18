@@ -382,7 +382,7 @@ export default async function TopperPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         {/* BREADCRUMB */}
         <div className="mb-8 flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
           <Link href="/" className="transition hover:text-foreground" data-track="topper-breadcrumb-home">Home</Link>
@@ -709,7 +709,7 @@ export default async function TopperPage({ params }: Props) {
           <section className="mt-12">
             <h2 className="text-xl font-semibold">UPSC {topper.year} Toppers</h2>
             <p className="mt-1 text-sm text-muted-foreground">Browse answer copies and strategies of other UPSC {topper.year} rank holders</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sameYearToppers.map((t: any) => (
                 <Link
                   key={t.slug}
@@ -738,7 +738,7 @@ export default async function TopperPage({ params }: Props) {
           <section className="mt-12">
             <h2 className="text-xl font-semibold">Also AIR {topper.rank} Holders</h2>
             <p className="mt-1 text-sm text-muted-foreground">Other UPSC toppers who secured AIR {topper.rank}</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sameRankToppers.map((t: any) => (
                 <Link
                   key={t.slug}
@@ -762,7 +762,7 @@ export default async function TopperPage({ params }: Props) {
           <section className="mt-12">
             <h2 className="text-xl font-semibold">Related {topper.optionalSubject} Toppers</h2>
             <p className="mt-1 text-sm text-muted-foreground">Toppers who chose {topper.optionalSubject} as their optional subject</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {relatedToppers.map((related: any) => (
                 <Link
                   key={related.slug}
@@ -795,7 +795,7 @@ export default async function TopperPage({ params }: Props) {
         {topper.insights?.length > 0 && (
           <section className="mt-12">
             <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Key Insights</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {topper.insights.map((insight: string, index: number) => (
                 <div key={index} className="rounded-xl border border-border/50 bg-card p-4">
                   <p className="text-sm leading-6">{insight}</p>

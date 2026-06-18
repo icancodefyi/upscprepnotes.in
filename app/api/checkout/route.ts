@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
       total,
       ref,
       downloadToken,
+      email: email || undefined,
       status: "pending",
     });
 

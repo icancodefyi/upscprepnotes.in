@@ -16,6 +16,12 @@ interface Props {
   items?: CartItem[];
   productSlug?: string;
   children?: React.ReactNode;
+  email?: string;
+}
+
+function getStoredEmail(): string {
+  if (typeof window === "undefined") return "";
+  try { return localStorage.getItem("upsc-email") || ""; } catch { return ""; }
 }
 
 export default function PayButton({
@@ -26,11 +32,17 @@ export default function PayButton({
   items,
   productSlug,
   children,
+  email: propEmail,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
 
-  const handlePay = useCallback(async () => {
+  const storedEmail = getStoredEmail();
+  const effectiveEmail = propEmail || storedEmail;
+
+  const proceedToCheckout = useCallback(async (email: string) => {
     setLoading(true);
     setError("");
 
@@ -45,7 +57,7 @@ export default function PayButton({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: checkoutItems }),
+        body: JSON.stringify({ items: checkoutItems, email: email || undefined }),
       });
 
       if (!res.ok) {
@@ -55,6 +67,17 @@ export default function PayButton({
 
       const data = await res.json();
 
+      if (email) {
+        try { localStorage.setItem("upsc-email", email); } catch {}
+      }
+
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+      if (isMobile || !data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
       const { DodoPayments } = await import("dodopayments-checkout");
       DodoPayments.Initialize({
         mode: "live",
@@ -63,10 +86,54 @@ export default function PayButton({
       DodoPayments.Checkout.open({ checkoutUrl: data.checkoutUrl });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
       setLoading(false);
     }
   }, [items, productSlug, amount]);
+
+  const handlePay = useCallback(async () => {
+    if (!effectiveEmail) {
+      setShowEmailPrompt(true);
+      return;
+    }
+    await proceedToCheckout(effectiveEmail);
+  }, [effectiveEmail, proceedToCheckout]);
+
+  const handleEmailSubmit = useCallback(async () => {
+    const trimmed = emailInput.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setError("Please enter a valid email");
+      return;
+    }
+    setShowEmailPrompt(false);
+    setError("");
+    await proceedToCheckout(trimmed);
+  }, [emailInput, proceedToCheckout]);
+
+  if (showEmailPrompt) {
+    return (
+      <div className="space-y-2">
+        <p className="text-xs font-medium text-gray-600">Enter your email to continue</p>
+        <input
+          type="email"
+          value={emailInput}
+          onChange={(e) => setEmailInput(e.target.value)}
+          placeholder="your@email.com"
+          autoFocus
+          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-900"
+          onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
+        />
+        <button
+          type="button"
+          onClick={handleEmailSubmit}
+          disabled={loading}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-500"
+        >
+          {loading ? "Processing..." : "Continue to Payment"}
+        </button>
+        {error && <p className="text-xs text-red-500">{error}</p>}
+      </div>
+    );
+  }
 
   return (
     <>
