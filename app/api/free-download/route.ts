@@ -140,16 +140,12 @@ export async function POST(request: NextRequest) {
       available,
     });
 
-    try {
-      if (available) {
-        await sendAvailableEmail(email, topperName, pdfUrls);
-      } else {
-        await sendUnavailableEmail(email, topperName);
-      }
-      await sendAdminNotification(email, topperName, topperSlug, name, source, sourceUrl, available);
-    } catch (err) {
-      console.error("Email send error:", err);
+    if (available) {
+      await sendAvailableEmail(email, topperName, pdfUrls);
+    } else {
+      await sendUnavailableEmail(email, topperName);
     }
+    await sendAdminNotification(email, topperName, topperSlug, name, source, sourceUrl, available);
 
     return NextResponse.json(
       {

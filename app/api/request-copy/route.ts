@@ -75,11 +75,7 @@ export async function POST(request: NextRequest) {
       topperName,
     });
 
-    try {
-      await sendRequestEmail(email, topperName);
-    } catch (err) {
-      console.error("Request email send error:", err);
-    }
+    await sendRequestEmail(email, topperName);
 
     return NextResponse.json(
       { success: true, topperName },

@@ -96,11 +96,7 @@ export async function POST(request: NextRequest) {
       console.error("Analytics event creation error:", err);
     }
 
-    try {
-      await sendGuideEmail(name, email);
-    } catch (err) {
-      console.error("Guide email send error:", err);
-    }
+    await sendGuideEmail(name, email);
 
     return NextResponse.json(
       {
