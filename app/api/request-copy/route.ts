@@ -2,18 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { CopyRequestModel } from "@/models/copy-request.model";
 import { TopperModel } from "@/models/topper.model";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/resend";
 
 async function sendRequestEmail(email: string, topperName: string) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_PORT === "465",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
 
   const userHtml = `
     <!DOCTYPE html>
@@ -34,8 +25,7 @@ async function sendRequestEmail(email: string, topperName: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: `We'll notify you when ${topperName}'s answer copy is available`,
     html: userHtml,
@@ -48,9 +38,8 @@ async function sendRequestEmail(email: string, topperName: string) {
     <p>Time: ${new Date().toLocaleString()}</p>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
-    to: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
+  await sendEmail({
+    to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
     subject: `📋 Copy Request: ${topperName} — ${email}`,
     html: adminHtml,
   });

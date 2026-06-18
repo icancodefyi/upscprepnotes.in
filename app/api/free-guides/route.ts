@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/resend";
 
 const GUIDES = [
   {
@@ -22,15 +22,6 @@ const GUIDES = [
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
 
 async function sendGuideEmail(name: string, email: string) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_PORT === "465",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
 
   const guideLinks = GUIDES.map(
     (g) =>
@@ -67,8 +58,7 @@ async function sendGuideEmail(name: string, email: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: "Your 3 Free Strategy Guides — UPSCPrepNotes",
     html,

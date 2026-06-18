@@ -2,21 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { TopperModel } from "@/models/topper.model";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/resend";
 
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
-
-async function getTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_PORT === "465",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-}
 
 function buildDownloadLinksHtml(urls: string[]): string {
   if (urls.length === 0) return "";
@@ -32,7 +20,6 @@ function buildDownloadLinksHtml(urls: string[]): string {
 }
 
 async function sendAvailableEmail(email: string, topperName: string, pdfUrls: string[]) {
-  const transporter = await getTransporter();
 
   const linksHtml = buildDownloadLinksHtml(pdfUrls);
 
@@ -57,8 +44,7 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: pdfUrls.length > 1 ? `Your Free Answer Copies — ${topperName}` : `Your Free Answer Copy — ${topperName}`,
     html,
@@ -66,7 +52,6 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
 }
 
 async function sendUnavailableEmail(email: string, topperName: string) {
-  const transporter = await getTransporter();
 
   const html = `
     <!DOCTYPE html>
@@ -88,8 +73,7 @@ async function sendUnavailableEmail(email: string, topperName: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: `We're Sourcing ${topperName}'s Answer Copy`,
     html,
@@ -97,7 +81,6 @@ async function sendUnavailableEmail(email: string, topperName: string) {
 }
 
 async function sendAdminNotification(email: string, topperName: string, topperSlug: string, name: string, source: string, sourceUrl: string, available: boolean) {
-  const transporter = await getTransporter();
 
   const status = available ? "✅ Available — Downloaded" : "⏳ Unavailable — Requested";
   const html = `
@@ -110,9 +93,8 @@ async function sendAdminNotification(email: string, topperName: string, topperSl
     <p>Time: ${new Date().toLocaleString()}</p>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
-    to: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
+  await sendEmail({
+    to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
     subject: `${available ? "📥" : "📋"} Free Download: ${topperName} — ${email}`,
     html,
   });

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { CustomerModel } from "@/models/customer.model";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/resend";
 
 function generateOrderId(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -28,20 +28,7 @@ const GUIDES = [
   },
 ];
 
-async function sendTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_PORT === "465",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-}
-
 async function sendCustomerEmail(name: string, email: string, orderId: string) {
-  const transporter = await sendTransporter();
   const guideLinks = GUIDES.map(
     (g) =>
       `<tr><td style="padding:6px 0"><a href="${g.url}" style="color:#059669;font-weight:600;font-size:14px">${g.title}</a></td></tr>`
@@ -73,8 +60,7 @@ async function sendCustomerEmail(name: string, email: string, orderId: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: `Payment Confirmed — Your Compilation is Being Prepared (${orderId})`,
     html,
@@ -84,8 +70,6 @@ async function sendCustomerEmail(name: string, email: string, orderId: string) {
 async function sendNotificationEmails(customer: Record<string, unknown>) {
   const subscriberEmails = await SubscriberEmailModel.find().lean();
   if (subscriberEmails.length === 0) return;
-
-  const transporter = await sendTransporter();
 
   const html = `
     <!DOCTYPE html>
@@ -114,8 +98,7 @@ async function sendNotificationEmails(customer: Record<string, unknown>) {
 
   for (const sub of subscriberEmails) {
     try {
-      await transporter.sendMail({
-        from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+      await sendEmail({
         to: sub.email,
         subject: `New Purchase: ${customer.name} — ${customer.product} (₹${customer.amount})`,
         html,

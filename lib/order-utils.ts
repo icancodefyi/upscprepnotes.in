@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { existsSync } from "fs";
 import { join } from "path";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/resend";
 import { PRODUCTS, StoreProduct } from "@/lib/store-products";
 
 const ZIP_DIR = join(process.cwd(), "private", "zips");
@@ -29,25 +29,12 @@ export function resolveProducts(items: { slug: string }[]): StoreProduct[] {
     .filter((p): p is StoreProduct => !!p);
 }
 
-export function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_PORT === "465",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-}
-
 export async function sendOrderConfirmationEmail(
   email: string,
   orderId: string,
   items: { title: string }[],
   downloadUrl: string
 ) {
-  const transporter = createTransporter();
   const itemList = items
     .map(
       (i) =>
@@ -81,8 +68,7 @@ export async function sendOrderConfirmationEmail(
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+  await sendEmail({
     to: email,
     subject: `Your Downloads Are Ready — ${orderId}`,
     html,
@@ -94,7 +80,6 @@ export async function sendAdminNotification(
   items: { title: string }[],
   total: number
 ) {
-  const transporter = createTransporter();
   const itemList = items
     .map((i) => `<tr><td style="padding:4px 0">• ${i.title}</td></tr>`)
     .join("");
@@ -117,9 +102,8 @@ export async function sendAdminNotification(
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"UPSCPrepNotes" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
-    to: process.env.SMTP_USER || "upscprepnotes.in@gmail.com",
+  await sendEmail({
+    to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
     subject: `New Dodo Sale: ₹${total} — ${email}`,
     html,
   });
