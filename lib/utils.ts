@@ -17,7 +17,7 @@ export function topperImageSrc(topper: { slug?: string; ProfileImage?: string; f
     return img;
   }
   if (topper.slug && PREVIEW_SLUGS.has(topper.slug)) {
-    return `/previews/${topper.slug}.png`;
+    return `https://ik.imagekit.io/impiclabs/previews/${topper.slug}.png?tr=w-788,f-auto,q-80`;
   }
   return `https://api.dicebear.com/9.x/notionists/svg?seed=${topper.firstName}-${topper.lastName}`;
 }

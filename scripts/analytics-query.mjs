@@ -1,20 +1,19 @@
-// Fetch analytics from both DBs — last 3 days
+// Fetch analytics from upscprepnotes — last 3 days
 // Run: node -r dotenv/config scripts/analytics-query.mjs dotenv_config_path=.env.local
 import mongoose from "mongoose";
 
 const UPSC_MONGO = process.env.MONGODB_URI;
-const airlistUri = UPSC_MONGO?.replace("/upscprepnotes?", "/airlist?")?.replace("/upscprepnotes", "/airlist");
-const AIRLIST_MONGO = process.env.AIRLIST_MONGO_URI || airlistUri || "";
+const DB_NAME = process.env.DB_NAME || "upscprepnotes";
 
-if (!UPSC_MONGO || !AIRLIST_MONGO) {
-  console.error("MONGODB_URI / AIRLIST_MONGO_URI not set. Run with: node -r dotenv/config scripts/analytics-query.mjs dotenv_config_path=.env.local");
+if (!UPSC_MONGO) {
+  console.error("MONGODB_URI not set. Run with: node -r dotenv/config scripts/analytics-query.mjs dotenv_config_path=.env.local");
   process.exit(1);
 }
 
 const SINCE = new Date(Date.now() - 3 * 86400000);
 
 async function queryUpscprepnotes() {
-  const conn = await mongoose.createConnection(UPSC_MONGO).asPromise();
+  const conn = await mongoose.createConnection(UPSC_MONGO, { dbName: DB_NAME }).asPromise();
 
   const events = conn.collection("analyticsevents");
   const leads = conn.collection("freedownloadleads");
@@ -65,50 +64,11 @@ async function queryUpscprepnotes() {
   return { eventCount, uniqueVisitors: uniqueVisitors.length, eventBreakdown, topPages, topClicks, recentEvents, dailyTimeline, leadCount, leadAvailable, leadUnavailable, copyCount, guideCount, purchaseCount, customerCount };
 }
 
-async function queryAirlist() {
-  const conn = await mongoose.createConnection(AIRLIST_MONGO).asPromise();
 
-  const events = conn.collection("analytics_events");
-  const leads = conn.collection("free_download_leads");
 
-  const [eventCount, uniqueVisitors, eventBreakdown, topPages, topClicks, recentEvents] = await Promise.all([
-    events.countDocuments({ timestamp: { $gte: SINCE } }),
-    events.distinct("visitorId", { timestamp: { $gte: SINCE }, visitorId: { $ne: "unknown" } }),
-    events.aggregate([
-      { $match: { timestamp: { $gte: SINCE } } },
-      { $group: { _id: "$event", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-    ]).toArray(),
-    events.aggregate([
-      { $match: { timestamp: { $gte: SINCE } } },
-      { $group: { _id: "$url", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 20 },
-    ]).toArray(),
-    events.aggregate([
-      { $match: { timestamp: { $gte: SINCE }, event: "click" } },
-      { $group: { _id: { url: "$url" }, count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 20 },
-    ]).toArray(),
-    events.find({ timestamp: { $gte: SINCE } }).sort({ timestamp: -1 }).limit(30).toArray(),
-  ]);
+console.log("📊 Querying analytics...\n");
 
-  const leadCount = await leads.countDocuments({ downloadedAt: { $gte: SINCE } });
-
-  const dailyTimeline = await events.aggregate([
-    { $match: { timestamp: { $gte: SINCE } } },
-    { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } }, count: { $sum: 1 } } },
-    { $sort: { _id: 1 } },
-  ]).toArray();
-
-  await conn.close();
-  return { eventCount, uniqueVisitors: uniqueVisitors.length, eventBreakdown, topPages, topClicks, recentEvents, dailyTimeline, leadCount };
-}
-
-console.log("📊 Querying analytics from both DBs...\n");
-
-const [upsc, airlist] = await Promise.all([queryUpscprepnotes(), queryAirlist()]);
+const upsc = await queryUpscprepnotes();
 
 console.log("=".repeat(60));
 console.log("📚 UPSCPREPNOTES.IN — Last 3 Days");
@@ -133,34 +93,10 @@ upsc.topClicks.forEach((c, i) => {
 });
 
 console.log(`\n` + "=".repeat(60));
-console.log("🌐 AIRLIST.IN — Last 3 Days");
-console.log("=".repeat(60));
-console.log(`Total events:       ${airlist.eventCount}`);
-console.log(`Unique visitors:    ${airlist.uniqueVisitors}`);
-console.log(`Free DL leads:      ${airlist.leadCount}`);
-console.log(`\nEvent breakdown:`);
-airlist.eventBreakdown.forEach((e) => console.log(`  ${e._id}: ${e.count}`));
-console.log(`\nTop pages:`);
-airlist.topPages.forEach((p, i) => console.log(`  ${i+1}. ${(p._id || "(root)").substring(0, 70)} — ${p.count}`));
-console.log(`\nDaily timeline:`);
-airlist.dailyTimeline.forEach((d) => console.log(`  ${d._id}: ${d.count} events`));
-console.log(`\nTop clicks:`);
-airlist.topClicks.forEach((c, i) => {
-  const url = c._id.url || "";
-  console.log(`  ${i+1}. ${url.substring(0, 70)} — ${c.count}`);
-});
-
-console.log(`\n` + "=".repeat(60));
 console.log("Recent events (upscprepnotes):");
 upsc.recentEvents.slice(0, 10).forEach((e) => {
   const pagePath = e.pagePath ? e.pagePath.substring(0, 50) : "";
   const linkText = e.metadata && e.metadata.linkText ? ` — "${e.metadata.linkText}"` : "";
   console.log(`  [${new Date(e.timestamp).toLocaleString()}] ${e.event} @ ${pagePath}${linkText}`);
 });
-console.log("\nRecent events (airlist):");
-airlist.recentEvents.slice(0, 10).forEach((e) => {
-  const url = e.url ? e.url.substring(0, 50) : "";
-  console.log(`  [${new Date(e.timestamp).toLocaleString()}] ${e.event} @ ${url}`);
-});
-
 process.exit(0);

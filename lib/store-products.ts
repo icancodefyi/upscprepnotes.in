@@ -47,7 +47,7 @@ export const INSTITUTES: Institute[] = [
     shortName: "Insight IAS",
     description: "Prelims test series and study material",
     gradient: "bg-blue-600",
-    logo: "/images/institutes/insight-ias.png",
+    logo: "https://ik.imagekit.io/impiclabs/institutes/insight-ias.png?tr=f-auto,q-80",
   },
   {
     slug: "only-ias",
@@ -55,7 +55,7 @@ export const INSTITUTES: Institute[] = [
     shortName: "Only IAS",
     description: "Prelims test series",
     gradient: "bg-orange-500",
-    logo: "/images/institutes/only-ias.png",
+    logo: "https://ik.imagekit.io/impiclabs/institutes/only-ias.png?tr=f-auto,q-80",
   },
   {
     slug: "ias-baba",
@@ -63,7 +63,7 @@ export const INSTITUTES: Institute[] = [
     shortName: "IAS BABA",
     description: "All India Open Mock Tests and Mains tests",
     gradient: "bg-emerald-600",
-    logo: "/images/institutes/ias-baba.png",
+    logo: "https://ik.imagekit.io/impiclabs/institutes/ias-baba.png?tr=f-auto,q-80",
   },
   {
     slug: "csk-csat",
@@ -79,7 +79,7 @@ export const INSTITUTES: Institute[] = [
     shortName: "Sudarshan Gurjar",
     description: "Places in News and geography compilations",
     gradient: "bg-cyan-600",
-    logo: "/images/institutes/sudarshan-gurjar.png",
+    logo: "https://ik.imagekit.io/impiclabs/institutes/sudarshan-gurjar.png?tr=f-auto,q-80",
   },
   {
     slug: "general",
@@ -95,7 +95,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "top-10-rankers-strategy",
     title: "Top 10 Rankers Strategy",
-    image: "/images/products/top-10-rankers-strategy.png",
+    image: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "AIR 1-10 complete strategies in one PDF",
     description: "Full strategies, marks analysis, paper-by-paper breakdowns, and score deep dives for AIR 1 through AIR 10.",
     longDescription: [
@@ -126,7 +126,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "all-strategy-reports",
     title: "All Strategy Reports",
-    image: "/images/products/all-strategy-reports.png",
+    image: "https://ik.imagekit.io/impiclabs/products/all-strategy-reports.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "All 280+ topper strategies bundled",
     description: "Every topper's complete strategy, marks analysis, and paper breakdown in one bundle.",
     longDescription: [
@@ -157,7 +157,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "answer-copies-compilation",
     title: "Answer Copies Compilation",
-    image: "/images/products/answer-copies-compilation.png",
+    image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "50+ handwritten answer sheets",
     description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay, Optional papers.",
     longDescription: [
@@ -237,7 +237,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "insight-ias-prelims-tests-1-10",
     title: "Insight IAS Prelims Tests 1-10",
-    image: "/images/products/insight-ias-prelims-tests-1-10.png",
+    image: "https://ik.imagekit.io/impiclabs/products/insight-ias-prelims-tests-1-10.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "Full-length GS Prelims test series by Insight IAS",
     description: "10 full-length GS Prelims tests with answer keys. Covers complete syllabus as per latest UPSC pattern.",
     longDescription: [
@@ -269,7 +269,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "only-ias-pt-tests-1-10",
     title: "Only IAS PT Tests 1-10",
-    image: "/images/products/only-ias-pt-tests-1-10.png",
+    image: "https://ik.imagekit.io/impiclabs/products/only-ias-pt-tests-1-10.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "Prelims test series by Only IAS",
     description: "10 full-length Prelims tests designed by Only IAS faculty. Covers GS Paper 1 with detailed solutions.",
     longDescription: [
@@ -315,7 +315,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "3 Tests",
     badgeColor: "amber",
     gradient: "bg-emerald-600",
-    image: "/images/products/ias-baba-aiomt-1-3.png",
+    image: "https://ik.imagekit.io/impiclabs/products/ias-baba-aiomt-1-3.png?tr=w-464,h-600,f-auto,q-80",
     features: [
       "3 All India Open Mock Tests",
       "UPSC-standard difficulty level",
@@ -347,7 +347,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "5 Tests",
     badgeColor: "emerald",
     gradient: "bg-emerald-700",
-    image: "/images/products/ias-baba-mains-tests-1-5.png",
+    image: "https://ik.imagekit.io/impiclabs/products/ias-baba-mains-tests-1-5.png?tr=w-464,h-600,f-auto,q-80",
     features: [
       "5 full-length GS Mains tests (GS 1-4)",
       "UPSC Mains pattern questions",
@@ -379,7 +379,7 @@ export const PRODUCTS: StoreProduct[] = [
     badge: "16 Tests",
     badgeColor: "emerald",
     gradient: "bg-purple-600",
-    image: "/images/products/csk-csat-micro-tests-1-16.png",
+    image: "https://ik.imagekit.io/impiclabs/products/csk-csat-micro-tests-1-16.png?tr=w-464,h-600,f-auto,q-80",
     features: [
       "16 topic-wise CSAT micro tests",
       "Covers comprehension, reasoning, maths, DI",
@@ -397,7 +397,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "places-in-news",
     title: "Places in News",
-    image: "/images/products/places-in-news.png",
+    image: "https://ik.imagekit.io/impiclabs/products/places-in-news.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "Complete Places in News compilation by Sudarshan Gurjar",
     description: "Comprehensive compilation of all places in news for UPSC — geography, current affairs, and map-based questions covered.",
     longDescription: [
@@ -429,7 +429,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "government-schemes-compilation",
     title: "Government Schemes Compilation",
-    image: "/images/products/government-schemes-compilation.png",
+    image: "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "All important government schemes for UPSC 2026",
     description: "Comprehensive compilation of all central government schemes, categorized by ministry and sector.",
     longDescription: [
@@ -487,7 +487,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/gs1-notes-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/gs1-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 22,
     totalSizeMB: 778,
     files: [
@@ -534,7 +534,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/gs2-notes-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/gs2-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 17,
     totalSizeMB: 788,
     files: [
@@ -581,7 +581,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/gs3-notes-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/gs3-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 19,
     totalSizeMB: 766,
     files: [
@@ -628,7 +628,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/ethics-gs4-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/ethics-gs4-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 13,
     totalSizeMB: 290,
     files: [
@@ -675,7 +675,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/prelims-prep-pack.png",
+    image: "https://ik.imagekit.io/impiclabs/products/prelims-prep-pack.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 10,
     totalSizeMB: 447,
     files: [
@@ -720,7 +720,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/polity-foundation.png",
+    image: "https://ik.imagekit.io/impiclabs/products/polity-foundation.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 2,
     totalSizeMB: 265,
     files: [
@@ -757,7 +757,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/history-pack.png",
+    image: "https://ik.imagekit.io/impiclabs/products/history-pack.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 4,
     totalSizeMB: 189,
     files: [
@@ -796,7 +796,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/air-10-mains-notes.png",
+    image: "https://ik.imagekit.io/impiclabs/products/air-10-mains-notes.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 4,
     totalSizeMB: 179,
     files: [
@@ -835,7 +835,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/abhijit-ray-prelims-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/abhijit-ray-prelims-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 6,
     totalSizeMB: 164,
     files: [
@@ -876,7 +876,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/environment-short-notes.png",
+    image: "https://ik.imagekit.io/impiclabs/products/environment-short-notes.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 1,
     totalSizeMB: 166,
     files: [
@@ -912,7 +912,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/mrunal-economy-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/mrunal-economy-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 1,
     totalSizeMB: 297,
     files: [
@@ -948,7 +948,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/satyam-gandhi-mains-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/satyam-gandhi-mains-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 3,
     totalSizeMB: 314,
     files: [
@@ -986,7 +986,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/asad-zuberi-air86-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/asad-zuberi-air86-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 12,
     totalSizeMB: 475,
     files: [
@@ -1033,7 +1033,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/madhav-air16-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/madhav-air16-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 17,
     totalSizeMB: 173,
     files: [
@@ -1080,7 +1080,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/prahaar-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/prahaar-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 15,
     totalSizeMB: 328,
     files: [
@@ -1127,7 +1127,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/antriksh-gs-notes.png",
+    image: "https://ik.imagekit.io/impiclabs/products/antriksh-gs-notes.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 5,
     totalSizeMB: 251,
     files: [
@@ -1167,7 +1167,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/dr-shivin-geography.png",
+    image: "https://ik.imagekit.io/impiclabs/products/dr-shivin-geography.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 1,
     totalSizeMB: 152,
     files: [
@@ -1203,7 +1203,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 299,
     link: null,
     comingSoon: false,
-    image: "/images/products/anthropology-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/anthropology-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 14,
     totalSizeMB: 548,
     files: [
@@ -1250,7 +1250,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 199,
     link: null,
     comingSoon: false,
-    image: "/images/products/geography-bundle.png",
+    image: "https://ik.imagekit.io/impiclabs/products/geography-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 4,
     totalSizeMB: 237,
     files: [
@@ -1289,7 +1289,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/vp-2026-test-series.png",
+    image: "https://ik.imagekit.io/impiclabs/products/vp-2026-test-series.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 20,
     totalSizeMB: 67,
     files: [
@@ -1336,7 +1336,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/visionias-test-series.png",
+    image: "https://ik.imagekit.io/impiclabs/products/visionias-test-series.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 24,
     totalSizeMB: 306,
     files: [
@@ -1383,7 +1383,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/only-ias-test-series.png",
+    image: "https://ik.imagekit.io/impiclabs/products/only-ias-test-series.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 14,
     totalSizeMB: 37,
     files: [
@@ -1430,7 +1430,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/csk-csat-complete.png",
+    image: "https://ik.imagekit.io/impiclabs/products/csk-csat-complete.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 26,
     totalSizeMB: 42,
     files: [
@@ -1477,7 +1477,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 149,
     link: null,
     comingSoon: false,
-    image: "/images/products/ias-baba-test-series.png",
+    image: "https://ik.imagekit.io/impiclabs/products/ias-baba-test-series.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 8,
     totalSizeMB: 18,
     files: [
@@ -1520,7 +1520,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/dhyeya-ias-prelims-tests.png",
+    image: "https://ik.imagekit.io/impiclabs/products/dhyeya-ias-prelims-tests.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 4,
     totalSizeMB: 76,
     files: [
@@ -1559,7 +1559,7 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 99,
     link: null,
     comingSoon: false,
-    image: "/images/products/ipm-prelims-test-series.png",
+    image: "https://ik.imagekit.io/impiclabs/products/ipm-prelims-test-series.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 10,
     totalSizeMB: 18,
     files: [
@@ -1578,7 +1578,7 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "mains-test-series-combo",
     title: "Mains Test Series Combo",
-    image: "/images/products/mains-test-series-combo.png",
+    image: "https://ik.imagekit.io/impiclabs/products/mains-test-series-combo.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "66 tests from 4 top coaching brands at 40% off",
     description: "VP 2026 + VisionIAS + Only IAS + IAS BABA Mains tests bundled together. The ultimate Mains answer writing practice repository.",
     longDescription: [

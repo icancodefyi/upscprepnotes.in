@@ -51,6 +51,8 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <img
                   src={product.image}
                   alt={product.title}
+                  width={464}
+                  height={600}
                   className="w-full max-h-[500px] object-contain object-top"
                 />
               </div>

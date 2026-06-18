@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. ₹11 per copy. 7-day refund.",
     url: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
-    images: [{ url: "/previews/ishita-kishore.png", width: 1200, height: 900 }],
+    images: [{ url: "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80", width: 1200, height: 900 }],
   },
 };
 
@@ -25,9 +25,9 @@ const productSchema = {
   description:
     "Complete UPSC Mains preparation compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Organized by paper, marks, and year. Includes AI assistant access and lifetime updates.",
   image: [
-    "https://upscprepnotes.in/previews/ishita-kishore.png",
-    "https://upscprepnotes.in/previews/garima-lohia.png",
-    "https://upscprepnotes.in/previews/harshita-goyal.png",
+    "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80",
+    "https://ik.imagekit.io/impiclabs/previews/garima-lohia.png?tr=w-788,f-auto,q-80",
+    "https://ik.imagekit.io/impiclabs/previews/harshita-goyal.png?tr=w-788,f-auto,q-80",
   ],
   brand: { "@type": "Brand", name: "UPSCPrepNotes" },
   offers: {

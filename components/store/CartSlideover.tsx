@@ -47,6 +47,7 @@ export default function CartSlideover({ open, onClose }: Props) {
           <button
             onClick={onClose}
             data-track="cart-close"
+            aria-label="Close cart"
             className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           >
             <IconX size={18} />

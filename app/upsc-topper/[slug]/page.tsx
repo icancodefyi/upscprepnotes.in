@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
 import {
+  getAllIndexedToppers,
   getRelatedToppers,
   getTopperBySlug,
   getToppersByRank,
@@ -21,6 +22,15 @@ import ReportButton from "@/components/ReportButton";
 import StrategyPaywall from "@/components/topper/StrategyPaywall";
 
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  try {
+    const toppers = await getAllIndexedToppers();
+    return toppers.map((t: any) => ({ slug: t.slug }));
+  } catch {
+    return [];
+  }
+}
 
 interface Props {
   params: Promise<{
@@ -261,6 +271,38 @@ export default async function TopperPage({ params }: Props) {
           text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full compilation with all papers is available at ₹799.`,
         },
       },
+      {
+        "@type": "Question",
+        name: `What were ${topper.firstName} ${topper.lastName}'s ethics (GS4) marks?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${topper.firstName} scored ${topper.marks.gs4} marks in the GS4 (Ethics) paper of UPSC CSE ${topper.year}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What were ${topper.firstName} ${topper.lastName}'s optional subject marks?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${topper.firstName} scored ${topper.marks.optional1} in ${topper.optionalSubject} Paper 1 and ${topper.marks.optional2} in Paper 2, totaling ${topper.marks.optional1 + topper.marks.optional2} marks in the optional subject for UPSC CSE ${topper.year}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${topper.firstName} ${topper.lastName}'s UPSC preparation strategy is detailed on their topper page, covering subject-wise approach, optional strategy, and interview preparation for UPSC CSE ${topper.year}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year} with ${topper.optionalSubject} as optional subject. The detailed educational background and graduation details are covered in the strategy section on their topper page.`,
+        },
+      },
     ],
   };
 
@@ -410,6 +452,27 @@ export default async function TopperPage({ params }: Props) {
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers, essay and {topper.optionalSubject}.
             </p>
+
+            {/* QUICK FACTS — structured for AI overviews */}
+            <div className="mt-4 rounded-xl border border-border/50 bg-card p-4 text-sm">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Quick Facts</h2>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                {[
+                  ["Name", `${topper.firstName} ${topper.lastName}`],
+                  ["Rank", `AIR ${topper.rank}`],
+                  ["Year", `${topper.year}`],
+                  ["Optional", `${topper.optionalSubject}`],
+                  ["Written Total", `${topper.marks.written}`],
+                  ["Interview", `${topper.marks.interview}`],
+                  ["Total Marks", `${topper.marks.total}`],
+                ].filter(r => r[1] && r[1] !== "0").map(([label, value]) => (
+                  <div key={label} className="flex justify-between">
+                    <span className="text-muted-foreground">{label}</span>
+                    <span className="font-semibold">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
             <p className="mt-2 text-sm leading-6">
               <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
                 Browse Store →
@@ -481,7 +544,7 @@ export default async function TopperPage({ params }: Props) {
         {/* STRATEGY — moved up, first 2 sections visible, rest blurred */}
         {topper.strategy && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Preparation Strategy</h2>
+            <h2 className="text-xl font-semibold">How Did {topper.firstName} {topper.lastName} Prepare for UPSC?</h2>
             <p className="mt-1 text-sm text-muted-foreground">How they prepared for UPSC CSE {topper.year}</p>
             <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
@@ -569,7 +632,7 @@ export default async function TopperPage({ params }: Props) {
 
         {/* MARKS TABLE */}
         <section className="mt-12">
-          <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Marks Breakdown</h2>
+          <h2 className="text-xl font-semibold">What Were {topper.firstName} {topper.lastName}'s Marks in Each Paper?</h2>
           <p className="mt-1 text-sm text-muted-foreground">All India Rank {topper.rank} — UPSC CSE {topper.year}</p>
 
           {/* STRONGEST PAPER */}
@@ -733,7 +796,7 @@ export default async function TopperPage({ params }: Props) {
 
         {/* FAQ */}
         <section className="mt-12">
-          <h2 className="text-xl font-semibold">FAQs about {topper.firstName} {topper.lastName}</h2>
+          <h2 className="text-xl font-semibold">Frequently Asked Questions about {topper.firstName} {topper.lastName}</h2>
           <div className="mt-4 divide-y divide-black/10">
             {[
               {
@@ -761,6 +824,34 @@ export default async function TopperPage({ params }: Props) {
                 a: topper.strategy
                   ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed above on this page.`
                   : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s ethics (GS4) marks?`,
+                a: `${topper.firstName} scored ${topper.marks.gs4} marks in the GS4 (Ethics) paper of UPSC CSE ${topper.year}.`,
+              },
+              {
+                q: `What were ${topper.firstName} ${topper.lastName}'s optional subject marks?`,
+                a: `${topper.firstName} scored ${topper.marks.optional1} in ${topper.optionalSubject} Paper 1 and ${topper.marks.optional2} in Paper 2, totaling ${topper.marks.optional1 + topper.marks.optional2} marks in the optional.`,
+              },
+              {
+                q: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
+                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. Details about their graduation and educational background are mentioned in the strategy section above.`,
+              },
+              {
+                q: `Which coaching did ${topper.firstName} ${topper.lastName} join for UPSC?`,
+                a: topper.strategy?.toLowerCase().includes("coaching") || topper.strategy?.toLowerCase().includes("class")
+                  ? `${topper.firstName}'s coaching details are mentioned in the preparation strategy section above.`
+                  : `Coaching details for ${topper.firstName} ${topper.lastName} are not available. Many UPSC toppers rely on self-study and mock test series.`,
+              },
+              {
+                q: `How many attempts did ${topper.firstName} ${topper.lastName} take for UPSC?`,
+                a: `The number of attempts ${topper.firstName} ${topper.lastName} took for UPSC CSE is covered in their preparation journey — refer to the strategy section above for attempt details and timeline.`,
+              },
+              {
+                q: `What books did ${topper.firstName} ${topper.lastName} use for UPSC preparation?`,
+                a: topper.strategy?.toLowerCase().includes("book") || topper.strategy?.toLowerCase().includes("ncert") || topper.strategy?.toLowerCase().includes("standard")
+                  ? `${topper.firstName}'s book list and recommended resources are detailed in the preparation strategy section above.`
+                  : `Book recommendations for ${topper.firstName} ${topper.lastName} are not separately listed. Check the strategy section for their subject-wise preparation approach.`,
               },
             ].map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">

@@ -12,8 +12,14 @@ const leads = mongoose.connection.collection("freedownloadleads");
 const allLeads = await leads.find({}).sort({ createdAt: -1 }).toArray();
 const emails = [...new Set(allLeads.map(l => l.email))].filter(Boolean);
 
-// Exclude the 3 who just received apology emails today
-const exclude = ["shyamkumar8252790105@gmail.com", "nargist91@gmail.com", "prabhaswayam22@gmail.com"];
+// Exclude apology recipients + developer + admin
+const exclude = [
+  "shyamkumar8252790105@gmail.com",
+  "nargist91@gmail.com",
+  "prabhaswayam22@gmail.com",
+  "rakhangezaid10@gmail.com",
+  "impic.tech@gmail.com",
+];
 const recipients = emails.filter(e => !exclude.includes(e));
 
 console.log(`Total leads: ${allLeads.length}, unique emails: ${emails.length}, sending to: ${recipients.length}`);

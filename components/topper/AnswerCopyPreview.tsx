@@ -27,7 +27,7 @@ export default function AnswerCopyPreview({ topper }: Props) {
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const name = `${topper.firstName} ${topper.lastName}`;
   const hasPreview = PREVIEW_SLUGS.has(topper.slug);
-  const previewSrc = `/previews/${topper.slug}.png`;
+  const previewSrc = `https://ik.imagekit.io/impiclabs/previews/${topper.slug}.png?tr=w-788,f-auto,q-80`;
 
   return (
     <section className="mt-12">
@@ -49,6 +49,8 @@ export default function AnswerCopyPreview({ topper }: Props) {
             <img
               src={previewSrc}
               alt={`${name} answer copy preview`}
+              width={788}
+              height={1128}
               className="w-full object-contain max-h-[500px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />

@@ -21,7 +21,7 @@ export default function SampleAnswerCarousel({ topperName, year, rank, onImageCl
     return () => clearInterval(timer);
   }, [next]);
 
-  const imgSrc = `/sample-answers/${current + 1}.png`;
+  const imgSrc = `https://ik.imagekit.io/impiclabs/sample-answers/${current + 1}.png?tr=w-910,f-auto,q-80`;
 
   return (
     <div className="relative cursor-pointer" onClick={() => onImageClick?.(imgSrc)}>
@@ -33,8 +33,10 @@ export default function SampleAnswerCarousel({ topperName, year, rank, onImageCl
           {Array.from({ length: SAMPLE_COUNT }).map((_, i) => (
             <div key={i} className="min-w-0 w-full shrink-0">
               <img
-                src={`/sample-answers/${i + 1}.png`}
+                src={`https://ik.imagekit.io/impiclabs/sample-answers/${i + 1}.png?tr=w-910,f-auto,q-80`}
                 alt={`Sample answer copy page ${i + 1}`}
+                width={910}
+                height={1280}
                 className="w-full object-contain max-h-[500px]"
               />
             </div>

@@ -259,6 +259,8 @@ function ProductCard({
             <img
               src={product.image}
               alt={product.title}
+              width={464}
+              height={600}
               className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
             />
             {product.badge && (
