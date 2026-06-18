@@ -260,7 +260,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set with all papers is in the Complete Compilation with 50+ topper copies at ₹11 per copy.`,
+              text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Great Weekend Sale, all products at ₹99.`,
         },
       },
       {
@@ -268,7 +268,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full compilation with all papers is available at ₹799.`,
+              text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full set is available in the store — Great Weekend Sale, all products at ₹99.`,
         },
       },
       {
@@ -475,9 +475,9 @@ export default async function TopperPage({ params }: Props) {
             </div>
             <p className="mt-2 text-sm leading-6">
               <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
-                Browse Store →
+                Shop Now →
               </Link>
-              <span className="text-muted-foreground"> — all {topper.firstName}&apos;s answer copies + 50+ toppers across GS1–4, Essay &amp; Optional. ₹799 only.</span>
+              <span className="text-muted-foreground"> — Great Weekend Sale. All Products at ₹99.</span>
             </p>
             {topper.bio && (
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -615,30 +615,25 @@ export default async function TopperPage({ params }: Props) {
           </section>
         )}
 
-        {/* VISIBLE COMPILATION UPSELL — money page link, visible without dialog interaction */}
+        {/* GREAT WEEKEND SALE */}
         <section className="mt-12">
-          <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6">
+          <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6">
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
-                <h3 className="mt-2 text-lg font-bold text-gray-900">
-                  {topper.firstName}&apos;s Answer Copies + 50+ Toppers
+                <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Great Weekend Sale</span>
+                <h3 className="mt-2 text-lg font-bold text-white">
+                  Great Weekend Sale — All Products at ₹99
                 </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Every paper (GS1-4, Essay, Optional) of {topper.firstName} plus 50+ other toppers. All at just ₹11 per copy.
+                <p className="mt-1 text-sm text-emerald-200/80">
+                  Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
                 </p>
-                <div className="mt-2 flex items-center gap-3">
-                  <span className="text-2xl font-bold text-gray-900">₹799</span>
-                  <span className="text-sm text-gray-500 line-through">₹4,999</span>
-                  <span className="text-xs text-emerald-700 font-semibold">83% off</span>
-                </div>
               </div>
               <Link
                 href="/store"
                 data-track="topper-compilation-upsell-body"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
               >
-                Browse Store &rarr;
+                Shop Now &rarr;
               </Link>
             </div>
           </div>
@@ -829,11 +824,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Browse Store</a> with 50+ topper copies at just ₹11 per copy (₹799 total).`,
+                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Great Weekend Sale, all products at ₹99.`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full compilation with all papers (GS1-4, Essay, Optional) is in the <a href="/store" class="text-emerald-600 font-semibold underline">Browse Store</a> at ₹799.`,
+                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full set is in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Great Weekend Sale, all products at ₹99.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
@@ -885,7 +880,7 @@ export default async function TopperPage({ params }: Props) {
           <h2 className="text-xl font-semibold">Explore More</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/store" data-track="topper-explore-compilation">Browse Store (₹799) &rarr;</Link>
+              <Link href="/store" data-track="topper-explore-compilation">Shop Now — ₹99 &rarr;</Link>
             </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} data-track="topper-explore-optional">All {topper.optionalSubject} Toppers &rarr;</Link>

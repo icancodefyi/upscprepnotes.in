@@ -5,10 +5,10 @@ import type { ContentPage } from "@/data/content";
 import type { Components } from "react-markdown";
 
 const DEFAULTS = {
-  ctaIntro: "Preparing for UPSC? Browse 39 premium products — notes bundles, test series, and teacher materials at ₹99 onwards.",
-  ctaIntroBtn: "Browse Store →",
-  ctaMidBtn: "Browse Store →",
-  ctaFinalBtn: "Explore Store →",
+  ctaIntro: "Great Weekend Sale — All Products at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
+  ctaIntroBtn: "Shop Now →",
+  ctaMidBtn: "Shop Now →",
+  ctaFinalBtn: "Shop Now →",
 };
 
 const markdownComponents: Components = {

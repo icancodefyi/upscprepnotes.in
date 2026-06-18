@@ -21,13 +21,13 @@ export default function PurchaseSidebar({ topperName }: Props) {
         </div>
       </div>
       <Link
-        href="/store/answer-copies-compilation"
+        href="/store"
         data-track="topper-sidebar-buy-answer-copies"
-        className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.97]"
+        className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-emerald-400 active:scale-[0.97]"
       >
-        Buy Now — ₹799
+        Shop Now — ₹99
       </Link>
-      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Instant PDF download · Lifetime access</p>
+      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Great Weekend Sale · All Products at ₹99</p>
     </div>
   );
 }

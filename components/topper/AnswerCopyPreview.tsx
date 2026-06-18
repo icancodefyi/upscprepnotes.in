@@ -84,22 +84,23 @@ export default function AnswerCopyPreview({ topper }: Props) {
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border-2 border-emerald-600/20 bg-emerald-50 p-5">
+      <div className="mt-4 rounded-xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold text-gray-900">
-              Get {name}&apos;s full answer copy + 50+ topper copies
+            <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">Great Weekend Sale</span>
+            <p className="mt-2 text-sm font-bold text-white">
+              Great Weekend Sale — All Products at ₹99
             </p>
-            <p className="text-xs text-gray-500 mt-0.5">
-              GS1–4, Essay, Optional papers — organized by marks and year. ₹11 per copy.
+            <p className="text-xs text-emerald-200/80 mt-0.5">
+              Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
             </p>
           </div>
           <Link
             href="/store"
             data-track="topper-preview-cta"
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] shrink-0"
+            className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-400 active:scale-[0.97] shrink-0"
           >
-            Browse Store — ₹799
+            Shop Now
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </Link>
         </div>

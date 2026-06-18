@@ -30,39 +30,33 @@ export default function ExitPopup() {
         </button>
 
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500">
+            <span className="text-xl">🎉</span>
           </div>
-          <h2 className="mt-4 text-lg font-bold text-gray-900">Wait — before you go</h2>
+          <h2 className="mt-4 text-lg font-bold text-gray-900">Great Weekend Sale!</h2>
           <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-            Get <strong className="text-gray-900">50+ topper answer copies</strong> including this one — GS1–4, Essay, Optional papers with marks.
+            All Products at <strong className="text-zinc-900">₹99</strong> — Biggest Sale Till Date.
           </p>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-3 border-y border-black/[0.06] py-4">
-          <div>
-            <p className="text-3xl font-bold text-gray-900">₹799</p>
-          </div>
-          <div className="h-8 w-px bg-black/[0.08]" />
-          <div className="text-left">
-            <p className="text-xs text-gray-500 line-through">₹4,999</p>
-            <p className="text-xs text-emerald-600 font-semibold">₹11 per copy</p>
-          </div>
+        <div className="mt-6 rounded-xl bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-4 text-center">
+          <p className="text-xs text-emerald-400 font-semibold uppercase tracking-wider">Great Weekend Sale</p>
+          <p className="mt-1 text-3xl font-bold text-white">₹99</p>
+          <p className="text-xs text-emerald-200/80">All Products</p>
         </div>
 
         <div className="mt-5 space-y-2.5">
           <Link
             href="/store"
             onClick={() => setShow(false)}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 py-3 text-sm font-bold text-white hover:bg-emerald-400"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
-            Pay ₹799 — Get Instant Access
+            Shop Now &rarr;
           </Link>
         </div>
 
         <p className="mt-4 text-center text-[10px] text-gray-400">
-          72 resources · 7-day refund · Lifetime access
+          Biggest Sale Till Date · All Products at ₹99
         </p>
       </div>
     </div>

@@ -679,30 +679,25 @@ export default async function SubjectPage({ params }: Props) {
           ))}
         </div>
       </section>
-      {/* COMPILATION UPSELL */}
+      {/* GREAT WEEKEND SALE */}
       <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-zinc-100">
-        <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 md:p-8">
+        <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 md:p-8">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
-              <h2 className="mt-2 text-lg font-bold text-gray-900 md:text-xl">
-                Get {subjectInfo.name} Topper Answer Copies
+              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Great Weekend Sale</span>
+              <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
+                Great Weekend Sale — All Products at ₹99
               </h2>
-              <p className="mt-1 text-sm text-gray-600">
-                50+ topper copies across GS1-4, Essay &amp; Optional. All at just ₹11 per copy.
+              <p className="mt-1 text-sm text-emerald-200/80">
+                Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
               </p>
-              <div className="mt-2 flex items-center gap-3">
-                <span className="text-2xl font-bold text-gray-900">₹799</span>
-                <span className="text-sm text-gray-500 line-through">₹4,999</span>
-                <span className="text-xs text-emerald-700 font-semibold">83% off</span>
-              </div>
             </div>
             <Link
               href="/store"
               data-track="optional-compilation-upsell"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
             >
-              Browse Store &rarr;
+              Shop Now &rarr;
             </Link>
           </div>
         </div>

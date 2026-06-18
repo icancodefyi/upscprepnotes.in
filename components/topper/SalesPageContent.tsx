@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { TOPPERS, FAQS, FEATURES } from "./sales-page-data";
-import PayButton from "@/components/ui/PayButton";
 
 export default function SalesPageContent() {
   return (
@@ -19,7 +18,7 @@ export default function SalesPageContent() {
                   </div>
                 ))}
               </div>
-              <span><strong className="text-gray-800">2,300+</strong> compilations delivered</span>
+              <span><strong className="text-gray-800">2,300+</strong> products delivered</span>
             </div>
             <h1 className="mt-4 max-w-2xl text-[clamp(1.75rem,5.5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-gray-900">
               Stop losing marks on
@@ -27,13 +26,12 @@ export default function SalesPageContent() {
               <span className="bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent">presentation &amp; structure</span>
             </h1>
             <p className="mt-3 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
-              See exactly how 50+ toppers (AIR 1–1249) wrote their answers by hand — the same handwriting, structure, underlining, and presentation that scored 140+ in GS, Essay, and Optional papers.
+              Great Weekend Sale — All Products at ₹99. Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <PayButton amount={799} productSlug="all-strategy-reports" tracking="dodo-hero" className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-7 sm:py-3.5 sm:text-base transition-transform duration-150 active:scale-[0.97]">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
-                Pay ₹799 — Get Instant Access
-              </PayButton>
+              <Link href="/store" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-400 active:scale-[0.97] sm:px-7 sm:py-3.5 sm:text-base transition-transform duration-150">
+                Shop Now &rarr;
+              </Link>
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
               <span className="flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><polyline points="20 6 9 17 4 12"/></svg>7-day refund</span>
@@ -75,8 +73,8 @@ export default function SalesPageContent() {
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">Who is inside</p>
-            <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">50+ toppers across 4 years</h2>
-            <p className="mt-2 text-sm text-gray-500">Each copy verified with original scorecard. Rank range: AIR 1 – AIR 1249.</p>
+            <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">Great Weekend Sale — All Products at ₹99</h2>
+            <p className="mt-2 text-sm text-gray-500">Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.</p>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {TOPPERS.filter(t => t.previewImageUrl).map((t) => {
@@ -100,9 +98,8 @@ export default function SalesPageContent() {
             Every copy includes the original scorecard for verification
           </p>
           <div className="mt-6 text-center">
-            <Link href="/store" className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] transition-transform duration-150">
-              View more in compilation
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <Link href="/store" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-400 active:scale-[0.97] transition-transform duration-150">
+              Shop Now &rarr;
             </Link>
           </div>
         </div>
@@ -112,19 +109,19 @@ export default function SalesPageContent() {
       <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">The Complete Compilation</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-gray-900 sm:text-3xl">72 resources for ₹799</h2>
-            <p className="mt-3 text-sm leading-relaxed text-gray-500">Everything you need in one pack. No tiers, no upselling.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-500">Great Weekend Sale</p>
+            <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-gray-900 sm:text-3xl">All Products at ₹99</h2>
+            <p className="mt-3 text-sm leading-relaxed text-gray-500">Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.</p>
           </div>
           <div className="mx-auto mt-10 max-w-lg">
             <div className="rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.1)] sm:p-8">
               <div className="text-center">
-                <span className="inline-block rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-700">One Compilation</span>
+                <span className="inline-block rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">Great Weekend Sale</span>
                 <div className="mt-4 flex items-baseline justify-center gap-2">
-                  <span className="text-5xl font-bold tracking-[-0.03em] text-gray-900">₹799</span>
-                  <span className="text-sm text-gray-400 line-through">₹1,198</span>
+                  <span className="text-5xl font-bold tracking-[-0.03em] text-gray-900">₹99</span>
+                  <span className="text-sm text-gray-400 line-through">₹4,999</span>
                 </div>
-                <p className="mt-1 text-xs text-gray-400">₹11 per resource · 50+ topper copies included</p>
+                <p className="mt-1 text-xs text-gray-400">All Products at ₹99 · Biggest Sale Till Date</p>
               </div>
               <div className="mt-6 space-y-3 border-t border-black/[0.06] pt-6">
                 {FEATURES.map((f) => (
@@ -137,10 +134,9 @@ export default function SalesPageContent() {
                 ))}
               </div>
               <div className="mt-8 space-y-2.5">
-                <PayButton amount={799} productSlug="all-strategy-reports" tracking="dodo-offer" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base transition-transform duration-150">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
-                  Pay ₹799 — Get Instant Access
-                </PayButton>
+                <Link href="/store" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-400 active:scale-[0.97] sm:px-8 sm:py-4 sm:text-base transition-transform duration-150">
+                  Shop Now &rarr;
+                </Link>
               </div>
               <div className="relative mt-5">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200" /></div>
@@ -154,7 +150,7 @@ export default function SalesPageContent() {
               <p id="samples-error" className="mt-2 hidden text-center text-xs text-red-500"></p>
               <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
                 <span className="flex items-center gap-1 text-xs text-gray-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>7-day refund</span>
-                <span className="flex items-center gap-1 text-xs text-gray-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Verified copies</span>
+                <span className="flex items-center gap-1 text-xs text-gray-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>All Products at ₹99</span>
                 <span className="flex items-center gap-1 text-xs text-gray-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C4.5 2 2 7 2 12c0 3 1 6 3 8l-1 3 4-1c2 1 4 2 7 2 7 0 10-5 10-10S19 2 12 2z"/></svg>Card / UPI</span>
               </div>
             </div>

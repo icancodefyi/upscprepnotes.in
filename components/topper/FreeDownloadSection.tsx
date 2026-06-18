@@ -48,26 +48,22 @@ export function FreeDownloadSection({
             </div>
           </div>
 
-          {/* COMPILATION UPSELL */}
-          <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 flex flex-col items-start">
-            <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
-            <h2 className="mt-3 text-xl font-bold text-gray-900">
-              All 50+ Topper Answer Copies
+          {/* GREAT WEEKEND SALE */}
+          <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 flex flex-col items-start">
+            <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Great Weekend Sale</span>
+            <h2 className="mt-3 text-xl font-bold text-white">
+              Great Weekend Sale — All Products at ₹99
             </h2>
-            <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">
-              Get every paper (GS1-4, Essay, Optional) of {topperName} + 50+ other toppers plus 21 strategy guides. All at just ₹11 per copy.
+            <p className="mt-1.5 text-sm text-emerald-200/80 leading-relaxed">
+              Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
             </p>
-            <div className="mt-3 flex items-center gap-3">
-              <span className="text-2xl font-bold text-gray-900">₹799</span>
-              <span className="text-sm text-gray-500 line-through">₹4,999</span>
-            </div>
             <div className="mt-auto pt-4 w-full">
               <Link
                 href="/store"
                 data-track="topper-bundle-upsell"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
               >
-                Browse Store &rarr;
+                Shop Now &rarr;
               </Link>
             </div>
           </div>

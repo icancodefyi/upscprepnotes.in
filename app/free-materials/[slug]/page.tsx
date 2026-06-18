@@ -220,25 +220,26 @@ export default async function PDFDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* COMPILATION UPSELL */}
-        <section className="mb-16 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 sm:p-8">
+        {/* GREAT WEEKEND SALE */}
+        <section className="mb-16 rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-100 border border-emerald-200 shrink-0">
-              <span className="text-3xl">⭐</span>
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/30 shrink-0">
+              <span className="text-3xl">🎉</span>
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-emerald-900">Want More? Get the Complete Compilation</h2>
-              <p className="mt-1 text-sm text-emerald-700">
-                50+ verified topper answer copies + 21 strategy guides + interview prep + ethics case studies — all at ₹799.
+              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Great Weekend Sale</span>
+              <h2 className="mt-2 text-lg font-bold text-white">Great Weekend Sale — All Products at ₹99</h2>
+              <p className="mt-1 text-sm text-emerald-200/80">
+                Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
               </p>
             </div>
             <Button
               asChild
               size="lg"
-              className="shrink-0 rounded-full bg-emerald-600 px-8 text-sm font-bold text-white hover:bg-emerald-500 shadow-lg shadow-emerald-600/25"
+              className="shrink-0 rounded-full bg-emerald-500 px-8 text-sm font-bold text-white hover:bg-emerald-400 shadow-lg"
             >
               <Link href="/store" data-track={`pdf-upsell-${p.slug}`}>
-                Browse Store ₹799 &rarr;
+                Shop Now &rarr;
               </Link>
             </Button>
           </div>
