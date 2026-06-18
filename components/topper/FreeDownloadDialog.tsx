@@ -157,6 +157,9 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <p className="mt-1 text-sm text-muted-foreground">
               We sent {pdfUrls.length > 1 ? `${pdfUrls.length} answer copies` : "the download link"} for <strong>{topperName}</strong> to <strong>{email}</strong>.
             </p>
+            <p className="mt-2 text-xs text-amber-600 font-medium">
+              ⚠️ If you don't see the email in a few minutes, check your <strong>Spam</strong> or <strong>Promotions</strong> folder — it may have landed there.
+            </p>
             {pdfUrls.length > 0 && (
               <div className="mt-4 space-y-2">
                 {pdfUrls.map((url, i) => (
@@ -196,6 +199,9 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <h2 className="text-lg font-semibold">We&apos;re Working on It!</h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
               Thanks for requesting <strong>{topperName}</strong>&apos;s answer copy. We&apos;re sourcing it and will email it to you shortly.
+            </p>
+            <p className="mt-2 text-xs text-amber-600 font-medium">
+              ⚠️ To ensure delivery, please add <strong>hello@upscprepnotes.in</strong> to your contacts and check your <strong>Spam</strong> folder if the email doesn't appear within 24 hours.
             </p>
             <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-4 text-left">
               <p className="text-xs font-semibold text-amber-800">Complementary Offer</p>

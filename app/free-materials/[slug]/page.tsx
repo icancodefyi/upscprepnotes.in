@@ -11,6 +11,7 @@ import {
   generateStudyTips,
   generateFAQs,
   getCategoryLabel,
+  generateEditorialContent,
 } from "@/lib/pdf-content";
 import ResourceSearch from "@/components/ResourceSearch";
 
@@ -63,6 +64,7 @@ export default async function PDFDetailPage({ params }: Props) {
   const keyTopics = generateKeyTopics(p);
   const studyTips = generateStudyTips(p);
   const faqs = generateFAQs(p);
+  const editorial = generateEditorialContent(p);
 
   return (
     <main className="min-h-screen bg-white">
@@ -141,6 +143,16 @@ export default async function PDFDetailPage({ params }: Props) {
               ))}
             </div>
           )}
+        </section>
+
+        {/* EDITORIAL CONTENT */}
+        <section className="mb-12">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
+            About This Resource
+          </h2>
+          <p className="text-base leading-8 text-zinc-700">
+            {editorial}
+          </p>
         </section>
 
         {/* HOW TO USE */}

@@ -339,3 +339,81 @@ export function getCategoryLabel(category: string): string {
   };
   return labels[category] || "Resources";
 }
+
+export function generateEditorialContent(p: PDFMeta): string {
+  const totalItems = p.resources?.length || 0;
+  const brand = p.brand || "";
+  const title = p.title || "";
+  const categoryLabel = getCategoryLabel(p.category);
+
+  if (p.category === "test-series") {
+    let text = `${title} is a ${brand ? brand + " " : ""}UPSC test series designed to help aspirants practice rigorously before the actual examination. `;
+    text += `This collection includes ${totalItems} test papers covering the full UPSC syllabus — Prelims (objective) and Mains (descriptive) formats. `;
+    text += `Each test paper follows the official UPSC examination pattern, making it an excellent resource for timed practice. `;
+    if (p.resources && p.resources.length > 0) {
+      const sections = [...new Set(p.resources.map(r => r.section).filter(Boolean))];
+      if (sections.length > 0) {
+        text += `The papers are organized across ${sections.length} sections including ${sections.slice(0, 3).join(", ")}${sections.length > 3 ? ", and more" : ""}. `;
+      }
+    }
+    text += `Regular practice with these test papers helps identify weak areas, improves time management, and builds the stamina needed for the 3-hour Mains paper format. `;
+    text += `For best results, attempt each paper under strict exam conditions — no interruptions, no extra time, and no reference material. `;
+    text += `After each test, analyze your mistakes systematically and track your score progression over time.`;
+    return text;
+  }
+
+  if (p.category === "notes") {
+    let text = `${title}${brand ? ` by ${brand}` : ""} is a comprehensive set of UPSC study notes covering essential topics across the Civil Services Examination syllabus. `;
+    text += `These notes are designed for quick revision and concept clarity, making them ideal for aspirants who have already completed their standard textbooks. `;
+    if (totalItems > 0) {
+      text += `The collection includes ${totalItems} topic-wise resources that break down complex subjects into digestible sections. `;
+    }
+    text += `Unlike bulky textbooks, these notes present information in a concise, structured format that facilitates faster revision. `;
+    text += `Each topic is organized to highlight key facts, definitions, and analytical points that are most relevant for UPSC GS papers. `;
+    text += `Use these notes alongside your standard reference books — read the textbook for depth, then revise with these notes for retention. `;
+    text += `Spaced repetition is key: revisit these notes after 1 day, 1 week, and 1 month to lock concepts into long-term memory. `;
+    text += `The GS1-4 syllabus coverage ensures that these notes complement preparation across all General Studies papers.`;
+    return text;
+  }
+
+  if (p.category === "books") {
+    let text = `${title}${brand ? ` by ${brand}` : ""} is a well-regarded reference book for UPSC Civil Services Examination preparation. `;
+    text += `This book provides in-depth coverage of its subject matter with clear explanations, structured chapters, and practice material. `;
+    text += `It is suitable for both Prelims (objective) and Mains (descriptive) preparation, making it a versatile addition to any aspirant's study list. `;
+    text += `The book follows a logical progression from foundational concepts to advanced topics, allowing candidates to build understanding step by step. `;
+    if (totalItems > 1) {
+      text += `The download includes ${totalItems} resources covering different chapters and supplementary material. `;
+    }
+    text += `Recommended approach: read one chapter at a time, write brief summaries after each chapter without looking at the book, `;
+    text += `and revisit difficult sections during revision phases. Pay special attention to tables, diagrams, and data points — these are frequently tested in Prelims.`;
+    return text;
+  }
+
+  if (p.category === "magazines") {
+    let text = `${title}${brand ? ` from ${brand}` : ""} is a curated UPSC magazine covering current affairs and in-depth analysis of national and international developments. `;
+    text += `This magazine${totalItems > 0 ? ` features ${totalItems} articles and analyses ` : " "}`;
+    text += `that are mapped to the UPSC syllabus, helping aspirants connect current events with static subjects. `;
+    text += `Each issue covers government schemes, policy changes, committee recommendations, and global events relevant to GS Papers 1-4. `;
+    text += `Magazines are an essential resource for UPSC current affairs preparation because they provide expert analysis rather than just news headlines. `;
+    text += `Use this magazine to build a topic-wise current affairs notebook — for each article, write a one-page summary linking it to specific GS paper topics. `;
+    text += `Focus on understanding the "why" behind events rather than memorizing facts, as UPSC increasingly tests analytical understanding of current issues.`;
+    return text;
+  }
+
+  if (p.category === "current-affairs") {
+    let text = `${title}${brand ? ` by ${brand}` : ""} is a comprehensive current affairs compilation for UPSC preparation. `;
+    text += `This resource covers ${totalItems} key events and developments organized topic-wise for easy revision. `;
+    text += `Current affairs form a critical component of all three stages of UPSC — Prelims (GS and CSAT), Mains (GS Papers 1-4, Essay), and the Interview. `;
+    text += `A well-structured current affairs compilation saves aspirants the effort of tracking news daily and ensures comprehensive coverage. `;
+    text += `The compilation is organized by GS paper relevance, helping candidates connect current events to specific syllabus topics. `;
+    text += `Best practice: classify each event by GS paper, create brief notes linking events to static subjects, and revise weekly rather than monthly. `;
+    text += `For Mains preparation, practice writing 150-word analytical notes on significant current events — this directly improves your answer writing quality in the exam.`;
+    return text;
+  }
+
+  let text = `${title}${brand ? ` by ${brand}` : ""} is a valuable UPSC study resource. `;
+  text += `This collection includes ${totalItems} resources designed to help aspirants prepare effectively for the Civil Services Examination. `;
+  text += `Whether you are preparing for Prelims, Mains, or both, this material provides structured content aligned with the UPSC syllabus. `;
+  text += `Download the resources, study systematically, and supplement your preparation with answer writing practice and revision.`;
+  return text;
+}

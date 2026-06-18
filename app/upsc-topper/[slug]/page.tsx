@@ -599,6 +599,22 @@ export default async function TopperPage({ params }: Props) {
           </section>
         )}
 
+        {/* FALLBACK STRATEGY — for toppers without strategy data */}
+        {!topper.strategy && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">How Did {topper.firstName} {topper.lastName} Prepare for UPSC?</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Preparation overview for UPSC CSE {topper.year}</p>
+            <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
+              <div className="prose prose-zinc max-w-none prose-p:leading-7 prose-p:text-sm">
+                <p>{topper.firstName} {topper.lastName} secured AIR {topper.rank} in the UPSC Civil Services Examination {topper.year} with {topper.optionalSubject} as the optional subject. A total of {topper.marks.total} marks was achieved in the final merit list, with {topper.marks.written} marks in the written examination and {topper.marks.interview} marks in the interview round.</p>
+                <p>In the General Studies papers, {topper.firstName} scored {topper.marks.gs1} in GS1, {topper.marks.gs2} in GS2, {topper.marks.gs3} in GS3, and {topper.marks.gs4} in GS4 (Ethics). The essay paper contributed {topper.marks.essay} marks to the total score. In the optional subject ({topper.optionalSubject}), the candidate scored {topper.marks.optional1} in Paper 1 and {topper.marks.optional2} in Paper 2.</p>
+                <p>To explore {topper.firstName}&apos;s detailed preparation strategy including study plan, book list, coaching details, and answer writing approach, check the complete strategy guide available in the UPSCPrepNotes store along with actual answer copy PDFs and marksheets. The full compilation includes GS1-4 essays, optional papers, and the interview transcript.</p>
+                {topper.bio && <p>{topper.bio}</p>}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* VISIBLE COMPILATION UPSELL — money page link, visible without dialog interaction */}
         <section className="mt-12">
           <div className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6">

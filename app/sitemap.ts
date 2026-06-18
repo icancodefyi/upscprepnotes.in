@@ -4,6 +4,7 @@ import { TopperModel } from "@/models/topper.model";
 import { PYQModel } from "@/models/pyq.model";
 import { PDFModel } from "@/models/pdf.model";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
+import { PRODUCTS } from "@/lib/store-products";
 import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
 import freeMaterialPage from "@/data/content/upsc-free-material";
@@ -43,7 +44,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/toppers`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/pyq`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/toppers/toppers-copy-compilation`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: `${baseUrl}/ask`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
     { url: `${baseUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
@@ -54,7 +54,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/current-affairs/may-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     { url: `${baseUrl}/current-affairs/2025`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/current-affairs/download`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/search`, lastModified: new Date(), changeFrequency: "daily", priority: 0.6 },
   ];
 
   // Content pages — use real lastUpdated from data files
@@ -128,6 +127,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // Store pages
+  const storePages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/store`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.9 },
+    ...PRODUCTS.map((p) => ({
+      url: `${baseUrl}/store/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+  ];
+
   return [
     ...staticPages,
     ...contentPages,
@@ -136,5 +146,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...optionalPages,
     ...yearPages,
     ...pdfPages,
+    ...storePages,
   ];
 }

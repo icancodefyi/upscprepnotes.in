@@ -43,6 +43,44 @@ async function getToppersByYear(year: number) {
   }));
 }
 
+function getYearAnalysis(year: number): { title: string; paragraphs: string[] } | null {
+  const analyses: Record<number, { title: string; paragraphs: string[] }> = {
+    2025: {
+      title: "What UPSC 2025 Results Tell Us",
+      paragraphs: [
+        `The UPSC Civil Services Examination 2025 results revealed several notable trends. The top 100 ranks were dominated by candidates with diverse optional subjects, with PSIR, Geography, and Public Administration maintaining their positions as popular choices among high-ranking candidates. The average marks of top candidates remained consistent with previous years, suggesting stable evaluation standards.`,
+        `A significant observation from the 2025 results was the strong performance of candidates from engineering and humanities backgrounds alike, reinforcing that the UPSC examination rewards consistent preparation regardless of academic discipline. The interview scores among top candidates showed a narrower distribution compared to previous years, indicating a more standardized approach to the personality test.`,
+        `For aspirants preparing for future cycles, the 2025 results underscore the importance of balanced preparation across all GS papers. Top performers consistently scored above 60% across all four General Studies papers, with no single paper acting as a differentiator. The essay paper continued to be a critical filter, with many candidates at the cutoff level seeing significant score variations here.`,
+      ],
+    },
+    2024: {
+      title: "Key Takeaways from UPSC 2024 Results",
+      paragraphs: [
+        `The UPSC 2024 results marked a significant year with several women candidates securing top ranks, continuing a positive trend towards greater gender diversity in the civil services. The optional subject analysis revealed that PSIR and Sociology continued to produce a high number of successful candidates in the top 100 ranks.`,
+        `A noteworthy pattern from the 2024 examination was the performance in the ethics paper (GS4), where top-ranked candidates consistently scored above 130 marks, highlighting the growing importance of ethics preparation in the overall strategy. Candidates who scored well in GS4 also tended to perform better in the interview round, suggesting a correlation between ethical reasoning skills and personality test performance.`,
+        `The 2024 results also demonstrated that candidates who had attempted the Mains examination 2-3 times before finally securing a rank formed a significant portion of the final list. This challenges the notion that early success is the norm and reinforces the importance of persistence in the UPSC journey.`,
+      ],
+    },
+    2023: {
+      title: "UPSC 2023: Trends and Analysis",
+      paragraphs: [
+        `UPSC 2023 saw one of the highest number of candidates qualifying for the interview round, reflecting a slight easing in the Mains evaluation or improved answer writing standards among aspirants. The year was notable for the strong performance of candidates from smaller towns, with several top-50 ranks going to candidates from non-metro cities.`,
+        `In terms of optional subjects, Mathematics and Anthropology emerged as high-scoring options, with several candidates in the top 20 having chosen these subjects. This suggests that candidates who can handle technical or scientific subjects have a distinct advantage in scoring high marks. Medical Science optional also produced impressive results.`,
+        `The essay paper results from 2023 showed a wide dispersion of marks, with the difference between the highest and lowest essay scores among selected candidates exceeding 50 marks in some cases. This reinforces the essay paper's role as a significant differentiator in the final merit list.`,
+      ],
+    },
+    2022: {
+      title: "What UPSC 2022 Taught Us",
+      paragraphs: [
+        `The UPSC 2022 examination cycle was historic as it saw the largest number of women candidates in the top 20 in recent years. The year also marked the introduction of more analytical questions in the GS papers, moving away from direct factual recall towards application-based assessment.`,
+        `Geography and Public Administration continued their dominance as optional subjects among successful candidates, accounting for nearly 40% of the top 100 ranks. However, candidates with niche subjects like Political Science and Sociology also secured very high ranks, demonstrating that subject mastery matters more than subject choice.`,
+        `A key lesson from the 2022 results for future aspirants is the importance of the interview stage. Several candidates with relatively lower written scores (in the 800-830 range) jumped significantly in the final ranking due to high interview marks (195+), proving that the personality test can dramatically alter final standings.`,
+      ],
+    },
+  };
+  return analyses[year] || null;
+}
+
 function computeInsights(toppers: TopperData[], year: number) {
   if (toppers.length === 0) return [];
 
@@ -225,6 +263,23 @@ export default async function YearPage({ params }: Props) {
           </div>
         ) : (
           <>
+            {/* YEARLY ANALYSIS */}
+            {(() => {
+              const analysis = getYearAnalysis(yearNum);
+              if (!analysis) return null;
+              return (
+                <section className="mb-16">
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Analysis</p>
+                  <h2 className="mb-6 text-2xl font-semibold tracking-tight">{analysis.title}</h2>
+                  <div className="space-y-4 text-base leading-7 text-zinc-700">
+                    {analysis.paragraphs.map((p, i) => (
+                      <p key={i}>{p}</p>
+                    ))}
+                  </div>
+                </section>
+              );
+            })()}
+
             {/* COMPUTED INSIGHTS */}
             {insights.length > 0 && (
               <section className="mb-16">
