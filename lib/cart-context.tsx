@@ -34,7 +34,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (hydrated) {
-      localStorage.setItem("upsc-cart", JSON.stringify(items));
+      try { localStorage.setItem("upsc-cart", JSON.stringify(items)); } catch(e) {}
     }
   }, [items, hydrated]);
 

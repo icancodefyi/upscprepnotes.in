@@ -8,17 +8,19 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setMounted(true);
-    setExcluded(localStorage.getItem("_optex") === "1");
+    try { setExcluded(localStorage.getItem("_optex") === "1"); } catch(e) {}
   }, []);
 
   function toggle() {
     const next = !excluded;
     setExcluded(next);
-    if (next) {
-      localStorage.setItem("_optex", "1");
-    } else {
-      localStorage.removeItem("_optex");
-    }
+    try {
+      if (next) {
+        localStorage.setItem("_optex", "1");
+      } else {
+        localStorage.removeItem("_optex");
+      }
+    } catch(e) {}
     // reload so tracking script picks up the change
     window.location.reload();
   }

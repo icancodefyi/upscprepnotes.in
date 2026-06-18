@@ -15,10 +15,14 @@ export default function AnalyticsScripts({ isInternal }: { isInternal?: boolean 
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
+              try {
               var isAdmin = location.pathname.indexOf('/admin') === 0;
-              if (location.search.indexOf('optex=1') !== -1) { localStorage.setItem('_optex', '1'); window.history.replaceState({}, '', location.pathname); }
-              if (location.search.indexOf('optex=0') !== -1) { localStorage.removeItem('_optex'); window.history.replaceState({}, '', location.pathname); }
-              var selfExclude = localStorage.getItem('_optex') === '1';
+              } catch(e) { return; }
+              var _optex = null;
+              try { _optex = localStorage.getItem('_optex'); } catch(e) {}
+              if (location.search.indexOf('optex=1') !== -1) { try { localStorage.setItem('_optex', '1'); } catch(e) {} window.history.replaceState({}, '', location.pathname); }
+              if (location.search.indexOf('optex=0') !== -1) { try { localStorage.removeItem('_optex'); } catch(e) {} window.history.replaceState({}, '', location.pathname); }
+              var selfExclude = _optex === '1';
               var isInternalUser = ${!!isInternal};
               if (selfExclude || isAdmin || isInternalUser) return;
 
@@ -37,9 +41,11 @@ export default function AnalyticsScripts({ isInternal }: { isInternal?: boolean 
 
               // Own analytics backend
               function getSessionId() {
-                var s = sessionStorage.getItem('_sid');
-                if (!s) { s = 's' + Date.now() + Math.random().toString(36).slice(2,8); sessionStorage.setItem('_sid', s); }
-                return s;
+                try {
+                  var s = sessionStorage.getItem('_sid');
+                  if (!s) { s = 's' + Date.now() + Math.random().toString(36).slice(2,8); sessionStorage.setItem('_sid', s); }
+                  return s;
+                } catch(e) { return 's' + Date.now() + Math.random().toString(36).slice(2,8); }
               }
               function getVisitorId() {
                 try {

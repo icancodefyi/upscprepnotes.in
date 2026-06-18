@@ -35,8 +35,9 @@ export default function StoreDialog() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const savedStage = localStorage.getItem(STAGE_KEY);
-    const savedCoupon = localStorage.getItem(COUPON_KEY);
+    var savedStage = null, savedCoupon = null;
+    try { savedStage = localStorage.getItem(STAGE_KEY); } catch(e) {}
+    try { savedCoupon = localStorage.getItem(COUPON_KEY); } catch(e) {}
 
     if (savedStage === "claimed" && savedCoupon) {
       setCouponCode(savedCoupon);
@@ -64,13 +65,13 @@ export default function StoreDialog() {
     setStage(null);
     markPopup("storeDialog", "dismissed");
     if (stage === "browse") {
-      localStorage.setItem(STAGE_KEY, "dismissed");
+      try { localStorage.setItem(STAGE_KEY, "dismissed"); } catch(e) {}
     }
   }
 
   function handleBrowse() {
     dismiss();
-    localStorage.setItem(STAGE_KEY, "dismissed");
+    try { localStorage.setItem(STAGE_KEY, "dismissed"); } catch(e) {}
   }
 
   async function handleClaimCoupon(e: React.FormEvent) {
@@ -93,9 +94,9 @@ export default function StoreDialog() {
       });
     } catch {}
 
-    localStorage.setItem(STAGE_KEY, "claimed");
-    localStorage.setItem(COUPON_KEY, code);
-    localStorage.setItem(EMAIL_KEY, email);
+    try { localStorage.setItem(STAGE_KEY, "claimed"); } catch(e) {}
+    try { localStorage.setItem(COUPON_KEY, code); } catch(e) {}
+    try { localStorage.setItem(EMAIL_KEY, email); } catch(e) {}
     setCouponCode(code);
     setStage("claimed");
     setSubmitting(false);

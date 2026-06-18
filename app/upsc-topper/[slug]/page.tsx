@@ -605,9 +605,9 @@ export default async function TopperPage({ params }: Props) {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Complete Compilation</span>
-                <h2 className="mt-2 text-lg font-bold text-gray-900">
+                <h3 className="mt-2 text-lg font-bold text-gray-900">
                   {topper.firstName}&apos;s Answer Copies + 50+ Toppers
-                </h2>
+                </h3>
                 <p className="mt-1 text-sm text-gray-600">
                   Every paper (GS1-4, Essay, Optional) of {topper.firstName} plus 50+ other toppers. All at just ₹11 per copy.
                 </p>
