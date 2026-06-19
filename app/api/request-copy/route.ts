@@ -15,10 +15,6 @@ async function sendRequestEmail(email: string, topperName: string) {
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Request Received!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">We've noted your interest in <strong>${topperName}'s</strong> answer copy.</p>
         <p style="color:#444;font-size:14px;line-height:1.7;text-align:center">We're working on sourcing it. As soon as it's available, we'll send it straight to this inbox.</p>
-        <div style="background:#f0fdf4;border-radius:12px;padding:24px;margin-top:24px;text-align:center">
-          <p style="margin:0 0 8px;font-size:13px;color:#065f46">In the meantime, you can explore answer copies of <strong>20+ other toppers</strong> already available.</p>
-          <a href="https://upscprepnotes.in/upsc-topper/divya-tanwar-rank-105-2022" style="display:inline-block;background:#059669;color:#fff;padding:12px 24px;border-radius:40px;text-decoration:none;font-weight:600;font-size:13px">Browse Available Copies →</a>
-        </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You requested this on UPSCPrepNotes.in. We'll only email you when ${topperName}'s copy is ready.</p>
       </div>
     </body>

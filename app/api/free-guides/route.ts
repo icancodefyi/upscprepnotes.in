@@ -44,14 +44,6 @@ async function sendGuideEmail(name: string, email: string) {
           ${guideLinks}
         </table>
 
-        <hr style="border:none;border-top:2px solid #f0f0f0;margin:28px 0" />
-
-        <div style="background:#f0fdf4;border-radius:12px;padding:24px;text-align:center">
-          <p style="margin:0 0 8px;font-size:13px;color:#065f46">Want the full set? Get <strong style="font-size:15px">50+ topper answer copies + 21 strategy guides</strong> in one compilation.</p>
-          <p style="margin:0 0 16px;font-size:13px;color:#065f46">All papers — GS1-4, Essay &amp; Optional. Just <strong>₹11 per copy</strong> (₹799 total).</p>
-          <a href="${BUNDLE_URL}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get Complete Compilation at ₹799 →</a>
-        </div>
-
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested free guides on UPSCPrepNotes.in</p>
       </div>
     </body>
