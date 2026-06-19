@@ -20,6 +20,7 @@ const navLinks = [
   { href: "/admin/feedback", label: "Feedback" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/ai", label: "AI Chats" },
+  { href: "/admin/broadcast", label: "Broadcast" },
   { href: "/admin/settings", label: "Settings" },
 ];
 
