@@ -18,7 +18,7 @@ export default function BroadcastPage() {
       .catch(() => {});
   }, []);
 
-  async function sendTest() {
+  async function sendTo(email: string) {
     if (!subject.trim() || !html.trim()) return;
     setSending(true);
     setError("");
@@ -27,7 +27,7 @@ export default function BroadcastPage() {
       const r = await fetch("/api/broadcast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, html, testEmail: "upscprepnotes.in@gmail.com" }),
+        body: JSON.stringify({ subject, html, testEmail: email }),
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error);
@@ -101,7 +101,7 @@ export default function BroadcastPage() {
             <textarea
               value={html}
               onChange={(e) => setHtml(e.target.value)}
-              rows={12}
+              rows={22}
               className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-mono outline-none focus:border-zinc-400"
               placeholder={`<h1>Great Weekend Sale!</h1>\n<p>All products at just ₹99.</p>`}
             />
@@ -115,7 +115,7 @@ export default function BroadcastPage() {
         {result && (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
             {result.mode === "test"
-              ? "✅ Test email sent to upscprepnotes.in@gmail.com"
+              ? `✅ Test email sent to ${result.testEmail || "recipient"}`
               : `✅ Sent to ${result.sent} / ${result.total} leads`}
             {result.errors && (
               <div className="mt-2 text-xs text-amber-600">
@@ -127,11 +127,18 @@ export default function BroadcastPage() {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={sendTest}
+            onClick={() => sendTo("impic.tech@gmail.com")}
             disabled={sending || !subject.trim() || !html.trim()}
             className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 disabled:opacity-40"
           >
-            {sending ? "Sending..." : "Send Test"}
+            {sending ? "Sending..." : "Send to impic.tech"}
+          </button>
+          <button
+            onClick={() => sendTo("upscprepnotes.in@gmail.com")}
+            disabled={sending || !subject.trim() || !html.trim()}
+            className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 disabled:opacity-40"
+          >
+            {sending ? "Sending..." : "Send to upscprepnotes.in"}
           </button>
           <button
             onClick={sendAll}

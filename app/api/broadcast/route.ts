@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     if (testEmail) {
       await sendEmail({ to: testEmail, subject, html });
-      return Response.json({ sent: 1, mode: "test" });
+      return Response.json({ sent: 1, mode: "test", testEmail });
     }
 
     await connectDB();

@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       return_url: successUrl || `${origin}/store/success?ref=${ref}`,
       cancel_url: cancelUrl || `${origin}/store`,
       feature_flags: {
-        allow_discount_code: false,
+        allow_discount_code: true,
         allow_currency_selection: false,
       },
       metadata: {

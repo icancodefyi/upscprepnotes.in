@@ -55,3 +55,4 @@ scripts/.*.cache.json
 
 # product zips (6.9 GB)
 /private/zips/
+data/download-stats.json
