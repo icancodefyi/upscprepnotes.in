@@ -5,7 +5,7 @@ import type { ContentPage } from "@/data/content";
 import type { Components } from "react-markdown";
 
 const DEFAULTS = {
-  ctaIntro: "Great Weekend Sale — All Products at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
+  ctaIntro: "Flash Sale — All Products at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
   ctaIntroBtn: "Shop Now →",
   ctaMidBtn: "Shop Now →",
   ctaFinalBtn: "Shop Now →",

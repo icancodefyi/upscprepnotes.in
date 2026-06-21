@@ -49,14 +49,14 @@ export default function StoreToast() {
               <div className="min-w-0">
                 <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-emerald-400">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Great Weekend Sale
+                  Flash Sale
                 </p>
                 <p className="mt-0.5 text-sm font-bold tracking-tight text-white">
                   All Products at <span className="text-emerald-300">₹99</span>
                 </p>
               </div>
             </div>
-            <p className="mt-2 text-xs text-white/60">Biggest Sale Till Date</p>
+            <p className="mt-2 text-xs text-white/60">Limited Time Offer</p>
             <div className="mt-4">
               <Link
                 href="/store"

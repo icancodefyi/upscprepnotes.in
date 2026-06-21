@@ -36,11 +36,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           >
             <div className="absolute inset-0 bg-[length:200%_100%] animate-shimmer bg-gradient-to-r from-transparent via-emerald-400/25 to-transparent pointer-events-none" />
             <span className="relative text-xs sm:text-sm font-bold">
-              <span className="text-emerald-300">Great Weekend Sale</span>
+              <span className="text-emerald-300">Flash Sale</span>
               <span className="text-white/60 mx-2">—</span>
               All Products at <span className="text-emerald-300">₹99</span>
               <span className="text-white/60 mx-2 hidden sm:inline">—</span>
-              <span className="hidden sm:inline text-white/60">Biggest Sale Till Date</span>
+              <span className="hidden sm:inline text-white/60">Limited Time Offer</span>
               <span className="ml-2 sm:ml-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-black">
                 Shop &rarr;
               </span>
@@ -64,9 +64,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="group relative bg-gradient-to-r from-zinc-900 via-black to-zinc-900 text-white py-2.5 sticky top-0 z-50 border-b border-emerald-500/20 overflow-hidden">
           <a href="/store" className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer pr-10">
             <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
-              <span><span className="text-emerald-300 font-bold">Great Weekend Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Biggest Sale Till Date →</span></span>
-              <span><span className="text-emerald-300 font-bold">Great Weekend Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Biggest Sale Till Date →</span></span>
-              <span><span className="text-emerald-300 font-bold">Great Weekend Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Biggest Sale Till Date →</span></span>
+              <span><span className="text-emerald-300 font-bold">Flash Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Limited Time Offer →</span></span>
+              <span><span className="text-emerald-300 font-bold">Flash Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Limited Time Offer →</span></span>
+              <span><span className="text-emerald-300 font-bold">Flash Sale</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">All Products at <span className="text-emerald-300">₹99</span></span><span className="text-white/60 mx-2">·</span><span>Limited Time Offer →</span></span>
             </div>
           </a>
           <button

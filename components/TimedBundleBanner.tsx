@@ -46,12 +46,12 @@ export default function TimedBundleBanner() {
         <div className="relative p-4">
           <div className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Great Weekend Sale</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Flash Sale</span>
           </div>
           <p className="mt-2 text-sm font-bold text-white">
             All Products at <span className="text-emerald-300">₹99</span>
           </p>
-          <p className="mt-0.5 text-xs text-white/60">Biggest Sale Till Date</p>
+          <p className="mt-0.5 text-xs text-white/60">Limited Time Offer</p>
 
           <Link
             href="/store"

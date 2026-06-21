@@ -57,14 +57,14 @@ export default function ExitIntentPopup() {
 
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-400 ring-1 ring-emerald-500/20">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Great Weekend Sale
+            Flash Sale
           </span>
 
           <h2 className="mt-4 text-xl font-bold tracking-tight text-white sm:text-2xl">
             All Products at <span className="text-emerald-300">₹99</span>
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-white/60">
-            Biggest Sale Till Date — Notes bundles, test series, teacher materials, and more.
+            Limited Time Offer — Notes bundles, test series, teacher materials, and more.
           </p>
 
           <div className="mt-6 flex flex-col gap-2.5">

@@ -26,7 +26,7 @@ export default function SalesPageContent() {
               <span className="bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent">presentation &amp; structure</span>
             </h1>
             <p className="mt-3 max-w-md text-[15px] leading-relaxed text-gray-500 sm:text-base">
-              Great Weekend Sale — All Products at ₹99. Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
+              Flash Sale — All Products at ₹99. Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Link href="/store" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-400 active:scale-[0.97] sm:px-7 sm:py-3.5 sm:text-base transition-transform duration-150">
@@ -73,8 +73,8 @@ export default function SalesPageContent() {
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">Who is inside</p>
-            <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">Great Weekend Sale — All Products at ₹99</h2>
-            <p className="mt-2 text-sm text-gray-500">Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.</p>
+            <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">Flash Sale — All Products at ₹99</h2>
+            <p className="mt-2 text-sm text-gray-500">Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.</p>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {TOPPERS.filter(t => t.previewImageUrl).map((t) => {
@@ -109,19 +109,19 @@ export default function SalesPageContent() {
       <section className="border-b border-black/[0.04] bg-gradient-to-b from-transparent via-emerald-50/30 to-transparent py-24 sm:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-500">Great Weekend Sale</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-500">Flash Sale</p>
             <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-gray-900 sm:text-3xl">All Products at ₹99</h2>
-            <p className="mt-3 text-sm leading-relaxed text-gray-500">Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.</p>
+            <p className="mt-3 text-sm leading-relaxed text-gray-500">Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.</p>
           </div>
           <div className="mx-auto mt-10 max-w-lg">
             <div className="rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.1)] sm:p-8">
               <div className="text-center">
-                <span className="inline-block rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">Great Weekend Sale</span>
+                <span className="inline-block rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white">Flash Sale</span>
                 <div className="mt-4 flex items-baseline justify-center gap-2">
                   <span className="text-5xl font-bold tracking-[-0.03em] text-gray-900">₹99</span>
                   <span className="text-sm text-gray-400 line-through">₹4,999</span>
                 </div>
-                <p className="mt-1 text-xs text-gray-400">All Products at ₹99 · Biggest Sale Till Date</p>
+                <p className="mt-1 text-xs text-gray-400">All Products at ₹99 · Limited Time Offer</p>
               </div>
               <div className="mt-6 space-y-3 border-t border-black/[0.06] pt-6">
                 {FEATURES.map((f) => (

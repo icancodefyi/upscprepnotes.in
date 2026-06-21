@@ -33,14 +33,14 @@ export default function ExitPopup() {
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500">
             <span className="text-xl">🎉</span>
           </div>
-          <h2 className="mt-4 text-lg font-bold text-gray-900">Great Weekend Sale!</h2>
+          <h2 className="mt-4 text-lg font-bold text-gray-900">Flash Sale!</h2>
           <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-            All Products at <strong className="text-zinc-900">₹99</strong> — Biggest Sale Till Date.
+            All Products at <strong className="text-zinc-900">₹99</strong> — Limited Time Offer.
           </p>
         </div>
 
         <div className="mt-6 rounded-xl bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-4 text-center">
-          <p className="text-xs text-emerald-400 font-semibold uppercase tracking-wider">Great Weekend Sale</p>
+          <p className="text-xs text-emerald-400 font-semibold uppercase tracking-wider">Flash Sale</p>
           <p className="mt-1 text-3xl font-bold text-white">₹99</p>
           <p className="text-xs text-emerald-200/80">All Products</p>
         </div>
@@ -56,7 +56,7 @@ export default function ExitPopup() {
         </div>
 
         <p className="mt-4 text-center text-[10px] text-gray-400">
-          Biggest Sale Till Date · All Products at ₹99
+          Limited Time Offer · All Products at ₹99
         </p>
       </div>
     </div>

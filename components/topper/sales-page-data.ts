@@ -44,5 +44,5 @@ export const FEATURES = [
 export const WHATSAPP_NUMBER = "919152750079";
 export const UPI_ID = "rakhangezaid8@pingpay";
 export const SITE = "upscprepnotes.in";
-export const TIER = "Great Weekend Sale";
+export const TIER = "Flash Sale";
 export const PRICE = 99;

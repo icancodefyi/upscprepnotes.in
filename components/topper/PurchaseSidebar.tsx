@@ -27,7 +27,7 @@ export default function PurchaseSidebar({ topperName }: Props) {
       >
         Shop Now — ₹99
       </Link>
-      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Great Weekend Sale · All Products at ₹99</p>
+      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Flash Sale · All Products at ₹99</p>
     </div>
   );
 }

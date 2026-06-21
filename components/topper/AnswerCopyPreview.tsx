@@ -87,12 +87,12 @@ export default function AnswerCopyPreview({ topper }: Props) {
       <div className="mt-4 rounded-xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">Great Weekend Sale</span>
+            <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">Flash Sale</span>
             <p className="mt-2 text-sm font-bold text-white">
-              Great Weekend Sale — All Products at ₹99
+              Flash Sale — All Products at ₹99
             </p>
             <p className="text-xs text-emerald-200/80 mt-0.5">
-              Biggest Sale Till Date. Get every product on UPSCPrepNotes at just ₹99.
+              Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
             </p>
           </div>
           <Link
