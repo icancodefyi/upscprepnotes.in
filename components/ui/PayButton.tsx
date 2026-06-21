@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import posthog from "posthog-js";
 
 interface CartItem {
   slug: string;
@@ -91,12 +92,18 @@ export default function PayButton({
   }, [items, productSlug, amount]);
 
   const handlePay = useCallback(async () => {
+    posthog.capture("cart_checkout_clicked", {
+      total_amount: amount,
+      item_slugs: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []),
+      item_count: items?.length || (productSlug ? 1 : 0),
+      tracking,
+    });
     if (!effectiveEmail) {
       setShowEmailPrompt(true);
       return;
     }
     await proceedToCheckout(effectiveEmail);
-  }, [effectiveEmail, proceedToCheckout]);
+  }, [effectiveEmail, proceedToCheckout, amount, items, productSlug, tracking]);
 
   const handleEmailSubmit = useCallback(async () => {
     const trimmed = emailInput.trim();

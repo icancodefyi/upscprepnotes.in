@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { IconArrowLeft, IconShoppingCart, IconCheck, IconStarFilled, IconShoppingBag } from "@tabler/icons-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS } from "@/lib/store-products";
@@ -22,9 +23,24 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
   const { addItem } = useCart();
   const related = PRODUCTS.filter((p) => p.slug !== product.slug && !p.comingSoon).slice(0, 3);
 
+  useEffect(() => {
+    posthog.capture("product_viewed", {
+      product_slug: product.slug,
+      product_title: product.title,
+      product_price: product.price,
+      product_category: product.category,
+    });
+  }, [product.slug, product.title, product.price, product.category]);
+
   function handleAddToCart() {
     addItem(product);
     setCartOpen(true);
+    posthog.capture("add_to_cart", {
+      product_slug: product.slug,
+      product_title: product.title,
+      product_price: product.price,
+      product_category: product.category,
+    });
   }
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import posthog from "posthog-js";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { IconCheck, IconDownload, IconShoppingBag, IconArrowLeft } from "@tabler/icons-react";
@@ -38,6 +39,12 @@ function SuccessInner() {
           if (data.found && data.status === "paid") {
             setOrder(data);
             setLoading(false);
+            posthog.capture("purchase_completed", {
+              order_id: data.orderId,
+              total_amount: data.total,
+              item_slugs: data.items?.map((i: { slug: string }) => i.slug),
+              item_count: data.items?.length,
+            });
           } else if (attempts < maxAttempts) {
             attempts++;
             setTimeout(poll, 1500);

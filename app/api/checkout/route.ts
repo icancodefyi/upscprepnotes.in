@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken } from "@/lib/order-utils";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 function shortRef() {
   return Date.now().toString(36).slice(-6) + Math.random().toString(36).slice(2, 6);
@@ -113,6 +114,20 @@ export async function POST(request: NextRequest) {
         metadata: { ref, total, items: resolvedItems.map(i => i.slug) },
       });
     } catch {}
+
+    const distinctId = email || `anon-${ref}`;
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId,
+      event: "checkout_started",
+      properties: {
+        ref,
+        total_amount: total,
+        item_slugs: resolvedItems.map((i) => i.slug),
+        item_count: resolvedItems.length,
+        email: email || undefined,
+      },
+    });
 
     return NextResponse.json({
       checkoutUrl: session.checkout_url,

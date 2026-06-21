@@ -18,6 +18,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
 import { trackViewItem } from "@/lib/analytics";
 import { trackClientEvent, getVisitorId } from "@/lib/client-analytics";
+import posthog from "posthog-js";
 import ProductRecommendations from "@/components/ProductRecommendations";
 
 export default function AskPageWrapper() {
@@ -432,6 +433,15 @@ function AskPage() {
     trackViewItem("Ask AI Page", 0);
   }, []);
 
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.email) {
+      posthog.identify(session.user.email, {
+        email: session.user.email,
+        name: session.user.name || undefined,
+      });
+    }
+  }, [status, session?.user?.email, session?.user?.name]);
+
   // Migrate anonymous conversations and resend pending message when user signs in
   useEffect(() => {
     if (status === "authenticated" && pendingMessage) {
@@ -506,6 +516,11 @@ function AskPage() {
       messageLength: text.length,
       conversationId: activeId || "new",
       hasHistory: messages.length > 0,
+    });
+    posthog.capture("ai_question_asked", {
+      message_length: text.length,
+      conversation_id: activeId || "new",
+      has_history: messages.length > 0,
     });
 
     try {
@@ -760,6 +775,7 @@ function AskPage() {
             <button
               type="button"
               onClick={() => {
+                posthog.capture("user_signed_in", { method: "google", trigger: "quota_modal" });
                 signIn("google");
                 setShowQuotaModal(false);
               }}
@@ -919,7 +935,10 @@ function AskPage() {
           ) : (
             <button
               type="button"
-              onClick={() => signIn("google")}
+              onClick={() => {
+                posthog.capture("user_signed_in", { method: "google", trigger: "sidebar" });
+                signIn("google");
+              }}
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-zinc-500 transition hover:bg-zinc-50 hover:text-zinc-700"
             >
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24">

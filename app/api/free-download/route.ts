@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
 
@@ -127,6 +128,19 @@ export async function POST(request: NextRequest) {
       source: source || "topper_page",
       sourceUrl: sourceUrl || "",
       available,
+    });
+
+    const posthog = getPostHogClient();
+    posthog.identify({ distinctId: email, properties: { email, name: name || undefined } });
+    posthog.capture({
+      distinctId: email,
+      event: "free_download_requested",
+      properties: {
+        topper_slug: topperSlug,
+        topper_name: topperName,
+        source: source || "topper_page",
+        available,
+      },
     });
 
     if (available) {

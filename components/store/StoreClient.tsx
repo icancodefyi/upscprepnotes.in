@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import posthog from "posthog-js";
 import Link from "next/link";
 import {
   IconShoppingCart,
@@ -79,6 +80,20 @@ export default function StoreClient() {
     );
   }, [search]);
 
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    if (value.trim().length >= 3) {
+      posthog.capture("store_filtered", { query: value, filter_type: "search" });
+    }
+  }, []);
+
+  const handleCategoryChange = useCallback((tab: CategoryTab) => {
+    setCategory(tab);
+    if (tab !== "all") {
+      posthog.capture("store_filtered", { category: tab, filter_type: "category" });
+    }
+  }, []);
+
   return (
     <CartProvider>
       <div className="mx-auto min-h-screen bg-white">
@@ -97,7 +112,7 @@ export default function StoreClient() {
                   data-track="store-search"
                   placeholder="Search..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="w-32 rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-7 pr-2 text-xs outline-none transition focus:w-40 focus:border-gray-300 focus:bg-white sm:w-40 sm:py-2 sm:pl-8 sm:pr-3 sm:text-sm sm:focus:w-56"
                 />
               </div>
@@ -156,7 +171,7 @@ export default function StoreClient() {
                       key={tab.key}
                       type="button"
                       data-track={`store-tab-${tab.key}`}
-                      onClick={() => setCategory(tab.key)}
+                      onClick={() => handleCategoryChange(tab.key)}
                       className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                         category === tab.key
                           ? "bg-gray-900 text-white"

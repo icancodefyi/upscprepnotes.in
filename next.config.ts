@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  skipTrailingSlashRedirect: true,
   async redirects() {
     return [
       {
@@ -19,10 +20,25 @@ const nextConfig: NextConfig = {
       "how-to-write-upsc-mains-answers",
       "upsc-topper-answer-copies",
     ];
-    return contentSlugs.map((slug) => ({
+    const contentRewrites = contentSlugs.map((slug) => ({
       source: `/${slug}`,
       destination: `/content/${slug}`,
     }));
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/array/:path*",
+        destination: "https://us-assets.i.posthog.com/array/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+      ...contentRewrites,
+    ];
   },
 };
 

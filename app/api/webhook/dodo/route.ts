@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken, sendOrderConfirmationEmail, sendAdminNotification } from "@/lib/order-utils";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const dodo = new DodoPayments({
   bearerToken: process.env.DODO_API_KEY!,
@@ -74,6 +75,20 @@ export async function POST(request: NextRequest) {
             metadata: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug) },
           });
         } catch {}
+        const distinctId = customerEmail || existing.email || `anon-${existing.ref}`;
+        const posthog = getPostHogClient();
+        posthog.capture({
+          distinctId,
+          event: "payment_completed",
+          properties: {
+            ref: existing.ref,
+            total_amount: existing.total,
+            item_slugs: existing.items.map((i: any) => i.slug),
+            item_count: existing.items.length,
+            payment_id: paymentId,
+            email: customerEmail || existing.email || undefined,
+          },
+        });
         if (customerEmail) {
           try {
             await sendOrderConfirmationEmail(customerEmail, existing._id.toString().slice(-8).toUpperCase(), existing.items, downloadUrl);
@@ -128,6 +143,21 @@ export async function POST(request: NextRequest) {
         metadata: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug) },
       });
     } catch {}
+
+    const newDistinctId = customerEmail || `anon-${order.ref}`;
+    const posthogNew = getPostHogClient();
+    posthogNew.capture({
+      distinctId: newDistinctId,
+      event: "payment_completed",
+      properties: {
+        ref: order.ref,
+        total_amount: order.total,
+        item_slugs: order.items.map((i: any) => i.slug),
+        item_count: order.items.length,
+        payment_id: paymentId,
+        email: customerEmail || undefined,
+      },
+    });
 
     if (customerEmail) {
       try {
