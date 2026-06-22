@@ -49,18 +49,17 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const gs4 = topper.marks?.gs4 ?? "";
   const essay = topper.marks?.essay ?? "";
   const opt1 = topper.marks?.optional1 ?? "";
-  const opt2 = topper.marks?.optional2 ?? "";
 
   const total = topper.marks?.total ?? "";
-  const parts: string[] = [`${name} AIR ${rank} UPSC marksheet — Total ${total}`];
-  if (essay) parts.push(`Essay ${essay}`);
-  if (gs4) parts.push(`GS4 ${gs4}`);
-  if (gs1) parts.push(`GS1 ${gs1}`);
-  if (gs2) parts.push(`GS2 ${gs2}`);
-  if (gs3) parts.push(`GS3 ${gs3}`);
-  if (opt1 && subject) parts.push(`${subject} ${opt1}/${opt2}`);
-  let desc = parts.join(" · ");
-  desc += `. Full marks & free answer copy PDF.${subject ? ` Optional: ${subject}.` : ""}`;
+  let desc = `${name} AIR ${rank} UPSC marksheet: Total ${total}`;
+  if (essay) desc += ` · Essay ${essay}`;
+  if (gs1) desc += ` · GS1 ${gs1}`;
+  if (gs2) desc += ` · GS2 ${gs2}`;
+  if (gs3) desc += ` · GS3 ${gs3}`;
+  if (gs4) desc += ` · GS4 ${gs4}`;
+  if (opt1 && subject) desc += ` · ${subject} ${opt1}`;
+  desc += `. See the full marks breakdown across all papers & download a free answer copy PDF.`;
+  if (subject) desc += ` Optional: ${subject}.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;
@@ -83,13 +82,13 @@ export async function generateMetadata({ params }: Props) {
     : `https://upscprepnotes.in${topperImage || "/logo.png"}`;
 
   return {
-    title: `${topper.firstName} ${topper.lastName} UPSC Marksheet (Total ${topper.marks.total}) & Answer Copy — AIR ${topper.rank}, ${topper.year}`,
+    title: `${topper.firstName} ${topper.lastName} Answer Copy PDF — Free Download, UPSC Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
     },
     openGraph: {
-      title: `${topper.firstName} ${topper.lastName} UPSC Marksheet (Total ${topper.marks.total}) & Answer Copy — AIR ${topper.rank}, ${topper.year}`,
+      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy & Strategy (AIR ${topper.rank})`,
       description: buildMetaDescription(topper),
       url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
       siteName: "UPSCPrepNotes",
@@ -440,7 +439,7 @@ export default async function TopperPage({ params }: Props) {
           {/* RIGHT */}
           <div>
             <h1 className="text-3xl font-bold leading-tight sm:text-4xl">
-              {topper.firstName} {topper.lastName} UPSC Marksheet (Total {topper.marks.total}) &amp; Answer Copy — AIR {topper.rank}, {topper.year}
+              {topper.firstName} {topper.lastName} — UPSC Marksheet, {topper.optionalSubject || "Optional Subject"} Answer Copy &amp; Strategy
             </h1>
             <p className="mt-1 text-lg text-primary font-medium">
               AIR {topper.rank} &middot; {topper.marks.total} Total Marks
