@@ -112,15 +112,11 @@ function ListTestimonial() {
           The answer copies were the closest thing to having a mentor sit beside you. Seeing exactly how AIR 9 and AIR 16 structured their answers changed how I approached every paper.
         </p>
         <div className="list-testimonial__source">
-          <div className="list-testimonial__avatar">AG</div>
+            <div className="list-testimonial__avatar">SR</div>
           <div>
-            <p className="list-testimonial__name">Anupama Gaur</p>
+            <p className="list-testimonial__name">Sample Reviewer</p>
             <p className="list-testimonial__meta">
-              Anthropology Optional · Verified buyer
-              <span className="list-testimonial__verified">
-                <IconCheck size={8} />
-                Verified
-              </span>
+              Preview · Not a verified purchase
             </p>
           </div>
         </div>
