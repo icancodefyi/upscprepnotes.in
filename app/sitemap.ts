@@ -1,9 +1,7 @@
 import { MetadataRoute } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
-import { PYQModel } from "@/models/pyq.model";
-import { PDFModel } from "@/models/pdf.model";
-import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
+
 import { PRODUCTS } from "@/lib/store-products";
 import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
@@ -13,11 +11,6 @@ import answerWritingPage from "@/data/content/how-to-write-upsc-mains-answers";
 import syllabusHindiPage from "@/data/content/upsc-syllabus-hindi";
 import freeMaterialHindiPage from "@/data/content/upsc-free-material-hindi";
 import answerWritingHindiPage from "@/data/content/how-to-write-upsc-mains-answers-hindi";
-
-const OPTIONAL_SUBJECTS = [
-  "psir", "public-administration", "mathematics", "sociology",
-  "geography", "philosophy", "anthropology", "history",
-];
 
 const CONTENT_SLUGS = [
   "upsc-full-form",
@@ -30,8 +23,6 @@ const CONTENT_SLUGS = [
   "upsc-free-material-hindi",
   "how-to-write-upsc-mains-answers-hindi",
 ];
-
-const YEAR_KEYS = ["2022", "2023", "2024", "2025"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://upscprepnotes.in";
@@ -86,47 +77,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // PYQ year pages — use latest PYQ model update as timestamp
-  const latestPYQ = await PYQModel.findOne({}).sort({ updatedAt: -1 }).select("updatedAt").lean();
-  const pyqLastModified = (latestPYQ as any)?.updatedAt || new Date();
-  const pyqYears = await getAllPYQYears();
-  const pyqPages: MetadataRoute.Sitemap = pyqYears.map((year) => ({
-    url: `${baseUrl}/pyq/${year}`,
-    lastModified: new Date(pyqLastModified),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  // Optional subject pages — use latest topper update as signal
-  const latestOptionalTopper = await TopperModel.findOne({})
-    .sort({ updatedAt: -1 })
-    .select("updatedAt")
-    .lean();
-  const optionalLastModified = (latestOptionalTopper as any)?.updatedAt || new Date();
-  const optionalPages: MetadataRoute.Sitemap = OPTIONAL_SUBJECTS.map((sub) => ({
-    url: `${baseUrl}/optional/${sub}`,
-    lastModified: new Date(optionalLastModified),
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
-
-  // PDF resource pages
-  const pdfs = await PDFModel.find({}).select("slug updatedAt").lean();
-  const pdfPages: MetadataRoute.Sitemap = pdfs.map((p: any) => ({
-    url: `${baseUrl}/free-materials/${p.slug}`,
-    lastModified: p.updatedAt || new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
-  // Year pages
-  const yearPages: MetadataRoute.Sitemap = YEAR_KEYS.map((year) => ({
-    url: `${baseUrl}/year/${year}`,
-    lastModified: new Date(pyqLastModified),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
   // Store pages
   const storePages: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/store`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.9 },
@@ -142,10 +92,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticPages,
     ...contentPages,
     ...topperPages,
-    ...pyqPages,
-    ...optionalPages,
-    ...yearPages,
-    ...pdfPages,
     ...storePages,
   ];
 }

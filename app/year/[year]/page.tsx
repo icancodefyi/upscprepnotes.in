@@ -3,6 +3,29 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 
+const OPTIONAL_SLUG_MAP: Record<string, string> = {
+  "Political Science & International Relations": "psir",
+  "Public Administration": "public-administration",
+  Mathematics: "mathematics",
+  Sociology: "sociology",
+  Geography: "geography",
+  Philosophy: "philosophy",
+  Anthropology: "anthropology",
+  History: "history",
+};
+
+function renderOptionalLink(name: string | null | undefined) {
+  if (!name) return "—";
+  const slug = OPTIONAL_SLUG_MAP[name];
+  return slug ? (
+    <Link href={`/optional/${slug}`} className="text-blue-600 underline underline-offset-2 hover:text-blue-800">
+      {name}
+    </Link>
+  ) : (
+    <span>{name}</span>
+  );
+}
+
 interface Props {
   params: Promise<{ year: string }>;
 }
@@ -330,7 +353,7 @@ export default async function YearPage({ params }: Props) {
                             {t.firstName} {t.lastName}
                           </Link>
                         </td>
-                        <td className="p-4 text-zinc-600">{t.optionalSubject || "—"}</td>
+                        <td className="p-4 text-zinc-600">{renderOptionalLink(t.optionalSubject)}</td>
                         <td className="p-4">{t.marks.gs1 || "—"}</td>
                         <td className="p-4">{t.marks.gs2 || "—"}</td>
                         <td className="p-4">{t.marks.gs3 || "—"}</td>

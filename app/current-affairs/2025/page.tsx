@@ -14,7 +14,7 @@ const totalEvents = (() => {
 })();
 
 export const metadata: Metadata = {
-  title: "Current Affairs 2025 – Complete Yearly Compilation (All 12 Months) for UPSC | UPSCPrepNotes",
+  title: "Current Affairs 2025 – Complete Yearly Compilation (All 12 Months) for UPSC",
   description:
     `Complete current affairs 2025 compilation for UPSC preparation covering all 12 months (January to December 2025) with ${totalEvents}+ important events across 11 sections: national news, international relations, economy, environment, science & tech, schemes, reports, awards, appointments, sports. Free PDF download.`,
   openGraph: {

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "Download free UPSC study material PDFs including test series from Vision IAS, Forum IAS, Insights IAS, notes by MK Yadav, Drishti IAS, and more. Updated daily.",
   alternates: { canonical: "https://upscprepnotes.in/free-materials" },
   openGraph: {
-    title: "Free UPSC Study Material — UPSCPrepNotes",
+    title: "Free UPSC Study Material — Test Series, Notes, Books & Magazines",
     description: "Download free UPSC study material: test series, coaching notes, books, magazines, and current affairs compilations.",
     url: "https://upscprepnotes.in/free-materials",
   },

@@ -42,7 +42,7 @@ export async function generateMetadata({
   const data = await getPYQByYear(year);
 
   if (!data) {
-    return { title: "PYQ Not Found - UPSCPrepNotes" };
+    return { title: "PYQ Not Found" };
   }
 
   return {
@@ -570,8 +570,8 @@ export default async function PYQYearPage({ params }: Props) {
               </h3>
               <div className="space-y-3">
                 <a
-                  href="/toppers"
-                  data-track="pyq-related-toppers"
+                  href={`/year/${year}`}
+                  data-track="pyq-related-year"
                   className="flex items-center justify-between p-3 bg-gray-50 border-2 border-gray-100 hover:border-black transition-all group"
                 >
                   <span className="text-sm font-medium text-gray-700 group-hover:text-black">

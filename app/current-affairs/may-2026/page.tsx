@@ -4,7 +4,7 @@ import CurrentAffairsClient from "./CurrentAffairsClient";
 import { MAY_2026 } from "@/lib/current-affairs-content";
 
 export const metadata: Metadata = {
-  title: "Current Affairs May 2026 – Latest Monthly Current Affairs for UPSC | UPSCPrepNotes",
+  title: "Current Affairs May 2026 – Latest Monthly Current Affairs for UPSC",
   description:
     "Current affairs May 2026 for UPSC preparation. Latest edition with 55 topics across 11 sections covering national news, international relations, economy, environment, science & tech, schemes, awards, sports. Includes interactive quiz, AI explanations, and free PDF download. Updated daily.",
   openGraph: {

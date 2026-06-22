@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: "https://upscprepnotes.in/privacy-policy",
   },
   openGraph: {
-    title: "Privacy Policy — UPSCPrepNotes",
+  title: "Privacy Policy — UPSC Study Material Platform",
     description:
       "Information regarding analytics, usage data, and platform privacy.",
     url: "https://upscprepnotes.in/privacy-policy",

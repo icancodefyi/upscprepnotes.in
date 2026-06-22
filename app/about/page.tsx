@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     canonical: "https://upscprepnotes.in/about",
   },
   openGraph: {
-    title: "About — UPSCPrepNotes",
+  title: "About — UPSC Preparation Intelligence Platform",
     description:
       "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
     url: "https://upscprepnotes.in/about",

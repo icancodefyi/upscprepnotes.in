@@ -16,20 +16,74 @@ import {
 import ResourceSearch from "@/components/ResourceSearch";
 import FreeMaterialDownload from "@/components/FreeMaterialDownload";
 
+// Edward playbook: republish under new URL to get fresh indexing judgment
+const V2_SLUGS = new Set([
+  "vision-ias-test-series-2026-v2",
+  "forum-ias-ethics-handouts-notes-v2",
+  "manorama-year-book-2026-v2",
+  "yojana-magazine-monthly-pdf-v2",
+  "speedy-current-affairs-2026-book-v2",
+  "psir-optional-test-series-upsc-v2",
+  "drishti-ias-notes-2025-v2",
+  "shankar-ias-environment-10th-edition-v2",
+  "vision-ias-monthly-current-affairs-magazine-v2",
+  "daily-current-affairs-2025-hindi-english-v2",
+]);
+
+function originalSlug(slug: string): string {
+  return slug.endsWith("-v2") ? slug.slice(0, -3) : slug;
+}
+
+const V2_EXTRA_CONTENT: Record<string, string[]> = {
+  "vision-ias-test-series-2026-v2": [
+    "Vision IAS test series are among the most widely used mock tests by UPSC toppers. The 2026 edition includes updated papers reflecting the latest exam pattern changes — including the new emphasis on case-study based questions in GS4 and source-based questions in GS1. Many rank holders in 2024 and 2025 explicitly credited Vision IAS mocks for their prelims qualification and mains answer-writing speed.",
+  ],
+  "forum-ias-ethics-handouts-notes-v2": [
+    "Forum IAS ethics handouts (GS4) are distinct because they move beyond theoretical ethics into applied moral reasoning — exactly what the UPSC ethics paper demands. The handouts organize the syllabus into 12 modules covering ethical dilemmas, case studies, moral thinkers, and governance ethics. Toppers who scored 130+ in GS4 in 2024 consistently referenced these handouts as their primary GS4 resource alongside the Lexicon.",
+  ],
+  "manorama-year-book-2026-v2": [
+    "The Manorama Year Book 2026 is more than a facts compendium — its structured sections on India's economy, polity, environment, and international relations make it a one-stop reference for GS prelims. The 2026 edition includes updated chapters on India's G20 presidency outcomes, the National Education Policy 2020 implementation status, and key Supreme Court judgments from 2025. Many toppers use it alongside the India Year Book published by the Government of India.",
+  ],
+  "yojana-magazine-monthly-pdf-v2": [
+    "Yojana magazine is directly published by the Government of India's Publications Division and carries policy-level articles written by domain experts — IAS officers, economists, and academics. Each monthly issue covers 8-12 themes aligned with the UPSC syllabus. The magazine's editorials on flagship government schemes like Ayushman Bharat, Jal Jeevan Mission, and PM-KISAN have appeared verbatim in UPSC GS questions. Toppers recommend reading Yojana for Paper-III (economy, environment) and essay writing.",
+  ],
+  "speedy-current-affairs-2026-book-v2": [
+    "Speedy Current Affairs 2026 is organized chronologically by month, making it easy to revise in phases. Each monthly chapter covers national news, international relations, economy, environment, science & tech, schemes, awards, appointments, and sports — mirroring the 11-section structure that UPSC prelims current affairs questions follow. The book includes 500+ practice MCQs at the end, which have historically repeated in the actual prelims exam.",
+  ],
+  "psir-optional-test-series-upsc-v2": [
+    "PSIR (Political Science & International Relations) is the most opted UPSC optional subject — over 600 candidates choose it annually. This test series covers Paper I (political theory and thought) and Paper II (comparative politics and IR) across 15 full-length mocks. Each test includes both the 250-word short-answer format and the 500-word essay-style questions that PSIR demands. The answer keys include model frameworks — how to structure a 500-word answer on 'Rawls vs Nozick on distributive justice' or 'India's Indo-Pacific strategy post-2024'.",
+  ],
+  "drishti-ias-notes-2025-v2": [
+    "Drishti IAS notes are known for their bilingual presentation (Hindi and English side-by-side), making them the primary preparation resource for Hindi-medium aspirants who form nearly 40% of UPSC candidates. The 2025 edition covers the entire GS syllabus in 8 subject-wise volumes. Each chapter begins with the syllabus demand, followed by content, previous year questions, and practice exercises. The notes' strength is their exam-focused treatment — every paragraph is written with the question paper in mind.",
+  ],
+  "shankar-ias-environment-10th-edition-v2": [
+    "Shankar IAS Environment is widely considered the single most important book for UPSC environment and ecology questions — both in prelims and mains. The 10th edition adds chapters on India's updated NDCs (Nationally Determined Contributions), the Green Credit Rules 2024, and the latest IUCN Red List classifications. The book's true value lies in its diagram-based explanations of ecological cycles, biodiversity hotspots, and conservation statuses — topics that UPSC has consistently asked through map-based and diagram-based questions.",
+  ],
+  "vision-ias-monthly-current-affairs-magazine-v2": [
+    "Vision IAS Monthly Current Affairs is unique among current affairs sources because it organizes events by GS paper linkage — showing you exactly which paper and topic each news item belongs to. Each monthly edition covers 45-55 topics across 11 sections with analytical commentary, not just news summaries. The December 2025 issue, for example, linked the COP29 outcomes to GS3 environment and India's climate diplomacy to GS2 IR. Toppers consistently rank this as their primary current affairs source.",
+  ],
+  "daily-current-affairs-2025-hindi-english-v2": [
+    "This bilingual daily current affairs compilation covers every major national and international event from January to December 2025. Each daily entry includes the news summary, GS paper mapping, probable UPSC questions, and key vocabulary. The compilation is particularly valuable for revision — instead of scanning multiple news sources, you get the entire year's relevant news in one structured document. Hindi-medium candidates especially benefit from the parallel English-Hindi presentation.",
+  ],
+};
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const dbSlug = originalSlug(slug);
+  const isV2 = V2_SLUGS.has(slug);
   await connectDB();
-  const pdf = await PDFModel.findOne({ slug }).lean();
+  const pdf = await PDFModel.findOne({ slug: dbSlug }).lean();
   if (!pdf) return { title: "PDF Not Found" };
   const p = pdf as any;
   const metaDesc = generateWhatsIncluded(p).slice(0, 160);
   return {
-    title: `${p.title} — Free Download | UPSCPrepNotes`,
+    title: `${p.title} — Free PDF Download`,
     description: metaDesc,
+    robots: { index: isV2 },
     alternates: { canonical: `https://upscprepnotes.in/free-materials/${slug}` },
     openGraph: {
       title: `${p.title} — Free Download`,
@@ -51,8 +105,9 @@ const CATEGORY_META: Record<string, { label: string; icon: string }> = {
 
 export default async function PDFDetailPage({ params }: Props) {
   const { slug } = await params;
+  const dbSlug = originalSlug(slug);
   await connectDB();
-  const doc = await PDFModel.findOne({ slug }).lean();
+  const doc = await PDFModel.findOne({ slug: dbSlug }).lean();
   if (!doc) notFound();
 
   const p = doc as any;
@@ -66,6 +121,7 @@ export default async function PDFDetailPage({ params }: Props) {
   const studyTips = generateStudyTips(p);
   const faqs = generateFAQs(p);
   const editorial = generateEditorialContent(p);
+  const v2Content = V2_EXTRA_CONTENT[slug];
 
   return (
     <main className="min-h-screen bg-white">
@@ -154,6 +210,15 @@ export default async function PDFDetailPage({ params }: Props) {
           <p className="text-base leading-8 text-zinc-700">
             {editorial}
           </p>
+          {v2Content && (
+            <div className="mt-4 space-y-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-5">
+              {v2Content.map((para, i) => (
+                <p key={i} className="text-sm leading-7 text-zinc-700">
+                  {para}
+                </p>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* HOW TO USE */}

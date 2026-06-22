@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: "https://upscprepnotes.in/disclaimer",
   },
   openGraph: {
-    title: "Disclaimer — UPSCPrepNotes",
+  title: "Disclaimer — UPSC Study Material & Topper Data",
     description:
       "Educational and informational use disclaimer.",
     url: "https://upscprepnotes.in/disclaimer",

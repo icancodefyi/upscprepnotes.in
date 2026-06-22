@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Current Affairs PDF – Free Monthly & Yearly PDF Download for UPSC | UPSCPrepNotes",
+  title: "Current Affairs PDF – Free Monthly & Yearly Download for UPSC",
   description:
     "Download free current affairs PDF for UPSC preparation. Monthly editions (May 2026) with 55 topics across 11 sections. Yearly compilation (2025) with 400+ events. Free PDF downloads for UPSC Prelims, Mains & Interview.",
   openGraph: {

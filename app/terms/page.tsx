@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: "https://upscprepnotes.in/terms",
   },
   openGraph: {
-    title: "Terms & Conditions — UPSCPrepNotes",
+  title: "Terms & Conditions — UPSC Study Material Usage",
     description:
       "Platform usage terms and conditions.",
     url: "https://upscprepnotes.in/terms",

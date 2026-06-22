@@ -636,7 +636,11 @@ export default async function SubjectPage({ params }: Props) {
                         {t.firstName} {t.lastName}
                       </Link>
                     </td>
-                    <td className="p-4 text-zinc-600">{t.year}</td>
+                    <td className="p-4 text-zinc-600">
+                      <Link href={`/year/${t.year}`} className="text-blue-600 underline underline-offset-2 hover:text-blue-800">
+                        {t.year}
+                      </Link>
+                    </td>
                     <td className="p-4">{t.marks.optional1 || "—"}</td>
                     <td className="p-4">{t.marks.optional2 || "—"}</td>
                     <td className="p-4">{t.marks.essay || "—"}</td>

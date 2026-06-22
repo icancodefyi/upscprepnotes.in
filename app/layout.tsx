@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: {
     default: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
-    template: "%s | UPSCPrepNotes",
+    template: "%s",
   },
   description:
     "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies (GS1–4, Essay, Optional), marks breakdowns, optional subject analysis, and AI-powered preparation insights.",

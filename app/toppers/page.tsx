@@ -32,7 +32,7 @@ export default async function ToppersPage() {
         <ToppersSearch toppers={toppers} />
 
         {/* Free Materials CTA */}
-        <div className="mt-16 max-w-3xl mx-auto">
+        <div className="mt-16 max-w-3xl mx-auto space-y-4">
           <div className="rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-100 border border-blue-200">
@@ -53,6 +53,24 @@ export default async function ToppersPage() {
               </Link>
             </div>
           </div>
+          <Link
+            href="/toppers/marks-database"
+            data-track="toppers-marks-database"
+            className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 hover:border-emerald-400 transition-all group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100 border border-emerald-200">
+                <span className="text-xl">📊</span>
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-emerald-900">UPSC Topper Marks Database</h2>
+                <p className="mt-0.5 text-sm text-emerald-700">
+                  Sortable marksheets for 50+ rank holders — compare GS papers, optional scores, interview marks, and totals.
+                </p>
+              </div>
+            </div>
+            <span className="text-emerald-500 group-hover:text-emerald-700 transition-colors">&rarr;</span>
+          </Link>
         </div>
       </div>
     </main>
