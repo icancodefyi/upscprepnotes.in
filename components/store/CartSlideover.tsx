@@ -79,12 +79,14 @@ export default function CartSlideover({ open, onClose }: Props) {
             <div className="space-y-3 sm:space-y-4">
               {items.map((item) => (
                 <div key={item.product.slug} className="flex gap-2 rounded-lg border border-gray-100 p-2 sm:gap-3 sm:p-3">
-                  <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg sm:h-16 sm:w-16 ${item.product.gradient}`}
-                  >
-                    <span className="text-base font-black text-white sm:text-lg">
-                      {item.product.title.charAt(0)}
-                    </span>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-50 sm:h-16 sm:w-16">
+                    {item.product.image ? (
+                      <img src={item.product.image} alt={item.product.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className={`flex h-full w-full items-center justify-center ${item.product.gradient}`}>
+                        <span className="text-base font-black text-white sm:text-lg">{item.product.title.charAt(0)}</span>
+                      </div>
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
                     <Link
@@ -181,8 +183,14 @@ function CartCrossSell({ cartSlugs }: { cartSlugs: string[] }) {
       <div className="mt-2 space-y-2">
         {recommendations.map((product) => (
           <div key={product.slug} className="flex items-center gap-2">
-            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${product.gradient}`}>
-              <span className="text-[10px] font-black text-white">{product.title.charAt(0)}</span>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-gray-50">
+              {product.image ? (
+                <img src={product.image} alt={product.title} className="h-full w-full object-cover" />
+              ) : (
+                <div className={`flex h-full w-full items-center justify-center ${product.gradient}`}>
+                  <span className="text-[10px] font-black text-white">{product.title.charAt(0)}</span>
+                </div>
+              )}
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold text-gray-800">{product.title}</p>
