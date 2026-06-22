@@ -12,6 +12,7 @@ const OPTIONAL_SLUG_MAP: Record<string, string> = {
   Philosophy: "philosophy",
   Anthropology: "anthropology",
   History: "history",
+  "Commerce & Accountancy": "commerce-accountancy",
 };
 
 function renderOptionalLink(name: string | null | undefined) {

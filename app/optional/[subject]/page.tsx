@@ -289,6 +289,40 @@ const SUBJECT_DATA: Record<string, SubjectInfo> = {
     ],
     scoringTrend: "History is a high-scoring optional with scores typically ranging 260-320. The subject rewards analytical depth, historiographical awareness, and structured presentation. Toppers with History optional frequently rank in the top-50.",
   },
+  "commerce-accountancy": {
+    name: "Commerce & Accountancy",
+    description: "Commerce and Accountancy optional for UPSC: financial accounting, cost accounting, auditing, business finance — ideal for candidates with a commerce background.",
+    overview: "Commerce and Accountancy as a UPSC optional covers two papers: Paper I includes accounting principles, financial accounting, cost accounting, and taxation; Paper II covers auditing, business finance, financial management, and company law. The subject is particularly suited for candidates with a background in commerce (B.Com, M.Com, CA, CS, CMA) as it leverages their existing knowledge. Commerce & Accountancy is one of the few optional subjects with a largely objective evaluation framework — numerical accuracy and conceptual precision are directly rewarded.",
+    whyPopular: "Commerce and Accountancy is popular among commerce graduates and CA/CS professionals who already possess strong foundational knowledge. The syllabus overlaps significantly with standard commerce curricula at the undergraduate level, reducing additional preparation time. The subject offers predictable question patterns and objective marking — particularly in accounting and costing sections — making it one of the more scoring optionals when prepared systematically.",
+    booklist: [
+      "S.N. Maheshwari — Financial Accounting",
+      "S.P. Jain & K.L. Narang — Cost Accounting",
+      "K.S. Aiyangar — Auditing Principles and Practice",
+      "V.K. Bhalla — Financial Management",
+      "N.D. Kapoor — Company Law and Secretarial Practice",
+      "M.C. Shukla — Advanced Accounting",
+      "Shashi K. Gupta — Business Finance",
+      "M.N. Arora — Cost and Management Accounting",
+    ],
+    syllabusTopics: [
+      "Financial accounting: concepts, conventions, preparation of final accounts",
+      "Cost accounting: cost sheets, marginal costing, standard costing, variance analysis",
+      "Auditing: principles, techniques, audit of limited companies, EDP auditing",
+      "Business finance: sources of finance, capital structure, working capital management",
+      "Taxation: basic concepts, income tax framework, GST fundamentals",
+      "Company law: incorporation, meetings, winding up, corporate governance",
+      "Financial management: ratio analysis, fund flow, cash flow analysis",
+    ],
+    prepInsights: [
+      "Master the accounting cycle and preparation of final accounts — these are foundational for Paper I.",
+      "Practice numerical problems daily: cost sheets, variance analysis, ratio analysis, and fund flow statements.",
+      "For auditing, focus on standard auditing practices, vouching, verification, and audit reports.",
+      "Memorise key sections of the Companies Act — these are frequently tested in Paper II.",
+      "Use previous year question papers to identify recurring themes — accounting standards, cost methods, and audit procedures are common.",
+      "Maintain a formula sheet for all ratios, costing formulas, and tax calculations for quick revision.",
+    ],
+    scoringTrend: "Commerce and Accountancy is a consistent scorer with marks typically ranging 260-320. The objective nature of accounting and costing sections rewards precise numerical skills. Candidates with strong CA/CS backgrounds often score 300+.",
+  },
   philosophy: {
     name: "Philosophy",
     description: "Philosophy optional: Indian and Western philosophical thought and applied ethics — a niche subject for analytical thinkers with high-scoring potential.",
@@ -335,7 +369,7 @@ const SUBJECT_DATA: Record<string, SubjectInfo> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subject } = await params;
-  const subjectKey = subject.toLowerCase();
+  const subjectKey = subject.toLowerCase().replace(/\s+/g, "-");
   const subjectInfo = SUBJECT_DATA[subjectKey];
 
   if (!subjectInfo) {
@@ -425,7 +459,7 @@ function computeSubjectInsights(subjectName: string, toppers: TopperData[]) {
 
 export default async function SubjectPage({ params }: Props) {
   const { subject } = await params;
-  const subjectKey = subject.toLowerCase();
+  const subjectKey = subject.toLowerCase().replace(/\s+/g, "-");
   const subjectInfo = SUBJECT_DATA[subjectKey];
 
   if (!subjectInfo) {

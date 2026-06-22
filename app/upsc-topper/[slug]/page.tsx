@@ -130,9 +130,11 @@ export default async function TopperPage({ params }: Props) {
       anthropology: "anthropology",
       history: "history",
       law: "law",
+      "commerce & accountancy": "commerce-accountancy",
+      commerce: "commerce-accountancy",
     };
     if (slugMap[s]) return slugMap[s];
-    return s.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return s.replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
   }
 
   // Strategy section restructuring
@@ -716,6 +718,94 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
+        {/* RESOURCE AVAILABILITY — which answer copies exist */}
+        {(() => {
+          const copies = topper.answerCopies || {};
+          const available = Object.entries({
+            Essay: copies.essay,
+            "GS1": copies.gs1,
+            "GS2": copies.gs2,
+            "GS3": copies.gs3,
+            "GS4": copies.gs4,
+          }).filter(([, urls]) => urls && urls.length > 0);
+          const totalPapers = 5;
+          const availableCount = available.length;
+          return (
+            <section className="mt-12">
+              <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Answer Copy Availability</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Which answer copies are available for this topper</p>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {["Essay", "GS1", "GS2", "GS3", "GS4"].map((paper) => {
+                  const key = paper.toLowerCase() === "essay" ? "essay" : paper.toLowerCase();
+                  const urls = copies[key as keyof typeof copies];
+                  const isAvailable = Array.isArray(urls) && urls.length > 0;
+                  return (
+                    <div key={paper} className={`rounded-xl border p-4 text-center ${isAvailable ? "border-emerald-200 bg-emerald-50" : "border-border/50 bg-card opacity-60"}`}>
+                      <p className={`text-xs font-semibold uppercase tracking-wider ${isAvailable ? "text-emerald-700" : "text-muted-foreground"}`}>
+                        {isAvailable ? "Available" : "Coming Soon"}
+                      </p>
+                      <p className="mt-1 text-sm font-bold">{paper}</p>
+                      {isAvailable && (
+                        <p className="mt-0.5 text-[10px] text-emerald-600">{urls.length} copy{urls.length > 1 ? "ies" : "y"}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                {availableCount === totalPapers
+                  ? `All ${totalPapers} answer copies are available for ${topper.firstName} ${topper.lastName}.`
+                  : `${availableCount} of ${totalPapers} paper copies available for ${topper.firstName} ${topper.lastName}${availableCount > 0 ? ". Download a free sample above" : " — check back soon"}.`}
+              </p>
+            </section>
+          );
+        })()}
+
+        {/* MARKS IN CONTEXT */}
+        {(() => {
+          const m = topper.marks;
+          const papers = [
+            { label: "Essay", value: m.essay },
+            { label: "GS1", value: m.gs1 },
+            { label: "GS2", value: m.gs2 },
+            { label: "GS3", value: m.gs3 },
+            { label: "GS4", value: m.gs4 },
+          ].filter(p => p.value > 0);
+          if (papers.length === 0) return null;
+          const sorted = [...papers].sort((a, b) => b.value - a.value);
+          const best = sorted[0];
+          const weakest = sorted[sorted.length - 1];
+          const gap = best.value - weakest.value;
+          return (
+            <section className="mt-12">
+              <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Marks Intelligence</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Paper-wise breakdown and performance analysis</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Strongest</p>
+                  <p className="mt-1 text-lg font-bold">{best.label}</p>
+                  <p className="text-sm text-emerald-700">{best.value} marks</p>
+                </div>
+                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">Scope to Improve</p>
+                  <p className="mt-1 text-lg font-bold">{weakest.label}</p>
+                  <p className="text-sm text-amber-700">{weakest.value} marks</p>
+                </div>
+                <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">Marks Gap</p>
+                  <p className="mt-1 text-lg font-bold">{gap} marks</p>
+                  <p className="text-sm text-blue-700">Between best &amp; weakest paper</p>
+                </div>
+              </div>
+              {topper.optionalSubject && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {topper.firstName} scored {m.optional1 + m.optional2} marks in {topper.optionalSubject} optional (Paper 1: {m.optional1}, Paper 2: {m.optional2}) — this contributed {(m.optional1 + m.optional2) > 0 ? Math.round((m.optional1 + m.optional2) / m.total * 100) : 0}% of total marks.
+                </p>
+              )}
+            </section>
+          );
+        })()}
+
         {/* RELATED TOPPERS — moved higher for internal linking value */}
         {sameYearToppers.length > 0 && (
           <section className="mt-12">
@@ -876,6 +966,28 @@ export default async function TopperPage({ params }: Props) {
                   ? `${topper.firstName}'s book list and recommended resources are detailed in the preparation strategy section above.`
                   : `Book recommendations for ${topper.firstName} ${topper.lastName} are not separately listed. Check the strategy section for their subject-wise preparation approach.`,
               },
+              {
+                q: `Did ${topper.firstName} ${topper.lastName} take any coaching for UPSC?`,
+                a: topper.strategy?.toLowerCase().includes("coaching")
+                  ? `${topper.firstName}'s coaching details are covered in the preparation strategy section.`
+                  : `Coaching details for ${topper.firstName} ${topper.lastName} are not explicitly mentioned. Many top-ranked toppers, especially those with AIR under 50, rely on a combination of self-study and test series.`,
+              },
+              {
+                q: `What was ${topper.firstName} ${topper.lastName}'s GS1 strategy?`,
+                a: `${topper.firstName} ${topper.lastName} scored ${topper.marks.gs1} marks in GS1 (Indian Heritage & Culture, History, Geography). ${topper.strategy?.toLowerCase().includes("gs1") ? "Their GS1 preparation approach is covered in the strategy section above." : "For GS1 preparation strategies, refer to the detailed approach outlined in the strategy section."}`,
+              },
+              {
+                q: `How many hours did ${topper.firstName} ${topper.lastName} study daily?`,
+                a: `Daily study hours for ${topper.firstName} ${topper.lastName} are discussed in the preparation strategy section above when available. Most UPSC toppers maintain 6-8 hours of focused study during peak preparation, with variations based on their work status and personal circumstances.`,
+              },
+              {
+                q: `What was ${topper.firstName} ${topper.lastName}'s optional subject preparation strategy?`,
+                a: `${topper.firstName} chose ${topper.optionalSubject} as their optional subject. ${topper.strategy?.toLowerCase().includes(topper.optionalSubject?.toLowerCase() || "") ? "Their optional subject strategy is covered in the preparation section above." : `The strategy section above details ${topper.firstName}'s overall approach, including optional subject preparation where available.`} ${topper.optionalSubject} has produced strong results in UPSC CSE — for more toppers who opted for this subject, visit the <a href="/optional/${getSubjectSlug(topper.optionalSubject)}" class="text-emerald-600 font-semibold underline">${topper.optionalSubject} optional page</a>.`,
+              },
+              {
+                q: `Where is ${topper.firstName} ${topper.lastName} now?`,
+                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. After selection, UPSC toppers typically undergo training at Lal Bahadur Shastri National Academy of Administration (LBSNAA), Mussoorie, followed by service-specific training. Their current posting and service allocation details are updated when available.`,
+              },
             ].map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">
                 <h3 className="text-sm font-semibold">{faq.q}</h3>
@@ -886,6 +998,47 @@ export default async function TopperPage({ params }: Props) {
             ))}
           </div>
         </section>
+
+        {/* ALSO VIEW — interlinks top 5 winning pages */}
+        {[{
+          name: "Divya Tanwar", slug: "divya-tanwar", rank: 52, year: 2024,
+        }, {
+          name: "Garima Lohia", slug: "garima-lohia", rank: 2, year: 2024,
+        }, {
+          name: "Uma Harathi", slug: "uma-harathi-n", rank: 3, year: 2024,
+        }, {
+          name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
+        }, {
+          name: "Komal Meena", slug: "komal-meena", rank: 47, year: 2024,
+        }].filter(t => t.slug !== topper.slug).slice(0, 4).length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Popular topper pages — answer copies, marksheets &amp; strategies</p>
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[{
+                name: "Divya Tanwar", slug: "divya-tanwar", rank: 52, year: 2024,
+              }, {
+                name: "Garima Lohia", slug: "garima-lohia", rank: 2, year: 2024,
+              }, {
+                name: "Uma Harathi", slug: "uma-harathi-n", rank: 3, year: 2024,
+              }, {
+                name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
+              }, {
+                name: "Komal Meena", slug: "komal-meena", rank: 47, year: 2024,
+              }].filter(t => t.slug !== topper.slug).slice(0, 4).map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/upsc-topper/${t.slug}`}
+                  data-track={`topper-also-view-${t.slug}`}
+                  className="rounded-xl border border-border/50 bg-card p-4 text-center transition hover:-translate-y-px hover:border-primary/20"
+                >
+                  <p className="text-xs text-muted-foreground">AIR {t.rank} &middot; {t.year}</p>
+                  <p className="mt-1 text-sm font-semibold">{t.name}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* EXPLORE MORE */}
         <section className="mt-12">
