@@ -13,6 +13,7 @@ import type { ProductCategory } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
+import FakePurchaseToast from "./FakePurchaseToast";
 
 type SortOption = "featured" | "price-low" | "price-high" | "rating";
 
@@ -248,16 +249,12 @@ export default function StoreClient() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              Recent purchases
+              Recent purchase
             </div>
-            <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1.5 text-xs text-gray-600">
+            <div className="mt-2 text-xs text-gray-600">
               <span className="inline-flex items-center gap-1">
                 <svg className="h-3 w-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                 Anupama Gaur — <strong>Answer Copies Compilation</strong>
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <svg className="h-3 w-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-                Payush Patel — <strong>All Strategy Reports</strong>
               </span>
             </div>
           </div>
@@ -293,6 +290,7 @@ export default function StoreClient() {
         </div>
       </div>
       <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
+      <FakePurchaseToast />
     </CartProvider>
   );
 }

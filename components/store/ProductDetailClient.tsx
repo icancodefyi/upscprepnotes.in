@@ -10,6 +10,7 @@ import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
 import { TOPPERS } from "@/components/topper/sales-page-data";
+import FakePurchaseToast from "./FakePurchaseToast";
 
 export default function ProductDetailClient({ product }: { product: StoreProduct }) {
   return (
@@ -63,7 +64,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
         <div className="flex flex-col gap-6 lg:grid lg:grid-cols-5 lg:gap-10 lg:items-start">
           {/* Left: Image + content */}
           <div className="lg:col-span-3">
-            {product.image ? (
+            {product.images ? (
+              <ImageCarousel images={product.images} title={product.title} />
+            ) : product.image ? (
               <div className="overflow-hidden rounded-xl bg-gray-50">
                 <img
                   src={product.image}
@@ -251,6 +254,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
         )}
       </div>
       <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
+      <FakePurchaseToast />
     </div>
   );
 }
@@ -379,5 +383,37 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
         Secure payment · PDF delivered instantly
       </p>
     </>
+  );
+}
+
+function ImageCarousel({ images, title }: { images: string[]; title: string }) {
+  const [active, setActive] = useState(0);
+
+  return (
+    <div className="overflow-hidden rounded-xl bg-gray-50">
+      <img
+        src={images[active]}
+        alt={`${title} - ${active + 1}`}
+        width={464}
+        height={600}
+        className="w-full max-h-[300px] object-contain object-top sm:max-h-[500px]"
+      />
+      {images.length > 1 && (
+        <div className="flex items-center justify-center gap-2 border-t border-gray-100 bg-white px-3 py-2 sm:gap-3 sm:py-2.5">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setActive(i)}
+              className={`h-8 w-8 shrink-0 overflow-hidden rounded-md border-2 transition sm:h-10 sm:w-10 ${
+                i === active ? "border-gray-900 opacity-100" : "border-transparent opacity-60 hover:opacity-80"
+              }`}
+            >
+              <img src={img} alt={`${title} preview ${i + 1}`} className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
