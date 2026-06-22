@@ -20,6 +20,13 @@ export async function generateStaticParams() {
   return Object.keys(pages).map((slug) => ({ slug }));
 }
 
+const HINDI_SLUGS = new Set([
+  "upsc-full-form-hindi",
+  "upsc-syllabus-hindi",
+  "upsc-free-material-hindi",
+  "how-to-write-upsc-mains-answers-hindi",
+]);
+
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const mod = pages[slug as keyof typeof pages];
@@ -28,7 +35,21 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: page.title,
     description: page.description,
-    alternates: { canonical: `https://upscprepnotes.in/${slug}` },
+    alternates: {
+      canonical: `https://upscprepnotes.in/${slug}`,
+      languages: {
+        hi: HINDI_SLUGS.has(slug)
+          ? `https://upscprepnotes.in/${slug}`
+          : undefined,
+      },
+    },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url: `https://upscprepnotes.in/${slug}`,
+      siteName: "UPSCPrepNotes",
+      images: [{ url: "/logo.png", width: 512, height: 512 }],
+    },
   };
 }
 
@@ -37,5 +58,42 @@ export default async function ContentPage({ params }: Props) {
   const mod = pages[slug as keyof typeof pages];
   if (!mod) notFound();
   const { default: page } = await mod();
-  return <ContentLayout page={page} />;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: page.h1 || page.title,
+    description: page.description,
+    datePublished: page.lastUpdated,
+    dateModified: page.lastUpdated,
+    author: {
+      "@type": "Organization",
+      name: "UPSCPrepNotes",
+      url: "https://upscprepnotes.in",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "UPSCPrepNotes",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://upscprepnotes.in/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://upscprepnotes.in/${slug}`,
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
+      <ContentLayout page={page} />
+    </>
+  );
 }

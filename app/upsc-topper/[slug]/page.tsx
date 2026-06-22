@@ -76,11 +76,23 @@ export async function generateMetadata({ params }: Props) {
     };
   }
 
+  const topperImage = topperImageSrc(topper);
+  const ogImage = topperImage?.startsWith("http")
+    ? topperImage
+    : `https://upscprepnotes.in${topperImage || "/logo.png"}`;
+
   return {
     title: `${topper.firstName} ${topper.lastName} Answer Copy PDF — Free Download, UPSC Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+    },
+    openGraph: {
+      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy & Strategy (AIR ${topper.rank})`,
+      description: buildMetaDescription(topper),
+      url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
+      siteName: "UPSCPrepNotes",
+      images: [{ url: ogImage, width: 788, height: 1050 }],
     },
   };
 }

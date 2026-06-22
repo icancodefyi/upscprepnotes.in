@@ -362,12 +362,20 @@ function ProductCard({
           <h3 className="text-xs font-semibold text-gray-900 leading-snug transition-colors group-hover:text-emerald-700 sm:text-sm">{product.title}</h3>
         </Link>
 
-        <div className="mt-1 flex items-center gap-1.5 sm:mt-1.5 sm:gap-2">
+          <div className="mt-1 flex items-center gap-1.5 sm:mt-1.5 sm:gap-2">
           <span className="text-xs font-bold text-gray-900 sm:text-sm">₹{product.price}</span>
           {product.originalPrice && (
             <span className="text-[10px] text-gray-400 line-through sm:text-[11px]">₹{product.originalPrice.toLocaleString("en-IN")}</span>
           )}
         </div>
+
+        {product.fileCount && (
+          <p className="mt-0.5 flex items-center gap-1 text-[9px] text-gray-400 sm:text-[10px]">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            {product.fileCount} file{product.fileCount > 1 ? "s" : ""}
+            {product.totalSizeMB ? ` · ${product.totalSizeMB} MB` : ""}
+          </p>
+        )}
 
         {product.rating && (
           <div className="mt-0.5 flex items-center gap-1 sm:mt-1">

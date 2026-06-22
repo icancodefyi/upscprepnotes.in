@@ -7,6 +7,8 @@ const freeMaterialLeadSchema = new Schema(
     pdfTitle: { type: String, required: true },
     category: { type: String, default: "" },
     source: { type: String, default: "free_materials" },
+    sentDay1FollowUp: { type: Boolean, default: false },
+    sentDay3FollowUp: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

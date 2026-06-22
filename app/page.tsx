@@ -116,8 +116,33 @@ const PAPER_BENEFITS = [
 export default async function HomePage() {
   const toppers = await getFeaturedToppers();
 
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
+    description:
+      "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies, marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
+    url: "https://upscprepnotes.in",
+    publisher: {
+      "@type": "Organization",
+      name: "UPSCPrepNotes",
+      url: "https://upscprepnotes.in",
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" },
+      ],
+    },
+  };
+
   return (
-    <main className="min-h-screen bg-[#F8F9FA]">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      <main className="min-h-screen bg-[#F8F9FA]">
       <div className="mx-auto max-w-7xl px-4 pb-32">
         {/* HERO */}
         <section className="pt-16 pb-20">
@@ -614,5 +639,6 @@ export default async function HomePage() {
 
       </div>
     </main>
+    </>
   );
 }
