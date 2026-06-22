@@ -72,19 +72,7 @@ export default function PayButton({
         try { localStorage.setItem("upsc-email", email); } catch {}
       }
 
-      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-      if (isMobile || !data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-        return;
-      }
-
-      const { DodoPayments } = await import("dodopayments-checkout");
-      DodoPayments.Initialize({
-        mode: "live",
-        displayType: "overlay",
-      });
-      DodoPayments.Checkout.open({ checkoutUrl: data.checkoutUrl });
+      window.location.href = data.checkoutUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setLoading(false);

@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import posthog from "posthog-js";
-import { IconArrowLeft, IconShoppingCart, IconCheck, IconStarFilled, IconShoppingBag } from "@tabler/icons-react";
+import { IconArrowLeft, IconShoppingCart, IconCheck, IconStarFilled, IconShoppingBag, IconUsers } from "@tabler/icons-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
+import { TOPPERS } from "@/components/topper/sales-page-data";
 
 export default function ProductDetailClient({ product }: { product: StoreProduct }) {
   return (
@@ -108,6 +109,35 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               </div>
             </div>
 
+            {product.slug === "answer-copies-compilation" && (
+              <div className="mt-6 sm:mt-8">
+                <h2 className="text-sm font-bold text-gray-900 sm:text-base">Sample Preview</h2>
+                <p className="mt-1 text-[11px] text-gray-400 sm:text-xs">Actual answer sheets from 8 toppers included in this compilation</p>
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                  {TOPPERS.slice(0, 8).map((topper) => (
+                    <a
+                      key={topper.slug}
+                      href={topper.previewImageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 transition hover:shadow-md"
+                    >
+                      <img
+                        src={topper.previewImageUrl}
+                        alt={`${topper.name} answer copy preview`}
+                        className="aspect-[3/4] w-full object-cover transition duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                        <p className="text-[10px] font-semibold text-white leading-tight">{topper.name}</p>
+                        <p className="text-[8px] text-white/70">{topper.rank} · {topper.year}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {product.features.length > 0 && (
               <div className="mt-6 sm:mt-8">
                 <h2 className="text-sm font-bold text-gray-900 sm:text-base">What you get</h2>
@@ -119,6 +149,23 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {product.slug === "answer-copies-compilation" && (
+              <div className="mt-6 rounded-xl border border-amber-100 bg-amber-50/50 p-4 sm:mt-8 sm:p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 sm:h-10 sm:w-10">
+                    <IconUsers size={16} className="text-amber-700 sm:size-[18px]" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-amber-900 sm:text-sm">What our buyers say</p>
+                    <p className="mt-1 text-xs leading-relaxed text-amber-800 sm:text-sm">
+                      &ldquo;An absolute game-changer for my answer writing practice. Seeing how toppers actually structure their answers in the exam hall is something no book can teach you.&rdquo;
+                    </p>
+                    <p className="mt-1 text-[11px] font-medium text-amber-600 sm:text-xs">— Anupama G., UPSC Aspirant (verified buyer)</p>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -176,14 +223,27 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                   key={r.slug}
                   href={`/store/${r.slug}`}
                   data-track={`detail-related-${r.slug}`}
-                  className="group rounded-lg border border-gray-100 bg-white p-3 transition hover:border-gray-200 hover:shadow-sm sm:p-4"
+                  className="group rounded-lg border border-gray-100 bg-white transition hover:border-gray-200 hover:shadow-sm"
                 >
-                  <div className={`flex h-16 items-center justify-center rounded-lg sm:h-24 ${r.gradient}`}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50 sm:w-6 sm:h-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  {r.image ? (
+                    <div className="relative h-20 overflow-hidden rounded-t-lg bg-gray-50 sm:h-28">
+                      <img
+                        src={r.image}
+                        alt={r.title}
+                        className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div className={`flex h-20 items-center justify-center rounded-t-lg sm:h-28 ${r.gradient}`}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50 sm:w-6 sm:h-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                  )}
+                  <div className="p-3 sm:p-4">
+                    <p className="text-xs font-semibold text-gray-900 group-hover:text-emerald-700 sm:text-sm">{r.title}</p>
+                    <p className="mt-0.5 text-[10px] text-gray-400 sm:text-xs">{r.tagline}</p>
+                    <p className="mt-1 text-xs font-bold text-gray-900 sm:text-sm">₹{r.price}</p>
                   </div>
-                  <p className="mt-2 text-xs font-semibold text-gray-900 group-hover:text-emerald-700 sm:mt-3 sm:text-sm">{r.title}</p>
-                  <p className="mt-0.5 text-[10px] text-gray-400 sm:text-xs">{r.tagline}</p>
-                  <p className="mt-1 text-xs font-bold text-gray-900 sm:text-sm">₹{r.price}</p>
                 </Link>
               ))}
             </div>
@@ -242,6 +302,14 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           </>
         )}
       </div>
+      <p className="mt-1 flex items-center gap-1 text-[10px] text-gray-400 sm:text-[11px]">
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+        </span>
+        {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}
+        1,400+ students
+      </p>
 
       <div className="mt-3 grid grid-cols-2 gap-1.5 sm:mt-5 sm:gap-2">
         <div className="flex items-center gap-1.5 rounded-lg bg-gray-50 px-2 py-1.5 sm:gap-2 sm:px-3 sm:py-2">

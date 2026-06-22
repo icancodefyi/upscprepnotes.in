@@ -130,7 +130,7 @@ export default function StoreClient() {
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 sm:text-[11px]">Best Seller</p>
                   <h2 className="mt-1 text-lg font-bold sm:text-2xl">All Strategy Reports</h2>
                   <p className="mt-1.5 text-xs text-zinc-300 sm:mt-2 sm:text-sm">280+ topper strategies, marks analysis, and answer copies. Everything you need in one bundle.</p>
-                  <div className="mt-3 flex items-center gap-2 sm:mt-4 sm:gap-3">
+                  <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-4 sm:gap-3">
                     <Link href="/store/all-strategy-reports" data-track="store-hero-cta"
                       className="inline-flex items-center gap-1 rounded-xl bg-white px-4 py-2 text-[11px] font-bold text-zinc-900 transition hover:bg-zinc-100 sm:px-5 sm:py-2.5 sm:text-xs"
                     >
@@ -138,6 +138,10 @@ export default function StoreClient() {
                       <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </Link>
                     <span className="text-[10px] text-zinc-400 sm:text-[11px]">₹27,720 value</span>
+                    <span className="inline-flex items-center gap-1 text-[10px] text-zinc-400 sm:text-[11px]">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                      1,400+ students
+                    </span>
                   </div>
                 </div>
                 <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-2xl font-black text-white sm:h-28 sm:w-28 sm:text-3xl">
@@ -237,8 +241,51 @@ export default function StoreClient() {
             </>
           )}
 
+          {/* ─── Recent Purchases ─── */}
+          <div className="mt-10 overflow-hidden rounded-xl border border-gray-100 bg-gray-50/50 p-3 sm:p-4">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              Recent purchases
+            </div>
+            <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1.5 text-xs text-gray-600">
+              <span className="inline-flex items-center gap-1">
+                <svg className="h-3 w-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                Anupama Gaur — <strong>Answer Copies Compilation</strong>
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <svg className="h-3 w-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                Payush Patel — <strong>All Strategy Reports</strong>
+              </span>
+            </div>
+          </div>
+
+          {/* ─── Social Proof Bar ─── */}
+          <div className="mt-6 rounded-xl border border-emerald-100 bg-emerald-50/50 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-800">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                7-day refund guarantee
+              </span>
+              <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-800">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Lifetime access
+              </span>
+              <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-800">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Instant download
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-emerald-700">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                1,400+ students
+              </span>
+            </div>
+          </div>
+
           {/* ─── Footer note ─── */}
-          <div className="mt-12 border-t border-gray-100 pt-8 text-center">
+          <div className="mt-8 border-t border-gray-100 pt-8 text-center">
             <p className="text-xs text-gray-400">
               Instant download after payment. 7-day refund guarantee.
             </p>
@@ -393,35 +440,35 @@ function ProductCard({
           </div>
         )}
 
-        <div className="mt-auto pt-1.5 sm:pt-2">
+        <div className="mt-auto pt-2 sm:pt-3">
           {comingSoon ? (
-            <div className="w-full rounded-md border border-dashed border-gray-200 py-1 text-center text-[10px] font-medium text-gray-400 sm:py-1.5 sm:text-[11px]" data-track={`store-card-comingsoon-${product.slug}`}>
+            <div className="w-full rounded-lg border border-dashed border-gray-200 py-1.5 text-center text-xs font-medium text-gray-400 sm:py-2 sm:text-sm" data-track={`store-card-comingsoon-${product.slug}`}>
               Coming Soon
             </div>
           ) : product.link ? (
             <Link
               href={product.link}
               data-track={`store-card-view-${product.slug}`}
-              className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1 text-[10px] font-semibold text-white transition hover:bg-amber-600 sm:py-1.5 sm:text-[11px]"
+              className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-gray-900 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-600 sm:py-2 sm:text-sm"
             >
-              <IconShoppingCart size={10} />
+              <IconShoppingCart size={13} />
               View Product
             </Link>
           ) : (
-            <div className="flex flex-col gap-1 sm:gap-1.5">
+            <div className="flex flex-col gap-1.5 sm:gap-2">
               <Link
                 href={`/store/${product.slug}`}
                 data-track={`store-card-buy-${product.slug}`}
-                className="flex w-full items-center justify-center gap-1 rounded-md bg-gray-900 py-1 text-[10px] font-semibold text-white transition hover:bg-zinc-800 sm:py-1.5 sm:text-[11px]"
+                className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-gray-900 py-1.5 text-xs font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.98] sm:py-2 sm:text-sm"
               >
-                <IconShoppingCart size={10} />
-                Buy Now
+                <IconShoppingCart size={13} />
+                Buy Now — ₹{product.price}
               </Link>
               <button
                 type="button"
                 data-track={`store-card-addtocart-${product.slug}`}
                 onClick={handleAddToCart}
-                className="flex w-full items-center justify-center gap-1 rounded-md border border-gray-200 bg-white py-1 text-[10px] font-medium text-gray-600 transition hover:border-gray-300 hover:text-gray-800 sm:py-1.5 sm:text-[11px]"
+                className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white py-1.5 text-xs font-medium text-gray-700 transition hover:border-gray-900 hover:text-gray-900 active:scale-[0.98] sm:py-2 sm:text-sm"
               >
                 Add to Cart
               </button>

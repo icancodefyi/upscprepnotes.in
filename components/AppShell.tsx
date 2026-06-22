@@ -4,27 +4,21 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import StoreDialog from "@/components/StoreDialog";
 import AskMentorButton from "@/components/AskMentorButton";
 import AskHeader from "@/components/AskHeader";
 import { CartProvider } from "@/lib/cart-context";
 import { trackClientEvent } from "@/lib/client-analytics";
-import { markPopup, wasDismissedToday } from "@/lib/popup-state";
+import { markPopup } from "@/lib/popup-state";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [bannerOpen, setBannerOpen] = useState(true);
-  const [canShowStoreDialog, setCanShowStoreDialog] = useState(false);
 
   useEffect(() => {
     if (pathname && !pathname.startsWith("/ask")) {
       trackClientEvent("page_view", { path: pathname });
     }
   }, [pathname]);
-
-  useEffect(() => {
-    setCanShowStoreDialog(!wasDismissedToday("storeDialog") && !wasDismissedToday("exitIntent"));
-  }, []);
 
   if (pathname?.startsWith("/ask")) {
     return (
@@ -88,7 +82,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <Footer />
       </div>
       <AskMentorButton />
-      {canShowStoreDialog && <StoreDialog />}
     </CartProvider>
   );
 }
