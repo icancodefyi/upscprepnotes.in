@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { Button } from "@/components/ui/button";
 
 interface Resource {
   name: string;
@@ -15,6 +16,8 @@ function isWpdmUrl(url: string) {
 
 export default function ResourceSearch({ resources, slug }: { resources: Resource[]; slug: string }) {
   const [query, setQuery] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "unlocked" | "error">("idle");
 
   const sections = useMemo(() => {
     const map = new Map<string, Resource[]>();
@@ -43,8 +46,69 @@ export default function ResourceSearch({ resources, slug }: { resources: Resourc
     return count;
   }, [filteredSections]);
 
+  const handleUnlock = useCallback(async () => {
+    if (!email.trim()) return;
+    setStatus("loading");
+    try {
+      await fetch("/api/free-material-download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          pdfSlug: slug,
+          pdfTitle: `${resources.length} Resources`,
+          category: "resource-collection",
+          downloadUrl: resources[0]?.downloadUrl || "",
+        }),
+      });
+      setStatus("unlocked");
+    } catch {
+      setStatus("error");
+    }
+  }, [email, slug, resources]);
+
   return (
     <div>
+      {/* EMAIL GATE */}
+      {status !== "unlocked" && (
+        <div className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4 sm:p-5">
+          <p className="text-sm font-semibold text-zinc-800 mb-2">
+            Enter your email to access all resources
+          </p>
+          <form
+            onSubmit={(e) => { e.preventDefault(); handleUnlock(); }}
+            className="flex flex-col sm:flex-row gap-2"
+          >
+            <input
+              type="email"
+              required
+              placeholder="you@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={status === "loading"}
+              className="flex-1 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition disabled:opacity-50"
+            />
+            <Button
+              type="submit"
+              disabled={status === "loading" || !email.trim()}
+              className="shrink-0 rounded-full bg-zinc-900 px-6 text-sm font-bold text-white hover:bg-zinc-800 disabled:opacity-50"
+            >
+              {status === "loading" ? "Please wait..." : "Unlock All Downloads →"}
+            </Button>
+          </form>
+          {status === "error" && (
+            <p className="mt-1.5 text-xs text-red-500">Something went wrong. Try again.</p>
+          )}
+        </div>
+      )}
+      {status === "unlocked" && (
+        <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-center">
+          <p className="text-xs font-semibold text-emerald-800">
+            ✓ Email saved! All downloads are unlocked. Check your inbox for the link.
+          </p>
+        </div>
+      )}
+
       <div className="relative mb-6">
         <svg
           className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400"

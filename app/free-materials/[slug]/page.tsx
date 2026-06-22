@@ -14,6 +14,7 @@ import {
   generateEditorialContent,
 } from "@/lib/pdf-content";
 import ResourceSearch from "@/components/ResourceSearch";
+import FreeMaterialDownload from "@/components/FreeMaterialDownload";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -182,42 +183,22 @@ export default async function PDFDetailPage({ params }: Props) {
 
         {/* DOWNLOAD SECTION (single item) */}
         {(!p.resources || p.resources.length === 0) && (
-          <section className="mb-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-white border border-zinc-200 shrink-0">
-                <span className="text-3xl">{cat.icon}</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="text-lg font-bold text-zinc-800">Download Free PDF</h2>
-                <p className="mt-1 text-sm text-zinc-500">
-                  Click the button to download {p.title} instantly.
-                </p>
-              </div>
-              <Button
-                asChild
-                size="lg"
-                className="shrink-0 rounded-full bg-zinc-900 px-8 text-sm font-bold text-white hover:bg-zinc-800 shadow-lg"
-              >
-                <a
-                  href={downloadUrl}
-                  download
-                  data-track={`pdf-download-${p.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download PDF &rarr;
-                </a>
-              </Button>
-            </div>
+          <>
+            <FreeMaterialDownload
+              downloadUrl={downloadUrl}
+              pdfSlug={p.slug}
+              pdfTitle={p.title}
+              category={p.category || "other"}
+            />
             {sourceUrl && (
-              <p className="mt-3 text-xs text-zinc-400 text-center sm:text-left">
+              <p className="mb-16 -mt-12 text-xs text-zinc-400 text-center sm:text-left">
                 Source:{" "}
                 <a href={sourceUrl} target="_blank" rel="noopener noreferrer" data-track="pdf-detail-source-link" className="underline hover:text-zinc-600">
                   pdfnotes.co
                 </a>
               </p>
             )}
-          </section>
+          </>
         )}
 
         {/* GREAT WEEKEND SALE */}
