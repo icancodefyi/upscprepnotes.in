@@ -757,6 +757,9 @@ export default async function TopperPage({ params }: Props) {
                   ? `All ${totalPapers} answer copies are available for ${topper.firstName} ${topper.lastName}.`
                   : `${availableCount} of ${totalPapers} paper copies available for ${topper.firstName} ${topper.lastName}${availableCount > 0 ? ". Download a free sample above" : " — check back soon"}.`}
               </p>
+              <p className="mt-2 text-[11px] text-muted-foreground/50">
+                Copies are sourced from topper contributions, coaching records, and verified compilations. Each copy is cross-referenced for consistency with published marksheets.
+              </p>
             </section>
           );
         })()}
@@ -987,6 +990,10 @@ export default async function TopperPage({ params }: Props) {
               {
                 q: `Where is ${topper.firstName} ${topper.lastName} now?`,
                 a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. After selection, UPSC toppers typically undergo training at Lal Bahadur Shastri National Academy of Administration (LBSNAA), Mussoorie, followed by service-specific training. Their current posting and service allocation details are updated when available.`,
+              },
+              {
+                q: `How do I know these answer copies are authentic?`,
+                a: `Every answer copy on UPSCPrepNotes is sourced from topper contributions, coaching institute records, or verified compilations. We cross-reference each copy against published marksheets, interview transcripts, and topper interviews for consistency. While UPSC itself does not publicly release answer books, the copies we host are checked for structural and content alignment with the topper's known performance. If you have specific concerns about a copy, use the <strong>Report</strong> button on this page to flag it for review.`,
               },
             ].map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">

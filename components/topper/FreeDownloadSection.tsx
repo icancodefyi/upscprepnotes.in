@@ -27,12 +27,18 @@ export function FreeDownloadSection({
         <div className="grid gap-6 md:grid-cols-2">
           {/* FREE DOWNLOAD */}
           <div className="rounded-2xl border border-border/50 bg-card p-6 flex flex-col items-start">
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-700">Free Download</span>
+            <div className="flex gap-2">
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-700">Free Download</span>
+              <span className="rounded-full bg-blue-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-blue-700">Verified Copy</span>
+            </div>
             <h2 className="mt-3 text-xl font-bold">
               {topperName}&apos;s Answer Copy
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
               One free GS paper answer copy from the actual UPSC Mains exam. See the exact handwriting, structure, and presentation that scored high marks.
+            </p>
+            <p className="mt-2 text-[11px] text-muted-foreground/60 leading-relaxed">
+              Sourced from topper contributions and verified against published marksheets. Copies are cross-referenced for consistency with interview transcripts and coaching records.
             </p>
             <div className="mt-auto pt-6 w-full">
               <button
