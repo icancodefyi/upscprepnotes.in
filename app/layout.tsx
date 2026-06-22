@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono, Fraunces } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,13 @@ const plusJakarta = Plus_Jakarta_Sans({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  style: ["normal", "italic"],
+  weight: ["400", "600", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -82,7 +89,7 @@ export default async function RootLayout({
   const session = await auth();
   const isInternal = !!session?.user?.email && INTERNAL_EMAILS.includes(session.user.email);
   return (
-    <html lang="en" className={cn("font-sans", plusJakarta.variable)}>
+    <html lang="en" className={cn("font-sans", plusJakarta.variable, fraunces.variable)}>
       <head>
         <AnalyticsScripts isInternal={isInternal} />
 

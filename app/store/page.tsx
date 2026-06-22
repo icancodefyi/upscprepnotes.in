@@ -1,5 +1,4 @@
-import StoreClient from "@/components/store/StoreClient";
-import Script from "next/script";
+import StoreRouter from "@/components/store/StoreRouter";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +39,7 @@ export default function StorePage() {
           }),
         }}
       />
-      <StoreClient />
+      <StoreRouter />
     </>
   );
 }
