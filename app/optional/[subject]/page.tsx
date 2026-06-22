@@ -722,12 +722,12 @@ export default async function SubjectPage({ params }: Props) {
         <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 md:p-8">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Flash Sale</span>
+              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
               <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
-                Flash Sale — All Products at ₹99
+                Starting at ₹99
               </h2>
               <p className="mt-1 text-sm text-emerald-200/80">
-                Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
+                Starting at ₹99 · Instant download.
               </p>
             </div>
             <Link

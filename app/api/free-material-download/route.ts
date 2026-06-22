@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
             <a href="${downloadUrl}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download ${pdfTitle} →</a>
           </div>
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:20px;text-align:center">
-            <p style="margin:0;font-size:13px;color:#059669;font-weight:600">🔥 Flash Sale — All Products at ₹99</p>
-            <p style="margin:4px 0 0;font-size:12px;color:#666">Get every product on UPSCPrepNotes at just ₹99. Limited time offer.</p>
+            <p style="margin:0;font-size:13px;color:#059669;font-weight:600">🔥 Starting at ₹99 — UPSC prep resources from toppers</p>
+            <p style="margin:4px 0 0;font-size:12px;color:#666">Answer copies, strategy reports, and notes from AIR 1–1249. Instant download after payment.</p>
             <a href="https://upscprepnotes.in/store" style="display:inline-block;margin-top:8px;background:#059669;color:#fff;text-decoration:none;padding:8px 24px;border-radius:8px;font-size:12px;font-weight:700">Browse Store →</a>
           </div>
           <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested a free download on UPSCPrepNotes.in</p>

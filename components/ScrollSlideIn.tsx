@@ -50,14 +50,14 @@ export default function ScrollSlideIn() {
 
         <div className="relative p-4">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-emerald-400 ring-1 ring-emerald-500/20">
-            Flash Sale
+            Offer
           </span>
 
           <div className="mt-3">
             <p className="text-sm font-bold text-white">
-              All Products at <span className="text-emerald-300">₹99</span>
+              Starting at <span className="text-emerald-300">₹99</span>
             </p>
-            <p className="text-xs text-white/60">Limited Time Offer</p>
+            <p className="text-xs text-white/60">Instant download</p>
           </div>
 
           <Link

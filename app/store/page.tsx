@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "UPSC Store — Topper Answer Copies, Notes & Test Series at ₹99",
   description:
-    "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery. Flash Sale — all products at ₹99.",
+    "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery. Starting at ₹99.",
   alternates: {
     canonical: "https://upscprepnotes.in/store",
   },

@@ -273,10 +273,10 @@ export default async function PDFDetailPage({ params }: Props) {
               <span className="text-3xl">🎉</span>
             </div>
             <div className="flex-1">
-              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Flash Sale</span>
-              <h2 className="mt-2 text-lg font-bold text-white">Flash Sale — All Products at ₹99</h2>
+              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
+              <h2 className="mt-2 text-lg font-bold text-white">Starting at ₹99</h2>
               <p className="mt-1 text-sm text-emerald-200/80">
-                Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
+                Starting at ₹99 · Instant download.
               </p>
             </div>
             <Button

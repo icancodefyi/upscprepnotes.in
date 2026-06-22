@@ -39,18 +39,18 @@ export default function StoreDialog() {
           <div className="relative p-6">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-400 ring-1 ring-emerald-500/20">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Flash Sale
+              Offer
             </span>
             <h2 className="mt-3 text-lg font-bold text-white">
-              All Products at <span className="text-emerald-300">₹99</span>
+              Starting at <span className="text-emerald-300">₹99</span>
             </h2>
             <p className="mt-1 text-xs text-white/60">
-              Limited Time Offer — Strategy compilations, answer copies, notes bundles, test series, and more.
+              Instant download · 7-day refund
             </p>
             <div className="mt-5 flex items-center justify-between">
               <div className="text-[11px] text-white/40 leading-tight">
-                <span className="font-semibold text-emerald-400">Limited Time</span>
-                <br />Flash Sale
+                <span className="font-semibold text-emerald-400">Instant</span>
+                <br />download
               </div>
               <Link href="/store" onClick={dismiss} data-track="store-dialog-browse"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-black transition hover:bg-emerald-50 active:scale-[0.97]"

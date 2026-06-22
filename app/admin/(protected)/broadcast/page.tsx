@@ -78,7 +78,7 @@ export default function BroadcastPage() {
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-400"
-            placeholder="Great Weekend Sale — All Products at ₹99"
+            placeholder="Great Weekend Sale — Starting at ₹99"
           />
         </div>
 
@@ -103,7 +103,7 @@ export default function BroadcastPage() {
               onChange={(e) => setHtml(e.target.value)}
               rows={22}
               className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-mono outline-none focus:border-zinc-400"
-              placeholder={`<h1>Great Weekend Sale!</h1>\n<p>All products at just ₹99.</p>`}
+              placeholder={`<h1>UPSC Topper Resources</h1>\n<p>Answer copies, strategy guides, and notes from AIR 1–1249. Starting at ₹99.</p>`}
             />
           )}
         </div>

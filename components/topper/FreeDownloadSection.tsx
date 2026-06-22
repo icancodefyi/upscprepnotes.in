@@ -56,12 +56,12 @@ export function FreeDownloadSection({
 
           {/* GREAT WEEKEND SALE */}
           <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 flex flex-col items-start">
-            <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Flash Sale</span>
+            <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
             <h2 className="mt-3 text-xl font-bold text-white">
-              Flash Sale — All Products at ₹99
+              Starting at ₹99
             </h2>
             <p className="mt-1.5 text-sm text-emerald-200/80 leading-relaxed">
-              Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
+              Instant download · 7-day refund guarantee.
             </p>
             <div className="mt-auto pt-4 w-full">
               <Link

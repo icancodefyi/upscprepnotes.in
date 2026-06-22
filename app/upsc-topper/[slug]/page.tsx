@@ -274,7 +274,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
         acceptedAnswer: {
           "@type": "Answer",
-              text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Flash Sale, all products at ₹99.`,
+              text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹99.`,
         },
       },
       {
@@ -282,7 +282,7 @@ export default async function TopperPage({ params }: Props) {
         name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
         acceptedAnswer: {
           "@type": "Answer",
-              text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full set is available in the store — Flash Sale, all products at ₹99.`,
+              text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full set is available in the store — Starting at ₹99.`,
         },
       },
       {
@@ -491,7 +491,7 @@ export default async function TopperPage({ params }: Props) {
               <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
                 Shop Now →
               </Link>
-              <span className="text-muted-foreground"> — Flash Sale. All Products at ₹99.</span>
+              <span className="text-muted-foreground"> — Starting at ₹99.</span>
             </p>
             {topper.bio && (
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -634,12 +634,12 @@ export default async function TopperPage({ params }: Props) {
           <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6">
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Flash Sale</span>
+                <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
                 <h3 className="mt-2 text-lg font-bold text-white">
-                  Flash Sale — All Products at ₹99
+                  Starting at ₹99
                 </h3>
                 <p className="mt-1 text-sm text-emerald-200/80">
-                  Limited Time Offer. Get every product on UPSCPrepNotes at just ₹99.
+                  Starting at ₹99 · Instant download.
                 </p>
               </div>
               <Link
@@ -929,11 +929,11 @@ export default async function TopperPage({ params }: Props) {
               },
               {
                 q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Flash Sale, all products at ₹99.`,
+                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Starting at ₹99.`,
               },
               {
                 q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full set is in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Flash Sale, all products at ₹99.`,
+                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full set is in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Starting at ₹99.`,
               },
               {
                 q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
