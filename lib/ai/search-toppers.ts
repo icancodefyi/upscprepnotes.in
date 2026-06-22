@@ -20,7 +20,7 @@ const KEYWORDS = [
 ];
 
 function extractKeywords(query: string): string[] {
-  const words = query.toLowerCase().split(/\s+/).filter((w) => w.length > 2);
+  const words = query.toLowerCase().split(/\s+/).filter((w) => w.length > 2 || /^\d+$/.test(w));
   return [...new Set(words)];
 }
 
@@ -33,6 +33,8 @@ function scoreTopper(topper: any, keywords: string[]): number {
     topper.bio,
     topper.strategy,
     ...(topper.insights || []),
+    topper.year?.toString(),
+    topper.rank?.toString(),
   ]
     .filter(Boolean)
     .join(" ")
