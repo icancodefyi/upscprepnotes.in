@@ -32,6 +32,8 @@ const ZIP_NAMES: Record<string, string> = {
   "dhyeya-ias-prelims-tests": "Dhyeya-IAS-Prelims-Tests.zip",
   "ipm-prelims-test-series": "IPM-Prelims-Test-Series.zip",
   "answer-copies-compilation": "Answer-Copies-Compilation.zip",
+  "top-10-rankers-strategy": "Top-10-Rankers-Strategy.zip",
+  "government-schemes-compilation": "Government-Schemes-Compilation.zip",
 };
 
 export async function GET(

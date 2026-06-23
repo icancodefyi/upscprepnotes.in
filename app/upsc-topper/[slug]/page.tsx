@@ -464,7 +464,7 @@ export default async function TopperPage({ params }: Props) {
               ))}
             </div>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers, essay and {topper.optionalSubject}.
+              {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers and essay.
             </p>
 
             {/* QUICK FACTS — structured for AI overviews */}
@@ -1016,7 +1016,7 @@ export default async function TopperPage({ params }: Props) {
         }, {
           name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
         }, {
-          name: "Komal Meena", slug: "komal-meena", rank: 47, year: 2024,
+          name: "Shruti Sharma", slug: "shruti-sharma", rank: 1, year: 2021,
         }].filter(t => t.slug !== topper.slug).slice(0, 4).length > 0 && (
           <section className="mt-12">
             <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
@@ -1031,7 +1031,7 @@ export default async function TopperPage({ params }: Props) {
               }, {
                 name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
               }, {
-                name: "Komal Meena", slug: "komal-meena", rank: 47, year: 2024,
+                name: "Shruti Sharma", slug: "shruti-sharma", rank: 1, year: 2021,
               }].filter(t => t.slug !== topper.slug).slice(0, 4).map((t) => (
                 <Link
                   key={t.slug}

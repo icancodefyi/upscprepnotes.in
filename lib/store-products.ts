@@ -160,7 +160,7 @@ export const PRODUCTS: StoreProduct[] = [
     title: "Answer Copies Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "50+ handwritten answer sheets",
-    description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay, Optional papers.",
+    description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay.",
     longDescription: [
       "This compilation contains actual scanned answer sheets written by UPSC toppers in the exam hall. See exactly how rank holders structured their answers, used headings, diagrams, and underlining to score 140+.",
       "Covers GS Papers 1-4, Essay, and Optional papers. Each copy is labelled with the topper's name, rank, year, and marks obtained.",
@@ -175,7 +175,7 @@ export const PRODUCTS: StoreProduct[] = [
     gradient: "bg-amber-500",
     features: [
       "50+ actual handwritten answer sheets from toppers",
-      "Covers GS1-4, Essay, and Optional papers",
+      "Covers GS1-4 and Essay",
       "Each copy labelled with name, rank, year, and marks",
       "See real handwriting, structure, underlining, and diagrams",
       "Organised by paper and marks for easy comparison",

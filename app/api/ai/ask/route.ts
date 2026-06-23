@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { searchToppers } from "@/lib/ai/search-toppers";
+import { searchToppers, type TopperResult } from "@/lib/ai/search-toppers";
 import { buildSystemPrompt } from "@/lib/ai/build-prompt";
 import {
   getQuota,
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     // Phase 1: Non-streaming call to decide if web search is needed
     try {
       const firstResponse = await groq.chat.completions.create({
-        model: "llama-3.1-8b-instant",
+        model: "llama-3.3-70b-versatile",
         messages: groqMessages,
         tools: [webSearchTool],
         tool_choice: "auto",
@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
       }
     } catch (err: any) {
       console.error("Tool call failed, falling back to no-search:", err);
-      // Attempt to recover from native function-call format (Llama's <function=...>)
       let failedGen: string | null = null;
       try {
         const raw = err?.error?.failed_generation || err?.failed_generation;
@@ -216,14 +215,35 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // No tool calls or tool call failed — return content as stream
-    const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
-    const content = assistantContent || "I couldn't find an answer to that. Could you rephrase your question?";
-    await saveMessage(cid, "assistant", content, sources);
-
+    // No tool calls — generate a streamed response using the 70B model
     const readable = new ReadableStream({
-      start(controller) {
-        if (content) controller.enqueue(encoder.encode(content));
+      async start(controller) {
+        let fullContent = "";
+        try {
+          const stream = await groq.chat.completions.create({
+            model: "llama-3.3-70b-versatile",
+            messages: groqMessages,
+            stream: true,
+            temperature: 0.7,
+            max_tokens: 1024,
+          });
+
+          for await (const chunk of stream) {
+            const text = chunk.choices?.[0]?.delta?.content || "";
+            if (text) {
+              fullContent += text;
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+        } catch (err) {
+          console.error("Stream error:", err);
+          const fallback = "I have information on that. Let me share what I know based on the topper data available.";
+          controller.enqueue(encoder.encode(fallback));
+          fullContent = fallback;
+        }
+
+        const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
+        await saveMessage(cid, "assistant", fullContent || "I have information on that. Let me share what I know based on the topper data available.", sources);
         controller.close();
       },
     });
