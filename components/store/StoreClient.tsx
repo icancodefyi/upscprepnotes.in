@@ -7,6 +7,7 @@ import { PRODUCTS } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import FakePurchaseToast from "./FakePurchaseToast";
+import EmailCapture from "./EmailCapture";
 import "@/app/store/store.css";
 
 const VISIBLE = PRODUCTS.filter((p) => !p.comingSoon);
@@ -355,6 +356,7 @@ export default function StoreClient() {
           )}
         </main>
 
+        <EmailCapture variant="grid" />
         <StoreFooter />
       </div>
 

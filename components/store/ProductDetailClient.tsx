@@ -5,6 +5,7 @@ import Link from "next/link";
 import posthog from "posthog-js";
 import { IconArrowLeft, IconShoppingCart, IconCheck, IconStarFilled, IconShoppingBag, IconUsers } from "@tabler/icons-react";
 import PayButton from "@/components/ui/PayButton";
+import { useStoreVariant } from "@/components/store/useStoreVariant";
 import { StoreProduct, PRODUCTS } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
@@ -24,6 +25,8 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
   const [cartOpen, setCartOpen] = useState(false);
   const { addItem } = useCart();
   const related = PRODUCTS.filter((p) => p.slug !== product.slug && !p.comingSoon).slice(0, 3);
+  // Ensure store_layout_variant super property is set even on direct product page visits
+  useStoreVariant(false);
 
   useEffect(() => {
     posthog.capture("product_viewed", {

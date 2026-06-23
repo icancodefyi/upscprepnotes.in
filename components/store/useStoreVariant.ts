@@ -34,16 +34,23 @@ function assignVariant(): StoreVariant {
  * Returns the store A/B variant for the current user.
  * Defaults to "grid" during SSR to avoid hydration mismatch.
  * Persisted in a cookie for 30 days so the same user always sees the same variant.
- * Variant is attached to every PostHog event via `posthog.people.set`.
+ * Variant is attached to every PostHog event via `posthog.register()` (super property).
+ *
+ * @param captureStoreViewed - Whether to fire a `store_viewed` event. Default true.
+ *                             Pass false when called from non-store pages (e.g. product detail)
+ *                             to set the super property without double-counting views.
  */
-export function useStoreVariant(): StoreVariant {
+export function useStoreVariant(captureStoreViewed = true): StoreVariant {
   const [variant, setVariant] = useState<StoreVariant>("grid");
 
   useEffect(() => {
     const v = assignVariant();
-    setVariant(v);
-    // Attach variant to every event for this session via super property
+    // Register super property before any capture so it's attached to the event
     posthog.register({ store_layout_variant: v });
+    if (captureStoreViewed) {
+      posthog.capture("store_viewed", { variant: v, store_layout_variant: v });
+    }
+    setVariant(v);
   }, []);
 
   return variant;

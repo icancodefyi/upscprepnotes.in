@@ -6,6 +6,7 @@ import { IconStarFilled, IconCheck, IconDownload, IconRefresh, IconShieldCheck }
 import { PRODUCTS } from "@/lib/store-products";
 import { useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
+import EmailCapture from "./EmailCapture";
 import "@/app/store/store-list.css";
 
 const VISIBLE = PRODUCTS.filter((p) => !p.comingSoon);
@@ -249,6 +250,7 @@ export default function StoreList() {
 
             <ListTrust />
             <ListTestimonial />
+            <EmailCapture variant="list" />
           </>
         )}
       </div>
