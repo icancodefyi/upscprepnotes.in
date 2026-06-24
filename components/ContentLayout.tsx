@@ -136,7 +136,22 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
         ))}
 
         {page.faq && page.faq.length > 0 && (
-          <section className="mt-16 border-t border-gray-100 pt-12">
+          <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: page.faq.map((f) => ({
+                    "@type": "Question",
+                    name: f.q,
+                    acceptedAnswer: { "@type": "Answer", text: f.a },
+                  })),
+                }),
+              }}
+            />
+            <section className="mt-16 border-t border-gray-100 pt-12">
             <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {page.lang === "hi" ? "अक्सर पूछे जाने वाले प्रश्न" : "Frequently Asked Questions"}
             </h2>
@@ -149,6 +164,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
               ))}
             </div>
           </section>
+          </>
         )}
 
         {page.relatedPages && page.relatedPages.length > 0 && (

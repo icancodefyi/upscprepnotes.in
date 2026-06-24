@@ -1988,9 +1988,9 @@ const mdComponents: Components = {
     </p>
   ),
   h1: ({ children }) => (
-    <h1 className="mt-6 mb-3 text-base font-bold tracking-tight text-zinc-900">
+    <h2 className="mt-6 mb-3 text-base font-bold tracking-tight text-zinc-900">
       {children}
-    </h1>
+    </h2>
   ),
   h2: ({ children }) => (
     <h2 className="mt-6 mb-2 text-sm font-semibold tracking-tight text-zinc-900">

@@ -70,6 +70,7 @@ function InstituteContent({
         </div>
 
         {/* Products */}
+        <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-400">Products</h2>
         {products.length === 0 ? (
           <div className="flex min-h-[200px] items-center justify-center rounded-xl border border-dashed border-gray-200">
             <p className="text-sm text-gray-400">No products available yet.</p>

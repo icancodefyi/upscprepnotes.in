@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 const OPTIONAL_SLUG_MAP: Record<string, string> = {
   "Political Science & International Relations": "psir",
@@ -168,6 +169,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `UPSC ${yearNum} Toppers — Complete Marks Dataset`,
       description: `Full marks breakdown for UPSC ${yearNum} toppers including GS papers, optional subject, essay, interview, and total scores.`,
       url: `https://upscprepnotes.in/year/${year}`,
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
   };
 }
@@ -223,6 +229,12 @@ export default async function YearPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-background text-black">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: `Year ${yearNum}`, href: `/year/${yearNum}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}

@@ -26,7 +26,7 @@ export default function Footer() {
 
           {/* Platform */}
           <div>
-            <h4 className="font-bold mb-4 text-sm">Platform</h4>
+            <h3 className="font-bold mb-4 text-sm">Platform</h3>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
                 <Link href="/toppers" data-track="footer-toppers" className="hover:text-black transition-colors">
@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-bold mb-4 text-sm">Resources</h4>
+            <h3 className="font-bold mb-4 text-sm">Resources</h3>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
                 <Link href="/resources" data-track="footer-all-resources" className="hover:text-black transition-colors">
@@ -121,7 +121,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="font-bold mb-4 text-sm">Legal</h4>
+            <h3 className="font-bold mb-4 text-sm">Legal</h3>
             <ul className="space-y-2.5 text-sm text-gray-600">
               <li>
                 <Link href="/privacy-policy" data-track="footer-privacy-policy" className="hover:text-black transition-colors">

@@ -91,6 +91,7 @@ function SuccessInner() {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-amber-600"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
         </div>
         <h1 className="mt-4 text-xl font-bold text-gray-900">Almost there!</h1>
+        {/* Intentional: error state shown before success — only one h1 renders */}
         <p className="mt-2 text-sm text-gray-500">{error}</p>
         <Link href="/store" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-800">
           <IconArrowLeft size={16} />

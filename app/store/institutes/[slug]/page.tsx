@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { INSTITUTES, getProductsByInstitute } from "@/lib/store-products";
 import InstitutePageClient from "./InstitutePageClient";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -24,7 +25,11 @@ export async function generateMetadata({ params }: Props) {
       description: `${institute.description}. Browse products on UPSCPrepNotes.`,
       url: `https://upscprepnotes.in/store/institutes/${institute.slug}`,
       siteName: "UPSCPrepNotes",
-      images: [{ url: "/logo.png", width: 512, height: 512 }],
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
   };
 }
@@ -36,5 +41,16 @@ export default async function InstitutePage({ params }: Props) {
 
   const products = getProductsByInstitute(slug);
 
-  return <InstitutePageClient institute={institute} products={products} />;
+  return (
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Store", href: "/store" },
+          { name: institute.name, href: `/store/institutes/${institute.slug}` },
+        ]}
+      />
+      <InstitutePageClient institute={institute} products={products} />
+    </>
+  );
 }
