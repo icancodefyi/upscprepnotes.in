@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
   async redirects() {
     return [
+      { source: "/requests", destination: "/admin/requests", permanent: true },
       {
         source: "/upsc-topper/toppers-copy-compilation",
         destination: "/toppers/toppers-copy-compilation",
