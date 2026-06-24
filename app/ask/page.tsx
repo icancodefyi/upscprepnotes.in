@@ -369,6 +369,10 @@ function AskPage() {
   );
   const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
   const [searchWeb, setSearchWeb] = useState(false);
+  const [shareData, setShareData] = useState<{ question: string; answer: string } | null>(null);
+  const [shareImageBlob, setShareImageBlob] = useState<Blob | null>(null);
+  const [shareCopied, setShareCopied] = useState(false);
+  const shareCanvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -707,17 +711,188 @@ function AskPage() {
     }
   }
 
-  function handleWhatsAppShare(content: string) {
+  function stripMarkdown(content: string): string {
     let text = isSearchIndicator(content)
       ? stripSearchIndicator(content)
       : content;
     text = text
       .replace(/\[source:\s*[^\]]+\]/gi, "")
       .replace(/\[([^\]]*)\]\(https?:\/\/[^)]+\)/g, "$1")
-      .trim()
-      .substring(0, 3000);
-    const url = `https://wa.me/?text=${encodeURIComponent(text + "\n\n— via UPSCPrepNotes AI Mentor\nhttps://upscprepnotes.in/ask")}`;
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/`(.*?)`/g, "$1")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/^\s*[-•]\s+/gm, "• ")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+    return text;
+  }
+
+  function openShareModal(answerContent: string, question?: string) {
+    const q = question || messages.filter(m => m.role === "user").pop()?.content || "";
+    const cleanAnswer = stripMarkdown(answerContent);
+    setShareData({ question: q, answer: cleanAnswer });
+    setShareImageBlob(null);
+    setShareCopied(false);
+    setTimeout(() => generateShareCard(q, cleanAnswer), 50);
+  }
+
+  function generateShareCard(question: string, answer: string) {
+    const canvas = shareCanvasRef.current;
+    if (!canvas) return;
+    const W = 1080;
+    const H = 1350;
+    const dpr = 2;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = "100%";
+    canvas.style.height = "auto";
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+
+    // Background gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, "#0a0a0a");
+    grad.addColorStop(0.5, "#111827");
+    grad.addColorStop(1, "#0a0a0a");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Accent line at top
+    ctx.fillStyle = "#10b981";
+    ctx.fillRect(0, 0, W, 6);
+
+    // Header
+    ctx.fillStyle = "#10b981";
+    ctx.font = "600 24px system-ui, -apple-system, sans-serif";
+    ctx.fillText("UPSCPrepNotes", 60, 75);
+    ctx.fillStyle = "#52525b";
+    ctx.font = "400 18px system-ui, -apple-system, sans-serif";
+    ctx.fillText("AI Mentor", 235, 75);
+
+    // Question section
+    let y = 130;
+    ctx.fillStyle = "#10b981";
+    ctx.font = "600 16px system-ui, -apple-system, sans-serif";
+    ctx.fillText("Q:", 60, y);
+    ctx.fillStyle = "#f4f4f5";
+    ctx.font = "600 26px system-ui, -apple-system, sans-serif";
+    const qLines = wrapText(ctx, question, W - 160);
+    for (const line of qLines) {
+      y += 36;
+      ctx.fillText(line, 90, y);
+    }
+
+    // Divider
+    y += 45;
+    ctx.strokeStyle = "#27272a";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, y);
+    ctx.lineTo(W - 60, y);
+    ctx.stroke();
+    y += 50;
+
+    // Answer section
+    ctx.fillStyle = "#a1a1aa";
+    ctx.font = "600 16px system-ui, -apple-system, sans-serif";
+    ctx.fillText("A:", 60, y);
+    ctx.fillStyle = "#e4e4e7";
+    ctx.font = "400 24px system-ui, -apple-system, sans-serif";
+
+    const maxAnswerHeight = H - y - 200;
+    const lineHeight = 34;
+    const maxLines = Math.floor(maxAnswerHeight / lineHeight);
+
+    const answerLines: string[] = [];
+    const allLines = wrapText(ctx, answer, W - 160);
+    for (let i = 0; i < Math.min(allLines.length, maxLines - 1); i++) {
+      answerLines.push(allLines[i]);
+    }
+    if (allLines.length > maxLines - 1) {
+      answerLines.push("...");
+    }
+
+    for (const line of answerLines) {
+      y += lineHeight;
+      ctx.fillText(line, 90, y);
+    }
+
+    // Footer
+    y = H - 100;
+    ctx.fillStyle = "#27272a";
+    ctx.fillRect(60, y - 20, W - 120, 1);
+    ctx.fillStyle = "#10b981";
+    ctx.font = "700 22px system-ui, -apple-system, sans-serif";
+    ctx.fillText("upscprepnotes.in/ask", 60, y + 20);
+    ctx.fillStyle = "#52525b";
+    ctx.font = "400 16px system-ui, -apple-system, sans-serif";
+    ctx.fillText("Get free UPSC strategy guidance", W - 320, y + 20);
+
+    // Convert to blob
+    canvas.toBlob((blob) => {
+      if (blob) setShareImageBlob(blob);
+    }, "image/png");
+  }
+
+  function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+    const paragraphs = text.split("\n");
+    const lines: string[] = [];
+    for (const para of paragraphs) {
+      if (!para.trim()) {
+        lines.push("");
+        continue;
+      }
+      const words = para.split(" ");
+      let current = "";
+      for (const word of words) {
+        const test = current ? current + " " + word : word;
+        const metrics = ctx.measureText(test);
+        if (metrics.width > maxWidth && current) {
+          lines.push(current);
+          current = word;
+        } else {
+          current = test;
+        }
+      }
+      if (current) lines.push(current);
+    }
+    return lines;
+  }
+
+  function downloadShareImage() {
+    if (!shareImageBlob) return;
+    const url = URL.createObjectURL(shareImageBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "upscprepnotes-ai.png";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function whatsappShareCard() {
+    if (!shareData) return;
+    const text = `${shareData.question}\n\n${shareData.answer.substring(0, 1500)}\n\n— via UPSCPrepNotes AI Mentor\nhttps://upscprepnotes.in/ask`;
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
+  }
+
+  function twitterShareCard() {
+    if (!shareData) return;
+    const text = `${shareData.question.substring(0, 100)}\n\n${shareData.answer.substring(0, 200)}\n\n— via UPSCPrepNotes AI Mentor\nhttps://upscprepnotes.in/ask`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+  }
+
+async function copyShareText() {
+    if (!shareData) return;
+    const text = `${shareData.question}\n\n${shareData.answer}\n\n— via UPSCPrepNotes AI Mentor\nhttps://upscprepnotes.in/ask`;
+    const ok = await copyToClipboard(text);
+    if (ok) {
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -815,6 +990,105 @@ function AskPage() {
           </div>
         </div>
       )}
+
+      {/* Share dialog */}
+      {shareData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setShareData(null)}
+          />
+          <div className="relative z-10 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl">
+            <div className="sticky top-0 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-4">
+              <h3 className="text-sm font-semibold text-zinc-800">Share answer</h3>
+              <button
+                type="button"
+                onClick={() => setShareData(null)}
+                className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
+                aria-label="Close"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-5">
+              {/* Card preview */}
+              <div className="overflow-hidden rounded-xl border border-zinc-100 shadow-sm">
+                <canvas ref={shareCanvasRef} className="block w-full" />
+                {!shareImageBlob && (
+                  <div className="flex h-48 items-center justify-center bg-zinc-50">
+                    <div className="flex gap-1">
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.15s]" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.3s]" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Download button */}
+              <button
+                type="button"
+                onClick={downloadShareImage}
+                disabled={!shareImageBlob}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Download image
+              </button>
+
+              {/* Share options */}
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={whatsappShareCard}
+                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  <span className="text-[10px] text-zinc-500">WhatsApp</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={twitterShareCard}
+                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-zinc-700" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  <span className="text-[10px] text-zinc-500">Twitter</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={copyShareText}
+                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.5 2.5 0 0013.5 1.5h-9a2.5 2.5 0 00-2.5 2.5v9a2.5 2.5 0 002.5 2.5h2.5m4.166-1.888A2.5 2.5 0 0111.5 14.5h9a2.5 2.5 0 002.5-2.5v-9a2.5 2.5 0 00-2.5-2.5h-9a2.5 2.5 0 00-2.5 2.5v9a2.5 2.5 0 002.5 2.5h2.5" />
+                  </svg>
+                  <span className="text-[10px] text-zinc-500">Copy text</span>
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShareData(null)}
+                className="mt-3 w-full rounded-xl border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
@@ -1146,12 +1420,15 @@ function AskPage() {
                                 )}
                                 <button
                                   type="button"
-                                  onClick={() => handleWhatsAppShare(msg.content)}
+                                  onClick={() => {
+                                    const q = messages.slice(0, i).reverse().find(m => m.role === "user")?.content || "";
+                                    openShareModal(msg.content, q);
+                                  }}
                                   data-track={`ask-share-${i}`}
                                   className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
                                 >
-                                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.769-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.188 2.25 2.25 0 00-3.935-2.188zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                                   </svg>
                                   Share
                                 </button>
