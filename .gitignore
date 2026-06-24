@@ -57,3 +57,6 @@ scripts/.*.cache.json
 /private/zips/
 data/download-stats.json
 .env.local
+
+# Claude project files (contains actual topper data)
+claude-project/
