@@ -66,8 +66,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   "how-to-write-upsc-mains-answers-hindi": "2026-06-16",
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
-    url: `${baseUrl}/${slug}`,
-    lastModified: new Date(contentMap[slug] || "2026-06-24"),
+    url: `${baseUrl}/content/${slug}`,
+    lastModified: new Date(contentMap[slug] || "2026-06-25"),
     changeFrequency: "weekly",
     priority: slug.startsWith("how-to-score") || slug.includes("optional-300") ? 0.85 : 0.9,
   }));

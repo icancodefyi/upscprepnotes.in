@@ -33,11 +33,6 @@ const nextConfig: NextConfig = {
       "upsc-full-form-hindi",
       "how-to-write-upsc-mains-answers",
       "upsc-topper-answer-copies",
-      "upsc-syllabus-hindi",
-      "upsc-free-material-hindi",
-      "how-to-write-upsc-mains-answers-hindi",
-      "how-to-score-130-plus-in-gs1",
-      "how-to-score-120-plus-in-gs2",
     ];
     const contentRewrites = contentSlugs.map((slug) => ({
       source: `/${slug}`,

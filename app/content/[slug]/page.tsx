@@ -16,24 +16,27 @@ export async function generateMetadata({ params }: Props) {
   const { default: page } = await mod();
   const enSlug = getEnglishSlug(slug);
   const hiSlug = getHindiSlug(enSlug);
+  const contentPath = `/content/${slug}`;
+  const enContentPath = `/content/${enSlug}`;
+  const hiContentPath = hiSlug ? `/content/${hiSlug}` : null;
   const languages: Record<string, string> = {
-    "x-default": `https://upscprepnotes.in/${enSlug}`,
-    en: `https://upscprepnotes.in/${enSlug}`,
+    "x-default": `https://upscprepnotes.in${enContentPath}`,
+    en: `https://upscprepnotes.in${enContentPath}`,
   };
-  if (hiSlug) {
-    languages.hi = `https://upscprepnotes.in/${hiSlug}`;
+  if (hiContentPath) {
+    languages.hi = `https://upscprepnotes.in${hiContentPath}`;
   }
   return {
     title: page.title,
     description: page.description,
     alternates: {
-      canonical: `https://upscprepnotes.in/${slug}`,
+      canonical: `https://upscprepnotes.in${contentPath}`,
       languages,
     },
     openGraph: {
       title: page.title,
       description: page.description,
-      url: `https://upscprepnotes.in/${slug}`,
+      url: `https://upscprepnotes.in${contentPath}`,
       siteName: "UPSCPrepNotes",
       images: [{ url: "/og/default.png", width: 1200, height: 630 }],
     },
@@ -49,6 +52,8 @@ export default async function ContentPage({ params }: Props) {
   const mod = getPage(slug);
   if (!mod) notFound();
   const { default: page } = await mod();
+
+  const contentPath = `/content/${slug}`;
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -72,7 +77,7 @@ export default async function ContentPage({ params }: Props) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://upscprepnotes.in/${slug}`,
+      "@id": `https://upscprepnotes.in${contentPath}`,
     },
   };
 
@@ -81,7 +86,7 @@ export default async function ContentPage({ params }: Props) {
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
-          { name: page.h1 || page.title, href: `/${slug}` },
+          { name: page.h1 || page.title, href: contentPath },
         ]}
       />
       <script
