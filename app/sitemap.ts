@@ -4,6 +4,7 @@ import { TopperModel } from "@/models/topper.model";
 
 import { PRODUCTS } from "@/lib/store-products";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
+import { getAllSlugs, getPage } from "@/data/content/registry";
 import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
 import freeMaterialPage from "@/data/content/upsc-free-material";
@@ -13,17 +14,7 @@ import syllabusHindiPage from "@/data/content/upsc-syllabus-hindi";
 import freeMaterialHindiPage from "@/data/content/upsc-free-material-hindi";
 import answerWritingHindiPage from "@/data/content/how-to-write-upsc-mains-answers-hindi";
 
-const CONTENT_SLUGS = [
-  "upsc-full-form",
-  "upsc-syllabus",
-  "upsc-free-material",
-  "upsc-full-form-hindi",
-  "how-to-write-upsc-mains-answers",
-  "upsc-topper-answer-copies",
-  "upsc-syllabus-hindi",
-  "upsc-free-material-hindi",
-  "how-to-write-upsc-mains-answers-hindi",
-];
+const CONTENT_SLUGS = getAllSlugs();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://upscprepnotes.in";
@@ -37,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/toppers/marks-database`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/pyq`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/toppers/toppers-copy-compilation`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
     { url: `${baseUrl}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
@@ -75,9 +67,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
     url: `${baseUrl}/${slug}`,
-    lastModified: new Date(contentMap[slug]),
+    lastModified: new Date(contentMap[slug] || "2026-06-24"),
     changeFrequency: "weekly",
-    priority: 0.9,
+    priority: slug.startsWith("how-to-score") || slug.includes("optional-300") ? 0.85 : 0.9,
   }));
 
   // Topper profile pages (from MongoDB)

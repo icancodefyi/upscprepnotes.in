@@ -7,7 +7,11 @@ import type { Components } from "react-markdown";
 const DEFAULTS = {
   ctaIntro: "Starting at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
   ctaIntroBtn: "Shop Now →",
+  ctaMid: "Get the detailed strategy report with topper marks data, subject-wise breakdown, and answer templates.",
+  ctaMidSub: "Includes verified marks from 280+ UPSC toppers across all subjects.",
   ctaMidBtn: "Shop Now →",
+  ctaFinal: "Ready to Master Your UPSC Preparation?",
+  ctaFinalSub: "Access the complete topper intelligence database with marks, strategies, and answer copies — everything you need to optimize your preparation.",
   ctaFinalBtn: "Shop Now →",
 };
 

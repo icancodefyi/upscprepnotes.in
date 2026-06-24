@@ -116,6 +116,11 @@ export default function Footer() {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link href="/faq" data-track="footer-faq" className="hover:text-black transition-colors">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -1,46 +1,21 @@
 import { notFound } from "next/navigation";
 import ContentLayout from "@/components/ContentLayout";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { getPage, getAllSlugs, getEnglishSlug, getHindiSlug } from "@/data/content/registry";
 
 type Props = { params: Promise<{ slug: string }> };
 
-// Register content pages here
-const pages = {
-  "upsc-full-form": () => import("@/data/content/upsc-full-form"),
-  "upsc-syllabus": () => import("@/data/content/upsc-syllabus"),
-  "upsc-free-material": () => import("@/data/content/upsc-free-material"),
-  "upsc-full-form-hindi": () => import("@/data/content/upsc-full-form-hindi"),
-  "how-to-write-upsc-mains-answers": () => import("@/data/content/how-to-write-upsc-mains-answers"),
-  "upsc-topper-answer-copies": () => import("@/data/content/upsc-topper-answer-copies"),
-  "upsc-syllabus-hindi": () => import("@/data/content/upsc-syllabus-hindi"),
-  "upsc-free-material-hindi": () => import("@/data/content/upsc-free-material-hindi"),
-  "how-to-write-upsc-mains-answers-hindi": () => import("@/data/content/how-to-write-upsc-mains-answers-hindi"),
-} as const;
-
 export async function generateStaticParams() {
-  return Object.keys(pages).map((slug) => ({ slug }));
+  return getAllSlugs().map((slug) => ({ slug }));
 }
-
-const EN_TO_HI: Record<string, string> = {
-  "upsc-full-form": "upsc-full-form-hindi",
-  "upsc-syllabus": "upsc-syllabus-hindi",
-  "upsc-free-material": "upsc-free-material-hindi",
-  "how-to-write-upsc-mains-answers": "how-to-write-upsc-mains-answers-hindi",
-};
-
-const HI_TO_EN: Record<string, string> = Object.fromEntries(
-  Object.entries(EN_TO_HI).map(([en, hi]) => [hi, en])
-);
-
-const HI_SLUGS = new Set(Object.values(EN_TO_HI));
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const mod = pages[slug as keyof typeof pages];
+  const mod = getPage(slug);
   if (!mod) return { title: "Page Not Found" };
   const { default: page } = await mod();
-  const enSlug = HI_TO_EN[slug] || slug;
-  const hiSlug = EN_TO_HI[enSlug];
+  const enSlug = getEnglishSlug(slug);
+  const hiSlug = getHindiSlug(enSlug);
   const languages: Record<string, string> = {
     "x-default": `https://upscprepnotes.in/${enSlug}`,
     en: `https://upscprepnotes.in/${enSlug}`,
@@ -71,7 +46,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ContentPage({ params }: Props) {
   const { slug } = await params;
-  const mod = pages[slug as keyof typeof pages];
+  const mod = getPage(slug);
   if (!mod) notFound();
   const { default: page } = await mod();
 

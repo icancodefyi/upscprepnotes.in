@@ -29,3 +29,5 @@ export type ContentPage = {
   ctaFinalBtn?: string;
   relatedPages?: RelatedPage[];
 };
+
+
