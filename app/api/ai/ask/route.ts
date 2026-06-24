@@ -10,8 +10,8 @@ import {
   updateConversationTitle,
   getConversation,
 } from "@/lib/ai/quota";
-import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
 import { auth } from "@/lib/auth";
+import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -19,14 +19,13 @@ const webSearchTool = {
   type: "function" as const,
   function: {
     name: "web_search",
-    description:
-      "Search the web for current information about UPSC: latest news, exam dates, notifications, results, current affairs, government schemes, policy changes, budgets, or any factual topic where your training data might be outdated. Use this for queries about recent events (past 12 months), specific data points, or any UPSC topic that needs up-to-date information.",
+    description: "Search the web for current information on UPSC, government exams, current affairs, notifications, results, cutoffs, and policy changes.",
     parameters: {
       type: "object",
       properties: {
         query: {
           type: "string",
-          description: "The search query, typically the user's question rephrased for search",
+          description: "The search query to look up on the web",
         },
       },
       required: ["query"],
@@ -36,7 +35,7 @@ const webSearchTool = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, sessionId, conversationId } = await request.json();
+    const { message, sessionId, conversationId, searchWeb: wantsSearch } = await request.json();
 
     if (!message || typeof message !== "string" || !message.trim()) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
@@ -81,144 +80,70 @@ export async function POST(request: NextRequest) {
       })),
     ];
 
-    const encoder = new TextEncoder();
-
-    let wantsSearch = false;
-    let toolCallArgs: any = null;
-    let toolCallId = "";
-    let assistantContent = "";
-
-    // Phase 1: Non-streaming call to decide if web search is needed
-    try {
-      const firstResponse = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
-        messages: groqMessages,
-        tools: [webSearchTool],
-        tool_choice: "auto",
-        stream: false,
-        temperature: 0.7,
-        max_tokens: 1024,
-      });
-
-      const choice = firstResponse.choices?.[0];
-      const assistantMessage = choice?.message;
-      assistantContent = assistantMessage?.content || "";
-
-      const toolCalls = assistantMessage?.tool_calls;
-      if (toolCalls && toolCalls.length > 0) {
-        const tc = toolCalls[0];
-        toolCallId = tc.id;
-        try {
-          toolCallArgs = JSON.parse(tc.function.arguments);
-        } catch {}
-        if (toolCallArgs?.query) {
-          wantsSearch = true;
-        }
-      }
-    } catch (err: any) {
-      console.error("Tool call failed, falling back to no-search:", err);
-      let failedGen: string | null = null;
-      try {
-        const raw = err?.error?.failed_generation || err?.failed_generation;
-        if (typeof raw === "string") {
-          failedGen = raw;
-        } else if (typeof err.message === "string") {
-          const jsonPart = err.message.match(/\{.*\}/);
-          if (jsonPart) failedGen = JSON.parse(jsonPart[0])?.error?.failed_generation;
-        }
-      } catch {}
-      if (failedGen) {
-        assistantContent = failedGen.replace(/<function=[\s\S]*?<\/function>/g, "").replace(/<function=[\s\S]*$/, "").trim();
-        const nativeMatch = failedGen.match(/<function=web_search=\{"query":\s*"([^"]+)"\}><\/function>/);
-        if (nativeMatch) {
-          wantsSearch = true;
-          toolCallArgs = { query: nativeMatch[1] };
-          toolCallId = "native-fallback";
-        }
-      }
-    }
-
-    if (wantsSearch) {
-      const query = toolCallArgs?.query || message;
-
-      const readable = new ReadableStream({
-        async start(controller) {
-          let fullContent = "";
-
-          try {
-            const indicator = `🔍 *Searching the web for "${query.replace(/"/g, '\\"')}"...*\n\n`;
-            controller.enqueue(encoder.encode(indicator));
-            fullContent += indicator;
-
-            let formattedResults = "";
-            try {
-              const searchData = await searchWeb(query);
-              formattedResults = formatSearchResults(query, searchData.results);
-            } catch (err) {
-              console.error("Web search failed:", err);
-            }
-
-            groqMessages.push({
-              role: "assistant",
-              content: null,
-              tool_calls: [{
-                id: toolCallId,
-                type: "function",
-                function: { name: "web_search", arguments: JSON.stringify(toolCallArgs || { query }) },
-              }],
-            });
-
-            const toolContent = formattedResults
-              ? `Web search results for "${query}". Use these to answer the user's question. When citing sources, use markdown links like [Source](actual_url) with the actual URLs from the search results above. Always include citations for any factual claims from search results. Acknowledge you searched the web.\n\n${formattedResults}`
-              : "No web search results were found. Answer the question using your existing knowledge.";
-
-            groqMessages.push({
-              role: "tool",
-              tool_call_id: toolCallId,
-              content: toolContent,
-            });
-
-            const secondStream = await groq.chat.completions.create({
-              model: "llama-3.3-70b-versatile",
-              messages: groqMessages,
-              stream: true,
-              temperature: 0.7,
-              max_tokens: 1024,
-            });
-
-            for await (const chunk of secondStream) {
-              const text = chunk.choices?.[0]?.delta?.content || "";
-              if (text) {
-                fullContent += text;
-                controller.enqueue(encoder.encode(text));
-              }
-            }
-
-            const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
-            await saveMessage(cid, "assistant", fullContent, sources);
-          } catch (err) {
-            console.error("Stream error:", err);
-            const errMsg = "\n\nSorry, something went wrong while searching. Please try again.";
-            controller.enqueue(encoder.encode(errMsg));
-          } finally {
-            controller.close();
-          }
-        },
-      });
-
-      return new Response(readable, {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "no-cache",
-          "X-Conversation-Id": cid,
-        },
-      });
-    }
-
-    // No tool calls — generate a streamed response using the 70B model
     const readable = new ReadableStream({
       async start(controller) {
+        const encoder = new TextEncoder();
         let fullContent = "";
+
+        // Phase 1: if user toggled search, detect need with fast 8B model
+        let didSearch = false;
+        if (wantsSearch) {
+          try {
+            const detection = await groq.chat.completions.create({
+              model: "llama-3.1-8b-instant",
+              messages: groqMessages,
+              tools: [webSearchTool],
+              tool_choice: "auto",
+              stream: false,
+              temperature: 0.7,
+              max_tokens: 512,
+            });
+
+            const toolCalls = detection.choices?.[0]?.message?.tool_calls;
+            const tc = toolCalls?.[0];
+            if (tc) {
+              let args: any;
+              try { args = JSON.parse(tc.function.arguments); } catch {}
+              const query = args?.query;
+              if (query) {
+                didSearch = true;
+                const indicator = `🔍 Searching the web for "${query.replace(/"/g, '\\"')}"...\n\n`;
+                controller.enqueue(encoder.encode(indicator));
+                fullContent += indicator;
+
+                let formattedResults = "";
+                try {
+                  const searchData = await searchWeb(query);
+                  formattedResults = formatSearchResults(query, searchData.results);
+                } catch (err) {
+                  console.error("Web search failed:", err);
+                }
+
+                groqMessages.push({
+                  role: "assistant",
+                  content: null,
+                  tool_calls: [{
+                    id: tc.id,
+                    type: "function",
+                    function: { name: "web_search", arguments: JSON.stringify(args) },
+                  }],
+                });
+
+                groqMessages.push({
+                  role: "tool",
+                  tool_call_id: tc.id,
+                  content: formattedResults
+                    ? `Web search results for "${query}". Use these to answer the user's question. When citing sources, use markdown links like [Source](actual_url) with the actual URLs. Always include citations for factual claims.\n\n${formattedResults}`
+                    : "No web search results were found. Answer using your existing knowledge.",
+                });
+              }
+            }
+          } catch (err) {
+            console.error("Web search detection failed:", err);
+          }
+        }
+
+        // Phase 2: stream the response (70B with or without search context)
         try {
           const stream = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
@@ -238,12 +163,14 @@ export async function POST(request: NextRequest) {
         } catch (err) {
           console.error("Stream error:", err);
           const fallback = "I have information on that. Let me share what I know based on the topper data available.";
-          controller.enqueue(encoder.encode(fallback));
-          fullContent = fallback;
+          if (!didSearch) {
+            controller.enqueue(encoder.encode(fallback));
+            fullContent = fallback;
+          }
         }
 
         const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
-        await saveMessage(cid, "assistant", fullContent || "I have information on that. Let me share what I know based on the topper data available.", sources);
+        await saveMessage(cid, "assistant", fullContent, sources);
         controller.close();
       },
     });

@@ -62,8 +62,14 @@ export default function ProductRecommendations({
             data-track={`recommendation-${product.slug}`}
             className="flex items-center gap-3 rounded-lg bg-white p-2.5 transition hover:shadow-sm hover:border-emerald-200 border border-transparent"
           >
-            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${product.gradient}`}>
-              <span className="text-xs font-black text-white">{product.title.charAt(0)}</span>
+            <div className="h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-zinc-100">
+              {product.image ? (
+                <img src={product.image} alt={product.title} className="h-full w-full object-cover" loading="lazy" />
+              ) : (
+                <div className={`flex h-full w-full items-center justify-center ${product.gradient}`}>
+                  <span className="text-xs font-black text-white">{product.title.charAt(0)}</span>
+                </div>
+              )}
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold text-zinc-800">{product.title}</p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
+import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
 import { getPostHogClient } from "@/lib/posthog-server";
@@ -70,26 +71,6 @@ async function sendUnavailableEmail(email: string, topperName: string) {
   });
 }
 
-async function sendAdminNotification(email: string, topperName: string, topperSlug: string, name: string, source: string, sourceUrl: string, available: boolean) {
-
-  const status = available ? "✅ Available — Downloaded" : "⏳ Unavailable — Requested";
-  const html = `
-    <p><strong>${status}</strong></p>
-    <p>Email: ${email}</p>
-    ${name ? `<p>Name: ${name}</p>` : ""}
-    <p>Topper: ${topperName} (${topperSlug})</p>
-    <p>Source: ${source}</p>
-    <p>URL: ${sourceUrl}</p>
-    <p>Time: ${new Date().toLocaleString()}</p>
-  `;
-
-  await sendEmail({
-    to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
-    subject: `${available ? "📥" : "📋"} Free Download: ${topperName} — ${email}`,
-    html,
-  });
-}
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -130,6 +111,21 @@ export async function POST(request: NextRequest) {
       available,
     });
 
+    await NurtureCampaignModel.updateOne(
+      { email: email.toLowerCase() },
+      {
+        $setOnInsert: {
+          email: email.toLowerCase(),
+          topperName,
+          step: 0,
+          nextScheduledAt: new Date(),
+          sentAt: [],
+          completed: false,
+        },
+      },
+      { upsert: true }
+    );
+
     const posthog = getPostHogClient();
     posthog.identify({ distinctId: email, properties: { email, name: name || undefined } });
     posthog.capture({
@@ -148,7 +144,6 @@ export async function POST(request: NextRequest) {
     } else {
       await sendUnavailableEmail(email, topperName);
     }
-    await sendAdminNotification(email, topperName, topperSlug, name, source, sourceUrl, available);
 
     return NextResponse.json(
       {

@@ -368,6 +368,7 @@ function AskPage() {
     null,
   );
   const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
+  const [searchWeb, setSearchWeb] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -531,6 +532,7 @@ function AskPage() {
           message: text,
           sessionId: getAskSessionId(),
           conversationId: activeId,
+          searchWeb,
         }),
       });
 
@@ -1377,75 +1379,118 @@ function AskPage() {
           disabled={streaming || loading}
           rows={1}
           placeholder="Ask about UPSC preparation..."
-          className="
-            block
-            w-full
-            resize-none
-            border-0
-            bg-transparent
-            px-5
-            py-3
-            pr-16
-            text-[15px]
-            leading-6
-            text-zinc-900
-            outline-none
-            placeholder:text-zinc-400
-          "
-          style={{
-            minHeight: "52px",
-            maxHeight: "220px",
-          }}
-          onInput={(e) => {
-            const el = e.currentTarget;
-            el.style.height = "52px";
-            el.style.height =
-              Math.min(el.scrollHeight, 220) + "px";
-          }}
-        />
+            className="
+              block
+              w-full
+              resize-none
+              border-0
+              bg-transparent
+              px-5
+              py-3
+              pr-16
+              pb-9
+              text-[15px]
+              leading-6
+              text-zinc-900
+              outline-none
+              placeholder:text-zinc-400
+            "
+            style={{
+              minHeight: "52px",
+              maxHeight: "220px",
+            }}
+            onInput={(e) => {
+              const el = e.currentTarget;
+              el.style.height = "52px";
+              el.style.height =
+                Math.min(el.scrollHeight, 220) + "px";
+            }}
+          />
 
-        <button
-          type="submit"
-          disabled={streaming || loading || !input.trim()}
-          aria-label="Send message"
-          className="
-            absolute
-            right-3
-            top-1/2
-            -translate-y-1/2
-            flex
-            h-8
-            w-8
-            items-center
-            justify-center
-            rounded-full
-            bg-zinc-900
-            text-white
-            transition-all
-            duration-200
-            hover:scale-105
-            hover:bg-zinc-800
-            active:scale-95
-            disabled:scale-100
-            disabled:bg-zinc-200
-            disabled:text-zinc-400
-            disabled:cursor-not-allowed
-          "
-        >
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <div className="absolute left-3 bottom-2 flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setSearchWeb((v) => !v)}
+              disabled={streaming || loading}
+              aria-label="Toggle web search"
+              aria-pressed={searchWeb}
+              className="group flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span
+                className={`relative inline-flex h-[18px] w-8 items-center rounded-full transition-colors duration-200 ${
+                  searchWeb ? "bg-emerald-500" : "bg-zinc-200 group-hover:bg-zinc-300"
+                }`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                    searchWeb ? "translate-x-[18px]" : "translate-x-[2px]"
+                  }`}
+                />
+              </span>
+              <span
+                className={`text-[11px] font-medium transition-colors duration-200 ${
+                  searchWeb ? "text-emerald-700" : "text-zinc-400 group-hover:text-zinc-600"
+                }`}
+              >
+                Web search
+              </span>
+            </button>
+            {searchWeb && (
+              <button
+                type="button"
+                onClick={() => setSearchWeb(false)}
+                disabled={streaming || loading}
+                aria-label="Disable web search"
+                className="flex h-4 w-4 items-center justify-center rounded-full bg-zinc-100 text-zinc-400 transition-colors hover:bg-zinc-200 hover:text-zinc-600 disabled:opacity-50"
+              >
+                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={streaming || loading || !input.trim()}
+            aria-label="Send message"
+            className="
+              absolute
+              right-3
+              bottom-2
+              flex
+              h-8
+              w-8
+              items-center
+              justify-center
+              rounded-full
+              bg-zinc-900
+              text-white
+              transition-all
+              duration-200
+              hover:scale-105
+              hover:bg-zinc-800
+              active:scale-95
+              disabled:scale-100
+              disabled:bg-zinc-200
+              disabled:text-zinc-400
+              disabled:cursor-not-allowed
+            "
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M5 12h14m-7-7l7 7-7 7"
-            />
-          </svg>
-        </button>
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M5 12h14m-7-7l7 7-7 7"
+              />
+            </svg>
+          </button>
       </div>
     </form>
 
