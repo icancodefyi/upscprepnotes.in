@@ -4,7 +4,7 @@ import { TopperModel } from "@/models/topper.model";
 
 import { PRODUCTS } from "@/lib/store-products";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
-import { getAllSlugs, getPage } from "@/data/content/registry";
+import { getAllSlugs } from "@/data/content/registry";
 import syllabusPage from "@/data/content/upsc-syllabus";
 import fullFormPage from "@/data/content/upsc-full-form";
 import freeMaterialPage from "@/data/content/upsc-free-material";
