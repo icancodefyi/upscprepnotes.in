@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getFeaturedToppers } from "@/services/topper.service";
@@ -17,6 +18,29 @@ import {
 } from "lucide-react";
 
 export const revalidate = 86400;
+
+export const metadata: Metadata = {
+  title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides for UPSC CSE",
+  description:
+    "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, marks breakdowns, optional subject analysis, an AI mentor for prep guidance, and a curated store — all in one platform.",
+  openGraph: {
+    title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides",
+    description:
+      "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, marks breakdowns, optional subject analysis, an AI mentor for prep guidance, and a curated store.",
+    url: "https://upscprepnotes.in",
+    siteName: "UPSCPrepNotes",
+    images: [{ url: "/logo.png", width: 512, height: 512 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides",
+    description:
+      "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, optional analysis, and an AI mentor.",
+  },
+  alternates: {
+    canonical: "https://upscprepnotes.in",
+  },
+};
 
 const OPTIONAL_SUBJECTS = [
   "PSIR",
