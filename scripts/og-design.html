@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    background: #F8F9FA;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* Left content panel */
+  .content {
+    flex: 1;
+    padding: 56px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Brand header */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .brand img { width: 44px; height: 44px; }
+  .brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.02em;
+  }
+
+  /* Headline */
+  .headline {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 58px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    max-width: 640px;
+  }
+
+  /* Subtitle */
+  .subtitle {
+    font-size: 20px;
+    color: #71717a;
+    margin-top: 16px;
+    line-height: 1.6;
+    max-width: 560px;
+    font-weight: 500;
+  }
+
+  /* Feature pills */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: #C4F9D7;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: -0.01em;
+  }
+  .pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #059669;
+    border-radius: 50%;
+  }
+
+  /* URL footer */
+  .url {
+    position: absolute;
+    bottom: 28px;
+    left: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Right decorative panel */
+  .decor {
+    width: 380px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .decor-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #C4F9D7 0%, #a7f3c0 50%, #86efac 100%);
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  /* Geometric circles pattern */
+  .circle-1 {
+    position: absolute;
+    top: -60px;
+    right: -40px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25);
+  }
+  .circle-2 {
+    position: absolute;
+    top: 140px;
+    right: 120px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+  .circle-3 {
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+  }
+  /* Small dots */
+  .dots {
+    position: absolute;
+    bottom: 40px;
+    right: 50px;
+    display: flex;
+    gap: 8px;
+  }
+  .dots-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- Default OG Image (Homepage) -->
+<div class="card" style="margin: 20px;">
+  <div class="content">
+    <div class="brand">
+      <img src="/logo.png" alt="UPSCPrepNotes" />
+      <span class="brand-name">UPSCPrepNotes</span>
+    </div>
+    <h1 class="headline">Topper Strategies, Answer Copies & Marksheets</h1>
+    <p class="subtitle">India's UPSC preparation intelligence platform — 280+ topper profiles, 50+ verified handwritten answer copies, marks breakdowns & optional analysis.</p>
+    <div class="features">
+      <span class="pill">280+ Toppers</span>
+      <span class="pill">50+ Answer Copies</span>
+      <span class="pill">AI Insights</span>
+    </div>
+    <span class="url">upscprepnotes.in</span>
+  </div>
+  <div class="decor">
+    <div class="decor-bg"></div>
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="circle-3"></div>
+  </div>
+</div>
+
+<!-- AI Mentor OG Image -->
+<div class="card" style="margin: 20px;">
+  <div class="content">
+    <div class="brand">
+      <img src="/logo.png" alt="UPSCPrepNotes" />
+      <span class="brand-name">UPSCPrepNotes</span>
+    </div>
+    <h1 class="headline">AI Mentor for UPSC</h1>
+    <p class="subtitle">Get instant answers trained on 280+ topper strategies, answer copies & marksheets. Ask anything about your UPSC preparation — free.</p>
+    <div class="features">
+      <span class="pill">Free</span>
+      <span class="pill">Ask Anything</span>
+      <span class="pill">Instant Answers</span>
+    </div>
+    <span class="url">upscprepnotes.in/ask</span>
+  </div>
+  <div class="decor">
+    <div class="decor-bg"></div>
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="circle-3"></div>
+  </div>
+</div>
+
+<!-- Store OG Image -->
+<div class="card" style="margin: 20px;">
+  <div class="content">
+    <div class="brand">
+      <img src="/logo.png" alt="UPSCPrepNotes" />
+      <span class="brand-name">UPSCPrepNotes</span>
+    </div>
+    <h1 class="headline">UPSC Store — Premium Resources</h1>
+    <p class="subtitle">Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series & more. Instant PDF delivery.</p>
+    <div class="features">
+      <span class="pill">39 Products</span>
+      <span class="pill">Instant Download</span>
+      <span class="pill">Starting ₹99</span>
+    </div>
+    <span class="url">upscprepnotes.in/store</span>
+  </div>
+  <div class="decor">
+    <div class="decor-bg"></div>
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    <div class="circle-3"></div>
+  </div>
+</div>
+
+</body>
+</html>

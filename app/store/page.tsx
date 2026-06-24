@@ -15,7 +15,11 @@ export const metadata = {
       "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery.",
     url: "https://upscprepnotes.in/store",
     siteName: "UPSCPrepNotes",
-    images: [{ url: "/logo.png", width: 512, height: 512 }],
+    images: [{ url: "/og/store.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og/store.png"],
   },
 };
 

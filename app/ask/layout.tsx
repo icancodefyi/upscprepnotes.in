@@ -10,7 +10,11 @@ export const metadata: Metadata = {
       "Get instant AI answers trained on 280+ topper strategies, answer copies, marksheets, and optional analysis. Ask about UPSC prep free.",
     url: "https://upscprepnotes.in/ask",
     siteName: "UPSCPrepNotes",
-    images: [{ url: "/logo.png", width: 512, height: 512 }],
+    images: [{ url: "/og/ask.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og/ask.png"],
   },
   alternates: {
     canonical: "https://upscprepnotes.in/ask",

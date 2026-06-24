@@ -48,13 +48,14 @@ export const metadata: Metadata = {
       "Structured topper profiles, marksheet analysis, 50+ handwritten answer copies, optional subject trends, and preparation strategies for UPSC aspirants.",
     url: "https://upscprepnotes.in",
     siteName: "UPSCPrepNotes",
-    images: [{ url: "/logo.png", width: 512, height: 512 }],
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
     description:
       "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ handwritten answer copies, optional analysis.",
+    images: ["/og/default.png"],
   },
   keywords: [
     "UPSC",
