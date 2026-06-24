@@ -1651,24 +1651,15 @@ const mdComponents: Components = {
     if (!cleanHref) return <span>{children}</span>;
     const isExternal = cleanHref.startsWith("http");
     if (isExternal) {
-      const domain = cleanHref.replace(/^https?:\/\//, "").split("/")[0];
-      const favicon = faviconUrl(cleanHref);
-      const label = children || domain;
+      const label = children || cleanHref.replace(/^https?:\/\//, "").split("/")[0];
       return (
         <a
           href={cleanHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 border-b border-zinc-300 text-zinc-700 underline underline-offset-2 transition hover:border-zinc-500 hover:text-zinc-900"
+          className="underline decoration-zinc-300 underline-offset-2 transition hover:decoration-zinc-500"
         >
-          <img
-            src={favicon}
-            alt=""
-            className="h-3.5 w-3.5 shrink-0 rounded"
-            width={14}
-            height={14}
-          />
-          <span>{label}</span>
+          {label}
         </a>
       );
     }
