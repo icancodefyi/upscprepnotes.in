@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PRODUCTS, getProductBySlug } from "@/lib/store-products";
 import ProductDetailClient from "@/components/store/ProductDetailClient";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +31,10 @@ export async function generateMetadata({
       url: `https://upscprepnotes.in/store/${product.slug}`,
       siteName: "UPSCPrepNotes",
       images: [{ url: imageUrl, width: 464, height: 600 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [imageUrl],
     },
   };
 }
@@ -63,6 +68,13 @@ export default async function ProductPage({
 
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Store", href: "/store" },
+          { name: product.title, href: `/store/${product.slug}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

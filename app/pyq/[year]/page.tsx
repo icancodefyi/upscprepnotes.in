@@ -25,6 +25,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 interface Props {
   params: Promise<{ year: string }>;
@@ -51,6 +52,11 @@ export async function generateMetadata({
     openGraph: {
       title: `UPSC CSE ${year} Official Question Papers`,
       description: `Complete set of UPSC CSE ${year} question papers for Prelims and Mains. Download PDFs now.`,
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
     alternates: {
       canonical: `https://upscprepnotes.in/pyq/${year}`,
@@ -173,6 +179,13 @@ export default async function PYQYearPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "PYQ", href: "/pyq" },
+          { name: `CSE ${year}`, href: `/pyq/${year}` },
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-8">

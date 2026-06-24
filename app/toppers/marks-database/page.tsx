@@ -9,6 +9,18 @@ export const metadata = {
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/marks-database",
   },
+  openGraph: {
+    title: "UPSC Topper Marks Database — Marksheets & Scores",
+    description:
+      "Search and sort marks of 50+ UPSC toppers across GS1-4, Essay, Optional, Written, Interview, and Total. Free access to every rank holder's marksheet.",
+    url: "https://upscprepnotes.in/toppers/marks-database",
+    siteName: "UPSCPrepNotes",
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og/default.png"],
+  },
 };
 
 export default async function MarksDatabasePage() {

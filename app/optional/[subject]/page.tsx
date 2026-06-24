@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 interface Props {
   params: Promise<{
@@ -386,6 +387,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${subjectInfo.name} Optional Subject — UPSC CSE Preparation, Toppers & Strategy`,
       description: subjectInfo.description,
       url: `https://upscprepnotes.in/optional/${subjectKey}`,
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
   };
 }
@@ -502,6 +508,13 @@ export default async function SubjectPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-background text-black">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Optional Subjects", href: "/optional" },
+          { name: subjectInfo.name, href: `/optional/${subjectKey}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}

@@ -14,6 +14,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://upscprepnotes.in/resources",
   },
+  openGraph: {
+    title: "UPSC Resources — Full Form, Syllabus & Free Material",
+    description:
+      "Browse all UPSCPrepNotes resources: UPSC full form, complete syllabus, free study material, 280+ topper profiles, PYQs, AI tutor, and Hindi guides.",
+    url: "https://upscprepnotes.in/resources",
+    siteName: "UPSCPrepNotes",
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og/default.png"],
+  },
 };
 
 const resources = [

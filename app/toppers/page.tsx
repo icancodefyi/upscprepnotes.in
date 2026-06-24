@@ -9,6 +9,18 @@ export const metadata = {
   alternates: {
     canonical: "https://upscprepnotes.in/toppers",
   },
+  openGraph: {
+    title: "UPSC Toppers List — Search All Rank Holders",
+    description:
+      "Browse and search 280+ UPSC toppers by name, rank, year, or optional subject. Access marks breakdowns, answer copies, and strategies.",
+    url: "https://upscprepnotes.in/toppers",
+    siteName: "UPSCPrepNotes",
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og/default.png"],
+  },
 };
 
 export default async function ToppersPage() {

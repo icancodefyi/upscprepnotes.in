@@ -4,6 +4,7 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
 import { Button } from "@/components/ui/button";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import {
   generateWhatsIncluded,
   generateHowToUse,
@@ -89,6 +90,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${p.title} — Free Download`,
       description: metaDesc,
       url: `https://upscprepnotes.in/free-materials/${slug}`,
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
   };
 }
@@ -125,6 +131,13 @@ export default async function PDFDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-white">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Free Materials", href: "/free-materials" },
+          { name: p.title, href: `/free-materials/${slug}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

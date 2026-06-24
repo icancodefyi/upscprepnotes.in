@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import ContentLayout from "@/components/ContentLayout";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -20,35 +21,50 @@ export async function generateStaticParams() {
   return Object.keys(pages).map((slug) => ({ slug }));
 }
 
-const HINDI_SLUGS = new Set([
-  "upsc-full-form-hindi",
-  "upsc-syllabus-hindi",
-  "upsc-free-material-hindi",
-  "how-to-write-upsc-mains-answers-hindi",
-]);
+const EN_TO_HI: Record<string, string> = {
+  "upsc-full-form": "upsc-full-form-hindi",
+  "upsc-syllabus": "upsc-syllabus-hindi",
+  "upsc-free-material": "upsc-free-material-hindi",
+  "how-to-write-upsc-mains-answers": "how-to-write-upsc-mains-answers-hindi",
+};
+
+const HI_TO_EN: Record<string, string> = Object.fromEntries(
+  Object.entries(EN_TO_HI).map(([en, hi]) => [hi, en])
+);
+
+const HI_SLUGS = new Set(Object.values(EN_TO_HI));
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const mod = pages[slug as keyof typeof pages];
   if (!mod) return { title: "Page Not Found" };
   const { default: page } = await mod();
+  const enSlug = HI_TO_EN[slug] || slug;
+  const hiSlug = EN_TO_HI[enSlug];
+  const languages: Record<string, string> = {
+    "x-default": `https://upscprepnotes.in/${enSlug}`,
+    en: `https://upscprepnotes.in/${enSlug}`,
+  };
+  if (hiSlug) {
+    languages.hi = `https://upscprepnotes.in/${hiSlug}`;
+  }
   return {
     title: page.title,
     description: page.description,
     alternates: {
       canonical: `https://upscprepnotes.in/${slug}`,
-      languages: {
-        hi: HINDI_SLUGS.has(slug)
-          ? `https://upscprepnotes.in/${slug}`
-          : undefined,
-      },
+      languages,
     },
     openGraph: {
       title: page.title,
       description: page.description,
       url: `https://upscprepnotes.in/${slug}`,
       siteName: "UPSCPrepNotes",
-      images: [{ url: "/logo.png", width: 512, height: 512 }],
+      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og/default.png"],
     },
   };
 }
@@ -87,6 +103,12 @@ export default async function ContentPage({ params }: Props) {
 
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: page.h1 || page.title, href: `/${slug}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
