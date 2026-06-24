@@ -1435,19 +1435,7 @@ function AskPage() {
                 Web search
               </span>
             </button>
-            {searchWeb && (
-              <button
-                type="button"
-                onClick={() => setSearchWeb(false)}
-                disabled={streaming || loading}
-                aria-label="Disable web search"
-                className="flex h-4 w-4 items-center justify-center rounded-full bg-zinc-100 text-zinc-400 transition-colors hover:bg-zinc-200 hover:text-zinc-600 disabled:opacity-50"
-              >
-                <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+
           </div>
 
           <button
@@ -1665,12 +1653,13 @@ const mdComponents: Components = {
     if (isExternal) {
       const domain = cleanHref.replace(/^https?:\/\//, "").split("/")[0];
       const favicon = faviconUrl(cleanHref);
+      const label = children || domain;
       return (
         <a
           href={cleanHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center border-b border-zinc-200 px-1 pb-0.5 transition hover:border-zinc-400"
+          className="inline-flex items-center gap-1 border-b border-zinc-300 text-zinc-700 underline underline-offset-2 transition hover:border-zinc-500 hover:text-zinc-900"
         >
           <img
             src={favicon}
@@ -1679,6 +1668,7 @@ const mdComponents: Components = {
             width={14}
             height={14}
           />
+          <span>{label}</span>
         </a>
       );
     }
