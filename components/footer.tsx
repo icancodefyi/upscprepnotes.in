@@ -72,22 +72,22 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-full-form" data-track="footer-upsc-full-form" className="hover:text-black transition-colors">
+                <Link href="/content/upsc-full-form" data-track="footer-upsc-full-form" className="hover:text-black transition-colors">
                   UPSC Full Form
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-syllabus" data-track="footer-upsc-syllabus" className="hover:text-black transition-colors">
+                <Link href="/content/upsc-syllabus" data-track="footer-upsc-syllabus" className="hover:text-black transition-colors">
                   UPSC Syllabus
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-free-material" data-track="footer-free-upsc-material" className="hover:text-black transition-colors">
+                <Link href="/content/upsc-free-material" data-track="footer-free-upsc-material" className="hover:text-black transition-colors">
                   Free UPSC Material
                 </Link>
               </li>
               <li>
-                <Link href="/upsc-full-form-hindi" data-track="footer-upsc-full-form-hindi" className="hover:text-black transition-colors">
+                <Link href="/content/upsc-full-form-hindi" data-track="footer-upsc-full-form-hindi" className="hover:text-black transition-colors">
                   UPSC Full Form (हिंदी)
                 </Link>
               </li>

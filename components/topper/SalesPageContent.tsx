@@ -185,11 +185,11 @@ export default function SalesPageContent() {
       <div className="bg-gray-50 border-b border-black/[0.04]">
         <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12">
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
-            <Link href="/upsc-topper-answer-copies" className="text-gray-500 hover:text-gray-900 transition-colors">Guide to Topper Answer Copies</Link>
+            <Link href="/content/upsc-topper-answer-copies" className="text-gray-500 hover:text-gray-900 transition-colors">Guide to Topper Answer Copies</Link>
             <span className="text-gray-300">·</span>
-            <Link href="/upsc-topper-answer-copies#faq" className="text-gray-500 hover:text-gray-900 transition-colors">FAQ about Answer Copies</Link>
+            <Link href="/content/upsc-topper-answer-copies#faq" className="text-gray-500 hover:text-gray-900 transition-colors">FAQ about Answer Copies</Link>
             <span className="text-gray-300">·</span>
-            <Link href="/how-to-write-upsc-mains-answers" className="text-gray-500 hover:text-gray-900 transition-colors">How to Write UPSC Mains Answers</Link>
+            <Link href="/content/how-to-write-upsc-mains-answers" className="text-gray-500 hover:text-gray-900 transition-colors">How to Write UPSC Mains Answers</Link>
             <span className="text-gray-300">·</span>
             <Link href="/free-materials" className="text-gray-500 hover:text-gray-900 transition-colors">Free Study Materials</Link>
           </div>

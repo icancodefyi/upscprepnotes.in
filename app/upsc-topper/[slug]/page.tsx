@@ -1061,10 +1061,10 @@ export default async function TopperPage({ params }: Props) {
               <Link href={`/year/${topper.year}`} data-track="topper-explore-year">UPSC {topper.year} Toppers &rarr;</Link>
             </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/how-to-write-upsc-mains-answers" data-track="topper-explore-answer-writing">How to Write UPSC Answers &rarr;</Link>
+              <Link href="/content/how-to-write-upsc-mains-answers" data-track="topper-explore-answer-writing">How to Write UPSC Answers &rarr;</Link>
             </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/upsc-topper-answer-copies" data-track="topper-explore-guide">Topper Answer Copies Guide &rarr;</Link>
+              <Link href="/content/upsc-topper-answer-copies" data-track="topper-explore-guide">Topper Answer Copies Guide &rarr;</Link>
             </Button>
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href="/free-materials?category=optional" data-track="topper-explore-subject-materials">Free {topper.optionalSubject} Materials &rarr;</Link>

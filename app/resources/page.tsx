@@ -77,7 +77,7 @@ export default function ResourcesPage() {
           {resources.map((r) => (
             <Link
               key={r.slug}
-              href={`/${r.slug}`}
+              href={`/content/${r.slug}`}
               data-track={`resources-card-${r.slug}`}
               className="group rounded-2xl border border-gray-200 p-6 transition-all hover:border-emerald-200 hover:bg-emerald-50"
             >

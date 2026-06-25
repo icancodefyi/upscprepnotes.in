@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  skipTrailingSlashRedirect: true,
   async redirects() {
     return [
       { source: "/requests", destination: "/admin/requests", permanent: true },
@@ -24,20 +23,6 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    // Maintain list of all content pages so /slug rewrites to /content/slug
-    // Add new strategy/guide slugs here when created
-    const contentSlugs = [
-      "upsc-full-form",
-      "upsc-syllabus",
-      "upsc-free-material",
-      "upsc-full-form-hindi",
-      "how-to-write-upsc-mains-answers",
-      "upsc-topper-answer-copies",
-    ];
-    const contentRewrites = contentSlugs.map((slug) => ({
-      source: `/${slug}`,
-      destination: `/content/${slug}`,
-    }));
     return [
       {
         source: "/ingest/static/:path*",
@@ -51,7 +36,6 @@ const nextConfig: NextConfig = {
         source: "/ingest/:path*",
         destination: "https://us.i.posthog.com/:path*",
       },
-      ...contentRewrites,
     ];
   },
 };
