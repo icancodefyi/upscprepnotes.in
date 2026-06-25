@@ -1,4 +1,4 @@
-import type { ContentPage } from "../index";
+import type { ContentPage } from "./index";
 
 const page: ContentPage = {
   slug: "upsc-optional-subject-marks-analysis",
