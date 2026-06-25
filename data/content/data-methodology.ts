@@ -9,14 +9,14 @@ const page: ContentPage = {
   h1: "Data Methodology & Editorial Standards",
 
   intro:
-    "Every data point on UPSCPrepNotes is researched, extracted, and verified by **Zaid Rakhange** — a software engineer and former UPSC aspirant who personally studies UPSC result PDFs, topper interviews, and preparation transcripts to build this dataset. This page explains exactly how the data is sourced, verified, and maintained, so you can evaluate the authority of everything published here.",
+    "Every data point on UPSCPrepNotes is researched, extracted, and verified by **Zaid Rakhange** — a software engineer and founder of ImpicLabs who is genuinely fascinated by UPSC data and topper performance patterns. He personally studies UPSC result PDFs, topper interviews, and preparation transcripts to build this dataset. This page explains exactly how the data is sourced, verified, and maintained, so you can evaluate the authority of everything published here.",
 
   sections: [
     {
       heading: "Who Runs UPSCPrepNotes?",
-      body: `UPSCPrepNotes is founded and run by **Zaid Rakhange**, a software engineer and former UPSC aspirant. After preparing for the exam and recognizing how fragmented topper data is across the internet, Zaid built UPSCPrepNotes to centralize verified topper intelligence in one place.
+      body: `UPSCPrepNotes is founded and run by **Zaid Rakhange**, a software engineer and founder of ImpicLabs. Zaid is not a UPSC aspirant or coach — he is genuinely fascinated by the structure of UPSC data: how toppers perform across papers, which optionals produce top ranks, and what the numbers actually say. What started as a curiosity about the data turned into a full research platform.
 
-The platform is not affiliated with UPSC, any coaching institute, or any government body. It is an independent research and content project focused on making topper performance data accessible.`,
+The platform is not affiliated with UPSC, any coaching institute, or any government body. It is an independent research project driven purely by an interest in understanding topper performance at scale.`,
     },
     {
       heading: "How Topper Marks Data Is Sourced",

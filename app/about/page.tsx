@@ -64,7 +64,7 @@ export default function AboutPage() {
             <p className="font-semibold text-gray-900">Zaid Rakhange</p>
             <p className="text-sm text-emerald-700">Founder & Researcher, UPSCPrepNotes</p>
             <p className="mt-2 text-sm leading-6 text-zinc-600">
-              Zaid is a software engineer and former UPSC aspirant who personally extracts and verifies every data point on this platform. He manually goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset. No AI scraping, no outsourcing, no content mills.
+              Zaid is a software engineer and founder of ImpicLabs. He is not a UPSC aspirant or coach — he is genuinely fascinated by UPSC data and topper performance patterns. He personally goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset because he finds the numbers interesting. No AI scraping, no outsourcing, no content mills.
             </p>
           </div>
         </div>
