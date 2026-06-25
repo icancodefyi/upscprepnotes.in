@@ -61,10 +61,12 @@ export default function AboutPage() {
             className="h-14 w-14 rounded-full object-cover shrink-0"
           />
           <div>
-            <p className="font-semibold text-gray-900">Zaid Rakhange</p>
+            <p className="font-semibold text-gray-900">
+              <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors underline underline-offset-2">Zaid Rakhange</a>
+            </p>
             <p className="text-sm text-emerald-700">Founder & Researcher, UPSCPrepNotes</p>
             <p className="mt-2 text-sm leading-6 text-zinc-600">
-              Zaid is a software engineer and founder of ImpicLabs. He is not a UPSC aspirant or coach — he is genuinely fascinated by UPSC data and topper performance patterns. He personally goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset because he finds the numbers interesting. No AI scraping, no outsourcing, no content mills.
+              Zaid is a software engineer and founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline underline-offset-2 hover:text-emerald-600 transition-colors">ImpicLabs</a>. He is not a UPSC aspirant or coach — he is genuinely fascinated by UPSC data and topper performance patterns. He personally goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset because he finds the numbers interesting. No AI scraping, no outsourcing, no content mills.
             </p>
           </div>
         </div>
