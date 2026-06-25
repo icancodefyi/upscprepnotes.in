@@ -137,6 +137,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/content/how-to-score-300-plus-in-psir-optional" data-track="footer-strategy-psir" className="hover:text-black transition-colors">
+                  Score 300+ in PSIR Optional
+                </Link>
+              </li>
+              <li>
                 <Link href="/content/upsc-optional-subject-marks-analysis" data-track="footer-optional-marks" className="hover:text-black transition-colors">
                   Optional Marks Data
                 </Link>
