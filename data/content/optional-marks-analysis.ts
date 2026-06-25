@@ -155,6 +155,12 @@ The best way to use this data: cross-reference it with your own aptitude, intere
       description: "How I extract and verify every data point on this site.",
     },
   ],
+  sources: [
+    { label: "UPSC CSE 2022 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2022-08/Civil-Services-Examination-2021-Final-Result.pdf" },
+    { label: "UPSC CSE 2023 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2023-08/Civil-Services-Examination-2022-Final-Result.pdf" },
+    { label: "UPSC CSE 2024 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2024-08/Civil-Services-Examination-2023-Final-Result.pdf" },
+    { label: "Data Methodology & Editorial Standards — UPSCPrepNotes", url: "https://upscprepnotes.in/content/data-methodology-and-editorial-standards" },
+  ],
 };
 
 export default page;
