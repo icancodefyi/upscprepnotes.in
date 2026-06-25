@@ -136,6 +136,11 @@ export default function Footer() {
                   Score 120+ in GS2
                 </Link>
               </li>
+              <li>
+                <Link href="/content/upsc-optional-subject-marks-analysis" data-track="footer-optional-marks" className="hover:text-black transition-colors">
+                  Optional Marks Data
+                </Link>
+              </li>
             </ul>
           </div>
 

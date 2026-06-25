@@ -11,6 +11,7 @@ import upscSyllabusHindi from "./upsc-syllabus-hindi";
 import upscFreeMaterialHindi from "./upsc-free-material-hindi";
 import howToWriteAnswersHindi from "./how-to-write-upsc-mains-answers-hindi";
 import dataMethodology from "./data-methodology";
+import optionalMarksAnalysis from "./optional-marks-analysis";
 
 // Strategies — short, fact-dense, LLM-targeted pages
 import strategies from "./strategies/registry";
@@ -28,6 +29,7 @@ const guides: Record<string, () => Promise<PageModule>> = {
   "upsc-free-material-hindi": () => Promise.resolve({ default: upscFreeMaterialHindi }),
   "how-to-write-upsc-mains-answers-hindi": () => Promise.resolve({ default: howToWriteAnswersHindi }),
   "data-methodology-and-editorial-standards": () => Promise.resolve({ default: dataMethodology }),
+  "upsc-optional-subject-marks-analysis": () => Promise.resolve({ default: optionalMarksAnalysis }),
 };
 
 const EN_TO_HI: Record<string, string> = {
