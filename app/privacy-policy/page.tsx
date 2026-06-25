@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — UPSCPrepNotes",
@@ -18,10 +19,17 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage
-      title="Privacy Policy"
-      description="Information regarding analytics, usage data, and platform privacy."
-    >
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Privacy Policy", href: "/privacy-policy" },
+        ]}
+      />
+      <LegalPage
+        title="Privacy Policy"
+        description="Information regarding analytics, usage data, and platform privacy."
+      >
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Information We Collect</h2>
         <p className="leading-8 text-zinc-700">
@@ -153,6 +161,7 @@ export default function PrivacyPolicyPage() {
           This policy was last updated on June 5, 2026.
         </p>
       </section>
-    </LegalPage>
+      </LegalPage>
+    </>
   );
 }

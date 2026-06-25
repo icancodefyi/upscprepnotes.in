@@ -1063,6 +1063,16 @@ export default async function TopperPage({ params }: Props) {
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href="/content/how-to-write-upsc-mains-answers" data-track="topper-explore-answer-writing">How to Write UPSC Answers &rarr;</Link>
             </Button>
+            {(topper.marks.gs1 || 0) >= 115 && (
+              <Button variant="outline" asChild className="rounded-full text-xs h-9">
+                <Link href="/content/how-to-score-130-plus-in-gs1" data-track="topper-explore-strategy-gs1">Score 130+ in GS1 &rarr;</Link>
+              </Button>
+            )}
+            {(topper.marks.gs2 || 0) >= 115 && (
+              <Button variant="outline" asChild className="rounded-full text-xs h-9">
+                <Link href="/content/how-to-score-120-plus-in-gs2" data-track="topper-explore-strategy-gs2">Score 120+ in GS2 &rarr;</Link>
+              </Button>
+            )}
             <Button variant="outline" asChild className="rounded-full text-xs h-9">
               <Link href="/content/upsc-topper-answer-copies" data-track="topper-explore-guide">Topper Answer Copies Guide &rarr;</Link>
             </Button>

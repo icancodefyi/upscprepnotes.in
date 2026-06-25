@@ -41,9 +41,9 @@ const page: ContentPage = {
   ],
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
-    { title: "UPSC Syllabus 2026", href: "/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
-    { title: "UPSC Free Study Material", href: "/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
-    { title: "UPSC Full Form (हिंदी)", href: "/upsc-full-form-hindi", description: "UPSC का फुल फॉर्म, परीक्षाएं और तैयारी गाइड" },
+    { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
+    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
+    { title: "UPSC Full Form (हिंदी)", href: "/content/upsc-full-form-hindi", description: "UPSC का फुल फॉर्म, परीक्षाएं और तैयारी गाइड" },
   ],
   faq: [
     {

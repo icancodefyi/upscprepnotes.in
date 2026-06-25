@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions — UPSCPrepNotes",
@@ -18,10 +19,17 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage
-      title="Terms & Conditions"
-      description="Platform usage terms and conditions."
-    >
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Terms & Conditions", href: "/terms" },
+        ]}
+      />
+      <LegalPage
+        title="Terms & Conditions"
+        description="Platform usage terms and conditions."
+      >
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Acceptance of Terms</h2>
         <p className="leading-8 text-zinc-700">
@@ -110,6 +118,7 @@ export default function TermsPage() {
           These terms were last updated on May 26, 2026.
         </p>
       </section>
-    </LegalPage>
+      </LegalPage>
+    </>
   );
 }

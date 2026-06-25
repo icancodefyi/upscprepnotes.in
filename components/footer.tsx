@@ -121,6 +121,16 @@ export default function Footer() {
                   FAQ
                 </Link>
               </li>
+              <li>
+                <Link href="/content/how-to-score-130-plus-in-gs1" data-track="footer-strategy-gs1" className="hover:text-black transition-colors">
+                  Score 130+ in GS1
+                </Link>
+              </li>
+              <li>
+                <Link href="/content/how-to-score-120-plus-in-gs2" data-track="footer-strategy-gs2" className="hover:text-black transition-colors">
+                  Score 120+ in GS2
+                </Link>
+              </li>
             </ul>
           </div>
 

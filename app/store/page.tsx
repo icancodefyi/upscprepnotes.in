@@ -1,4 +1,5 @@
 import StoreRouter from "@/components/store/StoreRouter";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,12 @@ export const metadata = {
 export default function StorePage() {
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Store", href: "/store" },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

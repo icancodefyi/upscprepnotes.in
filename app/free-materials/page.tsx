@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import FreeMaterialsSearch from "@/components/FreeMaterialsSearch";
 
 interface SearchParams {
@@ -92,7 +93,14 @@ export default async function PDFHubPage({ searchParams }: Props) {
   const activeCategory = category ? CATEGORIES.find((c) => c.key === category) : null;
 
   return (
-    <main className="min-h-screen bg-white">
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Free Study Material", href: "/free-materials" },
+        ]}
+      />
+      <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         {/* HERO */}
         <section className="mb-16">
@@ -201,6 +209,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
         </Link>
       </div>
     </section>
-  </main>
+    </main>
+    </>
   );
 }

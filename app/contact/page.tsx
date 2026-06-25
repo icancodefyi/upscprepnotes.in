@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import ContactFeedbackSection from "@/components/ContactFeedbackSection";
 
 const contactSchema = {
@@ -38,11 +39,18 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <LegalPage
-      title="Contact"
-      description="Email hello@impiclabs.com for platform inquiries, factual corrections, profile updates, feedback, or collaboration. We respond within 2-3 business days."
-    >
-      <script
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Contact", href: "/contact" },
+        ]}
+      />
+      <LegalPage
+        title="Contact"
+        description="Email hello@impiclabs.com for platform inquiries, factual corrections, profile updates, feedback, or collaboration. We respond within 2-3 business days."
+      >
+        <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
@@ -140,6 +148,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </LegalPage>
+      </LegalPage>
+    </>
   );
 }

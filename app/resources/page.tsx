@@ -54,6 +54,20 @@ const resources = [
     badge: "Guide",
     readTime: "8 min",
   },
+  {
+    slug: "how-to-score-130-plus-in-gs1",
+    h1: "How to Score 130+ in GS Paper 1",
+    description: "Data-driven GS1 strategy with actual topper marks — history, geography, society, and culture breakdown across 50 indexed profiles.",
+    badge: "Strategy",
+    readTime: "3 min",
+  },
+  {
+    slug: "how-to-score-120-plus-in-gs2",
+    h1: "How to Score 120+ in GS Paper 2",
+    description: "GS2 marks analysis from 50 toppers — governance, constitution, polity, and social justice with score distributions and section-wise strategy.",
+    badge: "Strategy",
+    readTime: "3 min",
+  },
 ];
 
 export default function ResourcesPage() {

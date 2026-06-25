@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 const aboutSchema = {
   "@context": "https://schema.org",
@@ -30,14 +31,21 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <LegalPage
-      title="About"
-      description="UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants."
-    >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
+        ]}
       />
+      <LegalPage
+        title="About"
+        description="UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants."
+      >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+        />
 
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What is UPSCPrepNotes?</h2>
@@ -196,6 +204,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </LegalPage>
+      </LegalPage>
+    </>
   );
 }

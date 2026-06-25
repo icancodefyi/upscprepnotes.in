@@ -104,7 +104,7 @@ Candidates with PSIR as their optional do carry a natural advantage in the IR an
   relatedPages: [
     {
       title: "How to Score 130+ in GS1",
-      href: "/how-to-score-130-plus-in-gs1",
+      href: "/content/how-to-score-130-plus-in-gs1",
       description: "Strategy and topper marks data for GS Paper 1, the companion 250-mark paper.",
     },
     {

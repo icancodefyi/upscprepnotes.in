@@ -110,10 +110,10 @@ Toppers who scored 130+ in GS1 typically scored **900+ overall written marks**, 
     },
   ],
   relatedPages: [
-    { title: "How to Score 120+ in GS Paper 2", href: "/how-to-score-120-plus-in-gs2", description: "GS2 strategy with topper marks data" },
-    { title: "How to Score 120+ in GS Paper 3", href: "/how-to-score-120-plus-in-gs3", description: "GS3 strategy for economy, security, environment" },
-    { title: "How to Score 100+ in GS Paper 4", href: "/how-to-score-100-plus-in-gs4", description: "Ethics paper strategy with real marks" },
-    { title: "Topper Answer Copies Compilation", href: "/upsc-topper-answer-copies", description: "50+ topper answer copies" },
+    { title: "How to Score 120+ in GS Paper 2", href: "/content/how-to-score-120-plus-in-gs2", description: "GS2 strategy with topper marks data" },
+    { title: "Topper Answer Copies Compilation", href: "/content/upsc-topper-answer-copies", description: "50+ topper answer copies" },
+    { title: "Garima Lohia's GS1 Marks", href: "/upsc-topper/garima-lohia", description: "AIR 2 (2024) scored 119 in GS1 — full marksheet and strategy" },
+    { title: "Animesh Pradhan's GS1 Marks", href: "/upsc-topper/animesh-pradhan", description: "AIR 2 (2023) scored 118 in GS1 — full strategy profile" },
   ],
 };
 

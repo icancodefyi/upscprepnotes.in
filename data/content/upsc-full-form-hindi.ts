@@ -90,9 +90,9 @@ const page: ContentPage = {
   ],
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "सभी संसाधन — सिलेबस, स्टडी मटीरियल, गाइड्स और अधिक" },
-    { title: "UPSC Full Form", href: "/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
-    { title: "UPSC Syllabus 2026", href: "/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
-    { title: "UPSC Free Study Material", href: "/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
+    { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
+    { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
+    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
   ],
   faq: [
     {

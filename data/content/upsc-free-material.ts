@@ -92,9 +92,9 @@ At **₹799** (launch price, moving to ₹4,999), this compilation replaces mont
   ],
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
-    { title: "UPSC Full Form", href: "/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
-    { title: "UPSC Syllabus 2026", href: "/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
-    { title: "UPSC Full Form (हिंदी)", href: "/upsc-full-form-hindi", description: "UPSC का पूरा नाम और सिविल सेवा परीक्षा गाइड" },
+    { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
+    { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
+    { title: "UPSC Full Form (हिंदी)", href: "/content/upsc-full-form-hindi", description: "UPSC का पूरा नाम और सिविल सेवा परीक्षा गाइड" },
   ],
   faq: [
     {

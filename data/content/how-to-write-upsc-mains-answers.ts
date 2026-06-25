@@ -163,8 +163,8 @@ The copies in my compilation show you what that looks like in practice. I can tr
   ],
 
   relatedPages: [
-    { title: "UPSC Free Study Material — Toppers, PYQs & More", href: "/upsc-free-material", description: "Browse 280+ topper profiles with marks, strategy guides, and an AI tutor — all free, no signup needed" },
-    { title: "UPSC Syllabus 2026 — Complete Breakdown", href: "/upsc-syllabus", description: "Full syllabus breakdown for Prelims, Mains, and Interview with topic-wise analysis" },
+    { title: "UPSC Free Study Material — Toppers, PYQs & More", href: "/content/upsc-free-material", description: "Browse 280+ topper profiles with marks, strategy guides, and an AI tutor — all free, no signup needed" },
+    { title: "UPSC Syllabus 2026 — Complete Breakdown", href: "/content/upsc-syllabus", description: "Full syllabus breakdown for Prelims, Mains, and Interview with topic-wise analysis" },
     { title: "Complete Compilation — 50+ Topper Answer Copies", href: "/toppers/toppers-copy-compilation", description: "Actual handwritten answer sheets with verified marks, organized by paper and year" },
     { title: "Ask AI for Answer Writing Feedback", href: "/ask", description: "AI tutor trained on these copies — compare your answer against topper patterns" },
   ],

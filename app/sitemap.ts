@@ -80,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/upsc-topper/${t.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
-    priority: 0.8,
+    priority: 0.5,
   }));
 
   // PYQ years (from DB)

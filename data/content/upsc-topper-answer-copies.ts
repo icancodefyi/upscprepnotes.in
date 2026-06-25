@@ -105,7 +105,7 @@ const page: ContentPage = {
     },
     {
       title: "How to Write UPSC Mains Answers",
-      href: "/how-to-write-upsc-mains-answers",
+      href: "/content/how-to-write-upsc-mains-answers",
       description: "Step-by-step guide to answer writing for UPSC Mains with examples from topper copies.",
     },
     {

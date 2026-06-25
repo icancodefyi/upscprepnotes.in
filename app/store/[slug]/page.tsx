@@ -48,7 +48,7 @@ export default async function ProductPage({
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
-  const productSchema = {
+  const productSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.title,
@@ -65,6 +65,29 @@ export default async function ProductPage({
       url: `https://upscprepnotes.in/store/${product.slug}`,
     },
   };
+
+  if (product.rating && product.reviewCount) {
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: product.rating,
+      reviewCount: product.reviewCount,
+      bestRating: 5,
+    };
+    productSchema.review = [
+      {
+        "@type": "Review",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: product.rating,
+          bestRating: 5,
+        },
+        author: {
+          "@type": "Organization",
+          name: "UPSCPrepNotes",
+        },
+      },
+    ];
+  }
 
   return (
     <>

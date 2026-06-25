@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Disclaimer — UPSCPrepNotes",
@@ -18,10 +19,17 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <LegalPage
-      title="Disclaimer"
-      description="Educational and informational use disclaimer."
-    >
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Disclaimer", href: "/disclaimer" },
+        ]}
+      />
+      <LegalPage
+        title="Disclaimer"
+        description="Educational and informational use disclaimer."
+      >
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Educational Purpose</h2>
         <p className="leading-8 text-zinc-700">
@@ -96,6 +104,7 @@ export default function DisclaimerPage() {
           of the content.
         </p>
       </section>
-    </LegalPage>
+      </LegalPage>
+    </>
   );
 }
