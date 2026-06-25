@@ -6,7 +6,7 @@ const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "UPSCPrepNotes",
-  "description": "UPSCPrepNotes is founded by Zaid Rakhange — an independent researcher who manually extracts and verifies UPSC topper marks data from official UPSC result PDFs.",
+  "description": "UPSCPrepNotes is a small site run by Zaid Rakhange, who manually extracts and verifies UPSC topper marks data from official UPSC result PDFs.",
   "url": "https://upscprepnotes.in",
   "email": "hello@impiclabs.com",
   "foundingDate": "2025",
@@ -20,16 +20,16 @@ const aboutSchema = {
 };
 
 export const metadata: Metadata = {
-  title: "About UPSCPrepNotes — Founder Zaid Rakhange's UPSC Research Platform",
+  title: "About UPSCPrepNotes — Run by Zaid Rakhange",
   description:
-    "UPSCPrepNotes is founded by Zaid Rakhange, who personally researches, extracts, and verifies UPSC topper marks data from official UPSC.gov.in result PDFs. Independent UPSC topper intelligence, not a coaching site.",
+    "UPSCPrepNotes is a small site run by Zaid Rakhange. He manually extracts and verifies UPSC topper marks from official UPSC.gov.in result PDFs. Not a coaching site, not a content mill.",
   alternates: {
     canonical: "https://upscprepnotes.in/about",
   },
   openGraph: {
-  title: "About UPSCPrepNotes — Founded by Zaid Rakhange",
+  title: "About — UPSCPrepNotes",
     description:
-      "UPSCPrepNotes is an independent research platform built by Zaid Rakhange. Every topper profile is manually extracted and cross-verified from UPSC's official result PDFs.",
+      "UPSCPrepNotes is a small site run by Zaid Rakhange. Every topper profile is manually extracted from UPSC's official result PDFs and cross-verified before publishing.",
     url: "https://upscprepnotes.in/about",
   },
 };
@@ -45,7 +45,7 @@ export default function AboutPage() {
       />
       <LegalPage
         title="About"
-        description="UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants."
+        description="A small site run by Zaid Rakhange that indexes and analyzes UPSC topper marks data."
       >
         <script
           type="application/ld+json"
@@ -53,7 +53,7 @@ export default function AboutPage() {
         />
 
         <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">Who Builds This?</h2>
+        <h2 className="text-2xl font-semibold">Hi, I am Zaid</h2>
         <div className="flex items-start gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
           <img
             src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=1080&q=75"
@@ -64,111 +64,63 @@ export default function AboutPage() {
             <p className="font-semibold text-gray-900">
               <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors underline underline-offset-2">Zaid Rakhange</a>
             </p>
-            <p className="text-sm text-emerald-700">Founder & Researcher, UPSCPrepNotes</p>
+            <p className="text-sm text-emerald-700">Software engineer, founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-emerald-600 transition-colors">ImpicLabs</a></p>
             <p className="mt-2 text-sm leading-6 text-zinc-600">
-              Zaid is a software engineer and founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline underline-offset-2 hover:text-emerald-600 transition-colors">ImpicLabs</a>. He is not a UPSC aspirant or coach — he is genuinely fascinated by UPSC data and topper performance patterns. He personally goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset because he finds the numbers interesting. No AI scraping, no outsourcing, no content mills.
+              I am not a UPSC aspirant and I have never taken the exam. I am just someone who finds topper data genuinely interesting. I got curious about what the numbers actually look like — how much do rank holders score in each paper, which optionals perform best, what patterns emerge. So I started going through UPSC result PDFs manually, extracting marks one by one. This site is the result of that curiosity. No AI scraping, no outsourcing, no content mill.
             </p>
           </div>
         </div>
       </section>
 
       <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">What is UPSCPrepNotes?</h2>
+        <h2 className="text-2xl font-semibold">What Is This Site?</h2>
         <p className="leading-8 text-zinc-700">
-          UPSCPrepNotes is an independent research platform that systematically
-          indexes, structures, and analyzes publicly available UPSC topper data.
-          Every marksheet, interview score, and preparation strategy on this site
-          is manually extracted and cross-verified by Zaid before publication.
+          UPSCPrepNotes is where I put the topper data I have been collecting. Every marksheet, interview score, and strategy on this site is something I manually extracted and cross-verified before publishing. There is no AI generating these profiles, no one copying them from other sites.
         </p>
         <p className="leading-8 text-zinc-700">
-          Unlike coaching portals or generic study sites, UPSCPrepNotes focuses
-          exclusively on data-driven insights — marks distributions, optional subject
-          trends, paper-wise score patterns, and rank-specific strategies. Every
-          topper profile is a structured dataset, not just a story.
-        </p>
-        <p className="leading-8 text-zinc-700">
-          The platform currently covers 50+ deeply indexed topper profiles with full marks breakdowns across GS papers, essay, optional, and interview scores. Strategy pages are built by Zaid analyzing patterns across this dataset — not by rewriting coaching brochures.
+          The site currently has 50+ indexed topper profiles with full marks breakdowns — GS papers, essay, optional, interview — and strategy pages that analyze patterns across this dataset. I add more as I work through the PDFs.
         </p>
       </section>
 
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Who Is It For?</h2>
         <p className="leading-8 text-zinc-700">
-          UPSCPrepNotes is built for aspirants who want to move beyond generic advice
-          and study real data. If you are preparing for UPSC CSE and want to understand
-          what scores look like at different rank levels, which optional subjects
-          produce top ranks, or how toppers approached specific papers — this platform
-          is designed for you.
-        </p>
-        <p className="leading-8 text-zinc-700">
-          We serve beginners exploring optional subject choices, intermediate aspirants
-          refining their preparation strategy, and advanced candidates benchmarking
-          their progress against verified topper data.
+          Honestly, anyone who wants to see real UPSC marks data instead of generic advice. If you are preparing and want to know what scores actually look like at different rank levels, which optionals produce top ranks, or how toppers performed paper by paper — this site has that.
         </p>
       </section>
 
       <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">What Makes It Different?</h2>
+        <h2 className="text-2xl font-semibold">What Is Here</h2>
         <p className="leading-8 text-zinc-700">
-          <strong>Data, not stories.</strong> Every topper page contains a complete,
-          structured marks dataset — GS papers, optional subject scores, essay marks,
-          interview performance, and final totals. You can compare, contrast, and
-          analyze rather than just read.
+          <strong>Topper profiles (50+):</strong> Full marks breakdowns with GS papers, essay, optional, interview, and total scores. Each number is manually extracted from UPSC's own result PDFs.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Cross-linked intelligence.</strong> Toppers are connected by year,
-          rank, optional subject, and score patterns. One click takes you from a
-          topper profile to everyone who scored similarly, opted for the same subject,
-          or appeared in the same year.
+          <strong>Strategy pages (4):</strong> Paper-wise guides built by analyzing the marks dataset — not by rewriting coaching brochures. Covers GS1 through GS4 with topper data, topic weightage, and book recommendations.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Answer copy compilation.</strong> We maintain a marks-wise compilation
-          of 50+ verified topper answer copies across GS1–4 and Essay — organized by
-          score, not rank — so you can study what a 120+ marks answer actually looks like.
-        </p>
-      </section>
-
-      <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">Platform Features</h2>
-        <p className="leading-8 text-zinc-700">
-          <strong>Topper Profiles (280+):</strong> Detailed profiles with full marks
-          breakdowns, preparation strategies, answer copy links, and JSON-LD structured
-          data for search engines.
+          <strong>Year archives (2022-2025):</strong> Browse all toppers from a given year with stats and optional subject trends.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Year Archives (2022-2025):</strong> Browse all toppers from a given year with
-          aggregate statistics, score distributions, and optional subject trends.
+          <strong>Optional subject hubs (8 subjects):</strong> PSIR, Public Administration, Sociology, Geography, History, Anthropology, Mathematics, and Philosophy — with topper lists, average scores, and book recommendations.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Optional Subject Hubs (8 subjects):</strong> Dedicated pages for PSIR, Public
-          Administration, Sociology, Geography, History, Anthropology, Mathematics, and
-          Philosophy with topper lists, average scores, book recommendations, and
-          preparation insights.
+          <strong>PYQ archives (2023-2025):</strong> Previous year question papers with direct UPSC.gov.in PDF links.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>PYQ Archives (2023-2025):</strong> Downloadable previous year question
-          papers for Prelims and Mains with direct UPSC.gov.in PDF links.
-        </p>
-        <p className="leading-8 text-zinc-700">
-          <strong>Content Library (4 guides):</strong> In-depth pages on UPSC full form,
-          complete syllabus breakdown, free study material, and Hindi-language resources.
+          <strong>Answer copy compilation:</strong> 50+ verified topper answer copies across GS1-4 and Essay — organized by score, so you can see what a 120+ answer actually looks like.
         </p>
       </section>
 
       <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">Platform Vision</h2>
+        <h2 className="text-2xl font-semibold">Why I Built This</h2>
         <p className="leading-8 text-zinc-700">
-          The objective of UPSCPrepNotes is to create a deeply interconnected
-          archive of preparation intelligence that helps aspirants discover
-          patterns, preparation methods, optional subject trends, and
-          high-performing strategies. We believe that structured data, freely
-          accessible, is the most effective tool for informed UPSC preparation.
+          I found it frustrating that UPSC topper data is scattered across a dozen different sites, interview transcripts, and PDFs. No single place had marks organized in a way you could actually compare and analyze. So I built one.
         </p>
         <p className="leading-8 text-zinc-700">
-          We are not a coaching institute, a test series provider, or a content
-          mill. We are an educational intelligence platform — and we measure our
-          success by how well we help aspirants make data-backed decisions about
-          their preparation.
+          The site is free to use. The only paid thing is the answer copy compilation (₹99), and that is because I spend time verifying and organizing those copies. Everything else — profiles, strategy pages, PYQs, optional hubs — is free.
+        </p>
+        <p className="leading-8 text-zinc-700">
+          I am not a coaching institute, test series provider, or content mill. I am just someone who likes data and built a site around it.
         </p>
       </section>
 
@@ -177,51 +129,37 @@ export default function AboutPage() {
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold">Where does your topper data come from?</h3>
+            <h3 className="text-lg font-semibold">Where does the topper data come from?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              All topper marks data is sourced from publicly available information on UPSC.gov.in
-              and verified secondary sources. We do not generate or fabricate any marks data. Each
-              profile references the source of its marks information.
+              UPSC's official result PDFs on upsc.gov.in. I download them, read through them, and extract marks manually. I do not generate or fabricate any data.
             </p>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold">How often is the data updated?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              New topper profiles are added as soon as official UPSC results are published and
-              marks data becomes available. Existing profiles are updated when corrections are
-              verified against official sources. Our last major update included 2024 and 2025
-              topper cohorts.
+              I add new profiles as soon as UPSC publishes results and I have time to go through the PDFs. Corrections are handled as they come in through the Report button.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">Is UPSCPrepNotes free to use?</h3>
+            <h3 className="text-lg font-semibold">Is this site free?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              Yes. All topper profiles, year archives, optional subject hubs, PYQ archives,
-              content guides, and the AI assistant are freely accessible. The only paid offering
-              is the answer copy compilation (₹799), which includes 50+ verified topper
-              answer copies across GS1-4 and Essay.
+              Yes. Profiles, strategy pages, year archives, optional hubs, PYQs, and the AI assistant are all free. The only paid thing is the answer copy compilation (₹99), which covers the time I spend verifying and organizing those copies.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">How many toppers are currently on the platform?</h3>
+            <h3 className="text-lg font-semibold">How many toppers are on the site?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              We currently host 280+ topper profiles spanning 2022 to 2025, covering 18 optional
-              subjects. Each profile includes detailed marks breakdowns across GS papers, essay,
-              optional, and interview scores.
+              50+ indexed profiles spanning 2022 to 2025, covering 18 optional subjects. Each has detailed marks breakdowns.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">Which optional subjects do you cover?</h3>
+            <h3 className="text-lg font-semibold">Which optionals do you cover?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              We have dedicated subject hubs for 8 optionals: PSIR, Public Administration,
-              Sociology, Geography, History, Anthropology, Mathematics, and Philosophy. These hubs
-              include topper lists, average scores, book recommendations, syllabus topics, and
-              preparation insights. Additional optionals are covered within topper profiles
-              even without dedicated hub pages.
+              8 dedicated hubs: PSIR, Public Administration, Sociology, Geography, History, Anthropology, Mathematics, and Philosophy. Each has topper lists, average scores, book recommendations, and syllabus topics. More optionals exist within topper profiles even without dedicated pages.
             </p>
           </div>
         </div>

@@ -94,7 +94,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
                 Zaid Rakhange
               </a>
             </p>
-            <p className="text-gray-500">Researched & written by Zaid Rakhange — manually verified against 50+ UPSC topper profiles. Updated {new Date(page.lastUpdated).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</p>
+            <p className="text-gray-500">Written by Zaid Rakhange. Data manually verified against UPSC official result PDFs. Updated {new Date(page.lastUpdated).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</p>
           </div>
         </div>
 
