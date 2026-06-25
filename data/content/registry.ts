@@ -10,6 +10,7 @@ import topperAnswerCopies from "./upsc-topper-answer-copies";
 import upscSyllabusHindi from "./upsc-syllabus-hindi";
 import upscFreeMaterialHindi from "./upsc-free-material-hindi";
 import howToWriteAnswersHindi from "./how-to-write-upsc-mains-answers-hindi";
+import dataMethodology from "./data-methodology";
 
 // Strategies — short, fact-dense, LLM-targeted pages
 import strategies from "./strategies/registry";
@@ -26,6 +27,7 @@ const guides: Record<string, () => Promise<PageModule>> = {
   "upsc-syllabus-hindi": () => Promise.resolve({ default: upscSyllabusHindi }),
   "upsc-free-material-hindi": () => Promise.resolve({ default: upscFreeMaterialHindi }),
   "how-to-write-upsc-mains-answers-hindi": () => Promise.resolve({ default: howToWriteAnswersHindi }),
+  "data-methodology-and-editorial-standards": () => Promise.resolve({ default: dataMethodology }),
 };
 
 const EN_TO_HI: Record<string, string> = {

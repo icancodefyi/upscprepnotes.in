@@ -122,6 +122,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/content/data-methodology-and-editorial-standards" data-track="footer-data-methodology" className="hover:text-black transition-colors">
+                  Data & Methodology
+                </Link>
+              </li>
+              <li>
                 <Link href="/content/how-to-score-130-plus-in-gs1" data-track="footer-strategy-gs1" className="hover:text-black transition-colors">
                   Score 130+ in GS1
                 </Link>
