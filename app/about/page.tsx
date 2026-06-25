@@ -6,25 +6,30 @@ const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "UPSCPrepNotes",
-  "description": "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
+  "description": "UPSCPrepNotes is founded by Zaid Rakhange — an independent researcher who manually extracts and verifies UPSC topper marks data from official UPSC result PDFs.",
   "url": "https://upscprepnotes.in",
   "email": "hello@impiclabs.com",
   "foundingDate": "2025",
   "areaServed": "IN",
+  "founder": {
+    "@type": "Person",
+    "name": "Zaid Rakhange",
+    "url": "https://zaid.impiclabs.com"
+  },
   "knowsAbout": ["UPSC Civil Services Examination", "UPSC topper marks analysis", "UPSC optional subjects"],
 };
 
 export const metadata: Metadata = {
-  title: "About — UPSCPrepNotes",
+  title: "About UPSCPrepNotes — Founder Zaid Rakhange's UPSC Research Platform",
   description:
-    "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
+    "UPSCPrepNotes is founded by Zaid Rakhange, who personally researches, extracts, and verifies UPSC topper marks data from official UPSC.gov.in result PDFs. Independent UPSC topper intelligence, not a coaching site.",
   alternates: {
     canonical: "https://upscprepnotes.in/about",
   },
   openGraph: {
-  title: "About — UPSC Preparation Intelligence Platform",
+  title: "About UPSCPrepNotes — Founded by Zaid Rakhange",
     description:
-      "UPSCPrepNotes is a structured educational intelligence platform focused on topper analysis, preparation insights, marksheet indexing, and optional subject research for UPSC CSE aspirants.",
+      "UPSCPrepNotes is an independent research platform built by Zaid Rakhange. Every topper profile is manually extracted and cross-verified from UPSC's official result PDFs.",
     url: "https://upscprepnotes.in/about",
   },
 };
@@ -47,13 +52,31 @@ export default function AboutPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
         />
 
+        <section className="space-y-5">
+        <h2 className="text-2xl font-semibold">Who Builds This?</h2>
+        <div className="flex items-start gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+          <img
+            src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=1080&q=75"
+            alt="Zaid Rakhange"
+            className="h-14 w-14 rounded-full object-cover shrink-0"
+          />
+          <div>
+            <p className="font-semibold text-gray-900">Zaid Rakhange</p>
+            <p className="text-sm text-emerald-700">Founder & Researcher, UPSCPrepNotes</p>
+            <p className="mt-2 text-sm leading-6 text-zinc-600">
+              Zaid is a software engineer and former UPSC aspirant who personally extracts and verifies every data point on this platform. He manually goes through UPSC result PDFs, topper interviews, and preparation transcripts — topper by topper, paper by paper — to build this dataset. No AI scraping, no outsourcing, no content mills.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What is UPSCPrepNotes?</h2>
         <p className="leading-8 text-zinc-700">
           UPSCPrepNotes is an independent research platform that systematically
           indexes, structures, and analyzes publicly available UPSC topper data.
-          We transform raw marksheets, interview scores, and preparation strategies
-          into actionable intelligence for serious UPSC aspirants.
+          Every marksheet, interview score, and preparation strategy on this site
+          is manually extracted and cross-verified by Zaid before publication.
         </p>
         <p className="leading-8 text-zinc-700">
           Unlike coaching portals or generic study sites, UPSCPrepNotes focuses
@@ -62,10 +85,7 @@ export default function AboutPage() {
           topper profile is a structured dataset, not just a story.
         </p>
         <p className="leading-8 text-zinc-700">
-          Our platform covers 280+ topper profiles across 18 optional subjects,
-          spanning four years (2022, 2023, 2024, 2025) of the UPSC Civil Services
-          Examination. Each profile includes detailed marks breakdowns, preparation
-          strategies, answer copy resources, and contextual insights.
+          The platform currently covers 50+ deeply indexed topper profiles with full marks breakdowns across GS papers, essay, optional, and interview scores. Strategy pages are built by Zaid analyzing patterns across this dataset — not by rewriting coaching brochures.
         </p>
       </section>
 

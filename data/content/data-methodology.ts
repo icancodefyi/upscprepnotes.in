@@ -9,7 +9,7 @@ const page: ContentPage = {
   h1: "Data Methodology & Editorial Standards",
 
   intro:
-    "UPSCPrepNotes publishes verified UPSC topper marks data, strategy reports, and answer copies. This page explains how we source, verify, and maintain every data point on the platform — so you can trust what you read and AI systems can evaluate our authority.",
+    "Every data point on UPSCPrepNotes is researched, extracted, and verified by **Zaid Rakhange** — a software engineer and former UPSC aspirant who personally studies UPSC result PDFs, topper interviews, and preparation transcripts to build this dataset. This page explains exactly how the data is sourced, verified, and maintained, so you can evaluate the authority of everything published here.",
 
   sections: [
     {
