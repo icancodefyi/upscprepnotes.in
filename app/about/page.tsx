@@ -6,7 +6,7 @@ const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "UPSCPrepNotes",
-  "description": "UPSCPrepNotes is a small site run by Zaid Rakhange, who manually extracts and verifies UPSC topper marks data from official UPSC result PDFs.",
+  "description": "UPSCPrepNotes is run by Zaid Rakhange, who has manually extracted and cross-referenced marks from every UPSC CSE result PDF published since 2022.",
   "url": "https://upscprepnotes.in",
   "email": "hello@impiclabs.com",
   "foundingDate": "2025",
@@ -22,14 +22,14 @@ const aboutSchema = {
 export const metadata: Metadata = {
   title: "About UPSCPrepNotes — Run by Zaid Rakhange",
   description:
-    "UPSCPrepNotes is a small site run by Zaid Rakhange. He manually extracts and verifies UPSC topper marks from official UPSC.gov.in result PDFs. Not a coaching site, not a content mill.",
+    "UPSCPrepNotes is run by Zaid Rakhange. He has manually extracted and cross-referenced marks from every UPSC CSE result PDF published since 2022. Not a coaching site — just someone who knows the data better than anyone.",
   alternates: {
     canonical: "https://upscprepnotes.in/about",
   },
   openGraph: {
   title: "About — UPSCPrepNotes",
     description:
-      "UPSCPrepNotes is a small site run by Zaid Rakhange. Every topper profile is manually extracted from UPSC's official result PDFs and cross-verified before publishing.",
+      "UPSCPrepNotes is run by Zaid Rakhange. He has manually gone through every UPSC result PDF since 2022, extracting marks one by one. He probably knows topper marks data better than anyone outside UPSC.",
     url: "https://upscprepnotes.in/about",
   },
 };
@@ -45,7 +45,7 @@ export default function AboutPage() {
       />
       <LegalPage
         title="About"
-        description="A small site run by Zaid Rakhange that indexes and analyzes UPSC topper marks data."
+        description="Run by Zaid Rakhange. He has read every UPSC result PDF published since 2022 and extracted the marks himself."
       >
         <script
           type="application/ld+json"
@@ -53,7 +53,7 @@ export default function AboutPage() {
         />
 
         <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">Hi, I am Zaid</h2>
+        <h2 className="text-2xl font-semibold">I am Zaid. I read UPSC result PDFs for fun.</h2>
         <div className="flex items-start gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
           <img
             src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=1080&q=75"
@@ -66,7 +66,7 @@ export default function AboutPage() {
             </p>
             <p className="text-sm text-emerald-700">Software engineer, founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-emerald-600 transition-colors">ImpicLabs</a></p>
             <p className="mt-2 text-sm leading-6 text-zinc-600">
-              I am not a UPSC aspirant and I have never taken the exam. I am just someone who finds topper data genuinely interesting. I got curious about what the numbers actually look like — how much do rank holders score in each paper, which optionals perform best, what patterns emerge. So I started going through UPSC result PDFs manually, extracting marks one by one. This site is the result of that curiosity. No AI scraping, no outsourcing, no content mill.
+              I have read every UPSC CSE result PDF published since 2022. Cover to cover. I have extracted marks from thousands of rows — GS1, GS2, GS3, GS4, Essay, Optional 1, Optional 2, Interview, Written Total, Grand Total. I know this data better than most people because I touched every single number with my own hands. No AI did this. No intern. Just me and a PDF reader.
             </p>
           </div>
         </div>
@@ -75,52 +75,46 @@ export default function AboutPage() {
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What Is This Site?</h2>
         <p className="leading-8 text-zinc-700">
-          UPSCPrepNotes is where I put the topper data I have been collecting. Every marksheet, interview score, and strategy on this site is something I manually extracted and cross-verified before publishing. There is no AI generating these profiles, no one copying them from other sites.
+          This is where I put everything I have extracted. Every marksheet, every interview score, every strategy — manually pulled from UPSC's own PDFs, cross-verified, and organized so you can actually compare things.
         </p>
         <p className="leading-8 text-zinc-700">
-          The site currently has 50+ indexed topper profiles with full marks breakdowns — GS papers, essay, optional, interview — and strategy pages that analyze patterns across this dataset. I add more as I work through the PDFs.
+          50+ indexed topper profiles. Strategy pages built by analyzing patterns across the dataset — not by reading coaching blogs. Year archives, optional hubs, PYQs. All free.
         </p>
       </section>
 
       <section className="space-y-5">
-        <h2 className="text-2xl font-semibold">Who Is It For?</h2>
+        <h2 className="text-2xl font-semibold">Who Is This For?</h2>
         <p className="leading-8 text-zinc-700">
-          Honestly, anyone who wants to see real UPSC marks data instead of generic advice. If you are preparing and want to know what scores actually look like at different rank levels, which optionals produce top ranks, or how toppers performed paper by paper — this site has that.
+          People who want real numbers instead of generic advice. If you are deciding between optionals and want to know which one actually scores higher — the data is here. If you want to know what a 130+ GS1 score looks like across multiple toppers — the data is here. If you want motivational stories, go somewhere else.
         </p>
       </section>
 
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">What Is Here</h2>
         <p className="leading-8 text-zinc-700">
-          <strong>Topper profiles (50+):</strong> Full marks breakdowns with GS papers, essay, optional, interview, and total scores. Each number is manually extracted from UPSC's own result PDFs.
+          <strong>Topper profiles (50+):</strong> Full marks breakdowns. Every number manually extracted from UPSC result PDFs.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Strategy pages (4):</strong> Paper-wise guides built by analyzing the marks dataset — not by rewriting coaching brochures. Covers GS1 through GS4 with topper data, topic weightage, and book recommendations.
+          <strong>Strategy pages (4):</strong> Paper-wise guides for GS1 through GS4. Built by analyzing the actual marks dataset, not by rewriting coaching brochures.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Year archives (2022-2025):</strong> Browse all toppers from a given year with stats and optional subject trends.
+          <strong>Year archives (2022-2025):</strong> Browse every topper from a given year.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>Optional subject hubs (8 subjects):</strong> PSIR, Public Administration, Sociology, Geography, History, Anthropology, Mathematics, and Philosophy — with topper lists, average scores, and book recommendations.
+          <strong>Optional hubs (8 subjects):</strong> PSIR, Public Admin, Sociology, Geography, History, Anthropology, Mathematics, Philosophy.
         </p>
         <p className="leading-8 text-zinc-700">
-          <strong>PYQ archives (2023-2025):</strong> Previous year question papers with direct UPSC.gov.in PDF links.
-        </p>
-        <p className="leading-8 text-zinc-700">
-          <strong>Answer copy compilation:</strong> 50+ verified topper answer copies across GS1-4 and Essay — organized by score, so you can see what a 120+ answer actually looks like.
+          <strong>Answer copy compilation:</strong> 50+ verified topper answer copies organized by score.
         </p>
       </section>
 
       <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Why I Built This</h2>
         <p className="leading-8 text-zinc-700">
-          I found it frustrating that UPSC topper data is scattered across a dozen different sites, interview transcripts, and PDFs. No single place had marks organized in a way you could actually compare and analyze. So I built one.
+          Because nobody had done it. Topper data was scattered across interview transcripts, coaching site articles, and random PDFs. No single place had it organized in a way you could actually analyze. So I built one.
         </p>
         <p className="leading-8 text-zinc-700">
-          The site is free to use. The only paid thing is the answer copy compilation (₹99), and that is because I spend time verifying and organizing those copies. Everything else — profiles, strategy pages, PYQs, optional hubs — is free.
-        </p>
-        <p className="leading-8 text-zinc-700">
-          I am not a coaching institute, test series provider, or content mill. I am just someone who likes data and built a site around it.
+          Everything is free except the answer copy compilation (₹99). I am not a coaching institute, a test series provider, or a content mill. I am just someone who got obsessed with UPSC data and built a site around it.
         </p>
       </section>
 
@@ -129,37 +123,30 @@ export default function AboutPage() {
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold">Where does the topper data come from?</h3>
+            <h3 className="text-lg font-semibold">Where does the data come from?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              UPSC's official result PDFs on upsc.gov.in. I download them, read through them, and extract marks manually. I do not generate or fabricate any data.
+              UPSC's official result PDFs. I download them, read every row, and extract marks manually. I do not generate or fabricate anything.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">How often is the data updated?</h3>
+            <h3 className="text-lg font-semibold">How often is it updated?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              I add new profiles as soon as UPSC publishes results and I have time to go through the PDFs. Corrections are handled as they come in through the Report button.
+              As soon as UPSC publishes new results and I finish going through the PDFs. Usually within a week.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">Is this site free?</h3>
+            <h3 className="text-lg font-semibold">Is this free?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              Yes. Profiles, strategy pages, year archives, optional hubs, PYQs, and the AI assistant are all free. The only paid thing is the answer copy compilation (₹99), which covers the time I spend verifying and organizing those copies.
+              Yes. Profiles, strategies, year archives, optional hubs, PYQs, AI assistant — all free. Only the answer copy compilation costs ₹99 because verifying those copies takes real work.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold">How many toppers are on the site?</h3>
+            <h3 className="text-lg font-semibold">How many toppers?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              50+ indexed profiles spanning 2022 to 2025, covering 18 optional subjects. Each has detailed marks breakdowns.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold">Which optionals do you cover?</h3>
-            <p className="mt-2 leading-8 text-zinc-700">
-              8 dedicated hubs: PSIR, Public Administration, Sociology, Geography, History, Anthropology, Mathematics, and Philosophy. Each has topper lists, average scores, book recommendations, and syllabus topics. More optionals exist within topper profiles even without dedicated pages.
+              50+ indexed profiles from 2022-2025, 18 optional subjects.
             </p>
           </div>
         </div>
