@@ -715,6 +715,12 @@ export default async function TopperPage({ params }: Props) {
                 </tr>
               </tbody>
             </table>
+            <p className="mt-3 text-xs text-muted-foreground/70 flex items-center gap-1">
+              <svg className="h-3 w-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Source: <a href="https://upsc.gov.in" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">UPSC CSE {topper.year} Final Result</a>
+            </p>
           </div>
         </section>
 

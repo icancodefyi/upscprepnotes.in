@@ -115,6 +115,11 @@ Toppers who scored 130+ in GS1 typically scored **900+ overall written marks**, 
     { title: "Garima Lohia's GS1 Marks", href: "/upsc-topper/garima-lohia", description: "AIR 2 (2024) scored 119 in GS1 — full marksheet and strategy" },
     { title: "Animesh Pradhan's GS1 Marks", href: "/upsc-topper/animesh-pradhan", description: "AIR 2 (2023) scored 118 in GS1 — full strategy profile" },
   ],
+  sources: [
+    { label: "UPSC CSE 2024 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2024-08/Civil-Services-Examination-2023-Final-Result.pdf" },
+    { label: "UPSC CSE 2025 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2025-04/CSE-2024-Final-Result.pdf" },
+    { label: "Topper answer copies compilation — UPSCPrepNotes", url: "https://upscprepnotes.in/content/upsc-topper-answer-copies" },
+  ],
 };
 
 export default page;

@@ -123,6 +123,11 @@ Candidates with PSIR as their optional do carry a natural advantage in the IR an
       description: "AIR 15 (2023) scored 134 in GS2 — one of the highest GS2 scores in the dataset.",
     },
   ],
+  sources: [
+    { label: "UPSC CSE 2024 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2024-08/Civil-Services-Examination-2023-Final-Result.pdf" },
+    { label: "UPSC CSE 2025 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2025-04/CSE-2024-Final-Result.pdf" },
+    { label: "Topper answer copies compilation — UPSCPrepNotes", url: "https://upscprepnotes.in/content/upsc-topper-answer-copies" },
+  ],
 };
 
 export default page;

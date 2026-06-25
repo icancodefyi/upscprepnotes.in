@@ -28,6 +28,7 @@ export type ContentPage = {
   ctaFinalSub?: string;
   ctaFinalBtn?: string;
   relatedPages?: RelatedPage[];
+  sources?: { label: string; url: string }[];
 };
 
 

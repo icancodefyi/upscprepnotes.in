@@ -94,7 +94,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
                 Zaid Rakhange
               </a>
             </p>
-            <p className="text-gray-500">UPSCPrepNotes — Updated June 2026</p>
+            <p className="text-gray-500">UPSCPrepNotes — Updated {new Date(page.lastUpdated).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</p>
           </div>
         </div>
 
@@ -190,6 +190,26 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {page.sources && page.sources.length > 0 && (
+          <section className="mt-12 border-t border-gray-100 pt-8">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">Data Sources</h2>
+            <ul className="mt-3 space-y-1.5">
+              {page.sources.map((s, i) => (
+                <li key={i}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-gray-500 underline underline-offset-2 hover:text-emerald-700 transition-colors"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
