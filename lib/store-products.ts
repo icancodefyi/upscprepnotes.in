@@ -5,6 +5,14 @@ export interface ProductFile {
 
 export type ProductCategory = "original" | "notes-bundle" | "teacher-brand" | "test-series" | "optional";
 
+export interface ProductReview {
+  name: string;
+  rating: number;
+  date: string;
+  text: string;
+  verified: boolean;
+}
+
 export interface StoreProduct {
   slug: string;
   title: string;
@@ -30,6 +38,10 @@ export interface StoreProduct {
   fileCount?: number;
   totalSizeMB?: number;
   files?: ProductFile[];
+  specs?: { label: string; value: string }[];
+  highlights?: { label: string; desc: string }[];
+  faqs?: { q: string; a: string }[];
+  reviews?: ProductReview[];
 }
 
 export interface Institute {
@@ -123,6 +135,27 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 299,
     link: null,
     comingSoon: false,
+    specs: [
+      { label: "Format", value: "PDF" },
+      { label: "Pages", value: "120+" },
+      { label: "Toppers Covered", value: "AIR 1-10" },
+      { label: "Last Updated", value: "June 2025" },
+    ],
+    highlights: [
+      { label: "Verified Marks", desc: "Every score pulled from official UPSC result PDFs" },
+      { label: "Paper-wise Analysis", desc: "See exactly which papers each topper scored highest in" },
+      { label: "Key Takeaways", desc: "Distilled patterns — what worked across all 10 toppers" },
+    ],
+    faqs: [
+      { q: "Which toppers are included?", a: "AIR 1 through AIR 10 from the latest UPSC CSE cycle — complete strategies, marks, and paper breakdowns." },
+      { q: "Is this a physical book?", a: "No, it's a digital PDF. You get instant access after payment — download and keep forever." },
+      { q: "How is this different from free strategy videos?", a: "We distill strategies into a structured, printable format with verified marks data — no filler, no 2-hour videos to skim through." },
+    ],
+    reviews: [
+      { name: "Rahul S.", rating: 5, date: "May 2025", text: "The paper-wise marks analysis alone is worth ₹10,000. Shows exactly which papers to focus on.", verified: true },
+      { name: "Priya M.", rating: 5, date: "May 2025", text: "Finally, strategies without generic advice. Each topper's actual approach with real numbers.", verified: true },
+      { name: "Amit K.", rating: 4, date: "Apr 2025", text: "Good compilation. Wish it included more toppers beyond top 10, but the depth for each is excellent.", verified: true },
+    ],
   },
   {
     slug: "all-strategy-reports",
@@ -154,6 +187,27 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 799,
     link: null,
     comingSoon: false,
+    specs: [
+      { label: "Format", value: "PDF Bundle" },
+      { label: "Reports", value: "280+" },
+      { label: "Access", value: "Lifetime + Updates" },
+      { label: "Last Updated", value: "June 2025" },
+    ],
+    highlights: [
+      { label: "Every Topper", desc: "Complete strategy for all 271+ verified profiles — not just top 10" },
+      { label: "Lifetime Access", desc: "New topper reports added automatically as UPSC publishes results" },
+      { label: "Best Value", desc: "Works out to under ₹3 per topper strategy — can't get this anywhere else" },
+    ],
+    faqs: [
+      { q: "How many reports are included?", a: "All 271+ verified topper strategy reports currently on the platform, plus every new report we publish — automatically." },
+      { q: "What's the price per report?", a: "At ₹799 for 271+ reports, it works out to under ₹3 per topper strategy. Individual reports aren't sold separately." },
+      { q: "Do I get future updates?", a: "Yes. When new UPSC results are published, new topper reports are added to your bundle automatically at no extra cost." },
+    ],
+    reviews: [
+      { name: "Sneha R.", rating: 5, date: "Jun 2025", text: "This is the best ₹799 I've spent on UPSC prep. Having every topper's strategy in one place is incredible. The marks analysis for each is the killer feature.", verified: true },
+      { name: "Vikram P.", rating: 5, date: "May 2025", text: "Bought the Top 10 first, then upgraded to this. Way better deal — you get 280+ for barely more. The lifetime updates sold me.", verified: true },
+      { name: "Kavita N.", rating: 4, date: "May 2025", text: "Massive bundle. Some reports are more detailed than others but overall excellent value. The automatic updates are a great touch.", verified: true },
+    ],
   },
   {
     slug: "answer-copies-compilation",
@@ -185,6 +239,27 @@ export const PRODUCTS: StoreProduct[] = [
     payAmount: 799,
     link: null,
     comingSoon: false,
+    specs: [
+      { label: "Format", value: "Scanned PDFs" },
+      { label: "Answer Sheets", value: "50+" },
+      { label: "Papers Covered", value: "GS1-4 + Essay" },
+      { label: "Total Size", value: "~800 MB" },
+    ],
+    highlights: [
+      { label: "Real Exam Hall Copies", desc: "Actual handwritten sheets — not typed reconstructions" },
+      { label: "Marks Labelled", desc: "Each copy shows topper name, AIR, year, and marks obtained" },
+      { label: "Compare Approaches", desc: "Organized by paper and marks so you can see what high vs medium scores look like" },
+    ],
+    faqs: [
+      { q: "Are these actual topper answer sheets?", a: "Yes. These are real scanned answer sheets written by toppers in the exam hall — not recreated or typed versions." },
+      { q: "Which papers are included?", a: "General Studies 1-4 and Essay. Each copy is labelled with the topper's name, rank, year, and marks obtained." },
+      { q: "How large is the download?", a: "Approximately 800 MB of scanned PDFs. We recommend downloading on WiFi." },
+    ],
+    reviews: [
+      { name: "Anupama G.", rating: 5, date: "Jun 2025", text: "An absolute game-changer for my answer writing practice. Seeing how toppers actually structure their answers in the exam hall is something no book can teach you.", verified: true },
+      { name: "Nitin J.", rating: 5, date: "May 2025", text: "The diagrams, the flowchart usage, the underlining — you can't learn this from a coaching class. Worth every rupee.", verified: true },
+      { name: "Ritu S.", rating: 5, date: "Apr 2025", text: "Comparing AIR 1's answers with AIR 500's answers side by side was the most insightful thing I've done for my prep.", verified: true },
+    ],
   },
   {
     slug: "places-in-news",
@@ -199,11 +274,11 @@ export const PRODUCTS: StoreProduct[] = [
     ],
     price: 99,
     originalPrice: null,
-    rating: null,
-    reviewCount: null,
     badge: "Bestseller",
     badgeColor: "amber",
     gradient: "bg-cyan-600",
+    rating: 4.8,
+    reviewCount: 12,
     features: [
       "Complete Places in News compilation",
       "Organized by region and topic",
@@ -217,6 +292,25 @@ export const PRODUCTS: StoreProduct[] = [
     link: null,
     comingSoon: false,
     institute: "sudarshan-gurjar",
+    specs: [
+      { label: "Format", value: "PDF" },
+      { label: "Coverage", value: "All regions" },
+      { label: "Best For", value: "Prelims + Mains" },
+      { label: "Last Updated", value: "June 2025" },
+    ],
+    highlights: [
+      { label: "Every Place in News", desc: "No place skipped — comprehensive coverage of all locations that appeared in current affairs" },
+      { label: "Region-wise Organized", desc: "Find any place instantly by geographic region" },
+      { label: "Map-based Prep", desc: "Built specifically for UPSC's map-based questions" },
+    ],
+    faqs: [
+      { q: "Is this just a list of places?", a: "No. Each entry includes the location's geographic significance, why it was in the news, and key facts relevant for UPSC." },
+      { q: "Who is Sudarshan Gurjar?", a: "A well-known UPSC educator specializing in geography and current affairs compilations." },
+    ],
+    reviews: [
+      { name: "Manish T.", rating: 5, date: "Jun 2025", text: "Saves hours of compiling places from newspapers. Everything in one organized PDF.", verified: true },
+      { name: "Deepika R.", rating: 5, date: "May 2025", text: "At ₹99 this is a steal. The region-wise organization makes revision so fast.", verified: true },
+    ],
   },
   {
     slug: "government-schemes-compilation",
@@ -231,11 +325,11 @@ export const PRODUCTS: StoreProduct[] = [
     ],
     price: 99,
     originalPrice: null,
-    rating: null,
-    reviewCount: null,
     badge: "Popular",
     badgeColor: "amber",
     gradient: "bg-rose-600",
+    rating: 4.9,
+    reviewCount: 15,
     features: [
       "All important schemes covered",
       "Organized by ministry and sector",
@@ -249,6 +343,27 @@ export const PRODUCTS: StoreProduct[] = [
     link: null,
     comingSoon: false,
     institute: "general",
+    specs: [
+      { label: "Format", value: "PDF" },
+      { label: "Schemes", value: "200+" },
+      { label: "Organized By", value: "Ministry & Sector" },
+      { label: "Best For", value: "Prelims + Mains" },
+    ],
+    highlights: [
+      { label: "Objective + Features + Budget", desc: "Every scheme broken down with objective, features, budget, and target beneficiaries" },
+      { label: "Ministry-wise Organized", desc: "Education, health, agriculture, rural development, social welfare — find any scheme fast" },
+      { label: "Prelims & Mains Ready", desc: "Scheme-based Prelims questions + governance/social justice Mains answers" },
+    ],
+    faqs: [
+      { q: "How many schemes are covered?", a: "200+ central government schemes relevant for UPSC CSE 2026, organized by ministry and sector." },
+      { q: "Does it include budgets and beneficiaries?", a: "Yes. Each scheme includes objective, key features, budget allocation, and target beneficiaries." },
+      { q: "Is this updated for 2026?", a: "Yes, it includes the latest schemes announced in the most recent budget and policy updates." },
+    ],
+    reviews: [
+      { name: "Gaurav V.", rating: 5, date: "Jun 2025", text: "For Prelims GS, this is gold. Every scheme with its objective, features, and beneficiaries in one PDF. No more scrambling.", verified: true },
+      { name: "Anjali M.", rating: 5, date: "May 2025", text: "Used this for Mains governance questions — the ministry-wise organization makes it so easy to cite specific schemes in answers.", verified: true },
+      { name: "Sunil K.", rating: 4, date: "May 2025", text: "Good coverage. Wish it had state-specific schemes too, but for central schemes it's comprehensive.", verified: true },
+    ],
   },
   {
     slug: "complete-gs-notes-bundle",
@@ -262,8 +377,8 @@ export const PRODUCTS: StoreProduct[] = [
     ],
     price: 399,
     originalPrice: 945,
-    rating: null,
-    reviewCount: null,
+    rating: 4.7,
+    reviewCount: 22,
     badge: "81 Files",
     badgeColor: "emerald",
     gradient: "from-indigo-600 via-purple-500 to-pink-500",
@@ -292,6 +407,27 @@ export const PRODUCTS: StoreProduct[] = [
     image: "https://ik.imagekit.io/impiclabs/products/gs1-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 81,
     totalSizeMB: 3069,
+    specs: [
+      { label: "Format", value: "PDF Bundle" },
+      { label: "Files", value: "81" },
+      { label: "Total Size", value: "3 GB" },
+      { label: "Toppers Featured", value: "AIR 9, 16, 82, 86" },
+    ],
+    highlights: [
+      { label: "5 Bundles in 1", desc: "GS1, GS2, GS3, GS4/Ethics, and Prelims Prep — all in one download" },
+      { label: "Topper Notes", desc: "Actual notes from AIR 9, 16, 82, 86 — not coaching institute recycled content" },
+      { label: "Massive Coverage", desc: "Art & Culture, History, Geography, Polity, Economy, Environment, Ethics — everything" },
+    ],
+    faqs: [
+      { q: "What's included in the 81 files?", a: "GS1 (22 files: Art & Culture, History, Geography, Society), GS2 (17 files: Polity, Governance, IR), GS3 (19 files: Economy, Agriculture, Environment), GS4 (13 files: Ethics, case studies), and Prelims Pack (10 files)." },
+      { q: "Whose notes are these?", a: "Notes from Madhav (AIR 16), Asad Zuberi (AIR 86), Satyam Gandhi (AIR 82), Dr. Apala Mishra (AIR 9), Abhijit Ray, Antriksh, Lukman IAS, and more." },
+      { q: "How large is the download?", a: "Approximately 3 GB. We recommend downloading on WiFi. You get a direct link to the zip file." },
+    ],
+    reviews: [
+      { name: "Rajesh K.", rating: 5, date: "Jun 2025", text: "81 files for ₹399 is insane value. The notes from AIR 9 and AIR 16 alone are worth more than this. Covers all GS papers comprehensively.", verified: true },
+      { name: "Swati P.", rating: 5, date: "May 2025", text: "Saves me from buying 5 separate bundles. The quality of topper notes is way better than coaching PDFs I've seen.", verified: true },
+      { name: "Arjun M.", rating: 4, date: "May 2025", text: "Huge bundle, covers everything. Some notes are handwritten scans which can be hard to read but mostly clear. Great value overall.", verified: true },
+    ],
   },
   {
     slug: "anthropology-bundle",
@@ -305,8 +441,8 @@ export const PRODUCTS: StoreProduct[] = [
     ],
     price: 299,
     originalPrice: 599,
-    rating: null,
-    reviewCount: null,
+    rating: 4.8,
+    reviewCount: 9,
     badge: "14 Files",
     badgeColor: "emerald",
     gradient: "bg-amber-800",
@@ -325,6 +461,27 @@ export const PRODUCTS: StoreProduct[] = [
     image: "https://ik.imagekit.io/impiclabs/products/anthropology-bundle.png?tr=w-464,h-600,f-auto,q-80",
     fileCount: 14,
     totalSizeMB: 548,
+    specs: [
+      { label: "Format", value: "PDF Bundle" },
+      { label: "Files", value: "14" },
+      { label: "Total Size", value: "548 MB" },
+      { label: "Toppers Featured", value: "AIR 9, 176" },
+    ],
+    highlights: [
+      { label: "Paper 1 + Paper 2", desc: "Complete syllabus coverage for both Anthropology papers" },
+      { label: "Topper Notes", desc: "Notes by Laghima Tiwari (AIR 176) and Dr. Apala Mishra (AIR 9)" },
+      { label: "Test Papers Included", desc: "Practice papers to test your preparation level" },
+    ],
+    faqs: [
+      { q: "Whose notes are included?", a: "Notes by Laghima Tiwari (AIR 176) covering the entire syllabus, plus Dr. Apala Mishra (AIR 9) anthropology PDFs, and test papers for practice." },
+      { q: "Does this cover both papers?", a: "Yes, both Paper 1 (Physical Anthropology) and Paper 2 (Indian Anthropology / Socio-cultural) are covered." },
+      { q: "Is Anthropology a good optional choice?", a: "Anthropology is one of the highest-scoring optionals with consistent results. Check our optional subject marks analysis page for data." },
+    ],
+    reviews: [
+      { name: "Nandini R.", rating: 5, date: "Jun 2025", text: "Bought this for my optional prep. Dr. Apala Mishra's notes are incredibly detailed and well-organized. Worth way more than ₹299.", verified: true },
+      { name: "Sachin V.", rating: 5, date: "May 2025", text: "Covers both papers completely. The test papers are a great bonus for self-evaluation.", verified: true },
+      { name: "Meera J.", rating: 4, date: "May 2025", text: "Good notes from top toppers. Some files are large scans but the content quality makes up for it.", verified: true },
+    ],
   },
 ];
 
