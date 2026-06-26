@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { getFeaturedToppers } from "@/services/topper.service";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { topperImageSrc } from "@/lib/utils";
 import {
   Trophy,
@@ -11,11 +10,8 @@ import {
   BarChart3,
   Sparkles,
   ArrowRight,
-  BookOpen,
-  MessageCircle,
-  Target,
-  Award,
 } from "lucide-react";
+import HeroLeadForm from "@/components/hero/HeroLeadForm";
 
 export const revalidate = 86400;
 
@@ -167,70 +163,138 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
       <main className="min-h-screen bg-[#F8F9FA]">
-      <div className="mx-auto max-w-7xl px-4 pb-32">
         {/* HERO */}
-        <section className="pt-16 pb-20">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-6">
-              <Sparkles size={12} />
-              Topper Answer Copies
-            </div>
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
-              Score 120+ Marks
-              <br />
-              <span className="text-gray-500">
-                in Each GS Paper
-              </span>
-            </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-gray-500 md:text-lg">
-              39 premium UPSC products — notes bundles, test series, teacher materials, and original compilations starting at ₹99.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild size="lg" className="rounded-full px-8 shadow-lg">
-              <Link data-track="home-hero-cta" href="/store">
-                Browse the Store &rarr;
-              </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-              <Link data-track="home-hero-secondary" href="/year/2025">
-                Browse Toppers
-              </Link>
-              </Button>
-            </div>
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <span data-track="home-price-badge" className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
-                <span>39 Products</span>
-              </span>
-              <span className="text-xs text-gray-400">Notes, Test Series, Teacher Materials & More</span>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-6 text-xs text-gray-400">
-              <span>Instant Digital Access</span>
-              <span className="text-gray-300">·</span>
-              <span>Verified Copies</span>
-              <span className="text-gray-300">·</span>
-              <span>Lifetime Updates</span>
-              <span className="text-gray-300">·</span>
-              <span>PDF Format</span>
-            </div>
-          </div>
-
-          {/* BENEFIT CARDS */}
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              "Get answer copies of toppers in each paper (Verified Only)",
-              "Handwritten Answers from 20+ toppers",
-              "Includes Micro-diagrams, Data, Facts, Examples",
-              "All GS Papers — GS1, GS2, GS3, GS4 & Essay Covered",
-            ].map((text) => (
-              <div key={text} className="bg-white border-2 border-gray-200 p-5 hover:border-black transition-all">
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 shrink-0 text-[#C4F9D7] font-bold">&#10003;</span>
-                  <p className="text-sm leading-6 text-gray-600">{text}</p>
+        <section className="relative overflow-hidden border-b border-gray-200">
+          <div
+    className="pointer-events-none absolute inset-0 opacity-50"
+    style={{
+      backgroundImage: "radial-gradient(circle, #d1d5db 1px, transparent 1px)",
+      backgroundSize: "22px 22px",
+    }}
+  />
+          <div className="relative mx-auto max-w-7xl px-4 pt-16 pb-20 md:pt-24 md:pb-28">
+            <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+              {/* LEFT */}
+              <div className="lg:col-span-7">
+                <div className="mb-6 flex items-center gap-3">
+                  <span className="text-xs font-bold text-gray-300">01</span>
+                  <span className="h-px w-8 bg-gray-300" />
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">
+                    UPSC Intelligence Database
+                  </span>
+                </div>
+                <h1 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-[4.25rem]">
+                  What separates{" "}
+                  <span className="italic font-light text-gray-400">rank holders</span>
+                  <br />
+                  from the rest?
+                </h1>
+                <p className="mt-6 max-w-xl text-base leading-7 text-gray-600 md:text-lg">
+                  <span className="font-semibold text-black">271 verified profiles.</span>{" "}
+                  37 optional subjects. Every mark manually extracted from UPSC&apos;s official result PDFs — free to explore.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <Button asChild size="lg" className="rounded-full bg-black px-8 shadow-lg hover:bg-gray-800">
+                    <Link data-track="home-hero-cta" href="/year/2025">
+                      Browse Free Profiles <ArrowRight size={16} className="ml-1 inline" />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+                    <Link data-track="home-hero-secondary" href="/store">
+                      Visit Store
+                    </Link>
+                  </Button>
+                </div>
+                <HeroLeadForm />
+                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-gray-200 pt-6">
+                  <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    Verified from UPSC.gov.in
+                  </span>
+                  <span className="text-sm text-gray-500">Built by Zaid Rakhange</span>
+                  <span className="text-sm text-gray-500">Free to explore</span>
                 </div>
               </div>
-            ))}
+
+              {/* RIGHT: Featured topper data card */}
+              <div className="lg:col-span-5">
+                {toppers[0] && (
+                  <div className="relative">
+                    <div className="absolute -right-3 -top-3 h-full w-full rounded-2xl bg-[#C4F9D7]" />
+                    <div className="relative rounded-2xl border-2 border-black bg-white p-6 shadow-xl">
+                      <Link href={`/upsc-topper/${toppers[0].slug}`} data-track="home-hero-topper-card" className="flex items-center gap-4">
+                        <img
+                          src={topperImageSrc(toppers[0])}
+                          alt={`${toppers[0].firstName} ${toppers[0].lastName}`}
+                          className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-white"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-base font-bold leading-tight">
+                            {toppers[0].firstName} {toppers[0].lastName}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            AIR {toppers[0].rank} &middot; {toppers[0].year}
+                          </p>
+                        </div>
+                        <span className="shrink-0 rounded-full bg-[#C4F9D7] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border border-black">
+                          Verified
+                        </span>
+                      </Link>
+
+                      <div className="mt-5 flex items-center justify-between border-b border-gray-100 pb-3">
+                        <span className="text-[11px] uppercase tracking-wider text-gray-400">Optional Subject</span>
+                        <span className="text-sm font-semibold">{toppers[0].optionalSubject}</span>
+                      </div>
+
+                      <div className="mt-4">
+                        <p className="mb-3 text-[11px] uppercase tracking-wider text-gray-400">Marks Breakdown</p>
+                        <div className="space-y-2.5">
+                          {[
+                            { label: "Essay", val: toppers[0].marks.essay, max: 250 },
+                            { label: "GS1", val: toppers[0].marks.gs1, max: 250 },
+                            { label: "GS2", val: toppers[0].marks.gs2, max: 250 },
+                            { label: "GS3", val: toppers[0].marks.gs3, max: 250 },
+                            { label: "GS4", val: toppers[0].marks.gs4, max: 250 },
+                            { label: "Optional", val: toppers[0].marks.optional1 + toppers[0].marks.optional2, max: 500 },
+                            { label: "Interview", val: toppers[0].marks.interview, max: 275 },
+                          ].map((p) => (
+                            <div key={p.label} className="flex items-center gap-3">
+                              <span className="w-12 text-xs text-gray-500">{p.label}</span>
+                              <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+                                <div
+                                  className="h-full rounded-full bg-emerald-500"
+                                  style={{ width: `${Math.min((p.val / p.max) * 100, 100)}%` }}
+                                />
+                              </div>
+                              <span className="w-8 text-right text-xs font-semibold">{p.val}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-4">
+                        <span className="text-sm font-semibold">Total Score</span>
+                        <span className="text-3xl font-bold tracking-tight">{toppers[0].marks.total}</span>
+                      </div>
+
+                      <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="text-emerald-500 font-bold">&#10003;</span>
+                          Source: UPSC.gov.in
+                        </span>
+                        <Link href={`/upsc-topper/${toppers[0].slug}`} data-track="home-hero-topper-link" className="font-medium text-black underline underline-offset-2 hover:text-gray-600">
+                          View profile &rarr;
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </section>
+
+      <div className="mx-auto max-w-7xl px-4 pb-32">
 
 
 
