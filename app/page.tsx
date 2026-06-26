@@ -13,6 +13,7 @@ import {
   Database,
   FileQuestion,
   FileText,
+  ChevronDown,
 } from "lucide-react";
 import HeroLeadForm from "@/components/hero/HeroLeadForm";
 
@@ -92,6 +93,78 @@ const PLATFORM_FEATURES = [
     title: "Previous Year Questions",
     desc: "PYQs organized by year and paper with topic analysis and answer patterns.",
     href: "/pyq",
+  },
+];
+
+const STRATEGY_GUIDES = [
+  {
+    title: "Score 130+ in GS1",
+    desc: "Indian Society, History, and Geography — topper-backed strategies with real marks data.",
+    href: "/content/how-to-score-130-plus-in-gs1",
+    score: "130+",
+    paper: "GS1",
+  },
+  {
+    title: "Score 120+ in GS2",
+    desc: "Polity, Governance, and Social Justice — framework-based answer writing.",
+    href: "/content/how-to-score-120-plus-in-gs2",
+    score: "120+",
+    paper: "GS2",
+  },
+  {
+    title: "Score 120+ in GS3",
+    desc: "Economy, Agriculture, and Environment — data-driven answers with current affairs.",
+    href: "/content/how-to-score-120-plus-in-gs3",
+    score: "120+",
+    paper: "GS3",
+  },
+  {
+    title: "Score 100+ in GS4",
+    desc: "Ethics, Integrity, and Case Studies — stakeholder analysis and ethical frameworks.",
+    href: "/content/how-to-score-100-plus-in-gs4",
+    score: "100+",
+    paper: "GS4",
+  },
+  {
+    title: "Score 300+ in PSIR Optional",
+    desc: "Political Science & IR — complete strategy with topper marks and answer patterns.",
+    href: "/content/how-to-score-300-plus-in-psir-optional",
+    score: "300+",
+    paper: "PSIR",
+  },
+  {
+    title: "Optional Subject Marks Analysis",
+    desc: "Which optionals score highest? Full ranking of 9 subjects with topper data.",
+    href: "/content/upsc-optional-subject-marks-analysis",
+    score: "Analysis",
+    paper: "All",
+  },
+];
+
+const FAQS = [
+  {
+    q: "Is UPSCPrepNotes free?",
+    a: "Yes. All topper profiles, marks data, 2,700+ free PDFs, and the AI tutor are completely free. We charge only for premium strategy reports and answer copy compilations.",
+  },
+  {
+    q: "How is the topper data collected?",
+    a: "Every mark is manually extracted from UPSC's official result PDFs on UPSC.gov.in. We verify each profile against the published gazette. Our dataset spans 2022-2025 with 271+ toppers.",
+  },
+  {
+    q: "Can I download answer copies?",
+    a: "Free sample answer copies are available on many topper profiles. The full compilation (50+ toppers, all GS papers + essay) is available in the store.",
+  },
+  {
+    q: "How does the AI tutor work?",
+    a: "Ask AI uses vector search over our topper strategy database to answer your UPSC questions with real, data-backed insights. Free tier: 20 queries/day.",
+  },
+  {
+    q: "Which optional subjects are covered?",
+    a: "We cover 37 optional subjects with marks analysis, score trends, and topper profiles — including PSIR, Anthropology, Sociology, Geography, History, and more.",
+  },
+  {
+    q: "How often is the data updated?",
+    a: "Topper profiles are updated within 2-4 weeks of UPSC results. Current affairs and free materials are updated weekly.",
   },
 ];
 
@@ -509,7 +582,168 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* CLOSING CTA */}
+        {/* STRATEGY GUIDES */}
+        <section className="mb-24 border-t border-gray-200 pt-16">
+          <div className="mb-8 flex items-center gap-3">
+            <span className="text-xs font-bold text-gray-300">06</span>
+            <span className="h-px w-8 bg-gray-300" />
+            <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">
+              Strategy Guides
+            </span>
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Paper-wise score targets,{" "}
+            <span className="italic font-light text-gray-400">backed by real data.</span>
+          </h2>
+          <p className="mt-3 max-w-xl text-sm leading-7 text-gray-500">
+            Each guide breaks down what it actually takes to score in a specific paper — using verified marks from rank holders.
+          </p>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {STRATEGY_GUIDES.map((guide) => (
+              <Link
+                data-track={`home-guide-${guide.paper.toLowerCase()}`}
+                key={guide.paper}
+                href={guide.href}
+                className="group bg-white border-2 border-gray-200 p-5 hover:border-black transition-all"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#C4F9D7] text-black border border-black text-[10px] font-bold uppercase tracking-wider">
+                    {guide.paper}
+                  </span>
+                  <span className="text-2xl font-bold tracking-tight text-gray-900">
+                    {guide.score}
+                  </span>
+                </div>
+                <h3 className="text-base font-bold leading-tight">{guide.title}</h3>
+                <p className="mt-2 text-sm text-gray-500 leading-6">{guide.desc}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-black underline underline-offset-2 group-hover:text-gray-500 transition-colors">
+                  Read guide <ArrowRight size={13} />
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-6">
+            <Link
+              data-track="home-methodology-link"
+              href="/content/data-methodology-and-editorial-standards"
+              className="text-sm font-medium text-black underline underline-offset-4 hover:text-gray-500 transition-colors"
+            >
+              Read our data methodology &amp; editorial standards &rarr;
+            </Link>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="mb-24 border-t border-gray-200 pt-16">
+          <div className="mb-8 flex items-center gap-3">
+            <span className="text-xs font-bold text-gray-300">07</span>
+            <span className="h-px w-8 bg-gray-300" />
+            <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">
+              Frequently Asked
+            </span>
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Questions?{" "}
+            <span className="italic font-light text-gray-400">We have answers.</span>
+          </h2>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {FAQS.map((faq) => (
+              <details
+                key={faq.q}
+                className="group bg-white border-2 border-gray-200 p-5 hover:border-black transition-all"
+              >
+                <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
+                  <h3 className="text-sm font-bold leading-tight">{faq.q}</h3>
+                  <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-gray-400 transition group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-sm text-gray-500 leading-6">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+
+          <div className="mt-6">
+            <Link
+              data-track="home-faq-link"
+              href="/faq"
+              className="text-sm font-medium text-black underline underline-offset-4 hover:text-gray-500 transition-colors"
+            >
+              See all FAQs &rarr;
+            </Link>
+          </div>
+        </section>
+
+        {/* ABOUT / FOUNDER */}
+        <section className="mb-24 border-t border-gray-200 pt-16">
+          <div className="mb-8 flex items-center gap-3">
+            <span className="text-xs font-bold text-gray-300">08</span>
+            <span className="h-px w-8 bg-gray-300" />
+            <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">
+              About
+            </span>
+          </div>
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+                Built by a{" "}
+                <span className="italic font-light text-gray-400">software engineer,</span>{" "}
+                not a coaching institute.
+              </h2>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-gray-500">
+                I&apos;m Zaid Rakhange — a software engineer fascinated by UPSC data. I manually extract every mark from UPSC&apos;s official result PDFs because I believe the best prep resources should be accurate, free, and built with care.
+              </p>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-gray-500">
+                No coaching institute agenda. No recycled content. Just verified data and tools that actually help you prepare smarter.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-4">
+                <Button asChild size="lg" className="rounded-full bg-black px-8 shadow-lg hover:bg-gray-800">
+                  <Link data-track="home-about-cta" href="/about">
+                    Read the Full Story <ArrowRight size={16} className="ml-1 inline" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+                  <Link data-track="home-contact-cta" href="/contact">
+                    Get in Touch
+                  </Link>
+                </Button>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-gray-200 pt-6">
+                <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  271+ verified profiles
+                </span>
+                <span className="text-sm text-gray-500">2,700+ free resources</span>
+                <span className="text-sm text-gray-500">7 premium products</span>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -right-3 -top-3 h-full w-full rounded-2xl bg-[#C4F9D7]" />
+              <div className="relative rounded-2xl border-2 border-black bg-white p-6 shadow-xl">
+                <div className="space-y-4">
+                  {[
+                    { label: "Topper Profiles", val: "271", note: "Verified from UPSC.gov.in" },
+                    { label: "Optional Subjects", val: "37", note: "Marks analysis & trends" },
+                    { label: "Answer Sets", val: "50+", note: "Handwritten by rank holders" },
+                    { label: "Strategy Guides", val: "5", note: "Paper-wise score targets" },
+                    { label: "Free Resources", val: "2,700+", note: "Test series, notes & magazines" },
+                    { label: "Premium Products", val: "7", note: "Starting at ₹99" },
+                  ].map((row) => (
+                    <div key={row.label} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                      <div>
+                        <p className="text-sm font-semibold">{row.label}</p>
+                        <p className="text-xs text-gray-400">{row.note}</p>
+                      </div>
+                      <span className="text-2xl font-bold tracking-tight">{row.val}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <section className="border-t border-gray-200 pt-16">
           <div className="relative overflow-hidden rounded-2xl border-2 border-black bg-white p-8 md:p-12">
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#C4F9D7] opacity-60" />
