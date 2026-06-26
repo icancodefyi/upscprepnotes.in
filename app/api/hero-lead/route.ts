@@ -6,11 +6,11 @@ import { sendEmail } from "@/lib/resend";
 import { getPostHogClient } from "@/lib/posthog-server";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
-const FREE_PRODUCT_NAME = "Places in News by Sudarshan Gurjar";
+const FREE_PRODUCT_NAME = "Government Schemes Compendium";
 const FREE_PRODUCT_VALUE = 99;
-const DOWNLOAD_URL = `${VPS_URL}/Places-in-News.zip`;
+const DOWNLOAD_URL = `${VPS_URL}/guide-government-schemes-compendium.pdf`;
 
-const EMAIL_SUBJECT = `Your Free "Places in News" Compilation (worth ₹${FREE_PRODUCT_VALUE})`;
+const EMAIL_SUBJECT = `Your Free Government Schemes Compendium (worth ₹${FREE_PRODUCT_VALUE})`;
 
 function buildEmailHtml(): string {
   return `
@@ -22,9 +22,9 @@ function buildEmailHtml(): string {
         <div style="text-align:center;margin-bottom:24px">
           <span style="display:inline-block;background:#C4F9D7;color:#111;border:1px solid #111;border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Free Exclusive</span>
         </div>
-        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center;line-height:1.3">Your Free <em>Places in News</em> Compilation is Ready</h1>
+        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center;line-height:1.3">Your Free <em>Government Schemes</em> Compendium is Ready</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">
-          Worth ₹${FREE_PRODUCT_VALUE} on our store — yours free. This is the complete compilation by Sudarshan Gurjar covering every place that appeared in the news, organized by region and topic.
+          Worth ₹${FREE_PRODUCT_VALUE} on our store — yours free. This is the complete compilation of all important government schemes, organized by ministry and sector with objectives, features, and key facts.
         </p>
         <div style="text-align:center;margin-bottom:28px">
           <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#000;color:#fff;padding:14px 36px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download Your Free PDF →</a>
@@ -32,10 +32,10 @@ function buildEmailHtml(): string {
         <div style="border-top:1px solid #eee;padding-top:24px;margin-bottom:24px">
           <p style="color:#111;font-size:13px;font-weight:600;margin:0 0 12px">What's inside:</p>
           <ul style="color:#666;font-size:13px;line-height:1.8;padding-left:20px;margin:0">
-            <li>Complete Places in News compilation</li>
-            <li>Organized by region and topic</li>
-            <li>Key facts for Prelims and Mains</li>
-            <li>Map-based question preparation</li>
+            <li>All important government schemes covered</li>
+            <li>Organized by ministry and sector</li>
+            <li>Objective, features, budget, and beneficiaries</li>
+            <li>Ideal for Prelims and Mains preparation</li>
           </ul>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0;line-height:1.5">

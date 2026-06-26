@@ -42,7 +42,7 @@ export default function HeroLeadForm() {
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold leading-tight">Check your email!</p>
             <p className="text-xs text-gray-500 mt-0.5">
-              We&apos;ve sent your free <span className="font-semibold">Places in News</span> compilation (worth ₹99).
+              We&apos;ve sent your free <span className="font-semibold">Government Schemes</span> compendium (worth ₹99).
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function HeroLeadForm() {
           Free
         </span>
         <span className="text-sm font-medium text-gray-600">
-          Get our <span className="font-bold text-black">Places in News</span> compilation free <span className="text-gray-400 line-through">₹99</span>
+          Get our <span className="font-bold text-black">Government Schemes</span> compendium free <span className="text-gray-400 line-through">₹99</span>
         </span>
       </div>
       <form onSubmit={handleSubmit} className="flex gap-2">
