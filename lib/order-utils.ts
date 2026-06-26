@@ -4,6 +4,8 @@ import { join } from "path";
 import { sendEmail } from "@/lib/resend";
 import { PRODUCTS, StoreProduct } from "@/lib/store-products";
 
+const ADMIN_EMAIL = "impic.tech@gmail.com";
+
 const ZIP_DIR = join(process.cwd(), "private", "zips");
 
 export function generateDownloadToken(): string {
@@ -105,6 +107,44 @@ export async function sendAdminNotification(
   await sendEmail({
     to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
     subject: `New Dodo Sale: ₹${total} — ${email}`,
+    html,
+  });
+}
+
+export async function sendOfferNotification(
+  email: string,
+  productTitle: string,
+  offeredPrice: number,
+  fullPrice: number,
+  ref: string
+) {
+  const discountPct = Math.round((1 - offeredPrice / fullPrice) * 100);
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"></head>
+    <body style="font-family:sans-serif;padding:24px;background:#f9f9f9">
+      <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;border-top:4px solid #059669">
+        <h2 style="margin:0 0 8px;font-size:20px">New Offer Received 🎯</h2>
+        <p style="margin:0 0 24px;color:#666;font-size:14px">Someone named their price for one of your products</p>
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <tr><td style="padding:8px 0;color:#888">Email</td><td style="padding:8px 0;font-weight:600">${email}</td></tr>
+          <tr><td style="padding:8px 0;color:#888">Product</td><td style="padding:8px 0;font-weight:600">${productTitle}</td></tr>
+          <tr><td style="padding:8px 0;color:#888">Offered Price</td><td style="padding:8px 0;font-weight:700;font-size:18px">₹${offeredPrice}</td></tr>
+          <tr><td style="padding:8px 0;color:#888">Full Price</td><td style="padding:8px 0;text-decoration:line-through;color:#999">₹${fullPrice}</td></tr>
+          <tr><td style="padding:8px 0;color:#888">Discount</td><td style="padding:8px 0;color:#059669;font-weight:600">${discountPct}% (₹${fullPrice - offeredPrice})</td></tr>
+          <tr><td style="padding:8px 0;color:#888">Reference</td><td style="padding:8px 0;font-family:monospace;font-size:13px">${ref}</td></tr>
+        </table>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
+        <p style="color:#999;font-size:12px;margin:0">This customer hasn't paid yet — they're at the checkout stage. You'll get another notification when payment completes.</p>
+      </div>
+    </body>
+    </html>
+  `;
+
+  await sendEmail({
+    to: ADMIN_EMAIL,
+    subject: `💰 New Offer: ₹${offeredPrice} for ${productTitle} — ${email}`,
     html,
   });
 }

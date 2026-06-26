@@ -42,6 +42,7 @@ export interface StoreProduct {
   highlights?: { label: string; desc: string }[];
   faqs?: { q: string; a: string }[];
   reviews?: ProductReview[];
+  minOfferPrice?: number;
 }
 
 export interface Institute {
@@ -133,6 +134,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "Top 10 Rankers Strategy Compilation",
     payAmount: 299,
+    minOfferPrice: 99,
     link: null,
     comingSoon: false,
     specs: [
@@ -185,6 +187,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "All Strategy Reports Bundle",
     payAmount: 799,
+    minOfferPrice: 199,
     link: null,
     comingSoon: false,
     specs: [
@@ -237,6 +240,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "Answer Copies Compilation",
     payAmount: 799,
+    minOfferPrice: 199,
     link: null,
     comingSoon: false,
     specs: [
@@ -289,6 +293,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "Places in News by Sudarshan Gurjar",
     payAmount: 99,
+    minOfferPrice: 49,
     link: null,
     comingSoon: false,
     institute: "sudarshan-gurjar",
@@ -340,6 +345,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "original",
     payNote: "Government Schemes Compilation",
     payAmount: 99,
+    minOfferPrice: 49,
     link: null,
     comingSoon: false,
     institute: "general",
@@ -402,6 +408,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "notes-bundle",
     payNote: "Complete GS Notes Bundle",
     payAmount: 399,
+    minOfferPrice: 149,
     link: null,
     comingSoon: false,
     image: "https://ik.imagekit.io/impiclabs/products/gs1-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
@@ -456,6 +463,7 @@ export const PRODUCTS: StoreProduct[] = [
     category: "optional",
     payNote: "Anthropology Optional Bundle",
     payAmount: 299,
+    minOfferPrice: 99,
     link: null,
     comingSoon: false,
     image: "https://ik.imagekit.io/impiclabs/products/anthropology-bundle.png?tr=w-464,h-600,f-auto,q-80",

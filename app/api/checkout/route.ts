@@ -4,7 +4,7 @@ import { PRODUCTS } from "@/lib/store-products";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import { generateDownloadToken } from "@/lib/order-utils";
+import { generateDownloadToken, sendOfferNotification } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
 
 function shortRef() {
@@ -25,11 +25,12 @@ interface CheckoutItem {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { items, email, successUrl, cancelUrl } = body as {
+    const { items, email, successUrl, cancelUrl, offeredPrice } = body as {
       items: CheckoutItem[];
       email?: string;
       successUrl?: string;
       cancelUrl?: string;
+      offeredPrice?: number;
     };
 
     const origin = request.headers.get("origin") || request.headers.get("referer") || "https://upscprepnotes.in";
@@ -58,8 +59,21 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      total += (item.price || product.price) * item.quantity;
-      resolvedItems.push({ slug: item.slug, quantity: item.quantity, price: item.price || product.price, title: product.title });
+      let itemPrice: number;
+      if (offeredPrice !== undefined) {
+        const minPrice = product.minOfferPrice ?? product.price;
+        if (offeredPrice < minPrice) {
+          return NextResponse.json(
+            { error: `Minimum price for ${product.title} is ₹${minPrice}` },
+            { status: 400 }
+          );
+        }
+        itemPrice = offeredPrice;
+      } else {
+        itemPrice = item.price || product.price;
+      }
+      total += itemPrice * item.quantity;
+      resolvedItems.push({ slug: item.slug, quantity: item.quantity, price: itemPrice, title: product.title });
     }
 
     const ref = shortRef();
@@ -70,6 +84,7 @@ export async function POST(request: NextRequest) {
     const order = await OrderModel.create({
       items: resolvedItems,
       total,
+      offeredPrice,
       ref,
       downloadToken,
       email: email || undefined,
@@ -95,12 +110,24 @@ export async function POST(request: NextRequest) {
         ref,
         items: JSON.stringify(resolvedItems.map((i) => ({ slug: i.slug, quantity: i.quantity, price: i.price, title: i.title }))),
         total: String(total),
+        ...(offeredPrice !== undefined ? { offeredPrice: String(offeredPrice) } : {}),
       },
     });
 
     await OrderModel.findByIdAndUpdate(order._id, {
       dodoSessionId: session.session_id,
     });
+
+    // Notify admin of name-your-price offer
+    if (offeredPrice !== undefined) {
+      const product = PRODUCTS.find((p) => p.slug === resolvedItems[0]?.slug);
+      if (product) {
+        const origPrice = product.price;
+        sendOfferNotification(email || "unknown", product.title, offeredPrice, origPrice, ref).catch(
+          (err) => console.error("Offer notification failed:", err)
+        );
+      }
+    }
 
     try {
       await AnalyticsEventModel.create({

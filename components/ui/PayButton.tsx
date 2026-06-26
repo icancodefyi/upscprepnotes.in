@@ -18,6 +18,7 @@ interface Props {
   productSlug?: string;
   children?: React.ReactNode;
   email?: string;
+  offeredPrice?: number;
 }
 
 function getStoredEmail(): string {
@@ -34,6 +35,7 @@ export default function PayButton({
   productSlug,
   children,
   email: propEmail,
+  offeredPrice,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -58,7 +60,11 @@ export default function PayButton({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: checkoutItems, email: email || undefined }),
+        body: JSON.stringify({
+          items: checkoutItems,
+          email: email || undefined,
+          ...(offeredPrice !== undefined ? { offeredPrice } : {}),
+        }),
       });
 
       if (!res.ok) {
@@ -77,7 +83,7 @@ export default function PayButton({
       setError(err instanceof Error ? err.message : "Something went wrong");
       setLoading(false);
     }
-  }, [items, productSlug, amount]);
+  }, [items, productSlug, amount, offeredPrice]);
 
   const handlePay = useCallback(async () => {
     posthog.capture("cart_checkout_clicked", {

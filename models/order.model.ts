@@ -12,6 +12,7 @@ const orderSchema = new Schema(
       },
     ],
     total: { type: Number, required: true },
+    offeredPrice: { type: Number },
     ref: { type: String, unique: true, sparse: true },
     dodoSessionId: { type: String, unique: true, sparse: true },
     dodoPaymentId: { type: String },
