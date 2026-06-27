@@ -103,7 +103,7 @@ function ProductCard({
         {/* Footer */}
         <div className="product-card__footer">
           <span className="product-card__price">
-            ₹{product.price}
+            {product.minOfferPrice ? `From ₹${product.minOfferPrice}` : `₹${product.price}`}
             {product.originalPrice && (
               <span className="product-card__price-original">
                 ₹{product.originalPrice.toLocaleString("en-IN")}
