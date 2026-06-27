@@ -6,11 +6,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { IconCheck, IconDownload, IconShoppingBag, IconArrowLeft } from "@tabler/icons-react";
 import { Suspense } from "react";
-import { useStoreVariant } from "@/components/store/useStoreVariant";
 
 function SuccessInner() {
-  // Ensure store_layout_variant is set even on page reload / direct success page access
-  useStoreVariant(false);
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
 

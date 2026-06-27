@@ -356,7 +356,7 @@ export default function StoreClient() {
           )}
         </main>
 
-        <EmailCapture variant="grid" />
+        <EmailCapture />
         <StoreFooter />
       </div>
 

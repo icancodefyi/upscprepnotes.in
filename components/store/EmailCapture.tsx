@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { IconMail, IconCheck } from "@tabler/icons-react";
 
-export default function EmailCapture({ variant = "grid" }: { variant?: "grid" | "list" }) {
+export default function EmailCapture() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -26,43 +26,11 @@ export default function EmailCapture({ variant = "grid" }: { variant?: "grid" | 
   }
 
   if (status === "success") {
-    const cls = variant === "list" ? "list-email-capture" : "email-capture";
     return (
-      <div className={`${cls} ${cls}--success`}>
+      <div className="email-capture email-capture--success">
         <IconCheck size={20} />
         <span>You&rsquo;re subscribed! We&rsquo;ll notify you when new resources drop.</span>
       </div>
-    );
-  }
-
-  if (variant === "list") {
-    return (
-      <section className="list-email-capture">
-        <div className="list-email-capture__inner">
-          <IconMail size={20} className="list-email-capture__icon" />
-          <h3 className="list-email-capture__title">New topper reports drop every week</h3>
-          <p className="list-email-capture__desc">
-            Get notified when we add new answer copies, notes, and strategy compilations.
-          </p>
-          <form onSubmit={handleSubmit} className="list-email-capture__form">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              required
-              className="list-email-capture__input"
-              aria-label="Email address"
-            />
-            <button type="submit" className="list-email-capture__btn" disabled={status === "loading"}>
-              {status === "loading" ? "Subscribing…" : "Subscribe"}
-            </button>
-          </form>
-          {status === "error" && (
-            <p className="list-email-capture__error">Something went wrong. Try again.</p>
-          )}
-        </div>
-      </section>
     );
   }
 
