@@ -3,9 +3,12 @@ import { connectDB } from "@/lib/mongodb";
 import { sendEmail } from "@/lib/resend";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
+import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { CopyRequestModel } from "@/models/copy-request.model";
 import { CustomerModel } from "@/models/customer.model";
 import { OrderModel } from "@/models/order.model";
+import { SubscriberEmailModel } from "@/models/subscriber-email.model";
+import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,16 +26,19 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const [freeDownloads, freeGuides, copyRequests, customers, orders] = await Promise.all([
+    const [freeDownloads, freeGuides, freeMaterials, copyRequests, customers, orders, subscribers, nurtureCampaigns] = await Promise.all([
       FreeDownloadLeadModel.distinct("email"),
       FreeGuideLeadModel.distinct("email"),
+      FreeMaterialLeadModel.distinct("email"),
       CopyRequestModel.distinct("email"),
       CustomerModel.distinct("email"),
       OrderModel.distinct("email"),
+      SubscriberEmailModel.distinct("email"),
+      NurtureCampaignModel.distinct("email"),
     ]);
 
     const all = new Set<string>();
-    for (const arr of [freeDownloads, freeGuides, copyRequests, customers, orders]) {
+    for (const arr of [freeDownloads, freeGuides, freeMaterials, copyRequests, customers, orders, subscribers, nurtureCampaigns]) {
       for (const email of arr) {
         if (email && email !== "unknown@checkout") all.add(email.toLowerCase());
       }
