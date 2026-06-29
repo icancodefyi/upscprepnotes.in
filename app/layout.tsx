@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AppShell from "@/components/AppShell";
 import AuthProvider from "@/components/AuthProvider";
 import AnalyticsScripts from "@/components/AnalyticsScripts";
+import TelegramStickyBar from "@/components/TelegramStickyBar";
 import { auth } from "@/lib/auth";
 
 const INTERNAL_EMAILS = ["rakhangezaid10@gmail.com", "impic.tech@gmail.com"];
@@ -152,6 +153,7 @@ export default async function RootLayout({
             <AppShell>
               {children}
             </AppShell>
+            <TelegramStickyBar />
           </AuthProvider>
         </TooltipProvider>
       </body>
