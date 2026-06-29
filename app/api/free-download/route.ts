@@ -34,6 +34,11 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Free Download is Ready!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here ${pdfUrls.length > 1 ? "are the free answer copies" : "is the free answer copy"} of <strong>${topperName}</strong> you requested.</p>
         ${linksHtml}
+        <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
+          <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
+            📬 Join 100+ aspirants on Telegram for daily current affairs →
+          </a>
+        </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested a free download on UPSCPrepNotes.in</p>
       </div>
     </body>
@@ -58,6 +63,11 @@ async function sendUnavailableEmail(email: string, topperName: string) {
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">We're Working on It!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're sourcing it now and will email it to you as soon as it's available.</p>
+        <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
+          <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
+            📬 Meanwhile, join 100+ aspirants on Telegram for daily current affairs →
+          </a>
+        </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">— UPSCPrepNotes Team</p>
       </div>
     </body>

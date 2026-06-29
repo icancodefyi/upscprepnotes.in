@@ -72,48 +72,45 @@ export default function May2026Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      {/* Server-rendered hero for SEO */}
-      <section className="relative overflow-hidden bg-[#213183]">
-        <div className="absolute inset-0 opacity-40" style={{
-          backgroundImage: `radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.6), transparent),
-                            radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4), transparent),
-                            radial-gradient(1.5px 1.5px at 50% 15%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 70% 45%, rgba(255,255,255,0.3), transparent),
-                            radial-gradient(1.5px 1.5px at 85% 75%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.3), transparent),
-                            radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.4), transparent),
-                            radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.5), transparent),
-                            radial-gradient(1px 1px at 60% 50%, rgba(255,255,255,0.25), transparent),
-                            radial-gradient(1.5px 1.5px at 45% 35%, rgba(255,255,255,0.4), transparent)`
-        }} />
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32 relative">
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold tracking-wider text-white">
+      {/* Hero */}
+      <section className="bg-white border-b border-[#e6e6e6]">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <span className="inline-flex items-center rounded-full border border-[#e6e6e6] bg-[#f6f5f4] px-3.5 py-1 text-xs font-semibold tracking-wider text-[#615d59]">
             Monthly Edition
           </span>
-          <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight text-white sm:text-6xl sm:tracking-tighter">
+          <h1 className="mt-5 text-4xl font-bold tracking-tight text-black sm:text-5xl">
             {MAY_2026.month} {MAY_2026.year}
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-white/65">
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-[#615d59]">
             UPSC Monthly Current Affairs — {MAY_2026.sections.length} sections, {totalTopics} topics.
             Each topic includes key facts, data points, and context structured for quick revision.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link href="/api/generate-current-affairs?month=may-2026"
-              className="inline-flex items-center gap-2 rounded-full bg-[#0075de] px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-95 active:scale-90">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Download PDF
             </Link>
             <Link href="/store"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all hover:scale-95 active:scale-90 shadow-sm">
+              className="inline-flex items-center gap-2 rounded-full border border-[#e6e6e6] bg-white px-6 py-2.5 text-sm font-semibold text-[#615d59] transition hover:text-black">
               Browse Store
             </Link>
+            <a
+              href="https://t.me/+VYMxrig-a8AzZmNl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-[#0088cc]/30 bg-[#e8f4fd] px-5 py-2.5 text-sm font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              Telegram
+            </a>
           </div>
         </div>
       </section>
 
-      <CurrentAffairsClient hideHero />
+      <CurrentAffairsClient />
 
       {/* Internal links section rendered server-side under the client component */}
       <section className="bg-[#f6f5f4]">

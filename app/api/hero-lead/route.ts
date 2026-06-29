@@ -42,6 +42,11 @@ function buildEmailHtml(): string {
           You're also enrolled in our free 4-day UPSC strategy email series.<br/>
           You can unsubscribe at any time.
         </p>
+        <div style="text-align:center;margin-top:20px;padding:12px;background:#e8f4fd;border-radius:40px">
+          <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
+            📬 Join 100+ aspirants on Telegram for daily current affairs →
+          </a>
+        </div>
       </div>
     </body>
     </html>
