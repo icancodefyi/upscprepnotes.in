@@ -7,12 +7,15 @@ import type { Components } from "react-markdown";
 const DEFAULTS = {
   ctaIntro: "Starting at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
   ctaIntroBtn: "Shop Now →",
+  ctaIntroHref: "/store",
   ctaMid: "Get the detailed strategy report with topper marks data, subject-wise breakdown, and answer templates.",
   ctaMidSub: "Includes verified marks from 280+ UPSC toppers across all subjects.",
   ctaMidBtn: "Shop Now →",
+  ctaMidHref: "/store",
   ctaFinal: "Ready to Master Your UPSC Preparation?",
   ctaFinalSub: "Access the complete topper intelligence database with marks, strategies, and answer copies — everything you need to optimize your preparation.",
   ctaFinalBtn: "Shop Now →",
+  ctaFinalHref: "/store",
 };
 
 const markdownComponents: Components = {
@@ -106,7 +109,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
         <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
           <p className="text-sm font-semibold text-emerald-900">{t.ctaIntro}</p>
           <Link
-            href="/store"
+            href={t.ctaIntroHref}
             data-track="content-cta-intro"
             className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
           >
@@ -128,7 +131,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
                 <p className="text-sm font-semibold text-emerald-900">{t.ctaMid}</p>
                 <p className="mt-1 text-xs text-emerald-700">{t.ctaMidSub}</p>
                 <Link
-                  href="/store"
+                  href={t.ctaMidHref}
                   data-track={`content-cta-mid-${i}`}
                   className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
                 >
@@ -238,7 +241,7 @@ export default function ContentLayout({ page }: { page: ContentPage }) {
           <h2 className="text-2xl font-bold text-white sm:text-3xl">{t.ctaFinal}</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-gray-400">{t.ctaFinalSub}</p>
           <Link
-            href="/store"
+            href={t.ctaFinalHref}
             data-track="content-cta-final"
             className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-10 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500 transition-colors"
           >

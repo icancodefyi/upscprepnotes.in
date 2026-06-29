@@ -14,45 +14,45 @@ const page: ContentPage = {
   sections: [
     {
       heading: "What Does the Forum IAS Test Series Actually Include?",
-      body: `**Prelims Test Series (PTS) 2026**, Batch-24, runs **31 tests total**: 16 GS tests, 13 CSAT tests, and 2 dedicated current affairs tests, split across two levels — Level 1 (6 GS subject-wise tests + 4 CSAT comprehensive tests) and Level 2 (10 GS simulator tests + 9 CSAT simulator tests). Earlier 2026 batches (21-23) ran slightly larger, at 32 tests.
+      body: `**Prelims Test Series (PTS) 2026**, Batch-24, runs **31 tests total**: 16 GS tests, 13 CSAT tests, and 2 dedicated current affairs tests, split across two levels — Level 1 (6 GS subject-wise tests + 4 CSAT comprehensive tests) and Level 2 (10 GS simulator tests + 9 CSAT simulator tests). Earlier 2026 batches (21-23) ran slightly larger, at 32 tests. For comparison, you can [browse free UPSC test series resources](/free-materials) from multiple institutes.
 
-**Mains Guidance Program (MGP)**, the GS Mains test series, is structured in tiers rather than a single fixed test count. The base MGP 2027 cohort includes a mix of self-assessment micro-tests, half-length tests, and full-length tests across four levels (Basic, Plus, Revisions, Simulator) — roughly 30+ touchpoints once micro-tests are counted, though the headline "evaluated full/half-length test" count is lower than that combined figure suggests. MGP+ adds an essay test series; MGP Prime adds a year-long current affairs program; MGP Prime+ combines both.
+**Mains Guidance Program (MGP)**, the GS Mains test series, is structured in tiers rather than a single fixed test count. The base MGP 2027 cohort includes a mix of self-assessment micro-tests, half-length tests, and full-length tests across four levels (Basic, Plus, Revisions, Simulator) — roughly 30+ touchpoints once micro-tests are counted, though the headline "evaluated full/half-length test" count is lower than that combined figure suggests. MGP+ adds an essay test series; MGP Prime adds a year-long current affairs program; MGP Prime+ combines both. To understand what makes a good Mains answer, see [how to write UPSC Mains answers](/content/how-to-write-upsc-mains-answers).
 
-**Optional Test Series** (Sociology, PSIR, Anthropology, Public Administration, Geography, Law, Hindi Literature) typically run **10-12 tests** per subject — a mix of sectional and full-length tests, evaluated with model answers and test discussions.
+**Optional Test Series** (Sociology, PSIR, Anthropology, Public Administration, Geography, Law, Hindi Literature) typically run **10-12 tests** per subject — a mix of sectional and full-length tests, evaluated with model answers and test discussions. Check our [optional subject marks analysis](/content/upsc-optional-subject-marks-analysis) to see which subjects score highest.
 
-Every paid test, across all three programs, includes detailed solutions, same-day or next-day test discussions, and an **All India Rank** published the day after the test.`,
+Every paid test, across all three programs, includes detailed solutions, same-day or next-day test discussions, and an **All India Rank** published the day after the test. You can also [download free answer copies](/free-materials) from UPSCPrepNotes to supplement your test preparation.`,
     },
     {
       heading: "What Makes Forum IAS Different",
-      body: `The feature ForumIAS leans on hardest is the **All India Ranking** — every paid test publishes a rank against everyone else who took that test, which gives a concrete benchmark beyond a raw score. For aspirants prepping in isolation, this is genuinely useful; it's the closest thing to a real competitive signal outside the actual exam.
+      body: `The feature ForumIAS leans on hardest is the **All India Ranking** — every paid test publishes a rank against everyone else who took that test, which gives a concrete benchmark beyond a raw score. For aspirants prepping in isolation, this is genuinely useful; it's the closest thing to a real competitive signal outside the actual exam. To see how real toppers actually scored, browse the [complete UPSC topper marks database](/toppers/marks-database).
 
-ForumIAS also markets a structured **OGIP-style answer writing approach** — a "definition-based" introduction framework that the MGP program explicitly pioneered in 2016, designed to help candidates extract marks from existing knowledge rather than requiring exhaustive content mastery. Whether this framework outperforms similar structured approaches from other institutes isn't something that can be verified independently; it's a marketing differentiator as much as a pedagogical one.
+ForumIAS also markets a structured **OGIP-style answer writing approach** — a "definition-based" introduction framework that the MGP program explicitly pioneered in 2016, designed to help candidates extract marks from existing knowledge rather than requiring exhaustive content mastery. Whether this framework outperforms similar structured approaches from other institutes isn't something that can be verified independently; it's a marketing differentiator as much as a pedagogical one. For a framework that is verifiable, study [how AIR 1-50 toppers structured their answers](/toppers/toppers-copy-compilation) in actual exam conditions.
 
-Current affairs integration is built into both the Prelims and Mains programs — PTS dedicates 20-25 questions per full test to current affairs, and the MGP Prime tier bundles a year-long current affairs program directly into the test cycle, rather than treating current affairs as a separate add-on.
+Current affairs integration is built into both the Prelims and Mains programs — PTS dedicates 20-25 questions per full test to current affairs, and the MGP Prime tier bundles a year-long current affairs program directly into the test cycle, rather than treating current affairs as a separate add-on. You can also [access free current affairs monthly compilations](/current-affairs) on UPSCPrepNotes.
 
 The **paragraph-level feedback** on Mains evaluation is a commonly cited strength in aspirant discussions — evaluators are expected to comment on structure, content, and presentation rather than just assigning a number. The consistency of that feedback across evaluators, though, is the program's most frequently cited weak point (see the evaluation section below).`,
     },
     {
       heading: "Prelims Test Series — Detailed Analysis",
-      body: `**Question quality**: PTS questions are widely described as closer to UPSC's actual difficulty curve than many competing test series, particularly on analytical/conceptual questions rather than pure factual recall. The two-level structure (subject-wise comprehensive tests, then simulator-style full tests) is a deliberate difficulty progression — Level 1 tests are narrower and more diagnostic, Level 2 tests are built to simulate exam-day unpredictability.
+      body: `**Question quality**: PTS questions are widely described as closer to UPSC's actual difficulty curve than many competing test series, particularly on analytical/conceptual questions rather than pure factual recall. The two-level structure (subject-wise comprehensive tests, then simulator-style full tests) is a deliberate difficulty progression — Level 1 tests are narrower and more diagnostic, Level 2 tests are built to simulate exam-day unpredictability. You can also [practise with actual UPSC PYQs](/pyq) organized by year and subject.
 
 **Difficulty progression**: The jump from Level 1 to Level 2 is noticeable. Level 1 tests are meant to surface gaps subject by subject; Level 2 tests assume those gaps are closed and lean into ambiguous, multi-concept questions — closer to what the actual Prelims paper does in a tough year.
 
 **CSAT coverage**: CSAT gets a full, separate test track (13 of the 31 tests in Batch-24), conducted at a simulated 2:30 PM slot to match exam-day timing. This is more CSAT-specific practice than several competing test series offer, where CSAT is sometimes an afterthought.
 
-**Current affairs weightage**: Beyond the 2 dedicated current affairs tests, every full-length GS test folds in 20-25 current affairs questions, which is a meaningfully high share given Prelims' general drift toward current-affairs-linked questions in recent years.
+**Current affairs weightage**: Beyond the 2 dedicated current affairs tests, every full-length GS test folds in 20-25 current affairs questions, which is a meaningfully high share given Prelims' general drift toward current-affairs-linked questions in recent years. To supplement, check our [monthly current affairs compilation for May 2026](/current-affairs/may-2026).
 
-**Where it falls short**: The volume of tests (31, down from 32 in earlier 2026 batches) is lower than some rivals offering 40+ tests at a similar price point, which matters if your prep style depends on sheer repetition rather than fewer, harder simulations.`,
+**Where it falls short**: The volume of tests (31, down from 32 in earlier 2026 batches) is lower than some rivals offering 40+ tests at a similar price point, which matters if your prep style depends on sheer repetition rather than fewer, harder simulations. If volume is your priority, browse [free test series materials](/free-materials) from various coaching institutes.`,
     },
     {
       heading: "Mains Test Series (MGP) — Detailed Analysis",
-      body: `**Question design**: MGP's questions are explicitly built off PYQ pattern analysis blended with current-year relevant topics, which is standard practice across serious Mains test series but executed with reasonable consistency here. The four-level structure (Basic micro-tests → Plus half/full-length → Revision full-length → Simulator full-length) is meant to build up from diagnostic to exam-realistic difficulty over the program's 6-12 month duration.
+      body: `**Question design**: MGP's questions are explicitly built off PYQ pattern analysis blended with current-year relevant topics, which is standard practice across serious Mains test series but executed with reasonable consistency here. For independent practice, [practise with actual UPSC Mains PYQs](/pyq) organized by paper and year. The four-level structure (Basic micro-tests → Plus half/full-length → Revision full-length → Simulator full-length) is meant to build up from diagnostic to exam-realistic difficulty over the program's 6-12 month duration.
 
-**Evaluation quality — the real drawback**: This is the most consistent complaint in aspirant discussions about ForumIAS Mains evaluation, and it's worth being direct about it: **evaluator inconsistency is real**. Because evaluation at this scale is done by a team of evaluators rather than a single person, the same answer can score noticeably differently depending on who grades it, and the depth of paragraph-level feedback varies — some evaluators leave detailed, actionable comments, others leave minimal markup. This isn't unique to ForumIAS; it's a structural issue with any test series that scales evaluation across dozens of graders. But it does mean a single test score shouldn't be treated as a precise signal — look at the trend across multiple tests rather than reacting hard to any one result.
+**Evaluation quality — the real drawback**: This is the most consistent complaint in aspirant discussions about ForumIAS Mains evaluation, and it's worth being direct about it: **evaluator inconsistency is real**. Because evaluation at this scale is done by a team of evaluators rather than a single person, the same answer can score noticeably differently depending on who grades it, and the depth of paragraph-level feedback varies — some evaluators leave detailed, actionable comments, others leave minimal markup. This isn't unique to ForumIAS; it's a structural issue with any test series that scales evaluation across dozens of graders. But it does mean a single test score shouldn't be treated as a precise signal — look at the trend across multiple tests rather than reacting hard to any one result. To see what "good" evaluation looks like, study [actual topper answer copy feedback](/toppers/toppers-copy-compilation).
 
 **Model answers**: Solutions are described as well-structured rather than exhaustive — useful for understanding how to organize an answer (headings, keywords, data points) but not meant to be memorized as a complete content source.
 
-**Mentor guidance**: The mentor-guided structure (a dedicated mentor through the program, plus periodic connects) is a feature several competing test series don't offer at this price tier, and it's one of the more consistently positive mentions in aspirant feedback.`,
+**Mentor guidance**: The mentor-guided structure (a dedicated mentor through the program, plus periodic connects) is a feature several competing test series don't offer at this price tier, and it's one of the more consistently positive mentions in aspirant feedback. For additional frameworks, check the [answer writing guide](/content/how-to-write-upsc-mains-answers) on UPSCPrepNotes.`,
     },
     {
       heading: "Forum IAS Pricing for 2026",
@@ -159,16 +159,19 @@ None of these replace the All India Rank benchmark or structured mentor access a
   ctaIntro:
     "Practice with test questions from real topper strategies — free.",
   ctaIntroBtn: "Browse Free Study Materials",
+  ctaIntroHref: "/free-materials",
 
   ctaMid:
     "Want to see how 50+ real toppers structured their Mains answers before you pay for a test series evaluation?",
   ctaMidSub: "The full answer copy compilation includes GS, Essay, and Optional answers from AIR 1-50+.",
   ctaMidBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaMidHref: "/store/answer-copies-compilation",
 
   ctaFinal:
     "Before you commit ₹20,000+ to a Mains test series, see exactly how toppers wrote the answers that scored.",
   ctaFinalSub: "50+ topper answer copies across GS papers, Essay, and Optional — ₹799.",
   ctaFinalBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaFinalHref: "/store/answer-copies-compilation",
 
   relatedPages: [
     {

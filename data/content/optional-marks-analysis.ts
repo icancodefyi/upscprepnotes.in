@@ -154,6 +154,11 @@ The best way to use this data: cross-reference it with your own aptitude, intere
       href: "/content/data-methodology-and-editorial-standards",
       description: "How I extract and verify every data point on this site.",
     },
+    {
+      title: "Forum IAS Test Series Review 2026",
+      href: "/content/forum-ias-test-series-review",
+      description: "Review of ForumIAS optional test series — coverage, pricing, and evaluation quality for Sociology, PSIR, Anthropology, and more.",
+    },
   ],
   sources: [
     { label: "UPSC CSE 2022 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2022-08/Civil-Services-Examination-2021-Final-Result.pdf" },

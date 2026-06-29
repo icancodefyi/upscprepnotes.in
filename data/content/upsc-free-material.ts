@@ -95,6 +95,7 @@ At **₹799** (launch price, moving to ₹4,999), this compilation replaces mont
     { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
     { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
     { title: "UPSC Full Form (हिंदी)", href: "/content/upsc-full-form-hindi", description: "UPSC का पूरा नाम और सिविल सेवा परीक्षा गाइड" },
+    { title: "Forum IAS Test Series Review 2026", href: "/content/forum-ias-test-series-review", description: "Independent review of ForumIAS Prelims & Mains test series — question quality, pricing, and evaluation." },
   ],
   faq: [
     {

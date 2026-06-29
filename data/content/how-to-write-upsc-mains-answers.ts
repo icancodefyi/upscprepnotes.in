@@ -166,6 +166,7 @@ The copies in my compilation show you what that looks like in practice. I can tr
     { title: "UPSC Free Study Material — Toppers, PYQs & More", href: "/content/upsc-free-material", description: "Browse 280+ topper profiles with marks, strategy guides, and an AI tutor — all free, no signup needed" },
     { title: "UPSC Syllabus 2026 — Complete Breakdown", href: "/content/upsc-syllabus", description: "Full syllabus breakdown for Prelims, Mains, and Interview with topic-wise analysis" },
     { title: "Complete Compilation — 50+ Topper Answer Copies", href: "/toppers/toppers-copy-compilation", description: "Actual handwritten answer sheets with verified marks, organized by paper and year" },
+    { title: "Forum IAS Test Series Review 2026", href: "/content/forum-ias-test-series-review", description: "Honest independent review of ForumIAS Prelims and Mains test series before you pay for evaluation." },
     { title: "Ask AI for Answer Writing Feedback", href: "/ask", description: "AI tutor trained on these copies — compare your answer against topper patterns" },
   ],
 };

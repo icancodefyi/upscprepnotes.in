@@ -21,12 +21,15 @@ export type ContentPage = {
   lang?: "en" | "hi";
   ctaIntro?: string;
   ctaIntroBtn?: string;
+  ctaIntroHref?: string;
   ctaMid?: string;
   ctaMidSub?: string;
   ctaMidBtn?: string;
+  ctaMidHref?: string;
   ctaFinal?: string;
   ctaFinalSub?: string;
   ctaFinalBtn?: string;
+  ctaFinalHref?: string;
   relatedPages?: RelatedPage[];
   sources?: { label: string; url: string }[];
 };

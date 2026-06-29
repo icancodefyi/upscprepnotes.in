@@ -113,6 +113,11 @@ const page: ContentPage = {
       href: "/free-materials",
       description: "Download free UPSC preparation resources including NCERTs, PYQs, and strategy guides.",
     },
+    {
+      title: "Forum IAS Test Series Review 2026",
+      href: "/content/forum-ias-test-series-review",
+      description: "Honest review of ForumIAS test series — how their evaluation compares to real topper answer copy standards.",
+    },
   ],
 };
 
