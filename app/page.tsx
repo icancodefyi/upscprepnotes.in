@@ -624,6 +624,33 @@ export default async function HomePage() {
             ))}
           </div>
 
+          <div className="mt-10 border-t border-gray-200 pt-8">
+            <h3 className="text-sm font-bold mb-4">UPSC Reference Guides</h3>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { title: "UPSC Syllabus 2026", desc: "Complete Prelims, Mains & Optional syllabus breakdown with topic-wise analysis.", href: "/content/upsc-syllabus" },
+                { title: "UPSC Full Form", desc: "What UPSC stands for, exams it conducts, and how the civil services exam works.", href: "/content/upsc-full-form" },
+                { title: "Free Study Materials", desc: "2,700+ free test series, notes, magazines, and current affairs compilations.", href: "/content/upsc-free-material" },
+                { title: "Topper Answer Copies Guide", desc: "What they are, where to find verified copies, and how to use them for Mains prep.", href: "/content/upsc-topper-answer-copies" },
+                { title: "How to Write UPSC Mains Answers", desc: "Answer structure frameworks drawn from 50+ real topper copies analyzed in depth.", href: "/content/how-to-write-upsc-mains-answers" },
+                { title: "Forum IAS Test Series Review", desc: "Honest independent review of ForumIAS Prelims and Mains test series.", href: "/content/forum-ias-test-series-review" },
+              ].map((guide) => (
+                <Link
+                  data-track={`home-guide-${guide.href.split("/").pop()}`}
+                  key={guide.href}
+                  href={guide.href}
+                  className="group bg-white border-2 border-gray-200 p-5 hover:border-black transition-all"
+                >
+                  <h3 className="text-base font-bold leading-tight">{guide.title}</h3>
+                  <p className="mt-2 text-sm text-gray-500 leading-6">{guide.desc}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-black underline underline-offset-2 group-hover:text-gray-500 transition-colors">
+                    Read guide <ArrowRight size={13} />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           <div className="mt-6">
             <Link
               data-track="home-methodology-link"
