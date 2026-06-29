@@ -12,6 +12,7 @@ import upscFreeMaterialHindi from "./upsc-free-material-hindi";
 import howToWriteAnswersHindi from "./how-to-write-upsc-mains-answers-hindi";
 import dataMethodology from "./data-methodology";
 import optionalMarksAnalysis from "./optional-marks-analysis";
+import forumIasTestSeriesReview from "./forum-ias-test-series-review";
 
 // Strategies — short, fact-dense, LLM-targeted pages
 import strategies from "./strategies/registry";
@@ -30,6 +31,7 @@ const guides: Record<string, () => Promise<PageModule>> = {
   "how-to-write-upsc-mains-answers-hindi": () => Promise.resolve({ default: howToWriteAnswersHindi }),
   "data-methodology-and-editorial-standards": () => Promise.resolve({ default: dataMethodology }),
   "upsc-optional-subject-marks-analysis": () => Promise.resolve({ default: optionalMarksAnalysis }),
+  "forum-ias-test-series-review": () => Promise.resolve({ default: forumIasTestSeriesReview }),
 };
 
 const EN_TO_HI: Record<string, string> = {
