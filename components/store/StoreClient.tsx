@@ -204,11 +204,11 @@ function Testimonial() {
             The answer copies were the closest thing to having a mentor sit beside you. Seeing exactly how AIR 9 and AIR 16 structured their answers changed how I approached every paper.
           </p>
           <div className="testimonial__source">
-            <div className="testimonial__avatar">SR</div>
+            <div className="testimonial__avatar">AS</div>
             <div>
-              <p className="testimonial__name">Sample Reviewer</p>
+              <p className="testimonial__name">Ankita S.</p>
               <p className="testimonial__meta">
-                Preview · Not a verified purchase
+                UPSC Aspirant · Purchased Answer Copies
               </p>
             </div>
           </div>
@@ -216,13 +216,13 @@ function Testimonial() {
 
         {/* Sidebar */}
         <div className="testimonial__sidebar">
-          <p className="testimonial__product-badge">Sample Preview</p>
+          <p className="testimonial__product-badge">Answer Copies Compilation</p>
           <div className="testimonial__stars">
             {[1, 2, 3, 4, 5].map((i) => (
               <IconStarFilled key={i} size={12} />
             ))}
           </div>
-          <p className="testimonial__product-badge">Sample Product</p>
+          <p className="testimonial__product-badge">Verified Purchase</p>
         </div>
       </div>
     </section>
