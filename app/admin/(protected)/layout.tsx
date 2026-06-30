@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyAdminToken } from "@/lib/admin-auth";
-import { LogoutButton } from "./logout-button";
+import { AdminSidebar } from "./admin-sidebar";
 
 async function checkAuth() {
   const cookieStore = await cookies();
@@ -12,18 +11,6 @@ async function checkAuth() {
   }
 }
 
-const navLinks = [
-  { href: "/admin", label: "Toppers" },
-  { href: "/admin/new", label: "Add Topper" },
-  { href: "/admin/pyq", label: "PYQ" },
-  { href: "/admin/requests", label: "Requests" },
-  { href: "/admin/feedback", label: "Feedback" },
-  { href: "/admin/analytics", label: "Analytics" },
-  { href: "/admin/ai", label: "AI Chats" },
-  { href: "/admin/broadcast", label: "Broadcast" },
-  { href: "/admin/settings", label: "Settings" },
-];
-
 export default async function ProtectedLayout({
   children,
 }: {
@@ -32,40 +19,13 @@ export default async function ProtectedLayout({
   await checkAuth();
 
   return (
-    <div className="min-h-screen">
-      <header className="relative border-b border-black/[0.06] bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/admin"
-              className="text-sm font-semibold tracking-tight"
-            >
-              Admin
-            </Link>
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-zinc-500 transition hover:text-black"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="text-xs text-zinc-400 transition hover:text-zinc-600"
-            >
-              View site →
-            </Link>
-            <LogoutButton />
-          </div>
-        </div>
-      </header>
-      <main className="relative mx-auto max-w-7xl px-6 pb-28 pt-8">
-        {children}
-      </main>
+    <div className="min-h-screen bg-zinc-50/50">
+      <AdminSidebar />
+      <div className="lg:pl-64">
+        <main className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-28 pt-8 lg:pt-10">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

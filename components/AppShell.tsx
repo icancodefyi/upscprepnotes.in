@@ -52,9 +52,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     markPopup("banner", "dismissed");
   }
 
+  const isAdmin = pathname?.startsWith("/admin");
+
   return (
     <CartProvider>
-      {bannerOpen && (
+      {!isAdmin && bannerOpen && (
         <div className="group relative bg-gradient-to-r from-zinc-900 via-black to-zinc-900 text-white py-2.5 sticky top-0 z-50 border-b border-emerald-500/20 overflow-hidden">
           <a href="/store" className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer pr-10">
             <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
@@ -76,12 +78,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <Header bannerOpen={bannerOpen} />
-      <div>{children}</div>
-      <div>
-        <Footer />
-      </div>
-      <AskMentorButton />
+      {isAdmin ? children : (
+        <>
+          <Header bannerOpen={bannerOpen} />
+          <div>{children}</div>
+          <div>
+            <Footer />
+          </div>
+          <AskMentorButton />
+        </>
+      )}
     </CartProvider>
   );
 }
