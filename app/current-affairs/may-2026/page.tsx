@@ -118,6 +118,10 @@ export default function May2026Page() {
           <div className="rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
             <h2 className="text-sm font-bold text-[#000000e8]">More Resources for UPSC Preparation</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
+              <Link href="/current-affairs/june-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
+                <span>📅</span>
+                <span>June 2026 Edition — Latest Month</span>
+              </Link>
               <Link href="/current-affairs/2025" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
                 <span>📅</span>
                 <span>2025 Yearly Compilation — All 12 Months</span>

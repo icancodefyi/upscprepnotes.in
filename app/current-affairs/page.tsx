@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { MONTHS, getSlug } from "@/lib/current-affairs-utils";
 
 export const metadata: Metadata = {
   title: "Current Affairs for UPSC 2026 – Free Monthly & Yearly Compilations",
@@ -129,26 +130,35 @@ export default function CurrentAffairsHub() {
 
         {/* Editions */}
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
-          <Link
-            href="/current-affairs/may-2026"
-            className="group rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
-          >
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#000000e8] text-sm font-bold text-white">M</span>
-              <div>
-                <p className="text-sm font-bold text-[#000000e8] group-hover:text-[#0075de] transition">May 2026 Edition</p>
-                <p className="text-xs text-[#615d59]">Latest · 11 sections · 55 topics · with quiz & AI</p>
-              </div>
-              <span className="ml-auto rounded-full bg-[#1aae39]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#1aae39]">New</span>
-            </div>
-            <div className="mt-4 flex gap-2 text-xs text-[#615d59]">
-              <span>Interactive reading</span>
-              <span>·</span>
-              <span>Daily quiz</span>
-              <span>·</span>
-              <span>PDF download</span>
-            </div>
-          </Link>
+          {Object.entries(MONTHS).map(([slug, data], i) => {
+            const labels: string[] = [];
+            if (i === 0) labels.push("Latest");
+            labels.push(`${data.sections.length} sections · ${data.sections.reduce((a, s) => a + s.items.length, 0)} topics`);
+            labels.push("with quiz & AI");
+            return (
+              <Link
+                key={slug}
+                href={`/current-affairs/${slug}`}
+                className="group rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#000000e8] text-sm font-bold text-white">{data.month[0]}</span>
+                  <div>
+                    <p className="text-sm font-bold text-[#000000e8] group-hover:text-[#0075de] transition">{data.month} {data.year} Edition</p>
+                    <p className="text-xs text-[#615d59]">{labels.slice(0, 2).join(" · ")}</p>
+                  </div>
+                  {i === 0 && <span className="ml-auto rounded-full bg-[#1aae39]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#1aae39]">New</span>}
+                </div>
+                <div className="mt-4 flex gap-2 text-xs text-[#615d59]">
+                  <span>Interactive reading</span>
+                  <span>·</span>
+                  <span>Daily quiz</span>
+                  <span>·</span>
+                  <span>PDF download</span>
+                </div>
+              </Link>
+            );
+          })}
 
           <Link
             href="/current-affairs/2025"
@@ -266,10 +276,10 @@ export default function CurrentAffairsHub() {
         {/* CTA */}
         <div className="mt-12 flex flex-wrap gap-3">
           <Link
-            href="/current-affairs/may-2026"
+            href="/current-affairs/june-2026"
             className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           >
-            Read May 2026 Edition →
+            Read June 2026 Edition →
           </Link>
           <Link
             href="/current-affairs/download"

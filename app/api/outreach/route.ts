@@ -96,6 +96,81 @@ const TEMPLATES: Record<string, { subject: string; html: (name: string, org: str
       <p>Best,<br>Zaid<br>${S.site}</p>
     `,
   },
+
+  /* ───── LEVELUP IAS ─────
+   * Young ed-tech, digital-first. Founder Santosh Kumar.
+   * Karol Bagh. GS Foundation, Optional programs, Mentorship.
+   * Known for Anthropology optional (Karandeep Sir).
+   * Small/medium team = fast decisions. Digital-native.
+   */
+  levelup: {
+    subject: `LevelUp IAS x ${S.site} - quick thought`,
+    html: (name, org) => `
+      <p>Hi,</p>
+      <p>I'm Zaid. I started <strong>${S.site}</strong> (${S.url}) about a month ago. Free UPSC study platform — notes, current affairs, answer-writing resources. Bootstrapped, just building something useful.</p>
+      <p>Already at <strong>${S.visitors} monthly organic visitors</strong>, all from search. Serious aspirants — the kind who'd benefit from structured coaching.</p>
+      <p>I've been following LevelUp IAS. I particularly like your Anthropology optional program (Karandeep Sir's track record is solid) and the fact that you're trying to make quality prep affordable. Our audience skews budget-conscious and self-studying — they're exactly the ones looking for the next step beyond free resources.</p>
+      <p>We have banner slots at <strong>₹3K to ₹5K/month, no contracts</strong>. Happy to set up a short test placement so you can see if the traffic converts.</p>
+      <p>Worth a shot?</p>
+      <p>Best,<br>Zaid<br>${S.site}</p>
+    `,
+  },
+
+  /* ───── PREPP IAS ─────
+   * ~27 employees, founded 2020. Young team, interview-appeared mentors.
+   * Gurgaon + Old Rajinder Nagar. Mains test series ₹3,999, Prelims ₹4,999.
+   * Very affordable products. Digital-first. Fast decisions.
+   * Price points perfectly match our audience.
+   */
+  prepp: {
+    subject: `Prepp IAS x ${S.site} - quick thought`,
+    html: (name, org) => `
+      <p>Hi,</p>
+      <p>I'm Zaid. I started <strong>${S.site}</strong> (${S.url}) about a month ago. Free study platform — notes, compilations, answer-writing resources.</p>
+      <p>Already at <strong>${S.visitors} monthly organic visitors</strong>, all from search. Aspirants actively looking for study material and test practice.</p>
+      <p>I looked at Prepp's test series pricing — ₹3,999 for Mains, ₹4,999 for Prelims — and that ₹349/year Prepp+ subscription is exactly the kind of affordable, high-value product our audience responds to. Your model of young, interview-appeared mentors is something aspirants trust.</p>
+      <p>We do banner ads at <strong>₹3K to ₹5K/month, no contracts</strong>. Happy to do a short test placement so you can see the traffic quality.</p>
+      <p>Worth a conversation?</p>
+      <p>Best,<br>Zaid<br>${S.site}</p>
+    `,
+  },
+
+  /* ───── TATHASTU ICS ─────
+   * Founded by Dr. Tanu Jain (ex-IAS). Growing fast.
+   * UPSC+MBA/BA integrated programs, Philosophy optional.
+   * Medium-sized, actively hiring. Strong brand.
+   */
+  tathastu: {
+    subject: `Tathastu ICS x ${S.site} - quick thought`,
+    html: (name, org) => `
+      <p>Hi,</p>
+      <p>I'm Zaid. I run <strong>${S.site}</strong> (${S.url}) — a free UPSC study platform I built about a month ago. Notes, current affairs compilations, answer-writing resources. Completely bootstrapped.</p>
+      <p>We're already at <strong>${S.visitors} monthly organic visitors</strong>, all from search. Self-studying aspirants actively looking for courses and mentorship.</p>
+      <p>Tathastu's approach — especially the UPSC+MBA/BA integrated model and Dr. Tanu Jain's Philosophy optional program — is genuinely unique. Our audience includes early-stage aspirants who might not know about integrated degree programs as a path. That feels like a natural fit.</p>
+      <p>We have banner placements at <strong>₹3K to ₹5K/month, no contracts</strong>. Happy to set up a short test placement so you can check the traffic.</p>
+      <p>Worth a try?</p>
+      <p>Best,<br>Zaid<br>${S.site}</p>
+    `,
+  },
+
+  /* ───── EDEN IAS ─────
+   * Estd 2018. Small team, personal approach.
+   * Geography & Sociology optional. Foundation courses (1/2/3 year).
+   * Old Rajinder Nagar. Very active on social media.
+   * Small = fast decisions.
+   */
+  eden: {
+    subject: `Quick thought — ${S.site} x EDEN IAS`,
+    html: (name, org) => `
+      <p>Hi,</p>
+      <p>I'm Zaid. I started <strong>${S.site}</strong> (${S.url}) about a month ago. Free UPSC study platform with notes, current affairs compilations, and answer-writing resources. Just me building it.</p>
+      <p>It crossed <strong>${S.visitors} monthly organic visitors</strong> already, all from search. Serious aspirants who are self-studying and looking for structured programs.</p>
+      <p>EDEN IAS has a solid reputation for Geography and Sociology optional, and your 3-year Lakshya foundation program makes sense for early starters. Your team seems hands-on with students — that personal approach is valuable.</p>
+      <p>We have banner slots at <strong>₹3K to ₹5K/month, no contracts</strong>. Happy to set up a short test placement so you can check the traffic for yourself.</p>
+      <p>Worth a conversation?</p>
+      <p>Best,<br>Zaid<br>${S.site}</p>
+    `,
+  },
 };
 
 export async function POST(req: NextRequest) {
@@ -152,6 +227,34 @@ const CONTACTS = [
     email: "support@testbook.com",
     org: "Testbook",
     notes: "Large org — ask about publisher/affiliate program.",
+  },
+  {
+    key: "levelup",
+    name: "LevelUp IAS Team",
+    email: "info@levelupias.com",
+    org: "LevelUp IAS",
+    notes: "Young ed-tech, digital-first. Anthropology optional strength. Fast decisions.",
+  },
+  {
+    key: "prepp",
+    name: "Prepp IAS Team",
+    email: "iasexam@prepp.in",
+    org: "Prepp IAS",
+    notes: "Young team, affordable test series. Interview-appeared mentors.",
+  },
+  {
+    key: "tathastu",
+    name: "Tathastu ICS Team",
+    email: "enquiry@tathastuics.com",
+    org: "Tathastu ICS",
+    notes: "Dr. Tanu Jain. Integrated UPSC+degree programs. Philosophy optional.",
+  },
+  {
+    key: "eden",
+    name: "EDEN IAS Team",
+    email: "connect.edenias@gmail.com",
+    org: "EDEN IAS",
+    notes: "Small team, personal approach. Geography/Sociology optional. Lakshya program.",
   },
 ];
 

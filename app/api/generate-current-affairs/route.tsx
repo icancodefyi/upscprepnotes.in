@@ -1,9 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { MONTHS } from "@/lib/current-affairs-utils";
 
 const PDF_MAP: Record<string, string> = {
-  "may-2026": "may-2026.pdf",
+  ...Object.fromEntries(Object.keys(MONTHS).map((k) => [k, `${k}.pdf`])),
   "2025": "2025.pdf",
 };
 

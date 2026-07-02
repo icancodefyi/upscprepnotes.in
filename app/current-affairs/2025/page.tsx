@@ -67,7 +67,7 @@ export default function CurrentAffairs2025Page() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/current-affairs"
+              href="/current-affairs/may-2026"
               className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
                 Latest: May 2026 →
@@ -195,7 +195,7 @@ export default function CurrentAffairs2025Page() {
             </div>
           </div>
           <Link
-            href="/current-affairs"
+            href="/current-affairs/may-2026"
             className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0075de] hover:text-[#005bab] transition"
           >
             View the latest month (May 2026) →
