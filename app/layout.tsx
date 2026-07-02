@@ -8,9 +8,6 @@ import AppShell from "@/components/AppShell";
 import AuthProvider from "@/components/AuthProvider";
 import AnalyticsScripts from "@/components/AnalyticsScripts";
 import TelegramStickyBar from "@/components/TelegramStickyBar";
-import { auth } from "@/lib/auth";
-
-const INTERNAL_EMAILS = ["rakhangezaid10@gmail.com", "impic.tech@gmail.com"];
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -83,17 +80,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  const isInternal = !!session?.user?.email && INTERNAL_EMAILS.includes(session.user.email);
   return (
     <html lang="en" className={cn("font-sans", plusJakarta.variable, fraunces.variable)}>
       <head>
-        <AnalyticsScripts isInternal={isInternal} />
+        <AnalyticsScripts />
 
         {/* Organization Schema */}
         <Script
