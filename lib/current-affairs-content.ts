@@ -10,6 +10,310 @@ export interface CAMonthlyContent {
   sections: CASection[];
 }
 
+export const JUNE_2026: CAMonthlyContent = {
+  month: "June",
+  year: 2026,
+  title: "UPSC Monthly Current Affairs",
+  sections: [
+    {
+      title: "National News",
+      items: [
+        {
+          headline: "G7 Summit 2026: India Champions Global South at Evian Summit",
+          body: "PM Modi attended the 52nd G7 Summit in Evian, France (June 16-17) under the theme 'Forging New Partnerships and Rebuilding International Solidarity'. India addressed the global trust deficit, called for reforming the development paradigm beyond donor-recipient models, and amplified Global South voices. Bilateral meetings were held with US President Trump, UK PM Starmer, Canadian PM Carney, UAE President Al Nahyan, and Japanese PM Takaichi. Modi also visited Slovakia (June 15) elevating ties to a Comprehensive Partnership and received Slovakia's highest civilian award, the Order of the White Double Cross."
+        },
+        {
+          headline: "Supreme Court Upholds 28% GST on Online Gaming",
+          body: "The Supreme Court delivered landmark rulings upholding the constitutional validity of the 28% GST levy on online gaming companies (retrospective) and affirming state laws banning real-money gaming platforms. A bench of Justices Pardiwala and Mahadevan ruled that betting and gambling are State subjects under Entry 34 of List II of the Seventh Schedule. The total tax demands on gaming companies run into several lakh crore rupees. The ruling came under the Promotion and Regulation of Online Gaming Act, 2025."
+        },
+        {
+          headline: "Government Blocks Telegram Ahead of NEET Re-Test",
+          body: "The Ministry of Electronics & IT ordered the blocking of Telegram in India until June 21 at the NTA's request, following organised use of the platform by cheating rackets ahead of the NEET (UG) 2026 re-examination. The app was delisted from Google Play and Apple App Store. The IAF ferried NEET papers via Mi-17 helicopters to 20+ locations. Over 22 lakh candidates sat the re-test with nearly 5 lakh security personnel deployed."
+        },
+        {
+          headline: "Delhi High Court Recognizes Right to be Forgotten",
+          body: "The Delhi High Court recognized the Right to be Forgotten under Article 21 of the Constitution and directed global de-indexing of acquittal records. This landmark privacy judgment marks a significant step in India's evolving data protection jurisprudence. The ruling aligns with the Digital Personal Data Protection Act, 2023 framework and the Supreme Court's 2017 right to privacy judgment."
+        },
+        {
+          headline: "India's Defence Production Hits Record ₹1.78 Lakh Crore",
+          body: "India's defence production reached a record ₹1.78 lakh crore in FY 2025-26, marking 110% growth over five years. Defence exports crossed ₹25,000 crore. The government attributed the growth to policy reforms including the Defence Acquisition Procedure 2020, positive indigenisation lists, and private sector participation. DRDO successfully tested multiple systems including the Agni-V missile with MIRV technology and new counter-drone systems."
+        },
+      ],
+    },
+    {
+      title: "International Relations & Summits",
+      items: [
+        {
+          headline: "PM Modi Visits France, Slovakia, Seychelles in Major Diplomatic Push",
+          body: "PM Modi undertook a six-day visit to France (June 13-18) for the G7 Summit and VivaTech 2026 in Paris, where he jointly inaugurated 'Bharat Innovates' in Nice with President Macron as part of the India-France Year of Innovation. He then visited Slovakia (June 15) elevating ties to Comprehensive Partnership. Later, PM Modi paid a three-day state visit to Seychelles (June 27-29) where he was conferred Seychelles' highest civilian honour 'Guardian of the Blue Horizon' by President Herminie. India and Seychelles concluded a Rs 1,250 crore line of credit agreement and signed an extradition treaty."
+        },
+        {
+          headline: "India-France Deepen Defence Cooperation",
+          body: "India and France agreed to strengthen defence ties focusing on joint development and co-production of critical military technologies including fighter jet engines and advanced naval platforms. French President Macron and PM Modi discussed the Scorpene submarine programme, Rafale aircraft sustainment, and the upcoming Jaitapur EPR nuclear reactor project. France remains India's second-largest defence supplier after Russia. The two nations elevated their relationship to a Special Global Strategic Partnership."
+        },
+        {
+          headline: "India-Seychelles Expand Strategic Partnership",
+          body: "India and Seychelles unveiled 19 outcomes spanning defence, digital payments, space, and health cooperation. The agreements included India's Unified Payments Interface (UPI) integration in Seychelles, a new deep space communication network collaboration, and Indian assistance for AI and cybersecurity centres. The visit coincided with the 50th anniversary of diplomatic relations and Seychelles' Golden Jubilee National Day celebrations."
+        },
+        {
+          headline: "BRICS Space Economy Framework Proposed by India",
+          body: "India proposed a BRICS Space Economy framework at the BRICS Space Leaders' meeting to deepen space cooperation among member nations. The framework aims to facilitate joint satellite development, shared earth observation data, and collaborative deep space missions. BRICS foreign ministers meeting earlier in May in Brasilia had also discussed de-dollarisation of trade and a common payment system roadmap by 2028."
+        },
+        {
+          headline: "India-Japan Adopt Implementation Rules for Joint Crediting Mechanism",
+          body: "India and Japan adopted implementation rules for the Joint Crediting Mechanism (JCM), enabling technology transfer and carbon credit trading between the two nations. The mechanism supports India's efforts to attract Japanese investment in clean energy projects. PM Modi held a bilateral meeting with Japanese PM Sanae Takaichi on the sidelines of the G7 Summit, focusing on the Mumbai-Ahmedabad High Speed Rail project and the India-Japan Industrial Competitiveness Partnership."
+        },
+      ],
+    },
+    {
+      title: "Economy & Finance",
+      items: [
+        {
+          headline: "RBI Keeps Repo Rate Unchanged at 5.25%, Cuts GDP Forecast to 6.6%",
+          body: "The MPC unanimously voted to keep the repo rate unchanged at 5.25% for the eighth consecutive time, retaining a neutral stance. The RBI cut FY27 GDP growth forecast to 6.6% from 6.9%, citing West Asia conflict, elevated crude oil prices, and sub-normal monsoon risks. CPI inflation for FY27 projected at 5.1%, peaking at 5.9% in Q3. RBI Governor Sanjay Malhotra flagged El Niño risks and announced measures to attract foreign capital including expanded FAR for government securities."
+        },
+        {
+          headline: "India's GDP Grew 7.8% in Q4 FY 2025-26, Beating Forecasts",
+          body: "India's GDP growth for Q4 (January-March 2026) came in at 7.8%, beating the RBI's 7.0% forecast. Full-year FY 2025-26 GDP growth was revised to 7.2%. The growth was driven by strong manufacturing (8.1%), services (9.3%), and robust private consumption. However, the Q1 FY27 outlook was tempered by the West Asia conflict and rising energy prices, with the Finance Ministry projecting 7.2-7.5% growth."
+        },
+        {
+          headline: "GST Collections Rise 13.9% to Rs 1.95 Lakh Crore in June",
+          body: "Gross GST revenue collection for June 2026 stood at Rs 1.95 lakh crore, a 13.9% year-on-year increase. Import tax collections surged 34.6%, while domestic GST saw a 6.5% rise. The government also approved a Rs 19,700-crore carbon capture, utilisation and storage (CCUS) scheme expected to attract investments of about Rs 37,500 crore and create carbon-capture capacity of 7 million tonnes per year."
+        },
+        {
+          headline: "India's Forex Reserves Stay Above $750 Billion",
+          body: "India's foreign exchange reserves remained above the $750 billion mark, standing at $751 billion as of June 2026. The RBI announced measures to attract FPI investments including removing STCG, LTCG, and withholding taxes on FII investments in government bonds. The central bank also expanded the Fully Accessible Route (FAR) for government securities and eased FPI investment restrictions."
+        },
+        {
+          headline: "SEBI Revamps FPI Norms, Eases Investment Rules",
+          body: "SEBI introduced new norms for Foreign Portfolio Investors including relaxed disclosure requirements for non-controlling beneficial ownership up to 10% under automatic route for investors from land-bordering countries. The Cabinet also eased FDI rules allowing faster clearances within a definitive 60-day timeline for critical sectors. India's money market turnover hit a record as banks ramped up borrowing."
+        },
+      ],
+    },
+    {
+      title: "Environment & Ecology",
+      items: [
+        {
+          headline: "World Environment Day 2026: India Launches National Biodiversity Conservation Plan",
+          body: "India hosted World Environment Day (June 5) with the theme 'Land Restoration, Desertification and Drought Resilience'. MoEFCC unveiled the National Biodiversity Conservation Plan 2026-2030 integrating biodiversity across all sectors. The government also launched a nationwide campaign to eliminate single-use plastics in protected areas and showcased success in restoring 26 million hectares of degraded land under the Green India Mission."
+        },
+        {
+          headline: "State of India's Environment 2026: Seven Planetary Boundaries Breached",
+          body: "The CSE-DTE annual report 'State of India's Environment 2026: In Figures' revealed that India experienced extreme weather on 99% of days in 2025. Seven of nine planetary boundaries are now breached, with ocean acidification joining climate change and biosphere integrity in the danger zone. Forest diversion for non-forest use rose to 97,000 hectares between 2020-25. The report ranked Goa first among states on environmental performance."
+        },
+        {
+          headline: "India's Green Hydrogen Mission Shows Substantial Progress",
+          body: "The Ministry of New and Renewable Energy reported substantial progress in green hydrogen production. Several pilot projects including a major facility in Gujarat's coastal region commenced operations. The government is finalising incentive schemes for industrial adoption. The National Green Hydrogen Mission targets 5 MMT annual green hydrogen production by 2030, positioning India as a global hub."
+        },
+        {
+          headline: "Supreme Court Reviews Great Indian Bustard Conservation Progress",
+          body: "The Supreme Court-appointed committee reviewed installation of underground power lines to prevent GIB collisions with overhead cables. The government allocated additional funds for habitat protection in Rajasthan and Gujarat. The wild GIB population is estimated at 150 individuals. New conservation regulations for e-waste management were also notified, targeting the 3.5 million tonnes of annual e-waste generation."
+        },
+        {
+          headline: "Monsoon Deficit Raises Concerns: 75% of India Reports Deficient Rainfall",
+          body: "The India Meteorological Department reported that nearly 75% of the country experienced deficient rainfall in June due to El Niño conditions. The southwest monsoon onset over Kerala was delayed. However, reservoirs, renewable energy expansion (252 GW total renewable capacity), and water conservation measures provided resilience. The government activated contingency plans for 500+ drought-prone districts."
+        },
+      ],
+    },
+    {
+      title: "Science & Technology",
+      items: [
+        {
+          headline: "ISRO Successfully Tests Advanced Rocket Engine for Gaganyaan",
+          body: "ISRO fired up an advanced rocket engine, marking a key milestone for the Gaganyaan human spaceflight mission. The uncrewed Gaganyaan-1 test flight carrying humanoid robot Vyomitra is scheduled for later in 2026. AI is being integrated for mission control and crew health monitoring. DRDO also successfully conducted the Integrated Air Drop Test (IADT-02) validating the parachute deceleration system for the Crew Module."
+        },
+        {
+          headline: "India Tests Agni-V Missile with MIRV Technology",
+          body: "DRDO successfully conducted a user-specific trial of the Agni-V intercontinental ballistic missile (range 5,000+ km) off the coast of Odisha on June 28. A separate secretive test on June 10 from Chandipur with 11,442 residents evacuated fuelled speculation of an Agni-6 ICBM test (range 8,000-12,000 km). DRDO Chief confirmed readiness for the Agni-6 programme. The Agni-V test incorporated Multiple Independently Targetable Re-entry Vehicle (MIRV) technology."
+        },
+        {
+          headline: "India's Next-Gen NavIC Satellites Under Development",
+          body: "ISRO is actively developing next-generation NavIC satellites with enhanced signal strength and broader coverage. The new satellites will improve India's indigenous navigation system, reducing dependence on foreign systems like GPS. ISRO also announced plans for a new advanced Deep Space Communication Network to support interplanetary missions to Mars and Venus."
+        },
+        {
+          headline: "CSIR Launches Bharat Skill Development Initiative 2.0",
+          body: "The Ministry of Skill Development and Entrepreneurship launched 'Bharat Skill Development Initiative 2.0' focusing on AI, robotics, green jobs, and advanced manufacturing. The revamped programme emphasises industry collaboration and digital learning platforms. The PM-Vikas (Viksit Kaushal) initiative was also launched to provide advanced training to rural artisans and traditional craftsmen, targeting 1 million rural workers by 2027."
+        },
+        {
+          headline: "Police Begin Collecting DNA Records Under Criminal Procedure Act",
+          body: "Police across several Indian states began collecting DNA records of suspects under the Criminal Procedure (Identification) Act, 2022, replacing the colonial-era Identification of Prisoners Act, 1920. Over one lakh DNA profiles have been stored in a central database operated by the National Crime Records Bureau. The Supreme Court also delivered a landmark judgment clarifying provisions of the Digital Personal Data Protection Act, 2023."
+        },
+      ],
+    },
+    {
+      title: "Government Schemes & Policies",
+      items: [
+        {
+          headline: "PM-Vikas Skill Development Initiative Launched",
+          body: "The Ministry of Skill Development launched 'PM-Vikas' (Viksit Kaushal) on June 25 to provide advanced training to rural artisans and traditional craftsmen. The programme integrates digital literacy with traditional craftsmanship, targeting 1 million rural workers by 2027. It aligns with the Atmanirbhar Bharat vision by promoting local manufacturing and preserving India's cultural heritage through modern skill sets."
+        },
+        {
+          headline: "Namo Drone Didi Scheme Expanded to 50,000 Additional SHGs",
+          body: "The government announced expansion of the Namo Drone Didi scheme to include 50,000 additional self-help groups across India. The initiative, which empowers women in agriculture through drone technology, provides training and drone kits for agricultural spraying and monitoring. The expansion is expected to revolutionise precision farming and integrate women into the agricultural supply chain."
+        },
+        {
+          headline: "RBI Overhauls Lead Bank Scheme After Review",
+          body: "The Reserve Bank of India revamped the Lead Bank Scheme to boost district-level credit planning and financial inclusion. New guidelines released on June 19 enhance credit flow to priority sectors. A three-tier committee structure was introduced to strengthen coordination between banks and government agencies. Lead Banks will now appoint dedicated managers to oversee implementation across all districts."
+        },
+        {
+          headline: "Bharat Taxi Launched in Gujarat as Cooperative Ride Platform",
+          body: "Union Home Minister Amit Shah launched 'Bharat Taxi', a cooperative-based ride-hailing platform in Gujarat, as an alternative to private aggregators. The platform is owned by driver cooperatives and aims to provide fair earnings to drivers while offering competitive pricing to consumers. It aligns with the government's 'Sahkar Se Samriddhi' vision of promoting the cooperative sector."
+        },
+        {
+          headline: "Cabinet Approves Rs 3,630 Crore for Jewar Airport Connectivity",
+          body: "The Cabinet Committee on Economic Affairs approved Rs 3,630.77 crore for a 31.42 km greenfield corridor linking Jewar Airport to the Delhi-Mumbai Expressway. The project includes an 11 km elevated highway intersecting with major expressways and the Dedicated Freight Corridor. The Haryana Government will contribute Rs 450 crore toward the elevated section."
+        },
+      ],
+    },
+    {
+      title: "Important Reports & Indices",
+      items: [
+        {
+          headline: "State of India's Environment 2026 Report Released",
+          body: "The Centre for Science and Environment and Down To Earth released 'State of India's Environment 2026: In Figures' on June 4. Key findings: extreme weather on 99% of days in 2025, 97,000 hectares of forestland diverted in five years, seven of nine planetary boundaries breached. Five most populous states (UP, Maharashtra, Bihar, MP, West Bengal) ranked poorly. Goa, Assam, Punjab, Haryana topped state rankings."
+        },
+        {
+          headline: "QS World University Rankings 2027: IIT-Delhi Leads India",
+          body: "The QS World University Rankings 2027 placed IIT-Delhi as India's top institution globally at 149th rank. MIT retained the global top spot. India had 45 universities in the rankings, with improved scores in research citations and international faculty ratio. The rankings highlighted India's growing research output but noted gaps in industry-academia collaboration and international student attraction."
+        },
+        {
+          headline: "India Sets Record with Seven Schools in World's Best School Prizes",
+          body: "Seven Indian schools were shortlisted for the World's Best School Prizes 2026 (announced June 25), the highest for any country. The shortlisted schools span Delhi, Maharashtra, Karnataka, and Tamil Nadu, recognised for categories including community impact, environmental action, innovation, and overcoming adversity. The awards are organised by T4 Education in partnership with Accenture and American Express."
+        },
+        {
+          headline: "Index of Services Production (ISP) Introduced",
+          body: "The government introduced a new Index of Services Production (ISP) to track the performance of India's services sector, mirroring the Index of Industrial Production for manufacturing. The ISP covers 9 major services sectors including trade, hotels, transport, communication, financial services, real estate, and business services. India's services sector grew at 9.3% in FY 2025-26, contributing over 55% to GDP."
+        },
+        {
+          headline: "National Food Security Act Amendment Proposed",
+          body: "The government proposed amendments to the National Food Security Act (NFSA) to expand AAY (Antyodaya Anna Yojana) entitlements. The amendments aim to cover additional eligible households and streamline the PDS distribution mechanism using the digitised ration card system. The proposal comes amid debates on nutritional security and the need to align NFSA coverage with the latest population estimates."
+        },
+      ],
+    },
+    {
+      title: "Awards & Honours",
+      items: [
+        {
+          headline: "Padma Awards 2026 Conferred by President Murmu",
+          body: "President Droupadi Murmu conferred the Padma Awards 2026 at the second Civil Investiture Ceremony on June 23. Total 131 awards: 5 Padma Vibhushan (including P. Narayanan for Literature & Education, Justice K.T. Thomas for Social Work), 13 Padma Bhushan (including Vijay Amritraj, Mammootty, Alka Yagnik, Shibu Soren posthumous), and 113 Padma Shri (including Rohit Sharma, R. Madhavan, Shashi Shekhar Vempati)."
+        },
+        {
+          headline: "PM Modi Receives Seychelles' Highest Civilian Honour",
+          body: "PM Narendra Modi was conferred the 'Guardian of the Blue Horizon', the highest national honour of Seychelles, by President Patrick Herminie on June 28. The award recognises Modi's leadership in environmental conservation, climate action, sustainable development, and strengthening Indian Ocean Region cooperation. Earlier in June, he also received Slovakia's Order of the White Double Cross, First Class."
+        },
+        {
+          headline: "Jainendra Jain Wins Wolf Prize in Physics",
+          body: "Rajasthan-born theoretical physicist Jainendra K. Jain won the 2025 Wolf Prize in Physics, presented by Israeli President Isaac Herzog at a state ceremony. Jain is recognised for his discovery of the composite fermion theory, which revolutionised understanding of the fractional quantum Hall effect. He is currently a professor at Pennsylvania State University."
+        },
+        {
+          headline: "Two Indian Women Win 'Green Oscars' Whitley Awards",
+          body: "Two Indian women conservationists won the prestigious Whitley Awards (often called the 'Green Oscars') for environmental conservation in June 2026. The awards, presented by the UK-based Whitley Fund for Nature, recognised their work in community-led conservation and sustainable livelihoods. Each winner received £50,000 in project funding."
+        },
+        {
+          headline: "Sushruta Statue Unveiled at Royal College of Surgeons of Edinburgh",
+          body: "A 90-kilogram bronze statue of Maharshi Sushruta, the ancient Indian surgeon and author of the Sushruta Samhita, was unveiled at the Royal College of Surgeons of Edinburgh on June 19. The statue honours Sushruta's foundational contributions to surgery, including plastic surgery and cataract extraction techniques documented over 2,600 years ago."
+        },
+      ],
+    },
+    {
+      title: "Appointments",
+      items: [
+        {
+          headline: "D.K. Shivakumar Sworn in as 25th Chief Minister of Karnataka",
+          body: "Doddalahalli Kempegowda Shivakumar (D.K. Shivakumar) from the Indian National Congress was sworn in as the 25th Chief Minister of Karnataka in June 2026 at Raj Bhavan, Bengaluru. Governor Thawar Chand Gehlot administered the oath of office. He succeeded Siddaramaiah following directions from the Congress high command. Shivakumar, representing the Kanakapura constituency, has been a legislator since 1989."
+        },
+        {
+          headline: "Mette Frederiksen Wins Third Consecutive Term as Denmark PM",
+          body: "Mette Frederiksen, leader of the Social Democrats, secured a third consecutive term as Prime Minister of Denmark after forming a new centre-left coalition following the March 2026 parliamentary elections. She becomes one of the longest-serving current European leaders, noted for her welfare state expansion and climate policies."
+        },
+        {
+          headline: "New Chief Election Commissioner Appointed",
+          body: "The government appointed a new Chief Election Commissioner following the enactment of the Chief Election Commissioner and Other Election Commissioners (Appointment, Conditions of Service and Term of Office) Act, 2025. The appointment came as the Election Commission prepares for upcoming state assembly elections."
+        },
+        {
+          headline: "Nivedita Shukla Verma Given Additional Charge of Secretary, DoNER",
+          body: "Ms. Nivedita Shukla Verma (IAS, UP, 1991) was given additional charge as Secretary of the Ministry of Development of North Eastern Region (DoNER). Several other senior IAS appointments were made in June including new secretaries in MeitY, Ministry of Heavy Industries, and Ministry of Corporate Affairs."
+        },
+        {
+          headline: "Shreyas Iyer Appointed India T20 Captain",
+          body: "Shreyas Iyer was appointed as the new captain of the Indian T20 cricket team, marking a new chapter after India's T20 World Cup victory in March 2026. His first assignment was the T20 series against Ireland in June. The BCCI also announced Shubman Gill as vice-captain for the white-ball formats."
+        },
+      ],
+    },
+    {
+      title: "Obituaries",
+      items: [
+        {
+          headline: "François Englert, Nobel Physicist, Dies at 93",
+          body: "François Englert, the Belgian theoretical physicist who won the 2013 Nobel Prize in Physics for the discovery of the Higgs boson mechanism, passed away at 93 in Uccle, Brussels. His work on spontaneous symmetry breaking in particle physics, co-developed with Robert Brout, was foundational to the Standard Model and confirmed by CERN's 2012 discovery of the Higgs particle."
+        },
+        {
+          headline: "David Hockney, Legendary British Artist, Dies at 88",
+          body: "David Hockney, one of the most influential British artists of the 20th century, passed away at 88 at his home in London on June 11. Known for his pop art paintings, swimming pool series, and photographic collages, Hockney's work explored perspective, light, and landscape across seven decades. He was awarded the Order of Merit in 2012."
+        },
+        {
+          headline: "Gene Shalit, Iconic American Film Critic, Dies at 100",
+          body: "Gene Shalit, the iconic American film critic and television personality known for his distinctive moustache, bow tie, and pun-filled reviews on NBC's Today show, passed away at 100 on June 12. His career spanned over four decades, making him one of the most recognisable faces in entertainment journalism."
+        },
+        {
+          headline: "Ben Stokes Announces International Cricket Retirement",
+          body: "Ben Stokes announced his retirement from international cricket, ending his England career after the Trent Bridge Test in June 2026. The all-rounder, who played a pivotal role in England's 2019 World Cup victory and transformed English Test cricket as captain, retires as one of the greatest all-rounders in the game's history."
+        },
+      ],
+    },
+    {
+      title: "Sports",
+      items: [
+        {
+          headline: "FIFA World Cup 2026 Round of 32 Completed",
+          body: "The FIFA World Cup 2026 (hosted by USA, Canada, Mexico) Round of 32 matches were played throughout June, with India not qualifying. Notable results included defending champions Argentina advancing and several upsets. The expanded 48-team tournament featured exciting knockout matches as teams vied for a place in the quarter-finals."
+        },
+        {
+          headline: "Indian Women's Hockey Team Wins FIH Nations Cup 2026",
+          body: "The Indian Women's Hockey Team won the FIH Nations Cup 2026, earning promotion to the Pro League. The team defeated the Netherlands in their own backyard in a series of impressive performances. Dilpreet Singh and Jugraj Singh finished as joint-top scorers for the season with four goals each. The London leg featured historic India-Pakistan matches in Pro League history."
+        },
+        {
+          headline: "India Lose T20 Series 2-0 to Ireland in Shreyas Iyer's First Series as Captain",
+          body: "India suffered their first T20 series defeat in three years, losing 2-0 to Ireland on June 28. Ireland won the second match by one run at Stormont, Belfast. India debutant Prince Yadav impressed with 3/22. Teenage prodigy Vaibhav Sooryavanshi, who had earlier smashed the fastest List A fifty in history, was not picked for either match. The defeat was India's first bilateral T20 series loss since 2023."
+        },
+        {
+          headline: "Ancy Sojan Breaks 22-Year-Old National Long Jump Record",
+          body: "Kerala long jumper Ancy Sojan broke Anju Bobby George's 22-year-old national record in women's long jump, jumping 6.83m at a national meet in June 2026. The 24-year-old's leap qualifies her for the World Athletics Championships 2026 and the 2026 Commonwealth Games."
+        },
+        {
+          headline: "Harmanpreet Kaur Becomes First Cricketer to Play 200 T20Is",
+          body: "Harmanpreet Kaur created history by becoming the first cricketer (men's or women's) to play 200 T20 Internationals during India's series in June. Deepti Sharma also became the joint-highest wicket-taker for India in women's T20Is. The women's team continues its preparation for the 2026 Commonwealth Games and 2027 ODI World Cup."
+        },
+      ],
+    },
+    {
+      title: "Summits, Conferences & Important Days",
+      items: [
+        {
+          headline: "World Environment Day 2026 Hosted by India",
+          body: "June 5: India hosted World Environment Day with the theme 'Land Restoration, Desertification and Drought Resilience'. The Ministry of Environment launched the National Biodiversity Conservation Plan 2026-2030 and announced five new potential biosphere reserves. India showcased restoring 26 million hectares of degraded land and launched a SAARC partnership for transboundary landscape restoration in the Hindu Kush Himalayan region."
+        },
+        {
+          headline: "VivaTech 2026: PM Modi Attends Europe's Largest Tech Event",
+          body: "PM Modi attended VivaTech 2026 in Paris on June 18, one of Europe's largest gatherings for technology and innovation. The visit was part of the India-France Year of Innovation. Modi inaugurated 'Bharat Innovates' in Nice on June 14, connecting Indian startups with global investors. Indian startups showcased innovations in AI, clean energy, and space technology."
+        },
+        {
+          headline: "International Day Against Drug Abuse and Illicit Trafficking",
+          body: "June 26: The day focused on countering the growing opium production in Myanmar, which has replaced Afghanistan as the largest source of illicit opium in Asia. India's Narcotics Control Bureau reported increased seizures and called for stronger regional cooperation under SAARC and BIMSTEC frameworks."
+        },
+        {
+          headline: "World Ocean Day 2026: Focus on Marine Conservation",
+          body: "June 8: World Ocean Day was observed with the theme 'The Ocean: Our Shared Heritage'. India announced new Marine Protected Areas in the Andaman and Nicobar Islands and Lakshadweep. The government also launched the 'Indian Ocean Blue Economy Partnership' with support from the Indian Ocean Rim Association."
+        },
+        {
+          headline: "International Yoga Day 2026 Celebrated Globally",
+          body: "June 21: The 12th International Day of Yoga was celebrated worldwide with the theme 'Yoga for Self and Society'. PM Modi led the main event at the United Nations Headquarters in New York, marking the first time the flagship celebration was held at the UN. The event saw participation from 190+ countries."
+        },
+      ],
+    },
+  ],
+};
+
 export const MAY_2026: CAMonthlyContent = {
   month: "May",
   year: 2026,

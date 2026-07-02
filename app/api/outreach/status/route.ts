@@ -8,6 +8,10 @@ const OUTREACH_SUBJECTS = [
   "UPSCPrepNotes x Sleepy Classes - random thought",
   "Question about advertising on UPSCPrepNotes",
   "UPSCPrepNotes x Testbook - partnership?",
+  "LevelUp IAS x UPSCPrepNotes - quick thought",
+  "Prepp IAS x UPSCPrepNotes - quick thought",
+  "Tathastu ICS x UPSCPrepNotes - quick thought",
+  "Quick thought — UPSCPrepNotes x EDEN IAS",
 ];
 
 export async function GET() {
