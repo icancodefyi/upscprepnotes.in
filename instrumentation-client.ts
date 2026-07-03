@@ -10,5 +10,5 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   // otherwise report dev-only errors (e.g. Turbopack's HMR ChunkLoadError)
   // that never ship to real users, adding noise to error tracking.
   capture_exceptions: isProduction,
-  debug: !isProduction,
+  debug: process.env.NODE_ENV === "development",
 });
