@@ -9,7 +9,7 @@ const page: ContentPage = {
   h1: "How to Score 100+ in UPSC GS Paper 4",
 
   intro:
-    "GS Paper 4 (Ethics, Integrity, and Aptitude) carries 250 marks. Based on UPSCPrepNotes' database of 38 topper profiles with recorded GS4 marks (2022-2023), the average score is 117.2 and 37 of 38 profiles — 97% — scored 100 or above. The highest recorded score is 141 (Garima Lohia, AIR 2, 2022).\n\nThis makes GS4 the paper where almost every successful candidate clears 100, unlike GS1, GS2, or GS3, where 100+ is a minority outcome. The real differentiator in GS4 is not crossing 100 but pushing into the 120-140 range, which is where this guide's strategy is focused.",
+    "Want to know how to score 100+ in GS Paper 4 (Ethics)? GS Paper 4 (Ethics, Integrity, and Aptitude) carries 250 marks. Based on UPSCPrepNotes' database of 38 topper profiles with recorded GS4 marks (2022-2023), the average score is 117.2 and 37 of 38 profiles — 97% — scored 100 or above. The highest recorded score is 141 (Garima Lohia, AIR 2, 2022).\n\nThis makes GS4 the paper where almost every successful candidate clears 100, unlike GS1, GS2, or GS3, where 100+ is a minority outcome. The real differentiator in GS4 is not crossing 100 but pushing into the 120-140 range, which is where this guide's strategy is focused.",
 
   sections: [
     {

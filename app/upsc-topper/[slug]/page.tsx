@@ -58,8 +58,8 @@ function buildMetaDescription(topper: Record<string, any>): string {
   if (gs3) desc += ` · GS3 ${gs3}`;
   if (gs4) desc += ` · GS4 ${gs4}`;
   if (opt1 && subject) desc += ` · ${subject} ${opt1}`;
-  desc += `. See the full marks breakdown across all papers & download a free answer copy PDF.`;
-  if (subject) desc += ` Optional: ${subject}.`;
+    desc += `. See the full marks breakdown across all papers, optional subject marksheet & download a free answer copy PDF.`;
+  if (subject) desc += ` Optional subject: ${subject}.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;
@@ -82,13 +82,13 @@ export async function generateMetadata({ params }: Props) {
     : `https://upscprepnotes.in${topperImage || "/logo.png"}`;
 
   return {
-    title: `${topper.firstName} ${topper.lastName} Answer Copy PDF — Free Download, UPSC Marksheet & Strategy (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} UPSC Marksheet, Answer Copy PDF & ${topper.optionalSubject || "Optional Subject"} — Free Download (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: {
       canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
     },
     openGraph: {
-      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy & Strategy (AIR ${topper.rank})`,
+      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy, ${topper.optionalSubject || "Optional Subject"} & Strategy (AIR ${topper.rank})`,
       description: buildMetaDescription(topper),
       url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
       siteName: "UPSCPrepNotes",
@@ -464,7 +464,7 @@ export default async function TopperPage({ params }: Props) {
               ))}
             </div>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              {topper.firstName} {topper.lastName} UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional. Download actual UPSC Mains answer copy PDF with marks breakdown across GS Papers and essay.
+              {topper.firstName} {topper.lastName} answer copy PDF and UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional subject. Download the actual UPSC Mains answer copy with full marks breakdown across GS papers, essay, and optional subject.
             </p>
 
             {/* QUICK FACTS — structured for AI overviews */}

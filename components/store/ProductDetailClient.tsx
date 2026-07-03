@@ -517,6 +517,17 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           </div>
         )}
 
+        <div className="mt-4 rounded-xl border-2 border-emerald-200 bg-emerald-50 p-3">
+          <div className="flex items-center gap-2">
+            <svg className="h-5 w-5 shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <div>
+              <p className="text-xs font-bold text-emerald-800">7-Day Money-Back Guarantee</p>
+              <p className="text-[11px] text-emerald-600">Not satisfied? Get a full refund within 7 days.</p>
+            </div>
+          </div>
+        </div>
         <p className="mt-3 text-center text-[11px] text-gray-400">
           Secure payment · PDF delivered instantly
         </p>

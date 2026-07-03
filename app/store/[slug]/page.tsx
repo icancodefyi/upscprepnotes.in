@@ -20,13 +20,13 @@ export async function generateMetadata({
   if (!product) return { title: "Product Not Found" };
   const imageUrl = product.image || "/logo.png";
   return {
-    title: `${product.title} — UPSCPrepNotes Store`,
+      title: product.title,
     description: product.description.slice(0, 160),
     alternates: {
       canonical: `https://upscprepnotes.in/store/${product.slug}`,
     },
     openGraph: {
-      title: `${product.title} — UPSCPrepNotes Store`,
+    title: product.title,
       description: product.description.slice(0, 160),
       url: `https://upscprepnotes.in/store/${product.slug}`,
       siteName: "UPSCPrepNotes",

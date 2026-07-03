@@ -9,7 +9,7 @@ const page: ContentPage = {
   h1: "How to Score 300+ in UPSC PSIR Optional",
 
   intro:
-    "PSIR is the single most common optional in my dataset — 9 of the 50+ topper profiles I've pulled from UPSC's result PDFs chose it, more than any other subject. That popularity means I've got more data points to work with here than for almost any other optional, which is exactly why I wanted to dig into what actually separates a 300+ PSIR score from an average one.\n\nThe average total marks across these 9 PSIR toppers sits at 941. That number alone doesn't tell you much, so I broke it down — optional marks, GS2 overlap, written totals, the works — to find what the 300+ scorers are actually doing differently.",
+    "Want to know how to score 300+ in PSIR optional? PSIR is the single most common optional in my dataset — 9 of the 50+ topper profiles I've pulled from UPSC's result PDFs chose it, more than any other subject. That popularity means I've got more data points to work with here than for almost any other optional, which is exactly why I wanted to dig into what actually separates a 300+ PSIR score from an average one.\n\nThe average total marks across these 9 PSIR toppers sits at 941. That number alone doesn't tell you much, so I broke it down — optional marks, GS2 overlap, written totals, the works — to find what the 300+ scorers are actually doing differently.",
 
   sections: [
     {
