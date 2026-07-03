@@ -8,7 +8,7 @@ const page: ContentPage = {
   lastUpdated: "2026-06-24",
   h1: "How to Score 130+ in UPSC GS Paper 1",
   intro:
-    "GS Paper 1 (Indian Heritage & Culture, History, Geography, Society) is often the most unpredictable paper. But scoring 130+ is achievable with the right strategy. Here's how toppers do it — with real marks data, topic prioritization, and answer frameworks.",
+    "Want to know how to score 130+ in UPSC GS Paper 1? GS Paper 1 (Indian Heritage & Culture, History, Geography, Society) is often the most unpredictable paper, but scoring 130+ is achievable with the right strategy. Here's how toppers do it — with real marks data, topic prioritization, and answer frameworks.",
   sections: [
     {
       heading: "What Score Do You Need in GS1?",

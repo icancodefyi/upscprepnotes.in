@@ -9,7 +9,7 @@ const page: ContentPage = {
   h1: "How to Score 120+ in UPSC GS Paper 3",
 
   intro:
-    "GS Paper 3 (Economy, Agriculture, Environment, Science & Technology, Security) carries 250 marks and is consistently the most syllabus-heavy GS paper. Based on UPSCPrepNotes' database of 38 topper profiles with recorded GS3 marks, the highest score is 104 (Ritika Verma, AIR 25, 2023) — no profile in the current dataset has crossed 120.\n\nThis means a 120+ GS3 score, while it is the benchmark candidates aim for, sits above the highest verified score in this dataset. The realistic, data-backed target for a top-tier GS3 performance is 100-105, which already places a candidate in the top 16% of the sample. The strategy below is built around what actually separates the 100+ scorers from the rest.",
+    "Want to know how to score 120+ in GS Paper 3? GS Paper 3 (Economy, Agriculture, Environment, Science & Technology, Security) carries 250 marks and is consistently the most syllabus-heavy GS paper. Based on UPSCPrepNotes' database of 38 topper profiles with recorded GS3 marks, the highest score is 104 (Ritika Verma, AIR 25, 2023) — no profile in the current dataset has crossed 120.\n\nThis means a 120+ GS3 score, while it is the benchmark candidates aim for, sits above the highest verified score in this dataset. The realistic, data-backed target for a top-tier GS3 performance is 100-105, which already places a candidate in the top 16% of the sample. The strategy below is built around what actually separates the 100+ scorers from the rest.",
 
   sections: [
     {

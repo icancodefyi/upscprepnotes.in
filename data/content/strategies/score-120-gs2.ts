@@ -2,14 +2,14 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-120-plus-in-gs2",
-  title: "How to Score 120+ in UPSC GS Paper 2 — Marks, Strategy & Topper Analysis | UPSCPrepNotes",
+  title: "How to Score 120+ in UPSC GS Paper 2 — Marks, Strategy & Topper Analysis",
   description:
     "Guide to scoring 120+ in UPSC GS Paper 2 (Polity, Governance, IR). Includes real topper marks data, weightage breakdown, and answer-writing strategy from AIR 1-23 toppers.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 120+ in UPSC GS Paper 2",
 
   intro:
-    "GS Paper 2 covers Polity, Governance, Social Justice, and International Relations, and carries 250 marks in UPSC Mains. Based on topper data from 2022-2023, only 11 of 50 analyzed candidates crossed 120 in GS2, making it one of the harder papers to score high in. Here's how those toppers did it — with real marks data, topic prioritization, and answer frameworks.",
+    "Want to know how to score 120+ in GS Paper 2? GS Paper 2 covers Polity, Governance, Social Justice, and International Relations, and carries 250 marks in UPSC Mains. Based on topper data from 2022-2023, only 11 of 50 analyzed candidates crossed 120 in GS2, making it one of the harder papers to score high in. Here's how those toppers did it — with real marks data, topic prioritization, and answer frameworks.",
 
   sections: [
     {

@@ -3,16 +3,16 @@ import Link from "next/link";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
 export const metadata: Metadata = {
-  title: "UPSCPrepNotes FAQ — Everything You Need to Know",
+  title: "UPSC Topper Answer Copies & Marksheets FAQ — Free Download, Pricing & How to Use",
   description:
-    "Frequently asked questions about UPSCPrepNotes: is it free, how to use topper data, how answer copies work, pricing, and more.",
+    "Answers to common questions about UPSC topper answer copies: which copies are available, how to download free PDFs, pricing, authenticity, and how to use them in your preparation.",
   alternates: {
     canonical: "https://upscprepnotes.in/faq",
   },
   openGraph: {
-    title: "UPSCPrepNotes FAQ",
+    title: "UPSC Topper Answer Copies & Marksheets FAQ — Free Download, Pricing & How to Use",
     description:
-      "Everything you need to know about UPSCPrepNotes — free resources, topper data, answer copies, and pricing.",
+      "Answers to common questions about UPSC topper answer copies: which copies are available, how to download free PDFs, pricing, authenticity, and how to use them in your preparation.",
     url: "https://upscprepnotes.in/faq",
     siteName: "UPSCPrepNotes",
     images: [{ url: "/og/default.png", width: 1200, height: 630 }],
@@ -82,10 +82,10 @@ export default function FAQPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-        Frequently Asked Questions
+        UPSC Topper Answer Copies & Marksheets — FAQ
       </h1>
       <p className="mt-4 text-lg text-gray-500">
-        Everything you need to know about UPSCPrepNotes.
+        Everything you need to know about UPSC topper answer copies, marksheet data, free downloads, pricing, and how to use them in your preparation.
       </p>
       <div className="mt-12 divide-y divide-gray-200">
         {FAQS.map((faq, i) => (
