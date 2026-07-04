@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description:
-    "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies (GS1–4, Essay, Optional), marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
+    "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, GS/Optional marks breakdowns, and an AI mentor. Compare strategies and download free PDFs.",
   metadataBase: new URL("https://upscprepnotes.in"),
   icons: {
     icon: "/logo.png",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
     description:
-      "Structured topper profiles, marksheet analysis, 50+ handwritten answer copies, optional subject trends, and preparation strategies for UPSC aspirants.",
+      "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, marks breakdowns, optional subject analysis, and an AI mentor.",
     url: "https://upscprepnotes.in",
     siteName: "UPSCPrepNotes",
     images: [{ url: "/og/default.png", width: 1200, height: 630 }],

@@ -2,9 +2,9 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-120-plus-in-gs3",
-  title: "How to Score 120+ in GS Paper 3 — Economy, Agriculture, Environment & Security Strategy",
+  title: "Highest Marks in GS3 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Strategy guide for UPSC GS Paper 3 (Economy, Agriculture, Environment, Security). Real topper marks data, topic weightage, booklist, and answer-writing tips.",
+    "Highest GS3 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage for Economy, Agriculture, Environment & Security, and strategy from top rankers.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 120+ in UPSC GS Paper 3",
 

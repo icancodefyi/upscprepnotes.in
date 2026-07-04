@@ -2,9 +2,9 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-120-plus-in-gs2",
-  title: "How to Score 120+ in UPSC GS Paper 2 — Marks, Strategy & Topper Analysis",
+  title: "Highest Marks in GS2 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Guide to scoring 120+ in UPSC GS Paper 2 (Polity, Governance, IR). Includes real topper marks data, weightage breakdown, and answer-writing strategy from AIR 1-23 toppers.",
+    "Highest GS2 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage for Polity, Governance & IR, and strategy from top rankers.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 120+ in UPSC GS Paper 2",
 

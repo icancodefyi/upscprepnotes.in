@@ -2,9 +2,9 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-100-plus-in-gs4",
-  title: "How to Score 100+ in GS Paper 4 — Ethics, Integrity & Aptitude Strategy with Topper Data",
+  title: "Highest Marks in GS4 (Ethics) — UPSC Topper Scores & Strategy",
   description:
-    "Strategy guide for UPSC GS Paper 4 (Ethics, Integrity, Aptitude). Real topper marks data, case study frameworks, booklist, and answer-writing tips.",
+    "Highest GS4 marks scored by UPSC toppers: max 141 (Garima Lohia), average 117. Paper-wise benchmarks, case study frameworks, and answer-writing tips from top rankers.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 100+ in UPSC GS Paper 4",
 
