@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { CustomerModel } from "@/models/customer.model";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { sendEmail } from "@/lib/resend";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 function generateOrderId(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

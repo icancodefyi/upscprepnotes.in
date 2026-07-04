@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const rl = await checkRateLimit(req, "analytics");
+  if (rl) return rl;
+
   try {
     const body = await req.json();
     const { event, pagePath, sessionId, visitorId: clientVisitorId, referrer, userAgent, deviceType, metadata } = body;

@@ -6,6 +6,7 @@ import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken, sendOfferNotification } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 function shortRef() {
   return Date.now().toString(36).slice(-6) + Math.random().toString(36).slice(2, 6);
@@ -23,6 +24,9 @@ interface CheckoutItem {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { items, email, successUrl, cancelUrl, offeredPrice } = body as {

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConversation } from "@/lib/ai/quota";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const rl = await checkRateLimit(request, "ai");
+  if (rl) return rl;
+
   const { id } = await params;
 
   try {

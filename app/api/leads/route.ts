@@ -1,11 +1,15 @@
+import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
 import { CopyRequestModel } from "@/models/copy-request.model";
 import { CustomerModel } from "@/models/customer.model";
 import { OrderModel } from "@/models/order.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "leads");
+  if (rl) return rl;
   try {
     await connectDB();
 

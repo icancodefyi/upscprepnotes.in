@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
@@ -14,7 +15,10 @@ function categorize(subject: string): string {
   return "other";
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "outreach");
+  if (rl) return rl;
+
   try {
     const { data } = await resend.emails.list({ limit: 100 });
 

@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listConversations, createConversation, getQuota } from "@/lib/ai/quota";
 import { auth } from "@/lib/auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rl = await checkRateLimit(request, "ai");
+  if (rl) return rl;
   const sessionId = request.nextUrl.searchParams.get("sessionId");
 
   try {
@@ -25,6 +28,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "ai");
+  if (rl) return rl;
   try {
     const { sessionId } = await request.json();
     if (!sessionId) {

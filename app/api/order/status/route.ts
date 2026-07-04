@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
   try {
     const ref = request.nextUrl.searchParams.get("ref");
     const token = request.nextUrl.searchParams.get("token");

@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AskConversationModel, type IAskConversation } from "@/models/ask.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "ai");
+  if (rl) return rl;
+
   try {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);

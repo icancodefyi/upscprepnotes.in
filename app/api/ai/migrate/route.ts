@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { AskConversationModel, AskSessionModel } from "@/models/ask.model";
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "ai");
+  if (rl) return rl;
   try {
     const session = await auth();
     if (!session?.user?.id) {

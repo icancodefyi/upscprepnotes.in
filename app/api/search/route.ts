@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllToppersList } from "@/services/topper.service";
 import { PRODUCTS } from "@/lib/store-products";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const STATIC_PAGES = [
   { title: "Store", href: "/store", category: "Page", keywords: "products, buy, notes, test series, optional" },
@@ -13,6 +14,9 @@ const STATIC_PAGES = [
 ];
 
 export async function GET(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   const q = request.nextUrl.searchParams.get("q")?.toLowerCase().trim() || "";
   if (!q) return NextResponse.json({ results: [] });
 
