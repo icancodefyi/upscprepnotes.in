@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import DownloadPdfButton from "./DownloadPdfButton";
 
 const MONTHS = [
   "January 2025",
@@ -92,15 +93,11 @@ export default function YearlyTOC() {
           })}
         </nav>
         <div className="mt-6 border-t border-[#e6e6e6] pt-4">
-          <a
-            href="/api/generate-current-affairs?month=2025"
-            className="flex items-center gap-2 rounded-full bg-[#000000e8] px-4 py-2 text-[11px] font-semibold text-white transition hover:opacity-90"
-          >
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Download PDF
-          </a>
+          <DownloadPdfButton
+            month="2025"
+            iconClassName="h-3 w-3"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-[#000000e8] px-4 py-2 text-[11px] font-semibold text-white transition hover:opacity-90"
+          />
         </div>
 
         {/* Product Ads */}
