@@ -3,7 +3,7 @@ import { DodoPayments } from "dodopayments";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import { generateDownloadToken, sendOrderConfirmationEmail, sendAdminNotification } from "@/lib/order-utils";
+import { generateDownloadToken, sendAdminNotification } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
 
 const dodo = new DodoPayments({
@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
     const existing = await OrderModel.findOne({ dodoSessionId: sessionId });
     if (existing) {
       if (existing.status === "pending") {
-        const downloadUrl = `https://upscprepnotes.in/api/download/${existing.downloadToken}`;
         await OrderModel.findByIdAndUpdate(existing._id, {
           status: "paid",
           email: customerEmail || existing.email,
@@ -89,13 +88,6 @@ export async function POST(request: NextRequest) {
             email: customerEmail || existing.email || undefined,
           },
         });
-        if (customerEmail) {
-          try {
-            await sendOrderConfirmationEmail(customerEmail, existing._id.toString().slice(-8).toUpperCase(), existing.items, downloadUrl);
-          } catch (err) {
-            console.error("Failed to send confirmation email:", err);
-          }
-        }
         try {
           await sendAdminNotification(customerEmail, existing.items, existing.total);
         } catch (err) {
@@ -116,7 +108,6 @@ export async function POST(request: NextRequest) {
       items = [{ slug: "unknown", quantity: 1, price: total, title: "Store Purchase" }];
     }
 
-    const { generateDownloadToken } = await import("@/lib/order-utils");
     const downloadToken = generateDownloadToken();
     const order = await OrderModel.create({
       email: customerEmail || "unknown@checkout",
@@ -128,8 +119,6 @@ export async function POST(request: NextRequest) {
       downloadToken,
       status: "paid",
     });
-
-    const downloadUrl = `https://upscprepnotes.in/api/download/${downloadToken}`;
 
     try {
       await AnalyticsEventModel.create({
@@ -158,14 +147,6 @@ export async function POST(request: NextRequest) {
         email: customerEmail || undefined,
       },
     });
-
-    if (customerEmail) {
-      try {
-        await sendOrderConfirmationEmail(customerEmail, order._id.toString().slice(-8).toUpperCase(), items, downloadUrl);
-      } catch (err) {
-        console.error("Failed to send confirmation email:", err);
-      }
-    }
 
     try {
       await sendAdminNotification(customerEmail, items, total);
