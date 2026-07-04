@@ -15,6 +15,7 @@ export interface ProductReview {
 
 export interface StoreProduct {
   slug: string;
+  dodoProductId?: string;
   title: string;
   tagline: string;
   description: string;
@@ -108,6 +109,7 @@ export const INSTITUTES: Institute[] = [
 export const PRODUCTS: StoreProduct[] = [
   {
     slug: "top-10-rankers-strategy",
+    dodoProductId: "pdt_0NiRYsqj11mE2Xcw8A1nJ",
     title: "Top 10 Rankers Strategy",
     image: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "AIR 1-10 complete strategies in one PDF",
@@ -214,6 +216,7 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "answer-copies-compilation",
+    dodoProductId: "pdt_0NiRYspHtFcNZIxO9Jyop",
     title: "Answer Copies Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "50+ handwritten answer sheets",
@@ -319,6 +322,7 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "government-schemes-compilation",
+    dodoProductId: "pdt_0NiRYsuBZ0zyVvmW4gDKN",
     title: "Government Schemes Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "All important government schemes for UPSC 2026",
@@ -373,6 +377,7 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "complete-gs-notes-bundle",
+    dodoProductId: "pdt_0NiRYsxdN5boMQWsxQb4O",
     title: "Complete GS Notes Bundle",
     tagline: "81 files — all GS 1-4 + Prelims notes in one bundle",
     description: "Every GS notes bundle on the platform — GS 1, GS 2, GS 3, Ethics & GS 4, and Prelims Prep Pack — merged into one complete set.",
@@ -438,6 +443,7 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "anthropology-bundle",
+    dodoProductId: "pdt_0NiRYsvx8ApjyGrPDbdeW",
     title: "Anthropology Optional Bundle",
     tagline: "14 files — complete Anthropology coverage by Laghima Tiwari (AIR 176) & Dr. Apala Mishra (AIR 9)",
     description: "Comprehensive Anthropology optional notes with test papers by rank holders.",

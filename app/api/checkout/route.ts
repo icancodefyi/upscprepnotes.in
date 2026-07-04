@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
     };
 
     const origin = request.headers.get("origin") || request.headers.get("referer") || "https://upscprepnotes.in";
-    const productId = process.env.DODO_PRODUCT_ID;
-    if (!productId) {
+    const fallbackProductId = process.env.DODO_PRODUCT_ID;
+    if (!fallbackProductId) {
       return NextResponse.json(
-        { error: "Store not configured for payments. Run setup-dodo-product first." },
+        { error: "Store not configured for payments." },
         { status: 500 }
       );
     }
@@ -91,14 +91,18 @@ export async function POST(request: NextRequest) {
       status: "pending",
     });
 
+    // Build product_cart with the correct Dodo product ID per item
+    const productCart = resolvedItems.map((item) => {
+      const product = PRODUCTS.find((p) => p.slug === item.slug);
+      return {
+        product_id: product?.dodoProductId || fallbackProductId,
+        quantity: item.quantity,
+        amount: item.price * 100,
+      };
+    });
+
     const session = await dodo.checkoutSessions.create({
-      product_cart: [
-        {
-          product_id: productId,
-          quantity: 1,
-          amount: total * 100,
-        },
-      ],
+      product_cart: productCart,
       customer: email ? { email } : undefined,
       return_url: successUrl || `${origin}/store/success?ref=${ref}`,
       cancel_url: cancelUrl || `${origin}/store`,
