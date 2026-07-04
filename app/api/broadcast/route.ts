@@ -9,8 +9,12 @@ import { CustomerModel } from "@/models/customer.model";
 import { OrderModel } from "@/models/order.model";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "broadcast");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { subject, html, testEmail } = body;

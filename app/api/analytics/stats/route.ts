@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { AskConversationModel } from "@/models/ask.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,9 @@ function getDateRange(days: number) {
 }
 
 export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "analytics");
+  if (rl) return rl;
+
   try {
     const { searchParams } = new URL(req.url);
     const days = parseInt(searchParams.get("days") || "30", 10);

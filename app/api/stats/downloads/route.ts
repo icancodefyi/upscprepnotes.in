@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const DATA_FILE = path.join(process.cwd(), "data", "download-stats.json");
 
@@ -23,7 +24,10 @@ function writeStats(data: { count: number; lastUpdated: number }) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data));
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "form");
+  if (rl) return rl;
+
   const stats = readStats();
 
   // Increment count slowly over time for realism

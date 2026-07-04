@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
   try {
     const { email } = await request.json();
 

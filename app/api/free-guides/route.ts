@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { sendEmail } from "@/lib/resend";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const GUIDES = [
   {
@@ -58,6 +59,9 @@ async function sendGuideEmail(name: string, email: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { name, email } = body;

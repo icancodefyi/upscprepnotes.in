@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import { searchToppers, type TopperResult } from "@/lib/ai/search-toppers";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { buildSystemPrompt } from "@/lib/ai/build-prompt";
 import {
   getQuota,
@@ -34,6 +35,9 @@ const webSearchTool = {
 };
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "ai");
+  if (rl) return rl;
+
   try {
     const { message, sessionId, conversationId, searchWeb: wantsSearch } = await request.json();
 

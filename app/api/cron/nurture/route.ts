@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { sendEmail } from "@/lib/resend";
 import fs from "fs";
+import { checkRateLimit } from "@/lib/rate-limit";
 import path from "path";
 
 const EMAILS_DIR = path.join(process.cwd(), "emails");
@@ -25,7 +26,10 @@ const STEP_DELAY_DAYS = [2, 3, 2, 3];
 
 const BATCH_SIZE = 10;
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "cron");
+  if (rl) return rl;
+
   try {
     await connectDB();
 

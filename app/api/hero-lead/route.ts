@@ -4,6 +4,7 @@ import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { sendEmail } from "@/lib/resend";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
 const FREE_PRODUCT_NAME = "Government Schemes Compendium";
@@ -54,6 +55,9 @@ function buildEmailHtml(): string {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { email, source } = body;

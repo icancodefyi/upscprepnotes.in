@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { CopyRequestModel } from "@/models/copy-request.model";
 import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 async function sendRequestEmail(email: string, topperName: string) {
 
@@ -42,6 +43,9 @@ async function sendRequestEmail(email: string, topperName: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { email, topperSlug } = body;

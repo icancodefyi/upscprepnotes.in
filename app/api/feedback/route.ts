@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FeedbackModel } from "@/models/feedback.model";
 import { verifyAdminToken } from "@/lib/admin-auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const rl = await checkRateLimit(req, "form");
+  if (rl) return rl;
+
   try {
     const body = await req.json();
     const { name, email, type, message, url } = body;
@@ -63,6 +67,9 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const rl = await checkRateLimit(req, "form");
+  if (rl) return rl;
+
   try {
     const token = req.cookies.get("admin_session")?.value;
     if (!token || !(await verifyAdminToken(token))) {

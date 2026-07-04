@@ -5,6 +5,7 @@ import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
 
@@ -82,6 +83,9 @@ async function sendUnavailableEmail(email: string, topperName: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
   try {
     const body = await request.json();
     const { email, topperSlug, name, source, sourceUrl } = body;

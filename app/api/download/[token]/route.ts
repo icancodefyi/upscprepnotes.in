@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
 
@@ -16,6 +17,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
   try {
     const { token } = await params;
 

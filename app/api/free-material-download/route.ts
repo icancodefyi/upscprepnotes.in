@@ -3,8 +3,11 @@ import { connectDB } from "@/lib/mongodb";
 import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { sendEmail } from "@/lib/resend";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
   try {
     const { email, pdfSlug, pdfTitle, category, downloadUrl } = await request.json();
 
