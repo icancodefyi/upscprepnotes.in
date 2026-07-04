@@ -2,9 +2,9 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-300-plus-in-psir-optional",
-  title: "How to Score 300+ in PSIR Optional — Marks Data, Syllabus Strategy & Topper Analysis",
+  title: "Highest Marks in PSIR Optional — UPSC Topper Scores & Strategy",
   description:
-    "Strategy guide for UPSC PSIR optional with real topper marks data, syllabus breakdown, booklist, answer writing tips, and preparation plan.",
+    "Highest PSIR optional marks scored by UPSC toppers: max scores, average benchmarks, syllabus breakdown, booklist, and answer-writing tips from top rankers.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 300+ in UPSC PSIR Optional",
 

@@ -378,13 +378,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${subjectInfo.name} Optional Subject — UPSC CSE Preparation, Toppers & Strategy`,
-    description: `${subjectInfo.name} optional subject for UPSC. ${subjectInfo.description}`,
+    title: `${subjectInfo.name} Optional Marks & Strategy — UPSC Topper Scores & Preparation`,
+    description: `${subjectInfo.name} optional subject marks data for UPSC. ${subjectInfo.description}`,
     alternates: {
       canonical: `https://upscprepnotes.in/optional/${subjectKey}`,
     },
     openGraph: {
-      title: `${subjectInfo.name} Optional Subject — UPSC CSE Preparation, Toppers & Strategy`,
+      title: `${subjectInfo.name} Optional Marks & Strategy — UPSC Topper Scores & Preparation`,
       description: subjectInfo.description,
       url: `https://upscprepnotes.in/optional/${subjectKey}`,
       images: [{ url: "/og/default.png", width: 1200, height: 630 }],

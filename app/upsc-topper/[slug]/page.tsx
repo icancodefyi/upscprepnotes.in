@@ -43,23 +43,10 @@ function buildMetaDescription(topper: Record<string, any>): string {
   const rank = topper.rank;
   const year = topper.year;
   const subject = topper.optionalSubject || "";
-  const gs1 = topper.marks?.gs1 ?? "";
-  const gs2 = topper.marks?.gs2 ?? "";
-  const gs3 = topper.marks?.gs3 ?? "";
-  const gs4 = topper.marks?.gs4 ?? "";
-  const essay = topper.marks?.essay ?? "";
-  const opt1 = topper.marks?.optional1 ?? "";
 
-  const total = topper.marks?.total ?? "";
-  let desc = `${name} AIR ${rank} UPSC marksheet: Total ${total}`;
-  if (essay) desc += ` · Essay ${essay}`;
-  if (gs1) desc += ` · GS1 ${gs1}`;
-  if (gs2) desc += ` · GS2 ${gs2}`;
-  if (gs3) desc += ` · GS3 ${gs3}`;
-  if (gs4) desc += ` · GS4 ${gs4}`;
-  if (opt1 && subject) desc += ` · ${subject} ${opt1}`;
-    desc += `. See the full marks breakdown across all papers, optional subject marksheet & download a free answer copy PDF.`;
-  if (subject) desc += ` Optional subject: ${subject}.`;
+  let desc = `${name} (AIR ${rank}) — See their complete UPSC ${year} marksheet`;
+  if (subject) desc += ` with ${subject}`;
+  desc += `. Download the free answer copy PDF, compare paper-wise scores (GS1-4, Essay, Optional), and read their preparation strategy.`;
 
   if (desc.length > 160) desc = desc.slice(0, 157) + "...";
   return desc;

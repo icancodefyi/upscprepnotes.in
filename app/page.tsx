@@ -22,7 +22,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides for UPSC CSE",
   description:
-    "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, marks breakdowns, optional subject analysis, an AI mentor for prep guidance, and a curated store — all in one platform.",
+    "Access 280+ UPSC topper profiles with verified marks, 50+ handwritten answer copies (GS1-4, Essay, Optional), optional subject analysis, AI mentor, and a curated store of strategy compilations.",
   openGraph: {
     title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides",
     description:

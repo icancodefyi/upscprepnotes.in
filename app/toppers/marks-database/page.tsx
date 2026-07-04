@@ -3,14 +3,14 @@ import { getAllToppersWithMarks } from "@/services/topper.service";
 import MarksTable from "@/components/topper/MarksTable";
 
 export const metadata = {
-  title: "UPSC Topper Marks Database — 50+ Rank Holders' Marksheets & Scores",
+  title: "UPSC Topper Marks Database — Optional, GS1-4, Essay & Interview Scores",
   description:
-    "Search and sort marks of 50+ UPSC toppers across all subjects — GS1, GS2, GS3, GS4, Essay, Optional, Written, Interview, and Total marks. Free access to every rank holder's marksheet.",
+    "Search and sort marks of 50+ UPSC toppers across all subjects — GS1, GS2, GS3, GS4, Essay, Optional (PSIR, Sociology, Anthropology, etc.), Written, Interview, and Total marks. Free access to every rank holder's marksheet.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/marks-database",
   },
   openGraph: {
-    title: "UPSC Topper Marks Database — Marksheets & Scores",
+    title: "UPSC Topper Marks Database — Optional, GS1-4 & Interview Scores",
     description:
       "Search and sort marks of 50+ UPSC toppers across GS1-4, Essay, Optional, Written, Interview, and Total. Free access to every rank holder's marksheet.",
     url: "https://upscprepnotes.in/toppers/marks-database",

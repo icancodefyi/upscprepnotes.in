@@ -161,7 +161,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `UPSC ${yearNum} Toppers — Complete Marks Dataset`,
-    description: `Full marks breakdown for UPSC ${yearNum} toppers including GS papers, optional subject, essay, interview, and total scores.`,
+    description: `See every UPSC ${yearNum} topper's paper-wise marks. Compare GS, Essay, Optional & Interview scores. Download free answer copies and find preparation strategies.`,
     alternates: {
       canonical: `https://upscprepnotes.in/year/${year}`,
     },

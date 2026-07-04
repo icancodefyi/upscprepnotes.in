@@ -2,9 +2,9 @@ import type { ContentPage } from "../index";
 
 const page: ContentPage = {
   slug: "how-to-score-130-plus-in-gs1",
-  title: "How to Score 130+ in UPSC GS Paper 1 — Marks, Strategy & Topper Analysis",
+  title: "Highest Marks in GS1 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Complete guide to scoring 130+ in UPSC GS Paper 1. Includes topper marks data, topic-wise strategy, booklist, and answer-writing tips from AIR 1-10 toppers.",
+    "Highest GS1 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage, and answer-writing strategy from top rankers.",
   lastUpdated: "2026-06-24",
   h1: "How to Score 130+ in UPSC GS Paper 1",
   intro:
