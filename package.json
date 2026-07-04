@@ -12,8 +12,7 @@
     "scrape:pdf-links": "node scripts/scrape-pdf-links.mjs",
     "generate-pdfs": "npx tsx scripts/generate-current-affairs-pdfs.tsx",
     "generate-2025-pdf": "npx tsx scripts/generate-2025-pdf.tsx",
-    "tg:post": "npx tsx scripts/post-telegram.ts",
-    "tg:next": "npx tsx scripts/post-next.ts"
+    "tg:post": "npx tsx scripts/post-telegram.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
