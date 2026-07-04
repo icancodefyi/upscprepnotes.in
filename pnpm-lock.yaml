@@ -29,6 +29,9 @@ importers:
       dodopayments:
         specifier: ^2.38.1
         version: 2.38.1
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       groq-sdk:
         specifier: ^1.2.0
         version: 1.2.0
@@ -47,6 +50,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.31
         version: 5.0.0-beta.31(next@16.2.7(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(nodemailer@9.0.1)(react@19.2.3)
+      node-telegram-bot-api:
+        specifier: ^1.1.2
+        version: 1.1.2
       nodemailer:
         specifier: ^9.0.1
         version: 9.0.1
@@ -3605,6 +3611,10 @@ packages:
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
+
+  node-telegram-bot-api@1.1.2:
+    resolution: {integrity: sha512-PtLczp0WZCQz7LHsObl1WIyfMSTco58cfYXITqB4Fbeuybd/A/sM729h892fbcjz+szJ9lpu+/pfewUs9NObrg==}
+    engines: {node: '>=18'}
 
   nodemailer@9.0.1:
     resolution: {integrity: sha512-Gwv8SQewT616ZM/URn0H54b8PWo/Wum7md3EW2aWy1lO27+WZCX+Xyak3J+NlmHUjDh5ME+uesJUDRbR3Ye8Bw==}
@@ -8443,6 +8453,8 @@ snapshots:
       formdata-polyfill: 4.0.10
 
   node-releases@2.0.27: {}
+
+  node-telegram-bot-api@1.1.2: {}
 
   nodemailer@9.0.1: {}
 
