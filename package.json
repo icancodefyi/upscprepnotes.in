@@ -11,7 +11,9 @@
     "scrape:images": "node scripts/scrape-topper-images.mjs",
     "scrape:pdf-links": "node scripts/scrape-pdf-links.mjs",
     "generate-pdfs": "npx tsx scripts/generate-current-affairs-pdfs.tsx",
-    "generate-2025-pdf": "npx tsx scripts/generate-2025-pdf.tsx"
+    "generate-2025-pdf": "npx tsx scripts/generate-2025-pdf.tsx",
+    "tg:post": "npx tsx scripts/post-telegram.ts",
+    "tg:next": "npx tsx scripts/post-next.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
@@ -21,12 +23,14 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dodopayments": "^2.38.1",
+    "dotenv": "^17.4.2",
     "groq-sdk": "^1.2.0",
     "lucide-react": "^1.16.0",
     "mongodb": "^7.2.0",
     "mongoose": "^9.6.2",
     "next": "16.2.7",
     "next-auth": "5.0.0-beta.31",
+    "node-telegram-bot-api": "^1.1.2",
     "nodemailer": "^9.0.1",
     "posthog-js": "^1.391.2",
     "posthog-node": "^5.38.2",
