@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import posthog from "posthog-js";
 import { IconDownload, IconX, IconCheck, IconClock, IconStar, IconEye, IconLayoutKanban } from "@tabler/icons-react";
 import { trackClientEvent } from "@/lib/client-analytics";
 
@@ -14,26 +15,78 @@ interface FreeDownloadDialogProps {
 
 export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, freeAnswerCopyUrls, onOpenChange }: FreeDownloadDialogProps) {
   const [email, setEmail] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pdfUrls, setPdfUrls] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [available, setAvailable] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [dialogError, setDialogError] = useState("");
+
+  // The topper's answer copy links are handed to us as props, so when they
+  // exist we can let the user download immediately instead of gating the file
+  // behind a required email (the step where session recordings show drop-off).
+  const directUrls = freeAnswerCopyUrls?.length
+    ? freeAnswerCopyUrls
+    : freeAnswerCopyUrl
+      ? [freeAnswerCopyUrl]
+      : [];
+  const canDownloadDirectly = directUrls.length > 0;
 
   useEffect(() => {
     trackClientEvent("dialog_open", { dialog: "free_download", topperSlug, topperName });
+    posthog.capture("free_download_dialog_opened", {
+      topper_slug: topperSlug,
+      topper_name: topperName,
+      can_download_directly: canDownloadDirectly,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleClose() {
+    // "Abandoned" = closed without ever getting the file or leaving an email.
+    const abandoned = !submitted && !downloaded && !emailSent;
     trackClientEvent("dialog_close", { dialog: "free_download", topperSlug, topperName, submitted });
+    posthog.capture("free_download_dialog_closed", {
+      topper_slug: topperSlug,
+      topper_name: topperName,
+      submitted,
+      downloaded,
+      email_started: emailTouched,
+    });
+    if (abandoned) {
+      posthog.capture("free_download_dialog_abandoned", {
+        topper_slug: topperSlug,
+        topper_name: topperName,
+        email_started: emailTouched,
+        gated: !canDownloadDirectly,
+      });
+    }
     onOpenChange(false);
+  }
+
+  function trackDownload(gated: boolean) {
+    if (downloaded) return;
+    setDownloaded(true);
+    trackClientEvent("file_download", {
+      topperSlug,
+      topperName,
+      fileType: "answer_copy",
+      source: "free_download_dialog",
+    });
+    posthog.capture("free_download_completed", {
+      topper_slug: topperSlug,
+      topper_name: topperName,
+      gated,
+    });
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) {
-      setDialogError("Email is required");
+      // Email is only required when we have no file to hand over directly.
+      if (!canDownloadDirectly) setDialogError("Email is required");
       return;
     }
     setLoading(true);
@@ -54,28 +107,21 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
       }
-      setAvailable(data.available);
-      if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
-      else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
-      setSubmitted(true);
+      setEmailSent(true);
       trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, topperName, status: data.available ? "delivered" : "pending", email: email.trim() });
       trackClientEvent("free_download_lead", { topperSlug, topperName, available: data.available, count: data.pdfUrls?.length || 1, email: email.trim() });
+      // When we couldn't serve the file directly, fall through to the
+      // "check your inbox / we're working on it" confirmation screen.
+      if (!canDownloadDirectly) {
+        setAvailable(data.available);
+        if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
+        else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
+        setSubmitted(true);
+      }
     } catch (err: any) {
       setDialogError(err.message);
     } finally {
       setLoading(false);
-    }
-  }
-
-  function handleDownload() {
-    if (!downloaded) {
-      setDownloaded(true);
-      trackClientEvent("file_download", {
-        topperSlug,
-        topperName,
-        fileType: "answer_copy",
-        source: "free_download_dialog",
-      });
     }
   }
 
@@ -117,36 +163,96 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div>
-                <label className="text-xs font-medium text-gray-700">Email *</label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  type="email"
-                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-                  placeholder="Send the download link here"
-                />
-              </div>
-              {dialogError && (
-                <p className="text-xs text-red-500">{dialogError}</p>
-              )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all"
-              >
-                {loading ? "Sending..." : "Send My Free Copy →"}
-              </button>
-            </form>
-            <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
-              <span>🔒 Free download</span>
-              <span className="h-1 w-1 rounded-full bg-gray-300" />
-              <span>No spam</span>
-              <span className="h-1 w-1 rounded-full bg-gray-300" />
-              <span>Unsubscribe anytime</span>
-            </div>
+            {canDownloadDirectly ? (
+              // Download-first: the file is available, so serve it immediately
+              // and offer email as a lighter, optional follow-up.
+              <>
+                <div className="space-y-2">
+                  {directUrls.map((url, i) => (
+                    <a
+                      key={url}
+                      href={url}
+                      download
+                      onClick={() => trackDownload(false)}
+                      data-track="free-download-pdf"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500 transition-all"
+                    >
+                      <IconDownload size={16} />
+                      {directUrls.length > 1 ? `Download Copy ${i + 1}` : "Download Now — It's Free"}
+                    </a>
+                  ))}
+                </div>
+
+                {emailSent ? (
+                  <p className="mt-4 flex items-center justify-center gap-1.5 text-xs font-medium text-emerald-600">
+                    <IconCheck size={14} /> We&apos;ll also email it, plus more free topper copies.
+                  </p>
+                ) : (
+                  <form onSubmit={handleSubmit} className="mt-4 border-t border-border/40 pt-4">
+                    <label className="text-xs font-medium text-gray-700">
+                      Want it in your inbox too? <span className="text-muted-foreground">(optional)</span>
+                    </label>
+                    <div className="mt-1 flex gap-2">
+                      <input
+                        value={email}
+                        onChange={(e) => { setEmail(e.target.value); if (!emailTouched) setEmailTouched(true); }}
+                        type="email"
+                        className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                        placeholder="you@example.com"
+                      />
+                      <button
+                        type="submit"
+                        disabled={loading || !email.trim()}
+                        className="shrink-0 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-40 transition-all"
+                      >
+                        {loading ? "..." : "Email me"}
+                      </button>
+                    </div>
+                    {dialogError && (
+                      <p className="mt-2 text-xs text-red-500">{dialogError}</p>
+                    )}
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      We&apos;ll also send more free topper copies. No spam — unsubscribe anytime.
+                    </p>
+                  </form>
+                )}
+              </>
+            ) : (
+              // No file to serve yet: keep email required so we can source the
+              // copy and deliver it by email once it's ready.
+              <>
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div>
+                    <label className="text-xs font-medium text-gray-700">Email *</label>
+                    <input
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); if (!emailTouched) setEmailTouched(true); }}
+                      required
+                      type="email"
+                      className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                      placeholder="Send the download link here"
+                    />
+                  </div>
+                  {dialogError && (
+                    <p className="text-xs text-red-500">{dialogError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all"
+                  >
+                    {loading ? "Sending..." : "Send My Free Copy →"}
+                  </button>
+                </form>
+                <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
+                  <span>🔒 Free download</span>
+                  <span className="h-1 w-1 rounded-full bg-gray-300" />
+                  <span>No spam</span>
+                  <span className="h-1 w-1 rounded-full bg-gray-300" />
+                  <span>Unsubscribe anytime</span>
+                </div>
+              </>
+            )}
           </>
         ) : available ? (
           <div className="text-center">
@@ -167,7 +273,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
                     key={url}
                     href={url}
                     download
-                    onClick={handleDownload}
+                    onClick={() => trackDownload(true)}
                     data-track="free-download-pdf"
                     className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 transition-colors"
                   >
