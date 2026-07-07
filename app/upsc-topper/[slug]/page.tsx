@@ -441,8 +441,8 @@ export default async function TopperPage({ params }: Props) {
                 { label: "Interview", value: topper.marks.interview, show: topper.marks.interview > 0 },
                 { label: "Total", value: topper.marks.total, show: topper.marks.total > 0, highlight: true },
                 { label: "Essay", value: topper.marks.essay, show: topper.marks.essay > 0 },
-                { label: "Best GS", value: Math.max(topper.marks.gs1 || 0, topper.marks.gs2 || 0, topper.marks.gs3 || 0, topper.marks.gs4 || 0), show: (topper.marks.gs1 || topper.marks.gs2 || topper.marks.gs3 || topper.marks.gs4) > 0 },
-                { label: topper.optionalSubject?.split(" ").slice(0, 2).join(" ") || "Optional", value: topper.marks.optional1 || topper.marks.optional2, show: (topper.marks.optional1 || topper.marks.optional2) > 0 },
+                { label: "Optional P1", value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
+                { label: "Optional P2", value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
               ].filter(c => c.show).slice(0, 6).map((c) => (
                 <div key={c.label} className={`rounded-lg border ${c.highlight ? "border-emerald-200 bg-emerald-50" : "border-border/50 bg-card"} p-2.5 text-center`}>
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
@@ -450,30 +450,46 @@ export default async function TopperPage({ params }: Props) {
                 </div>
               ))}
             </div>
+
+            {/* PAPER-WISE MARKS — marksheet table for search intent */}
+            <div className="mt-4 rounded-xl border border-border/50 bg-card overflow-hidden">
+              <div className="bg-emerald-50 px-4 py-2 border-b border-border/50">
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">{topper.firstName} {topper.lastName} — UPSC Marksheet {topper.year}</p>
+              </div>
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-border/30">
+                  {[
+                    { label: "GS1", value: topper.marks.gs1, show: (topper.marks.gs1 || 0) > 0 },
+                    { label: "GS2", value: topper.marks.gs2, show: (topper.marks.gs2 || 0) > 0 },
+                    { label: "GS3", value: topper.marks.gs3, show: (topper.marks.gs3 || 0) > 0 },
+                    { label: "GS4 (Ethics)", value: topper.marks.gs4, show: (topper.marks.gs4 || 0) > 0 },
+                    { label: "Essay", value: topper.marks.essay, show: (topper.marks.essay || 0) > 0 },
+                    { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P1`, value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
+                    { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P2`, value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
+                  ].filter(r => r.show).map((row) => (
+                    <tr key={row.label} className="hover:bg-muted/30">
+                      <td className="px-4 py-2 text-muted-foreground">{row.label}</td>
+                      <td className="px-4 py-2 font-semibold text-right">{row.value}</td>
+                    </tr>
+                  ))}
+                  <tr className="border-t-2 border-emerald-200 bg-emerald-50/50">
+                    <td className="px-4 py-2 font-semibold text-emerald-800">Written Total</td>
+                    <td className="px-4 py-2 font-semibold text-right text-emerald-800">{topper.marks.written}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 text-muted-foreground">Interview</td>
+                    <td className="px-4 py-2 font-semibold text-right">{topper.marks.interview}</td>
+                  </tr>
+                  <tr className="border-t-2 border-emerald-200 bg-emerald-50/50">
+                    <td className="px-4 py-2 font-bold text-emerald-800">Total</td>
+                    <td className="px-4 py-2 font-bold text-right text-emerald-800">{topper.marks.total}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {topper.firstName} {topper.lastName} answer copy PDF and UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional subject. Download the actual UPSC Mains answer copy with full marks breakdown across GS papers, essay, and optional subject.
             </p>
-
-            {/* QUICK FACTS — structured for AI overviews */}
-            <div className="mt-4 rounded-xl border border-border/50 bg-card p-4 text-sm">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Quick Facts</h2>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                {[
-                  ["Name", `${topper.firstName} ${topper.lastName}`],
-                  ["Rank", `AIR ${topper.rank}`],
-                  ["Year", `${topper.year}`],
-                  ["Optional", `${topper.optionalSubject}`],
-                  ["Written Total", `${topper.marks.written}`],
-                  ["Interview", `${topper.marks.interview}`],
-                  ["Total Marks", `${topper.marks.total}`],
-                ].filter(r => r[1] && r[1] !== "0").map(([label, value]) => (
-                  <div key={label} className="flex justify-between">
-                    <span className="text-muted-foreground">{label}</span>
-                    <span className="font-semibold">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
             <p className="mt-2 text-sm leading-6">
               <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
                 Shop Now →
