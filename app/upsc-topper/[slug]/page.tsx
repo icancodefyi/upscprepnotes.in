@@ -19,7 +19,6 @@ import PurchaseSidebar from "@/components/topper/PurchaseSidebar";
 import ExitPopup from "@/components/topper/ExitPopup";
 import LiveCounter from "@/components/topper/LiveCounter";
 import ReportButton from "@/components/ReportButton";
-import StrategyPaywall from "@/components/topper/StrategyPaywall";
 
 export const revalidate = 3600;
 
@@ -567,8 +566,7 @@ export default async function TopperPage({ params }: Props) {
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
                 {Object.keys(structuredStrategy).length > 0 ? (
                   <>
-                    {/* First 4 sections — fully visible for SEO depth */}
-                    {Object.entries(structuredStrategy).slice(0, 4).map(
+                    {Object.entries(structuredStrategy).map(
                       ([heading, content], i) => (
                         <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
                           <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
@@ -579,33 +577,6 @@ export default async function TopperPage({ params }: Props) {
                           </div>
                         </section>
                       ),
-                    )}
-                    {/* Remaining sections — blurred with paywall */}
-                    {Object.keys(structuredStrategy).length > 4 && (
-                      <div className="relative mt-4">
-                        <div className="overflow-hidden" style={{ maxHeight: "320px" }}>
-                          <div className="blur-sm opacity-30 pointer-events-none select-none">
-                            {Object.entries(structuredStrategy).slice(4).map(
-                              ([heading, content], i) => (
-                                <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
-                                  <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
-                                  <div className="mt-2">
-                                    <ReactMarkdown>
-                                      {deduplicateContent(content)}
-                                    </ReactMarkdown>
-                                  </div>
-                                </section>
-                              ),
-                            )}
-                          </div>
-                          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
-                        </div>
-                        <StrategyPaywall
-                          topperName={`${topper.firstName} ${topper.lastName}`}
-                          topperSlug={topper.slug}
-                          blurredCount={Object.keys(structuredStrategy).length - 4}
-                        />
-                      </div>
                     )}
                   </>
                 ) : (
