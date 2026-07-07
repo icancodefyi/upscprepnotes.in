@@ -513,6 +513,11 @@ export const PRODUCTS: StoreProduct[] = [
     tagline: "10 full-length Mains tests — GS Paper 1-4 by Vision IAS",
     description: "Complete Vision IAS Mains 2026 test series with 10 full-length papers covering GS 1-4. Practice with the same test format used by thousands of UPSC aspirants.",
     image: "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series.png?tr=w-464,h-600,f-auto,q-80",
+    images: [
+      "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-1.png?tr=w-464,h-600,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-2.png?tr=w-464,h-600,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-3.png?tr=w-464,h-600,f-auto,q-80",
+    ],
     longDescription: [
       "This is the complete Vision IAS Mains 2026 test series — 10 full-length tests designed to simulate the actual UPSC CSE Mains examination. Each test covers GS Papers 1 through 4 with questions structured exactly like the real exam.",
       "Vision IAS is one of India's most trusted test series providers for UPSC preparation. These tests help you build answer-writing speed, practice within time limits, and identify weak areas before the actual exam.",
