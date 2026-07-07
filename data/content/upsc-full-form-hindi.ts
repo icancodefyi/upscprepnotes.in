@@ -3,11 +3,11 @@ import { ContentPage } from "./index";
 const page: ContentPage = {
   slug: "upsc-full-form-hindi",
   lang: "hi",
-  title: "UPSC Full Form in Hindi — UPSC का फुल फॉर्म, अर्थ, परीक्षाएं और तैयारी गाइड",
+  title: "UPSC का फुल फॉर्म (Full Form) — Union Public Service Commission क्या है? जानिए पूरी जानकारी",
   description:
     "UPSC का फुल फॉर्म Union Public Service Commission (संघ लोक सेवा आयोग) है। जानिए UPSC क्या है, इसके द्वारा आयोजित परीक्षाएं, चयन प्रक्रिया और तैयारी के टिप्स.",
-  lastUpdated: "2026-06-03",
-  h1: "UPSC Full Form in Hindi — UPSC का फुल फॉर्म क्या है?",
+  lastUpdated: "2026-07-07",
+  h1: "UPSC का फुल फॉर्म (Full Form) — संघ लोक सेवा आयोग क्या है?",
   ctaIntro: "UPSC की तैयारी कर रहे हैं? 50+ टॉपर्स के वास्तविक उत्तर पत्रिकाएं (Answer Copies) प्राप्त करें — सिर्फ ₹799 में।",
   ctaIntroBtn: "बंडल खरीदें ₹799 →",
   ctaMid: "🎯 रणनीति नहीं, असली उत्तर पत्रिकाएं देखें — टॉपर्स ने परीक्षा में कैसे लिखा",
