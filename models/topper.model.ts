@@ -61,6 +61,10 @@ const topperSchema = new Schema(
       enrichedAt: Date,
       lastTriedAt: Date,
     },
+    faqs: [{
+      question: { type: String, required: true },
+      answer: { type: String, required: true },
+    }],
     isFeatured: {
       type: Boolean,
       default: false,
