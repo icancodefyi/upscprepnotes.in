@@ -202,108 +202,65 @@ export default async function TopperPage({ params }: Props) {
       .join("\n");
   };
 
-  // FAQ Schema — expanded for entity search intent
+  // Build FAQ items — DB FAQs first, then generic fallbacks
+  const dbFaqs = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({
+    "@type": "Question" as const,
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer" as const, text: f.answer },
+  }));
+
+  const genericFaqs = [
+    {
+      "@type": "Question" as const,
+      name: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
+      },
+    },
+    {
+      "@type": "Question" as const,
+      name: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
+      },
+    },
+    {
+      "@type": "Question" as const,
+      name: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: `${topper.firstName} ${topper.lastName} scored a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
+      },
+    },
+    {
+      "@type": "Question" as const,
+      name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹99.`,
+      },
+    },
+    {
+      "@type": "Question" as const,
+      name: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
+      acceptedAnswer: {
+        "@type": "Answer" as const,
+        text: `${topper.firstName} ${topper.lastName}'s UPSC preparation strategy is detailed on their topper page, covering subject-wise approach, optional strategy, and interview preparation for UPSC CSE ${topper.year}.`,
+      },
+    },
+  ] as const;
+
+  // FAQ Schema — Speakable + per-topper FAQs + generic fallbacks
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s interview marks?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} scored ${topper.marks.interview} marks in the UPSC personality test (interview).`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName} scored a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s GS1 marks?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} scored ${topper.marks.gs1} marks in GS1 paper.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s essay marks?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} scored ${topper.marks.essay} marks in the essay paper.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-              text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹99.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-              text: `Download a free sample of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from the topper page — enter your email and we will send the PDF. The full set is available in the store — Starting at ₹99.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s ethics (GS4) marks?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} scored ${topper.marks.gs4} marks in the GS4 (Ethics) paper of UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What were ${topper.firstName} ${topper.lastName}'s optional subject marks?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} scored ${topper.marks.optional1} in ${topper.optionalSubject} Paper 1 and ${topper.marks.optional2} in Paper 2, totaling ${topper.marks.optional1 + topper.marks.optional2} marks in the optional subject for UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName}'s UPSC preparation strategy is detailed on their topper page, covering subject-wise approach, optional strategy, and interview preparation for UPSC CSE ${topper.year}.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year} with ${topper.optionalSubject} as optional subject. The detailed educational background and graduation details are covered in the strategy section on their topper page.`,
-        },
-      },
-    ],
+    mainEntity: [...dbFaqs, ...genericFaqs],
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".faq-section"],
+    },
   };
 
   // Breadcrumb Schema
@@ -338,7 +295,7 @@ export default async function TopperPage({ params }: Props) {
     ],
   };
 
-  // Person Schema with rich marks data
+  // Person Schema with rich marks data + Wikidata entity linking
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -348,6 +305,10 @@ export default async function TopperPage({ params }: Props) {
     url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
     datePublished: "2025-01-01",
     dateModified: new Date().toISOString().split("T")[0],
+    about: {
+      "@id": "https://en.wikipedia.org/wiki/Union_Public_Service_Commission",
+      name: "UPSC",
+    },
     knowsAbout: [
       { "@type": "Thing", name: `UPSC CSE ${topper.year}` },
       { "@type": "Thing", name: topper.optionalSubject },
@@ -891,91 +852,43 @@ export default async function TopperPage({ params }: Props) {
         )}
 
         {/* FAQ */}
-        <section className="mt-12">
+        <section className="faq-section mt-12">
           <h2 className="text-xl font-semibold">Frequently Asked Questions about {topper.firstName} {topper.lastName}</h2>
           <div className="mt-4 divide-y divide-black/10">
-            {[
-              {
-                q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
-                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
-              },
-              {
-                q: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
-                a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
-              },
-              {
-                q: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
-                a: `${topper.firstName} obtained a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
-              },
-              {
-                q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set of ${topper.firstName}'s copies across all papers is available in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Starting at ₹99.`,
-              },
-              {
-                q: `Where can I find ${topper.firstName} ${topper.lastName} answer copy?`,
-                a: `You can <strong>download a free sample</strong> of ${topper.firstName} ${topper.lastName}'s UPSC answer copy directly from this page — enter your email and we will send the PDF. The full set is in the <a href="/store" class="text-emerald-600 font-semibold underline">Shop Now</a> — Starting at ₹99.`,
-              },
-              {
-                q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
-                a: topper.strategy
-                  ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed above on this page.`
-                  : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
-              },
-              {
-                q: `What were ${topper.firstName} ${topper.lastName}'s ethics (GS4) marks?`,
-                a: `${topper.firstName} scored ${topper.marks.gs4} marks in the GS4 (Ethics) paper of UPSC CSE ${topper.year}.`,
-              },
-              {
-                q: `What were ${topper.firstName} ${topper.lastName}'s optional subject marks?`,
-                a: `${topper.firstName} scored ${topper.marks.optional1} in ${topper.optionalSubject} Paper 1 and ${topper.marks.optional2} in Paper 2, totaling ${topper.marks.optional1 + topper.marks.optional2} marks in the optional.`,
-              },
-              {
-                q: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
-                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. Details about their graduation and educational background are mentioned in the strategy section above.`,
-              },
-              {
-                q: `Which coaching did ${topper.firstName} ${topper.lastName} join for UPSC?`,
-                a: topper.strategy?.toLowerCase().includes("coaching") || topper.strategy?.toLowerCase().includes("class")
-                  ? `${topper.firstName}'s coaching details are mentioned in the preparation strategy section above.`
-                  : `Coaching details for ${topper.firstName} ${topper.lastName} are not available. Many UPSC toppers rely on self-study and mock test series.`,
-              },
-              {
-                q: `How many attempts did ${topper.firstName} ${topper.lastName} take for UPSC?`,
-                a: `The number of attempts ${topper.firstName} ${topper.lastName} took for UPSC CSE is covered in their preparation journey — refer to the strategy section above for attempt details and timeline.`,
-              },
-              {
-                q: `What books did ${topper.firstName} ${topper.lastName} use for UPSC preparation?`,
-                a: topper.strategy?.toLowerCase().includes("book") || topper.strategy?.toLowerCase().includes("ncert") || topper.strategy?.toLowerCase().includes("standard")
-                  ? `${topper.firstName}'s book list and recommended resources are detailed in the preparation strategy section above.`
-                  : `Book recommendations for ${topper.firstName} ${topper.lastName} are not separately listed. Check the strategy section for their subject-wise preparation approach.`,
-              },
-              {
-                q: `Did ${topper.firstName} ${topper.lastName} take any coaching for UPSC?`,
-                a: topper.strategy?.toLowerCase().includes("coaching")
-                  ? `${topper.firstName}'s coaching details are covered in the preparation strategy section.`
-                  : `Coaching details for ${topper.firstName} ${topper.lastName} are not explicitly mentioned. Many top-ranked toppers, especially those with AIR under 50, rely on a combination of self-study and test series.`,
-              },
-              {
-                q: `What was ${topper.firstName} ${topper.lastName}'s GS1 strategy?`,
-                a: `${topper.firstName} ${topper.lastName} scored ${topper.marks.gs1} marks in GS1 (Indian Heritage & Culture, History, Geography). ${topper.strategy?.toLowerCase().includes("gs1") ? "Their GS1 preparation approach is covered in the strategy section above." : "For GS1 preparation strategies, refer to the detailed approach outlined in the strategy section."}`,
-              },
-              {
-                q: `How many hours did ${topper.firstName} ${topper.lastName} study daily?`,
-                a: `Daily study hours for ${topper.firstName} ${topper.lastName} are discussed in the preparation strategy section above when available. Most UPSC toppers maintain 6-8 hours of focused study during peak preparation, with variations based on their work status and personal circumstances.`,
-              },
-              {
-                q: `What was ${topper.firstName} ${topper.lastName}'s optional subject preparation strategy?`,
-                a: `${topper.firstName} chose ${topper.optionalSubject} as their optional subject. ${topper.strategy?.toLowerCase().includes(topper.optionalSubject?.toLowerCase() || "") ? "Their optional subject strategy is covered in the preparation section above." : `The strategy section above details ${topper.firstName}'s overall approach, including optional subject preparation where available.`} ${topper.optionalSubject} has produced strong results in UPSC CSE — for more toppers who opted for this subject, visit the <a href="/optional/${getSubjectSlug(topper.optionalSubject)}" class="text-emerald-600 font-semibold underline">${topper.optionalSubject} optional page</a>.`,
-              },
-              {
-                q: `Where is ${topper.firstName} ${topper.lastName} now?`,
-                a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. After selection, UPSC toppers typically undergo training at Lal Bahadur Shastri National Academy of Administration (LBSNAA), Mussoorie, followed by service-specific training. Their current posting and service allocation details are updated when available.`,
-              },
-              {
-                q: `How do I know these answer copies are authentic?`,
-                a: `Every answer copy on UPSCPrepNotes is sourced from topper contributions, coaching institute records, or verified compilations. We cross-reference each copy against published marksheets, interview transcripts, and topper interviews for consistency. While UPSC itself does not publicly release answer books, the copies we host are checked for structural and content alignment with the topper's known performance. If you have specific concerns about a copy, use the <strong>Report</strong> button on this page to flag it for review.`,
-              },
-            ].map((faq, index) => (
+            {(() => {
+              const dbFaqs = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({
+                q: f.question, a: f.answer,
+              }));
+              const genericFaqs = [
+                {
+                  q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
+                  a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
+                },
+                {
+                  q: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
+                  a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
+                },
+                {
+                  q: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
+                  a: `${topper.firstName} obtained a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
+                },
+                {
+                  q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
+                  a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set is available in the <a href="/store" class="text-emerald-600 font-semibold underline">store</a> — Starting at ₹99.`,
+                },
+                {
+                  q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
+                  a: topper.strategy
+                    ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed above on this page.`
+                    : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
+                },
+                {
+                  q: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
+                  a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. Details about their graduation and educational background are mentioned in the strategy section above.`,
+                },
+              ];
+              return [...dbFaqs, ...genericFaqs];
+            })().map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">
                 <h3 className="text-sm font-semibold">{faq.q}</h3>
                 <div className="mt-1 text-sm leading-6 text-muted-foreground prose prose-zinc max-w-none prose-a:text-emerald-600 prose-a:font-semibold">

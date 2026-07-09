@@ -58,6 +58,7 @@ function normalizeTopper(topper: any) {
     isIndexed: topper.isIndexed || false,
     freeAnswerCopyUrl: topper.freeAnswerCopyUrls?.[0] || topper.freeAnswerCopyUrl || null,
     freeAnswerCopyUrls: topper.freeAnswerCopyUrls?.length ? topper.freeAnswerCopyUrls : (topper.freeAnswerCopyUrl ? [topper.freeAnswerCopyUrl] : []),
+    faqs: topper.faqs || [],
   };
 }
 
