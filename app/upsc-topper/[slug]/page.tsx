@@ -476,11 +476,11 @@ export default async function TopperPage({ params }: Props) {
                     { label: "Rank", value: `AIR ${topper.rank}` },
                     { label: "Year", value: topper.year },
                     { label: "Optional Subject", value: topper.optionalSubject },
-                    { label: "Essay Marks", value: topper.marks.essay },
+                    { label: "Essay Marks", value: topper.marks.essay, show: (topper.marks.essay || 0) > 0 },
                     { label: "Written Total", value: topper.marks.written },
                     { label: "Interview", value: topper.marks.interview },
                     { label: "Total Marks", value: topper.marks.total },
-                  ].map((row) => (
+                  ].filter(r => r.show !== false).map((row) => (
                     <tr key={row.label} className="hover:bg-muted/30">
                       <td className="px-4 py-2.5 text-muted-foreground font-medium w-1/3">{row.label}</td>
                       <td className="px-4 py-2.5 font-semibold">{row.value}</td>
@@ -556,7 +556,7 @@ export default async function TopperPage({ params }: Props) {
             <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
               <div className="prose prose-zinc max-w-none prose-p:leading-7 prose-p:text-sm">
                 <p>{topper.firstName} {topper.lastName} secured AIR {topper.rank} in the UPSC Civil Services Examination {topper.year} with {topper.optionalSubject} as the optional subject. A total of {topper.marks.total} marks was achieved in the final merit list, with {topper.marks.written} marks in the written examination and {topper.marks.interview} marks in the interview round.</p>
-                <p>In the General Studies papers, {topper.firstName} scored {topper.marks.gs1} in GS1, {topper.marks.gs2} in GS2, {topper.marks.gs3} in GS3, and {topper.marks.gs4} in GS4 (Ethics). The essay paper contributed {topper.marks.essay} marks to the total score. In the optional subject ({topper.optionalSubject}), the candidate scored {topper.marks.optional1} in Paper 1 and {topper.marks.optional2} in Paper 2.</p>
+                <p>In the General Studies papers, {topper.firstName}'s marks were distributed as follows: {(topper.marks.gs1 || 0) > 0 ? `GS1: ${topper.marks.gs1}, ` : ""}{(topper.marks.gs2 || 0) > 0 ? `GS2: ${topper.marks.gs2}, ` : ""}{(topper.marks.gs3 || 0) > 0 ? `GS3: ${topper.marks.gs3}, ` : ""}{(topper.marks.gs4 || 0) > 0 ? `GS4 (Ethics): ${topper.marks.gs4}, ` : ""}{(topper.marks.essay || 0) > 0 ? `Essay: ${topper.marks.essay}, ` : ""}Optional ({topper.optionalSubject}): P1: {topper.marks.optional1}, P2: {topper.marks.optional2}.</p>
                 <p>To explore {topper.firstName}&apos;s detailed preparation strategy including study plan, book list, coaching details, and answer writing approach, check the complete strategy guide available in the UPSCPrepNotes store along with actual answer copy PDFs and marksheets. The full compilation includes GS1-4 essays, optional papers, and the interview transcript.</p>
                 {topper.bio && <p>{topper.bio}</p>}
               </div>
