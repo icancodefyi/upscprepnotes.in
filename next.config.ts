@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
       { source: "/free-materials/shankar-ias-environment-10th-edition", destination: "/free-materials/shankar-ias-environment-10th-edition-v2", permanent: true },
       { source: "/free-materials/vision-ias-monthly-current-affairs-magazine", destination: "/free-materials/vision-ias-monthly-current-affairs-magazine-v2", permanent: true },
       { source: "/free-materials/daily-current-affairs-2025-hindi-english", destination: "/free-materials/daily-current-affairs-2025-hindi-english-v2", permanent: true },
+      // Flash sale email had broken product links — redirect to store
+      { source: "/store/only-ias-pt-tests-1-10", destination: "/store", permanent: true },
     ];
   },
   async rewrites() {
