@@ -18,6 +18,7 @@ import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import PurchaseSidebar from "@/components/topper/PurchaseSidebar";
 import ExitPopup from "@/components/topper/ExitPopup";
 import LiveCounter from "@/components/topper/LiveCounter";
+import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
 import ReportButton from "@/components/ReportButton";
 
 export const revalidate = 3600;
@@ -659,51 +660,10 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </section>
 
-        {/* RESOURCE AVAILABILITY — which answer copies exist */}
-        {(() => {
-          const copies = topper.answerCopies || {};
-          const available = Object.entries({
-            Essay: copies.essay,
-            "GS1": copies.gs1,
-            "GS2": copies.gs2,
-            "GS3": copies.gs3,
-            "GS4": copies.gs4,
-          }).filter(([, urls]) => urls && urls.length > 0);
-          const totalPapers = 5;
-          const availableCount = available.length;
-          return (
-            <section className="mt-12">
-              <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Answer Copy Availability</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Which answer copies are available for this topper</p>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-3">
-                {["Essay", "GS1", "GS2", "GS3", "GS4"].map((paper) => {
-                  const key = paper.toLowerCase() === "essay" ? "essay" : paper.toLowerCase();
-                  const urls = copies[key as keyof typeof copies];
-                  const isAvailable = Array.isArray(urls) && urls.length > 0;
-                  return (
-                    <div key={paper} className={`rounded-xl border p-4 text-center ${isAvailable ? "border-emerald-200 bg-emerald-50" : "border-border/50 bg-card opacity-60"}`}>
-                      <p className={`text-xs font-semibold uppercase tracking-wider ${isAvailable ? "text-emerald-700" : "text-muted-foreground"}`}>
-                        {isAvailable ? "Available" : "Coming Soon"}
-                      </p>
-                      <p className="mt-1 text-sm font-bold">{paper}</p>
-                      {isAvailable && (
-                        <p className="mt-0.5 text-[10px] text-emerald-600">{urls.length} copy{urls.length > 1 ? "ies" : "y"}</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-xs text-muted-foreground">
-                {availableCount === totalPapers
-                  ? `All ${totalPapers} answer copies are available for ${topper.firstName} ${topper.lastName}.`
-                  : `${availableCount} of ${totalPapers} paper copies available for ${topper.firstName} ${topper.lastName}${availableCount > 0 ? ". Download a free sample above" : " — check back soon"}.`}
-              </p>
-              <p className="mt-2 text-[11px] text-muted-foreground/50">
-                Copies are sourced from topper contributions, coaching records, and verified compilations. Each copy is cross-referenced for consistency with published marksheets.
-              </p>
-            </section>
-          );
-        })()}
+        {/* FREE ANSWER COPY — email input */}
+        <section className="mt-12">
+          <TopperLeadCapture topperName={`${topper.firstName} ${topper.lastName}`} topperSlug={topper.slug} />
+        </section>
 
         {/* MARKS IN CONTEXT */}
         {(() => {
@@ -901,30 +861,30 @@ export default async function TopperPage({ params }: Props) {
 
         {/* ALSO VIEW — interlinks top 5 winning pages */}
         {[{
-          name: "Divya Tanwar", slug: "divya-tanwar", rank: 52, year: 2024,
+          name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022,
         }, {
-          name: "Garima Lohia", slug: "garima-lohia", rank: 2, year: 2024,
+          name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022,
         }, {
-          name: "Uma Harathi", slug: "uma-harathi-n", rank: 3, year: 2024,
+          name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025,
         }, {
-          name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
+          name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023,
         }, {
-          name: "Shruti Sharma", slug: "shruti-sharma", rank: 1, year: 2021,
+          name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022,
         }].filter(t => t.slug !== topper.slug).slice(0, 4).length > 0 && (
           <section className="mt-12">
             <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
             <p className="mt-1 text-sm text-muted-foreground">Popular topper pages — answer copies, marksheets &amp; strategies</p>
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[{
-                name: "Divya Tanwar", slug: "divya-tanwar", rank: 52, year: 2024,
+                name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022,
               }, {
-                name: "Garima Lohia", slug: "garima-lohia", rank: 2, year: 2024,
+                name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022,
               }, {
-                name: "Uma Harathi", slug: "uma-harathi-n", rank: 3, year: 2024,
+                name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025,
               }, {
-                name: "Ayan Jain", slug: "ayan-jain", rank: 56, year: 2024,
+                name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023,
               }, {
-                name: "Shruti Sharma", slug: "shruti-sharma", rank: 1, year: 2021,
+                name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022,
               }].filter(t => t.slug !== topper.slug).slice(0, 4).map((t) => (
                 <Link
                   key={t.slug}
