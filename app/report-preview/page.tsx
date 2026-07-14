@@ -6,14 +6,14 @@ export const metadata: Metadata = {
 };
 
 const TOPPERS_FOR_TEST = [
-  { name: "Ishita Kishore", rank: "1", slug: "ishita-kishore", sub: "PSIR" },
-  { name: "Garima Lohia", rank: "2", slug: "garima-lohia", sub: "Commerce & Accountancy" },
-  { name: "Harshita Goyal", rank: "2", slug: "harshita-goyal", sub: "PSIR" },
-  { name: "Shivani Ettaboyina", rank: "11", slug: "shivani-ettaboyina", sub: "Anthropology" },
-  { name: "Uma Harathi", rank: "3", slug: "uma-harathi", sub: "Anthropology" },
-  { name: "Divya Tanwar", rank: "105", slug: "divya-tanwar", sub: "Hindi Literature" },
-  { name: "Vaishali Chopra", rank: "23", slug: "vaishali-chopra", sub: "Mathematics" },
-  { name: "Ayan Jain", rank: "16", slug: "ayan-jain", sub: "Mathematics" },
+  { name: "Ishita Kishore", rank: "1", slug: "ishita-kishore-rank-1-2022", sub: "PSIR" },
+  { name: "Garima Lohia", rank: "2", slug: "garima-lohia-rank-2-2022", sub: "Commerce & Accountancy" },
+  { name: "Harshita Goyal", rank: "2", slug: "harshita-goyal-rank-2-2024", sub: "PSIR" },
+  { name: "Shivani Ettaboyina", rank: "11", slug: "shivani-ettaboyina-rank-11-2024", sub: "Anthropology" },
+  { name: "Uma Harathi", rank: "3", slug: "uma-harathi-rank-3-2022", sub: "Anthropology" },
+  { name: "Divya Tanwar", rank: "105", slug: "divya-tanwar-rank-105-2022", sub: "Hindi Literature" },
+  { name: "Vaishali Chopra", rank: "23", slug: "vaishali-chopra-rank-23-2022", sub: "Mathematics" },
+  { name: "Ayan Jain", rank: "16", slug: "ayan-jain-rank-16-2023", sub: "Mathematics" },
 ];
 
 export default function PreviewPage() {
