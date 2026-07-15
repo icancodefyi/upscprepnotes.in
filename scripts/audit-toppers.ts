@@ -14,18 +14,19 @@ async function main() {
     const t = await Topper.findOne({ slug }).lean();
     if (!t) { console.log(`\n=== ${slug} NOT FOUND ===`); continue; }
 
-    console.log(`\n=== ${t.firstName} ${t.lastName} (AIR ${t.rank}, ${t.year}) ===`);
-    console.log(`Optional: ${t.optionalSubject}`);
-    console.log(`Marks: Essay=${t.marks?.essay}, GS1=${t.marks?.gs1}, GS2=${t.marks?.gs2}, GS3=${t.marks?.gs3}, GS4=${t.marks?.gs4}`);
-    console.log(`Opt1=${t.marks?.optional1}, Opt2=${t.marks?.optional2}`);
-    console.log(`Written=${t.marks?.written}, Interview=${t.marks?.interview}, Total=${t.marks?.total}`);
-    console.log(`isIndexed: ${t.isIndexed}`);
-    console.log(`isFeatured: ${t.isFeatured}`);
-    console.log(`Bio length: ${t.bio?.length || 0} chars`);
-    console.log(`Strategy length: ${t.strategy?.length || 0} chars`);
-    console.log(`Insights count: ${t.insights?.length || 0}`);
-    console.log(`FAQs count: ${t.faqs?.length || 0}`);
-    console.log(`Slug: ${t.slug}`);
+    const any = t as any;
+    console.log(`\n=== ${any.firstName} ${any.lastName} (AIR ${any.rank}, ${any.year}) ===`);
+    console.log(`Optional: ${any.optionalSubject}`);
+    console.log(`Marks: Essay=${any.marks?.essay}, GS1=${any.marks?.gs1}, GS2=${any.marks?.gs2}, GS3=${any.marks?.gs3}, GS4=${any.marks?.gs4}`);
+    console.log(`Opt1=${any.marks?.optional1}, Opt2=${any.marks?.optional2}`);
+    console.log(`Written=${any.marks?.written}, Interview=${any.marks?.interview}, Total=${any.marks?.total}`);
+    console.log(`isIndexed: ${any.isIndexed}`);
+    console.log(`isFeatured: ${any.isFeatured}`);
+    console.log(`Bio length: ${any.bio?.length || 0} chars`);
+    console.log(`Strategy length: ${any.strategy?.length || 0} chars`);
+    console.log(`Insights count: ${any.insights?.length || 0}`);
+    console.log(`FAQs count: ${any.faqs?.length || 0}`);
+    console.log(`Slug: ${any.slug}`);
   }
 
   await mongoose.disconnect();

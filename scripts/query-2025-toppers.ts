@@ -13,10 +13,11 @@ async function main() {
   const toppers = await Topper.find({ year: 2025 }).sort({ rank: 1 }).lean();
   console.log(`Total 2025 toppers: ${toppers.length}\n`);
   for (const t of toppers) {
-    const hasFree = t.freeAnswerCopyUrl || (t.freeAnswerCopyUrls?.length > 0) ? "✅ download" : "";
-    const hasBio = t.bio?.trim() ? "✅ bio" : "";
-    const hasStrategy = t.strategy?.trim() ? "✅ strategy" : "";
-    console.log(`AIR ${t.rank} | ${t.firstName} ${t.lastName} | ${t.slug} | ${t.optionalSubject || "N/A"} ${hasFree} ${hasBio} ${hasStrategy}`);
+    const any = t as any;
+    const hasFree = any.freeAnswerCopyUrl || (any.freeAnswerCopyUrls?.length > 0) ? "✅ download" : "";
+    const hasBio = any.bio?.trim() ? "✅ bio" : "";
+    const hasStrategy = any.strategy?.trim() ? "✅ strategy" : "";
+    console.log(`AIR ${any.rank} | ${any.firstName} ${any.lastName} | ${any.slug} | ${any.optionalSubject || "N/A"} ${hasFree} ${hasBio} ${hasStrategy}`);
   }
   await mongoose.disconnect();
 }

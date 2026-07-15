@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "how-to-score-120-plus-in-gs3",
   title: "Highest Marks in GS3 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Highest GS3 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage for Economy, Agriculture, Environment & Security, and strategy from top rankers.",
+    "Highest GS3 score in our dataset is 104 (Ritika Verma, AIR 25). Real marks from 38 toppers: avg 89.9, topic-wise weightage, booklist, and answer-writing strategy.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 120+ in UPSC GS Paper 3",
 
@@ -125,6 +125,11 @@ This indicates that consistent reading of the Economic Survey, Union Budget, and
       title: "UPSC Topper Answer Copies",
       href: "/content/upsc-topper-answer-copies",
       description: "Compilation of GS3 and other paper answer copies from top-ranked toppers.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "Ritika Verma's Strategy",

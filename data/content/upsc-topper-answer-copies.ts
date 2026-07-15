@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "upsc-topper-answer-copies",
   title: "UPSC Topper Answer Copies — Complete Guide [2026] | UPSCPrepNotes",
   description:
-    "Everything about UPSC topper answer copies: what they are, where to find verified handwritten answer sheets from AIR 1–1249, how to use them for Mains preparation, and which topper copies are most valuable for GS, Essay, and Optional papers.",
+    "What are UPSC topper answer copies? Where to find verified handwritten answer sheets from AIR 1-1249, how to use them for Mains, and which copies to study first.",
   lastUpdated: "2026-06-13",
   h1: "UPSC Topper Answer Copies: Complete Guide for Mains Preparation",
   intro:
@@ -102,6 +102,11 @@ const page: ContentPage = {
       title: "UPSC Toppers — Complete List with Marks",
       href: "/toppers",
       description: "Browse all 280+ topper profiles with marks breakdowns, strategies, and answer copy availability.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "How to Write UPSC Mains Answers",

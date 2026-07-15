@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "how-to-score-120-plus-in-gs2",
   title: "Highest Marks in GS2 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Highest GS2 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage for Polity, Governance & IR, and strategy from top rankers.",
+    "Only 22% of toppers cross 120 in GS2. Real marks from 50 profiles: highest 135 (Vaishali Chopra). Polity, Governance, IR topic breakdown and answer-writing tips.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 120+ in UPSC GS Paper 2",
 
@@ -111,6 +111,11 @@ Candidates with PSIR as their optional do carry a natural advantage in the IR an
       title: "PSIR Optional Strategy",
       href: "/optional/psir",
       description: "PSIR overlaps heavily with GS2 — useful for candidates choosing an optional with governance and IR synergy.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "Ishita Kishore's GS2 Strategy",

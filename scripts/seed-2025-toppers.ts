@@ -135,12 +135,12 @@ async function main() {
       console.log(`Skipping ${data.slug} — already exists`);
       continue;
     }
-    const topper = await Topper.create(data);
+    const topper = await (Topper as any).create(data);
     console.log(`Created ${data.firstName} ${data.lastName} (AIR ${data.rank}, ${data.year}) — ID: ${topper._id}`);
   }
 
   // Generate FAQs for toppers without any
-  const allToppers = await Topper.find({ $or: [{ faqs: { $exists: false } }, { faqs: { $size: 0 } }], year: 2025 }).lean();
+  const allToppers = await Topper.find({ $or: [{ faqs: { $exists: false } }, { faqs: { $size: 0 } }], year: 2025 }).lean() as any[];
   let faqUpdated = 0;
   for (const t of allToppers) {
     const name = `${t.firstName} ${t.lastName}`;
