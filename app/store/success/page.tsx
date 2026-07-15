@@ -71,11 +71,11 @@ function SuccessInner() {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
-          <svg className="mx-auto h-10 w-10 animate-spin text-emerald-600" viewBox="0 0 24 24" fill="none">
+          <svg className="mx-auto h-10 w-10 animate-spin text-brand" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          <p className="mt-4 text-sm text-gray-500">Verifying your payment...</p>
+          <p className="mt-4 text-sm text-muted-foreground">Verifying your payment...</p>
         </div>
       </div>
     );
@@ -84,12 +84,12 @@ function SuccessInner() {
   if (error) {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-amber-600"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-muted">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-brand"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
         </div>
-        <h1 className="mt-4 text-xl font-bold text-gray-900">Almost there!</h1>
+        <h1 className="mt-4 text-xl font-bold text-foreground">Almost there!</h1>
         {/* Intentional: error state shown before success — only one h1 renders */}
-        <p className="mt-2 text-sm text-gray-500">{error}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
         <Link href="/store" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-800">
           <IconArrowLeft size={16} />
           Back to Store
@@ -101,32 +101,32 @@ function SuccessInner() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <div className="text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-          <IconCheck size={28} className="text-emerald-600" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-muted">
+          <IconCheck size={28} className="text-brand" />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-gray-900">Payment Successful!</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="mt-4 text-2xl font-bold text-foreground">Payment Successful!</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Order <strong>{order?.orderId}</strong>
         </p>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-muted-foreground">
           A confirmation email has been sent to <strong>{order?.email}</strong>
         </p>
       </div>
 
       <div className="mt-8 rounded-xl border border-gray-100 bg-white p-6">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400">Your Downloads</h2>
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Your Downloads</h2>
         <div className="mt-4 space-y-3">
           {order?.items.map((item) => (
             <div key={item.slug} className="flex items-center justify-between rounded-lg border border-gray-100 p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50">
-                  <IconShoppingBag size={18} className="text-emerald-600" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+                  <IconShoppingBag size={18} className="text-brand" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{item.title}</p>
+                  <p className="text-sm font-semibold text-foreground">{item.title}</p>
                   <a
                     href={`/api/download/${order?.downloadToken}?slug=${item.slug}`}
-                    className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700"
+                    className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-brand hover:text-brand"
                   >
                     <IconDownload size={12} />
                     Download ZIP
@@ -138,9 +138,9 @@ function SuccessInner() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-xl bg-emerald-50 p-5">
+      <div className="mt-6 rounded-xl bg-brand-muted p-5">
         <p className="text-xs font-semibold text-emerald-800">What happens next?</p>
-        <ul className="mt-2 space-y-1.5 text-xs text-emerald-700">
+        <ul className="mt-2 space-y-1.5 text-xs text-brand">
           <li className="flex items-start gap-2">
             <IconCheck size={13} className="mt-0.5 shrink-0" />
             Your files are ready for instant download above
@@ -159,7 +159,7 @@ function SuccessInner() {
       <div className="mt-8 text-center">
         <Link
           href="/store"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-800"
+          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground/80"
         >
           <IconArrowLeft size={15} />
           Continue Browsing Store
@@ -174,7 +174,7 @@ export default function SuccessPage() {
     <Suspense
       fallback={
         <div className="flex min-h-[60vh] items-center justify-center">
-          <svg className="h-10 w-10 animate-spin text-emerald-600" viewBox="0 0 24 24" fill="none">
+          <svg className="h-10 w-10 animate-spin text-brand" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>

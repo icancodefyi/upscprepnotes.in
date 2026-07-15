@@ -288,18 +288,18 @@ const SOURCE_TYPE_COLORS: Record<
   SourceType,
   { bg: string; text: string; dot: string }
 > = {
-  government: { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-500" },
+  government: { bg: "bg-brand-muted", text: "text-blue-700", dot: "bg-blue-500" },
   official: {
-    bg: "bg-emerald-50",
-    text: "text-emerald-700",
-    dot: "bg-emerald-500",
+    bg: "bg-brand-muted",
+    text: "text-brand",
+    dot: "bg-brand",
   },
   academic: {
     bg: "bg-violet-50",
     text: "text-violet-700",
     dot: "bg-violet-500",
   },
-  coaching: { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-500" },
+  coaching: { bg: "bg-brand-muted", text: "text-brand", dot: "bg-brand-muted" },
   reference: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
   community: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
   topper: { bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-500" },
@@ -913,7 +913,7 @@ async function copyShareText() {
       {showQuotaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 bg-foreground/20 backdrop-blur-sm"
             onClick={() => setShowQuotaModal(false)}
           />
           <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
@@ -995,7 +995,7 @@ async function copyShareText() {
       {shareData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm"
             onClick={() => setShareData(null)}
           />
           <div className="relative z-10 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl">
@@ -1091,7 +1091,7 @@ async function copyShareText() {
 
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          className="fixed inset-0 z-30 bg-foreground/40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -1309,7 +1309,7 @@ async function copyShareText() {
                         setInput(q);
                         inputRef.current?.focus();
                       }}
-                      className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-zinc-700 text-left transition hover:border-emerald-400 hover:bg-emerald-100"
+                      className="w-full rounded-xl border border-brand/20 bg-brand-muted px-4 py-3 text-sm text-zinc-700 text-left transition hover:border-emerald-400 hover:bg-brand-muted"
                     >
                       {q}
                     </button>
@@ -1593,7 +1593,7 @@ async function copyShareText() {
                             setInput(q);
                             inputRef.current?.focus();
                           }}
-                          className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs text-zinc-700 transition hover:border-emerald-400 hover:bg-emerald-100"
+                          className="rounded-full border border-brand/20 bg-brand-muted px-3 py-1.5 text-xs text-zinc-700 transition hover:border-emerald-400 hover:bg-brand-muted"
                         >
                           {q}
                         </button>
@@ -1612,7 +1612,7 @@ async function copyShareText() {
             <Link
               href="/store/all-strategy-reports"
               data-track="ask-purchase-banner"
-              className="flex items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-emerald-500 hover:to-teal-500"
+              className="flex items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-brand to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-brand hover:to-teal-500"
             >
               <div className="flex items-center gap-2.5">
                 <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -1695,7 +1695,7 @@ async function copyShareText() {
             >
               <span
                 className={`relative inline-flex h-[18px] w-8 items-center rounded-full transition-colors duration-200 ${
-                  searchWeb ? "bg-emerald-500" : "bg-zinc-200 group-hover:bg-zinc-300"
+                  searchWeb ? "bg-brand" : "bg-zinc-200 group-hover:bg-zinc-300"
                 }`}
               >
                 <span
@@ -1706,7 +1706,7 @@ async function copyShareText() {
               </span>
               <span
                 className={`text-[11px] font-medium transition-colors duration-200 ${
-                  searchWeb ? "text-emerald-700" : "text-zinc-400 group-hover:text-zinc-600"
+                  searchWeb ? "text-brand" : "text-zinc-400 group-hover:text-zinc-600"
                 }`}
               >
                 Web search
@@ -1811,7 +1811,7 @@ function SourceDrawerModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:p-4">
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+        className="fixed inset-0 bg-foreground/20 backdrop-blur-sm"
         onClick={onClose}
       />
       <div className="relative z-10 flex max-h-[70vh] w-full flex-col rounded-t-2xl bg-white shadow-2xl sm:max-h-[60vh] sm:max-w-lg sm:rounded-2xl mx-auto">

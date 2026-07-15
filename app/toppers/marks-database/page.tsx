@@ -31,26 +31,26 @@ export default async function MarksDatabasePage() {
   const avgInterview = Math.round(toppers.reduce((s, t) => s + (t.marks.interview || 0), 0) / toppers.filter(t => t.marks.interview).length);
 
   return (
-    <main className="min-h-screen bg-[#F8F9FA]">
+    <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         {/* Breadcrumb */}
-        <div className="mb-6 text-xs text-gray-400">
-          <Link href="/" className="hover:text-gray-600 transition-colors">Home</Link>
+        <div className="mb-6 text-xs text-muted-foreground">
+          <Link href="/" className="hover:text-muted-foreground transition-colors">Home</Link>
           <span className="mx-2">/</span>
-          <Link href="/toppers" className="hover:text-gray-600 transition-colors">Toppers</Link>
+          <Link href="/toppers" className="hover:text-muted-foreground transition-colors">Toppers</Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-500">Marks Database</span>
+          <span className="text-muted-foreground">Marks Database</span>
         </div>
 
         {/* Hero */}
         <div className="mb-10">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gray-400">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
             UPSC Marks Database
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             UPSC Topper Marks &amp; Scores Database
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-gray-500">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Complete marksheets of {toppers.length}+ UPSC rank holders — sortable by every subject. See how the toppers scored across GS papers, essay, optional, written, and interview. Free data for your UPSC prep strategy.
           </p>
         </div>
@@ -64,9 +64,9 @@ export default async function MarksDatabasePage() {
             { label: "Avg Interview", value: avgInterview, sub: "marks" },
           ].map((s) => (
             <div key={s.label} className="rounded-xl bg-white border border-border/50 p-4 text-center">
-              <p className="text-[10px] uppercase tracking-wider text-gray-400">{s.label}</p>
-              <p className="mt-0.5 text-2xl font-bold text-gray-900">{s.value.toLocaleString()}</p>
-              <p className="text-[10px] text-gray-400">{s.sub}</p>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.label}</p>
+              <p className="mt-0.5 text-2xl font-bold text-foreground">{s.value.toLocaleString()}</p>
+              <p className="text-[10px] text-muted-foreground">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -77,8 +77,8 @@ export default async function MarksDatabasePage() {
         </div>
 
         {/* SEO Text */}
-        <div className="mt-12 max-w-3xl mx-auto text-sm leading-relaxed text-gray-500 space-y-4">
-          <h2 className="text-lg font-bold text-gray-900">Why This Marks Data Matters for Your UPSC Prep</h2>
+        <div className="mt-12 max-w-3xl mx-auto text-sm leading-relaxed text-muted-foreground space-y-4">
+          <h2 className="text-lg font-bold text-foreground">Why This Marks Data Matters for Your UPSC Prep</h2>
           <p>
             Understanding how UPSC toppers scored across individual papers is the key to building your own target score. This database gives you real marks data from actual rank holders — not hypotheticals.
           </p>
@@ -89,14 +89,14 @@ export default async function MarksDatabasePage() {
             Each topper&apos;s name links to their full profile page with downloadable answer copies — so you can see not just <em>what</em> they scored but <em>how</em> they wrote their answers.
           </p>
 
-          <div className="mt-8 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 sm:p-8">
-            <h3 className="text-base font-bold text-amber-900">Want All Answer Copies in One Place?</h3>
-            <p className="mt-2 text-sm text-amber-700">
+          <div className="mt-8 rounded-2xl border border-brand/20 bg-brand-muted p-6 sm:p-8">
+            <h3 className="text-base font-bold text-foreground">Want All Answer Copies in One Place?</h3>
+            <p className="mt-2 text-sm text-brand">
               Get the Complete Compilation — 50+ topper answer copies in a single PDF bundle with marks insights, handwriting analysis, and time management strategies.
             </p>
             <Link
               href="/store"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-amber-500 transition-colors"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white hover:bg-brand transition-colors"
             >
               Browse Store &rarr;
             </Link>

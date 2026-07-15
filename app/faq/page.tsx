@@ -81,26 +81,26 @@ export default function FAQPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+      <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
         UPSC Topper Answer Copies & Marksheets — FAQ
       </h1>
-      <p className="mt-4 text-lg text-gray-500">
+      <p className="mt-4 text-lg text-muted-foreground">
         Everything you need to know about UPSC topper answer copies, marksheet data, free downloads, pricing, and how to use them in your preparation.
       </p>
-      <div className="mt-12 divide-y divide-gray-200">
+      <div className="mt-12 divide-y divide-border">
         {FAQS.map((faq, i) => (
           <div key={i} className="py-6">
-            <h2 className="text-lg font-semibold text-gray-900">{faq.q}</h2>
-            <p className="mt-2 text-base leading-7 text-gray-600">{faq.a}</p>
+            <h2 className="text-lg font-semibold text-foreground">{faq.q}</h2>
+            <p className="mt-2 text-base leading-7 text-muted-foreground">{faq.a}</p>
           </div>
         ))}
       </div>
-      <div className="mt-12 rounded-2xl bg-gray-50 p-6 text-center">
-        <p className="text-sm text-gray-500">
+      <div className="mt-12 rounded-2xl bg-secondary p-6 text-center">
+        <p className="text-sm text-muted-foreground">
           Still have questions?{" "}
           <Link
             href="/contact"
-            className="font-medium text-emerald-600 hover:text-emerald-500"
+            className="font-medium text-brand hover:text-brand"
           >
             Contact us
           </Link>

@@ -124,19 +124,19 @@ export default async function PYQYearPage({ params }: Props) {
     const hasUrl = Boolean(paper.pdfUrl);
 
     return (
-      <div className="group bg-white border-2 border-gray-200 p-5 hover:border-black transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="group bg-white border border-border p-5 hover:border-foreground transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start gap-4 flex-1 min-w-0">
-          <div className="mt-1 text-[#C4F9D7] shrink-0">
+          <div className="mt-1 text-brand-mint shrink-0">
             <FileText
               size={22}
-              className="fill-current stroke-black"
+              className="fill-current stroke-foreground"
             />
           </div>
           <div className="min-w-0">
-            <h3 className="font-bold group-hover:underline decoration-[#C4F9D7] decoration-2 underline-offset-4 transition-all truncate">
+            <h3 className="font-bold group-hover:underline decoration-brand-mint decoration-2 underline-offset-4 transition-all truncate">
               {paper.subject}
             </h3>
-            <p className="text-gray-500 text-sm truncate">
+            <p className="text-muted-foreground text-sm truncate">
               {paper.description}
             </p>
           </div>
@@ -145,7 +145,7 @@ export default async function PYQYearPage({ params }: Props) {
           {hasUrl ? (
             <>
               <Button
-                className="bg-white text-black border-2 border-gray-300 hover:border-black"
+                className="bg-white text-foreground border border-border hover:border-foreground"
                 asChild
               >
                 <a
@@ -158,7 +158,7 @@ export default async function PYQYearPage({ params }: Props) {
                 </a>
               </Button>
               <Button
-                className="bg-black text-white hover:bg-gray-800"
+                className="bg-foreground text-white hover:bg-foreground/80"
                 asChild
               >
                 <a href={paper.pdfUrl} data-track={`pyq-download-${paper.subject.toLowerCase().replace(/\s+/g, '-')}`} download>
@@ -167,7 +167,7 @@ export default async function PYQYearPage({ params }: Props) {
               </Button>
             </>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-400 border-2 border-dashed border-gray-200">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground border border-dashed border-border">
               <Sparkles size={12} />
               Coming Soon
             </span>
@@ -178,7 +178,7 @@ export default async function PYQYearPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-background">
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -192,7 +192,7 @@ export default async function PYQYearPage({ params }: Props) {
           <Link
             href="/pyq"
             data-track="pyq-year-back"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-black transition-colors"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to PYQ Archive
           </Link>
@@ -204,10 +204,10 @@ export default async function PYQYearPage({ params }: Props) {
             {/* Header */}
             <div>
               <div className="flex flex-wrap items-center gap-3 mb-4">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-mint text-foreground border border-foreground rounded-full text-xs font-bold tracking-wider uppercase">
                   Official Papers
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium uppercase tracking-wider">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-muted-foreground border border-border rounded-full text-xs font-medium uppercase tracking-wider">
                   <Calendar size={12} />
                   Year: {year}
                 </div>
@@ -215,12 +215,12 @@ export default async function PYQYearPage({ params }: Props) {
 
               <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
                 UPSC CSE{" "}
-                <span className="bg-[#C4F9D7] px-2 border border-black">
+                <span className="bg-brand-mint px-2 border border-foreground">
                   {year}
                 </span>{" "}
                 Question Papers
               </h1>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-muted-foreground text-lg leading-relaxed">
                 Official UPSC Civil Services Examination {year} question papers
                 for Prelims (GS + CSAT) and Mains (Essay + GS Papers).
               </p>
@@ -231,10 +231,10 @@ export default async function PYQYearPage({ params }: Props) {
               const analysis = getPYQAnalysis(year);
               if (!analysis) return null;
               return (
-                <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
-                  <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Analysis</p>
+                <section className="bg-white border border-border p-6 md:p-8">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">Analysis</p>
                   <h2 className="text-2xl font-bold mb-4">{analysis.title}</h2>
-                  <div className="space-y-4 text-gray-700 leading-relaxed">
+                  <div className="space-y-4 text-foreground/70 leading-relaxed">
                     {analysis.paragraphs.map((p, i) => (
                       <p key={i}>{p}</p>
                     ))}
@@ -244,14 +244,14 @@ export default async function PYQYearPage({ params }: Props) {
             })()}
 
             {/* Inline Conversion */}
-            <div className="bg-white border-2 border-gray-200 p-6">
+            <div className="bg-white border border-border p-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Target className="w-5 h-5 text-black" />
+                    <Target className="w-5 h-5 text-foreground" />
                     <span className="font-bold">Pro Tip from Toppers</span>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     Don&apos;t just solve PYQs —{" "}
                     <strong>analyze how toppers wrote their answers</strong>.
                     See real answer copies with marks.
@@ -260,7 +260,7 @@ export default async function PYQYearPage({ params }: Props) {
                 <a
                   href="/store"
                   data-track="pyq-view-copies"
-                  className="inline-flex items-center gap-2 bg-black text-white font-bold px-6 py-3 hover:bg-gray-800 transition-colors shrink-0 text-sm"
+                  className="inline-flex items-center gap-2 bg-foreground text-white font-bold px-6 py-3 hover:bg-foreground/80 transition-colors shrink-0 text-sm"
                 >
                   Browse Store <ArrowRight className="w-4 h-4" />
                 </a>
@@ -271,7 +271,7 @@ export default async function PYQYearPage({ params }: Props) {
             {prelimsPapers.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm">
                     1
                   </span>
                   Prelims Examination
@@ -288,7 +288,7 @@ export default async function PYQYearPage({ params }: Props) {
             {mainsPapers.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-8 h-8 bg-[#C4F9D7] text-black border border-black flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 bg-brand-mint text-foreground border border-foreground flex items-center justify-center text-sm">
                     2
                   </span>
                   Mains Examination
@@ -302,13 +302,13 @@ export default async function PYQYearPage({ params }: Props) {
             )}
 
             {/* Paper Structure & Breakdown */}
-            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+            <section className="bg-white border border-border p-6 md:p-8">
               <div className="flex items-center gap-2 mb-1">
                 <BarChart3 className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Breakdown</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Breakdown</span>
               </div>
               <h2 className="text-2xl font-bold mb-4">UPSC CSE {year} Paper Structure & Breakdown</h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed">
+              <div className="space-y-4 text-foreground/70 leading-relaxed">
                 <p>
                   The UPSC Civil Services Examination {year} consisted of two stages: Prelims and Mains. 
                   The Prelims included two objective-type papers — General Studies (GS) Paper 1 and CSAT (Paper 2). 
@@ -321,24 +321,24 @@ export default async function PYQYearPage({ params }: Props) {
                   GS Paper 4 (Ethics, Integrity, Aptitude), two Optional Subject papers, and two language papers (qualifying in nature). 
                   Each GS paper carried 250 marks, totaling 1750 marks for the written segment.
                 </p>
-                <div className="bg-gray-50 border border-gray-200 p-5 mt-4">
+                <div className="bg-secondary border border-border p-5 mt-4">
                   <h3 className="font-bold mb-3 text-base">Quick Stats: {year} Papers</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div>
                       <span className="text-2xl font-black">{prelimsPapers.length}</span>
-                      <p className="text-xs text-gray-500">Prelims Papers</p>
+                      <p className="text-xs text-muted-foreground">Prelims Papers</p>
                     </div>
                     <div>
                       <span className="text-2xl font-black">{mainsPapers.length}</span>
-                      <p className="text-xs text-gray-500">Mains Papers</p>
+                      <p className="text-xs text-muted-foreground">Mains Papers</p>
                     </div>
                     <div>
                       <span className="text-2xl font-black">{papers.length}</span>
-                      <p className="text-xs text-gray-500">Total Papers</p>
+                      <p className="text-xs text-muted-foreground">Total Papers</p>
                     </div>
                     <div>
                       <span className="text-2xl font-black">{year}</span>
-                      <p className="text-xs text-gray-500">Exam Year</p>
+                      <p className="text-xs text-muted-foreground">Exam Year</p>
                     </div>
                   </div>
                 </div>
@@ -346,29 +346,29 @@ export default async function PYQYearPage({ params }: Props) {
             </section>
 
             {/* How to Use These Papers */}
-            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+            <section className="bg-white border border-border p-6 md:p-8">
               <div className="flex items-center gap-2 mb-1">
                 <Lightbulb className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Guide</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Guide</span>
               </div>
               <h2 className="text-2xl font-bold mb-4">How to Use the {year} Question Papers for Maximum Benefit</h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed">
+              <div className="space-y-4 text-foreground/70 leading-relaxed">
                 <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
+                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
                   <div>
                     <h3 className="font-bold">Start with Prelims Papers</h3>
                     <p className="text-sm">Attempt GS Paper 1 under timed conditions (2 hours, 100 questions). Review each incorrect answer and note the topic. Repeat with CSAT. Track your accuracy percentage and identify weak subjects for focused revision.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
+                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
                   <div>
                     <h3 className="font-bold">Analyze Mains Paper Demands</h3>
                     <p className="text-sm">Read each GS paper thoroughly before attempting to write. Note the keyword demands — "Discuss", "Analyze", "Critically examine" each requires a different answer structure. Create a mind map of topics tested across all four GS papers to understand the syllabus coverage.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
+                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
                   <div>
                     <h3 className="font-bold">Practice Answer Writing</h3>
                     <p className="text-sm">Select 5 questions from each GS paper and write full answers within the word limit (150-200 words for 10-mark, 200-250 for 15-mark questions). Compare your answers with topper copies to improve structure and content quality.</p>
@@ -378,13 +378,13 @@ export default async function PYQYearPage({ params }: Props) {
             </section>
 
             {/* Answer Keys & Solutions */}
-            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+            <section className="bg-white border border-border p-6 md:p-8">
               <div className="flex items-center gap-2 mb-1">
                 <HelpCircle className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Solutions</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Solutions</span>
               </div>
               <h2 className="text-2xl font-bold mb-4">Answer Keys & Solutions for {year} Papers</h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-foreground/70 mb-4">
                 After solving the papers, check your answers against reliable answer keys. For Prelims, 
                 compare with answer keys published by leading coaching institutes. For Mains, review 
                 model answers to understand the expected content depth and structure.
@@ -393,13 +393,13 @@ export default async function PYQYearPage({ params }: Props) {
                 <a
                   href="/store"
                   data-track="pyq-answer-keys-store"
-                  className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 hover:border-black transition-all group"
+                  className="flex items-center justify-between p-4 bg-secondary border border-border hover:border-foreground transition-all group"
                 >
                   <div className="flex items-center gap-3">
-                    <BookOpen className="w-5 h-5 text-gray-500" />
+                    <BookOpen className="w-5 h-5 text-muted-foreground" />
                     <div>
                       <span className="font-bold text-sm">Topper Answer Copies</span>
-                      <p className="text-xs text-gray-500">See how AIR-1 to AIR-10 wrote answers</p>
+                      <p className="text-xs text-muted-foreground">See how AIR-1 to AIR-10 wrote answers</p>
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -407,13 +407,13 @@ export default async function PYQYearPage({ params }: Props) {
                 <a
                   href="/free-materials"
                   data-track="pyq-answer-keys-free"
-                  className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 hover:border-black transition-all group"
+                  className="flex items-center justify-between p-4 bg-secondary border border-border hover:border-foreground transition-all group"
                 >
                   <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-gray-500" />
+                    <FileText className="w-5 h-5 text-muted-foreground" />
                     <div>
                       <span className="font-bold text-sm">Free Study Materials</span>
-                      <p className="text-xs text-gray-500">Notes, test series & current affairs</p>
+                      <p className="text-xs text-muted-foreground">Notes, test series & current affairs</p>
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -422,7 +422,7 @@ export default async function PYQYearPage({ params }: Props) {
             </section>
 
             {/* FAQ */}
-            <section className="bg-white border-2 border-gray-200 p-6 md:p-8">
+            <section className="bg-white border border-border p-6 md:p-8">
               <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions about UPSC CSE {year} Papers</h2>
               <div className="space-y-3">
                 {[
@@ -431,12 +431,12 @@ export default async function PYQYearPage({ params }: Props) {
                   { q: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, a: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied for incorrect answers.` },
                   { q: `What topics were emphasized in the ${year} Mains GS papers?`, a: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples. GS Paper 4 (Ethics) featured longer case studies requiring multi-stakeholder analysis.` },
                 ].map((faq, i) => (
-                  <details key={i} className="group border border-gray-200 [&>summary]:open:border-black">
-                    <summary className="flex items-center justify-between p-4 cursor-pointer list-none font-bold text-sm hover:bg-gray-50 transition-colors">
+                  <details key={i} className="group border border-border [&>summary]:open:border-foreground">
+                    <summary className="flex items-center justify-between p-4 cursor-pointer list-none font-bold text-sm hover:bg-secondary transition-colors">
                       {faq.q}
                       <ChevronDown className="w-4 h-4 shrink-0 group-open:rotate-180 transition-transform" />
                     </summary>
-                    <div className="px-4 pb-4 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-3">
+                    <div className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm border-t border-border pt-3">
                       {faq.a}
                     </div>
                   </details>
@@ -478,19 +478,19 @@ export default async function PYQYearPage({ params }: Props) {
             />
 
             {/* CTA */}
-            <section className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8">
+            <section className="bg-foreground p-8">
               <div className="text-center max-w-xl mx-auto">
-                <div className="inline-flex items-center gap-2 bg-[#C4F9D7]/20 border border-[#C4F9D7]/30 px-4 py-2 mb-4">
-                  <Sparkles className="w-4 h-4 text-[#C4F9D7]" />
-                  <span className="text-sm text-[#C4F9D7] font-bold">
+                <div className="inline-flex items-center gap-2 bg-brand-mint/20 border border-brand-mint/30 px-4 py-2 mb-4">
+                  <Sparkles className="w-4 h-4 text-brand-mint" />
+                  <span className="text-sm text-brand-mint font-bold">
                     RECOMMENDED
                   </span>
                 </div>
                 <h3 className="text-2xl font-black text-white mb-3">
                   Downloaded the Papers? <br />
-                  <span className="text-[#C4F9D7]">Now See the Answers.</span>
+                  <span className="text-brand-mint">Now See the Answers.</span>
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   50+ verified topper answer copies. See how
                   AIR-1 toppers structured their answers.
                 </p>
@@ -502,15 +502,15 @@ export default async function PYQYearPage({ params }: Props) {
                     "Strategy Notes",
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-[#C4F9D7] shrink-0" />
-                      <span className="text-gray-300">{item}</span>
+                      <CheckCircle2 className="w-4 h-4 text-brand-mint shrink-0" />
+                      <span className="text-muted-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
                 <a
                   href="/store"
                   data-track="pyq-explore-compilation"
-                  className="inline-flex items-center gap-2 bg-[#C4F9D7] text-black font-bold px-8 py-4 hover:bg-white transition-colors"
+                  className="inline-flex items-center gap-2 bg-brand-mint text-foreground font-bold px-8 py-4 hover:bg-white transition-colors"
                 >
                   Browse Store <ArrowRight className="w-5 h-5" />
                 </a>
@@ -521,7 +521,7 @@ export default async function PYQYearPage({ params }: Props) {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-6">
             {/* Year Selector */}
-            <div className="bg-white border-2 border-gray-200 p-6 sticky top-24">
+            <div className="bg-white border border-border p-6 sticky top-24">
               <h3 className="font-bold text-lg mb-4">Other Years</h3>
               <div className="flex flex-wrap gap-2">
                 {allYears.map((y: string) => (
@@ -531,8 +531,8 @@ export default async function PYQYearPage({ params }: Props) {
                     data-track={`pyq-year-sidebar-${y}`}
                     className={`px-4 py-2 text-sm font-bold border-2 transition-all ${
                       y === year
-                        ? "bg-black text-white border-black"
-                        : "bg-white text-gray-600 border-gray-200 hover:border-black hover:text-black"
+                        ? "bg-foreground text-white border-foreground"
+                        : "bg-white text-muted-foreground border-border hover:border-foreground hover:text-foreground"
                     }`}
                   >
                     {y}
@@ -541,33 +541,33 @@ export default async function PYQYearPage({ params }: Props) {
               </div>
 
               {/* Sidebar Conversion */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-5">
+              <div className="mt-6 pt-6 border-t border-border">
+                <div className="bg-foreground p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">₹799 Launch</span>
-                    <span className="text-[11px] text-gray-500 line-through">₹4,999</span>
+                    <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-semibold text-brand">₹799 Launch</span>
+                    <span className="text-[11px] text-muted-foreground line-through">₹4,999</span>
                   </div>
                   <h4 className="font-bold text-white mb-1">Complete Compilation</h4>
-                  <p className="text-xs text-gray-400 mb-4">
+                  <p className="text-xs text-muted-foreground mb-4">
                     21 strategy guides + topper copies + interview prep. Everything in one pack.
                   </p>
                 <a
                   href="/free-materials"
                   data-track="pyq-sidebar-free-materials"
-                  className="flex items-center justify-between p-3 bg-blue-50 border-2 border-blue-100 hover:border-blue-300 transition-all group"
+                  className="flex items-center justify-between p-3 bg-brand-muted border border-brand/20 hover:border-brand/40 transition-all group"
                 >
-                  <span className="text-sm font-medium text-blue-700 group-hover:text-blue-900">
+                  <span className="text-sm font-medium text-brand group-hover:text-foreground">
                     Free Study Material
                   </span>
                   <ArrowRight
                     size={14}
-                    className="text-blue-300 group-hover:text-blue-600 transform group-hover:translate-x-1 transition-all"
+                    className="text-brand/70 group-hover:text-brand transform group-hover:translate-x-1 transition-all"
                   />
                 </a>
                 <a
                     href="/store"
                     data-track="pyq-sidebar-bundle"
-                    className="inline-flex items-center justify-center w-full bg-white text-gray-900 font-bold px-4 py-3 hover:bg-gray-100 transition-colors text-sm"
+                    className="inline-flex items-center justify-center w-full bg-white text-foreground font-bold px-4 py-3 hover:bg-secondary transition-colors text-sm"
                   >
                     Browse Store — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
                   </a>
@@ -576,49 +576,49 @@ export default async function PYQYearPage({ params }: Props) {
             </div>
 
             {/* Related Resources */}
-            <div className="bg-white border-2 border-gray-200 p-6">
+            <div className="bg-white border border-border p-6">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-[#C4F9D7]" />
+                <TrendingUp className="w-5 h-5 text-brand-mint" />
                 Related Resources
               </h3>
               <div className="space-y-3">
                 <a
                   href={`/year/${year}`}
                   data-track="pyq-related-year"
-                  className="flex items-center justify-between p-3 bg-gray-50 border-2 border-gray-100 hover:border-black transition-all group"
+                  className="flex items-center justify-between p-3 bg-secondary border border-border hover:border-foreground transition-all group"
                 >
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-black">
+                  <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground">
                     UPSC Toppers {year}
                   </span>
                   <ArrowRight
                     size={14}
-                    className="text-gray-300 group-hover:text-black transform group-hover:translate-x-1 transition-all"
+                    className="text-muted-foreground group-hover:text-foreground transform group-hover:translate-x-1 transition-all"
                   />
                 </a>
                 <a
                   href="/optional"
                   data-track="pyq-related-optional"
-                  className="flex items-center justify-between p-3 bg-gray-50 border-2 border-gray-100 hover:border-black transition-all group"
+                  className="flex items-center justify-between p-3 bg-secondary border border-border hover:border-foreground transition-all group"
                 >
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-black">
+                  <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground">
                     Optional Subject Notes
                   </span>
                   <ArrowRight
                     size={14}
-                    className="text-gray-300 group-hover:text-black transform group-hover:translate-x-1 transition-all"
+                    className="text-muted-foreground group-hover:text-foreground transform group-hover:translate-x-1 transition-all"
                   />
                 </a>
                 <a
                   href="/store"
                   data-track="pyq-sidebar-browse"
-                  className="flex items-center justify-between p-3 bg-[#C4F9D7]/20 border-2 border-[#C4F9D7] hover:border-black transition-all group"
+                  className="flex items-center justify-between p-3 bg-brand-mint/20 border border-brand-mint hover:border-foreground transition-all group"
                 >
-                  <span className="text-sm font-bold text-black">
+                  <span className="text-sm font-bold text-foreground">
                     Browse Store
                   </span>
                   <ArrowRight
                     size={14}
-                    className="text-black transform group-hover:translate-x-1 transition-all"
+                    className="text-foreground transform group-hover:translate-x-1 transition-all"
                   />
                 </a>
               </div>
