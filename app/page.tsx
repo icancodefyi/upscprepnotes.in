@@ -86,101 +86,55 @@ export default async function HomePage() {
 
         {/* ──────────────────────────── HERO ──────────────────────────── */}
         <section className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-4 pt-20 pb-24 md:pt-28 md:pb-32">
-            <div className="grid items-center gap-16 lg:grid-cols-12 lg:gap-12">
+          <div className="mx-auto max-w-4xl px-4 pt-20 pb-24 md:pt-32 md:pb-36 text-center">
 
-              {/* LEFT — headline + CTAs */}
-              <div className="lg:col-span-7">
-                <h1 className="font-heading text-4xl font-extrabold leading-[1.08] tracking-tight md:text-5xl lg:text-[3.75rem]">
-                  Every mark. Every topper.
-                  <br />
-                  <span className="text-brand">Sourced from UPSC.gov.in.</span>
-                </h1>
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                  271 topper profiles with paper-wise marks breakdowns, 50+ handwritten answer copies, and an AI mentor trained on real topper strategies. All free.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Button asChild size="lg" className="rounded-full bg-brand px-7 text-brand-foreground hover:bg-brand/90">
-                    <Link data-track="home-hero-cta" href="/year/2025">
-                      Explore topper profiles <ArrowRight size={16} className="ml-1" />
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-                    <Link data-track="home-hero-store" href="/store">
-                      Browse store
-                    </Link>
-                  </Button>
-                </div>
-                <HeroLeadForm />
-                <p className="mt-8 text-sm text-muted-foreground">
-                  No signup required. Data sourced from official UPSC result PDFs.
-                </p>
-              </div>
+            <p className="text-xs font-medium tracking-wider text-muted-foreground">UPSC CSE · 2022 – 2025</p>
 
-              {/* RIGHT — live topper data card */}
-              <div className="lg:col-span-5">
-                {toppers[0] && (
-                  <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <Link href={`/upsc-topper/${toppers[0].slug}`} data-track="home-hero-topper-card" className="flex items-center gap-4">
-                      <img
-                        src={topperImageSrc(toppers[0])}
-                        alt={`${toppers[0].firstName} ${toppers[0].lastName}`}
-                        width={56} height={56}
-                        className="h-14 w-14 rounded-xl border border-border bg-secondary object-cover"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-base font-bold leading-tight">{toppers[0].firstName} {toppers[0].lastName}</p>
-                        <p className="text-sm text-muted-foreground">AIR {toppers[0].rank} · {toppers[0].year}</p>
-                      </div>
-                      <span className="shrink-0 rounded-full bg-brand-muted px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand">Verified</span>
-                    </Link>
+            <h1 className="mt-4 font-heading text-4xl font-extrabold leading-[1.1] tracking-tight md:text-5xl lg:text-[4rem]">
+              Every mark. Every topper.
+              <br />
+              <span className="text-brand">Verified from UPSC.gov.in.</span>
+            </h1>
 
-                    <div className="mt-5 flex items-center justify-between border-b border-border pb-3">
-                      <span className="text-xs text-muted-foreground">Optional</span>
-                      <span className="text-sm font-semibold">{toppers[0].optionalSubject}</span>
-                    </div>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              271 topper profiles with paper-wise marks breakdowns, 50+ handwritten answer copies, optional subject analysis, and an AI mentor — all free.
+            </p>
 
-                    <div className="mt-4">
-                      <p className="mb-3 text-xs text-muted-foreground">Marks breakdown</p>
-                      <div className="space-y-2">
-                        {[
-                          { label: "Essay", val: toppers[0].marks.essay, max: 250 },
-                          { label: "GS1", val: toppers[0].marks.gs1, max: 250 },
-                          { label: "GS2", val: toppers[0].marks.gs2, max: 250 },
-                          { label: "GS3", val: toppers[0].marks.gs3, max: 250 },
-                          { label: "GS4", val: toppers[0].marks.gs4, max: 250 },
-                          { label: "Optional", val: toppers[0].marks.optional1 + toppers[0].marks.optional2, max: 500 },
-                          { label: "Interview", val: toppers[0].marks.interview, max: 275 },
-                        ].map((p) => (
-                          <div key={p.label} className="flex items-center gap-3">
-                            <span className="w-14 text-xs text-muted-foreground">{p.label}</span>
-                            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary">
-                              <div className="h-full rounded-full bg-brand" style={{ width: `${Math.min((p.val / p.max) * 100, 100)}%` }} />
-                            </div>
-                            <span className="w-9 text-right text-xs font-semibold tabular-nums">{p.val}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-                      <span className="text-sm font-semibold">Total</span>
-                      <span className="text-2xl font-bold tabular-nums">{toppers[0].marks.total}</span>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-brand font-bold">✓</span>
-                        Source: UPSC.gov.in
-                      </span>
-                      <Link href={`/upsc-topper/${toppers[0].slug}`} data-track="home-hero-topper-link" className="font-medium text-foreground underline underline-offset-2 hover:text-muted-foreground">
-                        View profile →
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button asChild size="lg" className="rounded-full bg-brand px-7 text-brand-foreground hover:bg-brand/90">
+                <Link data-track="home-hero-cta" href="/year/2025">
+                  Explore topper profiles <ArrowRight size={16} className="ml-1" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full px-7">
+                <Link data-track="home-hero-store" href="/store">
+                  Browse store
+                </Link>
+              </Button>
             </div>
+
+            <div className="mx-auto mt-10 max-w-md">
+              <HeroLeadForm />
+            </div>
+
+            <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              {[
+                { value: "271+", label: "Verified profiles" },
+                { value: "37", label: "Optional subjects" },
+                { value: "50+", label: "Answer copies" },
+                { value: "2,700+", label: "Free resources" },
+              ].map((s) => (
+                <div key={s.label} className="text-center">
+                  <p className="font-heading text-2xl font-bold tabular-nums tracking-tight md:text-3xl">{s.value}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-10 text-xs text-muted-foreground">
+              Data sourced from official UPSC result PDFs. No signup required to browse.
+            </p>
+
           </div>
         </section>
 
