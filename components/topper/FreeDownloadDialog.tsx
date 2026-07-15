@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IconDownload, IconX, IconCheck, IconClock, IconStar, IconEye, IconLayoutKanban } from "@tabler/icons-react";
 import { trackClientEvent } from "@/lib/client-analytics";
 
@@ -20,9 +20,25 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
   const [available, setAvailable] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [dialogError, setDialogError] = useState("");
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     trackClientEvent("dialog_open", { dialog: "free_download", topperSlug, topperName });
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    setTimeout(() => dialogRef.current?.focus(), 100);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
   }, []);
 
   function handleClose() {
@@ -81,11 +97,19 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} />
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} aria-hidden="true" />
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Download ${topperName}'s answer copy`}
+        tabIndex={-1}
+        className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl"
+      >
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
+          aria-label="Close dialog"
+          className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
         >
           <IconX size={18} />
         </button>
@@ -93,8 +117,8 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
         {!submitted ? (
           <>
             <div className="text-center mb-5">
-              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-                <IconDownload size={24} className="text-emerald-600" />
+              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
+                <IconDownload size={24} className="text-brand" />
               </div>
               <h2 className="text-lg font-semibold">Get {topperName}&apos;s Answer Copy</h2>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -103,39 +127,40 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             </div>
 
             <div className="mb-5 grid grid-cols-3 gap-2">
-              <div className="rounded-lg bg-emerald-50 p-2.5 text-center">
-                <IconStar size={16} className="mx-auto text-emerald-600" />
-                <p className="mt-1 text-[10px] font-medium text-gray-700 leading-tight">Real answer structure</p>
+              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
+                <IconStar size={16} className="mx-auto text-brand" />
+                <p className="mt-1 text-[10px] font-medium leading-tight">Real answer structure</p>
               </div>
-              <div className="rounded-lg bg-emerald-50 p-2.5 text-center">
-                <IconEye size={16} className="mx-auto text-emerald-600" />
-                <p className="mt-1 text-[10px] font-medium text-gray-700 leading-tight">Handwriting analysis</p>
+              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
+                <IconEye size={16} className="mx-auto text-brand" />
+                <p className="mt-1 text-[10px] font-medium leading-tight">Handwriting analysis</p>
               </div>
-              <div className="rounded-lg bg-emerald-50 p-2.5 text-center">
-                <IconLayoutKanban size={16} className="mx-auto text-emerald-600" />
-                <p className="mt-1 text-[10px] font-medium text-gray-700 leading-tight">Time management</p>
+              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
+                <IconLayoutKanban size={16} className="mx-auto text-brand" />
+                <p className="mt-1 text-[10px] font-medium leading-tight">Time management</p>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="text-xs font-medium text-gray-700">Email *</label>
+                <label htmlFor="free-download-email" className="text-xs font-medium">Email *</label>
                 <input
+                  id="free-download-email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   type="email"
-                  className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand"
                   placeholder="Send the download link here"
                 />
               </div>
               {dialogError && (
-                <p className="text-xs text-red-500">{dialogError}</p>
+                <p className="text-xs text-destructive" role="alert">{dialogError}</p>
               )}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-full bg-emerald-600 py-3 text-sm font-bold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all"
+                className="w-full rounded-full bg-brand py-3 text-sm font-bold text-brand-foreground hover:bg-brand/90 disabled:opacity-50 transition-all"
               >
                 {loading ? "Sending..." : "Send My Free Copy →"}
               </button>
@@ -150,15 +175,15 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
           </>
         ) : available ? (
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-              <IconCheck size={24} className="text-emerald-600" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
+              <IconCheck size={24} className="text-brand" />
             </div>
             <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               We sent {pdfUrls.length > 1 ? `${pdfUrls.length} answer copies` : "the download link"} for <strong>{topperName}</strong> to <strong>{email}</strong>.
             </p>
-            <p className="mt-2 text-xs text-amber-600 font-medium">
-              ⚠️ If you don't see the email in a few minutes, check your <strong>Spam</strong> or <strong>Promotions</strong> folder — it may have landed there.
+            <p className="mt-2 text-xs text-brand font-medium">
+              ⚠️ If you don&apos;t see the email in a few minutes, check your <strong>Spam</strong> or <strong>Promotions</strong> folder — it may have landed there.
             </p>
             {pdfUrls.length > 0 && (
               <div className="mt-4 space-y-2">
@@ -169,7 +194,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
                     download
                     onClick={handleDownload}
                     data-track="free-download-pdf"
-                    className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-sm font-bold text-brand-foreground hover:bg-brand/90 transition-colors"
                   >
                     <IconDownload size={14} />
                     {pdfUrls.length > 1 ? `Download Copy ${i + 1}` : "Download Now"}
@@ -181,20 +206,20 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               href="https://t.me/+VYMxrig-a8AzZmNl"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl border-2 border-[#0088cc]/30 bg-[#e8f4fd] px-4 py-2.5 text-xs font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]"
+              className="mt-4 flex items-center justify-center gap-2 rounded-xl border-2 border-telegram/30 bg-telegram/10 px-4 py-2.5 text-xs font-semibold text-telegram transition hover:bg-telegram/20"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
               Join 100+ aspirants on Telegram for daily current affairs →
             </a>
-            <div className="mt-4 rounded-xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4">
-              <p className="text-xs font-bold text-gray-900">Want 50+ topper copies + 21 guides?</p>
-              <p className="text-xs text-gray-500 mt-0.5">All papers — GS1-4, Essay, Optional. ₹799 only.</p>
+            <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
+              <p className="text-xs font-bold">Want 50+ topper copies + 21 guides?</p>
+              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. ₹799 only.</p>
               <button
                 onClick={() => {
                   window.open("/store", "_blank");
                   onOpenChange(false);
                 }}
-                className="mt-2 w-full rounded-full bg-gray-900 px-4 py-2 text-xs font-bold text-white hover:bg-gray-800 transition-colors"
+                className="mt-2 w-full rounded-full bg-foreground px-4 py-2 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
               >
                 Get the Complete Compilation →
               </button>
@@ -202,19 +227,19 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
           </div>
         ) : (
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-100">
-              <IconClock size={24} className="text-amber-600" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
+              <IconClock size={24} className="text-brand" />
             </div>
             <h2 className="text-lg font-semibold">We&apos;re Working on It!</h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
               Thanks for requesting <strong>{topperName}</strong>&apos;s answer copy. We&apos;re sourcing it and will email it to you shortly.
             </p>
-            <p className="mt-2 text-xs text-amber-600 font-medium">
-              ⚠️ To ensure delivery, please add <strong>hello@upscprepnotes.in</strong> to your contacts and check your <strong>Spam</strong> folder if the email doesn't appear within 24 hours.
+            <p className="mt-2 text-xs text-brand font-medium">
+              ⚠️ To ensure delivery, please add <strong>hello@upscprepnotes.in</strong> to your contacts and check your <strong>Spam</strong> folder if the email doesn&apos;t appear within 24 hours.
             </p>
-            <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-4 text-left">
-              <p className="text-xs font-semibold text-amber-800">Complementary Offer</p>
-              <p className="mt-1 text-xs text-amber-700 leading-relaxed">
+            <div className="mt-4 rounded-xl bg-brand-muted border border-brand/20 p-4 text-left">
+              <p className="text-xs font-semibold text-brand">Complementary Offer</p>
+              <p className="mt-1 text-xs text-brand/80 leading-relaxed">
                 If we can&apos;t deliver within 48 hours, we&apos;ll give you <strong>free access to our premium strategy guides</strong> (worth ₹649) as a thank-you.
               </p>
             </div>
@@ -222,7 +247,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               In the meantime,{" "}
               <button
                 onClick={() => onOpenChange(false)}
-                className="text-emerald-600 font-semibold underline cursor-pointer"
+                className="text-brand font-semibold underline cursor-pointer"
               >
                 browse the complete compilation
               </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, X, ChevronDown, Search } from "lucide-react";
@@ -38,7 +39,8 @@ function DropdownItem({ href, label, onClick }: { href: string; label: string; o
     <Link
       href={href}
       onClick={onClick}
-      className="block whitespace-nowrap px-3 py-1.5 text-sm text-gray-600 transition-colors hover:text-emerald-700"
+      role="menuitem"
+      className="block whitespace-nowrap rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
     >
       {label}
     </Link>
@@ -56,6 +58,27 @@ function NavDropdown({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+      e.preventDefault();
+      setOpen(true);
+    } else if (e.key === "Escape") {
+      setOpen(false);
+      buttonRef.current?.focus();
+    }
+  }
 
   return (
     <div
@@ -65,15 +88,23 @@ function NavDropdown({
       onMouseLeave={() => setOpen(false)}
     >
       <button
+        ref={buttonRef}
         data-track={dataTrack}
-        className="flex items-center gap-1 hover:text-black transition-colors"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen(!open)}
+        onKeyDown={handleKeyDown}
+        className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {label}
         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="absolute left-0 top-full pt-2">
-          <div className="min-w-48 rounded-2xl border border-black/[0.06] bg-white p-2 shadow-lg">
+        <div className="absolute left-0 top-full z-50 pt-2">
+          <div
+            role="menu"
+            className="min-w-48 rounded-xl border border-border bg-card p-2 shadow-lg"
+          >
             {children}
           </div>
         </div>
@@ -103,9 +134,9 @@ function SearchSuggestions({
   const order = ["Topper", "Store", "Page"];
 
   return (
-    <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-black/[0.06] bg-white p-2 shadow-xl">
+    <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-border bg-card p-2 shadow-xl">
       {results.length === 0 ? (
-        <div className="px-3 py-4 text-center text-sm text-gray-400">
+        <div className="px-3 py-4 text-center text-sm text-muted-foreground">
           No results for &ldquo;{query}&rdquo;
         </div>
       ) : (
@@ -114,7 +145,7 @@ function SearchSuggestions({
             (cat) =>
               grouped[cat] && (
                 <div key={cat} className="mb-2 last:mb-0">
-                  <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                  <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     {cat}
                   </p>
                   {grouped[cat].map((r, idx) => {
@@ -125,20 +156,20 @@ function SearchSuggestions({
                         key={`${r.href}-${idx}`}
                         href={r.href}
                         onClick={onSelect}
-                        className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm transition ${
-                          isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-gray-50"
+                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+                          isActive ? "bg-brand-muted text-brand" : "hover:bg-secondary"
                         }`}
                       >
                         <div className="min-w-0 flex-1">
                           <p className="truncate font-medium">{r.title}</p>
                           {r.subtitle && (
-                            <p className={`truncate text-xs ${isActive ? "text-emerald-600/80" : "text-gray-400"}`}>
+                            <p className={`truncate text-xs ${isActive ? "text-brand/80" : "text-muted-foreground"}`}>
                               {r.subtitle}
                             </p>
                           )}
                         </div>
                         {r.meta && (
-                          <span className="ml-3 shrink-0 text-xs font-semibold text-emerald-600">
+                          <span className="ml-3 shrink-0 text-xs font-semibold text-brand">
                             {r.meta}
                           </span>
                         )}
@@ -151,7 +182,7 @@ function SearchSuggestions({
           <Link
             href={`/search?q=${encodeURIComponent(query)}`}
             onClick={onSelect}
-            className="block rounded-xl px-3 py-2 text-center text-xs font-medium text-emerald-600 hover:bg-emerald-50"
+            className="block rounded-lg px-3 py-2 text-center text-xs font-medium text-brand hover:bg-brand-muted"
           >
             View all results for &ldquo;{query}&rdquo;
           </Link>
@@ -239,32 +270,35 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
   }
 
   return (
-    <header className={`sticky z-40 bg-[#F8F9FA] border-b border-gray-100 ${bannerOpen ? "top-[36px]" : "top-0"}`}>
+    <header className={`sticky z-40 bg-background border-b border-border ${bannerOpen ? "top-[36px]" : "top-0"}`}>
       <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
-        <Link href="/" data-track="nav-logo" className="flex items-center gap-2">
-          <img
+        <Link href="/" data-track="nav-logo" className="flex items-center gap-2.5">
+          <Image
             src="/logo.png"
             alt="UPSCPrepNotes"
+            width={32}
+            height={32}
             className="h-8 w-auto"
+            priority
           />
           <span className="font-bold text-lg tracking-tight">
             UPSCPrepNotes
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Main navigation">
           <Link
             href="/store"
             data-track="nav-store"
-            className="flex items-center gap-1.5 hover:text-black transition-colors"
+            className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             Store
-            <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+            <span className="rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-brand-foreground leading-none">New</span>
           </Link>
           <Link
             href="/toppers"
             data-track="nav-toppers"
-            className="hover:text-black transition-colors"
+            className="rounded-lg px-2 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             Toppers
           </Link>
@@ -278,7 +312,7 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
             {FREE_MATERIALS_CATEGORIES.map((cat) => (
               <DropdownItem key={cat.href} href={cat.href} label={cat.label} />
             ))}
-            <div className="mt-1 border-t border-black/[0.06] pt-1">
+            <div className="mt-1 border-t border-border pt-1">
               <DropdownItem href="/free-materials" label="View All →" />
             </div>
           </NavDropdown>
@@ -287,7 +321,7 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
             {PYQ_YEARS.map((year) => (
               <DropdownItem key={year} href={`/pyq/${year}`} label={year} />
             ))}
-            <div className="mt-1 border-t border-black/[0.06] pt-1">
+            <div className="mt-1 border-t border-border pt-1">
               <DropdownItem href="/pyq" label="View All →" />
             </div>
           </NavDropdown>
@@ -295,18 +329,18 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
           <Link
             href="/ask"
             data-track="nav-ask-ai"
-            className="flex items-center gap-1.5 hover:text-black transition-colors"
+            className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             Ask AI
-            <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+            <span className="rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-brand-foreground leading-none">New</span>
           </Link>
         </nav>
 
         {/* Desktop Search */}
         <div ref={searchContainerRef} className="hidden md:block relative">
           <form onSubmit={handleSearchSubmit}>
-            <div className={`flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-all ${searchOpen ? "w-72" : "w-44"}`}>
-              <Search size={14} className="text-gray-400" />
+            <div className={`flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 transition-all ${searchOpen ? "w-72" : "w-48"}`}>
+              <Search size={16} className="text-muted-foreground" />
               <input
                 ref={searchRef}
                 type="text"
@@ -315,11 +349,12 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
                 onFocus={() => setSearchOpen(true)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search..."
-                className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+                aria-label="Search toppers, products, and pages"
+                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 autoComplete="off"
               />
               {loading && (
-                <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600" />
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-brand" />
               )}
             </div>
           </form>
@@ -338,16 +373,17 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <CartIcon onClick={() => setCartOpen(true)} />
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             data-track="nav-mobile-toggle"
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            aria-label="Toggle menu"
+            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl hover:bg-secondary transition-colors"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
@@ -356,16 +392,17 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white">
-          <div className="px-4 py-4 space-y-3">
-            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
-              <Search size={16} className="text-gray-400" />
+        <div className="md:hidden border-t border-border bg-card">
+          <div className="px-4 py-4 space-y-4">
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 rounded-xl border border-border bg-secondary px-4 py-3">
+              <Search size={18} className="text-muted-foreground" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search toppers, products, pages..."
-                className="flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+                aria-label="Search"
+                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </form>
 
@@ -374,10 +411,10 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
                 href="/store"
                 onClick={() => setMobileOpen(false)}
                 data-track="nav-mobile-store"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 Store
-                <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+                <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold text-brand-foreground leading-none">New</span>
               </Link>
               <div onClick={() => setMobileOpen(false)}>
                 <CartIcon onClick={() => setCartOpen(true)} />
@@ -388,19 +425,20 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
               href="/toppers"
               onClick={() => setMobileOpen(false)}
               data-track="nav-mobile-toppers"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
             >
               Toppers
             </Link>
+
             <div className="py-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Current Affairs</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Current Affairs</p>
               <div className="ml-2 space-y-1">
                 {CURRENT_AFFAIRS_SUB.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block text-sm text-gray-600 hover:text-black py-1"
+                    className="block text-sm text-muted-foreground hover:text-foreground py-2"
                   >
                     {item.label}
                   </Link>
@@ -409,14 +447,14 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
             </div>
 
             <div className="py-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Free Materials</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Free Materials</p>
               <div className="ml-2 space-y-1">
                 {FREE_MATERIALS_CATEGORIES.map((cat) => (
                   <Link
                     key={cat.href}
                     href={cat.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block text-sm text-gray-600 hover:text-black py-1"
+                    className="block text-sm text-muted-foreground hover:text-foreground py-2"
                   >
                     {cat.label}
                   </Link>
@@ -424,21 +462,22 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
                 <Link
                   href="/free-materials"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-sm font-medium text-emerald-600 hover:text-emerald-700 py-1"
+                  className="block text-sm font-medium text-brand hover:text-brand/80 py-2"
                 >
                   View All →
                 </Link>
               </div>
             </div>
+
             <div className="py-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">PYQs</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-2">PYQs</p>
               <div className="ml-2 space-y-1">
                 {PYQ_YEARS.map((year) => (
                   <Link
                     key={year}
                     href={`/pyq/${year}`}
                     onClick={() => setMobileOpen(false)}
-                    className="block text-sm text-gray-600 hover:text-black py-1"
+                    className="block text-sm text-muted-foreground hover:text-foreground py-2"
                   >
                     {year}
                   </Link>
@@ -446,20 +485,21 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
                 <Link
                   href="/pyq"
                   onClick={() => setMobileOpen(false)}
-                  className="block text-sm font-medium text-emerald-600 hover:text-emerald-700 py-1"
+                  className="block text-sm font-medium text-brand hover:text-brand/80 py-2"
                 >
                   View All →
                 </Link>
               </div>
             </div>
+
             <Link
               href="/ask"
               onClick={() => setMobileOpen(false)}
               data-track="nav-mobile-ask-ai"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-black transition-colors py-2"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
             >
               Ask AI
-              <span className="rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+              <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold text-brand-foreground leading-none">New</span>
             </Link>
           </div>
         </div>

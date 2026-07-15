@@ -507,7 +507,7 @@ export default async function SubjectPage({ params }: Props) {
   );
 
   return (
-    <main className="min-h-screen bg-background text-black">
+    <main className="min-h-screen bg-background text-foreground">
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -523,7 +523,7 @@ export default async function SubjectPage({ params }: Props) {
       {/* HERO */}
       <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
         {/* BREADCRUMB */}
-        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
           <Link href="/" data-track="optional-breadcrumb-home" className="transition hover:text-foreground">
             Home
           </Link>
@@ -532,7 +532,7 @@ export default async function SubjectPage({ params }: Props) {
         </div>
 
         <div className="mb-12">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
             Optional Subject Intelligence
           </p>
 
@@ -540,7 +540,7 @@ export default async function SubjectPage({ params }: Props) {
             {subjectInfo.name} — UPSC Optional Subject, Toppers &amp; Strategy
           </h1>
 
-          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-zinc-800">
+          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-foreground/80">
             {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
           </p>
         </div>
@@ -550,19 +550,19 @@ export default async function SubjectPage({ params }: Props) {
           <div className="grid gap-4 sm:gap-8 grid-cols-2 sm:grid-cols-4">
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.totalToppers}</p>
-              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Toppers</p>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Toppers</p>
             </div>
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.avgMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Avg Marks</p>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Avg Marks</p>
             </div>
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.maxMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Highest Marks</p>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Highest Marks</p>
             </div>
             <div>
               <p className="text-2xl sm:text-3xl font-semibold">{stats.minMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-zinc-600">Lowest Marks</p>
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Lowest Marks</p>
             </div>
           </div>
         )}
@@ -571,12 +571,12 @@ export default async function SubjectPage({ params }: Props) {
       {/* COMPUTED INSIGHTS */}
       {insights.length > 0 && (
         <section className="mx-auto max-w-5xl px-6 pb-8">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Key Insights — {subjectInfo.name}
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {insights.map((insight, i) => (
-              <div key={i} className="rounded-xl border border-black/[0.06] bg-zinc-50 p-4 text-sm leading-6 text-zinc-700">
+              <div key={i} className="rounded-xl border border-border bg-secondary p-4 text-sm leading-6 text-foreground/70">
                 {insight}
               </div>
             ))}
@@ -594,21 +594,21 @@ export default async function SubjectPage({ params }: Props) {
           {subjectInfo.overview && (
             <div className="mb-8">
               <h3 className="text-2xl font-semibold">Subject Overview</h3>
-              <p className="mt-3 text-zinc-700 leading-8">{subjectInfo.overview}</p>
+              <p className="mt-3 text-foreground/70 leading-8">{subjectInfo.overview}</p>
             </div>
           )}
 
           {subjectInfo.whyPopular && (
             <div className="mb-8">
               <h3 className="text-2xl font-semibold">Why {subjectInfo.name} Is Popular</h3>
-              <p className="mt-3 text-zinc-700 leading-8">{subjectInfo.whyPopular}</p>
+              <p className="mt-3 text-foreground/70 leading-8">{subjectInfo.whyPopular}</p>
             </div>
           )}
 
           {(subjectInfo.syllabusTopics || []).length > 0 && (
             <div className="mb-8">
               <h3 className="text-2xl font-semibold">Key Syllabus Topics</h3>
-              <ul className="mt-3 list-disc pl-6 text-zinc-700 space-y-1">
+              <ul className="mt-3 list-disc pl-6 text-foreground/70 space-y-1">
                 {subjectInfo.syllabusTopics!.map((topic, idx) => (
                   <li key={idx}>{topic}</li>
                 ))}
@@ -619,7 +619,7 @@ export default async function SubjectPage({ params }: Props) {
           {(subjectInfo.booklist || []).length > 0 && (
             <div className="mb-8">
               <h3 className="text-2xl font-semibold">Recommended Books</h3>
-              <ul className="mt-3 list-disc pl-6 text-zinc-700 space-y-1">
+              <ul className="mt-3 list-disc pl-6 text-foreground/70 space-y-1">
                 {subjectInfo.booklist!.map((book, idx) => (
                   <li key={idx}>{book}</li>
                 ))}
@@ -632,8 +632,8 @@ export default async function SubjectPage({ params }: Props) {
               <h3 className="text-2xl font-semibold">Preparation Insights</h3>
               <div className="mt-3 grid gap-4 md:grid-cols-2">
                 {subjectInfo.prepInsights!.map((insight, idx) => (
-                  <div key={idx} className="rounded-lg border border-black/[0.06] bg-background p-4">
-                    <p className="text-zinc-700 leading-7">{insight}</p>
+                  <div key={idx} className="rounded-lg border border-border bg-background p-4">
+                    <p className="text-foreground/70 leading-7">{insight}</p>
                   </div>
                 ))}
               </div>
@@ -641,9 +641,9 @@ export default async function SubjectPage({ params }: Props) {
           )}
 
           {subjectInfo.scoringTrend && (
-            <div className="mb-8 rounded-xl border border-black/[0.06] bg-zinc-50 p-6">
+            <div className="mb-8 rounded-xl border border-border bg-secondary p-6">
               <h3 className="text-lg font-semibold">Scoring Trend</h3>
-              <p className="mt-2 text-zinc-700 leading-7">{subjectInfo.scoringTrend}</p>
+              <p className="mt-2 text-foreground/70 leading-7">{subjectInfo.scoringTrend}</p>
             </div>
           )}
         </section>
@@ -652,13 +652,13 @@ export default async function SubjectPage({ params }: Props) {
       {/* FULL MARKS TABLE */}
       {toppers.length > 0 && (
         <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             {subjectInfo.name} Topper Marks Table
           </p>
-          <div className="overflow-x-auto rounded-2xl border border-black/[0.06]">
+          <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-black/[0.06] bg-zinc-50">
+                <tr className="border-b border-border bg-secondary">
                   <th className="p-4 font-semibold">AIR</th>
                   <th className="p-4 font-semibold">Name</th>
                   <th className="p-4 font-semibold">Year</th>
@@ -670,21 +670,21 @@ export default async function SubjectPage({ params }: Props) {
                   <th className="p-4 font-semibold">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-black/[0.04]">
+              <tbody className="divide-y divide-border">
                 {toppers.map((t) => (
-                  <tr key={t.slug} className="hover:bg-zinc-50 transition">
+                  <tr key={t.slug} className="hover:bg-secondary transition">
                     <td className="p-4 font-semibold">{t.rank}</td>
                     <td className="p-4">
                       <Link
                         href={`/upsc-topper/${t.slug}`}
                         data-track={`optional-topper-${t.slug}`}
-                        className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                        className="font-medium text-brand underline underline-offset-2 hover:text-brand"
                       >
                         {t.firstName} {t.lastName}
                       </Link>
                     </td>
-                    <td className="p-4 text-zinc-600">
-                      <Link href={`/year/${t.year}`} className="text-blue-600 underline underline-offset-2 hover:text-blue-800">
+                    <td className="p-4 text-muted-foreground">
+                      <Link href={`/year/${t.year}`} className="text-brand underline underline-offset-2 hover:text-brand">
                         {t.year}
                       </Link>
                     </td>
@@ -704,7 +704,7 @@ export default async function SubjectPage({ params }: Props) {
             <Link
               href="/"
               data-track="optional-browse-all-toppers"
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
             >
               Browse All Toppers &rarr;
             </Link>
@@ -713,8 +713,8 @@ export default async function SubjectPage({ params }: Props) {
       )}
 
       {/* OTHER OPTIONAL SUBJECTS */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-zinc-100">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Explore Other Optional Subjects
         </p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -723,7 +723,7 @@ export default async function SubjectPage({ params }: Props) {
               key={key}
               href={`/optional/${key}`}
               data-track={`optional-other-${key}`}
-              className="rounded-xl border border-black/[0.06] bg-zinc-50 p-4 text-sm font-medium transition hover:bg-zinc-100"
+              className="rounded-xl border border-border bg-secondary p-4 text-sm font-medium transition hover:bg-secondary"
             >
               {info.name}
             </Link>
@@ -731,22 +731,22 @@ export default async function SubjectPage({ params }: Props) {
         </div>
       </section>
       {/* GREAT WEEKEND SALE */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-zinc-100">
-        <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 md:p-8">
+      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
+        <div className="rounded-2xl border border-brand/20 bg-foreground p-6 md:p-8">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
+              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
               <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
                 Starting at ₹99
               </h2>
-              <p className="mt-1 text-sm text-emerald-200/80">
+              <p className="mt-1 text-sm text-brand/80">
                 Starting at ₹99 · Instant download.
               </p>
             </div>
             <Link
               href="/store"
               data-track="optional-compilation-upsell"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition hover:bg-brand"
             >
               Shop Now &rarr;
             </Link>

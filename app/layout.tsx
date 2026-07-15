@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Figtree, JetBrains_Mono, Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ import AuthProvider from "@/components/AuthProvider";
 import AnalyticsScripts from "@/components/AnalyticsScripts";
 import TelegramStickyBar from "@/components/TelegramStickyBar";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const figtree = Figtree({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "500", "600", "700", "800"],
@@ -20,11 +20,10 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-const fraunces = Fraunces({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-display",
-  style: ["normal", "italic"],
-  weight: ["400", "600", "700", "900"],
+  variable: "--font-heading",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -86,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", plusJakarta.variable, fraunces.variable)}>
+      <html lang="en" className={cn("font-sans", figtree.variable, sora.variable)}>
       <head>
         <AnalyticsScripts />
 
@@ -141,7 +140,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${plusJakarta.variable} ${jetbrainsMono.variable} antialiased bg-[#F8F9FA]`}
+        className={`${figtree.variable} ${jetbrainsMono.variable} antialiased bg-background`}
       >
         <TooltipProvider>
           <AuthProvider>

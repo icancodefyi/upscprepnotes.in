@@ -233,7 +233,7 @@ export default async function PDFDetailPage({ params }: Props) {
             {editorial}
           </p>
           {v2Content && (
-            <div className="mt-4 space-y-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-5">
+            <div className="mt-4 space-y-3 rounded-xl border border-brand/20 bg-brand-muted/50 p-5">
               {v2Content.map((para, i) => (
                 <p key={i} className="text-sm leading-7 text-zinc-700">
                   {para}
@@ -255,7 +255,7 @@ export default async function PDFDetailPage({ params }: Props) {
             <div className="mt-4 space-y-2">
               {studyTips.map((tip, i) => (
                 <div key={i} className="flex items-start gap-2.5 text-sm text-zinc-600">
-                  <span className="text-emerald-600 mt-0.5 shrink-0">&#10003;</span>
+                  <span className="text-brand mt-0.5 shrink-0">&#10003;</span>
                   <span>{tip}</span>
                 </div>
               ))}
@@ -289,13 +289,13 @@ export default async function PDFDetailPage({ params }: Props) {
         )}
 
         {/* GREAT WEEKEND SALE */}
-        <section className="mb-16 rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 sm:p-8">
+        <section className="mb-16 rounded-2xl border border-brand/20 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/30 shrink-0">
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand/20 border border-brand/20 shrink-0">
               <span className="text-3xl">🎉</span>
             </div>
             <div className="flex-1">
-              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
+              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
               <h2 className="mt-2 text-lg font-bold text-white">Starting at ₹99</h2>
               <p className="mt-1 text-sm text-emerald-200/80">
                 Starting at ₹99 · Instant download.
@@ -304,7 +304,7 @@ export default async function PDFDetailPage({ params }: Props) {
             <Button
               asChild
               size="lg"
-              className="shrink-0 rounded-full bg-emerald-500 px-8 text-sm font-bold text-white hover:bg-emerald-400 shadow-lg"
+              className="shrink-0 rounded-full bg-brand px-8 text-sm font-bold text-white hover:bg-brand shadow-lg"
             >
               <Link href="/store" data-track={`pdf-upsell-${p.slug}`}>
                 Shop Now &rarr;
@@ -440,7 +440,7 @@ async function PDFRelated({
             data-track={`pdf-detail-related-${r.slug}`}
             className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
           >
-            <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-black transition-colors truncate">
+            <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-foreground transition-colors truncate">
               {r.title}
             </h3>
             {r.brand && (

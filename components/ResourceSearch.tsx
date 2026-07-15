@@ -10,15 +10,15 @@ interface Resource {
 }
 
 const SECTION_COLORS: Record<string, { bar: string; bg: string; badge: string }> = {
-  "Test 1-5": { bar: "bg-emerald-500", bg: "bg-emerald-50", badge: "bg-emerald-500" },
+  "Test 1-5": { bar: "bg-brand", bg: "bg-brand-muted", badge: "bg-brand" },
   "Test 6-10": { bar: "bg-sky-500", bg: "bg-sky-50", badge: "bg-sky-500" },
   "Test 11-15": { bar: "bg-violet-500", bg: "bg-violet-50", badge: "bg-violet-500" },
-  "Test 16-20": { bar: "bg-amber-500", bg: "bg-amber-50", badge: "bg-amber-500" },
+  "Test 16-20": { bar: "bg-brand-muted", bg: "bg-brand-muted", badge: "bg-brand-muted" },
   "Test 21-25": { bar: "bg-rose-500", bg: "bg-rose-50", badge: "bg-rose-500" },
 };
 
 function getColors(section: string) {
-  return SECTION_COLORS[section] || { bar: "bg-emerald-500", bg: "bg-emerald-50", badge: "bg-emerald-500" };
+  return SECTION_COLORS[section] || { bar: "bg-brand", bg: "bg-brand-muted", badge: "bg-brand" };
 }
 
 function isWpdmUrl(url: string) {
@@ -200,7 +200,7 @@ export default function ResourceSearch({ resources, slug }: { resources: Resourc
                             target="_blank"
                             rel="noopener noreferrer"
                             data-track={`pdf-resource-dl-${slug}-${idx}`}
-                            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-full px-4 py-2 transition-all shadow-sm hover:shadow-md"
+                            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-white bg-brand hover:bg-brand rounded-full px-4 py-2 transition-all shadow-sm hover:shadow-md"
                           >
                             {isWpdm ? "Open →" : "Download ↓"}
                           </a>
@@ -218,7 +218,7 @@ export default function ResourceSearch({ resources, slug }: { resources: Resourc
 
                       {/* Email form */}
                       {isActivating && (
-                        <div className="mt-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3.5">
+                        <div className="mt-2 rounded-xl border border-brand/20 bg-brand-muted p-3.5">
                           <form
                             onSubmit={(e) => { e.preventDefault(); handleSubmit(globalIdx); }}
                             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
@@ -235,14 +235,14 @@ export default function ResourceSearch({ resources, slug }: { resources: Resourc
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={isLoading}
                                 autoFocus
-                                className="w-full rounded-lg border border-emerald-300 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition disabled:opacity-50"
+                                className="w-full rounded-lg border border-emerald-300 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand transition disabled:opacity-50"
                               />
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
                               <button
                                 type="submit"
                                 disabled={isLoading || !email.trim()}
-                                className="rounded-full bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-emerald-500 disabled:opacity-50 transition shadow-sm"
+                                className="rounded-full bg-brand px-5 py-2.5 text-xs font-bold text-white hover:bg-brand disabled:opacity-50 transition shadow-sm"
                               >
                                 {isLoading ? "Sending..." : "Get Link →"}
                               </button>

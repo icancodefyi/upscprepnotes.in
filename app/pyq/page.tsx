@@ -88,14 +88,14 @@ export default async function PYQIndexPage() {
   const years = await getAllPYQYears();
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 pb-32">
         {/* Breadcrumb */}
         <div className="mb-8 pt-8">
           <Link
             href="/"
             data-track="pyq-back-home"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-black transition-colors"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowRight className="w-4 h-4 mr-2 rotate-180" /> Back to Home
           </Link>
@@ -103,34 +103,34 @@ export default async function PYQIndexPage() {
 
         {/* Hero */}
         <div className="max-w-4xl mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#C4F9D7] text-black border border-black rounded-full text-xs font-bold tracking-wider uppercase mb-6">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-mint text-foreground border border-foreground rounded-full text-xs font-bold tracking-wider uppercase mb-6">
             <FileText size={12} />
             Free Question Papers PDF
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
             UPSC{" "}
-            <span className="bg-[#C4F9D7] px-2 border border-black">
+            <span className="bg-brand-mint px-2 border border-foreground">
               Previous Year Papers
             </span>{" "}
             PDF
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl leading-relaxed max-w-3xl mb-8">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mb-8">
             Download official UPSC Civil Services Examination previous year question papers PDF
             for Prelims (GS + CSAT) and Mains (Essay + GS 1-4 + Optional subjects). 
             Free archive of UPSC PYQ PDF downloads from 2022 to 2025.
           </p>
 
-          <div className="flex flex-wrap gap-6 text-sm text-gray-500">
+          <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">3+</span>
+              <span className="w-6 h-6 rounded-full bg-foreground text-white flex items-center justify-center text-xs font-bold">3+</span>
               Years Archive
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">300+</span>
+              <span className="w-6 h-6 rounded-full bg-foreground text-white flex items-center justify-center text-xs font-bold">300+</span>
               Papers
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">Free</span>
+              <span className="w-6 h-6 rounded-full bg-foreground text-white flex items-center justify-center text-xs font-bold">Free</span>
               PDF Download
             </span>
           </div>
@@ -148,15 +148,15 @@ export default async function PYQIndexPage() {
                 key={year}
                 href={`/pyq/${year}`}
                 data-track={`pyq-year-card-${year}`}
-                className="group bg-white border-2 border-gray-200 p-8 hover:border-black transition-all flex flex-col justify-between"
+                className="group bg-white border border-border p-8 hover:border-foreground transition-all flex flex-col justify-between"
               >
-                <div className="text-5xl font-bold text-gray-300 group-hover:text-black/40 transition-colors mb-4">
+                <div className="text-5xl font-bold text-foreground/20 group-hover:text-foreground/40 transition-colors mb-4">
                   {year}
                 </div>
-                <h3 className="text-xl font-bold mb-2 group-hover:underline decoration-[#C4F9D7] decoration-4 underline-offset-4 transition-all">
+                <h3 className="text-xl font-bold mb-2 group-hover:underline decoration-brand-mint decoration-4 underline-offset-4 transition-all">
                   UPSC CSE {year} Papers
                 </h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                   Includes Prelims (GS + CSAT) and Mains (Essay + GS 1-4) official papers.
                 </p>
                 <div className="flex items-center text-sm font-bold mt-auto">
@@ -168,9 +168,9 @@ export default async function PYQIndexPage() {
         </section>
 
         {/* Paper Categories */}
-        <section className="mb-20 border-t border-gray-200 pt-16">
+        <section className="mb-20 border-t border-border pt-16">
           <h2 className="text-3xl font-bold mb-6">UPSC PYQ PDF Categories</h2>
-          <p className="text-gray-600 text-lg mb-8 max-w-3xl">
+          <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
             Our UPSC previous year question papers PDF archive covers every paper released by the commission. 
             Download individual PDFs for each examination component.
           </p>
@@ -183,14 +183,14 @@ export default async function PYQIndexPage() {
               { icon: FileText, title: "Mains GS Paper 2", desc: "Governance, Constitution, Polity, Social Justice, and International Relations." },
               { icon: FileText, title: "Mains GS Paper 3", desc: "Technology, Economic Development, Biodiversity, Environment, Security, and Disaster Management." },
             ].map((item) => (
-              <div key={item.title} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
+              <div key={item.title} className="bg-white border border-border p-6 hover:border-foreground transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-[#C4F9D7] text-black border border-black shrink-0">
+                  <div className="p-3 bg-brand-mint text-foreground border border-foreground shrink-0">
                     <item.icon size={22} />
                   </div>
                   <div>
                     <h3 className="font-bold mb-1">{item.title}</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -199,10 +199,10 @@ export default async function PYQIndexPage() {
         </section>
 
         {/* Why Solve PYQs */}
-        <section className="mb-20 border-t border-gray-200 pt-16">
+        <section className="mb-20 border-t border-border pt-16">
           <div className="max-w-4xl">
             <h2 className="text-3xl font-bold mb-6">Why Solve UPSC Previous Year Papers?</h2>
-            <p className="text-gray-600 text-lg mb-8">
+            <p className="text-muted-foreground text-lg mb-8">
               Previous Year Questions (PYQs) are the most reliable tool for UPSC preparation. 
               They reveal the examiner&apos;s mindset, topic weighting, and evolving question patterns. 
               Every serious aspirant must integrate PYQ analysis into their study routine.
@@ -216,14 +216,14 @@ export default async function PYQIndexPage() {
                 { icon: Lightbulb, title: "Develop Answer Writing Skills", desc: "For Mains, PYQs are the best answer writing practice. Structure your responses to match UPSC's expectations — introduction, body, conclusion with relevant examples." },
                 { icon: BookOpen, title: "Build Exam Confidence", desc: "Regular PYQ practice reduces exam anxiety. Familiarity with the paper pattern, difficulty level, and question style builds the confidence needed on exam day." },
               ].map((item) => (
-                <div key={item.title} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
+                <div key={item.title} className="bg-white border border-border p-6 hover:border-foreground transition-all">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-black text-white shrink-0">
+                    <div className="p-3 bg-foreground text-white shrink-0">
                       <item.icon size={22} />
                     </div>
                     <div>
                       <h3 className="font-bold mb-1">{item.title}</h3>
-                      <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -233,9 +233,9 @@ export default async function PYQIndexPage() {
         </section>
 
         {/* How to Use PYQs */}
-        <section className="mb-20 border-t border-gray-200 pt-16">
+        <section className="mb-20 border-t border-border pt-16">
           <h2 className="text-3xl font-bold mb-6">How to Use UPSC PYQs Effectively</h2>
-          <p className="text-gray-600 text-lg mb-8 max-w-3xl">
+          <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
             Simply downloading UPSC previous year question papers PDF is not enough. 
             Follow this systematic approach to maximize your learning from every paper.
           </p>
@@ -245,17 +245,17 @@ export default async function PYQIndexPage() {
               { step: "02", title: "Solve & Review", desc: "Attempt each paper under exam conditions — strictly timed, no distractions. After solving, review every incorrect answer in detail. Maintain an error log tracking recurring mistakes." },
               { step: "03", title: "Align Your Strategy", desc: "Use PYQ insights to refine your study plan. Increase time on frequently tested topics, adjust your note-making style to match question demands, and practice answer writing for identified weak areas." },
             ].map((item) => (
-              <div key={item.step} className="bg-white border-2 border-gray-200 p-6 hover:border-black transition-all">
-                <span className="text-5xl font-black text-gray-200 mb-4 block">{item.step}</span>
+              <div key={item.step} className="bg-white border border-border p-6 hover:border-foreground transition-all">
+                <span className="text-5xl font-black text-foreground/15 mb-4 block">{item.step}</span>
                 <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="mb-20 border-t border-gray-200 pt-16">
+        <section className="mb-20 border-t border-border pt-16">
           <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions about UPSC PYQs</h2>
           <div className="max-w-4xl space-y-4">
             {[
@@ -266,12 +266,12 @@ export default async function PYQIndexPage() {
               { q: "Where can I download UPSC previous year question papers PDF?", a: "You can download UPSC previous year question papers PDF for free right here on UPSCPrepNotes. We provide official PDFs for Prelims (GS + CSAT) and Mains (Essay + GS 1-4) for 2022, 2023, 2024, and 2025." },
               { q: "How do I analyze PYQs for topic weighting?", a: "Create a spreadsheet with columns for year, subject, topic, and marks. After solving 5+ years of papers, sort by topic to see which areas carry the most weight. Allocate study time proportionally to this data." },
             ].map((faq, i) => (
-              <details key={i} className="group bg-white border-2 border-gray-200 [&>summary]:open:border-black">
-                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-bold hover:bg-gray-50 transition-colors">
+              <details key={i} className="group bg-white border border-border [&>summary]:open:border-foreground">
+                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-bold hover:bg-secondary transition-colors">
                   {faq.q}
                   <ChevronDown className="w-4 h-4 shrink-0 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-5 pb-5 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-4">
+                <div className="px-5 pb-5 text-muted-foreground leading-relaxed text-sm border-t border-border pt-4">
                   {faq.a}
                 </div>
               </details>
@@ -286,21 +286,21 @@ export default async function PYQIndexPage() {
         />
 
         {/* Free Materials CTA */}
-        <section className="p-8 md:p-12 bg-white border-b-2 border-gray-100">
+        <section className="p-8 md:p-12 bg-white border-b border-border">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 max-w-4xl mx-auto">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-100 border border-blue-200">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-brand-muted border border-brand/20">
               <span className="text-2xl">📚</span>
             </div>
             <div className="flex-1">
-              <h2 className="text-base font-bold text-gray-900">Free Study Material</h2>
-              <p className="mt-1 text-sm text-gray-500">
+              <h2 className="text-base font-bold text-foreground">Free Study Material</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
                 Practice with test series, revise with notes, and stay updated with current affairs compilations — all free.
               </p>
             </div>
             <Link
               href="/free-materials"
               data-track="pyq-browse-free-materials"
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white hover:bg-brand transition-colors"
             >
               Browse Free Materials &rarr;
             </Link>
@@ -308,24 +308,24 @@ export default async function PYQIndexPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-8 md:p-12">
+        <section className="bg-foreground p-8 md:p-12">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#C4F9D7]/20 border border-[#C4F9D7]/30 rounded-full mb-4">
-                <Sparkles className="w-4 h-4 text-[#C4F9D7]" />
-                <span className="text-xs text-[#C4F9D7] font-bold">RECOMMENDED</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-mint/20 border border-brand-mint/30 rounded-full mb-4">
+                <Sparkles className="w-4 h-4 text-brand-mint" />
+                <span className="text-xs text-brand-mint font-bold">RECOMMENDED</span>
               </div>
               <h2 className="text-3xl font-bold text-white mb-3">
                 PYQs + Answer Copy Compilation
               </h2>
-              <p className="text-gray-400 max-w-xl">
+              <p className="text-muted-foreground max-w-xl">
                 See how toppers actually wrote their answers. 50+ verified copies across GS1-4 and Essay with marks-wise compilation.
               </p>
             </div>
             <a
               href="/store"
               data-track="pyq-main-cta"
-              className="inline-flex items-center gap-2 bg-[#C4F9D7] text-black font-bold px-8 py-4 hover:bg-white transition-colors shrink-0"
+              className="inline-flex items-center gap-2 bg-brand-mint text-foreground font-bold px-8 py-4 hover:bg-white transition-colors shrink-0"
             >
               Browse Store <ArrowRight className="w-4 h-4" />
             </a>

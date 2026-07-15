@@ -20,7 +20,7 @@ function renderOptionalLink(name: string | null | undefined) {
   if (!name) return "—";
   const slug = OPTIONAL_SLUG_MAP[name];
   return slug ? (
-    <Link href={`/optional/${slug}`} className="text-blue-600 underline underline-offset-2 hover:text-blue-800">
+    <Link href={`/optional/${slug}`} className="text-brand underline underline-offset-2 hover:text-brand">
       {name}
     </Link>
   ) : (
@@ -228,7 +228,7 @@ export default async function YearPage({ params }: Props) {
   const nextYear = yearIndex < ALL_YEARS.length - 1 ? ALL_YEARS[yearIndex + 1] : null;
 
   return (
-    <main className="min-h-screen bg-background text-black">
+    <main className="min-h-screen bg-background text-foreground">
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -242,7 +242,7 @@ export default async function YearPage({ params }: Props) {
 
       <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
         {/* BREADCRUMB */}
-        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
           <Link href="/" className="transition hover:text-foreground">
             Home
           </Link>
@@ -251,11 +251,11 @@ export default async function YearPage({ params }: Props) {
         </div>
 
         <div className="mb-12">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-zinc-500">
+          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
             Yearly Archive
           </p>
           <h1 className="text-4xl font-semibold tracking-tight">UPSC {yearNum} Toppers — Complete Marks Dataset</h1>
-          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-zinc-800">
+          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-foreground/80">
             Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
           </p>
         </div>
@@ -265,7 +265,7 @@ export default async function YearPage({ params }: Props) {
           {prevYear && (
             <Link
               href={`/year/${prevYear}`}
-              className="rounded-full border border-zinc-200 px-5 py-2 text-sm font-medium transition hover:bg-zinc-100"
+              className="rounded-full border border-border px-5 py-2 text-sm font-medium transition hover:bg-secondary"
             >
               &larr; {prevYear}
             </Link>
@@ -276,8 +276,8 @@ export default async function YearPage({ params }: Props) {
               href={`/year/${y}`}
               className={`rounded-full px-5 py-2 text-sm font-medium transition ${
                 y === yearNum
-                  ? "bg-black text-white"
-                  : "border border-zinc-200 hover:bg-zinc-100"
+                  ? "bg-foreground text-white"
+                  : "border border-border hover:bg-secondary"
               }`}
             >
               {y}
@@ -286,7 +286,7 @@ export default async function YearPage({ params }: Props) {
           {nextYear && (
             <Link
               href={`/year/${nextYear}`}
-              className="rounded-full border border-zinc-200 px-5 py-2 text-sm font-medium transition hover:bg-zinc-100"
+              className="rounded-full border border-border px-5 py-2 text-sm font-medium transition hover:bg-secondary"
             >
               {nextYear} &rarr;
             </Link>
@@ -295,7 +295,7 @@ export default async function YearPage({ params }: Props) {
 
         {toppers.length === 0 ? (
           <div className="mx-auto max-w-2xl text-center py-24">
-            <p className="text-zinc-600">No topper profiles found for this year.</p>
+            <p className="text-muted-foreground">No topper profiles found for this year.</p>
           </div>
         ) : (
           <>
@@ -305,9 +305,9 @@ export default async function YearPage({ params }: Props) {
               if (!analysis) return null;
               return (
                 <section className="mb-16">
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Analysis</p>
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Analysis</p>
                   <h2 className="mb-6 text-2xl font-semibold tracking-tight">{analysis.title}</h2>
-                  <div className="space-y-4 text-base leading-7 text-zinc-700">
+                  <div className="space-y-4 text-base leading-7 text-foreground/70">
                     {analysis.paragraphs.map((p, i) => (
                       <p key={i}>{p}</p>
                     ))}
@@ -319,12 +319,12 @@ export default async function YearPage({ params }: Props) {
             {/* COMPUTED INSIGHTS */}
             {insights.length > 0 && (
               <section className="mb-16">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                   Key Insights — UPSC {yearNum}
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {insights.map((insight, i) => (
-                    <div key={i} className="rounded-xl border border-black/[0.06] bg-zinc-50 p-4 text-sm leading-6 text-zinc-700">
+                    <div key={i} className="rounded-xl border border-border bg-secondary p-4 text-sm leading-6 text-foreground/70">
                       {insight}
                     </div>
                   ))}
@@ -334,13 +334,13 @@ export default async function YearPage({ params }: Props) {
 
             {/* FULL MARKS TABLE */}
             <section>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 Topper Marks Table
               </p>
-              <div className="overflow-x-auto rounded-2xl border border-black/[0.06]">
+              <div className="overflow-x-auto rounded-2xl border border-border">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-black/[0.06] bg-zinc-50">
+                    <tr className="border-b border-border bg-secondary">
                       <th className="p-4 font-semibold">AIR</th>
                       <th className="p-4 font-semibold">Name</th>
                       <th className="p-4 font-semibold">Optional</th>
@@ -354,19 +354,19 @@ export default async function YearPage({ params }: Props) {
                       <th className="p-4 font-semibold">Total</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-black/[0.04]">
+                  <tbody className="divide-y divide-border">
                     {toppers.map((t) => (
-                      <tr key={t.slug} className="hover:bg-zinc-50 transition">
+                      <tr key={t.slug} className="hover:bg-secondary transition">
                         <td className="p-4 font-semibold">{t.rank}</td>
                         <td className="p-4">
                           <Link
                             href={`/upsc-topper/${t.slug}`}
-                            className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                            className="font-medium text-brand underline underline-offset-2 hover:text-brand"
                           >
                             {t.firstName} {t.lastName}
                           </Link>
                         </td>
-                        <td className="p-4 text-zinc-600">{renderOptionalLink(t.optionalSubject)}</td>
+                        <td className="p-4 text-muted-foreground">{renderOptionalLink(t.optionalSubject)}</td>
                         <td className="p-4">{t.marks.gs1 || "—"}</td>
                         <td className="p-4">{t.marks.gs2 || "—"}</td>
                         <td className="p-4">{t.marks.gs3 || "—"}</td>
@@ -386,22 +386,22 @@ export default async function YearPage({ params }: Props) {
       </section>
 
       {/* GREAT WEEKEND SALE */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-zinc-100">
-        <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 md:p-8">
+      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
+        <div className="rounded-2xl border border-brand/20 bg-foreground p-6 md:p-8">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
+              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
               <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
                 Starting at ₹99
               </h2>
-              <p className="mt-1 text-sm text-emerald-200/80">
+              <p className="mt-1 text-sm text-brand/80">
                 Starting at ₹99 · Instant download.
               </p>
             </div>
             <Link
               href="/store"
               data-track="year-compilation-upsell"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition hover:bg-brand"
             >
               Shop Now &rarr;
             </Link>

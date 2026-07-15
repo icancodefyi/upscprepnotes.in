@@ -30,8 +30,8 @@ export default function ProductDetailClient({ product }: { product: StoreProduct
 function SectionLabel({ children }: { children: string }) {
   return (
     <div className="mb-5 flex items-center gap-3">
-      <span className="text-[11px] uppercase tracking-[0.3em] text-gray-400">{children}</span>
-      <span className="h-px flex-1 bg-gray-200" />
+      <span className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">{children}</span>
+      <span className="h-px flex-1 bg-secondary" />
     </div>
   );
 }
@@ -63,14 +63,14 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
   const reviews = product.reviews || [];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-20">
         {/* Top bar */}
         <div className="mb-6 flex items-center justify-between">
           <Link
             href="/store"
             data-track="detail-back-to-store"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-black transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             <IconArrowLeft size={14} />
             Back to Store
@@ -79,26 +79,26 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
         </div>
 
         {/* Breadcrumb-style title row */}
-        <div className="mb-6 flex items-center gap-3 text-xs text-gray-400">
-          <Link href="/" className="hover:text-black transition-colors">Home</Link>
+        <div className="mb-6 flex items-center gap-3 text-xs text-muted-foreground">
+          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/store" className="hover:text-black transition-colors">Store</Link>
+          <Link href="/store" className="hover:text-foreground transition-colors">Store</Link>
           <span>/</span>
-          <span className="font-medium text-gray-600">{product.title}</span>
+          <span className="font-medium text-muted-foreground">{product.title}</span>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-10 lg:items-start">
           {/* Left: Image + content */}
           <div className="lg:col-span-7">
             {/* Product image */}
-            <div className="relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-white">
               {product.images ? (
                 <ImageCarousel images={product.images} title={product.title} />
               ) : product.image ? (
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-full max-h-[480px] object-contain object-top bg-gray-50"
+                  className="w-full max-h-[480px] object-contain object-top bg-secondary"
                 />
               ) : (
                 <div className={`flex h-64 items-center justify-center ${product.gradient}`}>
@@ -128,9 +128,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <SectionLabel>Product Details</SectionLabel>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {product.specs.map((spec) => (
-                    <div key={spec.label} className="rounded-xl border-2 border-gray-200 bg-white p-3">
-                      <p className="text-[10px] uppercase tracking-wider text-gray-400">{spec.label}</p>
-                      <p className="mt-1 text-sm font-bold text-gray-900">{spec.value}</p>
+                    <div key={spec.label} className="rounded-xl border border-border bg-white p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{spec.label}</p>
+                      <p className="mt-1 text-sm font-bold text-foreground">{spec.value}</p>
                     </div>
                   ))}
                 </div>
@@ -142,7 +142,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               <SectionLabel>About this product</SectionLabel>
               <div className="space-y-4">
                 {product.longDescription.map((para, i) => (
-                  <p key={i} className="text-sm leading-7 text-gray-600">{para}</p>
+                  <p key={i} className="text-sm leading-7 text-muted-foreground">{para}</p>
                 ))}
               </div>
             </div>
@@ -153,13 +153,13 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <SectionLabel>Why buy this</SectionLabel>
                 <div className="space-y-3">
                   {product.highlights.map((hl) => (
-                    <div key={hl.label} className="flex items-start gap-3 rounded-xl border-2 border-gray-200 bg-white p-4">
+                    <div key={hl.label} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4">
                       <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#C4F9D7] border border-black">
-                        <span className="text-xs font-bold text-black">&#10003;</span>
+                        <span className="text-xs font-bold text-foreground">&#10003;</span>
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-gray-900">{hl.label}</p>
-                        <p className="mt-0.5 text-sm text-gray-500">{hl.desc}</p>
+                        <p className="text-sm font-bold text-foreground">{hl.label}</p>
+                        <p className="mt-0.5 text-sm text-muted-foreground">{hl.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -171,7 +171,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             {product.slug === "answer-copies-compilation" && (
               <div className="mt-8">
                 <SectionLabel>Sample Preview</SectionLabel>
-                <p className="mb-4 text-sm text-gray-500">Actual answer sheets from 8 toppers included in this compilation</p>
+                <p className="mb-4 text-sm text-muted-foreground">Actual answer sheets from 8 toppers included in this compilation</p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {TOPPERS.slice(0, 8).map((topper) => (
                     <a
@@ -179,7 +179,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                       href={topper.previewImageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50 transition hover:border-black"
+                      className="group relative overflow-hidden rounded-xl border border-border bg-secondary transition hover:border-black"
                     >
                       <img
                         src={topper.previewImageUrl}
@@ -201,11 +201,11 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             {product.features.length > 0 && (
               <div className="mt-8">
                 <SectionLabel>What&apos;s included</SectionLabel>
-                <div className="rounded-2xl border-2 border-gray-200 bg-white p-6">
+                <div className="rounded-2xl border border-border bg-white p-6">
                   <ul className="grid gap-3 sm:grid-cols-2">
                     {product.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
-                        <span className="mt-0.5 shrink-0 text-emerald-500 font-bold">&#10003;</span>
+                      <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                        <span className="mt-0.5 shrink-0 text-brand font-bold">&#10003;</span>
                         {f}
                       </li>
                     ))}
@@ -218,12 +218,12 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             {product.files && product.files.length > 0 && (
               <div className="mt-8">
                 <SectionLabel>Files in this bundle</SectionLabel>
-                <p className="mb-3 text-sm text-gray-500">{product.fileCount} files · {product.totalSizeMB} MB total</p>
-                <div className="space-y-1.5 max-h-48 overflow-y-auto rounded-2xl border-2 border-gray-200 bg-white p-4">
+                <p className="mb-3 text-sm text-muted-foreground">{product.fileCount} files · {product.totalSizeMB} MB total</p>
+                <div className="space-y-1.5 max-h-48 overflow-y-auto rounded-2xl border border-border bg-white p-4">
                   {product.files.map((f, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2">
-                      <span className="truncate text-xs text-gray-600">{f.name}</span>
-                      <span className="ml-2 shrink-0 text-[11px] text-gray-400">{f.sizeMB} MB</span>
+                    <div key={i} className="flex items-center justify-between rounded-lg bg-secondary px-3 py-2">
+                      <span className="truncate text-xs text-muted-foreground">{f.name}</span>
+                      <span className="ml-2 shrink-0 text-[11px] text-muted-foreground">{f.sizeMB} MB</span>
                     </div>
                   ))}
                 </div>
@@ -244,12 +244,12 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <SectionLabel>Questions & Answers</SectionLabel>
                 <div className="space-y-3">
                   {product.faqs.map((faq) => (
-                    <details key={faq.q} className="group rounded-xl border-2 border-gray-200 bg-white p-4 hover:border-black transition-all">
+                    <details key={faq.q} className="group rounded-xl border border-border bg-white p-4 hover:border-black transition-all">
                       <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
                         <h3 className="text-sm font-bold leading-tight">{faq.q}</h3>
-                        <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-gray-400 transition group-open:rotate-180" />
+                        <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition group-open:rotate-180" />
                       </summary>
-                      <p className="mt-3 text-sm text-gray-500 leading-6">{faq.a}</p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-6">{faq.a}</p>
                     </details>
                   ))}
                 </div>
@@ -258,15 +258,15 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 
             {/* Guarantee */}
             {!product.comingSoon && (
-              <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white p-5 text-center">
+              <div className="mt-8 rounded-2xl border border-dashed border-border bg-white p-5 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#C4F9D7] border border-black">
-                  <svg className="h-5 w-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="h-5 w-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                 </div>
-                <p className="mt-3 text-sm font-semibold text-gray-900">Instant preview after purchase</p>
-                <p className="mt-1 text-xs text-gray-500">Every PDF opens in your browser. Download and keep forever.</p>
+                <p className="mt-3 text-sm font-semibold text-foreground">Instant preview after purchase</p>
+                <p className="mt-1 text-xs text-muted-foreground">Every PDF opens in your browser. Download and keep forever.</p>
               </div>
             )}
           </div>
@@ -281,7 +281,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 
         {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-16 border-t border-gray-200 pt-12">
+          <div className="mt-16 border-t border-border pt-12">
             <SectionLabel>Related Products</SectionLabel>
             <div className="grid gap-4 sm:grid-cols-3">
               {related.map((r) => (
@@ -289,9 +289,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                   key={r.slug}
                   href={`/store/${r.slug}`}
                   data-track={`detail-related-${r.slug}`}
-                  className="group bg-white border-2 border-gray-200 hover:border-black transition-all flex flex-col"
+                  className="group bg-white border border-border hover:border-black transition-all flex flex-col"
                 >
-                  <div className="relative aspect-[3/4] overflow-hidden border-b-2 border-gray-200 bg-gray-50">
+                  <div className="relative aspect-[3/4] overflow-hidden border-b border-border bg-secondary">
                     {r.image ? (
                       <img
                         src={r.image}
@@ -309,9 +309,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                     )}
                     {r.badge && (
                       <span className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-black ${
-                        r.badgeColor === "emerald" ? "bg-[#C4F9D7] text-black" :
-                        r.badgeColor === "amber" ? "bg-amber-100 text-amber-900" :
-                        "bg-gray-100 text-gray-700"
+                        r.badgeColor === "emerald" ? "bg-[#C4F9D7] text-foreground" :
+                        r.badgeColor === "amber" ? "bg-brand-muted text-brand" :
+                        "bg-secondary text-foreground/70"
                       }`}>
                         {r.badge}
                       </span>
@@ -319,7 +319,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                   </div>
                   <div className="p-4 flex flex-1 flex-col">
                     <h3 className="text-sm font-bold leading-tight">{r.title}</h3>
-                    <p className="mt-1 text-xs text-gray-500 line-clamp-2 flex-1">{r.tagline}</p>
+                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2 flex-1">{r.tagline}</p>
                     <div className="mt-3 flex items-center justify-between">
                       <span className="text-lg font-bold">₹{r.price}</span>
                       <ArrowRight className="w-4 h-4 text-gray-300 group-hover:translate-x-1 transition-transform" />
@@ -353,15 +353,15 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
   return (
     <div className="relative">
       <div className="absolute -right-3 -top-3 h-full w-full rounded-2xl bg-[#C4F9D7]" />
-      <div className="relative rounded-2xl border-2 border-black bg-white p-6 shadow-xl">
+      <div className="relative rounded-2xl border border-black bg-white p-6 shadow-xl">
         {product.badge && (
           <div className="mb-3">
             <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-black ${
               product.badgeColor === "emerald"
-                ? "bg-[#C4F9D7] text-black"
+                ? "bg-[#C4F9D7] text-foreground"
                 : product.badgeColor === "amber"
-                  ? "bg-amber-100 text-amber-900"
-                  : "bg-gray-100 text-gray-700"
+                  ? "bg-brand-muted text-brand"
+                  : "bg-secondary text-foreground/70"
             }`}>
               {product.badge}
             </span>
@@ -369,7 +369,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
         )}
 
         <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{product.title}</h1>
-        <p className="mt-1 text-sm text-gray-500">{product.tagline}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>
 
         {product.rating && (
           <div className="mt-3 flex items-center gap-2">
@@ -378,21 +378,21 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
                 <IconStarFilled
                   key={s}
                   size={14}
-                  className={s <= Math.round(product.rating!) ? "text-amber-400" : "text-gray-200"}
+                  className={s <= Math.round(product.rating!) ? "text-brand" : "text-gray-200"}
                 />
               ))}
             </span>
-            <span className="text-sm font-medium text-gray-700">{product.rating}</span>
-            <span className="text-sm text-gray-400">({product.reviewCount} reviews)</span>
+            <span className="text-sm font-medium text-foreground/70">{product.rating}</span>
+            <span className="text-sm text-muted-foreground">({product.reviewCount} reviews)</span>
           </div>
         )}
 
         <div className="mt-3 flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-muted-foreground">
             {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}1,400+ students
           </span>
         </div>
@@ -401,11 +401,11 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
         {product.minOfferPrice ? (
           <div className="mt-5">
             <div className="mb-2 flex items-center justify-between">
-              <label className="text-[11px] uppercase tracking-[0.2em] text-gray-400 font-semibold">Name your price</label>
-              <span className="text-[11px] text-gray-400">min ₹{minPrice}</span>
+              <label className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Name your price</label>
+              <span className="text-[11px] text-muted-foreground">min ₹{minPrice}</span>
             </div>
-            <div className="flex items-stretch overflow-hidden rounded-xl border-2 border-black bg-white">
-              <span className="flex items-center pl-4 text-2xl font-bold text-gray-900">₹</span>
+            <div className="flex items-stretch overflow-hidden rounded-xl border border-black bg-white">
+              <span className="flex items-center pl-4 text-2xl font-bold text-foreground">₹</span>
               <input
                 type="number"
                 min={minPrice}
@@ -416,7 +416,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
                   setOfferPrice(val);
                 }}
                 onBlur={() => setOfferPrice(clampedPrice)}
-                className="w-full px-2 py-3 text-3xl font-bold text-gray-900 outline-none"
+                className="w-full px-2 py-3 text-3xl font-bold text-foreground outline-none"
               />
             </div>
             {/* Quick pick pills */}
@@ -428,8 +428,8 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
                   onClick={() => setOfferPrice(pick.value)}
                   className={`flex-1 rounded-lg border-2 px-2 py-1.5 text-xs font-bold transition-all ${
                     clampedPrice === pick.value
-                      ? "border-black bg-black text-white"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-black"
+                      ? "border-black bg-foreground text-white"
+                      : "border-border bg-white text-muted-foreground hover:border-black"
                   }`}
                 >
                   {pick.label}
@@ -437,12 +437,12 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
               ))}
             </div>
             {product.originalPrice && (
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-muted-foreground">
                 Listed at <span className="line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span> · pay what feels fair
               </p>
             )}
             {isDiscounted && (
-              <p className="mt-1 text-xs font-semibold text-emerald-600">
+              <p className="mt-1 text-xs font-semibold text-brand">
                 You save ₹{product.price - clampedPrice} ({Math.round((1 - clampedPrice / product.price) * 100)}% off)
               </p>
             )}
@@ -452,8 +452,8 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
             <span className="text-3xl font-bold tracking-tight">₹{product.price}</span>
             {product.originalPrice && (
               <>
-                <span className="text-sm text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-                <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
+                <span className="rounded-full bg-brand-muted px-2.5 py-0.5 text-xs font-bold text-brand">
                   {Math.round((1 - product.price / product.originalPrice) * 100)}% off
                 </span>
               </>
@@ -469,18 +469,18 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
             { icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", label: "Lifetime access" },
             { icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", label: "1,400+ students" },
           ].map((badge) => (
-            <div key={badge.label} className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
-              <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div key={badge.label} className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2">
+              <svg className="h-4 w-4 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d={badge.icon} />
               </svg>
-              <span className="text-[11px] font-medium text-gray-600">{badge.label}</span>
+              <span className="text-[11px] font-medium text-muted-foreground">{badge.label}</span>
             </div>
           ))}
         </div>
 
         {/* CTAs */}
         {product.comingSoon ? (
-          <div className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 px-5 py-3 text-sm font-medium text-gray-400">
+          <div className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-secondary px-5 py-3 text-sm font-medium text-muted-foreground">
             Coming Soon
           </div>
         ) : product.link ? (
@@ -488,7 +488,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
             <Link
               href={product.link}
               data-track={`detail-view-${product.slug}`}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
             >
               View Full Product Details
             </Link>
@@ -500,7 +500,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
               items={[{ slug: product.slug, quantity: 1, price: clampedPrice }]}
               tracking={`buy-${product.slug}`}
               offeredPrice={isDiscounted ? clampedPrice : undefined}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-4 text-base font-bold text-white transition hover:bg-gray-800 active:scale-[0.97]"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-4 text-base font-bold text-white transition hover:bg-gray-800 active:scale-[0.97]"
             >
               <IconShoppingCart size={18} />
               {`Pay ₹${clampedPrice}`}
@@ -509,7 +509,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
               type="button"
               data-track={`detail-addtocart-${product.slug}`}
               onClick={onAddToCart}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-5 py-3 text-sm font-semibold text-foreground/70 transition hover:border-black hover:text-foreground"
             >
               <IconShoppingBag size={16} />
               Add to Cart
@@ -517,18 +517,18 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           </div>
         )}
 
-        <div className="mt-4 rounded-xl border-2 border-emerald-200 bg-emerald-50 p-3">
+        <div className="mt-4 rounded-xl border border-brand/20 bg-brand-muted p-3">
           <div className="flex items-center gap-2">
-            <svg className="h-5 w-5 shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-5 w-5 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             <div>
               <p className="text-xs font-bold text-emerald-800">7-Day Money-Back Guarantee</p>
-              <p className="text-[11px] text-emerald-600">Not satisfied? Get a full refund within 7 days.</p>
+              <p className="text-[11px] text-brand">Not satisfied? Get a full refund within 7 days.</p>
             </div>
           </div>
         </div>
-        <p className="mt-3 text-center text-[11px] text-gray-400">
+        <p className="mt-3 text-center text-[11px] text-muted-foreground">
           Secure payment · PDF delivered instantly
         </p>
       </div>
@@ -540,7 +540,7 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
   return (
     <div>
       {/* Summary */}
-      <div className="flex items-center gap-6 rounded-2xl border-2 border-gray-200 bg-white p-5 mb-4">
+      <div className="flex items-center gap-6 rounded-2xl border border-border bg-white p-5 mb-4">
         <div className="text-center">
           <p className="text-4xl font-bold tracking-tight">{rating || "—"}</p>
           <div className="mt-1 flex items-center justify-center gap-0.5">
@@ -548,22 +548,22 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
               <IconStarFilled
                 key={s}
                 size={14}
-                className={s <= Math.round(rating || 0) ? "text-amber-400" : "text-gray-200"}
+                className={s <= Math.round(rating || 0) ? "text-brand" : "text-gray-200"}
               />
             ))}
           </div>
-          <p className="mt-1 text-xs text-gray-500">{reviewCount || reviews.length} reviews</p>
+          <p className="mt-1 text-xs text-muted-foreground">{reviewCount || reviews.length} reviews</p>
         </div>
         <div className="flex-1 space-y-1.5">
           {[5, 4, 3].map((star) => {
             const pct = star === 5 ? 85 : star === 4 ? 12 : 3;
             return (
               <div key={star} className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-3">{star}</span>
-                <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
-                  <div className="h-full rounded-full bg-amber-400" style={{ width: `${pct}%` }} />
+                <span className="text-xs text-muted-foreground w-3">{star}</span>
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
+                  <div className="h-full rounded-full bg-brand-muted" style={{ width: `${pct}%` }} />
                 </div>
-                <span className="text-xs text-gray-400 w-8 text-right">{pct}%</span>
+                <span className="text-xs text-muted-foreground w-8 text-right">{pct}%</span>
               </div>
             );
           })}
@@ -573,11 +573,11 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
       {/* Individual reviews */}
       <div className="space-y-3">
         {reviews.map((review, i) => (
-          <div key={i} className="rounded-xl border-2 border-gray-200 bg-white p-4">
+          <div key={i} className="rounded-xl border border-border bg-white p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 border border-gray-200">
-                  <span className="text-xs font-bold text-gray-600">{review.name.charAt(0)}</span>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary border border-border">
+                  <span className="text-xs font-bold text-muted-foreground">{review.name.charAt(0)}</span>
                 </div>
                 <div>
                   <p className="text-sm font-bold">{review.name}</p>
@@ -587,21 +587,21 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
                         <IconStarFilled
                           key={s}
                           size={10}
-                          className={s <= review.rating ? "text-amber-400" : "text-gray-200"}
+                          className={s <= review.rating ? "text-brand" : "text-gray-200"}
                         />
                       ))}
                     </span>
-                    <span className="text-xs text-gray-400">{review.date}</span>
+                    <span className="text-xs text-muted-foreground">{review.date}</span>
                   </div>
                 </div>
               </div>
               {review.verified && (
-                <span className="rounded-full bg-[#C4F9D7] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-black text-black">
+                <span className="rounded-full bg-[#C4F9D7] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-black text-foreground">
                   Verified Buyer
                 </span>
               )}
             </div>
-            <p className="mt-3 text-sm text-gray-600 leading-6">{review.text}</p>
+            <p className="mt-3 text-sm text-muted-foreground leading-6">{review.text}</p>
           </div>
         ))}
       </div>
@@ -617,10 +617,10 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
       <img
         src={images[active]}
         alt={`${title} - ${active + 1}`}
-        className="w-full max-h-[480px] object-contain object-top bg-gray-50"
+        className="w-full max-h-[480px] object-contain object-top bg-secondary"
       />
       {images.length > 1 && (
-        <div className="flex items-center justify-center gap-2 border-t-2 border-gray-200 bg-white px-3 py-3">
+        <div className="flex items-center justify-center gap-2 border-t border-border bg-white px-3 py-3">
           {images.map((img, i) => (
             <button
               key={i}

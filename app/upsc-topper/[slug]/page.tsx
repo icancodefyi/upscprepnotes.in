@@ -346,13 +346,15 @@ export default async function TopperPage({ params }: Props) {
 
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         {/* BREADCRUMB */}
-        <div className="mb-8 flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+        <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <Link href="/" className="transition hover:text-foreground" data-track="topper-breadcrumb-home">Home</Link>
           <span>/</span>
-          <Link href={`/year/${topper.year}`} className="transition hover:text-foreground" data-track="topper-breadcrumb-year">{topper.year}</Link>
+          <Link href={`/year/${topper.year}`} className="transition hover:text-foreground" data-track="topper-breadcrumb-year">UPSC {topper.year} Toppers</Link>
           <span>/</span>
           <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-foreground" data-track="topper-breadcrumb-optional">{topper.optionalSubject}</Link>
-        </div>
+          <span>/</span>
+          <span className="text-foreground">{topper.firstName} {topper.lastName}</span>
+        </nav>
 
         {/* HERO */}
         <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -360,10 +362,11 @@ export default async function TopperPage({ params }: Props) {
           <div>
             <div className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card">
               <div className="aspect-[3/4]">
-                <img
-                  src={topperImageSrc(topper)}
-                  alt={`${topper.firstName} ${topper.lastName}`}
-                  className="h-full w-full bg-muted object-cover transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.08]"
+                  <img
+                    src={topperImageSrc(topper)}
+                    alt={`${topper.firstName} ${topper.lastName}`}
+                    loading="lazy"
+                    className="h-full w-full bg-muted object-cover"
                 />
               </div>
             </div>
@@ -388,36 +391,22 @@ export default async function TopperPage({ params }: Props) {
 
           {/* RIGHT */}
           <div>
-            <h1 className="text-3xl font-bold leading-tight sm:text-4xl">
+            <h1 className="font-heading text-3xl font-bold leading-tight sm:text-4xl">
               {topper.firstName} {topper.lastName} — UPSC Marksheet, {topper.optionalSubject || "Optional Subject"} Answer Copy &amp; Strategy
             </h1>
             <p className="mt-1 text-lg text-primary font-medium">
               AIR {topper.rank} &middot; {topper.marks.total} Total Marks
             </p>
 
-            {/* MARKS AT A GLANCE — visible above fold for marksheet intent */}
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              {[
-                { label: "Written", value: topper.marks.written, show: topper.marks.written > 0 },
-                { label: "Interview", value: topper.marks.interview, show: topper.marks.interview > 0 },
-                { label: "Total", value: topper.marks.total, show: topper.marks.total > 0, highlight: true },
-                { label: "Essay", value: topper.marks.essay, show: topper.marks.essay > 0 },
-                { label: "Optional P1", value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
-                { label: "Optional P2", value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
-              ].filter(c => c.show).slice(0, 6).map((c) => (
-                <div key={c.label} className={`rounded-lg border ${c.highlight ? "border-emerald-200 bg-emerald-50" : "border-border/50 bg-card"} p-2.5 text-center`}>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
-                  <p className={`text-base font-bold ${c.highlight ? "text-emerald-700" : ""}`}>{c.value}</p>
-                </div>
-              ))}
-            </div>
-
             {/* PAPER-WISE MARKS — marksheet table for search intent */}
             <div className="mt-4 rounded-xl border border-border/50 bg-card overflow-hidden">
-              <div className="bg-emerald-50 px-4 py-2 border-b border-border/50">
-                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">{topper.firstName} {topper.lastName} — UPSC Marksheet {topper.year}</p>
+              <div className="bg-brand-muted px-4 py-2 border-b border-border/50">
+                <p className="text-xs font-bold uppercase tracking-wider text-brand">{topper.firstName} {topper.lastName} — UPSC Marksheet {topper.year}</p>
               </div>
               <table className="w-full text-sm">
+                <caption className="sr-only">
+                  {topper.firstName} {topper.lastName} UPSC {topper.year} marksheet with paper-wise marks breakdown
+                </caption>
                 <tbody className="divide-y divide-border/30">
                   {[
                     { label: "GS1", value: topper.marks.gs1, show: (topper.marks.gs1 || 0) > 0 },
@@ -433,17 +422,17 @@ export default async function TopperPage({ params }: Props) {
                       <td className="px-4 py-2 font-semibold text-right">{row.value}</td>
                     </tr>
                   ))}
-                  <tr className="border-t-2 border-emerald-200 bg-emerald-50/50">
-                    <td className="px-4 py-2 font-semibold text-emerald-800">Written Total</td>
-                    <td className="px-4 py-2 font-semibold text-right text-emerald-800">{topper.marks.written}</td>
+                  <tr className="border-t border-brand/20 bg-brand-muted/50">
+                    <td className="px-4 py-2 font-semibold text-brand">Written Total</td>
+                    <td className="px-4 py-2 font-semibold text-right text-brand">{topper.marks.written}</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-2 text-muted-foreground">Interview</td>
                     <td className="px-4 py-2 font-semibold text-right">{topper.marks.interview}</td>
                   </tr>
-                  <tr className="border-t-2 border-emerald-200 bg-emerald-50/50">
-                    <td className="px-4 py-2 font-bold text-emerald-800">Total</td>
-                    <td className="px-4 py-2 font-bold text-right text-emerald-800">{topper.marks.total}</td>
+                  <tr className="border-t border-brand/20 bg-brand-muted/50">
+                    <td className="px-4 py-2 font-bold text-brand">Total</td>
+                    <td className="px-4 py-2 font-bold text-right text-brand">{topper.marks.total}</td>
                   </tr>
                 </tbody>
               </table>
@@ -452,7 +441,7 @@ export default async function TopperPage({ params }: Props) {
               {topper.firstName} {topper.lastName} answer copy PDF and UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional subject. Download the actual UPSC Mains answer copy with full marks breakdown across GS papers, essay, and optional subject.
             </p>
             <p className="mt-2 text-sm leading-6">
-              <Link href="/store" className="text-emerald-600 font-semibold hover:underline" data-track="topper-compilation-body">
+              <Link href="/store" className="text-brand font-semibold hover:underline" data-track="topper-compilation-body">
                 Shop Now →
               </Link>
               <span className="text-muted-foreground"> — Starting at ₹99.</span>
@@ -471,6 +460,7 @@ export default async function TopperPage({ params }: Props) {
             {/* WIKI TABLE */}
             <div className="mt-5 rounded-xl border border-border/50 bg-card">
               <table className="w-full text-sm">
+                <caption className="sr-only">{topper.firstName} {topper.lastName} profile summary</caption>
                 <tbody className="divide-y divide-border/30">
                   {[
                     { label: "Name", value: `${topper.firstName} ${topper.lastName}` },
@@ -499,7 +489,7 @@ export default async function TopperPage({ params }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                   </svg>
                   Ask AI about {topper.firstName}
-                  <span className="ml-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
+                  <span className="ml-1.5 rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
                 </Link>
               </Button>
             </div>
@@ -530,7 +520,7 @@ export default async function TopperPage({ params }: Props) {
                   <>
                     {Object.entries(structuredStrategy).map(
                       ([heading, content], i) => (
-                        <section key={heading} className={i > 0 ? "mt-8 border-l-2 border-l-primary pl-5" : ""}>
+                        <section key={heading} className={i > 0 ? "mt-8 rounded-lg bg-secondary/30 p-4" : ""}>
                           <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
                           <div className="mt-2">
                             <ReactMarkdown>
@@ -565,27 +555,20 @@ export default async function TopperPage({ params }: Props) {
           </section>
         )}
 
-        {/* GREAT WEEKEND SALE */}
+        {/* COMPLETE COMPILATION CTA */}
         <section className="mt-12">
-          <div className="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6">
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <span className="rounded-full bg-emerald-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
-                <h3 className="mt-2 text-lg font-bold text-white">
-                  Starting at ₹99
-                </h3>
-                <p className="mt-1 text-sm text-emerald-200/80">
-                  Starting at ₹99 · Instant download.
-                </p>
-              </div>
-              <Link
-                href="/store"
-                data-track="topper-compilation-upsell-body"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-400"
-              >
-                Shop Now &rarr;
-              </Link>
+          <div className="rounded-xl border border-brand/20 bg-brand-muted p-6 md:flex md:items-center md:justify-between md:gap-6">
+            <div>
+              <h3 className="text-base font-bold text-brand">Get 50+ topper answer copies with full marks breakdown</h3>
+              <p className="mt-1 text-sm text-muted-foreground">GS1-4, Essay, and Optional papers. Instant download. 7-day refund.</p>
             </div>
+            <Link
+              href="/store"
+              data-track="topper-compilation-upsell-body"
+              className="mt-4 inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-brand-foreground transition hover:bg-brand/90 md:mt-0"
+            >
+              Shop store &rarr;
+            </Link>
           </div>
         </section>
 
@@ -620,6 +603,7 @@ export default async function TopperPage({ params }: Props) {
 
           <div className="mt-4 overflow-hidden rounded-xl border border-border/50">
             <table className="w-full text-sm">
+              <caption className="sr-only">{topper.firstName} {topper.lastName} complete marks — {topper.year}</caption>
               <thead>
                 <tr className="border-b border-border/50 bg-muted/50">
                   <th className="px-4 py-3 font-semibold text-left">Paper</th>
@@ -685,20 +669,20 @@ export default async function TopperPage({ params }: Props) {
               <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Marks Intelligence</h2>
               <p className="mt-1 text-sm text-muted-foreground">Paper-wise breakdown and performance analysis</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Strongest</p>
+                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Strongest</p>
                   <p className="mt-1 text-lg font-bold">{best.label}</p>
-                  <p className="text-sm text-emerald-700">{best.value} marks</p>
+                  <p className="text-sm text-brand">{best.value} marks</p>
                 </div>
-                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">Scope to Improve</p>
+                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Scope to Improve</p>
                   <p className="mt-1 text-lg font-bold">{weakest.label}</p>
-                  <p className="text-sm text-amber-700">{weakest.value} marks</p>
+                  <p className="text-sm text-brand/80">{weakest.value} marks</p>
                 </div>
-                <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">Marks Gap</p>
+                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Marks Gap</p>
                   <p className="mt-1 text-lg font-bold">{gap} marks</p>
-                  <p className="text-sm text-blue-700">Between best &amp; weakest paper</p>
+                  <p className="text-sm text-brand">Between best &amp; weakest paper</p>
                 </div>
               </div>
               {topper.optionalSubject && (
@@ -723,7 +707,7 @@ export default async function TopperPage({ params }: Props) {
                   data-track={`topper-related-${t.slug}`}
                   className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
                 >
-                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
+                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">AIR {t.rank}</p>
                     <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
@@ -752,7 +736,7 @@ export default async function TopperPage({ params }: Props) {
                   data-track={`topper-samerank-${t.slug}`}
                   className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
                 >
-                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
+                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{t.year}</p>
                     <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
@@ -814,7 +798,7 @@ export default async function TopperPage({ params }: Props) {
         {/* FAQ */}
         <section className="faq-section mt-12">
           <h2 className="text-xl font-semibold">Frequently Asked Questions about {topper.firstName} {topper.lastName}</h2>
-          <div className="mt-4 divide-y divide-black/10">
+          <div className="mt-4 divide-y divide-border/30">
             {(() => {
               const dbFaqs = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({
                 q: f.question, a: f.answer,
@@ -834,7 +818,7 @@ export default async function TopperPage({ params }: Props) {
                 },
                 {
                   q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                  a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set is available in the <a href="/store" class="text-emerald-600 font-semibold underline">store</a> — Starting at ₹99.`,
+                  a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set is available in the <a href="/store" class="text-brand font-semibold underline">store</a> — Starting at ₹99.`,
                 },
                 {
                   q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
@@ -851,7 +835,7 @@ export default async function TopperPage({ params }: Props) {
             })().map((faq, index) => (
               <div key={index} className="py-3 first:pt-0 last:pb-0">
                 <h3 className="text-sm font-semibold">{faq.q}</h3>
-                <div className="mt-1 text-sm leading-6 text-muted-foreground prose prose-zinc max-w-none prose-a:text-emerald-600 prose-a:font-semibold">
+                <div className="mt-1 text-sm leading-6 text-muted-foreground prose prose-zinc max-w-none prose-a:text-brand prose-a:font-semibold">
                   <ReactMarkdown>{faq.a}</ReactMarkdown>
                 </div>
               </div>
@@ -860,45 +844,35 @@ export default async function TopperPage({ params }: Props) {
         </section>
 
         {/* ALSO VIEW — interlinks top 5 winning pages */}
-        {[{
-          name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022,
-        }, {
-          name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022,
-        }, {
-          name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025,
-        }, {
-          name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023,
-        }, {
-          name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022,
-        }].filter(t => t.slug !== topper.slug).slice(0, 4).length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Popular topper pages — answer copies, marksheets &amp; strategies</p>
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[{
-                name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022,
-              }, {
-                name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022,
-              }, {
-                name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025,
-              }, {
-                name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023,
-              }, {
-                name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022,
-              }].filter(t => t.slug !== topper.slug).slice(0, 4).map((t) => (
-                <Link
-                  key={t.slug}
-                  href={`/upsc-topper/${t.slug}`}
-                  data-track={`topper-also-view-${t.slug}`}
-                  className="rounded-xl border border-border/50 bg-card p-4 text-center transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <p className="text-xs text-muted-foreground">AIR {t.rank} &middot; {t.year}</p>
-                  <p className="mt-1 text-sm font-semibold">{t.name}</p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+        {(() => {
+          const alsoView = [
+            { name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022 },
+            { name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022 },
+            { name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025 },
+            { name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023 },
+            { name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022 },
+          ].filter(t => t.slug !== topper.slug).slice(0, 4);
+          if (alsoView.length === 0) return null;
+          return (
+            <section className="mt-12">
+              <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Popular topper pages — answer copies, marksheets &amp; strategies</p>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {alsoView.map((t) => (
+                  <Link
+                    key={t.slug}
+                    href={`/upsc-topper/${t.slug}`}
+                    data-track={`topper-also-view-${t.slug}`}
+                    className="rounded-xl border border-border bg-card p-4 text-center transition hover:-translate-y-px hover:border-foreground/20"
+                  >
+                    <p className="text-xs text-muted-foreground">AIR {t.rank} &middot; {t.year}</p>
+                    <p className="mt-1 text-sm font-semibold">{t.name}</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* EXPLORE MORE */}
         <section className="mt-12">
