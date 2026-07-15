@@ -9,13 +9,10 @@ import {
   getToppersByRank,
   getToppersByYear,
 } from "@/services/topper.service";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { topperImageSrc } from "@/lib/utils";
 import TrackingProvider from "./TrackingProvider";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
-import PurchaseSidebar from "@/components/topper/PurchaseSidebar";
 import ExitPopup from "@/components/topper/ExitPopup";
 import LiveCounter from "@/components/topper/LiveCounter";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
@@ -329,178 +326,163 @@ export default async function TopperPage({ params }: Props) {
 
   return (
     <>
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-background">
       <TrackingProvider name={`${topper.firstName} ${topper.lastName}`} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 md:py-12">
+
         {/* BREADCRUMB */}
         <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          <Link href="/" className="transition hover:text-foreground" data-track="topper-breadcrumb-home">Home</Link>
-          <span>/</span>
-          <Link href={`/year/${topper.year}`} className="transition hover:text-foreground" data-track="topper-breadcrumb-year">UPSC {topper.year} Toppers</Link>
-          <span>/</span>
-          <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-foreground" data-track="topper-breadcrumb-optional">{topper.optionalSubject}</Link>
-          <span>/</span>
-          <span className="text-foreground">{topper.firstName} {topper.lastName}</span>
+          <Link href="/" className="transition hover:text-foreground">Home</Link><span>/</span>
+          <Link href={`/year/${topper.year}`} className="transition hover:text-foreground">UPSC {topper.year}</Link><span>/</span>
+          <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} className="transition hover:text-foreground">{topper.optionalSubject}</Link><span>/</span>
+          <span className="text-foreground font-medium">{topper.firstName} {topper.lastName}</span>
         </nav>
 
-        {/* HERO */}
-        <div className="grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
-          {/* LEFT */}
-          <div>
-            <div className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card">
+        {/* HERO — compact, image inline with content */}
+        <h1 className="font-heading text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+          {topper.firstName} {topper.lastName}
+        </h1>
+        <p className="mt-1.5 text-base text-brand font-medium">
+          AIR {topper.rank} · {topper.year} · {topper.optionalSubject}
+        </p>
+
+        <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:gap-8">
+          {/* Image */}
+          <div className="sm:max-w-[180px] lg:max-w-[220px] shrink-0">
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="aspect-[3/4]">
-                  <img
-                    src={topperImageSrc(topper)}
-                    alt={`${topper.firstName} ${topper.lastName}`}
-                    loading="lazy"
-                    className="h-full w-full bg-muted object-cover"
+                <img
+                  src={topperImageSrc(topper)}
+                  alt={`${topper.firstName} ${topper.lastName}`}
+                  loading="lazy"
+                  className="h-full w-full bg-muted object-cover"
                 />
               </div>
             </div>
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              <div className="rounded-xl border border-border/50 bg-card p-3 text-center">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">AIR</p>
-                <p className="text-xl font-bold text-primary">{topper.rank}</p>
+            <div className="mt-2 grid grid-cols-3 gap-1.5">
+              <div className="rounded-lg border border-border bg-card p-2 text-center">
+                <p className="text-[10px] font-medium text-muted-foreground">AIR</p>
+                <p className="font-heading text-base font-bold text-brand tabular-nums">{topper.rank}</p>
               </div>
-              <div className="rounded-xl border border-border/50 bg-card p-3 text-center">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Total</p>
-                <p className="text-xl font-bold">{topper.marks.total}</p>
+              <div className="rounded-lg border border-border bg-card p-2 text-center">
+                <p className="text-[10px] font-medium text-muted-foreground">Total</p>
+                <p className="font-heading text-base font-bold tabular-nums">{topper.marks.total}</p>
               </div>
-              <div className="rounded-xl border border-border/50 bg-card p-3 text-center">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Year</p>
-                <p className="text-xl font-bold">{topper.year}</p>
+              <div className="rounded-lg border border-border bg-card p-2 text-center">
+                <p className="text-[10px] font-medium text-muted-foreground">Year</p>
+                <p className="font-heading text-base font-bold tabular-nums">{topper.year}</p>
               </div>
             </div>
-
-            {/* Purchase CTA */}
-            <PurchaseSidebar topperName={`${topper.firstName} ${topper.lastName}`} />
           </div>
 
-          {/* RIGHT */}
-          <div>
-            <h1 className="font-heading text-3xl font-bold leading-tight sm:text-4xl">
-              {topper.firstName} {topper.lastName} — UPSC Marksheet, {topper.optionalSubject || "Optional Subject"} Answer Copy &amp; Strategy
-            </h1>
-            <p className="mt-1 text-lg text-primary font-medium">
-              AIR {topper.rank} &middot; {topper.marks.total} Total Marks
-            </p>
-
-            {/* PAPER-WISE MARKS — marksheet table for search intent */}
-            <div className="mt-4 rounded-xl border border-border/50 bg-card overflow-hidden">
-              <div className="bg-brand-muted px-4 py-2 border-b border-border/50">
-                <p className="text-xs font-bold uppercase tracking-wider text-brand">{topper.firstName} {topper.lastName} — UPSC Marksheet {topper.year}</p>
-              </div>
-              <table className="w-full text-sm">
-                <caption className="sr-only">
-                  {topper.firstName} {topper.lastName} UPSC {topper.year} marksheet with paper-wise marks breakdown
-                </caption>
-                <tbody className="divide-y divide-border/30">
-                  {[
-                    { label: "GS1", value: topper.marks.gs1, show: (topper.marks.gs1 || 0) > 0 },
-                    { label: "GS2", value: topper.marks.gs2, show: (topper.marks.gs2 || 0) > 0 },
-                    { label: "GS3", value: topper.marks.gs3, show: (topper.marks.gs3 || 0) > 0 },
-                    { label: "GS4 (Ethics)", value: topper.marks.gs4, show: (topper.marks.gs4 || 0) > 0 },
-                    { label: "Essay", value: topper.marks.essay, show: (topper.marks.essay || 0) > 0 },
-                    { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P1`, value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
-                    { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P2`, value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
-                  ].filter(r => r.show).map((row) => (
-                    <tr key={row.label} className="hover:bg-muted/30">
-                      <td className="px-4 py-2 text-muted-foreground">{row.label}</td>
-                      <td className="px-4 py-2 font-semibold text-right">{row.value}</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t border-brand/20 bg-brand-muted/50">
-                    <td className="px-4 py-2 font-semibold text-brand">Written Total</td>
-                    <td className="px-4 py-2 font-semibold text-right text-brand">{topper.marks.written}</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 text-muted-foreground">Interview</td>
-                    <td className="px-4 py-2 font-semibold text-right">{topper.marks.interview}</td>
-                  </tr>
-                  <tr className="border-t border-brand/20 bg-brand-muted/50">
-                    <td className="px-4 py-2 font-bold text-brand">Total</td>
-                    <td className="px-4 py-2 font-bold text-right text-brand">{topper.marks.total}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              {topper.firstName} {topper.lastName} answer copy PDF and UPSC marksheet — AIR {topper.rank} ({topper.year}) with {topper.optionalSubject} optional subject. Download the actual UPSC Mains answer copy with full marks breakdown across GS papers, essay, and optional subject.
-            </p>
-            <p className="mt-2 text-sm leading-6">
-              <Link href="/store" className="text-brand font-semibold hover:underline" data-track="topper-compilation-body">
-                Shop Now →
-              </Link>
-              <span className="text-muted-foreground"> — Starting at ₹99.</span>
-            </p>
+          {/* Content */}
+          <div className="min-w-0 flex-1">
             {topper.bio && (
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                {topper.bio}
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{topper.bio}</p>
             )}
 
-            {/* Social proof */}
-            <div className="mt-4 flex items-center text-xs">
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/store"
+                data-track="topper-hero-store"
+                className="inline-flex items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-bold text-brand-foreground hover:bg-brand/90"
+              >
+                Browse store &rarr;
+              </Link>
+              <Link
+                href={`/ask?q=Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`}
+                data-track="topper-ask-ai"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+              >
+                Ask AI
+              </Link>
+            </div>
+
+            <div className="mt-4 flex items-center gap-4 text-xs">
               <LiveCounter />
-            </div>
-
-            {/* WIKI TABLE */}
-            <div className="mt-5 rounded-xl border border-border/50 bg-card">
-              <table className="w-full text-sm">
-                <caption className="sr-only">{topper.firstName} {topper.lastName} profile summary</caption>
-                <tbody className="divide-y divide-border/30">
-                  {[
-                    { label: "Name", value: `${topper.firstName} ${topper.lastName}` },
-                    { label: "Rank", value: `AIR ${topper.rank}` },
-                    { label: "Year", value: topper.year },
-                    { label: "Optional Subject", value: topper.optionalSubject },
-                    { label: "Essay Marks", value: topper.marks.essay, show: (topper.marks.essay || 0) > 0 },
-                    { label: "Written Total", value: topper.marks.written },
-                    { label: "Interview", value: topper.marks.interview },
-                    { label: "Total Marks", value: topper.marks.total },
-                  ].filter(r => r.show !== false).map((row) => (
-                    <tr key={row.label} className="hover:bg-muted/30">
-                      <td className="px-4 py-2.5 text-muted-foreground font-medium w-1/3">{row.label}</td>
-                      <td className="px-4 py-2.5 font-semibold">{row.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* ASK AI */}
-            <div className="mt-4">
-              <Button asChild variant="outline" className="w-full rounded-xl border-primary/30 text-primary hover:bg-primary/5 hover:text-primary text-sm">
-                <Link href={`/ask?q=Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`} data-track="topper-ask-ai">
-                  <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
-                  </svg>
-                  Ask AI about {topper.firstName}
-                  <span className="ml-1.5 rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white leading-none">New</span>
-                </Link>
-              </Button>
-            </div>
-
-            {/* REPORT */}
-            <div className="mt-3">
               <ReportButton topperName={`${topper.firstName} ${topper.lastName}`} />
             </div>
           </div>
         </div>
 
+        {/* MARKSHEET */}
+        <section className="mt-12">
+          <h2 className="font-heading text-2xl font-bold tracking-tight">
+            UPSC Marksheet {topper.year}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Verified marks breakdown — sourced from UPSC.gov.in
+          </p>
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card">
+            <table className="w-full text-sm">
+              <caption className="sr-only">{topper.firstName} {topper.lastName} UPSC {topper.year} marksheet</caption>
+              <tbody className="divide-y divide-border">
+                {[
+                  { label: "GS1", value: topper.marks.gs1, show: (topper.marks.gs1 || 0) > 0 },
+                  { label: "GS2", value: topper.marks.gs2, show: (topper.marks.gs2 || 0) > 0 },
+                  { label: "GS3", value: topper.marks.gs3, show: (topper.marks.gs3 || 0) > 0 },
+                  { label: "GS4 (Ethics)", value: topper.marks.gs4, show: (topper.marks.gs4 || 0) > 0 },
+                  { label: "Essay", value: topper.marks.essay, show: (topper.marks.essay || 0) > 0 },
+                  { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P1`, value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
+                  { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P2`, value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
+                ].filter(r => r.show).map((row) => (
+                  <tr key={row.label} className="hover:bg-muted/30">
+                    <td className="px-5 py-3 text-muted-foreground">{row.label}</td>
+                    <td className="px-5 py-3 text-right font-bold tabular-nums">{row.value}</td>
+                  </tr>
+                ))}
+                <tr className="border-t border-border bg-secondary/30">
+                  <td className="px-5 py-3 font-semibold text-muted-foreground">Written Total</td>
+                  <td className="px-5 py-3 text-right font-bold tabular-nums">{topper.marks.written}</td>
+                </tr>
+                <tr>
+                  <td className="px-5 py-3 text-muted-foreground">Interview</td>
+                  <td className="px-5 py-3 text-right font-bold tabular-nums">{topper.marks.interview}</td>
+                </tr>
+                <tr className="border-t-2 border-brand/30 bg-brand-muted/50">
+                  <td className="px-5 py-3 font-extrabold text-brand">Total</td>
+                  <td className="px-5 py-3 text-right font-extrabold text-brand tabular-nums text-lg">{topper.marks.total}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="border-t border-border px-5 py-2.5 text-xs text-muted-foreground">
+              Source:{" "}
+              <a href="https://upsc.gov.in" target="_blank" rel="noopener noreferrer" className="no-underline hover:underline hover:text-brand">
+                UPSC CSE {topper.year} Final Result
+              </a>
+            </div>
+          </div>
+
+          {/* Strongest paper highlight */}
+          {(() => {
+            const papers = [
+              { label: "GS1", value: topper.marks.gs1 },
+              { label: "GS2", value: topper.marks.gs2 },
+              { label: "GS3", value: topper.marks.gs3 },
+              { label: "GS4", value: topper.marks.gs4 },
+              { label: "Essay", value: topper.marks.essay },
+            ].filter(p => p.value > 0);
+            if (papers.length < 2) return null;
+            const sorted = [...papers].sort((a, b) => b.value - a.value);
+            return (
+              <div className="mt-3 flex flex-wrap items-center gap-3 rounded-lg border border-border/50 bg-card px-4 py-2.5 text-xs sm:gap-4">
+                <span className="text-muted-foreground">Strongest paper:</span>
+                <span className="font-bold text-brand">{sorted[0].label} ({sorted[0].value})</span>
+                <span className="text-muted-foreground/50">·</span>
+                <span className="text-muted-foreground">Needs work:</span>
+                <span className="font-bold text-foreground">{sorted[sorted.length - 1].label} ({sorted[sorted.length - 1].value})</span>
+                <span className="text-muted-foreground/50">·</span>
+                <span className="text-muted-foreground">Gap: <span className="font-bold text-foreground">{sorted[0].value - sorted[sorted.length - 1].value} marks</span></span>
+              </div>
+            );
+          })()}
+        </section>
+
+        {/* ANSWER COPY */}
         <FreeDownloadSection
           topperName={`${topper.firstName} ${topper.lastName}`}
           topperSlug={topper.slug}
@@ -509,28 +491,23 @@ export default async function TopperPage({ params }: Props) {
           freeAnswerCopyUrls={topper.freeAnswerCopyUrls}
         />
 
-        {/* STRATEGY — moved up, first 2 sections visible, rest blurred */}
+        {/* STRATEGY */}
         {topper.strategy && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold">How Did {topper.firstName} {topper.lastName} Prepare for UPSC?</h2>
-            <p className="mt-1 text-sm text-muted-foreground">How they prepared for UPSC CSE {topper.year}</p>
-            <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
+            <h2 className="font-heading text-2xl font-bold tracking-tight">
+              How {topper.firstName} Prepared for UPSC
+            </h2>
+            <div className="mt-4 rounded-xl border border-border bg-card p-6 md:p-8">
               <div className="prose prose-zinc max-w-none prose-headings:font-semibold prose-p:leading-7 prose-p:text-sm prose-headings:text-base">
                 {Object.keys(structuredStrategy).length > 0 ? (
-                  <>
-                    {Object.entries(structuredStrategy).map(
-                      ([heading, content], i) => (
-                        <section key={heading} className={i > 0 ? "mt-8 rounded-lg bg-secondary/30 p-4" : ""}>
-                          <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
-                          <div className="mt-2">
-                            <ReactMarkdown>
-                              {deduplicateContent(content)}
-                            </ReactMarkdown>
-                          </div>
-                        </section>
-                      ),
-                    )}
-                  </>
+                  Object.entries(structuredStrategy).map(([heading, content], i) => (
+                    <section key={heading} className={i > 0 ? "mt-8 pt-8 border-t border-border" : ""}>
+                      <h3 className="font-bold">{resolveHeading(heading, topper)}</h3>
+                      <div className="mt-2">
+                        <ReactMarkdown>{deduplicateContent(content)}</ReactMarkdown>
+                      </div>
+                    </section>
+                  ))
                 ) : (
                   <ReactMarkdown>{topper.strategy}</ReactMarkdown>
                 )}
@@ -539,381 +516,151 @@ export default async function TopperPage({ params }: Props) {
           </section>
         )}
 
-        {/* FALLBACK STRATEGY — for toppers without strategy data */}
+        {/* FALLBACK STRATEGY */}
         {!topper.strategy && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold">How Did {topper.firstName} {topper.lastName} Prepare for UPSC?</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Preparation overview for UPSC CSE {topper.year}</p>
-            <div className="mt-4 rounded-xl border border-border/50 bg-card p-6">
+            <h2 className="font-heading text-2xl font-bold tracking-tight">
+              How {topper.firstName} Prepared for UPSC
+            </h2>
+            <div className="mt-4 rounded-xl border border-border bg-card p-6 md:p-8">
               <div className="prose prose-zinc max-w-none prose-p:leading-7 prose-p:text-sm">
-                <p>{topper.firstName} {topper.lastName} secured AIR {topper.rank} in the UPSC Civil Services Examination {topper.year} with {topper.optionalSubject} as the optional subject. A total of {topper.marks.total} marks was achieved in the final merit list, with {topper.marks.written} marks in the written examination and {topper.marks.interview} marks in the interview round.</p>
-                <p>In the General Studies papers, {topper.firstName}'s marks were distributed as follows: {(topper.marks.gs1 || 0) > 0 ? `GS1: ${topper.marks.gs1}, ` : ""}{(topper.marks.gs2 || 0) > 0 ? `GS2: ${topper.marks.gs2}, ` : ""}{(topper.marks.gs3 || 0) > 0 ? `GS3: ${topper.marks.gs3}, ` : ""}{(topper.marks.gs4 || 0) > 0 ? `GS4 (Ethics): ${topper.marks.gs4}, ` : ""}{(topper.marks.essay || 0) > 0 ? `Essay: ${topper.marks.essay}, ` : ""}Optional ({topper.optionalSubject}): P1: {topper.marks.optional1}, P2: {topper.marks.optional2}.</p>
-                <p>To explore {topper.firstName}&apos;s detailed preparation strategy including study plan, book list, coaching details, and answer writing approach, check the complete strategy guide available in the UPSCPrepNotes store along with actual answer copy PDFs and marksheets. The full compilation includes GS1-4 essays, optional papers, and the interview transcript.</p>
+                <p>{topper.firstName} {topper.lastName} secured AIR {topper.rank} in UPSC CSE {topper.year} with {topper.optionalSubject} optional. Total marks: {topper.marks.total} (Written: {topper.marks.written}, Interview: {topper.marks.interview}).</p>
                 {topper.bio && <p>{topper.bio}</p>}
               </div>
             </div>
           </section>
         )}
 
-        {/* COMPLETE COMPILATION CTA */}
-        <section className="mt-12">
-          <div className="rounded-xl border border-brand/20 bg-brand-muted p-6 md:flex md:items-center md:justify-between md:gap-6">
-            <div>
-              <h3 className="text-base font-bold text-brand">Get 50+ topper answer copies with full marks breakdown</h3>
-              <p className="mt-1 text-sm text-muted-foreground">GS1-4, Essay, and Optional papers. Instant download. 7-day refund.</p>
-            </div>
-            <Link
-              href="/store"
-              data-track="topper-compilation-upsell-body"
-              className="mt-4 inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-brand-foreground transition hover:bg-brand/90 md:mt-0"
-            >
-              Shop store &rarr;
-            </Link>
-          </div>
-        </section>
-
         <AnswerCopyPreview topper={topper} />
 
-        {/* MARKS TABLE */}
-        <section className="mt-12">
-          <h2 className="text-xl font-semibold">What Were {topper.firstName} {topper.lastName}'s Marks in Each Paper?</h2>
-          <p className="mt-1 text-sm text-muted-foreground">All India Rank {topper.rank} — UPSC CSE {topper.year}</p>
-
-          {/* STRONGEST PAPER */}
-          {(() => {
-            const papers = [
-              { label: "GS1", value: topper.marks.gs1 },
-              { label: "GS2", value: topper.marks.gs2 },
-              { label: "GS3", value: topper.marks.gs3 },
-              { label: "GS4", value: topper.marks.gs4 },
-              { label: "Essay", value: topper.marks.essay },
-            ].filter((p) => p.value > 0);
-            const sorted = [...papers].sort((a, b) => b.value - a.value);
-            const best = sorted[0];
-            return best ? (
-              <div className="mt-4 rounded-xl border border-border/50 bg-primary/5 p-4">
-                <p className="text-sm font-semibold">Strongest Paper: {best.label} ({best.value} marks)</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {topper.firstName} scored highest in {best.label}
-                  {sorted.length > 1 ? ` — ${best.value - sorted[1].value} marks ahead of their next best paper` : ""}
-                </p>
-              </div>
-            ) : null;
-          })()}
-
-          <div className="mt-4 overflow-hidden rounded-xl border border-border/50">
-            <table className="w-full text-sm">
-              <caption className="sr-only">{topper.firstName} {topper.lastName} complete marks — {topper.year}</caption>
-              <thead>
-                <tr className="border-b border-border/50 bg-muted/50">
-                  <th className="px-4 py-3 font-semibold text-left">Paper</th>
-                  <th className="px-4 py-3 font-semibold text-right">Marks</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/30">
-                {[
-                  { label: "GS1", marks: topper.marks.gs1 },
-                  { label: "GS2", marks: topper.marks.gs2 },
-                  { label: "GS3", marks: topper.marks.gs3 },
-                  { label: "GS4 (Ethics)", marks: topper.marks.gs4 },
-                  { label: "Essay", marks: topper.marks.essay },
-                  { label: `${topper.optionalSubject} Paper 1`, marks: topper.marks.optional1 },
-                  { label: `${topper.optionalSubject} Paper 2`, marks: topper.marks.optional2 },
-                  { label: "Written Total", marks: topper.marks.written },
-                  { label: "Interview", marks: topper.marks.interview },
-                ]
-                  .filter((r) => r.marks > 0)
-                  .map((row) => (
-                    <tr key={row.label} className="hover:bg-muted/30">
-                      <td className="px-4 py-3 text-muted-foreground">{row.label}</td>
-                      <td className="px-4 py-3 font-semibold text-right">{row.marks}</td>
-                    </tr>
-                  ))}
-                <tr className="bg-muted/30 font-semibold">
-                  <td className="px-4 py-3">Total</td>
-                  <td className="px-4 py-3 text-right">{topper.marks.total}</td>
-                </tr>
-              </tbody>
-            </table>
-            <p className="mt-3 text-xs text-muted-foreground/70 flex items-center gap-1">
-              <svg className="h-3 w-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Source: <a href="https://upsc.gov.in" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">UPSC CSE {topper.year} Final Result</a>
-            </p>
-          </div>
-        </section>
-
-        {/* FREE ANSWER COPY — email input */}
+        {/* FREE ANSWER COPY */}
         <section className="mt-12">
           <TopperLeadCapture topperName={`${topper.firstName} ${topper.lastName}`} topperSlug={topper.slug} />
         </section>
 
-        {/* MARKS IN CONTEXT */}
-        {(() => {
-          const m = topper.marks;
-          const papers = [
-            { label: "Essay", value: m.essay },
-            { label: "GS1", value: m.gs1 },
-            { label: "GS2", value: m.gs2 },
-            { label: "GS3", value: m.gs3 },
-            { label: "GS4", value: m.gs4 },
-          ].filter(p => p.value > 0);
-          if (papers.length === 0) return null;
-          const sorted = [...papers].sort((a, b) => b.value - a.value);
-          const best = sorted[0];
-          const weakest = sorted[sorted.length - 1];
-          const gap = best.value - weakest.value;
-          return (
-            <section className="mt-12">
-              <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Marks Intelligence</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Paper-wise breakdown and performance analysis</p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Strongest</p>
-                  <p className="mt-1 text-lg font-bold">{best.label}</p>
-                  <p className="text-sm text-brand">{best.value} marks</p>
-                </div>
-                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Scope to Improve</p>
-                  <p className="mt-1 text-lg font-bold">{weakest.label}</p>
-                  <p className="text-sm text-brand/80">{weakest.value} marks</p>
-                </div>
-                <div className="rounded-xl border border-brand/20 bg-brand-muted p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-brand">Marks Gap</p>
-                  <p className="mt-1 text-lg font-bold">{gap} marks</p>
-                  <p className="text-sm text-brand">Between best &amp; weakest paper</p>
-                </div>
-              </div>
-              {topper.optionalSubject && (
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {topper.firstName} scored {m.optional1 + m.optional2} marks in {topper.optionalSubject} optional (Paper 1: {m.optional1}, Paper 2: {m.optional2}) — this contributed {(m.optional1 + m.optional2) > 0 ? Math.round((m.optional1 + m.optional2) / m.total * 100) : 0}% of total marks.
-                </p>
-              )}
-            </section>
-          );
-        })()}
-
-        {/* RELATED TOPPERS — moved higher for internal linking value */}
-        {sameYearToppers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">UPSC {topper.year} Toppers</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Browse answer copies and strategies of other UPSC {topper.year} rank holders</p>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {sameYearToppers.map((t: any) => (
-                <Link
-                  key={t.slug}
-                  href={`/upsc-topper/${t.slug}`}
-                  data-track={`topper-related-${t.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">AIR {t.rank}</p>
-                    <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{t.optionalSubject}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-4">
-              <Link href={`/year/${topper.year}`} data-track="topper-view-all-year" className="text-sm text-primary font-medium hover:underline">
-                View All UPSC {topper.year} Toppers &rarr;
-              </Link>
-            </div>
-          </section>
-        )}
-
-        {sameRankToppers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">Also AIR {topper.rank} Holders</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Other UPSC toppers who secured AIR {topper.rank}</p>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {sameRankToppers.map((t: any) => (
-                <Link
-                  key={t.slug}
-                  href={`/upsc-topper/${t.slug}`}
-                  data-track={`topper-samerank-${t.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">{t.year}</p>
-                    <p className="text-sm font-semibold truncate">{t.firstName} {t.lastName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{t.optionalSubject}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {relatedToppers.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-semibold">Related {topper.optionalSubject} Toppers</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Toppers who chose {topper.optionalSubject} as their optional subject</p>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedToppers.map((related: any) => (
-                <Link
-                  key={related.slug}
-                  href={`/upsc-topper/${related.slug}`}
-                  data-track={`topper-related-${related.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 transition hover:-translate-y-px hover:border-primary/20"
-                >
-                  <img src={topperImageSrc(related)} alt={`${related.firstName} ${related.lastName}`} className="h-12 w-12 shrink-0 rounded-xl border border-border/50 bg-muted" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">AIR {related.rank} &bull; {related.year}</p>
-                    <p className="text-sm font-semibold truncate">{related.firstName} {related.lastName}</p>
-                    <p className="text-xs text-muted-foreground truncate">{related.optionalSubject}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-4">
-              <Link
-                href={`/optional/${getSubjectSlug(topper.optionalSubject)}`}
-                data-track="topper-explore-related"
-                className="text-sm text-primary font-medium hover:underline"
-              >
-                View All {topper.optionalSubject} Toppers &rarr;
-              </Link>
-            </div>
-          </section>
-        )}
-
         {/* INSIGHTS */}
         {topper.insights?.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold">{topper.firstName} {topper.lastName} Key Insights</h2>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <h2 className="font-heading text-2xl font-bold tracking-tight">Key insights</h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {topper.insights.map((insight: string, index: number) => (
-                <div key={index} className="rounded-xl border border-border/50 bg-card p-4">
-                  <p className="text-sm leading-6">{insight}</p>
-                </div>
+                <div key={index} className="rounded-xl border border-border bg-card p-4 text-sm leading-relaxed">{insight}</div>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* RELATED TOPPERS */}
+        {(sameYearToppers.length > 0 || sameRankToppers.length > 0 || relatedToppers.length > 0) && (
+          <section className="mt-12">
+            <h2 className="font-heading text-2xl font-bold tracking-tight">Related toppers</h2>
+
+            {sameYearToppers.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-sm font-bold text-muted-foreground">Same year — UPSC {topper.year}</h3>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {sameYearToppers.map((t: any) => (
+                    <Link key={t.slug} href={`/upsc-topper/${t.slug}`} data-track={`topper-related-${t.slug}`} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition hover:border-foreground/20">
+                      <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-10 w-10 shrink-0 rounded-lg border border-border bg-muted object-cover" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold truncate">{t.firstName} {t.lastName}</p>
+                        <p className="text-xs text-muted-foreground">AIR {t.rank} · {t.optionalSubject}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {sameRankToppers.length > 0 && (
+              <div className={sameYearToppers.length > 0 ? "mt-6" : "mt-4"}>
+                <h3 className="text-sm font-bold text-muted-foreground">Same rank — AIR {topper.rank}</h3>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {sameRankToppers.map((t: any) => (
+                    <Link key={t.slug} href={`/upsc-topper/${t.slug}`} data-track={`topper-samerank-${t.slug}`} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition hover:border-foreground/20">
+                      <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-10 w-10 shrink-0 rounded-lg border border-border bg-muted object-cover" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold truncate">{t.firstName} {t.lastName}</p>
+                        <p className="text-xs text-muted-foreground">{t.year} · {t.optionalSubject}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {relatedToppers.length > 0 && (
+              <div className={sameYearToppers.length > 0 || sameRankToppers.length > 0 ? "mt-6" : "mt-4"}>
+                <h3 className="text-sm font-bold text-muted-foreground">Same optional — {topper.optionalSubject}</h3>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {relatedToppers.map((t: any) => (
+                    <Link key={t.slug} href={`/upsc-topper/${t.slug}`} data-track={`topper-related-${t.slug}`} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition hover:border-foreground/20">
+                      <img src={topperImageSrc(t)} alt={`${t.firstName} ${t.lastName}`} loading="lazy" className="h-10 w-10 shrink-0 rounded-lg border border-border bg-muted object-cover" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold truncate">{t.firstName} {t.lastName}</p>
+                        <p className="text-xs text-muted-foreground">AIR {t.rank} · {t.year}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
         )}
 
         {/* FAQ */}
         <section className="faq-section mt-12">
-          <h2 className="text-xl font-semibold">Frequently Asked Questions about {topper.firstName} {topper.lastName}</h2>
-          <div className="mt-4 divide-y divide-border/30">
+          <h2 className="font-heading text-2xl font-bold tracking-tight">
+            Frequently asked questions
+          </h2>
+          <div className="mt-4 divide-y divide-border rounded-xl border border-border bg-card">
             {(() => {
-              const dbFaqs = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({
-                q: f.question, a: f.answer,
-              }));
+              const dbFaqs = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }));
               const genericFaqs = [
-                {
-                  q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`,
-                  a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.`,
-                },
-                {
-                  q: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`,
-                  a: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.`,
-                },
-                {
-                  q: `What were ${topper.firstName} ${topper.lastName}'s total marks in UPSC?`,
-                  a: `${topper.firstName} obtained a total of ${topper.marks.total} marks in UPSC CSE ${topper.year}.`,
-                },
-                {
-                  q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
-                  a: `Yes. Get a <strong>free</strong> sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email on this page — we will send the download link instantly. The full set is available in the <a href="/store" class="text-brand font-semibold underline">store</a> — Starting at ₹99.`,
-                },
-                {
-                  q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`,
-                  a: topper.strategy
-                    ? `${topper.firstName} ${topper.lastName}'s preparation strategy is detailed above on this page.`
-                    : `Detailed preparation strategy for ${topper.firstName} ${topper.lastName} is not yet available.`,
-                },
-                {
-                  q: `What is ${topper.firstName} ${topper.lastName}'s educational background?`,
-                  a: `${topper.firstName} ${topper.lastName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}. Details about their graduation and educational background are mentioned in the strategy section above.`,
-                },
+                { q: `What was ${topper.firstName} ${topper.lastName}'s UPSC rank?`, a: `AIR ${topper.rank} in UPSC CSE ${topper.year}.` },
+                { q: `What was ${topper.firstName} ${topper.lastName}'s optional subject?`, a: `${topper.optionalSubject}.` },
+                { q: `What were ${topper.firstName} ${topper.lastName}'s total marks?`, a: `${topper.marks.total} marks out of 2025.` },
+                { q: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy?`, a: `Yes — enter your email on this page and we'll send a free sample. The full set (50+ copies) is in the <a href="/store" class="text-brand font-semibold no-underline hover:underline">store</a>.` },
+                { q: `How did ${topper.firstName} ${topper.lastName} prepare for UPSC?`, a: topper.strategy ? `Detailed above on this page.` : `Strategy details are not yet available.` },
               ];
               return [...dbFaqs, ...genericFaqs];
             })().map((faq, index) => (
-              <div key={index} className="py-3 first:pt-0 last:pb-0">
-                <h3 className="text-sm font-semibold">{faq.q}</h3>
-                <div className="mt-1 text-sm leading-6 text-muted-foreground prose prose-zinc max-w-none prose-a:text-brand prose-a:font-semibold">
+              <details key={index} className="group">
+                <summary className="flex cursor-pointer items-start justify-between gap-4 p-4 list-none">
+                  <h3 className="text-sm font-bold">{faq.q}</h3>
+                  <span className="mt-0.5 shrink-0 text-muted-foreground transition group-open:rotate-180">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
                   <ReactMarkdown>{faq.a}</ReactMarkdown>
                 </div>
-              </div>
+              </details>
             ))}
           </div>
         </section>
 
-        {/* ALSO VIEW — interlinks top 5 winning pages */}
-        {(() => {
-          const alsoView = [
-            { name: "Divya Tanwar", slug: "divya-tanwar-rank-105-2022", rank: 105, year: 2022 },
-            { name: "Garima Lohia", slug: "garima-lohia-rank-2-2022", rank: 2, year: 2022 },
-            { name: "Anuj Agnihotri", slug: "anuj-agnihotri-rank-1-2025", rank: 1, year: 2025 },
-            { name: "Ayan Jain", slug: "ayan-jain-rank-16-2023", rank: 16, year: 2023 },
-            { name: "Uma Harathi", slug: "uma-harathi-rank-3-2022", rank: 3, year: 2022 },
-          ].filter(t => t.slug !== topper.slug).slice(0, 4);
-          if (alsoView.length === 0) return null;
-          return (
-            <section className="mt-12">
-              <h2 className="text-xl font-semibold">Also View These UPSC Toppers</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Popular topper pages — answer copies, marksheets &amp; strategies</p>
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {alsoView.map((t) => (
-                  <Link
-                    key={t.slug}
-                    href={`/upsc-topper/${t.slug}`}
-                    data-track={`topper-also-view-${t.slug}`}
-                    className="rounded-xl border border-border bg-card p-4 text-center transition hover:-translate-y-px hover:border-foreground/20"
-                  >
-                    <p className="text-xs text-muted-foreground">AIR {t.rank} &middot; {t.year}</p>
-                    <p className="mt-1 text-sm font-semibold">{t.name}</p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })()}
-
-        {/* EXPLORE MORE */}
-        <section className="mt-12">
-          <h2 className="text-xl font-semibold">Explore More</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/store" data-track="topper-explore-compilation">Shop Now — ₹99 &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} data-track="topper-explore-optional">All {topper.optionalSubject} Toppers &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href={`/year/${topper.year}`} data-track="topper-explore-year">UPSC {topper.year} Toppers &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/content/how-to-write-upsc-mains-answers" data-track="topper-explore-answer-writing">How to Write UPSC Answers &rarr;</Link>
-            </Button>
-            {(topper.marks.gs1 || 0) >= 115 && (
-              <Button variant="outline" asChild className="rounded-full text-xs h-9">
-                <Link href="/content/how-to-score-130-plus-in-gs1" data-track="topper-explore-strategy-gs1">Score 130+ in GS1 &rarr;</Link>
-              </Button>
-            )}
-            {(topper.marks.gs2 || 0) >= 115 && (
-              <Button variant="outline" asChild className="rounded-full text-xs h-9">
-                <Link href="/content/how-to-score-120-plus-in-gs2" data-track="topper-explore-strategy-gs2">Score 120+ in GS2 &rarr;</Link>
-              </Button>
-            )}
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/content/upsc-topper-answer-copies" data-track="topper-explore-guide">Topper Answer Copies Guide &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/free-materials?category=optional" data-track="topper-explore-subject-materials">Free {topper.optionalSubject} Materials &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/free-materials" data-track="topper-explore-free-materials">All Free Study Material &rarr;</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full text-xs h-9">
-              <Link href="/ask" data-track="topper-ask-ai-mentor">Ask AI Mentor &rarr;</Link>
-            </Button>
+        {/* EXPLORE MORE — compact */}
+        <section className="mt-12 border-t border-border pt-8">
+          <div className="flex flex-wrap gap-2">
+            <Link href="/store" data-track="topper-explore-compilation" className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary hover:border-foreground/20">
+              Store &rarr;
+            </Link>
+            <Link href={`/year/${topper.year}`} data-track="topper-explore-year" className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary hover:border-foreground/20">
+              UPSC {topper.year} toppers &rarr;
+            </Link>
+            <Link href={`/optional/${getSubjectSlug(topper.optionalSubject)}`} data-track="topper-explore-optional" className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary hover:border-foreground/20">
+              {topper.optionalSubject} toppers &rarr;
+            </Link>
+            <Link href="/ask" data-track="topper-explore-ai" className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary hover:border-foreground/20">
+              Ask AI mentor &rarr;
+            </Link>
+            <Link href="/free-materials" data-track="topper-explore-free" className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary hover:border-foreground/20">
+              Free study materials &rarr;
+            </Link>
           </div>
         </section>
+
       </div>
       </main>
       <ExitPopup />
