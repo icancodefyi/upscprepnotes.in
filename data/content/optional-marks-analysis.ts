@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "upsc-optional-subject-marks-analysis",
   title: "UPSC Optional Subject Marks Analysis — Which Optional Scores Highest? Data from 50 Rank Holders",
   description:
-    "Data-backed comparison of UPSC optional subjects using marks from 50+ topper profiles. Average scores, sample sizes, GS correlation, and honest limitations.",
+    "Which UPSC optional scores highest? Mathematics avg 1012, Anthropology 985, Commerce 972. Real data from 50+ toppers — average scores, GS correlation, and limitations.",
   lastUpdated: "2026-06-25",
   h1: "UPSC Optional Subject Marks Analysis",
 
@@ -148,6 +148,11 @@ The best way to use this data: cross-reference it with your own aptitude, intere
       title: "How to Score 120+ in GS3",
       href: "/content/how-to-score-120-plus-in-gs3",
       description: "GS3 strategy with optional subject correlation data.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "Data Methodology & Editorial Standards",

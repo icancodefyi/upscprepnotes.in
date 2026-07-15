@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: page.title,
     description: page.description,
+    ...(page.noindex ? { robots: { index: false, follow: true } } : {}),
     alternates: {
       canonical: `https://upscprepnotes.in${contentPath}`,
       languages,

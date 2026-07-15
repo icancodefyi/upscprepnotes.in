@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "how-to-score-100-plus-in-gs4",
   title: "Highest Marks in GS4 (Ethics) — UPSC Topper Scores & Strategy",
   description:
-    "Highest GS4 marks scored by UPSC toppers: max 141 (Garima Lohia), average 117. Paper-wise benchmarks, case study frameworks, and answer-writing tips from top rankers.",
+    "97% of UPSC toppers score 100+ in GS4. Real marks from 38 profiles: highest 141 (Garima Lohia), avg 117. Case study framework, booklist, and monthly plan.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 100+ in UPSC GS Paper 4",
 
@@ -123,6 +123,11 @@ GS4's case studies (Section B) carry roughly the same weight as the entire theor
       title: "UPSC Topper Answer Copies",
       href: "/content/upsc-topper-answer-copies",
       description: "Compilation of GS4 and other paper answer copies from top-ranked toppers.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "Garima Lohia's Strategy",

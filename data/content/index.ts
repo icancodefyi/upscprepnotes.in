@@ -32,6 +32,7 @@ export type ContentPage = {
   ctaFinalHref?: string;
   relatedPages?: RelatedPage[];
   sources?: { label: string; url: string }[];
+  noindex?: boolean;
 };
 
 

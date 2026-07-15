@@ -88,6 +88,7 @@ const page: ContentPage = {
 **सबसे महत्वपूर्ण सुझाव:** टॉपर्स ने परीक्षा में वास्तव में कैसे लिखा — यह देखने से आपको अंदाजा होता है कि 130+ अंक वाला उत्तर कैसा दिखता है। हमारे बंडल में 50+ टॉपर्स की वास्तविक उत्तर पत्रिकाएं शामिल हैं।`,
     },
   ],
+  noindex: true,
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "सभी संसाधन — सिलेबस, स्टडी मटीरियल, गाइड्स और अधिक" },
     { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },

@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "how-to-score-300-plus-in-psir-optional",
   title: "Highest Marks in PSIR Optional — UPSC Topper Scores & Strategy",
   description:
-    "Highest PSIR optional marks scored by UPSC toppers: max scores, average benchmarks, syllabus breakdown, booklist, and answer-writing tips from top rankers.",
+    "Only 22% of PSIR toppers cross 300. Real marks from 9 profiles: Ishita Kishore (313), Swati Sharma (304). Paper-wise breakdown, booklist, and GS2 overlap analysis.",
   lastUpdated: "2026-06-25",
   h1: "How to Score 300+ in UPSC PSIR Optional",
 
@@ -122,6 +122,11 @@ I also checked PSIR marks against GS2 marks specifically, since the syllabus ove
       title: "UPSC Topper Answer Copies",
       href: "/content/upsc-topper-answer-copies",
       description: "Compilation of PSIR and GS2 answer copies from top-ranked toppers.",
+    },
+    {
+      title: "UPSC Previous Year Papers (PYQ)",
+      href: "/pyq",
+      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
     },
     {
       title: "Ishita Kishore's Strategy",

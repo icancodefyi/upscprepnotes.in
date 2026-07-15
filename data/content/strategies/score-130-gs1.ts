@@ -4,7 +4,7 @@ const page: ContentPage = {
   slug: "how-to-score-130-plus-in-gs1",
   title: "Highest Marks in GS1 — UPSC Topper Scores, Strategy & Paper Analysis",
   description:
-    "Highest GS1 marks scored by UPSC toppers: max scores, average benchmarks, topic weightage, and answer-writing strategy from top rankers.",
+    "130+ in GS1 puts you in the top 10%. Real marks from 7 toppers (2024-2025): highest 141. Topic weightage, booklist, and answer-writing strategy from top rankers.",
   lastUpdated: "2026-06-24",
   h1: "How to Score 130+ in UPSC GS Paper 1",
   intro:
@@ -112,6 +112,7 @@ Toppers who scored 130+ in GS1 typically scored **900+ overall written marks**, 
   relatedPages: [
     { title: "How to Score 120+ in GS Paper 2", href: "/content/how-to-score-120-plus-in-gs2", description: "GS2 strategy with topper marks data" },
     { title: "Topper Answer Copies Compilation", href: "/content/upsc-topper-answer-copies", description: "50+ topper answer copies" },
+    { title: "UPSC Previous Year Papers (PYQ)", href: "/pyq", description: "Download official UPSC PYQ PDFs for Prelims and Mains — free." },
     { title: "Garima Lohia's GS1 Marks", href: "/upsc-topper/garima-lohia", description: "AIR 2 (2024) scored 119 in GS1 — full marksheet and strategy" },
     { title: "Animesh Pradhan's GS1 Marks", href: "/upsc-topper/animesh-pradhan", description: "AIR 2 (2023) scored 118 in GS1 — full strategy profile" },
   ],
