@@ -11,6 +11,7 @@ const ZIP_NAMES: Record<string, string> = {
   "government-schemes-compilation": "Government-Schemes-Compilation.zip",
   "anthropology-bundle": "Anthropology-Bundle.zip",
   "complete-gs-notes-bundle": "Complete-GS-Notes-Bundle.zip",
+  "all-strategy-reports": "All-Strategy-Reports.zip",
   "vision-ias-mains-2026-test-series": "Vision-IAS-Mains-2026-Test-Series.zip",
 };
 
@@ -37,7 +38,25 @@ export async function GET(
       return NextResponse.json({ error: "Product file not found" }, { status: 404 });
     }
 
-    return NextResponse.redirect(`${VPS_URL}/${ZIP_NAMES[targetSlug]}`, 302);
+    const zipName = ZIP_NAMES[targetSlug];
+    const zipUrl = `${VPS_URL}/${zipName}`;
+
+    // Check if the file actually exists on VPS before redirecting
+    try {
+      const headRes = await fetch(zipUrl, { method: "HEAD", signal: AbortSignal.timeout(5000) });
+      if (headRes.ok) {
+        return NextResponse.redirect(zipUrl, 302);
+      }
+    } catch {
+      // File doesn't exist on VPS yet — fall through to preparing page
+    }
+
+    // File not ready yet — redirect to a "preparing" page with order details
+    const prepUrl = new URL("/store/download-preparing", request.url);
+    prepUrl.searchParams.set("token", token);
+    prepUrl.searchParams.set("slug", targetSlug);
+    prepUrl.searchParams.set("title", order.items?.find((i: any) => i.slug === targetSlug)?.title || targetSlug);
+    return NextResponse.redirect(prepUrl, 302);
   } catch (err) {
     console.error("Download error:", err);
     return NextResponse.json({ error: "Download failed" }, { status: 500 });
