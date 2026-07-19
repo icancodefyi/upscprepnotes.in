@@ -122,11 +122,11 @@ export default function YearlyTOC() {
               <p className="text-[10px] text-[#615d59] mt-0.5">60+ topper answer copies · ₹799</p>
             </Link>
             <Link
-              href="/store/top-10-rankers-strategy"
+              href="/store/all-strategy-reports"
               className="block rounded-lg bg-gradient-to-r from-emerald-50 to-white p-3 ring-1 ring-[#e6e6e6] hover:ring-emerald-200 transition"
             >
-              <p className="text-[11px] font-bold text-[#000000e8] leading-tight">Top 10 Rankers Strategy</p>
-              <p className="text-[10px] text-[#615d59] mt-0.5">AIR 1-10 strategies · ₹299</p>
+              <p className="text-[11px] font-bold text-[#000000e8] leading-tight">Complete Strategy Bundle</p>
+              <p className="text-[10px] text-[#615d59] mt-0.5">280+ toppers · ₹799</p>
             </Link>
           </div>
         </div>

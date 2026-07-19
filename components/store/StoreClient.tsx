@@ -185,8 +185,8 @@ function StoreHero() {
         <Link href="/store/answer-copies-compilation" className="btn-primary">
           Shop answer copies
         </Link>
-        <Link href="/store/answer-copies-compilation" className="btn-ghost">
-          View answer copies
+        <Link href="/store/all-strategy-reports" className="btn-ghost">
+          View all products
         </Link>
       </div>
     </section>
@@ -268,9 +268,10 @@ export default function StoreClient() {
   }, [search]);
 
   const featured = VISIBLE.find((p) => p.slug === "answer-copies-compilation");
+  const strategy = VISIBLE.find((p) => p.slug === "all-strategy-reports");
   const gsBundle = VISIBLE.find((p) => p.slug === "complete-gs-notes-bundle");
   const rest = VISIBLE.filter(
-    (p) => !["answer-copies-compilation", "complete-gs-notes-bundle"].includes(p.slug)
+    (p) => !["answer-copies-compilation", "all-strategy-reports", "complete-gs-notes-bundle"].includes(p.slug)
   );
 
   return (
@@ -325,6 +326,11 @@ export default function StoreClient() {
                   {/* Featured: Answer Copies — 2×2 */}
                   {featured && (
                     <ProductCard product={featured} variant="featured" />
+                  )}
+
+                  {/* Wide: Strategy Reports */}
+                  {strategy && (
+                    <ProductCard product={strategy} variant="wide" />
                   )}
 
                   {/* Wide: GS Notes Bundle */}

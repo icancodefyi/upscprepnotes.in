@@ -198,7 +198,7 @@ export default function CartSlideover({ open, onClose }: Props) {
 function CartCrossSell({ cartSlugs }: { cartSlugs: string[] }) {
   const { addItem } = useCart();
   const recommendations = PRODUCTS.filter(
-    (p) => !p.comingSoon && !cartSlugs.includes(p.slug) && ["top-10-rankers-strategy", "answer-copies-compilation"].includes(p.slug)
+    (p) => !p.comingSoon && !cartSlugs.includes(p.slug) && ["top-10-rankers-strategy", "answer-copies-compilation", "all-strategy-reports"].includes(p.slug)
   ).slice(0, 2);
 
   if (recommendations.length === 0) return null;
