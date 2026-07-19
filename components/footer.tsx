@@ -169,6 +169,11 @@ export default function Footer() {
                   Disclaimer
                 </Link>
               </li>
+              <li>
+                <a href="/llms.txt" data-track="footer-llms-txt" className="hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">
+                  llms.txt <span className="text-[10px] text-muted-foreground/60">(for AI)</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
