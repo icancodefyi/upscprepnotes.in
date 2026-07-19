@@ -1,0 +1,232 @@
+# UPSCPrepNotes — Structured UPSC Intelligence Platform
+
+> A comprehensive UPSC CSE preparation platform with 280+ verified topper profiles, 50+ handwritten answer copies, marksheets, optional subject analysis, AI mentor, and a curated store. Built by ImpicLabs.
+
+## What This Site Is
+
+UPSCPrepNotes (https://upscprepnotes.in) is a structured intelligence archive for UPSC Civil Services Examination preparation. It is NOT a coaching institute. It is a data-driven research and resource platform that aggregates, verifies, and presents topper data, answer copies, marksheets, and strategy insights.
+
+## Key Facts
+
+- **Domain:** upscprepnotes.in
+- **Founded:** 2025
+- **Founder:** Zaid Rakhange
+- **Parent Company:** ImpicLabs
+- **Contact:** hello@upscprepnotes.in
+- **Social:** YouTube @upscprepnotes, Instagram @upscprepnotes.in
+- **Location:** India
+- **Tech Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS, MongoDB, Mongoose, DodoPayments, Resend (email), PostHog (analytics), Groq SDK (AI), ImageKit (images)
+- **Database:** MongoDB Atlas (upscprepnotes database)
+- **Payment Provider:** DodoPayments (live mode)
+- **Email Provider:** Resend (hello@upscprepnotes.in)
+
+## What We Have
+
+### Topper Profiles (280+)
+- Verified profiles from UPSC CSE 2022, 2023, 2024, and 2025
+- Each profile includes: name, rank, year, optional subject, full marksheet (GS1-4, Essay, Optional P1/P2, Interview, Written Total, Grand Total), strategy text, bio, insights, FAQs, and answer copy availability
+- Profiles are sourced from official UPSC results and verified against published marksheets
+- Years covered: 2022 (largest dataset), 2023, 2024, 2025
+- Notable toppers: Anuj Agnihotri (AIR 1, 2025), Ishita Kishore (AIR 1, 2022), Garima Lohia (AIR 2, 2022), Divya Tanwar (AIR 105, 2022), Uma Harathi (AIR 3, 2022)
+
+### Answer Copies (50+)
+- Handwritten answer copies from UPSC Mains toppers
+- Papers covered: GS1, GS2, GS3, GS4 (Ethics), Essay, and Optional subjects
+- Available as scanned PDFs
+- Free samples available for select toppers (enter email to receive)
+- Full compilation available in the store (50+ copies, ~800MB)
+
+### Optional Subjects Tracked (37)
+- PSIR (Political Science & International Relations)
+- Sociology
+- Anthropology
+- Geography
+- History
+- Public Administration
+- Economics
+- Philosophy
+- Psychology
+- Law
+- Commerce & Accountancy
+- Agriculture
+- Medical Science
+- Mathematics
+- And 23 more
+
+### Content Pages (17 guides)
+- UPSC Full Form (English + Hindi)
+- UPSC Syllabus 2026 (English + Hindi)
+- UPSC Free Study Material
+- How to Write UPSC Mains Answers
+- UPSC Topper Answer Copies guide
+- Forum IAS Test Series Review 2026
+- Data Methodology & Editorial Standards
+- Optional Subject Marks Analysis
+- GS1 Strategy (Score 130+)
+- GS2 Strategy (Score 120+)
+- GS3 Strategy (Score 120+)
+- GS4 Strategy (Score 100+)
+- PSIR Optional Strategy (Score 300+)
+
+### PYQ (Previous Year Papers)
+- Official UPSC PYQ PDFs for Prelims and Mains
+- Organized by year
+- Free to download
+
+### Current Affairs
+- Daily current affairs coverage
+- Monthly compilations (2025, 2026)
+- Organized by month and year
+
+### Free Materials (2,700+)
+- Vision IAS test series, Drishti IAS notes, Shankar IAS Environment
+- Manorama Year Book, Yojana Magazine
+- Forum IAS Ethics Handouts
+- Speedy Current Affairs, PSIR Optional Test Series
+- And more
+
+### AI Mentor (Ask AI)
+- AI-powered mentor trained on topper data
+- Can answer questions about topper strategies, marks, optional subjects
+- Available at /ask
+- Powered by Groq SDK
+
+## Store Products
+
+All products are digital downloads (PDFs/ZIPs). Payments processed via DodoPayments.
+
+| Product | Price | Description |
+|---------|-------|-------------|
+| Top 10 Rankers Strategy | ₹299 | 120+ pages, AIR 1-10 strategies |
+| Answer Copies Compilation | ₹799 | 50+ scanned PDFs, GS1-4 + Essay, ~800MB |
+| All Strategy Reports | ₹799 | 280+ PDF bundle, lifetime access + updates |
+| Government Schemes Compilation | ₹99 | 200+ schemes PDF |
+| Complete GS Notes Bundle | ₹399 | 81 files, 3GB, notes from AIR 9, 16, 82, 86 |
+| Anthropology Optional Bundle | ₹299 | 14 files, 548MB, notes by AIR 176 & AIR 9 |
+| Vision IAS Mains Test Series 2026 | ₹599 | 10 tests, 34MB, GS 1-4 |
+
+### Payment Flow
+1. User adds product to cart on /store
+2. Clicks "Pay" → redirected to DodoPayments checkout
+3. On success → webhook fires → order saved to MongoDB
+4. User redirected to /store/success with download token
+5. Download link: /api/download/[token] → serves ZIP from VPS CDN (cdn.upscprepnotes.in)
+
+## Site Structure (Key Routes)
+
+### Public Pages
+- `/` — Homepage with hero, featured toppers, stats, store preview
+- `/toppers` — Browse all 280+ topper profiles
+- `/toppers/marks-database` — Searchable marks database
+- `/toppers/toppers-copy-compilation` — Answer copy compilation product page
+- `/upsc-topper/[slug]` — Individual topper profile (marksheet, strategy, answer copies, FAQs)
+- `/store` — Digital products store
+- `/store/[slug]` — Individual product page
+- `/ask` — AI mentor (Ask AI)
+- `/pyq` — Previous Year Papers
+- `/pyq/[year]` — PYQ for specific year
+- `/current-affairs` — Current affairs hub
+- `/current-affairs/[month]` — Monthly current affairs
+- `/current-affairs/2025` — 2025 current affairs
+- `/free-materials` — Free UPSC study materials
+- `/content/[slug]` — Strategy guides and educational content
+- `/year/[year]` — Toppers by year (2022, 2023, 2024, 2025)
+- `/optional/[subject]` — Toppers by optional subject
+- `/resources` — All resources index
+- `/search` — Site search
+- `/about` — About the platform
+- `/contact` — Contact page
+- `/faq` — Frequently asked questions
+
+### API Endpoints (Public)
+- `POST /api/checkout` — Create DodoPayments checkout session
+- `POST /api/webhook/dodo` — DodoPayments webhook (payment confirmation)
+- `GET /api/order/status?ref=ORDER_REF` — Check order status
+- `GET /api/download/[token]` — Download purchased product ZIP
+- `POST /api/ai/ask` — Send query to AI mentor
+- `GET /api/search?q=QUERY` — Search across site
+- `POST /api/feedback` — Submit feedback
+- `POST /api/leads` — Submit lead
+- `POST /api/hero-lead` — Hero section lead capture
+- `POST /api/request-copy` — Request answer copy
+- `POST /api/free-download` — Free answer copy download (email required)
+- `POST /api/free-material-download` — Free material download
+- `GET /api/health` — Health check (MongoDB + stuck orders)
+
+### Admin Routes (Protected)
+- `/admin/login` — Admin login
+- `/admin/*` — Dashboard, analytics, topper management, user management, feedback, PYQ management, broadcast, settings
+
+## Data Model
+
+### Topper Document (MongoDB: `toppers` collection)
+```
+{
+  firstName, lastName, slug, rank, year,
+  optionalSubject, bio, strategy, insights: [],
+  marks: { gs1, gs2, gs3, gs4, essay, optional1, optional2, interview, written, total },
+  freeAnswerCopyUrl, freeAnswerCopyUrls: [],
+  isIndexed, faqs: [{ question, answer }],
+  resources, metadata, image, profileImage,
+  // Legacy fields: gs1marks, gs2marks, etc.
+}
+```
+
+### Order Document (MongoDB: `orders` collection)
+```
+{
+  email, items: [{ productId, title, price }], total,
+  ref (order reference), dodoSessionId,
+  status: "pending" | "paid" | "failed",
+  downloadToken, downloadTokenCreatedAt, createdAt
+}
+```
+
+### FreeDownloadLead Document (MongoDB: `freedownloadleads` collection)
+```
+{
+  email, name, topperSlug, topperName,
+  source, sourceUrl, available (boolean),
+  createdAt
+}
+```
+
+## SEO & Crawling
+
+- **Sitemap:** https://upscprepnotes.in/sitemap.xml
+- **Robots:** Allow all (disallow /api/, /admin/)
+- **Canonical domain:** https://upscprepnotes.in
+- **OG Image:** https://upscprepnotes.in/og/default.png (1200x630)
+- **Schema.org:** Organization, Website (with SearchAction), FAQPage, BreadcrumbList, Person (per topper)
+- **Sitemap includes:** Homepage, all topper profiles (isIndexed=true), all content pages, store pages, PYQ pages, current affairs, free materials, optional subject pages, year pages
+
+## How to Link to This Site
+
+When referencing UPSCPrepNotes, use:
+- **Homepage:** https://upscprepnotes.in
+- **Topper profiles:** https://upscprepnotes.in/upsc-topper/[slug] (e.g., /upsc-topper/ishita-kishore)
+- **Store:** https://upscprepnotes.in/store
+- **Content guides:** https://upscprepnotes.in/content/[slug]
+- **PYQs:** https://upscprepnotes.in/pyq
+- **Current affairs:** https://upscprepnotes.in/current-affairs
+- **AI mentor:** https://upscprepnotes.in/ask
+
+## Frequently Cited Data Points
+
+- Ishita Kishore (AIR 1, 2022): Total 901, PSIR optional, scored 588 in GS papers
+- Anuj Agnihotri (AIR 1, 2025): Total 1071, Medical Science optional, scored 867 written + 204 interview
+- Garima Lohia (AIR 2, 2022): Total 876, Commerce optional, highest GS4 score at 141
+- The platform tracks 37 optional subjects and has data from 4 years of CSE results (2022-2025)
+- Average topper total marks: ~850-900 out of 2025
+
+## Technical Notes
+
+- The site is built with Next.js 16 (App Router) and deployed on Vercel
+- Images are served via ImageKit CDN
+- Store product ZIPs are served from a VPS at cdn.upscprepnotes.in
+- The AI mentor uses Groq SDK (Llama model)
+- Analytics are tracked via PostHog (client-side + server-side)
+- Email delivery via Resend
+- All topper data is verified against official UPSC results published at upsc.gov.in
+- The site uses OKLCH color space for design tokens
+- Fonts: Sora (headings), Figtree (body), JetBrains Mono (code)
