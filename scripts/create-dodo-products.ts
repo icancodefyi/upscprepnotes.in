@@ -8,6 +8,7 @@ const dodo = new DodoPayments({
 const PRODUCTS = [
   { name: "Answer Copies Compilation", priceInr: 799, slug: "answer-copies-compilation" },
   { name: "Top 10 Rankers Strategy", priceInr: 299, slug: "top-10-rankers-strategy" },
+  { name: "All Strategy Reports", priceInr: 799, slug: "all-strategy-reports" },
   { name: "Government Schemes Compilation", priceInr: 99, slug: "government-schemes-compilation" },
   { name: "Anthropology Bundle", priceInr: 299, slug: "anthropology-bundle" },
   { name: "Complete GS Notes Bundle", priceInr: 399, slug: "complete-gs-notes-bundle" },

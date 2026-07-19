@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const order = await OrderModel.create({
-      items: resolvedItems,
+      items: resolvedItems.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity, price: i.price })),
       total,
       offeredPrice,
       ref,

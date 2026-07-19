@@ -12,6 +12,7 @@ const dodo = new DodoPayments({
 });
 
 export async function POST(request: NextRequest) {
+  const webhookId = Math.random().toString(36).slice(2, 10);
   try {
     const body = await request.text();
 
@@ -19,10 +20,14 @@ export async function POST(request: NextRequest) {
     try {
       event = JSON.parse(body);
     } catch {
+      console.error(`[${webhookId}] Invalid JSON body`);
       return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
 
+    console.log(`[${webhookId}] Webhook received: type=${event.type}`);
+
     if (event.type !== "payment.succeeded") {
+      console.log(`[${webhookId}] Ignoring event type: ${event.type}`);
       return NextResponse.json({ received: true });
     }
 
@@ -31,8 +36,10 @@ export async function POST(request: NextRequest) {
     const paymentId = paymentData.id || paymentData.payment_id;
     const metadata = paymentData.metadata || {};
 
+    console.log(`[${webhookId}] payment.succeeded: session=${sessionId} payment=${paymentId}`);
+
     if (!sessionId) {
-      console.error("No session_id in webhook");
+      console.error(`[${webhookId}] No session_id in webhook payload`);
       return NextResponse.json({ error: "Missing session_id" }, { status: 400 });
     }
 
@@ -50,9 +57,11 @@ export async function POST(request: NextRequest) {
           total = total || Math.round(paid / 100);
         }
       } catch {
-        console.error("Failed to retrieve payment");
+        console.error(`[${webhookId}] Failed to retrieve payment details for ${paymentId}`);
       }
     }
+
+    console.log(`[${webhookId}] Looking up order by sessionId=${sessionId}`);
 
     const existing = await OrderModel.findOne({ dodoSessionId: sessionId });
     if (existing) {
@@ -62,6 +71,7 @@ export async function POST(request: NextRequest) {
           email: customerEmail || existing.email,
           dodoPaymentId: paymentId,
         });
+        console.log(`[${webhookId}] Order ${existing._id} updated: pending → paid`);
         try {
           await AnalyticsEventModel.create({
             event: "checkout_completed",
@@ -91,11 +101,15 @@ export async function POST(request: NextRequest) {
         try {
           await sendAdminNotification(customerEmail, existing.items, existing.total);
         } catch (err) {
-          console.error("Admin notification failed:", err);
+          console.error(`[${webhookId}] Admin notification failed:`, err);
         }
+      } else {
+        console.log(`[${webhookId}] Order ${existing._id} already ${existing.status}, skipping`);
       }
       return NextResponse.json({ received: true, orderId: existing._id });
     }
+
+    console.log(`[${webhookId}] No existing order found for sessionId=${sessionId}, creating new one`);
 
     let items: { slug: string; quantity: number; price: number; title: string }[];
     try {
@@ -119,6 +133,8 @@ export async function POST(request: NextRequest) {
       downloadToken,
       status: "paid",
     });
+
+    console.log(`[${webhookId}] New order created: ${order._id}`);
 
     try {
       await AnalyticsEventModel.create({
@@ -151,12 +167,12 @@ export async function POST(request: NextRequest) {
     try {
       await sendAdminNotification(customerEmail, items, total);
     } catch (err) {
-      console.error("Admin notification failed:", err);
+      console.error(`[${webhookId}] Admin notification failed:`, err);
     }
 
     return NextResponse.json({ received: true, orderId: order._id });
   } catch (err) {
-    console.error("Webhook error:", err);
+    console.error(`[${webhookId}] Webhook error:`, err);
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
 }
