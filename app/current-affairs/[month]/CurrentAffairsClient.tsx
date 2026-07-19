@@ -54,7 +54,7 @@ const SECTION_PRODUCTS: Record<string, { href: string; label: string } | null> =
   "National News": null,
   "International Relations & Summits": { href: "/store/complete-gs-notes-bundle", label: "Master IR with notes from AIR 9, 16, 82, 86 →" },
   "Economy & Finance": { href: "/store/complete-gs-notes-bundle", label: "Economy prep: GS 3 notes from toppers →" },
-  "Environment & Ecology": { href: "/store/places-in-news", label: "Environment & geography: Places in News compilation →" },
+  "Environment & Ecology": { href: "/store/complete-gs-notes-bundle", label: "Environment & geography: GS notes from toppers →" },
   "Science & Technology": { href: "/store/complete-gs-notes-bundle", label: "S&T prep with curated topper notes →" },
   "Government Schemes & Policies": { href: "/store/government-schemes-compilation", label: "Get the complete Government Schemes Compendium →" },
   "Important Reports & Indices": null,
@@ -184,9 +184,6 @@ export default function CurrentAffairsPage({ slug }: { slug: string }) {
             <div className="mt-4 flex flex-wrap gap-3">
               <Link href="/store/government-schemes-compilation" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition hover:scale-95" style={{ backgroundColor: CANVAS, border: `1px solid ${HAIRLINE}`, color: INK }}>
                 Schemes Compendium
-              </Link>
-              <Link href="/store/places-in-news" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition hover:scale-95" style={{ backgroundColor: CANVAS, border: `1px solid ${HAIRLINE}`, color: INK }}>
-                Places in News
               </Link>
               <Link href="/store/complete-gs-notes-bundle" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold transition hover:scale-95" style={{ backgroundColor: CANVAS, border: `1px solid ${HAIRLINE}`, color: INK }}>
                 Complete GS Notes

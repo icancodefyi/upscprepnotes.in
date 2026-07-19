@@ -15,11 +15,11 @@ const RECOMMENDATION_MAP: Record<string, ProductRecommendation[]> = {
   ],
   topper: [
     { slug: "answer-copies-compilation", reason: "Includes this topper's actual answer sheets" },
-    { slug: "all-strategy-reports", reason: "Compare 280+ topper strategies" },
+    { slug: "top-10-rankers-strategy", reason: "See what AIR 1-10 did differently" },
   ],
   strategy: [
     { slug: "top-10-rankers-strategy", reason: "AIR 1-10 strategies distilled" },
-    { slug: "all-strategy-reports", reason: "Every topper strategy in one bundle" },
+    { slug: "complete-gs-notes-bundle", reason: "81 files of curated topper notes" },
   ],
   answer: [
     { slug: "answer-copies-compilation", reason: "50+ real answer copies" },
@@ -27,7 +27,7 @@ const RECOMMENDATION_MAP: Record<string, ProductRecommendation[]> = {
   ],
   optional: [
     { slug: "answer-copies-compilation", reason: "Optional paper answer copies included" },
-    { slug: "all-strategy-reports", reason: "Find toppers with your optional" },
+    { slug: "anthropology-bundle", reason: "Anthropology notes by AIR 9 & AIR 176" },
   ],
 };
 

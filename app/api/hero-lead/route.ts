@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       event: "hero_lead_captured",
       properties: {
         source: source || "hero_form",
-        product: "places-in-news",
+        product: "answer-copies-compilation",
         product_value: FREE_PRODUCT_VALUE,
       },
     });
