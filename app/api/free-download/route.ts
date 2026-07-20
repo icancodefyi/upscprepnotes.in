@@ -61,12 +61,15 @@ async function sendUnavailableEmail(email: string, topperName: string) {
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
-        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">We're Working on It!</h1>
+        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Coming!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
-        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're sourcing it now and will email it to you as soon as it's available.</p>
+        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We'll send you the download link shortly. While you wait, explore 50+ topper copies from other rank holders.</p>
+        <div style="text-align:center;margin-bottom:28px">
+          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#059669;color:#fff;padding:12px 28px;border-radius:40px;text-decoration:none;font-weight:700;font-size:13px">Browse the Store →</a>
+        </div>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
           <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
-            📬 Meanwhile, join 100+ aspirants on Telegram for daily current affairs →
+            📬 Join 100+ aspirants on Telegram for daily current affairs →
           </a>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">— UPSCPrepNotes Team</p>
@@ -77,7 +80,7 @@ async function sendUnavailableEmail(email: string, topperName: string) {
 
   await sendEmail({
     to: email,
-    subject: `We're Sourcing ${topperName}'s Answer Copy`,
+    subject: `Your ${topperName} Answer Copy — On Its Way`,
     html,
   });
 }
