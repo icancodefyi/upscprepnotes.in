@@ -102,9 +102,19 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
           )}
         </div>
       ) : (
-        <p className="mt-3 text-sm font-medium text-amber-700">
-          ✓ We noted your request for <strong>{topperName}</strong>&apos;s copies. We&apos;ll email you as soon as they&apos;re available.
-        </p>
+        <div className="mt-3">
+          <p className="text-sm font-medium text-emerald-700">
+            ✓ We&apos;ll send the download link for <strong>{topperName}</strong>&apos;s answer copy to your email shortly.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a
+              href="/store"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
+            >
+              Browse 50+ topper copies in the store
+            </a>
+          </div>
+        </div>
       )}
       {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
     </div>

@@ -230,29 +230,30 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
               <IconClock size={24} className="text-brand" />
             </div>
-            <h2 className="text-lg font-semibold">We&apos;re Working on It!</h2>
+            <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-              Thanks for requesting <strong>{topperName}</strong>&apos;s answer copy. We&apos;re sourcing it and will email it to you shortly.
+              We&apos;ll send you the download link for <strong>{topperName}</strong>&apos;s answer copy shortly.
             </p>
             <p className="mt-2 text-xs text-brand font-medium">
-              ⚠️ To ensure delivery, please add <strong>hello@upscprepnotes.in</strong> to your contacts and check your <strong>Spam</strong> folder if the email doesn&apos;t appear within 24 hours.
+              ⚠️ Check your <strong>Spam</strong> or <strong>Promotions</strong> folder if you don&apos;t see it within a few minutes.
             </p>
-            <div className="mt-4 rounded-xl bg-brand-muted border border-brand/20 p-4 text-left">
-              <p className="text-xs font-semibold text-brand">Complementary Offer</p>
-              <p className="mt-1 text-xs text-brand/80 leading-relaxed">
-                If we can&apos;t deliver within 48 hours, we&apos;ll give you <strong>free access to our premium strategy guides</strong> (worth ₹649) as a thank-you.
-              </p>
-            </div>
-            <p className="mt-4 text-xs text-muted-foreground">
-              In the meantime,{" "}
+            <div className="mt-4 flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  window.open("/store", "_blank");
+                  onOpenChange(false);
+                }}
+                className="w-full rounded-full bg-foreground px-4 py-2.5 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
+              >
+                Browse 50+ Topper Copies in the Store &rarr;
+              </button>
               <button
                 onClick={() => onOpenChange(false)}
-                className="text-brand font-semibold underline cursor-pointer"
+                className="w-full rounded-full border border-border px-4 py-2 text-xs text-muted-foreground hover:bg-secondary transition-colors"
               >
-                browse the complete compilation
+                Close
               </button>
-              {" "}with 50+ topper copies.
-            </p>
+            </div>
           </div>
         )}
       </div>
