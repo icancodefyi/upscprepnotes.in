@@ -1,0 +1,127 @@
+firstName,lastName,rank,year,optionalSubject,essay,gs1,gs2,gs3,gs4,optional1,optional2,written,interview,total,slug
+Ishita,Kishore,1,2022,Political Science & International Relations,137,121,130,88,112,147,166,901,193,1094,ishita-kishore-rank-1-2022
+Garima,Lohia,2,2022,Commerce & Accountancy,131,104,131,94,141,125,150,876,187,1063,garima-lohia-rank-2-2022
+UMA,Harathi,3,2022,Anthropology,119,113,116,100,132,146,147,873,187,1060,uma-harathi-rank-3-2022
+Smriti,Mishra,4,2022,Zoology,145,113,130,97,116,148,133,882,173,1055,smriti-mishra-rank-4-2022
+Mayur,Hazarika,5,2022,Anthropology,133,113,108,102,122,154,129,861,193,1054,mayur-hazarika-rank-5-2022
+Rahul,Shrivastava,10,2022,Electrical Engineering,142,116,132,91,125,139,118,863,180,1043,rahul-shrivastava-rank-10-2022
+Abhinav,Siwach,12,2022,Sociology,121,103,123,87,130,144,148,856,185,1041,abhinav-siwach-rank-12-2022
+Vidushi,Singh,13,2022,Economics,131,115,118,89,126,141,135,855,184,1039,vidushi-singh-rank-13-2022
+Kritika,Goyal,14,2022,Law,129,105,113,85,113,141,145,831,204,1035,kritika-goyal-rank-14-2022
+Avinash,Kumar,17,2022,Philosophy,109,113,109,95,113,165,154,858,176,1034,avinash-kumar-rank-17-2022
+Siddharth,Shukla,18,2022,History,128,115,123,86,125,154,125,856,175,1031,siddharth-shukla-rank-18-2022
+Shivam,Yadav,21,2022,PSIR,135,108,116,87,108,132,148,834,195,1029,shivam-yadav-rank-21-2022
+Vaishali,Chopra,23,2022,Mathematics,133,107,135,92,127,119,136,849,179,1028,vaishali-chopra-rank-23-2022
+Priyansha,Garg,31,2022,Public Administration,120,115,122,97,122,153,139,868,154,1022,priyansha-garg-rank-31-2022
+Arya,VM,36,2022,English Literature,117,93,117,86,115,156,143,827,193,1020,arya-vm-rank-36-2022
+Manan,Agarwal,46,2022,Mathematics,101,103,105,94,107,150,160,820,193,1013,manan-agarwal-rank-46-2022
+Sanskriti,Somani,49,2022,PSIR,129,98,121,89,106,146,143,832,180,1012,sanskriti-somani-rank-49-2022
+Sparsh,Yadav,51,2022,Mathematics,134,99,111,88,115,147,135,829,182,1011,sparsh-yadav-rank-51-2022
+Anirudha,Pandey,64,2022,PSIR,116,97,117,93,116,149,146,834,173,1007,anirudha-pandey-rank-64-2022
+Kasturi,Panda,67,2022,Sociology,116,114,116,85,115,142,134,822,184,1006,kasturi-panda-rank-67-2022
+Aaditya,Sharma,70,2022,Medical Science,130,107,120,100,119,130,123,829,176,1005,aaditya-sharma-rank-70-2022
+Dabholkar Vasant,Prasad,76,2022,Anthropology,132,103,109,77,106,140,141,808,195,1003,dabholkar-vasant-prasad-rank-76-2022
+Anjali,Garg,79,2022,Medical Science,106,97,116,100,116,142,145,822,179,1001,anjali-garg-rank-79-2022
+Malini,S,81,2022,Geography,85,111,129,88,122,133,134,802,187,989,malini-s-rank-81-2022
+BharatJai,PrakashMeena,85,2022,Hindi Literature,123,105,114,87,112,140,119,800,198,998,bharatjai-prakashmeena-rank-85-2022
+Nidhi,Kaushik,88,2022,PSIR,117,111,116,87,118,120,144,813,184,997,nidhi-kaushik-rank-88-2022
+Jatin,Jain,91,2022,Sociology,135,93,120,81,109,134,146,818,179,997,jatin-jain-rank-91-2022
+Divyanshi,Singla,95,2022,Sociology,123,104,110,83,112,151,143,826,170,996,divyanshi-singla-rank-95-2022
+Prashant,Raj,97,2022,Sociology,117,120,125,89,126,108,148,833,162,995,prashant-raj-rank-97-2022
+Kalpana,Pandey,102,2022,PSIR,144,99,115,68,125,134,127,812,182,994,kalpana-pandey-rank-102-2022
+JainJainom,Mahendrakumar,103,2022,PSIR,142,100,104,85,110,128,135,804,190,994,jainjainom-mahendrakumar-rank-103-2022
+Divya,Tanwar,105,2022,Hindi Literature,141,101,110,77,123,138,144,834,160,994,divya-tanwar-rank-105-2022
+Siddharth,kMishra,106,2022,Mathematics,129,82,110,94,92,152,159,818,176,994,siddharth-kmishra-rank-106-2022
+Akshansh,Yadav,109,2022,Geography,107,97,112,74,119,147,150,806,187,993,akshansh-yadav-rank-109-2022
+Nidhi,Pai,110,2022,Anthropology,118,97,107,82,113,178,147,842,151,993,nidhi-pai-rank-110-2022
+JaradPartik,Anil,112,2022,PSIR,109,109,127,83,116,134,132,810,182,992,jaradpartik-anil-rank-112-2022
+Rupal,Srivastava,113,2022,Geography,137,104,107,83,108,135,138,812,180,992,rupal-srivastava-rank-113-2022
+Mayank,Madhav,119,2022,Anthropology,117,96,94,83,124,152,144,810,182,992,mayank-madhav-rank-119-2022
+GaganSingh,Meena,120,2022,Mathematics,120,100,118,78,104,138,174,832,160,992,gagansingh-meena-rank-120-2022
+Aparajita,Agnihotri,124,2022,PSIR,116,110,114,78,115,149,134,816,175,991,aparajita-agnihotri-rank-124-2022
+Vishwajeet,Souryan,126,2022,Geography,114,115,117,82,108,161,137,834,157,991,vishwajeet-souryan-rank-126-2022
+Preeti,Kumari,130,2022,PSIR,128,108,113,81,106,134,120,790,198,988,preeti-kumari-rank-130-2022
+Robin,Bansal,135,2022,Physics,109,106,118,90,104,156,125,808,182,990,robin-bansal-rank-135-2022
+SoumyaRanjan,Dash,136,2022,Electrical Engineering,129,105,121,81,101,146,139,822,168,990,soumyaranjan-dash-rank-136-2022
+Madhav,Upadhyay,148,2022,Geology,122,112,117,84,132,140,120,827,160,987,madhav-upadhyay-rank-148-2022
+Dinesh,Godara,150,2022,Psychology,122,99,107,95,120,137,135,815,172,987,dinesh-godara-rank-150-2022
+Ayush,Goel,171,2022,Economics,93,106,114,98,129,128,134,802,182,984,ayush-goel-rank-171-2022
+Malavika,GNair,172,2022,Sociology,85,121,107,96,130,126,139,804,180,984,malavika-gnair-rank-172-2022
+Ankit,KumanJain,173,2022,Hindi Literature,129,109,108,84,115,134,132,811,173,984,ankit-kumanjain-rank-173-2022
+Mansi,Dahiya,178,2022,Sociology,109,100,122,77,107,152,124,791,193,984,mansi-dahiya-rank-178-2022
+Goldi,Gupta,181,2022,PSIR,103,110,128,101,118,133,125,818,165,983,goldi-gupta-rank-181-2022
+Ayasha,Fatima,184,2022,PSIR,100,114,119,70,115,146,140,804,179,983,ayasha-fatima-rank-184-2022
+Shaik,Habeebulla,189,2022,Anthropology,103,111,104,73,127,145,140,803,179,982,shaik-habeebulla-rank-189-2022
+Herrsh,Sharma,194,2022,History,145,108,118,84,95,134,125,809,172,981,herrsh-sharma-rank-194-2022
+Mohit,Gupta,195,2022,PSIR,132,104,127,87,118,119,148,835,146,981,mohit-gupta-rank-195-2022
+SaurabhA,Narendra,198,2022,PSIR,115,107,105,82,115,133,148,805,176,981,saurabha-narendra-rank-198-2022
+Tarun,Bansal,204,2022,PSIR,123,99,103,96,110,146,143,820,160,980,tarun-bansal-rank-204-2022
+MehtaKeval,Nilesh,206,2022,Anthropology,108,94,112,90,101,164,141,810,170,980,mehtakeval-nilesh-rank-206-2022
+Akash,AL,210,2022,PSIR,93,107,109,80,125,129,136,779,201,980,akash-al-rank-210-2022
+Gautam,Vivekanandan,211,2022,English Literature,149,97,93,79,110,123,142,793,187,980,gautam-vivekanandan-rank-211-2022
+Vedika,Bihani,213,2022,PSIR,99,107,119,95,111,139,127,797,182,979,vedika-bihani-rank-213-2022
+Ravula,JayasimhaReddy,217,2022,PSIR,120,93,108,93,111,138,132,795,184,979,ravula-jayasimhareddy-rank-217-2022
+Rohit,Kumar,225,2022,Geography,142,117,113,85,106,124,120,807,171,978,rohit-kumar-rank-225-2022
+Siddharth,SinghDangi,230,2022,Electrical Engineering,110,83,107,78,98,153,151,780,198,978,siddharth-singhdangi-rank-230-2022
+Nandagopan,M,233,2022,Malayalam Literature,118,103,112,86,94,135,139,787,190,977,nandagopan-m-rank-233-2022
+Cibilu,Pradeep,253,2022,Psychology,100,105,106,85,116,144,135,791,184,975,cibilu-pradeep-rank-253-2022
+Aakip,Khan,268,2022,Hindi Literature,126,94,104,75,112,138,134,783,190,973,aakip-khan-rank-268-2022
+Ajay,Yadav,276,2022,Geography,112,110,110,91,104,144,133,804,168,972,ajay-yadav-rank-276-2022
+DudhalAbhishek,Dilip,278,2022,Economics,91,106,103,79,116,152,143,790,182,972,dudhalabhishek-dilip-rank-278-2022
+Anirudh,Jain,295,2022,PSIR,116,106,106,86,123,137,131,805,165,970,anirudh-jain-rank-295-2022
+MohammadIbdul,Ahmad,298,2022,Mechanical Engineering,111,96,102,85,116,139,137,786,184,970,mohammadibdul-ahmad-rank-298-2022
+Aditya,Pandey,301,2022,Electrical Engineering,94,91,113,81,107,158,139,783,187,970,aditya-pandey-rank-301-2022
+Komal,Aggarwal,303,2022,Sociology,100,115,92,76,107,173,142,805,165,970,komal-aggarwal-rank-303-2022
+Harsh,Mandlik,310,2022,Sociology,124,100,116,92,114,131,131,808,161,969,harsh-mandlik-rank-310-2022
+KNChandana,Jahnavi,313,2022,Sociology,85,106,114,79,117,134,144,779,190,969,knchandana-jahnavi-rank-313-2022
+Dhamini,MDas,345,2022,Kannada Literature,130,89,94,84,112,131,144,784,182,966,dhamini-mdas-rank-345-2022
+Himanshu,Samant,348,2022,Geography,91,106,123,94,110,131,154,809,157,966,himanshu-samant-rank-348-2022
+Aniket,DnayaneshwarHirde,349,2022,Physics,115,104,104,82,111,149,150,815,151,966,aniket-dnayaneshwarhirde-rank-349-2022
+Harishankar,Ganesan,367,2022,Commerce & Accountancy,104,101,118,88,101,147,136,795,170,965,harishankar-ganesan-rank-367-2022
+GarudSanket,Sunil,370,2022,Mathematics,109,95,99,84,119,145,154,805,160,965,garudsanket-sunil-rank-370-2022
+Diksha,Rai,374,2022,Anthropology,118,110,119,96,85,146,125,799,165,964,diksha-rai-rank-374-2022
+Eppalapally,Susmitha,384,2022,PSIR,144,83,94,85,110,125,157,798,165,963,eppalapally-susmitha-rank-384-2022
+Capril,Arora,397,2022,Punjabi Literature,110,96,115,87,127,122,116,773,188,961,capril-arora-rank-397-2022
+Yash,PalSingh,399,2022,Geography,116,111,102,88,122,120,132,791,170,961,yash-palsingh-rank-399-2022
+Arushi,Sharma,402,2022,Philosophy,100,105,114,84,98,128,137,766,195,961,arushi-sharma-rank-402-2022
+Ishan,Agarwal,409,2022,Economics,70,110,108,83,120,144,136,771,190,961,ishan-agarwal-rank-409-2022
+Harshvardhan,Singh,418,2022,Mathematics,104,98,111,91,111,132,129,776,184,960,harshvardhan-singh-rank-418-2022
+Tanvi,Singhal,425,2022,Anthropology,132,98,107,81,101,149,132,800,160,960,tanvi-singhal-rank-425-2022
+Piyush,Kumar,433,2022,PSIR,127,103,114,83,103,138,134,802,157,959,piyush-kumar-rank-433-2022
+Nayan,Gautam,437,2022,Sociology,99,103,113,87,114,154,135,805,154,959,nayan-gautam-rank-437-2022
+SanglePallavi,Sangram,452,2022,Anthropology,109,110,109,78,109,129,125,769,187,956,sanglepallavi-sangram-rank-452-2022
+Bajrang,Prasad,454,2022,Hindi Literature,122,107,102,79,121,111,123,765,190,955,bajrang-prasad-rank-454-2022
+M,Sindhuja,458,2022,Anthropology,116,103,111,89,99,141,136,795,160,955,m-sindhuja-rank-458-2022
+Boddu,Hemanth,469,2022,Mathematics,109,106,108,82,124,126,115,770,182,952,boddu-hemanth-rank-469-2022
+C,Saravanan,487,2022,Anthropology,102,102,104,70,95,162,122,757,193,950,c-saravanan-rank-487-2022
+Udham,Patel,500,2022,Chemistry,92,102,119,84,125,158,123,803,146,949,udham-patel-rank-500-2022
+DhanushKumar,BS,501,2022,kannada Literature,96,102,114,84,112,137,147,792,157,949,dhanushkumar-bs-rank-501-2022
+shivin,iAS,514,2022,Geography,118,96,114,84,84,152,127,775,173,948,shivin-ias-rank-514-2022
+Tejaswini,Behera,516,2022,Economics,80,95,115,77,104,146,146,763,185,948,tejaswini-behera-rank-516-2022
+Adarsh,Patel,520,2022,Hindi Literature,121,97,106,77,118,117,140,776,171,947,adarsh-patel-rank-520-2022
+Navodit,Singh,534,2022,Geography,137,89,101,75,95,133,143,773,173,946,navodit-singh-rank-534-2022
+Madhav,Bharadwaj,536,2022,Management,111,100,104,83,106,150,127,781,165,946,madhav-bharadwaj-rank-536-2022
+Ashish,Puniya,557,2022,Hindi Literature,127,84,117,69,115,136,116,764,179,943,ashish-puniya-rank-557-2022
+Joshi,VikramNarasinha,590,2022,PSIR,96,92,111,93,94,132,126,744,195,939,joshi-vikramnarasinha-rank-590-2022
+Jaskaran,Singh,595,2022,Punjabi Literature,106,103,103,72,107,132,140,763,176,939,jaskaran-singh-rank-595-2022
+PradeepKumar,Barnwal,601,2022,PSIR,114,97,116,80,107,127,125,766,172,938,pradeepkumar-barnwal-rank-601-2022
+Apurva,Rastogi,604,2022,Sociology,107,102,122,90,126,140,119,806,132,938,apurva-rastogi-rank-604-2022
+Neha,Goyal,606,2022,Anthropology,118,88,110,84,113,129,137,779,159,938,neha-goyal-rank-606-2022
+Abhishek,Dwachya,610,2022,Sociology,79,128,117,75,100,171,117,787,787,1574,abhishek-dwachya-rank-610-2022
+KachhawaRoshan,Kevalsing,620,2022,History,106,100,113,80,107,149,131,786,151,937,kachhawaroshan-kevalsing-rank-620-2022
+GhugeAnurag,Punabrao,624,2022,Public Administration,125,94,92,91,117,116,121,756,180,936,ghugeanurag-punabrao-rank-624-2022
+YashPal,Charan,626,2022,PSIR,95,100,109,64,119,127,127,741,195,936,yashpal-charan-rank-626-2022
+Shreya,Singh,639,2022,Sociology,110,101,97,76,115,120,131,750,179,929,shreya-singh-rank-639-2022
+JadhaoSumedh,Milind,687,2022,Sociology,95,101,104,87,112,121,131,751,179,930,jadhaosumedh-milind-rank-687-2022
+Sandeep,Kumar,697,2022,Mathematics,125,88,104,71,107,141,143,779,151,930,sandeep-kumar-rank-697-2022
+JoganiUtsav,Satishbhai,712,2022,Geography,71,104,109,96,122,129,152,783,146,929,joganiutsav-satishbhai-rank-712-2022
+Pallavi,Vijaywanshi,730,2022,Anthropology,100,90,107,78,101,144,126,746,182,928,pallavi-vijaywanshi-rank-730-2022
+Kartikeya,Verma,760,2022,PSIR,121,98,98,82,107,125,129,760,165,925,kartikeya-verma-rank-760-2022
+Komal,Meena,765,2022,Zoology,130,117,119,79,106,118,129,798,127,925,komal-meena-rank-765-2022
+Divyanshi,Singh,769,2022,Geography,115,95,113,86,104,144,119,776,149,925,divyanshi-singh-rank-769-2022
+Pottupureddy,Bhargav,772,2022,Chemistry,107,85,83,73,112,152,148,760,165,925,pottupureddy-bhargav-rank-772-2022
+RamShankar,Meena,798,2022,Hindi Literature,112,93,91,72,103,130,131,732,187,919,ramshankar-meena-rank-798-2022
+Kartikey,Kumar,812,2022,Psychology,89,107,97,79,115,134,129,750,165,915,kartikey-kumar-rank-812-2022
+Amar,Meena,830,2022,History,129,92,93,77,90,127,115,723,187,910,amar-meena-rank-830-2022
+PawarTushar,Deepak,861,2022,Sociology,95,103,102,75,101,141,112,729,175,904,pawartushar-deepak-rank-861-2022
+Mangera,Kaushik,894,2022,Geography,93,87,110,74,97,140,142,743,154,897,mangera-kaushik-rank-894-2022

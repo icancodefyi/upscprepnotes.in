@@ -1,0 +1,48 @@
+firstName,lastName,rank,year,optionalSubject,essay,gs1,gs2,gs3,gs4,optional1,optional2,written,interview,total,slug
+Shakti,Dubey,1,2024,Political Science & International Relations,100,112,125,86,141,132,147,843,200,1043,shakti-dubey-rank-1-2024
+Harshita,Goyal,2,2024,Political Science & International Relations,144,102,121,90,125,117,152,851,187,1038,harshita-goyal-rank-2-2024
+Dongre,Archit Parag,3,2024,Philosophy,0,0,0,0,0,0,0,848,190,1038,dongre-archit-parag-rank-3-2024
+Shah,Margi Chirag,4,2024,Sociology,0,0,0,0,0,0,0,825,210,1035,shah-margi-chirag-rank-4-2024
+Aakash,Garg,5,2024,Sociology,0,0,0,0,0,0,0,831,201,1032,aakash-garg-rank-5-2024
+Komal,Punia,6,2024,Political Science & International Relations,100,100,100,100,100,100,100,700,176,876,komal-punia-rank-6-2024
+Aayushi,Bansal,7,2024,Sociology,0,0,0,0,0,0,0,821,210,1031,aayushi-bansal-rank-7-2024
+Raj,Krishna Jha,8,2024,Geography,0,0,0,0,0,0,0,831,200,1031,raj-krishna-jha-rank-8-2024
+Aditya,Vikram,9,2024,Anthropology,119,117,113,111,122,134,138,854,173,1027,aditya-vikram-rank-9-2024
+Mayank ,Tripathi,10,2024,Anthropology,0,0,0,0,0,0,0,843,184,1027,mayank-tripathi-rank-10-2024
+Shivani,Ettaboyina,11,2024,Anthropology,0,0,0,0,0,0,0,826,201,1027,shivani-ettaboyina-rank-11-2024
+Ashi,Sharma,12,2024,Public Administration,0,0,0,0,0,0,0,840,185,1025,ashi-sharma-rank-12-2024
+Hemant,Mishra,13,2024,Geography,0,0,0,0,0,0,0,863,162,1025,hemant-mishra-rank-13-2024
+Abhishek, Vashishtha,14,2024,0,0,0,0,0,0,0,0,833,190,1023,abhishek-vashishtha-rank-14-2024
+Madhav,Aggarwal,16,2024,Commerce & Accountancy,94,114,115,107,126,133,131,820,200,1020,madhav-aggarwal-rank-16-2024
+Sanskriti ,Trivedy,17,2024,Anthropology,0,0,0,0,0,0,0,822,196,1018,sanskriti-trivedy-rank-17-2024
+Saumya,Mishra,18,2024,Optional Subject,0,0,0,0,0,0,0,833,184,184,saumya-mishra-rank-18-2024
+Vibhor,Bhardwaj,19,2024,Physics,0,0,0,0,0,0,0,824,193,193,vibhor-bhardwaj-rank-19-2024
+Trilok,Singh,20,2024,Political Science and International Relations,0,0,0,0,0,0,0,851,165,165,trilok-singh-rank-20-2024
+Divyank,Gupta,21,2024, Mathematics,0,0,0,0,0,0,0,825,190,190,divyank-gupta-rank-21-2024
+Riya,Saini,22,2024,Optional Subject,0,0,0,0,0,0,0,808,206,206,riya-saini-rank-22-2024
+B,Sivachandran,23,2024,Optional Subject,0,0,0,0,0,0,0,810,204,204,b-sivachandran-rank-23-2024
+R,Rangamanju,24,2024,Geography,0,0,0,0,0,0,0,833,179,179,r-rangamanju-rank-24-2024
+Shivansh,Subhash Jagade,26,2024,N/A,0,0,0,0,0,0,0,817,195,195,shivansh-subhash-jagade-rank-26-2024
+Romil,Dwivedi,27,2024,Optional Subject,0,0,0,0,0,0,0,835,176,176,romil-dwivedi-rank-27-2024
+Rishabh,Choudhary,28,2024,Optional Subject,0,0,0,0,0,0,0,824,185,185,rishabh-choudhary-rank-28-2024
+Subashkarthik,S,29,2024,Geography,0,0,0,0,0,0,0,824,185,185,subashkarthik-s-rank-29-2024
+Panchal,Smit Hasmukhbhai,30,2024, Optional Subject,0,0,0,0,0,0,0,804,204,204,panchal-smit-hasmukhbhai-rank-30-2024
+Shreya,Tyagi,31,2024,Optional Subject,0,0,0,0,0,0,0,806,201,201,shreya-tyagi-rank-31-2024
+Alfred,Thomas,33,2024,Mathematics,0,0,0,0,0,0,0,811,193,193,alfred-thomas-rank-33-2024
+Abhi,Jain,34,2024,Political Science,0,0,0,0,0,0,0,820,184,184,abhi-jain-rank-34-2024
+Shreyak,Garg,35,2024,Geography,0,0,0,0,0,0,0,802,201,201,shreyak-garg-rank-35-2024
+Muskan,Srivastava,36,2024,Law,0,0,0,0,0,0,0,813,190,190,muskan-srivastava-rank-36-2024
+Shobhika,Pathak,37,2024,Sociology,0,0,0,0,0,0,0,807,195,195,shobhika-pathak-rank-37-2024
+Abhishek,Sharma,38,2024,Physics,0,0,0,0,0,0,0,818,184,184,abhishek-sharma-rank-38-2024
+Monica,R,39,2024,Geography,0,0,0,0,0,0,0,801,201,201,monica-r-rank-39-2024
+Iram,Choudhary,40,2024,Geography,0,0,0,0,0,0,0,819,182,182,iram-choudhary-rank-40-2024
+Sachin,Basavaraj Guttur,41,2024,Medical Science,0,0,0,0,0,0,0,822,179,1001,sachin-basavaraj-guttur-rank-41-2024
+Pavithra,P,42,2024,Geography,0,0,0,0,0,0,0,803,198,,pavithra-p-rank-42-2024
+Avdhija,Gupta,43,2024,Geography,0,0,0,0,0,0,0,808,193,,avdhija-gupta-rank-43-2024
+Mudita,Bansal,44,2024,Sociology,0,0,0,0,0,0,0,790,210,,mudita-bansal-rank-44-2024
+Malavika,G Nair,45,2024,Sociology,0,0,0,0,0,0,0,835,165,,malavika-g-nair-rank-45-2024
+Ravula,Jayasimha Reddy,46,2024,Anthropology,0,0,0,0,0,0,0,805,195,,ravula-jayasimha-reddy-rank-46-2024
+Nandanaa,G P,47,2024,Optional Subject,0,0,0,0,0,0,0,807,193,,nandanaa-g-p-rank-47-2024
+Ritika,Rath,48,2024,Sociology,0,0,0,0,0,0,0,816,184,,ritika-rath-rank-48-2024
+Sourav,Sinha,49,2024,Geography,0,0,0,0,0,0,0,830,170,,sourav-sinha-rank-49-2024
+Ankur,Tripathi,50,2024,Geography,0,0,0,0,0,0,0,793,206,,ankur-tripathi-rank-50-2024
