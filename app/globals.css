@@ -197,6 +197,17 @@
   animation: slide-up 0.3s ease-out;
 }
 
+/* Reserve room at the bottom of the page so the fixed overlays — the
+   floating "Ask AI Mentor" CTA (always visible) and the Telegram sticky
+   bar (when shown) — never cover interactive page content such as the
+   related-topper cards. The bar toggles `tg-bar-visible` on <body>. */
+.overlay-safe-bottom {
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+body.tg-bar-visible .overlay-safe-bottom {
+  padding-bottom: calc(9rem + env(safe-area-inset-bottom));
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

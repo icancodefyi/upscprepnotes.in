@@ -16,6 +16,13 @@ export default function TelegramStickyBar() {
     }
   }, []);
 
+  // Signal the bar's visibility to page content so it can reserve bottom
+  // room and never let this fixed bar cover interactive elements.
+  useEffect(() => {
+    document.body.classList.toggle("tg-bar-visible", visible);
+    return () => document.body.classList.remove("tg-bar-visible");
+  }, [visible]);
+
   function dismiss() {
     setVisible(false);
     localStorage.setItem(STORAGE_KEY, "1");
