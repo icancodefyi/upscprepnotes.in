@@ -332,7 +332,7 @@ export default async function TopperPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
 
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 md:py-12">
+      <div className="overlay-safe-bottom mx-auto max-w-5xl px-4 py-8 sm:px-6 md:py-12">
 
         {/* BREADCRUMB */}
         <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -430,7 +430,7 @@ export default async function TopperPage({ params }: Props) {
                   { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P1`, value: topper.marks.optional1, show: (topper.marks.optional1 || 0) > 0 },
                   { label: `${topper.optionalSubject?.split(" ").slice(0, 3).join(" ") || "Optional"} P2`, value: topper.marks.optional2, show: (topper.marks.optional2 || 0) > 0 },
                 ].filter(r => r.show).map((row) => (
-                  <tr key={row.label} className="hover:bg-muted/30">
+                  <tr key={row.label}>
                     <td className="px-5 py-3 text-muted-foreground">{row.label}</td>
                     <td className="px-5 py-3 text-right font-bold tabular-nums">{row.value}</td>
                   </tr>
