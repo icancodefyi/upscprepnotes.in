@@ -1,17 +1,29 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
+import { markPopup, wasDismissedToday, wasShownToday } from "@/lib/popup-state";
 
 export default function ExitPopup() {
   const [show, setShow] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  const close = useCallback(() => {
+    markPopup("topperExit", "dismissed");
+    setShow(false);
+  }, []);
+
   useEffect(() => {
+    // The `fired` flag only lived for the lifetime of one mounted page, so the
+    // popup re-armed on every topper profile the visitor opened. Persist the
+    // shown/dismissed state for the day so it triggers at most once.
+    if (wasShownToday("topperExit") || wasDismissedToday("topperExit")) return;
     let fired = false;
     const handler = (e: MouseEvent) => {
       if (fired || e.clientY > 10) return;
+      if (wasShownToday("topperExit") || wasDismissedToday("topperExit")) return;
       fired = true;
+      markPopup("topperExit", "shown");
       setShow(true);
     };
     document.addEventListener("mouseleave", handler);
@@ -21,12 +33,12 @@ export default function ExitPopup() {
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape" && show) {
-        setShow(false);
+        close();
       }
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [show]);
+  }, [show, close]);
 
   useEffect(() => {
     if (show) {
@@ -45,7 +57,7 @@ export default function ExitPopup() {
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-      onClick={() => setShow(false)}
+      onClick={close}
     >
       <div
         ref={dialogRef}
@@ -57,7 +69,7 @@ export default function ExitPopup() {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={() => setShow(false)}
+          onClick={close}
           aria-label="Close popup"
           className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
         >
@@ -83,7 +95,7 @@ export default function ExitPopup() {
         <div className="mt-5 space-y-2.5">
           <Link
             href="/store"
-            onClick={() => setShow(false)}
+            onClick={close}
             className="flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3 text-sm font-bold text-brand-foreground hover:bg-brand/90"
           >
             Shop Now →

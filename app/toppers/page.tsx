@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getAllToppersList } from "@/services/topper.service";
 import ToppersSearch from "./ToppersSearch";
 
@@ -41,7 +42,9 @@ export default async function ToppersPage() {
           </p>
         </div>
 
-        <ToppersSearch toppers={toppers} />
+        <Suspense fallback={<div className="py-20 text-center text-sm text-muted-foreground">Loading toppers…</div>}>
+          <ToppersSearch toppers={toppers} />
+        </Suspense>
 
         {/* Free Materials CTA */}
         <div className="mt-16 max-w-3xl mx-auto space-y-4">

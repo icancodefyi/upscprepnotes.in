@@ -3,7 +3,9 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
 import { PRODUCTS } from "@/lib/store-products";
+import { matchesQuery, matchesTopper } from "@/lib/search-match";
 
 interface Topper {
   firstName: string;
@@ -45,15 +47,7 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
 
   const topperResults = useMemo(() => {
     if (!q) return [];
-    return toppers.filter(
-      (t) =>
-        t.firstName.toLowerCase().includes(q) ||
-        t.lastName.toLowerCase().includes(q) ||
-        `${t.firstName} ${t.lastName}`.toLowerCase().includes(q) ||
-        t.rank.toString().includes(q) ||
-        t.year.toString().includes(q) ||
-        t.optionalSubject.toLowerCase().includes(q),
-    );
+    return toppers.filter((t) => matchesTopper(t, q));
   }, [q, toppers]);
 
   const productResults = useMemo(() => {
@@ -61,22 +55,31 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
     return PRODUCTS.filter(
       (p) =>
         !p.comingSoon &&
-        (p.title.toLowerCase().includes(q) ||
-          p.tagline.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          (p.category && p.category.toLowerCase().includes(q))),
+        matchesQuery(q, [p.title, p.tagline, p.description, p.category]),
     );
   }, [q]);
 
   const pageResults = useMemo(() => {
     if (!q) return [];
-    return STATIC_PAGES.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) || p.keywords.toLowerCase().includes(q),
-    );
+    return STATIC_PAGES.filter((p) => matchesQuery(q, [p.title, p.keywords]));
   }, [q]);
 
   const allResults = topperResults.length + productResults.length + pageResults.length;
+
+  // Instrument searches so zero-result queries on the full search page are
+  // measurable instead of only recoverable from session replay.
+  useEffect(() => {
+    const trimmed = q.trim();
+    if (trimmed.length < 2) return;
+    const timer = setTimeout(() => {
+      posthog.capture("search_performed", {
+        query: trimmed,
+        result_count: allResults,
+        source: "search_page",
+      });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [q, allResults]);
 
   return (
     <main className="min-h-screen bg-background text-black">

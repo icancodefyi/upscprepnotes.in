@@ -16,6 +16,10 @@ const DEFAULTS: Record<string, RateLimitConfig> = {
   leads: { maxRequests: 10, windowMs: 60000 },
   analytics: { maxRequests: 100, windowMs: 60000 },
   form: { maxRequests: 20, windowMs: 60000 },
+  // Search is a cheap read fired on a 180ms debounce as the user types, so it
+  // needs a far higher ceiling than the "form" bucket it used to share — a hit
+  // on that bucket rendered as "No results", indistinguishable from a miss.
+  search: { maxRequests: 120, windowMs: 60000 },
 };
 
 export async function rateLimit(
