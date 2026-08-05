@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import { Menu, X, ChevronDown, Search } from "lucide-react";
 import CartIcon from "@/components/store/CartIcon";
 import CartSlideover from "@/components/store/CartSlideover";
@@ -117,11 +118,13 @@ function SearchSuggestions({
   results,
   query,
   activeIndex,
+  notice,
   onSelect,
 }: {
   results: SearchResult[];
   query: string;
   activeIndex: number;
+  notice: string | null;
   onSelect: () => void;
 }) {
   const router = useRouter();
@@ -135,7 +138,11 @@ function SearchSuggestions({
 
   return (
     <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-border bg-card p-2 shadow-xl">
-      {results.length === 0 ? (
+      {notice ? (
+        <div className="px-3 py-4 text-center text-sm text-muted-foreground">
+          {notice}
+        </div>
+      ) : results.length === 0 ? (
         <div className="px-3 py-4 text-center text-sm text-muted-foreground">
           No results for &ldquo;{query}&rdquo;
         </div>
@@ -200,26 +207,54 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
   const [results, setResults] = useState<SearchResult[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
   const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchResults = useCallback(async (q: string) => {
-    if (!q.trim()) {
+    const trimmed = q.trim();
+    if (!trimmed) {
       setResults([]);
       setActiveIndex(-1);
       setLoading(false);
+      setNotice(null);
       return;
     }
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`);
+      // Distinguish a throttle or backend failure from a genuine empty result:
+      // both used to fall through to "No results", masking the real cause.
+      if (res.status === 429) {
+        setResults([]);
+        setActiveIndex(-1);
+        setNotice("You're searching quickly — keep typing…");
+        return;
+      }
+      if (!res.ok) {
+        setResults([]);
+        setActiveIndex(-1);
+        setNotice("Search is temporarily unavailable. Try again.");
+        return;
+      }
       const data = await res.json();
-      setResults(data.results || []);
+      const found: SearchResult[] = data.results || [];
+      setResults(found);
       setActiveIndex(-1);
+      setNotice(null);
+      if (trimmed.length >= 2) {
+        posthog.capture("search_performed", {
+          query: trimmed,
+          result_count: found.length,
+          source: "header_dropdown",
+        });
+      }
     } catch {
       setResults([]);
+      setActiveIndex(-1);
+      setNotice("Search is temporarily unavailable. Try again.");
     } finally {
       setLoading(false);
     }
@@ -255,6 +290,7 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
     setQuery("");
     setResults([]);
     setActiveIndex(-1);
+    setNotice(null);
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -363,11 +399,13 @@ export default function Header({ bannerOpen = true }: { bannerOpen?: boolean }) 
               results={results}
               query={query}
               activeIndex={activeIndex}
+              notice={notice}
               onSelect={() => {
                 setSearchOpen(false);
                 setQuery("");
                 setResults([]);
                 setActiveIndex(-1);
+                setNotice(null);
               }}
             />
           )}

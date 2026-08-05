@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
+import { matchesTopper } from "@/lib/search-match";
 
 const PER_PAGE = 20;
 
@@ -16,31 +19,55 @@ type Topper = {
 };
 
 export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+
+  // The page number is backed by the URL (?page=N) rather than local state, so
+  // returning from a topper profile (or sharing a link) restores the page the
+  // visitor was on instead of dumping them back on page 1.
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const requestedPage = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
 
   const filtered = useMemo(() => {
     if (!query.trim()) return toppers;
-    const q = query.toLowerCase();
-    return toppers.filter(
-      (t) =>
-        t.firstName.toLowerCase().includes(q) ||
-        t.lastName.toLowerCase().includes(q) ||
-        `${t.firstName} ${t.lastName}`.toLowerCase().includes(q) ||
-        t.rank.toString().includes(q) ||
-        t.year.toString().includes(q) ||
-        t.optionalSubject.toLowerCase().includes(q)
-    );
+    return toppers.filter((t) => matchesTopper(t, query));
   }, [query, toppers]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const safePage = Math.min(page, totalPages);
+  const safePage = Math.min(requestedPage, totalPages);
   const paginated = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
+  function setPageParam(p: number | null) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (p === null || p <= 1) params.delete("page");
+    else params.set("page", String(p));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }
+
   function goTo(p: number) {
-    setPage(Math.max(1, Math.min(p, totalPages)));
+    const clamped = Math.max(1, Math.min(p, totalPages));
+    setPageParam(clamped);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  // Instrument searches so zero-result queries are measurable rather than
+  // recoverable only from session replay.
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length < 2) return;
+    const timer = setTimeout(() => {
+      posthog.capture("search_performed", {
+        query: trimmed,
+        result_count: filtered.length,
+        source: "toppers_page",
+      });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [query, filtered.length]);
 
   const years = useMemo(() => {
     const y = new Set<number>();
@@ -75,7 +102,9 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
-              setPage(1);
+              // Drop the page param when the query changes so results start at
+              // page 1 (only touch the URL when there's actually a page to clear).
+              if (searchParams.get("page")) setPageParam(null);
             }}
             className="w-full rounded-2xl border border-border bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-muted-foreground focus:ring-0 sm:py-4"
             autoFocus

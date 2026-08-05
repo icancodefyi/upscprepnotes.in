@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAllToppersList } from "@/services/topper.service";
 import { PRODUCTS } from "@/lib/store-products";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { matchesQuery, matchesTopper } from "@/lib/search-match";
 
 const STATIC_PAGES = [
   { title: "Store", href: "/store", category: "Page", keywords: "products, buy, notes, test series, optional" },
@@ -14,25 +15,17 @@ const STATIC_PAGES = [
 ];
 
 export async function GET(request: NextRequest) {
-  const rl = await checkRateLimit(request, "form");
+  const rl = await checkRateLimit(request, "search");
   if (rl) return rl;
 
-  const q = request.nextUrl.searchParams.get("q")?.toLowerCase().trim() || "";
+  const q = request.nextUrl.searchParams.get("q")?.trim() || "";
   if (!q) return NextResponse.json({ results: [] });
 
   try {
     const toppers = await getAllToppersList();
 
     const topperResults = toppers
-      .filter(
-        (t) =>
-          t.firstName.toLowerCase().includes(q) ||
-          t.lastName.toLowerCase().includes(q) ||
-          `${t.firstName} ${t.lastName}`.toLowerCase().includes(q) ||
-          t.optionalSubject.toLowerCase().includes(q) ||
-          t.rank.toString().includes(q) ||
-          t.year.toString().includes(q),
-      )
+      .filter((t) => matchesTopper(t, q))
       .slice(0, 5)
       .map((t) => ({
         title: `${t.firstName} ${t.lastName}`,
@@ -44,10 +37,7 @@ export async function GET(request: NextRequest) {
     const productResults = PRODUCTS.filter(
       (p) =>
         !p.comingSoon &&
-        (p.title.toLowerCase().includes(q) ||
-          p.tagline.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          (p.category && p.category.toLowerCase().includes(q))),
+        matchesQuery(q, [p.title, p.tagline, p.description, p.category]),
     )
       .slice(0, 4)
       .map((p) => ({
@@ -58,9 +48,8 @@ export async function GET(request: NextRequest) {
         meta: `₹${p.price}`,
       }));
 
-    const pageResults = STATIC_PAGES.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) || p.keywords.toLowerCase().includes(q),
+    const pageResults = STATIC_PAGES.filter((p) =>
+      matchesQuery(q, [p.title, p.keywords]),
     ).map((p) => ({
       title: p.title,
       subtitle: p.href,
@@ -70,7 +59,14 @@ export async function GET(request: NextRequest) {
 
     const results = [...topperResults, ...productResults, ...pageResults];
     return NextResponse.json({ results });
-  } catch {
-    return NextResponse.json({ results: [] });
+  } catch (err) {
+    // Previously this swallowed the throw and returned an empty result set,
+    // making a real backend failure look identical to a genuine "no matches".
+    // Log it and return a 500 so the client can tell the two apart.
+    console.error("[/api/search] failed:", err);
+    return NextResponse.json(
+      { error: "Search is temporarily unavailable.", results: [] },
+      { status: 500 },
+    );
   }
 }
