@@ -199,7 +199,7 @@ export default async function PDFHubPage({ searchParams }: Props) {
             Browse Topper Profiles &rarr;
           </Link>
           <a
-            href="https://t.me/+VYMxrig-a8AzZmNl"
+            href="https://t.me/+2eV0YCTGdNcyNmFl"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#0088cc]/40 bg-[#0088cc]/10 px-6 py-2.5 text-xs font-bold text-[#66c4ff] transition hover:bg-[#0088cc]/20 sm:mt-4"

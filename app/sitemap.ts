@@ -49,6 +49,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/free-materials/daily-current-affairs-2025-hindi-english-v2`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/current-affairs`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/current-affairs/may-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
+    { url: `${baseUrl}/current-affairs/june-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
+    { url: `${baseUrl}/current-affairs/july-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     { url: `${baseUrl}/current-affairs/2025`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/current-affairs/download`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];

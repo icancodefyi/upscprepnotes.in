@@ -5,11 +5,11 @@ import { MONTHS, getSlug } from "@/lib/current-affairs-utils";
 export const metadata: Metadata = {
   title: "Current Affairs for UPSC 2026 – Free Monthly & Yearly Compilations",
   description:
-    "Free current affairs for UPSC preparation 2026. Monthly editions with 55 topics across 11 sections, daily quizzes, AI-powered reading, and downloadable PDFs. Yearly compilation covering 2025 events for UPSC Prelims, Mains & Interview.",
+    "Free current affairs for UPSC preparation 2026. Monthly editions with 60 topics across 12 sections, daily quizzes, AI-powered reading, and downloadable PDFs. Yearly compilation covering 2025 events for UPSC Prelims, Mains & Interview.",
   openGraph: {
     title: "Current Affairs for UPSC – Free Monthly & Yearly Compilations",
     description:
-      "Free current affairs for UPSC preparation. Monthly editions with 55 topics, daily quizzes, and AI-powered reading. Yearly compilation covering all of 2025. Downloadable PDFs included.",
+      "Free current affairs for UPSC preparation. Monthly editions with 60 topics, daily quizzes, and AI-powered reading. Yearly compilation covering all of 2025. Downloadable PDFs included.",
   },
   alternates: {
     canonical: "https://upscprepnotes.in/current-affairs",
@@ -25,7 +25,7 @@ const faqSchema = {
       name: "What is covered in UPSCPrepNotes current affairs?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Each monthly edition covers 11 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, and Sports — with 5 topics per section (55 topics total). Yearly compilations cover all months with 400+ events.",
+        text: "Each monthly edition covers 12 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section (60 topics total). Yearly compilations cover all months with 400+ events.",
       },
     },
     {
@@ -94,7 +94,7 @@ export default function CurrentAffairsHub() {
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-[#615d59] sm:text-base">
             Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers
-            11 UPSC-relevant sections with 55 topics, daily quizzes, AI-powered explanations, and
+            12 UPSC-relevant sections with 60 topics, daily quizzes, AI-powered explanations, and
             downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
           </p>
         </div>
@@ -112,9 +112,10 @@ export default function CurrentAffairsHub() {
             </p>
             <p>
               That is why we built UPSCPrepNotes current affairs differently. Each monthly edition distills 
-              thousands of news items into 55 tightly curated topics across 11 UPSC-relevant sections — 
+              thousands of news items into 60 tightly curated topics across 12 UPSC-relevant sections — 
               National News, International Relations, Economy, Environment, Science &amp; Technology, 
-              Government Schemes, Important Reports, Awards, Appointments, Obituaries, and Sports. 
+              Government Schemes, Important Reports, Awards, Appointments, Obituaries, Sports, and 
+              Summits &amp; Important Days. 
               Every topic includes key facts, data points, and context structured for quick revision. 
               No fluff, no filler — just what you need for Prelims, Mains, and Interview.
             </p>
@@ -184,11 +185,11 @@ export default function CurrentAffairsHub() {
         {/* Stats */}
         <div className="mt-12 grid gap-4 sm:grid-cols-3">
           <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
-            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">11</p>
+            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">12</p>
             <p className="text-xs text-[#615d59] mt-0.5">Sections per edition</p>
           </div>
           <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
-            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">55</p>
+            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">60</p>
             <p className="text-xs text-[#615d59] mt-0.5">Topics per month</p>
           </div>
           <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
@@ -199,7 +200,7 @@ export default function CurrentAffairsHub() {
 
         {/* Sections preview */}
         <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-          <h2 className="text-sm font-bold text-[#000000e8]">11 UPSC-Relevant Sections Covered Every Edition</h2>
+          <h2 className="text-sm font-bold text-[#000000e8]">12 UPSC-Relevant Sections Covered Every Edition</h2>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 text-sm text-[#615d59]">
             {[
               ["🇮🇳", "National News"],
@@ -213,6 +214,7 @@ export default function CurrentAffairsHub() {
               ["👤", "Appointments"],
               ["🕊️", "Obituaries"],
               ["🏏", "Sports"],
+              ["📅", "Summits & Important Days"],
             ].map(([emoji, label]) => (
               <div key={label} className="flex items-center gap-2">
                 <span>{emoji as string}</span>
@@ -228,7 +230,7 @@ export default function CurrentAffairsHub() {
           <div className="mt-4 space-y-4 text-sm text-[#615d59]">
             <div>
               <p className="font-semibold text-[#000000e8]">What is covered in UPSCPrepNotes current affairs?</p>
-              <p className="mt-1 leading-relaxed">Each monthly edition covers 11 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, and Sports — with 5 topics per section (55 topics total). Yearly compilations cover all months with 400+ events.</p>
+              <p className="mt-1 leading-relaxed">Each monthly edition covers 12 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section (60 topics total). Yearly compilations cover all months with 400+ events.</p>
             </div>
             <div>
               <p className="font-semibold text-[#000000e8]">Is the current affairs content free?</p>
@@ -262,7 +264,7 @@ export default function CurrentAffairsHub() {
               <span>Ask AI — UPSC Query Assistant</span>
             </Link>
             <a
-              href="https://t.me/+VYMxrig-a8AzZmNl"
+              href="https://t.me/+2eV0YCTGdNcyNmFl"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-lg bg-[#e8f4fd] px-4 py-3 text-[#0088cc] hover:text-[#006699] transition font-semibold"
@@ -276,10 +278,10 @@ export default function CurrentAffairsHub() {
         {/* CTA */}
         <div className="mt-12 flex flex-wrap gap-3">
           <Link
-            href="/current-affairs/june-2026"
+            href="/current-affairs/july-2026"
             className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           >
-            Read June 2026 Edition →
+            Read July 2026 Edition →
           </Link>
           <Link
             href="/current-affairs/download"

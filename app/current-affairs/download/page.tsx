@@ -4,11 +4,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Current Affairs PDF – Free Monthly & Yearly Download for UPSC",
   description:
-    "Download free current affairs PDF for UPSC preparation. Monthly editions (May 2026) with 55 topics across 11 sections. Yearly compilation (2025) with 400+ events. Free PDF downloads for UPSC Prelims, Mains & Interview.",
+    "Download free current affairs PDF for UPSC preparation. Monthly editions (July 2026) with 60 topics across 12 sections. Yearly compilation (2025) with 400+ events. Free PDF downloads for UPSC Prelims, Mains & Interview.",
   openGraph: {
     title: "Current Affairs PDF – Free Monthly & Yearly Download for UPSC",
     description:
-      "Download free current affairs PDF for UPSC. Monthly editions with 55 topics. Yearly compilation 2025 with 400+ events. Free PDF downloads.",
+      "Download free current affairs PDF for UPSC. Monthly editions with 60 topics. Yearly compilation 2025 with 400+ events. Free PDF downloads.",
   },
   alternates: {
     canonical: "https://upscprepnotes.in/current-affairs/download",
@@ -26,7 +26,8 @@ const breadcrumbSchema = {
 };
 
 const editions = [
-  { month: "May 2026", slug: "may-2026", label: "May 2026 Edition", desc: "Latest edition — 11 sections, 55 topics, with quiz" },
+  { month: "July 2026", slug: "july-2026", label: "July 2026 Edition", desc: "Latest edition — 12 sections, 60 topics, with quiz" },
+  { month: "May 2026", slug: "may-2026", label: "May 2026 Edition", desc: "11 sections, 55 topics, with quiz" },
   { month: "2025 Yearly", slug: "2025", label: "2025 Yearly Compilation", desc: "12 months (Jan–Dec) — ~850+ events across 11 sections" },
 ];
 
@@ -45,9 +46,9 @@ export default function CurrentAffairsDownloadPage() {
           Current Affairs PDF – Monthly & Yearly Editions
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-[#615d59]">
-          Download free current affairs PDFs for UPSC preparation. Each monthly edition covers 11 sections —
+          Download free current affairs PDFs for UPSC preparation. Each monthly edition covers 12 sections —
           National News, International Relations, Economy, Environment, Science & Tech, Schemes, Reports,
-          Awards, Appointments, Obituaries, and Sports — with 5 topics per section. The yearly compilation
+          Awards, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section. The yearly compilation
           covers all 12 months of 2025 with ~850+ key events.
         </p>
 
@@ -89,6 +90,7 @@ export default function CurrentAffairsDownloadPage() {
               "👤 Appointments",
               "🕊️ Obituaries",
               "🏏 Sports",
+              "📅 Summits & Important Days",
             ].map((item) => (
               <li key={item} className="flex items-center gap-2">
                 <span className="h-1 w-1 rounded-full bg-[#e6e6e6]" />
@@ -106,9 +108,9 @@ export default function CurrentAffairsDownloadPage() {
               <span>🏠</span>
               <span>Current Affairs Hub — All Editions</span>
             </Link>
-            <Link href="/current-affairs/may-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
+            <Link href="/current-affairs/july-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
               <span>📖</span>
-              <span>Read May 2026 Edition Online</span>
+              <span>Read July 2026 Edition Online</span>
             </Link>
             <Link href="/store" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
               <span>📚</span>

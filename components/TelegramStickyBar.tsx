@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 const STORAGE_KEY = "tg-bar-dismissed";
-const TELEGRAM_LINK = "https://t.me/+VYMxrig-a8AzZmNl";
+const TELEGRAM_LINK = "https://t.me/+2eV0YCTGdNcyNmFl";
 
 export default function TelegramStickyBar() {
   const [visible, setVisible] = useState(false);

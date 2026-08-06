@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DodoPayments } from "dodopayments";
 import { PRODUCTS } from "@/lib/store-products";
+import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
@@ -64,7 +65,10 @@ export async function POST(request: NextRequest) {
         );
       }
       let itemPrice: number;
-      if (offeredPrice !== undefined) {
+      if (isFlashSaleActive()) {
+        // Flash sale: fixed price, ignore name-your-price and per-item price
+        itemPrice = getEffectivePrice(product);
+      } else if (offeredPrice !== undefined) {
         const minPrice = product.minOfferPrice ?? product.price;
         if (offeredPrice < minPrice) {
           return NextResponse.json(

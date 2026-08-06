@@ -1,6 +1,7 @@
-import { JUNE_2026, MAY_2026, type CAMonthlyContent } from "./current-affairs-content";
+import { JUNE_2026, JULY_2026, MAY_2026, type CAMonthlyContent } from "./current-affairs-content";
 
 export const MONTHS: Record<string, CAMonthlyContent> = {
+  "july-2026": JULY_2026,
   "june-2026": JUNE_2026,
   "may-2026": MAY_2026,
 };

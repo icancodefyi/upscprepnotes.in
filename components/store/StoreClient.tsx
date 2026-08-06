@@ -5,9 +5,11 @@ import Link from "next/link";
 import { IconSearch, IconShoppingBag, IconStarFilled, IconCheck } from "@tabler/icons-react";
 import { PRODUCTS } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
+import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import CartSlideover from "./CartSlideover";
 import FakePurchaseToast from "./FakePurchaseToast";
 import EmailCapture from "./EmailCapture";
+import FlashSaleBanner from "./FlashSaleBanner";
 import "@/app/store/store.css";
 
 const VISIBLE = PRODUCTS.filter((p) => !p.comingSoon);
@@ -103,8 +105,19 @@ function ProductCard({
         {/* Footer */}
         <div className="product-card__footer">
           <span className="product-card__price">
-            {product.minOfferPrice ? `From ₹${product.minOfferPrice}` : `₹${product.price}`}
-            {product.originalPrice && (
+            {isFlashSaleActive() ? (
+              <>
+                <span className="text-emerald-700">₹{getEffectivePrice(product)}</span>
+                <span className="product-card__price-original">
+                  ₹{product.price.toLocaleString("en-IN")}
+                </span>
+              </>
+            ) : product.minOfferPrice ? (
+              `From ₹${product.minOfferPrice}`
+            ) : (
+              `₹${product.price}`
+            )}
+            {product.originalPrice && !isFlashSaleActive() && (
               <span className="product-card__price-original">
                 ₹{product.originalPrice.toLocaleString("en-IN")}
               </span>
@@ -277,6 +290,7 @@ export default function StoreClient() {
   return (
     <CartProvider>
       <div>
+        <FlashSaleBanner />
         <StoreNav search={search} onSearch={setSearch} />
 
         {!search && <StoreHero />}

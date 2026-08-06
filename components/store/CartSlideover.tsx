@@ -6,6 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import PayButton from "@/components/ui/PayButton";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/store-products";
+import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 
 interface Props {
   open: boolean;
@@ -121,7 +122,16 @@ export default function CartSlideover({ open, onClose }: Props) {
                     >
                       {item.product.title}
                     </Link>
-                    <p className="text-[11px] text-muted-foreground sm:text-xs">₹{item.product.price}</p>
+                    <p className="text-[11px] text-muted-foreground sm:text-xs">
+                      {isFlashSaleActive() ? (
+                        <>
+                          <span className="text-emerald-700">₹{getEffectivePrice(item.product)}</span>{" "}
+                          <s className="text-muted-foreground">₹{item.product.price}</s>
+                        </>
+                      ) : (
+                        <>₹{item.product.price}</>
+                      )}
+                    </p>
                     <div className="mt-1.5 flex items-center gap-1.5 sm:mt-2 sm:gap-2">
                       <button
                         onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
@@ -143,7 +153,7 @@ export default function CartSlideover({ open, onClose }: Props) {
                         <IconPlus size={12} />
                       </button>
                       <span className="ml-auto text-xs font-bold sm:text-sm">
-                        ₹{(item.product.price * item.quantity).toLocaleString("en-IN")}
+                        ₹{(getEffectivePrice(item.product) * item.quantity).toLocaleString("en-IN")}
                       </span>
                     </div>
                   </div>
@@ -178,7 +188,7 @@ export default function CartSlideover({ open, onClose }: Props) {
               <PayButton
                 amount={totalAmount}
                 email={email}
-                items={items.map((i) => ({ slug: i.product.slug, quantity: i.quantity, price: i.product.price }))}
+                items={items.map((i) => ({ slug: i.product.slug, quantity: i.quantity, price: getEffectivePrice(i.product) }))}
                 tracking="cart-checkout"
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold text-brand-foreground shadow-lg transition hover:bg-brand/90 sm:py-3.5"
               >
@@ -220,7 +230,16 @@ function CartCrossSell({ cartSlugs }: { cartSlugs: string[] }) {
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-semibold">{product.title}</p>
-              <p className="text-[10px] text-muted-foreground">₹{product.price}</p>
+              <p className="text-[10px] text-muted-foreground">
+                {isFlashSaleActive() ? (
+                  <>
+                    <span className="font-semibold text-emerald-700">₹{getEffectivePrice(product)}</span>{" "}
+                    <s>₹{product.price}</s>
+                  </>
+                ) : (
+                  <>₹{product.price}</>
+                )}
+              </p>
             </div>
             <button
               type="button"

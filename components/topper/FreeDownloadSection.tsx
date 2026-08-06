@@ -50,7 +50,7 @@ export function FreeDownloadSection({
                 Download free copy
               </button>
               <a
-                href="https://t.me/+VYMxrig-a8AzZmNl"
+                href="https://t.me/+2eV0YCTGdNcyNmFl"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-4 py-2.5 text-xs text-muted-foreground hover:border-foreground/20 hover:text-foreground transition"
