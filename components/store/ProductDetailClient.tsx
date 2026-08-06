@@ -13,7 +13,7 @@ import {
 import { ArrowRight, ChevronDown } from "lucide-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
-import { getEffectivePrice, getFlashSalePrice, isFlashSaleActive } from "@/lib/flash-sale";
+import { FLASH_SALE, getEffectivePrice, getFlashSalePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
@@ -668,7 +668,7 @@ function SaleCountdown() {
     const id = setInterval(() => force((v) => v + 1), 60 * 1000);
     return () => clearInterval(id);
   }, []);
-  const remaining = Math.max(0, new Date("2026-08-07T23:59:59+05:30").getTime() - Date.now());
+  const remaining = Math.max(0, new Date(FLASH_SALE.endDate).getTime() - Date.now());
   const hours = Math.floor(remaining / (60 * 60 * 1000));
   const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
   return (

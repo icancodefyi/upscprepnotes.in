@@ -7,10 +7,10 @@ export interface FlashSale {
   label: string;
 }
 
-// 48-hour launch sale: all products at ₹99
+// Launch sale: all products at ₹99
 export const FLASH_SALE: FlashSale = {
   active: true,
-  endDate: "2026-08-07T23:59:59+05:30",
+  endDate: "2026-08-10T23:59:59+05:30",
   price: 99,
   label: "Launch Sale",
 };
