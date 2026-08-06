@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PRODUCTS, getProductBySlug } from "@/lib/store-products";
+import { getEffectivePrice } from "@/lib/flash-sale";
 import ProductDetailClient from "@/components/store/ProductDetailClient";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 
@@ -57,7 +58,7 @@ export default async function ProductPage({
     image: product.image || "/logo.png",
     offers: {
       "@type": "Offer",
-      price: product.price,
+      price: getEffectivePrice(product),
       priceCurrency: "INR",
       availability: product.comingSoon
         ? "https://schema.org/PreOrder"

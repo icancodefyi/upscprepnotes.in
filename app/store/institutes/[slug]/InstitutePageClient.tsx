@@ -5,6 +5,7 @@ import Link from "next/link";
 import { IconArrowLeft, IconShoppingCart, IconStarFilled } from "@tabler/icons-react";
 import type { Institute, StoreProduct } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
+import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import CartSlideover from "@/components/store/CartSlideover";
 import CartIcon from "@/components/store/CartIcon";
 
@@ -123,10 +124,14 @@ function ProductCard({
         <div className="flex-1" />
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base font-bold text-foreground">₹{product.price}</span>
-            {product.originalPrice && (
+            <span className="text-base font-bold text-foreground">
+              {isFlashSaleActive() ? `₹${getEffectivePrice(product)}` : `₹${product.price}`}
+            </span>
+            {isFlashSaleActive() && product.price > 99 ? (
+              <span className="text-xs text-muted-foreground line-through">₹{product.price.toLocaleString("en-IN")}</span>
+            ) : product.originalPrice ? (
               <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-            )}
+            ) : null}
           </div>
         </div>
         <button

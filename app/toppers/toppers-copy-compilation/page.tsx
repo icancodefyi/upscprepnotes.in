@@ -3,16 +3,16 @@ import SalesPage from "@/components/topper/SalesPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹799 | UPSCPrepNotes",
+  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹99 Launch Sale | UPSCPrepNotes",
   description:
-    "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. ₹11 per copy. Pay via UPI. 7-day refund.",
+    "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹99 during the launch sale. Pay via UPI. 7-day refund.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
   },
   openGraph: {
     title: "UPSC Topper Answer Copy Compilation — 50+ Copies + 21 Guides",
     description:
-      "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. ₹11 per copy. 7-day refund.",
+      "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹99 during the launch sale. 7-day refund.",
     url: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
     images: [{ url: "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80", width: 1200, height: 900 }],
   },
@@ -32,10 +32,10 @@ const productSchema = {
   brand: { "@type": "Brand", name: "UPSCPrepNotes" },
   offers: {
     "@type": "Offer",
-    price: "799",
+    price: "99",
     priceCurrency: "INR",
     availability: "https://schema.org/InStock",
-    priceValidUntil: "2027-12-31",
+    priceValidUntil: "2026-08-08",
     url: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
     hasMerchantReturnPolicy: {
       "@type": "MerchantReturnPolicy",

@@ -192,7 +192,7 @@ export default async function PDFDetailPage({ params }: Props) {
             </p>
           )}
           <a
-            href="https://t.me/+VYMxrig-a8AzZmNl"
+            href="https://t.me/+2eV0YCTGdNcyNmFl"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#0088cc]/30 bg-[#e8f4fd] px-4 py-2 text-xs font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]"

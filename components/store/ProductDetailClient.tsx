@@ -13,6 +13,7 @@ import {
 import { ArrowRight, ChevronDown } from "lucide-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
+import { getEffectivePrice, getFlashSalePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
@@ -338,6 +339,9 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 }
 
 function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddToCart: () => void }) {
+  const flashActive = isFlashSaleActive();
+  const flashPrice = getFlashSalePrice();
+  const effectivePrice = getEffectivePrice(product);
   const minPrice = product.minOfferPrice ?? product.price;
   const suggestedPrice = Math.round(product.price * 0.6);
   const [offerPrice, setOfferPrice] = useState(product.price);
@@ -397,8 +401,27 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           </span>
         </div>
 
-        {/* Name your price — primary input */}
-        {product.minOfferPrice ? (
+        {/* Flash sale price */}
+        {flashActive ? (
+          <div className="mt-5">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-[#C4F9D7] px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-emerald-900">
+                Launch Sale
+              </span>
+              <span className="text-[11px] font-semibold text-muted-foreground">ends in <SaleCountdown /></span>
+            </div>
+            <div className="mt-3 flex items-baseline gap-3">
+              <span className="text-4xl font-black tracking-tight text-emerald-700">₹{flashPrice}</span>
+              <span className="text-base text-muted-foreground line-through">₹{product.price.toLocaleString("en-IN")}</span>
+              <span className="rounded-full bg-brand-muted px-2.5 py-0.5 text-xs font-bold text-brand">
+                {Math.round((1 - flashPrice! / product.price) * 100)}% off
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Every product at ₹{flashPrice} during the launch sale. Price returns to ₹{product.price.toLocaleString("en-IN")} after.
+            </p>
+          </div>
+        ) : product.minOfferPrice ? (
           <div className="mt-5">
             <div className="mb-2 flex items-center justify-between">
               <label className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Name your price</label>
@@ -496,14 +519,14 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
         ) : (
           <div className="mt-6 space-y-3">
             <PayButton
-              amount={clampedPrice}
-              items={[{ slug: product.slug, quantity: 1, price: clampedPrice }]}
+              amount={flashActive ? effectivePrice : clampedPrice}
+              items={[{ slug: product.slug, quantity: 1, price: flashActive ? effectivePrice : clampedPrice }]}
               tracking={`buy-${product.slug}`}
-              offeredPrice={isDiscounted ? clampedPrice : undefined}
+              offeredPrice={!flashActive && isDiscounted ? clampedPrice : undefined}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-4 text-base font-bold text-white transition hover:bg-gray-800 active:scale-[0.97]"
             >
               <IconShoppingCart size={18} />
-              {`Pay ₹${clampedPrice}`}
+              {flashActive ? `Get it for ₹${effectivePrice}` : `Pay ₹${clampedPrice}`}
             </PayButton>
             <button
               type="button"
@@ -636,5 +659,21 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
         </div>
       )}
     </>
+  );
+}
+
+function SaleCountdown() {
+  const [, force] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => force((v) => v + 1), 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
+  const remaining = Math.max(0, new Date("2026-08-07T23:59:59+05:30").getTime() - Date.now());
+  const hours = Math.floor(remaining / (60 * 60 * 1000));
+  const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+  return (
+    <span className="font-bold text-brand">
+      {hours}h {minutes}m
+    </span>
   );
 }

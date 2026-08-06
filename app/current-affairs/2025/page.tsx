@@ -67,10 +67,10 @@ export default function CurrentAffairs2025Page() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/current-affairs/may-2026"
+              href="/current-affairs/july-2026"
               className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
-                Latest: May 2026 →
+                Latest: July 2026 →
               </Link>
               <Link
                 href="/api/generate-current-affairs?month=2025"
@@ -195,10 +195,10 @@ export default function CurrentAffairs2025Page() {
             </div>
           </div>
           <Link
-            href="/current-affairs/may-2026"
+            href="/current-affairs/july-2026"
             className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0075de] hover:text-[#005bab] transition"
           >
-            View the latest month (May 2026) →
+            View the latest month (July 2026) →
           </Link>
         </section>
 
@@ -210,9 +210,9 @@ export default function CurrentAffairs2025Page() {
               <span>🏠</span>
               <span>Current Affairs Hub — All Editions</span>
             </Link>
-            <Link href="/current-affairs/may-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
+            <Link href="/current-affairs/july-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
               <span>📖</span>
-              <span>Latest: May 2026 Edition</span>
+              <span>Latest: July 2026 Edition</span>
             </Link>
             <Link href="/current-affairs/download" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
               <span>📥</span>

@@ -617,3 +617,311 @@ export const MAY_2026: CAMonthlyContent = {
     },
   ],
 };
+
+export const JULY_2026: CAMonthlyContent = {
+  month: "July",
+  year: 2026,
+  title: "UPSC Monthly Current Affairs",
+  sections: [
+    {
+      title: "National News",
+      items: [
+        {
+          headline: "Parliament's Monsoon Session Begins July 20 with Two Bills Passed",
+          body: "The Monsoon Session of Parliament commenced on July 20, 2026 with 19 sittings planned. Five bills were introduced during the session, of which two have been passed. Among the bills introduced were amendments to raise the number of Supreme Court judges, amend the MSME Act and amend the Foreign Contribution (Regulation) Act. The session's key legislation includes the Public Examinations (Prevention of Unfair Means) Amendment Bill."
+        },
+        {
+          headline: "Parliament Passes Bill Cracking Down on Paper Leaks in Public Exams",
+          body: "Parliament passed the Public Examinations (Prevention of Unfair Means) Amendment Bill, 2026, which strengthens penalties for leaks and malpractices in public examinations. The amended law provides for special task forces and fast-track courts to ensure time-bound trial of offences. The bill responds to the organised paper-leak rackets that had forced cancellation of exams earlier in the year."
+        },
+        {
+          headline: "Vande Mataram Gets Statutory Protection at Par with National Anthem",
+          body: "Parliament passed the Prevention of Insults to National Honour (Amendment) Bill, 2026, which extends to the National Song Vande Mataram the same statutory protection against intentional disturbance as the National Anthem. The amendment to Section 3 of the 1971 Act makes it an offence punishable with up to three years' imprisonment, with a minimum one-year term for repeat offenders. The move coincides with the 150th anniversary of the composition of Vande Mataram by Bankim Chandra Chatterjee in 1875."
+        },
+        {
+          headline: "Bill Introduced to Raise Supreme Court Strength from 33 to 37 Judges",
+          body: "A bill was introduced in the Monsoon Session to increase the sanctioned strength of Supreme Court judges from 33 to 37, excluding the Chief Justice of India. The proposed legislation also seeks to repeal the Supreme Court (Number of Judges) Amendment Ordinance, 2026 promulgated earlier in the year. The increase aims to reduce the mounting pendency of cases in the apex court."
+        },
+        {
+          headline: "Sarnath Inscribed as India's 45th UNESCO World Heritage Site",
+          body: "Sarnath, the sacred site where the Buddha delivered his first sermon, was inscribed on the UNESCO World Heritage List as India's 45th World Heritage Site. The decision was announced at the 48th session of the UNESCO World Heritage Committee held in Busan, South Korea in July 2026. Sarnath becomes the fourth World Heritage Site in Uttar Pradesh, joining the Taj Mahal, Agra Fort and Fatehpur Sikri, and was recognised for its Mauryan archaeological remains and Buddhist canonical significance."
+        },
+      ],
+    },
+    {
+      title: "International Relations & Summits",
+      items: [
+        {
+          headline: "16th India-Japan Annual Summit Held in New Delhi",
+          body: "PM Modi hosted Japanese PM Sanae Takaichi for the 16th India-Japan Annual Summit in New Delhi in early July. The two leaders signed landmark agreements on economic security, artificial intelligence and energy resilience, and announced plans marking 75 years of India-Japan diplomatic relations. A significant outcome was the first India-Japan defence co-development project, deepening the countries' strategic partnership."
+        },
+        {
+          headline: "PM Modi Receives Indonesia's Highest Civilian Honour",
+          body: "PM Modi was conferred the 'Bintang Adipurna', the highest civilian honour of Indonesia, by President Prabowo Subianto in Jakarta on July 7, 2026. He became the first Indian Prime Minister to address the Indonesian Parliament (DPR), where he unveiled the 'Ganga-Mahakam Vision' for a long-term strategic partnership. Modi also visited the UNESCO-listed Prambanan Temple complex in Yogyakarta and launched an Archaeological Survey of India-led conservation project there."
+        },
+        {
+          headline: "PM Modi Undertakes State Visits to Australia and New Zealand",
+          body: "Continuing his July diplomatic tour, PM Modi paid state visits to Indonesia and Australia and concluded his visit to New Zealand with a stop in Auckland on July 10. The visits focused on trade, defence and strategic cooperation, with India-New Zealand free trade agreement negotiations identified as a priority. The tour followed the India-Japan summit and came weeks after his state visit to Seychelles."
+        },
+        {
+          headline: "Mumbai to Host Prince William's Earthshot Prize 2026",
+          body: "Mumbai has been announced as the host city for the Earthshot Prize 2026, founded by Britain's Prince William to recognise innovative solutions to environmental challenges. The award ceremony is scheduled during Climate Week, reflecting India's growing role in global climate action. The Earthshot Prize awards five winners 1 million pounds each annually for breakthroughs in environmental innovation."
+        },
+        {
+          headline: "India to Host International Type 1 Diabetes Summit 2026",
+          body: "India will host the International Type 1 Diabetes Summit 2026 in Jodhpur, Rajasthan, from July 30 to August 1. The summit is being organised jointly by The Friends of Mewar, Breakthrough T1D and the William J. Clinton Foundation, bringing together researchers, healthcare professionals and policymakers from India, the US and Australia. It will focus on advances in the treatment and management of Type 1 diabetes."
+        },
+      ],
+    },
+    {
+      title: "Economy & Finance",
+      items: [
+        {
+          headline: "Forex Reserves Recover to Around $675 Billion in July",
+          body: "India's foreign exchange reserves rose by $964 million to $675.16 billion in the week ended July 10, 2026, according to RBI data. The reserves had touched an all-time high of $728.49 billion in February 2026 before falling through the West Asia crisis, when the rupee came under pressure and the RBI sold dollars. The recovery was driven by rising foreign currency assets as the central bank absorbed dollar inflows."
+        },
+        {
+          headline: "Q1 FY27 Inflation at 3.9% with Wholesale Prices Up 9.3%",
+          body: "Consumer price inflation averaged 3.9% in the first quarter of 2026-27, with food inflation at 4.8%, according to official data. Wholesale price inflation, however, remained elevated at 9.3%, reflecting lingering input cost pressures. The divergence between retail and wholesale prices remained a key concern for the Reserve Bank's monetary policy stance."
+        },
+        {
+          headline: "Bank Credit Growth Hits Two-Year High of 18.6%",
+          body: "Bank credit growth accelerated to 18.6% in the fortnight ending late June 2026, the highest in two years, driven by strong demand from retail, industry and services. Deposit growth, however, continued to lag credit expansion, keeping banking system liquidity under pressure. The RBI has been absorbing dollar inflows while managing durable liquidity through open market operations."
+        },
+        {
+          headline: "India's Seafood Exports Hit Record Rs 73,891 Crore",
+          body: "India recorded seafood exports of Rs 73,891 crore in 2025-26, its highest ever, despite global trade disruptions. The government has invested over Rs 39,000 crore in the fisheries sector through flagship schemes such as the Pradhan Mantri Matsya Sampada Yojana, helping more than double fish production. The Budget also made fish catch by Indian vessels in the EEZ and high seas duty-free to boost the sector."
+        },
+        {
+          headline: "FIU-IND Runner-Up at Best Egmont Case Award 2026",
+          body: "The Financial Intelligence Unit-India (FIU-IND) was named runner-up for the Best Egmont Case Award 2026 at the Egmont Group Plenary in Baku, Azerbaijan in July. The award recognised FIU-IND's analysis, based on inputs from the Indian Cyber Crime Coordination Centre (I4C), which traced a cyber fraud network involving about Rs 868 crore and over 5,000 mule bank accounts. The probe led to major seizures by the Enforcement Directorate."
+        },
+      ],
+    },
+    {
+      title: "Environment & Ecology",
+      items: [
+        {
+          headline: "IMD Forecasts Below-Normal July Rainfall at 280.4 mm",
+          body: "The India Meteorological Department forecast below-normal rainfall for July 2026 at 280.4 mm against the 1971-2020 long-period average. The outlook cited weak ENSO conditions and a neutral Indian Ocean Dipole, with the monsoon reaching Himachal Pradesh a week late on June 30. The forecast raised concerns for kharif sowing across rain-fed regions."
+        },
+        {
+          headline: "Monsoon Covers Entire Country as Seasonal Deficit Narrows to 15%",
+          body: "The southwest monsoon covered the entire country by around July 10, 2026, ahead of the normal schedule. Heavy rainfall in the first week of July sharply reduced the seasonal deficit from about 40% in early July to roughly 15% by July 28. The recovery, reported by agencies including Skymet, eased fears of a drought-hit kharif season."
+        },
+        {
+          headline: "June 2026 Becomes Third Driest June in 100 Years",
+          body: "June 2026 recorded the third-lowest rainfall for the month in a century, with nearly three-quarters of the country reporting deficient precipitation. The dry spell delayed sowing in several states and highlighted the monsoon's dependence on evolving ENSO conditions. The subsequent revival in July helped offset the early-season shortfall."
+        },
+        {
+          headline: "Cloudbursts Trigger Flash Floods in Himalayan States",
+          body: "A series of cloudbursts in the Himalayan states in July 2026 triggered flash floods, landslides and loss of life and property. The India Meteorological Department defines a cloudburst as an extreme rainfall event occurring over a small area of 20-30 sq km. Scientists attributed the rising frequency to warming-induced atmospheric instability in the mountains."
+        },
+        {
+          headline: "NHM Mizoram Notified as India's 21st Designated Repository",
+          body: "The Ministry of Environment, Forest and Climate Change notified the Natural History Museum of Mizoram University, Aizawl, as India's 21st Designated Repository under the Biological Diversity Act. Designated repositories safeguard and catalogue biological specimens and are central to India's biodiversity documentation framework. The notification strengthens the country's institutional network for biodiversity research."
+        },
+      ],
+    },
+    {
+      title: "Science & Technology",
+      items: [
+        {
+          headline: "DRDO Flight-Tests 'Kusha' Long-Range Surface-to-Air Missile",
+          body: "DRDO conducted the maiden flight-test of the indigenous 'Kusha' Long-Range Surface-to-Air Missile from Dr APJ Abdul Kalam Island, Odisha, on July 23, 2026. The test intercepted a simulated high-speed, high-altitude aerial target. The multi-layered Kusha system, with interceptors planned for ranges of about 150, 250 and 350 km, is positioned as a strategic rival to the Russian S-400 and marks a major step in Aatmanirbhar Bharat air defence."
+        },
+        {
+          headline: "DCGI Approves QDENGA as India's First Dengue Vaccine",
+          body: "The Drug Controller General of India granted market authorisation to QDENGA (TAK-003) as India's first approved dengue vaccine in July 2026. Developed by Takeda, the tetravalent live-attenuated vaccine protects against all four dengue serotypes and is approved for ages 4-60 in a two-dose schedule given three months apart. India accounts for nearly a third of global dengue cases, making the approval a major public health milestone."
+        },
+        {
+          headline: "India's Science Olympiad Teams Register Record Haul",
+          body: "Indian student teams recorded their best-ever results at the 2026 science olympiads. At the 56th International Physics Olympiad in Bucaramanga, Colombia, all five Indian students won gold, placing India joint-first with China and Russia. India also finished 7th at the 67th International Mathematical Olympiad in Shanghai with two gold and four silver medals, while Bhavyaa Gunwal won gold at the 37th International Biology Olympiad in Vilnius."
+        },
+        {
+          headline: "Hong Wang Becomes Third Woman to Win Fields Medal",
+          body: "Mathematician Hong Wang became only the third woman in history to win the Fields Medal, awarded at the International Congress of Mathematicians in July 2026. She was honoured alongside Yu Deng, John Pardon and Jacob Tsimerman. The Fields Medal, widely regarded as the Nobel Prize of Mathematics, is awarded every four years to mathematicians under the age of 40."
+        },
+        {
+          headline: "India Opens First AI-Based Bird Detection Centre",
+          body: "India's first AI-based bird detection and monitoring centre was established at the Thane Creek Flamingo Sanctuary in Maharashtra at a cost of Rs 45 crore. The centre uses artificial intelligence to monitor bird populations, strengthen biodiversity conservation and promote sustainable tourism. Thane Creek, declared a sanctuary in 2015-16, hosts thousands of migratory flamingos each winter."
+        },
+      ],
+    },
+    {
+      title: "Government Schemes & Policies",
+      items: [
+        {
+          headline: "Cabinet Approves BHAVYA Rasayan Scheme for Chemical Parks",
+          body: "The Union Cabinet approved the Bharat Audyogik Vikas Yojana Rasayan (BHAVYA Rasayan) scheme on July 24, 2026, with an outlay of Rs 3,030 crore to set up three dedicated chemical parks by FY 2030-31. The Centre will provide a grant of up to Rs 1,000 crore per park, subject to a minimum Rs 500 crore state contribution and 2,000 acres of contiguous encumbrance-free land. The parks will offer shared facilities such as common effluent treatment plants to boost domestic chemical and petrochemical manufacturing."
+        },
+        {
+          headline: "Mission Golden Spice Launched for Lakadong Turmeric",
+          body: "The Union Minister for Development of North Eastern Region launched 'Mission Golden Spice' with an outlay of Rs 175.45 crore to strengthen the value chain of Meghalaya's GI-tagged Lakadong turmeric. The five-year project (2026-2030) aims to expand cultivation from 2,500 to 7,000 hectares and raise farm-gate income to Rs 80 per kilogram. Lakadong turmeric, with 7-12% curcumin content versus the global average of 2-4%, is among the world's most potent turmeric varieties."
+        },
+        {
+          headline: "India Launches High-Seas Fishing Authorisation Framework",
+          body: "Vice President C.P. Radhakrishnan launched the national Letter of Authorisation (LoA) framework for sustainable fishing in the high seas at Bhubaneswar on July 9, 2026. It is India's first nationwide permit system for fishing beyond the Exclusive Economic Zone, with vessel-specific, non-transferable authorisations linked to the ReALCraft portal and compliance with Regional Fisheries Management Organisations. The Odisha Deep Sea Fishing Mission (2026-2036) was also unveiled to develop the state's offshore fisheries."
+        },
+        {
+          headline: "Rules Notified for Direct Benefit Transfers Under VB-G RAM G Act, 2025",
+          body: "The government notified rules under the VB-G RAM G Act, 2025, mandating direct benefit transfers for wage and unemployment allowance payments. The rules institutionalise digital, cashless disbursement of wages through the DBT framework, strengthening the social security architecture created by the Act. The move aligns with the government's push for leak-proof delivery of welfare benefits."
+        },
+        {
+          headline: "First Batch of Towns Approved Under PM SVANidhi Street Food Hubs",
+          body: "The government approved the first batch of towns for the PM SVANidhi Street Food Hubs initiative, which provides upgraded common infrastructure for street food vendors. The hubs integrate vending zones with amenities such as water, electricity and waste management to formalise street vending. The move extends the PM SVANidhi scheme's focus from working capital loans to urban livelihoods and vendor welfare."
+        },
+      ],
+    },
+    {
+      title: "Important Reports & Indices",
+      items: [
+        {
+          headline: "India Ranks 176th in Environmental Performance Index 2026",
+          body: "India ranked 176th out of 177 countries in the Environmental Performance Index (EPI) 2026 released by Yale and Columbia universities, with a score of 22.46. Estonia topped the index with 74.79, while Laos ranked last. The report attributed India's weak performance to severe air pollution, coal dependence and inadequate biodiversity protection, though it noted India's 10-year improvement of 7.47 points was among the highest."
+        },
+        {
+          headline: "ADR Report: 45% of India's Chief Ministers Face Criminal Cases",
+          body: "A report by the Association for Democratic Reforms and National Election Watch found that 45% (14 of 31) of India's sitting Chief Ministers have criminal cases against them. The analysis of self-sworn affidavits of chief ministers of 28 states and three Union territories highlighted the growing criminalisation of politics. The report renewed calls for campaign finance and political representation reforms."
+        },
+        {
+          headline: "World Population Projected to Reach 8.2 Billion in 2026",
+          body: "On World Population Day (July 11), the US Census Bureau projected that the world population will reach 8.2 billion in 2026 and 9 billion by 2039. India remained the world's most populous country. The projections underscore demographic transitions, with several large economies facing ageing populations while India retains a young demographic dividend."
+        },
+        {
+          headline: "NITI Aayog Releases Roadmap for Making Ayurveda Global",
+          body: "NITI Aayog released the 'Strategic Roadmap for Making Ayurveda Global' on July 2, 2026, in collaboration with the Ministry of Ayush. The report outlines a phased framework for standardisation, quality control and export promotion to establish India as a global leader in evidence-based traditional medicine. It emphasises a whole-of-government approach to overcoming international regulatory hurdles."
+        },
+        {
+          headline: "Monsoon Deficit Narrows to 15% by End-July, Reports Show",
+          body: "Monsoon tracking agencies reported that the seasonal rainfall deficit narrowed to around 15% by July 28, 2026, from about 40% in early July. The sharp improvement followed intense rainfall in the first week of July that covered the entire country. The data eased concerns of a drought-like kharif season but left the August outlook dependent on evolving monsoon dynamics."
+        },
+      ],
+    },
+    {
+      title: "Awards & Honours",
+      items: [
+        {
+          headline: "PM Modi Conferred Indonesia's Highest Civilian Honour",
+          body: "PM Narendra Modi was conferred the 'Bintang Adipurna', the highest civilian honour of Indonesia, by President Prabowo Subianto in Jakarta on July 7, 2026. The award recognises his contribution to strengthening India-Indonesia bilateral relations and strategic partnership. It is the latest in a series of highest state honours conferred on Modi by foreign nations."
+        },
+        {
+          headline: "72nd National Film Awards Announced",
+          body: "The 72nd National Film Awards were announced in July 2026 for films certified in 2024. 'Article 370' won the Best Feature Film award and Yami Gautam the Best Actress award for the film, while Kartik Aaryan won Best Actor for his portrayal of Murlikant Petkar in 'Chandu Champion'. 'Kalki 2898 AD' won Best Popular Film Providing Wholesome Entertainment, and Mammootty won his fourth National Award for 'Bramayugam'."
+        },
+        {
+          headline: "Sunil Bharti Mittal Gets 2026 USISPF Global Leadership Award",
+          body: "Sunil Bharti Mittal, founder and chairman of Bharti Enterprises, was honoured with the 2026 Global Leadership Award by the US-India Strategic Partnership Forum (USISPF) in July. The award was presented at the IX USISPF Annual Leadership Summit in Washington D.C. He was recognised for his pioneering work in global telecommunications and digital connectivity across emerging markets."
+        },
+        {
+          headline: "National Awards for e-Governance 2026 Conferred in Jaipur",
+          body: "The 29th National Conference on e-Governance, held in Jaipur on July 1-2, 2026, saw the conferral of the National Awards for e-Governance 2026. The Ministry of Panchayati Raj's Panchayat Advancement Index (PAI) and ICMR's AI-powered mental healthcare platform MINDS won Gold Awards, while e-Jagriti won Silver. PAI 2.0 assesses over 2.6 lakh gram panchayats against 150 indicators across nine themes of localised SDGs."
+        },
+        {
+          headline: "NTPC Wins Golden Peacock Environment Management Award",
+          body: "NTPC Limited was conferred the Golden Peacock Environment Management Award 2026 in the Power sector category by the Institute of Directors. The award recognised NTPC's implementation of flue-gas desulphurisation systems, zero liquid discharge policies and India's largest floating solar projects. The recognition aligns with NTPC's transition toward a 60 GW renewable capacity target by 2032."
+        },
+      ],
+    },
+    {
+      title: "Appointments",
+      items: [
+        {
+          headline: "Pralhad Joshi Appointed Union Education Minister",
+          body: "Pralhad Joshi was appointed as the Union Minister of Education in July 2026, taking charge on July 26 after the resignation of Dharmendra Pradhan. Joshi, a senior BJP leader from Karnataka, has held multiple ministerial portfolios in the Union Cabinet. His appointment came ahead of the Parliament's Monsoon Session."
+        },
+        {
+          headline: "Air Marshal Ashutosh Dixit Named Vice Chief of Air Staff",
+          body: "Air Marshal Ashutosh Dixit was appointed as the Vice Chief of the Air Staff (VCAS) of the Indian Air Force in July 2026. The appointment was part of a series of top-level military leadership changes in the armed forces. Air Marshal Dixit brings extensive operational and command experience to the role."
+        },
+        {
+          headline: "Lt Gen Rajesh Pushkar Takes Over Army's Southern Command",
+          body: "Lieutenant General Rajesh Pushkar assumed command as General Officer Commanding-in-Chief (GOC-in-C) of the Army's Southern Command on July 1, 2026. The Southern Command, headquartered in Pune, oversees Indian Army operations across the southern and western regions. His appointment was part of routine senior-level military transitions."
+        },
+        {
+          headline: "Air Marshal Jasvir Singh Mann Heads Southern Air Command",
+          body: "Air Marshal Jasvir Singh Mann assumed charge as Air Officer Commanding-in-Chief (AOC-in-C) of the IAF's Southern Air Command on July 1, 2026. He succeeded Air Marshal Manish Khanna, who superannuated on June 30. Air Marshal Mann, a decorated fighter pilot with over 3,000 flying hours, had earlier served as Senior Air Staff Officer at the Western Air Command."
+        },
+        {
+          headline: "Ravi Shankar Appointed Executive Director of RBI",
+          body: "Ravi Shankar was appointed as an Executive Director of the Reserve Bank of India in July 2026. The appointment strengthens the central bank's top management amid ongoing monetary and foreign exchange management operations. The RBI has been managing durable liquidity while absorbing dollar inflows to rebuild forex reserves."
+        },
+      ],
+    },
+    {
+      title: "Obituaries",
+      items: [
+        {
+          headline: "S. Janaki, Legendary Playback Singer, Dies at 88",
+          body: "S. Janaki, known as the 'Nightingale of South India', passed away on July 11, 2026, in Mysuru at the age of 88. Over a career spanning nearly six decades, she recorded over 48,000 songs in multiple Indian languages and won four National Film Awards and 33 state film awards. She was cremated with full state honours as tributes poured in from across the film industry."
+        },
+        {
+          headline: "Tamil Writer Poomani Passes Away at 79",
+          body: "Poomani, one of Tamil literature's most celebrated writers, passed away on July 12, 2026, at the age of 79. He won the Sahitya Akademi Award in 2014 for his novel 'Agnyaadi', and his novel 'Vekkai' was adapted into the acclaimed film 'Asuran' (2019). His writings centred on social justice, rural life and human dignity."
+        },
+        {
+          headline: "'Bridge Man of India' Girish Bharadwaj Dies",
+          body: "Girish Bharadwaj, popularly known as the 'Bridge Man of India', passed away in July 2026. He was honoured with the Padma Shri in 2017 for his contributions to rural infrastructure and social work, having built numerous suspension bridges connecting remote communities in Karnataka and beyond. His works transformed connectivity in hilly and riverine regions."
+        },
+        {
+          headline: "Veteran Politician Mudragada Padmanabha Reddy Dies at 73",
+          body: "Mudragada Padmanabha Reddy, a veteran politician of Andhra Pradesh, passed away on July 14, 2026, at the age of 73. A former minister, he was known for his political activism and for leading mass resignations from his party and legislative positions in support of the cause of Kapu reservation. He remained an influential figure in Andhra politics."
+        },
+        {
+          headline: "Cinematographer Chezhiyan Passes Away at 57",
+          body: "Chezhiyan, a renowned Tamil film cinematographer, passed away on July 10, 2026, at the age of 57. He was known for his evocative visuals and atmospheric lighting in acclaimed Tamil cinema. His death was mourned across the film industry."
+        },
+      ],
+    },
+    {
+      title: "Sports",
+      items: [
+        {
+          headline: "India Finish Fourth at Commonwealth Games 2026 with 39 Medals",
+          body: "India finished fourth at the Commonwealth Games 2026 in Glasgow (July 23-August 2) with 39 medals - 13 gold, 17 silver and 9 bronze. Weightlifter Mirabai Chanu won her third consecutive Commonwealth Games gold in the women's 48kg category with a Games record total of 190 kg. Neeraj Chopra took silver in the javelin, while Gulveer Singh and Tejaswin Shankar made history in athletics."
+        },
+        {
+          headline: "Spain Win Second FIFA World Cup Title",
+          body: "Spain defeated defending champions Argentina 1-0 in extra time at the MetLife Stadium, New Jersey, on July 19, 2026, to win their second FIFA World Cup title. Rodri was awarded the Golden Ball for the best player, while Kylian Mbappe won the Golden Boot as top scorer. Spain's triumph capped a near-flawless campaign at the 48-team tournament hosted by the US, Canada and Mexico."
+        },
+        {
+          headline: "Sinner and Noskova Win Wimbledon 2026 Singles Titles",
+          body: "Jannik Sinner defended his Wimbledon men's title, defeating Alexander Zverev in four sets, while Linda Noskova won the women's crown with an all-Czech final victory over Karolina Muchova. Noskova, at 21, became the youngest Wimbledon women's champion since 2011. The 139th Championships also introduced video review technology for the first time."
+        },
+        {
+          headline: "Australia Win ICC Women's T20 World Cup 2026",
+          body: "Australia defeated host England by seven wickets in the final at Lord's on July 5, 2026, to win the ICC Women's T20 World Cup. The victory added another title to Australia's dominant record in women's cricket. The tournament was a key step in India's preparation ahead of the 2026 Commonwealth Games."
+        },
+        {
+          headline: "Shravani Sangle Shines at Asian U23 Athletics Championships",
+          body: "Shravani Sachin Sangle was the standout performer for India at the inaugural Asian U23 Athletics Championships in Ordos, China, winning gold in the mixed and women's 4x400m relays and bronze in the 400m hurdles. India finished with 16 medals (3 gold, 4 silver, 9 bronze) at the continental meet. Her late surge to win the mixed relay gold was the highlight of India's campaign."
+        },
+      ],
+    },
+    {
+      title: "Summits, Conferences & Important Days",
+      items: [
+        {
+          headline: "World Population Day Observed on July 11",
+          body: "World Population Day was observed on July 11, 2026, against the backdrop of the US Census Bureau's projection that the world population will reach 8.2 billion in 2026 and 9 billion by 2039. The day draws attention to population-related issues including reproductive health, family planning and sustainable development. India, as the world's most populous country, remains central to these demographic debates."
+        },
+        {
+          headline: "Kargil Vijay Diwas Marks 27th Anniversary of Operation Vijay",
+          body: "India observed the 27th anniversary of Kargil Vijay Diwas on July 26, 2026, honouring the armed forces' victory in the 1999 Kargil War. The Defence Minister released 'Kargil: The Unseen Valour', a book by former Army Chief General Manoj Pande (Retd.), chronicling the intelligence challenges, tactical operations and post-war military evolution. Tributes were paid at the Kargil War Memorial in Drass."
+        },
+        {
+          headline: "International Tiger Day Celebrated on July 29",
+          body: "International Tiger Day was observed on July 29, 2026, highlighting the conservation of tiger habitats and the fight against poaching. India, home to around three-quarters of the world's wild tiger population, has led global efforts through Project Tiger and an expanding network of tiger reserves. The day underscores the link between tiger conservation and healthy forest ecosystems."
+        },
+        {
+          headline: "Akashvani Marks 90 Years of All India Radio",
+          body: "2026 marks the 90th anniversary of Akashvani (All India Radio), India's public broadcaster, with year-long celebrations launched in July. The milestone comes ahead of the centenary of radio broadcasting in India in 2027. AIR continues to serve as a vital medium for information and public broadcasting across the country."
+        },
+        {
+          headline: "Bharat 6G Alliance Review Meeting Held in New Delhi",
+          body: "The Bharat 6G Alliance (B6GA) review meeting was held in New Delhi on July 28, 2026, where awards were conferred under the Department of Telecommunications' 100 5G Use Case Labs Initiative. IIT Ropar secured the second position in the 'Capacity and Foundation Excellence' category for its 5G prototyping work. The initiative supports India's transition from 5G deployment to 6G research under the Bharat 6G Vision."
+        },
+      ],
+    },
+  ],
+};

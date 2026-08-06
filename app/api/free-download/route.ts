@@ -36,7 +36,7 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here ${pdfUrls.length > 1 ? "are the free answer copies" : "is the free answer copy"} of <strong>${topperName}</strong> you requested.</p>
         ${linksHtml}
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
-          <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
+          <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
             📬 Join 100+ aspirants on Telegram for daily current affairs →
           </a>
         </div>
@@ -61,14 +61,17 @@ async function sendUnavailableEmail(email: string, topperName: string) {
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
-        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Coming!</h1>
+        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Being Scanned</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
-        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We'll send you the download link shortly. While you wait, explore 50+ topper copies from other rank holders.</p>
-        <div style="text-align:center;margin-bottom:28px">
-          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#059669;color:#fff;padding:12px 28px;border-radius:40px;text-decoration:none;font-weight:700;font-size:13px">Browse the Store →</a>
+        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're digitizing the original answer sheet right now and will email the link within 24–48 hours.</p>
+        <div style="text-align:center;margin-bottom:24px;padding:20px;background:#e7f9ee;border-radius:16px;border:2px solid #059669">
+          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#065f46">Don't wait — get 50+ topper copies now</p>
+          <p style="margin:0 0 14px;font-size:13px;color:#065f46">50+ verified copies (GS1–4, Essay, Optional) + 21 strategy guides.<br/>Just <strong>₹99</strong> during the launch sale (84% off, ends soon).</p>
+          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#059669;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get the Full Compilation for ₹99 →</a>
         </div>
+        <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">7-day refund · Instant download · Price returns to ₹799 after the sale</p>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
-          <a href="https://t.me/+VYMxrig-a8AzZmNl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
+          <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
             📬 Join 100+ aspirants on Telegram for daily current affairs →
           </a>
         </div>

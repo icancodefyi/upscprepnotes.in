@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/store-products";
+import { isFlashSaleActive } from "@/lib/flash-sale";
 
 export type ProductRecommendation = {
   slug: string;
@@ -76,10 +77,14 @@ export default function ProductRecommendations({
               <p className="text-[10px] text-emerald-600 font-medium">{reason}</p>
             </div>
             <div className="text-right shrink-0">
-              <p className="text-xs font-bold text-emerald-800">₹{product.price}</p>
-              {product.originalPrice && (
+              <p className="text-xs font-bold text-emerald-800">
+                {isFlashSaleActive() ? "₹99" : `₹${product.price}`}
+              </p>
+              {isFlashSaleActive() && product.price > 99 ? (
+                <p className="text-[9px] text-zinc-400 line-through">₹{product.price.toLocaleString("en-IN")}</p>
+              ) : product.originalPrice ? (
                 <p className="text-[9px] text-zinc-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</p>
-              )}
+              ) : null}
             </div>
           </Link>
         ))}

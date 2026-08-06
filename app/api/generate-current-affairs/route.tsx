@@ -10,7 +10,7 @@ const PDF_MAP: Record<string, string> = {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const month = url.searchParams.get("month") || "may-2026";
+  const month = url.searchParams.get("month") || "july-2026";
 
   const filename = PDF_MAP[month];
   if (!filename) {

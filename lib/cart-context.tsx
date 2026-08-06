@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import type { StoreProduct } from "./store-products";
+import { getEffectivePrice } from "./flash-sale";
 
 export interface CartItem {
   product: StoreProduct;
@@ -69,7 +70,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalAmount = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  const totalAmount = items.reduce((sum, i) => sum + getEffectivePrice(i.product) * i.quantity, 0);
 
   return (
     <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalAmount }}>

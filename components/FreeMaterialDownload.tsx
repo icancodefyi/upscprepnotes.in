@@ -104,7 +104,7 @@ export default function FreeMaterialDownload({
             </a>
           )}
           <a
-            href="https://t.me/+VYMxrig-a8AzZmNl"
+            href="https://t.me/+2eV0YCTGdNcyNmFl"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 flex items-center justify-center gap-2 rounded-xl border-2 border-[#0088cc]/30 bg-[#e8f4fd] px-4 py-2 text-xs font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]"

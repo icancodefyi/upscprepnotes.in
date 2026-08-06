@@ -203,7 +203,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               </div>
             )}
             <a
-              href="https://t.me/+VYMxrig-a8AzZmNl"
+              href="https://t.me/+2eV0YCTGdNcyNmFl"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 flex items-center justify-center gap-2 rounded-xl border-2 border-telegram/30 bg-telegram/10 px-4 py-2.5 text-xs font-semibold text-telegram transition hover:bg-telegram/20"
@@ -213,7 +213,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             </a>
             <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
               <p className="text-xs font-bold">Want 50+ topper copies + 21 guides?</p>
-              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. ₹799 only.</p>
+              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. Just ₹99 during launch sale.</p>
               <button
                 onClick={() => {
                   window.open("/store", "_blank");
@@ -232,28 +232,33 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             </div>
             <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
             <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-              We&apos;ll send you the download link for <strong>{topperName}</strong>&apos;s answer copy shortly.
+              <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet right now — we&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready (usually within 24-48 hours).
             </p>
             <p className="mt-2 text-xs text-brand font-medium">
-              ⚠️ Check your <strong>Spam</strong> or <strong>Promotions</strong> folder if you don&apos;t see it within a few minutes.
+              ⚠️ Check your <strong>Spam</strong> or <strong>Promotions</strong> folder if you don&apos;t see it.
             </p>
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
+              <p className="text-xs font-bold">Don&apos;t wait — get 50+ copies now</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                50+ verified topper copies (GS1-4, Essay, Optional) + 21 strategy guides. Just ₹99 during the launch sale — 84% off.
+              </p>
               <button
                 onClick={() => {
                   window.open("/store", "_blank");
                   onOpenChange(false);
                 }}
-                className="w-full rounded-full bg-foreground px-4 py-2.5 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
+                className="mt-2.5 w-full rounded-full bg-foreground px-4 py-2.5 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
               >
-                Browse 50+ Topper Copies in the Store &rarr;
+                Get the Full Compilation for ₹99 &rarr;
               </button>
-              <button
-                onClick={() => onOpenChange(false)}
-                className="w-full rounded-full border border-border px-4 py-2 text-xs text-muted-foreground hover:bg-secondary transition-colors"
-              >
-                Close
-              </button>
+              <p className="mt-1.5 text-[10px] text-muted-foreground">7-day refund · Instant download · Price back to ₹799 after the sale</p>
             </div>
+            <button
+              onClick={() => onOpenChange(false)}
+              className="mt-3 w-full rounded-full border border-border px-4 py-2 text-xs text-muted-foreground hover:bg-secondary transition-colors"
+            >
+              Close
+            </button>
           </div>
         )}
       </div>

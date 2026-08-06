@@ -15,6 +15,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import HeroLeadForm from "@/components/hero/HeroLeadForm";
+import SalePrice from "@/components/store/SalePrice";
 
 export const revalidate = 86400;
 
@@ -243,7 +244,7 @@ export default async function HomePage() {
                   {[
                     { icon: Database, title: "Marks Database", desc: "Paper-wise marks breakdown for 271 toppers — compare scores across years and optionals.", href: "/toppers/marks-database" },
                     { icon: FileText, title: "Answer Copies", desc: "50+ actual handwritten answer sheets from rank holders. See real structure and diagrams.", href: "/toppers/toppers-copy-compilation" },
-                    { icon: FileText, title: "Current Affairs", desc: "Monthly compilations — 55 topics across 11 sections, every month.", href: "/current-affairs" },
+                    { icon: FileText, title: "Current Affairs", desc: "Monthly compilations — 60 topics across 12 sections, every month.", href: "/current-affairs" },
                     { icon: FileText, title: "Free Materials", desc: "2,700+ free test series, notes, and magazines from top coaching institutes.", href: "/free-materials" },
                     { icon: FileText, title: "Previous Year Questions", desc: "PYQs organized by year and paper with topic analysis and answer patterns.", href: "/pyq" },
                   ].map((feat) => {
@@ -315,10 +316,7 @@ export default async function HomePage() {
                     <h3 className="text-sm font-bold leading-tight">{product.title}</h3>
                     <p className="mt-1.5 text-xs text-muted-foreground line-clamp-2 flex-1">{product.tagline}</p>
                     <div className="mt-3 flex items-baseline gap-2">
-                      <span className="text-lg font-bold tabular-nums">₹{product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice}</span>
-                      )}
+                      <SalePrice product={product} />
                     </div>
                   </div>
                 </Link>
