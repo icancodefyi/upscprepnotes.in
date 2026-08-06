@@ -14,6 +14,8 @@ export default function BroadcastPage() {
   const [segmentSource, setSegmentSource] = useState("");
   const [segmentCount, setSegmentCount] = useState<number | null>(null);
   const [segmentLoading, setSegmentLoading] = useState(false);
+  const [batchOffset, setBatchOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     fetch("/api/leads")
@@ -61,11 +63,9 @@ export default function BroadcastPage() {
   async function sendAll() {
     if (!subject.trim() || !html.trim()) return;
 
-    let targetCount = leadsTotal;
-    let confirmMsg = `Send this email to ${leadsTotal} leads?`;
+    let confirmMsg = `Send this email to ${leadsTotal} leads (batches of 100/day)?`;
 
     if (segmentMode === "source" && segmentSource && segmentCount) {
-      targetCount = segmentCount;
       confirmMsg = `Send this email to ${segmentCount} leads from source "${segmentSource}"?`;
     }
 
@@ -76,12 +76,7 @@ export default function BroadcastPage() {
     setError("");
     setResult(null);
     try {
-      const body: any = { subject, html };
-
-      if (segmentMode === "source" && segmentSource) {
-        // if segment is set, we'll send to a filtered subset
-        // For now, same as all since broadcast API handles all
-      }
+      const body: any = { subject, html, offset: batchOffset };
 
       const r = await fetch("/api/broadcast", {
         method: "POST",
@@ -91,6 +86,8 @@ export default function BroadcastPage() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.error);
       setResult(d);
+      setBatchOffset(d.nextOffset ?? batchOffset);
+      setHasMore(typeof d.nextOffset === "number" && d.nextOffset < d.total);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -193,7 +190,7 @@ export default function BroadcastPage() {
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
             {result.mode === "test"
               ? `Test email sent to ${result.testEmail || "recipient"}`
-              : `Sent to ${result.sent} / ${result.total} leads`}
+              : `Sent to ${result.sent} / ${result.total} leads (batch starting at ${result.offset ?? 0})`}
             {result.errors && (
               <div className="mt-2 text-xs text-amber-600">
                 {result.errors.length} errors
@@ -222,8 +219,13 @@ export default function BroadcastPage() {
             disabled={sending || !subject.trim() || !html.trim()}
             className="rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 transition disabled:opacity-40"
           >
-            {sending ? "Sending..." : `Send to ${segmentCount || leadsTotal || "..."} Recipients`}
+            {sending ? "Sending..." : `Send Batch of 100 (${(leadsTotal ?? 0) - batchOffset || "..."} remaining)`}
           </button>
+          {hasMore && (
+            <span className="text-xs text-zinc-500">
+              Batch {Math.floor(batchOffset / 100) + 1} of {Math.ceil((leadsTotal || 0) / 100)} sent.
+            </span>
+          )}
         </div>
       </div>
     </div>
