@@ -2,6 +2,35 @@
 
 ---
 
+## Executive Snapshot (Aug 2026 diagnostic)
+
+| Metric | Value | Signal |
+|---|---|---|
+| Organic clicks (3 mo) | 2,882 | Climbing ~0 → 250/day |
+| Organic impressions (3 mo) | 30,623 | Large headroom — CTR must improve |
+| Mobile share | 66% (4,750 clicks, 8.7% CTR) | Mobile CTR > desktop (6.6%) → fix mobile-first |
+| Top page | Anuj Agnihotri — 2,308 clicks / 9,170 imp | **But no public answer-copy PDF exists** |
+| Orders | 38 total, **only 2 paid** | Checkout was broken |
+| Checkout start→complete | 42 → 2 (95% abandon) | Massive recovery opportunity |
+| Free-download leads | 1,071 | Email/retention asset, largely unused |
+| Nurture stuck at step 0 | 504 / 863 | Email sequence not working |
+
+### Checkout fix (root cause removed)
+Root cause: `.env.local` had been flipped into **test mode** (`DODO_ENVIRONMENT=test_mode`, test key) while `lib/store-products.ts` still pointed to **live** product IDs that don't exist in the test dashboard → every checkout session was invalid/unpurchasable → orders stuck pending.
+- Reverted `.env.local` to `live_mode` + live API key + valid live fallback product (`pdt_0NiRYspHtFcNZIxO9Jyop`).
+- Verified a real live checkout session can be created; live webhook `/api/webhook/dodo` enabled.
+- ⚠️ Deploy only with `.env.local` in live mode. The 36 pending orders are all abandoned carts (no payment ID) — treat as recovery list, not lost revenue.
+
+---
+
+## Phase 0 — Immediate Revenue Fixes (this week)
+
+- [ ] **0.1 — Abandoned-cart email** (biggest instant win). ~22 real people attempted checkout. Send a 1-hour reminder email (Resend) with cart items + re-checkout link. Recover several ₹199–₹1997 purchases.
+- [ ] **0.2 — Anuj Agnihotri page decision.** #1 traffic page (2,308 clicks, 31–35% CTR) but no public answer copy exists (verified — never fabricate). Route the ~1,062 answer-copy searchers to the 10 real hosted copies or the strategy page.
+- [ ] **0.3 — Zero-cost CTR lifts.** 66% mobile. Audit store + topper pages mobile UX; fix title/meta on high-impression/low-CTR pages (marks-database 2.46%, score-hubs 3–5%).
+
+---
+
 ## ✓ Completed
 
 - [x] **Step 5** — Add `Speakable` annotation to topper FAQPage schema. Tells ChatGPT which Q&As to read aloud.
