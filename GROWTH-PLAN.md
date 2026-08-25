@@ -31,6 +31,30 @@ Root cause: `.env.local` had been flipped into **test mode** (`DODO_ENVIRONMENT=
 
 ---
 
+## Phase 1 — Answer-Copy Monetization (data says this is THE lane)
+
+Answer-copy queries are the dominant natural demand cluster (~1,940 clicks / 10,058 impressions), but product fits don't yet match what people ask for.
+
+- [ ] **1.1 — Fulfill the 10 hosted copies end-to-end.** Verify the download flow works (PDF served, `free-download` route fires the "available" email) and send.
+- [ ] **1.2 — Auto-respond to "X answer copy" for toppers we HAVE** (real download); for ones we don't, show the strategy page + a related real copy instead of a dead end.
+- [ ] **1.3 — Build the "Answer Copy Database" pillar** (category ownership): one page listing all verified copies with filters (rank, year, marks, subject).
+- [ ] **1.4 — Monetize ethically:** free single-copy download = funnel; paid "Answer Copies Compilation" (₹199) = curated set + added value. Link every real copy page → compilation → checkout.
+
+## Phase 2 — Highest-Marks / Marksheet Cluster (high headroom, low effort)
+
+~2,300 impressions from marksheet queries at ~0–7% CTR (position ~5–10), plus "highest marks in GS3/ethics" with near-zero fills. We own the data (marks database of 290 toppers).
+
+- [ ] **2.1 — "Highest marks in every UPSC paper (2025/2026)" pages.** Per-paper highest-marks pages from the marks DB. Low effort, data already owned.
+- [ ] **2.2 — Per-topper marksheet pages** already rank (garima lohia #2.3, divya tanwar #2.3). Add a clear "View verified marksheet" element + schema to convert 0% CTR to clicks.
+- [ ] **2.3 — Index remaining toppers** in batches of 10 to grow the long-tail surface.
+
+## Phase 3 — Current Affairs & Free Material (recurring traffic)
+
+- [ ] **3.1 — Monthly current-affairs magazines.** Existing pages pull strong CTR (Vision IAS monthly 153 clicks, 8.63%). Publish a fresh monthly CA page so the recurring query always has the newest link.
+- [ ] **3.2 — Grow the free-material index** (Vision IAS, Drishti, Forum IAS, Hindi optional all rank). Each is a high-CTR entry into the free-download funnel (1,071 leads).
+
+---
+
 ## ✓ Completed
 
 - [x] **Step 5** — Add `Speakable` annotation to topper FAQPage schema. Tells ChatGPT which Q&As to read aloud.
