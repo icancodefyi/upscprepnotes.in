@@ -55,6 +55,32 @@ Answer-copy queries are the dominant natural demand cluster (~1,940 clicks / 10,
 
 ---
 
+## Phase 4 — Email Retention & Nurture (audit first)
+
+The nurture pipeline is broken: **504/863 stuck at step 0**, only 70 completed.
+
+- [ ] **4.1 — Debug the nurture campaign** — why do 58% never move past step 0? (Trigger never fires the first email, or a step-completion gate never flips.) Fix the trigger, then re-engage.
+- [ ] **4.2 — Free-download upsell sequence:** download → related product → discount. 1,071 leads, near-zero emails sent.
+- [ ] **4.3 — Abandoned-cart series** (see 0.1) wired into the same Resend infra.
+
+## Phase 5 — Authority & Distribution (30–90 day)
+
+- [ ] **5.1 — Comparison pages:** "Divya Tanwar vs Garima Lohia", "real vs coaching answer copies", "Vision vs Forum test series". Helps ChatGPT/citation + captures "X vs Y" queries.
+- [ ] **5.2 — Pillar pages + content clusters** (GS1–GS4, Essay, Optional). Link toppers + strategy hubs under pillars.
+- [ ] **5.3 — Reddit (r/UPSC, 600K+)** value-first data posts from the marks DB (see Reddit playbook below).
+- [ ] **5.4 — Backlinks:** press the 39 targets in `backlink-opportunities.md`; get listed in 5–10 UPSC directories + 2 credible reviews.
+
+---
+
+## Verification checklist (for anything shipped)
+
+1. `npm run build` / lint clean (find the repo's real check commands before assuming).
+2. Checkout: create a live session, verify the webhook flips order `pending → paid` and the download email sends.
+3. Never fabricate or guess a download/answer-copy URL — only link what returns HTTP 200.
+4. Keep `.env.local` in `live_mode` before any deploy. Never commit `.env.local` / secrets.
+
+---
+
 ## ✓ Completed
 
 - [x] **Step 5** — Add `Speakable` annotation to topper FAQPage schema. Tells ChatGPT which Q&As to read aloud.
