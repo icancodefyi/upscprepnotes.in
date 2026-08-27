@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
         if (wantsSearch) {
           try {
             const detection = await groq.chat.completions.create({
-              model: "llama-3.1-8b-instant",
+              model: "openai/gpt-oss-20b",
               messages: groqMessages,
               tools: [webSearchTool],
               tool_choice: "auto",
