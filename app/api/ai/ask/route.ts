@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
         // Phase 2: stream the response (70B with or without search context)
         try {
           const stream = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-20b",
             messages: groqMessages,
             stream: true,
             temperature: 0.7,
