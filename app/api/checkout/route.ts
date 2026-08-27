@@ -5,7 +5,7 @@ import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import { generateDownloadToken, sendOfferNotification } from "@/lib/order-utils";
+import { generateDownloadToken } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
 import { checkRateLimit } from "@/lib/rate-limit";
 
@@ -64,22 +64,11 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      let itemPrice: number;
-      if (isFlashSaleActive()) {
-        // Flash sale: fixed price, ignore name-your-price and per-item price
-        itemPrice = getEffectivePrice(product);
-      } else if (offeredPrice !== undefined) {
-        const minPrice = product.minOfferPrice ?? product.price;
-        if (offeredPrice < minPrice) {
-          return NextResponse.json(
-            { error: `Minimum price for ${product.title} is ₹${minPrice}` },
-            { status: 400 }
-          );
-        }
-        itemPrice = offeredPrice;
-      } else {
-        itemPrice = item.price || product.price;
-      }
+      // DodoPayments charges the dashboard-configured price regardless of `amount` sent.
+      // Flash sale: use flash price. Otherwise: use minOfferPrice (lowest entitlement price).
+      const itemPrice = isFlashSaleActive()
+        ? getEffectivePrice(product)
+        : (product.minOfferPrice ?? product.price);
       total += itemPrice * item.quantity;
       resolvedItems.push({ slug: item.slug, quantity: item.quantity, price: itemPrice, title: product.title });
     }
@@ -92,7 +81,6 @@ export async function POST(request: NextRequest) {
     const order = await OrderModel.create({
       items: resolvedItems.map((i) => ({ slug: i.slug, title: i.title, quantity: i.quantity, price: i.price })),
       total,
-      offeredPrice,
       ref,
       downloadToken,
       email: email || undefined,
@@ -122,24 +110,12 @@ export async function POST(request: NextRequest) {
         ref,
         items: JSON.stringify(resolvedItems.map((i) => ({ slug: i.slug, quantity: i.quantity, price: i.price, title: i.title }))),
         total: String(total),
-        ...(offeredPrice !== undefined ? { offeredPrice: String(offeredPrice) } : {}),
       },
     });
 
     await OrderModel.findByIdAndUpdate(order._id, {
       dodoSessionId: session.session_id,
     });
-
-    // Notify admin of name-your-price offer
-    if (offeredPrice !== undefined) {
-      const product = PRODUCTS.find((p) => p.slug === resolvedItems[0]?.slug);
-      if (product) {
-        const origPrice = product.price;
-        sendOfferNotification(email || "unknown", product.title, offeredPrice, origPrice, ref).catch(
-          (err) => console.error("Offer notification failed:", err)
-        );
-      }
-    }
 
     try {
       await AnalyticsEventModel.create({
