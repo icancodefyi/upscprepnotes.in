@@ -7,7 +7,6 @@ import {
   useRef,
   useCallback,
   useMemo,
-  Fragment,
 } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -19,6 +18,53 @@ import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
 import { trackViewItem } from "@/lib/analytics";
 import { trackClientEvent, getVisitorId } from "@/lib/client-analytics";
 import posthog from "posthog-js";
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+  MessageFooter,
+} from "@/components/ui/message";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
+import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export default function AskPageWrapper() {
   return (
@@ -72,6 +118,12 @@ async function copyToClipboard(text: string): Promise<boolean> {
 function isSearchIndicator(content: string): boolean {
   return content.startsWith("\uD83D\uDD0D");
 }
+
+type AskStatusEvent =
+  | { t: "begin"; label?: string }
+  | { t: "status"; label?: string }
+  | { t: "sources"; items?: { domain: string; label: string }[] }
+  | { t: "end" };
 
 function stripSearchIndicator(content: string): string {
   const idx = content.indexOf("\n\n", content.indexOf("\uD83D\uDD0D"));
@@ -340,7 +392,6 @@ function faviconUrl(domain: string): string {
 function AskPage() {
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -359,9 +410,9 @@ function AskPage() {
   const [showQuotaModal, setShowQuotaModal] = useState(false);
   const [quotaExhausted, setQuotaExhausted] = useState(false);
   const [pendingMessage, setPendingMessage] = useState<string | null>(null);
-  const [searchPhase, setSearchPhase] = useState("");
-  const [searchResults, setSearchResults] = useState<
-    { domain: string; label: string; status: "fetching" | "done" }[]
+  const [researchLabel, setResearchLabel] = useState("");
+  const [researchSources, setResearchSources] = useState<
+    { domain: string; label: string }[]
   >([]);
   const [selectedSources, setSelectedSources] = useState<SourceChip[] | null>(
     null,
@@ -513,7 +564,8 @@ function AskPage() {
     setStreamingMessage(null);
     setSearchedOnce(false);
     setIsSearching(false);
-    setSearchPhase("");
+    setResearchLabel("");
+    setResearchSources([]);
     setFollowUpQuestions([]);
 
     trackClientEvent("ask_question", {
@@ -580,89 +632,71 @@ function AskPage() {
       const decoder = new TextDecoder();
       let fullContent = "";
       let hasShownSearch = false;
-      let sourceLabelsShown = false;
+      let buffer = "";
 
-      const searchTimer = setTimeout(() => {
-        setSearchedOnce(true);
-        setIsSearching(true);
-        setSearchPhase("Gathering sources...");
-        const chips = classifySources(fullContent);
-        if (chips.length > 1) {
-          setSearchResults(
-            chips
-              .slice(1)
-              .map((c) => ({
-                domain: c.domain,
-                label: c.label,
-                status: "done" as const,
-              })),
-          );
-          setSearchPhase("Analyzing sources...");
-          sourceLabelsShown = true;
-        } else {
-          setSearchResults([
-            {
-              domain: "",
-              label: "Searching UPSC websites",
-              status: "fetching",
-            },
-          ]);
+      // Handle server control frames (status/source updates)
+      const applyEvent = (ev: AskStatusEvent) => {
+        switch (ev.t) {
+          case "begin":
+            setIsSearching(true);
+            setResearchLabel(ev.label || "Researching");
+            setResearchSources([]);
+            break;
+          case "status":
+            setResearchLabel(ev.label || "Researching");
+            break;
+          case "sources":
+            if (Array.isArray(ev.items)) setResearchSources(ev.items);
+            break;
+          case "end":
+            setIsSearching(false);
+            break;
         }
-      }, 800);
+      };
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-        fullContent += chunk;
+        buffer += chunk;
+
+        // Extract complete `#@<json>\n` control frames; keep everything else as content
+        let idx = buffer.indexOf("#@");
+        while (idx !== -1) {
+          const nl = buffer.indexOf("\n", idx + 2);
+          if (nl === -1) break;
+          const frame = buffer.slice(idx + 2, nl);
+          let ev: AskStatusEvent | null = null;
+          try {
+            ev = JSON.parse(frame) as AskStatusEvent;
+          } catch {}
+          if (ev) applyEvent(ev);
+          buffer = buffer.slice(0, idx) + buffer.slice(nl + 1);
+          idx = buffer.indexOf("#@");
+        }
+
+        fullContent += buffer;
+        buffer = "";
 
         // Detect search indicator and strip it from display content
         if (!hasShownSearch && isSearchIndicator(fullContent)) {
           setSearchedOnce(true);
-          setIsSearching(true);
-          setSearchPhase("Searching the web...");
           hasShownSearch = true;
         }
 
         const displayContentRaw = stripSearchIndicator(fullContent);
-
-        // When real content starts arriving after the search indicator
-        if (hasShownSearch && displayContentRaw.trim() && !sourceLabelsShown) {
-          clearTimeout(searchTimer);
-          const chips = classifySources(fullContent);
-          if (chips.length > 1) {
-            setSearchResults(
-              chips
-                .slice(1)
-                .map((c) => ({
-                  domain: c.domain,
-                  label: c.label,
-                  status: "done" as const,
-                })),
-            );
-          } else {
-            setSearchResults([
-              {
-                domain: "",
-                label: "Consulted UPSC resources",
-                status: "done" as const,
-              },
-            ]);
-          }
-          setSearchedOnce(true);
-          setIsSearching(false);
-          setSearchPhase("");
-          setSearchResults([]);
-          sourceLabelsShown = true;
-        }
-
         setStreamingMessage(displayContentRaw || fullContent);
       }
 
-      clearTimeout(searchTimer);
+      // Flush any trailing content left in the frame buffer (partial non-frame text)
+      if (buffer && !buffer.startsWith("#@")) {
+        fullContent += buffer;
+        setStreamingMessage(stripSearchIndicator(fullContent) || fullContent);
+      }
+
       setIsSearching(false);
-      setSearchPhase("");
-      setSearchResults([]);
+      setResearchLabel("");
+      setResearchSources([]);
 
       setMessages((prev) => [
         ...prev,
@@ -691,7 +725,8 @@ function AskPage() {
       setStreaming(false);
       setStreamingMessage(null);
       setIsSearching(false);
-      setSearchPhase("");
+      setResearchLabel("");
+      setResearchSources([]);
     }
   }
 
@@ -902,321 +937,247 @@ async function copyShareText() {
   }
 
   return (
-    <div className="flex h-full overflow-hidden bg-white">
+    <SidebarProvider className="h-full" style={{ minHeight: 0 }}>
       <SourceDrawerModal
         sources={selectedSources}
         onClose={() => setSelectedSources(null)}
       />
 
-      {/* Quota exhausted modal */}
-      {showQuotaModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-foreground/20 backdrop-blur-sm"
-            onClick={() => setShowQuotaModal(false)}
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-zinc-800">
-                Daily limit reached
-              </h3>
-              <button
-                type="button"
-                onClick={() => setShowQuotaModal(false)}
-                className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
-                aria-label="Close"
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <p className="mb-5 text-sm text-zinc-500 leading-relaxed">
+      {/* Quota exhausted dialog */}
+      <Dialog open={showQuotaModal} onOpenChange={setShowQuotaModal}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Daily limit reached</DialogTitle>
+            <DialogDescription>
               You&apos;ve used all your queries for today. Sign in to get{" "}
-              <span className="font-semibold text-zinc-700">
-                20 queries/day
-              </span>{" "}
+              <span className="font-semibold text-foreground">20 queries/day</span>{" "}
               instead of 5.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                posthog.capture("user_signed_in", { method: "google", trigger: "quota_modal" });
-                signIn("google");
-                setShowQuotaModal(false);
-              }}
-              className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 hover:border-zinc-300"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                />
-              </svg>
-              Sign in with Google
-            </button>
-            <p className="mt-3 text-center text-xs text-zinc-400">
+            </DialogDescription>
+          </DialogHeader>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              posthog.capture("user_signed_in", { method: "google", trigger: "quota_modal" });
+              signIn("google");
+              setShowQuotaModal(false);
+            }}
+            className="w-full"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            Sign in with Google
+          </Button>
+          <DialogFooter>
+            <p className="w-full text-center text-xs text-muted-foreground">
               Already signed in?{" "}
               <Link
                 href="/store"
-                className="text-zinc-500 underline underline-offset-2 decoration-zinc-300 hover:decoration-zinc-500"
+                className="underline underline-offset-2 hover:text-foreground"
               >
                 Browse premium resources
               </Link>
             </p>
-          </div>
-        </div>
-      )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Share dialog */}
       {shareData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm"
-            onClick={() => setShareData(null)}
-          />
-          <div className="relative z-10 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl">
-            <div className="sticky top-0 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-4">
-              <h3 className="text-sm font-semibold text-zinc-800">Share answer</h3>
-              <button
-                type="button"
-                onClick={() => setShareData(null)}
-                className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
-                aria-label="Close"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+        <Dialog open onOpenChange={() => setShareData(null)}>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Share answer</DialogTitle>
+            </DialogHeader>
 
-            <div className="p-5">
+            <div className="space-y-4">
               {/* Card preview */}
-              <div className="overflow-hidden rounded-xl border border-zinc-100 shadow-sm">
+              <div className="overflow-hidden rounded-xl border border-border shadow-sm">
                 <canvas ref={shareCanvasRef} className="block w-full" />
                 {!shareImageBlob && (
-                  <div className="flex h-48 items-center justify-center bg-zinc-50">
-                    <div className="flex gap-1">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.15s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.3s]" />
-                    </div>
+                  <div className="flex h-48 items-center justify-center bg-muted">
+                    <Spinner />
                   </div>
                 )}
               </div>
 
               {/* Download button */}
-              <button
+              <Button
                 type="button"
                 onClick={downloadShareImage}
                 disabled={!shareImageBlob}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
                 Download image
-              </button>
+              </Button>
 
               {/* Share options */}
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                <button
+              <div className="grid grid-cols-3 gap-2">
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={whatsappShareCard}
-                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                  className="flex flex-col items-center gap-1 h-auto py-3"
                 >
                   <svg className="h-5 w-5 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
-                  <span className="text-[10px] text-zinc-500">WhatsApp</span>
-                </button>
+                  <span className="text-[10px] text-muted-foreground">WhatsApp</span>
+                </Button>
 
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={twitterShareCard}
-                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                  className="flex flex-col items-center gap-1 h-auto py-3"
                 >
-                  <svg className="h-5 w-5 text-zinc-700" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="h-5 w-5 text-foreground" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
-                  <span className="text-[10px] text-zinc-500">Twitter</span>
-                </button>
+                  <span className="text-[10px] text-muted-foreground">Twitter</span>
+                </Button>
 
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={copyShareText}
-                  className="flex flex-col items-center gap-1 rounded-xl border border-zinc-100 px-2 py-3 transition hover:bg-zinc-50"
+                  className="flex flex-col items-center gap-1 h-auto py-3"
                 >
-                  <svg className="h-5 w-5 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="h-5 w-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.5 2.5 0 0013.5 1.5h-9a2.5 2.5 0 00-2.5 2.5v9a2.5 2.5 0 002.5 2.5h2.5m4.166-1.888A2.5 2.5 0 0111.5 14.5h9a2.5 2.5 0 002.5-2.5v-9a2.5 2.5 0 00-2.5-2.5h-9a2.5 2.5 0 00-2.5 2.5v9a2.5 2.5 0 002.5 2.5h2.5" />
                   </svg>
-                  <span className="text-[10px] text-zinc-500">Copy text</span>
-                </button>
+                  <span className="text-[10px] text-muted-foreground">Copy text</span>
+                </Button>
               </div>
+            </div>
 
-              <button
+            <DialogFooter>
+              <Button
                 type="button"
+                variant="outline"
                 onClick={() => setShareData(null)}
-                className="mt-3 w-full rounded-xl border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-50"
+                className="w-full"
               >
                 Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
 
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-foreground/40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar — quiet, low contrast */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-zinc-100 bg-white transition-transform duration-300 md:relative md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
-      >
-        <div className="flex items-center justify-between px-3 h-12 shrink-0 border-b border-zinc-50">
-          <Link href="/" className="flex items-center">
+      {/* Sidebar */}
+      <Sidebar>
+        <SidebarHeader>
+          <Link href="/" className="flex items-center px-2 py-1">
             <img src="/logo.png" alt="UPSCPrepNotes" className="h-10 w-auto" />
           </Link>
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(false)}
-            data-track="ask-sidebar-close"
-            className="md:hidden p-1 text-zinc-300 hover:text-zinc-500 transition"
-          >
-            <svg
-              className="h-3.5 w-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={newConversation} data-track="ask-new-chat">
+                    <svg
+                      className="size-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    <span>New chat</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
 
-        <div className="px-2 pb-2">
-          <button
-            type="button"
-            onClick={newConversation}
-            data-track="ask-new-chat"
-            className="flex w-full items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-zinc-400 transition hover:bg-zinc-50 hover:text-zinc-600"
-          >
-            <svg
-              className="h-3.5 w-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            New chat
-          </button>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto px-1.5 pb-2 scrollbar-thin">
           {conversations.length === 0 ? (
-            <p className="px-3 pt-6 text-center text-xs text-zinc-300">
+            <p className="px-6 pt-6 text-center text-xs text-muted-foreground">
               No conversations
             </p>
           ) : (
-            <div className="space-y-3">
-              {groupedConversations.map((group) => (
-                <div key={group.label}>
-                  <p className="px-2.5 pb-0.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-                    {group.label}
-                  </p>
-                  <div className="space-y-0.5">
+            groupedConversations.map((group) => (
+              <SidebarGroup key={group.label}>
+                <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
                     {group.items.slice(0, 8).map((conv, idx) => (
-                      <button
-                        key={conv.id}
-                        type="button"
-                        data-track={`ask-conversation-${idx}`}
-                        onClick={() => {
-                          loadConversation(conv.id);
-                          setSidebarOpen(false);
-                        }}
-                        className={`group w-full rounded-lg px-2.5 py-1.5 text-left text-sm transition ${activeId === conv.id ? "bg-zinc-100 text-zinc-800 font-medium" : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"}`}
-                      >
-                        <span className="truncate block">
-                          {formatTitle(conv.title)}
-                        </span>
-                      </button>
+                      <SidebarMenuItem key={conv.id}>
+                        <SidebarMenuButton
+                          isActive={activeId === conv.id}
+                          onClick={() => loadConversation(conv.id)}
+                          data-track={`ask-conversation-${idx}`}
+                        >
+                          <span>{formatTitle(conv.title)}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
                     ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))
           )}
-        </nav>
+        </SidebarContent>
 
-        {/* Auth */}
-        <div className="border-t border-zinc-50 px-2 py-2">
+        <SidebarFooter>
           {session?.user ? (
-            <div className="flex items-center gap-2 px-2.5 py-1.5">
+            <div className="flex items-center gap-2 px-2 py-1">
               {session.user.image && (
-                <img
-                  src={session.user.image}
-                  alt=""
-                  className="h-5 w-5 rounded-full"
-                />
+                <Avatar className="size-7">
+                  <AvatarImage src={session.user.image} alt="" />
+                  <AvatarFallback>
+                    {(session.user.email || "U").charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
               )}
-              <span className="flex-1 truncate text-xs text-zinc-500">
+              <span className="flex-1 truncate text-xs text-muted-foreground">
                 {session.user.email}
               </span>
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="xs"
                 onClick={() => signOut({ callbackUrl: "/ask" })}
-                className="text-[11px] text-zinc-400 hover:text-zinc-600 transition"
               >
                 Sign out
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 posthog.capture("user_signed_in", { method: "google", trigger: "sidebar" });
                 signIn("google");
               }}
-              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-zinc-500 transition hover:bg-zinc-50 hover:text-zinc-700"
+              className="w-full justify-start gap-2 text-muted-foreground"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24">
+              <svg className="size-3.5" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="currentColor"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
@@ -1235,62 +1196,50 @@ async function copyShareText() {
                 />
               </svg>
               Sign in with Google
-              <span className="ml-auto text-[11px] text-zinc-300">
-                20 queries/day
-              </span>
-            </button>
+              <Badge variant="secondary" className="ml-auto">20/day</Badge>
+            </Button>
           )}
-        </div>
-      </aside>
+        </SidebarFooter>
+      </Sidebar>
 
       {/* Main */}
-      <div className="flex flex-1 flex-col min-w-0 h-full overflow-hidden">
-        <header className="flex items-center justify-between border-b border-zinc-100 bg-white px-4 h-14 shrink-0 md:hidden">
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(true)}
-            data-track="ask-mobile-menu"
-            className="rounded-lg p-1.5 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition"
-            aria-label="Open sidebar"
+      <SidebarInset className="flex h-full min-h-0 flex-col overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border/60 bg-background px-4">
+          <div className="flex items-center gap-2">
+            <SidebarTrigger data-track="ask-sidebar-trigger" />
+            <span className="text-sm font-semibold text-foreground md:hidden">
+              AI Mentor
+            </span>
+          </div>
+          <span className="hidden text-sm font-semibold text-foreground md:block">
+            AI Mentor
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="text-muted-foreground"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </button>
-          <span className="text-sm font-semibold text-zinc-700">AI Mentor</span>
-          <Link
-            href="/"
-            data-track="ask-mobile-home"
-            className="text-xs text-zinc-400 hover:text-zinc-600 transition"
-          >
-            Home
-          </Link>
+            <Link href="/" data-track="ask-mobile-home">Home</Link>
+          </Button>
         </header>
 
         {/* Top purchase banner — always visible */}
-        <div className="mx-auto max-w-[720px] w-full px-4 pt-3 md:pt-4">
+        <div className="mx-auto w-full max-w-[720px] shrink-0 px-4 pt-3 md:pt-4">
           <Link
             href="/store/all-strategy-reports"
             data-track="ask-purchase-banner"
-            className="flex items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-brand to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-brand hover:to-teal-500"
+            className="flex w-full items-center gap-3 rounded-xl bg-gradient-to-r from-brand to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-brand hover:to-teal-500"
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex min-w-0 flex-1 items-center gap-2.5">
               <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <div>
-                <p className="text-xs font-bold">Get All 280+ Strategy Reports</p>
-                <p className="text-[10px] text-emerald-100">One-time payment · Lifetime access · ₹27,720 value at ₹799</p>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-bold leading-tight">Get All 280+ Strategy Reports</p>
+                <p className="truncate text-[10px] text-emerald-100">
+                  One-time payment · Lifetime access · ₹27,720 value at ₹799
+                </p>
               </div>
             </div>
             <span className="shrink-0 rounded-lg bg-white/20 px-2.5 py-1 text-[11px] font-bold">Shop Now →</span>
@@ -1299,19 +1248,24 @@ async function copyShareText() {
 
         <div
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto scrollbar-thin bg-white"
+          className="flex-1 overflow-y-auto bg-background scrollbar-thin"
         >
           {loading ? (
-            <div className="flex h-full items-center justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-800" />
+            <div className="flex h-full flex-col items-center justify-center gap-3 px-6">
+              <Spinner className="size-5 text-muted-foreground" />
+              <div className="w-full max-w-xs space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
             </div>
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
               <div className="w-full max-w-md text-center">
-                <h1 className="text-2xl font-bold text-zinc-900">
+                <h1 className="text-2xl font-bold text-foreground">
                   Ask the AI Mentor
                 </h1>
-                <p className="mt-2 text-sm text-zinc-500">
+                <p className="mt-2 text-sm text-muted-foreground">
                   Get instant answers from 280+ topper strategies and real UPSC
                   data.
                 </p>
@@ -1321,17 +1275,17 @@ async function copyShareText() {
                     "Analyze UPSC 2024 GS1 urbanization question",
                     "What is the best answer writing framework?",
                   ].map((q) => (
-                    <button
+                    <Button
                       key={q}
-                      type="button"
+                      variant="outline"
+                      className="w-full justify-start text-left text-muted-foreground"
                       onClick={() => {
                         setInput(q);
                         inputRef.current?.focus();
                       }}
-                      className="w-full rounded-xl border border-brand/20 bg-brand-muted px-4 py-3 text-sm text-zinc-700 text-left transition hover:border-emerald-400 hover:bg-brand-muted"
                     >
                       {q}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -1342,23 +1296,26 @@ async function copyShareText() {
                 {messages.map((msg, i) => (
                   <div key={i}>
                     {msg.role === "user" ? (
-                      <div className="py-4 pl-8 flex justify-end">
-                        <div className="rounded-2xl bg-zinc-800 px-4 py-2.5 text-sm leading-relaxed text-white max-w-[75%]">
-                          {msg.content}
-                        </div>
-                      </div>
+                      <Message align="end" className="py-4">
+                        <MessageContent className="items-end">
+                          <Bubble variant="default" align="end" className="max-w-[75%]">
+                            <BubbleContent className="bg-foreground text-background">
+                              {msg.content}
+                            </BubbleContent>
+                          </Bubble>
+                        </MessageContent>
+                      </Message>
                     ) : (
-                      <div className="border-b border-zinc-100 last:border-b-0">
-                        <div className="py-5 relative">
-                          <div className="absolute left-0 top-[14px]">
-                            <img
-                              src="/logo.png"
-                              alt=""
-                              className="h-9 w-9 rounded-full bg-white shadow-sm ring-1 ring-zinc-100"
-                            />
-                          </div>
-                          <div className="pl-11">
-                            <div className="prose prose-zinc max-w-none prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-zinc-700 prose-pre:rounded-lg prose-pre:bg-zinc-900 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                      <div className="border-b border-border/60 last:border-b-0">
+                        <Message align="start" className="py-5">
+                          <MessageAvatar>
+                            <Avatar className="size-8 ring-1 ring-border">
+                              <AvatarImage src="/logo.png" alt="AI Mentor" />
+                              <AvatarFallback>AI</AvatarFallback>
+                            </Avatar>
+                          </MessageAvatar>
+                          <MessageContent>
+                            <div className="prose prose-zinc max-w-none prose-a:text-foreground prose-a:underline prose-a:underline-offset-2 prose-a:decoration-muted-foreground/40 hover:prose-a:decoration-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-foreground prose-pre:rounded-lg prose-pre:bg-foreground prose-pre:text-background prose-li:marker:text-muted-foreground">
                               <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={mdComponents}
@@ -1367,94 +1324,60 @@ async function copyShareText() {
                               </ReactMarkdown>
                             </div>
                             {msg.content && (
-                              <div className="mt-4 flex items-center gap-1 text-[11px]">
-                                <button
-                                  type="button"
+                              <MessageFooter className="gap-1 px-1">
+                                <Button
+                                  variant="ghost"
+                                  size="xs"
                                   onClick={() => handleCopy(i, msg.content)}
                                   data-track={`ask-copy-${i}`}
-                                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
+                                  className="text-muted-foreground"
                                 >
                                   {copiedIndex === i ? (
-                                    <>
-                                      <svg
-                                        className="h-3.5 w-3.5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M5 13l4 4L19 7"
-                                        />
-                                      </svg>
-                                      Copied
-                                    </>
+                                    <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
                                   ) : (
-                                    <>
-                                      <svg
-                                        className="h-3.5 w-3.5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={1.5}
-                                          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"
-                                        />
-                                      </svg>
-                                      Copy
-                                    </>
+                                    <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
                                   )}
-                                </button>
+                                  {copiedIndex === i ? "Copied" : "Copy"}
+                                </Button>
                                 {getMergedSources(msg).length > 0 && (
-                                  <button
-                                    type="button"
+                                  <Button
+                                    variant="ghost"
+                                    size="xs"
                                     onClick={() =>
                                       setSelectedSources(getMergedSources(msg))
                                     }
-                                    className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
+                                    className="text-muted-foreground"
                                   >
-                                    <svg
-                                      className="h-3.5 w-3.5"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={1.5}
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                      />
+                                    <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                     {getMergedSources(msg).length} source
-                                    {getMergedSources(msg).length !== 1
-                                      ? "s"
-                                      : ""}
-                                  </button>
+                                    {getMergedSources(msg).length !== 1 ? "s" : ""}
+                                  </Button>
                                 )}
-                                <button
-                                  type="button"
+                                <Button
+                                  variant="ghost"
+                                  size="xs"
                                   onClick={() => {
                                     const q = messages.slice(0, i).reverse().find(m => m.role === "user")?.content || "";
                                     openShareModal(msg.content, q);
                                   }}
                                   data-track={`ask-share-${i}`}
-                                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-600"
+                                  className="text-muted-foreground"
                                 >
-                                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                                  <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.769-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.188 2.25 2.25 0 00-3.935-2.188zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                                   </svg>
                                   Share
-                                </button>
-                              </div>
+                                </Button>
+                              </MessageFooter>
                             )}
-                          </div>
-                        </div>
+                          </MessageContent>
+                        </Message>
                       </div>
                     )}
                   </div>
@@ -1462,17 +1385,22 @@ async function copyShareText() {
 
                 {/* Streaming assistant message */}
                 {streamingMessage && (
-                  <div className="border-b border-zinc-100 last:border-b-0">
-                    <div className="py-5 relative">
-                      <div className="absolute left-0 top-[14px]">
-                        <img
-                          src="/logo.png"
-                          alt=""
-                          className="h-9 w-9 rounded-full bg-white shadow-sm ring-1 ring-zinc-100"
-                        />
-                      </div>
-                      <div className="pl-11">
-                        <div className="prose prose-zinc max-w-none prose-a:text-zinc-800 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-zinc-300 hover:prose-a:decoration-zinc-500 prose-code:rounded prose-code:bg-zinc-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-zinc-700 prose-pre:rounded-lg prose-pre:bg-zinc-900 prose-pre:text-zinc-100 prose-li:marker:text-zinc-400">
+                  <div className="border-b border-border/60 last:border-b-0">
+                    <Message align="start" className="py-5">
+                      <MessageAvatar>
+                        <Avatar className="size-8 ring-1 ring-border">
+                          <AvatarImage src="/logo.png" alt="AI Mentor" />
+                          <AvatarFallback>AI</AvatarFallback>
+                        </Avatar>
+                      </MessageAvatar>
+                      <MessageContent>
+                        <Marker role="status" className="mb-1">
+                          <MarkerIcon>
+                            <Spinner className="size-3" />
+                          </MarkerIcon>
+                          <MarkerContent>Thinking...</MarkerContent>
+                        </Marker>
+                        <div className="prose prose-zinc max-w-none prose-a:text-foreground prose-a:underline prose-a:underline-offset-2 prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-foreground prose-pre:rounded-lg prose-pre:bg-foreground prose-pre:text-background">
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={mdComponents}
@@ -1480,71 +1408,33 @@ async function copyShareText() {
                             {preprocessContent(streamingMessage)}
                           </ReactMarkdown>
                         </div>
-                      </div>
-                    </div>
+                      </MessageContent>
+                    </Message>
                   </div>
                 )}
 
-                {/* Research progress — shown only while searching, hidden the instant content arrives */}
-                {streaming && isSearching && (
+                {/* Research progress — shown only while Web search is active, hidden the instant content arrives */}
+                {streaming && isSearching && !streamingMessage && (
                   <div className="mx-auto max-w-[720px] px-4 py-4">
-                    <div className="flex items-center gap-2 text-xs text-zinc-400">
-                      <svg
-                        className="h-3.5 w-3.5 text-zinc-300"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                      <span>{searchPhase || "Researching..."}</span>
-                      <span className="text-zinc-200 mx-1">·</span>
-                      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none max-w-[400px]">
-                        {searchResults.length === 0 ? (
-                          <span className="flex gap-1">
-                            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200" />
-                            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200 [animation-delay:0.15s]" />
-                            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-200 [animation-delay:0.3s]" />
-                          </span>
-                        ) : (
-                          searchResults.map((r, ri) => (
-                            <span
-                              key={ri}
-                              className="inline-flex shrink-0 items-center gap-1"
-                            >
-                              {r.status === "done" ? (
-                                <svg
-                                  className="h-3 w-3 text-zinc-300"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
-                              ) : (
-                                <span className="h-2 w-2 animate-pulse rounded-full bg-zinc-200" />
-                              )}
+                    <div className="flex items-start gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-3">
+                      <Spinner className="size-4 shrink-0 text-brand mt-0.5" />
+                      <div className="min-w-0 space-y-1.5">
+                        <p className="text-xs font-medium text-foreground">
+                          {researchLabel || "Researching..."}
+                          <span className="text-muted-foreground/50">…</span>
+                        </p>
+                        {researchSources.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            {researchSources.slice(0, 5).map((r, ri) => (
                               <span
-                                className={
-                                  r.status === "done"
-                                    ? "text-zinc-400"
-                                    : "text-zinc-300"
-                                }
+                                key={ri}
+                                className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2 py-0.5 text-[10px] text-muted-foreground"
                               >
-                                {r.label}
+                                <span className="size-1 rounded-full bg-brand" />
+                                <span className="max-w-[140px] truncate">{r.label}</span>
                               </span>
-                            </span>
-                          ))
+                            ))}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -1554,67 +1444,54 @@ async function copyShareText() {
                 {/* Web search used — tiny muted row after streaming, replaces search banner */}
                 {!streaming && searchedOnce && messages.length > 0 && (
                   <div className="mx-auto max-w-[720px] px-4 pb-2">
-                    <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-                      <svg
-                        className="h-3 w-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                      Web search used
-                    </div>
+                    <Marker>
+                      <MarkerIcon>
+                        <svg className="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </MarkerIcon>
+                      <MarkerContent>Web search used</MarkerContent>
+                    </Marker>
                   </div>
                 )}
 
-                {/* Streaming indicator — dot animation while streaming but not searching */}
+                {/* Streaming indicator — shown while streaming but not in the research phase */}
                 {streaming && !isSearching && (
                   <div className="mx-auto max-w-[720px] px-4 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800">
-                        <svg
-                          className="h-3 w-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                        </svg>
-                      </div>
-                      <div className="flex gap-1">
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300" />
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.15s]" />
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-300 [animation-delay:0.3s]" />
-                      </div>
-                    </div>
+                    <Marker role="status">
+                      <MarkerIcon>
+                        <Spinner className="size-3.5" />
+                      </MarkerIcon>
+                      <MarkerContent>
+                        {streamingMessage ? "Generating response..." : "Thinking..."}
+                      </MarkerContent>
+                    </Marker>
                   </div>
                 )}
 
                 <div ref={messagesEndRef} />
 
                 {!streaming && followUpQuestions.length > 0 && (
-                  <div className="mt-4 mb-2">
-                    <p className="text-[11px] uppercase tracking-[0.15em] text-zinc-400 mb-2 font-medium">
+                  <div className="mt-4 mb-2 space-y-2">
+                    <Separator />
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground mb-2 font-medium">
                       Follow up
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {followUpQuestions.map((q) => (
-                        <button
+                        <Button
                           key={q}
                           type="button"
+                          variant="outline"
+                          size="sm"
+                          className="h-auto rounded-full py-1.5 text-xs text-muted-foreground"
                           onClick={() => {
                             setInput(q);
                             inputRef.current?.focus();
                           }}
-                          className="rounded-full border border-brand/20 bg-brand-muted px-3 py-1.5 text-xs text-zinc-700 transition hover:border-emerald-400 hover:bg-brand-muted"
                         >
                           {q}
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -1625,174 +1502,106 @@ async function copyShareText() {
         </div>
 
         {/* Input area */}
-       <div className="shrink-0 border-t border-zinc-100 bg-white px-4 pt-4 pb-4 md:px-6">
-  <div className="mx-auto max-w-3xl">
-
-    <form onSubmit={handleSubmit}>
-      <div
-        className="
-          relative
-          overflow-hidden
-          rounded-[20px]
-          border
-          border-zinc-200
-          bg-white
-          shadow-sm
-          transition-all
-          duration-200
-          focus-within:border-zinc-300
-          focus-within:shadow-md
-        "
-      >
-        <textarea
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={streaming || loading}
-          rows={1}
-          placeholder="Ask about UPSC preparation..."
-            className="
-              block
-              w-full
-              resize-none
-              border-0
-              bg-transparent
-              px-5
-              py-3
-              pr-16
-              pb-9
-              text-[15px]
-              leading-6
-              text-zinc-900
-              outline-none
-              placeholder:text-zinc-400
-            "
-            style={{
-              minHeight: "52px",
-              maxHeight: "220px",
-            }}
-            onInput={(e) => {
-              const el = e.currentTarget;
-              el.style.height = "52px";
-              el.style.height =
-                Math.min(el.scrollHeight, 220) + "px";
-            }}
-          />
-
-          <div className="absolute left-3 bottom-2 flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setSearchWeb((v) => !v)}
-              disabled={streaming || loading}
-              aria-label="Toggle web search"
-              aria-pressed={searchWeb}
-              className="group flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span
-                className={`relative inline-flex h-[18px] w-8 items-center rounded-full transition-colors duration-200 ${
-                  searchWeb ? "bg-brand" : "bg-zinc-200 group-hover:bg-zinc-300"
-                }`}
-              >
-                <span
-                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                    searchWeb ? "translate-x-[18px]" : "translate-x-[2px]"
-                  }`}
+        <div className="shrink-0 border-t border-border/60 bg-background px-4 pt-4 pb-4 md:px-6">
+          <div className="mx-auto max-w-3xl">
+            <form onSubmit={handleSubmit}>
+              <div className="relative flex items-end gap-2 rounded-2xl border border-input bg-background p-2 shadow-sm transition-colors focus-within:border-ring">
+                <Textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={streaming || loading}
+                  rows={1}
+                  placeholder="Ask about UPSC preparation..."
+                  className="min-h-[52px] max-h-[220px] flex-1 resize-none border-0 bg-transparent px-3 py-2 text-[15px] leading-6 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:border-0 shadow-none"
+                  onInput={(e) => {
+                    const el = e.currentTarget;
+                    el.style.height = "52px";
+                    el.style.height = Math.min(el.scrollHeight, 220) + "px";
+                  }}
                 />
-              </span>
-              <span
-                className={`text-[11px] font-medium transition-colors duration-200 ${
-                  searchWeb ? "text-brand" : "text-zinc-400 group-hover:text-zinc-600"
-                }`}
-              >
-                Web search
-              </span>
-            </button>
+                <div className="flex shrink-0 items-center gap-2 pb-1.5">
+                  <label
+                    className="flex cursor-pointer items-center gap-1.5 text-[11px] font-medium text-muted-foreground"
+                    data-track="ask-web-search-toggle"
+                  >
+                    <Switch
+                      checked={searchWeb}
+                      onCheckedChange={setSearchWeb}
+                      disabled={streaming || loading}
+                      size="sm"
+                    />
+                    Web search
+                  </label>
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={streaming || loading || !input.trim()}
+                    aria-label="Send message"
+                    className="shrink-0"
+                  >
+                    {streaming ? (
+                      <Spinner className="size-4" />
+                    ) : (
+                      <svg
+                        className="size-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M5 12h14m-7-7l7 7-7 7"
+                        />
+                      </svg>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </form>
 
+            {quota && (
+              <p className="mt-2 text-center text-[11px] text-muted-foreground">
+                {quota.isAuthenticated
+                  ? `${quota.remaining} of 20 queries remaining today`
+                  : `${quota.remaining} of 5 free queries remaining today`}
+
+                {quota.remaining <= 1 && !quota.isAuthenticated && (
+                  <>
+                    {" "}
+                    —{" "}
+                    <Button
+                      variant="link"
+                      size="xs"
+                      className="h-auto p-0 text-xs"
+                      onClick={() => signIn("google")}
+                    >
+                      Sign in for 20/day
+                    </Button>
+                  </>
+                )}
+
+                {quota.remaining <= 1 && quota.isAuthenticated && (
+                  <>
+                    {" "}
+                    —{" "}
+                    <Link
+                      href="/store"
+                      className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                    >
+                      Browse premium resources
+                    </Link>
+                  </>
+                )}
+              </p>
+            )}
           </div>
-
-          <button
-            type="submit"
-            disabled={streaming || loading || !input.trim()}
-            aria-label="Send message"
-            className="
-              absolute
-              right-3
-              bottom-2
-              flex
-              h-8
-              w-8
-              items-center
-              justify-center
-              rounded-full
-              bg-zinc-900
-              text-white
-              transition-all
-              duration-200
-              hover:scale-105
-              hover:bg-zinc-800
-              active:scale-95
-              disabled:scale-100
-              disabled:bg-zinc-200
-              disabled:text-zinc-400
-              disabled:cursor-not-allowed
-            "
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M5 12h14m-7-7l7 7-7 7"
-              />
-            </svg>
-          </button>
-      </div>
-    </form>
-
-    {quota && (
-      <p className="mt-2 text-center text-[11px] text-zinc-400">
-        {quota.isAuthenticated
-          ? `${quota.remaining} of 20 queries remaining today`
-          : `${quota.remaining} of 5 free queries remaining today`}
-
-        {quota.remaining <= 1 && !quota.isAuthenticated && (
-          <>
-            {" "}
-            —{" "}
-            <button
-              type="button"
-              onClick={() => signIn("google")}
-              className="text-zinc-500 underline underline-offset-2 hover:text-zinc-700"
-            >
-              Sign in for 20/day
-            </button>
-          </>
-        )}
-
-        {quota.remaining <= 1 && quota.isAuthenticated && (
-          <>
-            {" "}
-            —{" "}
-            <Link
-              href="/store"
-              className="text-zinc-500 underline underline-offset-2 hover:text-zinc-700"
-            >
-              Browse premium resources
-            </Link>
-          </>
-        )}
-      </p>
-    )}
-  </div>
-</div>
-      </div>
-    </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
 
@@ -1805,115 +1614,102 @@ function SourceDrawerModal({
 }) {
   if (!sources || sources.length === 0) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:p-4">
-      <div
-        className="fixed inset-0 bg-foreground/20 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="relative z-10 flex max-h-[70vh] w-full flex-col rounded-t-2xl bg-white shadow-2xl sm:max-h-[60vh] sm:max-w-lg sm:rounded-2xl mx-auto">
-        <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
-          <h3 className="text-sm font-semibold text-zinc-800">Sources</h3>
-          <button
-            onClick={onClose}
-            className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
-            aria-label="Close"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-5 space-y-3">
-          {sources.map((src, i) => {
-            const colors = SOURCE_TYPE_COLORS[src.type];
-            return (
-              <div
-                key={i}
-                className="flex items-start gap-3 rounded-xl border border-zinc-100 bg-white p-3.5 transition hover:border-zinc-200"
-              >
+    <Sheet open onOpenChange={(o) => !o && onClose()}>
+      <SheetContent side="bottom" className="max-h-[70vh] sm:max-w-lg sm:mx-auto sm:rounded-t-2xl">
+        <SheetHeader>
+          <SheetTitle>Sources</SheetTitle>
+          <SheetDescription className="sr-only">
+            Sources used to answer this question
+          </SheetDescription>
+        </SheetHeader>
+        <ScrollArea className="h-full min-h-0 flex-1 pr-2">
+          <div className="flex-1 space-y-3 pt-2">
+            {sources.map((src, i) => {
+              const colors = SOURCE_TYPE_COLORS[src.type];
+              return (
                 <div
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${colors.bg}`}
+                  key={i}
+                  className="flex items-start gap-3 rounded-xl border border-border bg-background p-3.5 transition hover:bg-muted"
                 >
-                  {src.type === "topper" ? (
-                    <svg
-                      className="h-4 w-4 text-rose-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  ) : (
-                    <img
-                      src={faviconUrl(src.domain)}
-                      alt=""
-                      className="h-4 w-4 rounded"
-                    />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-zinc-800">
-                      {src.label}
-                    </span>
-                    <span
-                      className={`rounded-md px-1.5 py-0.5 text-[10px] font-medium ${colors.bg} ${colors.text}`}
-                    >
-                      {SOURCE_TYPE_LABEL[src.type]}
-                    </span>
-                  </div>
-                  <p className="mt-0.5 text-xs text-zinc-400">{src.domain}</p>
-                  {src.reason && (
-                    <p className="mt-1 text-xs text-zinc-500">{src.reason}</p>
-                  )}
-                </div>
-                <a
-                  href={src.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 transition"
-                  aria-label="Open source"
-                >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${colors.bg}`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
-              </div>
-            );
-          })}
+                    {src.type === "topper" ? (
+                      <svg
+                        className="h-4 w-4 text-rose-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    ) : (
+                      <img
+                        src={faviconUrl(src.domain)}
+                        alt=""
+                        className="h-4 w-4 rounded"
+                      />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-foreground">
+                        {src.label}
+                      </span>
+                      <Badge
+                        variant="secondary"
+                        className={`${colors.bg} ${colors.text}`}
+                      >
+                        {SOURCE_TYPE_LABEL[src.type]}
+                      </Badge>
+                    </div>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{src.domain}</p>
+                    {src.reason && (
+                      <p className="mt-1 text-xs text-muted-foreground">{src.reason}</p>
+                    )}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    asChild
+                    className="shrink-0 text-muted-foreground"
+                    aria-label="Open source"
+                  >
+                    <a
+                      href={src.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <svg
+                        className="size-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+        <div className="border-t border-border px-5 py-3 text-xs text-muted-foreground">
+          {sources.length} source{sources.length !== 1 ? "s" : ""}
         </div>
-        <div className="border-t border-zinc-100 px-5 py-3 flex items-center justify-between text-xs text-zinc-400">
-          <span>
-            {sources.length} source{sources.length !== 1 ? "s" : ""}
-          </span>
-        </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
