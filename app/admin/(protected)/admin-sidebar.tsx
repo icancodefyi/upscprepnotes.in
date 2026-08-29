@@ -95,6 +95,7 @@ const navGroups = [
     label: "Overview",
     items: [
       { href: "/admin", label: "Toppers", icon: Icons.award },
+      { href: "/admin/payments", label: "Payments", icon: Icons.chart },
       { href: "https://us.posthog.com", label: "Analytics", icon: Icons.chart, external: true },
     ],
   },
