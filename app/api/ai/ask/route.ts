@@ -89,9 +89,15 @@ export async function POST(request: NextRequest) {
         const encoder = new TextEncoder();
         let fullContent = "";
 
+        // Control frames: server → client status updates (stripped before display)
+        const emit = (obj: Record<string, unknown>) => {
+          controller.enqueue(encoder.encode(`#@${JSON.stringify(obj)}\n`));
+        };
+
         // Phase 1: if user toggled search, detect need with fast 8B model
         let didSearch = false;
         if (wantsSearch) {
+          emit({ t: "begin", label: "Analyzing your question" });
           try {
             const detection = await groq.chat.completions.create({
               model: "openai/gpt-oss-20b",
@@ -111,17 +117,31 @@ export async function POST(request: NextRequest) {
               const query = args?.query;
               if (query) {
                 didSearch = true;
+                emit({ t: "status", label: "Searching the web" });
                 const indicator = `🔍 Searching the web for "${query.replace(/"/g, '\\"')}"...\n\n`;
                 controller.enqueue(encoder.encode(indicator));
                 fullContent += indicator;
 
                 let formattedResults = "";
+                let sources: { domain: string; label: string }[] = [];
                 try {
                   const searchData = await searchWeb(query);
                   formattedResults = formatSearchResults(query, searchData.results);
+                  sources = searchData.results
+                    .map((r) => {
+                      let domain = r.url;
+                      try {
+                        domain = new URL(r.url).hostname.replace(/^www\./, "");
+                      } catch {}
+                      return { domain, label: r.title.slice(0, 70) || domain };
+                    })
+                    .slice(0, 5);
                 } catch (err) {
                   console.error("Web search failed:", err);
                 }
+
+                if (sources.length) emit({ t: "sources", items: sources });
+                emit({ t: "status", label: "Compiling the best info" });
 
                 groqMessages.push({
                   role: "assistant",
@@ -148,6 +168,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Phase 2: stream the response (70B with or without search context)
+        emit({ t: "status", label: "Writing your answer" });
+        emit({ t: "end" });
         try {
           const stream = await groq.chat.completions.create({
             model: "openai/gpt-oss-20b",
@@ -172,6 +194,8 @@ export async function POST(request: NextRequest) {
             fullContent = fallback;
           }
         }
+
+        emit({ t: "end" });
 
         const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
         await saveMessage(cid, "assistant", fullContent, sources);
