@@ -16,6 +16,9 @@ async function sendRequestEmail(email: string, topperName: string) {
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Request Received!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">We've noted your interest in <strong>${topperName}'s</strong> answer copy.</p>
         <p style="color:#444;font-size:14px;line-height:1.7;text-align:center">We're working on sourcing it. As soon as it's available, we'll send it straight to this inbox.</p>
+        <div style="margin-top:24px;background:#fff7e0;border:1px solid #f5d06b;border-radius:12px;padding:16px 20px">
+          <p style="color:#7a5c00;font-size:13px;line-height:1.7;margin:0"><strong>⚠️ Didn't see a confirmation email?</strong><br/>Gmail and other providers sometimes route automated emails to the <strong>Promotions</strong> tab or <strong>Spam/Junk</strong> folder. If you don't receive this email, please check <strong>Promotions</strong> and <strong>Spam</strong> — and mark us as "Not spam" so future updates land in your Inbox.</p>
+        </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You requested this on UPSCPrepNotes.in. We'll only email you when ${topperName}'s copy is ready.</p>
       </div>
     </body>
