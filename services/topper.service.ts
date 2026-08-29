@@ -146,8 +146,8 @@ export async function getAllToppersList() {
     .lean();
 
   return toppers.map((t: any) => ({
-    firstName: t.firstName,
-    lastName: t.lastName,
+    firstName: t.firstName || "",
+    lastName: t.lastName || "",
     rank: t.rank,
     year: t.year,
     optionalSubject: t.optionalSubject || "",
