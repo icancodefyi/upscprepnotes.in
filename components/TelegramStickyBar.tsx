@@ -9,7 +9,10 @@ export default function TelegramStickyBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(STORAGE_KEY);
+    let dismissed: string | null = null;
+    try {
+      dismissed = localStorage.getItem(STORAGE_KEY);
+    } catch {}
     if (!dismissed) {
       const timer = setTimeout(() => setVisible(true), 4000);
       return () => clearTimeout(timer);
@@ -18,7 +21,9 @@ export default function TelegramStickyBar() {
 
   function dismiss() {
     setVisible(false);
-    localStorage.setItem(STORAGE_KEY, "1");
+    try {
+      localStorage.setItem(STORAGE_KEY, "1");
+    } catch {}
   }
 
   if (!visible) return null;
