@@ -3,8 +3,34 @@ import { DodoPayments } from "dodopayments";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import { generateDownloadToken, sendAdminNotification } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
+import { generateDownloadToken, sendAdminNotification, sendOrderConfirmationEmail } from "@/lib/order-utils";
+
+function buildDownloadUrl(token: string, items: { slug?: string }[]): string {
+  const base = process.env.SITE_URL || "https://upscprepnotes.in";
+  const firstSlug = items?.[0]?.slug;
+  return `${base}/api/download/${token}${firstSlug ? `?slug=${firstSlug}` : ""}`;
+}
+
+async function sendConfirmationSafely(
+  recipientEmail: string,
+  orderId: string,
+  items: { slug?: string; title: string }[],
+  downloadToken: string
+) {
+  if (!recipientEmail) return;
+  try {
+    await sendOrderConfirmationEmail(
+      recipientEmail,
+      orderId,
+      items,
+      buildDownloadUrl(downloadToken, items)
+    );
+    console.log(`Order confirmation email sent to ${recipientEmail}`);
+  } catch (err) {
+    console.error(`Order confirmation email FAILED for ${recipientEmail}:`, err);
+  }
+}
 
 const dodo = new DodoPayments({
   bearerToken: process.env.DODO_API_KEY!,
@@ -72,6 +98,8 @@ export async function POST(request: NextRequest) {
           dodoPaymentId: paymentId,
         });
         console.log(`[${webhookId}] Order ${existing._id} updated: pending → paid`);
+        const recipientEmail = customerEmail || existing.email || "";
+        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);
         try {
           await AnalyticsEventModel.create({
             event: "checkout_completed",
@@ -135,6 +163,8 @@ export async function POST(request: NextRequest) {
     });
 
     console.log(`[${webhookId}] New order created: ${order._id}`);
+
+    await sendConfirmationSafely(customerEmail, order._id.toString(), order.items, order.downloadToken);
 
     try {
       await AnalyticsEventModel.create({

@@ -53,6 +53,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isAdmin = pathname?.startsWith("/admin");
+  const isLanding = pathname === "/landing" || pathname?.startsWith("/landing");
+
+  if (isLanding) {
+    return <CartProvider>{children}</CartProvider>;
+  }
 
   return (
     <CartProvider>

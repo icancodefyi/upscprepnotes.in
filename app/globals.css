@@ -232,3 +232,19 @@
 .animate-shimmer {
   animation: shimmer 3s linear infinite;
 }
+
+@keyframes altruist-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-altruist-marquee {
+  display: flex;
+  width: max-content;
+  animation: altruist-marquee 25s linear infinite;
+}
+
+.animate-altruist-marquee:hover {
+  animation-play-state: paused;
+}
+

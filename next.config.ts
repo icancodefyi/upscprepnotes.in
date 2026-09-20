@@ -102,6 +102,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/impiclabs/**",
       },
+      {
+        protocol: "https",
+        hostname: "framerusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

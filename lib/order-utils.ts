@@ -70,11 +70,15 @@ export async function sendOrderConfirmationEmail(
     </html>
   `;
 
-  await sendEmail({
+const result = await sendEmail({
     to: email,
     subject: `Your Downloads Are Ready — ${orderId}`,
     html,
   });
+
+  if (result?.error || !result?.data?.id) {
+    throw new Error(result?.error?.message || "Resend returned no email id");
+  }
 }
 
 export async function sendAdminNotification(
