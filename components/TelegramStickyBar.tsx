@@ -1,27 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const STORAGE_KEY = "tg-bar-dismissed";
 const TELEGRAM_LINK = "https://t.me/+2eV0YCTGdNcyNmFl";
 
 export default function TelegramStickyBar() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (pathname === "/landing" || pathname?.startsWith("/landing")) return;
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (!dismissed) {
       const timer = setTimeout(() => setVisible(true), 4000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [pathname]);
 
   function dismiss() {
     setVisible(false);
     localStorage.setItem(STORAGE_KEY, "1");
   }
 
-  if (!visible) return null;
+  if (!visible || pathname === "/landing" || pathname?.startsWith("/landing")) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">
