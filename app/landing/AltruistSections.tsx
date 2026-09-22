@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Check, ChevronLeft, ChevronRight, Plus, Minus, ArrowRight, ArrowUpRight, BookOpen, FileText, TrendingUp, Bot, Sparkles, MapPin, Download } from "lucide-react";
 import IndiaCommunityMap from "@/components/IndiaCommunityMap";
+import AnimatedCurvedRibbon from "@/components/AnimatedCurvedRibbon";
 
 // Premier Institute Logos
 const MARQUEE_ITEMS = [
@@ -160,64 +161,22 @@ export function AltruistPurpose() {
           opacity: 1
         }}
       >
-        {/* Curved Rotating SVG Ribbon */}
-        <div className="framer-xh74jq-container" style={{ transform: "rotate(-10deg)", opacity: 1 }}>
-          <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
-            <svg
-              width="1940"
-              height="300"
-              viewBox="0 0 1940 300"
-              style={{ display: "block", overflow: "visible" }}
-              aria-label="Authentic Marksheets • Evaluated Copies • Verified Rankers • Data-Driven Strategy "
-            >
-              <defs>
-                <path
-                  id="sec01-curve-path"
-                  d="M 99.7,150.0 L 299.8,191.2 L 500.0,211.9 L 700.2,201.6 L 970.0,150.0 L 1205.0,103.2 L 1405.2,87.6 L 1605.3,103.2 L 1840.3,150.0"
-                />
-                <path
-                  id="sec01-curve-path-extended"
-                  d="M -700 150 L 99.7,150.0 L 299.8,191.2 L 500.0,211.9 L 700.2,201.6 L 970.0,150.0 L 1205.0,103.2 L 1405.2,87.6 L 1605.3,103.2 L 1840.3,150.0 L 2600 150"
-                />
-                <mask id="sec01-curve-mask" maskUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="1940" height="300" fill="black" />
-                  <path
-                    d="M 99.7,150.0 L 299.8,191.2 L 500.0,211.9 L 700.2,201.6 L 970.0,150.0 L 1205.0,103.2 L 1405.2,87.6 L 1605.3,103.2 L 1840.3,150.0"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="150.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </mask>
-              </defs>
-              <path
-                d="M 99.7,150.0 L 299.8,191.2 L 500.0,211.9 L 700.2,201.6 L 970.0,150.0 L 1205.0,103.2 L 1405.2,87.6 L 1605.3,103.2 L 1840.3,150.0"
-                fill="none"
-                stroke="rgb(237, 242, 248)"
-                strokeWidth="72.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <text
-                dy="6.9"
-                style={{
-                  fontFamily: '"Instrument Sans", sans-serif',
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  letterSpacing: "2px"
-                }}
-                fill="rgb(37, 91, 115)"
-                textAnchor="start"
-                mask="url(#sec01-curve-mask)"
-              >
-                <textPath href="#sec01-curve-path-extended" startOffset="0">
-                  AUTHENTIC MARKSHEETS • EVALUATED COPIES • VERIFIED RANKERS • ZERO FLUFF • UPSC CSE 2026 • AUTHENTIC MARKSHEETS • EVALUATED COPIES • VERIFIED RANKERS • ZERO FLUFF • 
-                </textPath>
-              </text>
-            </svg>
-          </div>
-        </div>
+        {/* Curved Rotating SVG Ribbon (Continuous glide + scroll acceleration) */}
+        <AnimatedCurvedRibbon
+          id="ribbon-purpose"
+          unitText="AUTHENTIC MARKSHEETS • EVALUATED COPIES • VERIFIED RANKERS • ZERO FLUFF • UPSC CSE 2026 • "
+          angle={-10}
+          direction={1}
+          baseSpeed={0.8}
+          scrollSpeed={0.5}
+          containerClass="framer-xh74jq-container"
+          svgWidth={1940}
+          svgHeight={300}
+          viewBox="0 0 1940 300"
+          pathD="M 99.7,150.0 L 299.8,191.2 L 500.0,211.9 L 700.2,201.6 L 970.0,150.0 L 1205.0,103.2 L 1405.2,87.6 L 1605.3,103.2 L 1840.3,150.0"
+          strokeColor="rgb(237, 242, 248)"
+          textColor="rgb(37, 91, 115)"
+        />
 
         {/* White Info Card Chassis */}
         <div
@@ -1069,61 +1028,23 @@ export function AltruistGazetteRecords() {
         </div>
       </div>
 
-      {/* Rotating Ribbon Underneath */}
-      <div className="ssr-variant hidden-m7wppq">
-        <div className="framer-m0c4nu-container" style={{ transform: "rotate(19deg)" }}>
-          <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
-            <svg
-              width="2032"
-              height="300"
-              viewBox="0 0 2032 300"
-              style={{ display: "block", overflow: "visible" }}
-              aria-label="Verified Marksheets • Authentic Evaluated Booklets • Genuine Rankers "
-            >
-              <defs>
-                <path
-                  id="sec04-curve-path-extended"
-                  d="M -524.45 150 L 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2100 150 L 2556.45 150"
-                />
-                <mask id="sec04-curve-mask" maskUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="2032" height="300" fill="black" />
-                  <path
-                    d="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2100 150"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="150.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </mask>
-              </defs>
-              <path
-                d="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2100 150"
-                fill="none"
-                stroke="var(--token-4a66cce6-00d5-40f7-836a-7512ad740f85, rgb(255, 255, 252))"
-                strokeWidth="72.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <text
-                dy="6.9"
-                style={{
-                  fontFamily: '"Instrument Sans", sans-serif',
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  letterSpacing: "2px"
-                }}
-                fill="rgb(37, 91, 115)"
-                textAnchor="start"
-                mask="url(#sec04-curve-mask)"
-              >
-                <textPath href="#sec04-curve-path-extended" startOffset="0">
-                  VERIFIED MARKSHEETS • GENUINE TOPPER BOOKLETS • OFFICIAL GAZETTE RECORDS • ZERO GUESSWORK • VERIFIED MARKSHEETS • GENUINE TOPPER BOOKLETS • 
-                </textPath>
-              </text>
-            </svg>
-          </div>
-        </div>
+      {/* Rotating Ribbon Underneath (Criss-crossing at +19deg with reverse glide) */}
+      <div className="ssr-variant">
+        <AnimatedCurvedRibbon
+          id="ribbon-gazette"
+          unitText="VERIFIED MARKSHEETS • GENUINE TOPPER BOOKLETS • OFFICIAL GAZETTE RECORDS • ZERO GUESSWORK • "
+          angle={19}
+          direction={-1}
+          baseSpeed={0.8}
+          scrollSpeed={0.5}
+          containerClass="framer-m0c4nu-container"
+          svgWidth={2032}
+          svgHeight={300}
+          viewBox="0 0 2032 300"
+          pathD="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2100 150"
+          strokeColor="var(--token-4a66cce6-00d5-40f7-836a-7512ad740f85, rgb(255, 255, 252))"
+          textColor="rgb(37, 91, 115)"
+        />
       </div>
     </section>
   );
@@ -1999,60 +1920,23 @@ export function AltruistStarterPackLead() {
       </div>
 
 
-      {/* Rotating Volunteer SVG Ribbon */}
-      <div className="framer-v0aev5-container" style={{ transform: "translateY(-50%) rotate(-18deg)" }}>
-        <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
-          <svg
-            width="2032"
-            height="300"
-            viewBox="0 0 2032 300"
-            style={{ display: "block", overflow: "visible" }}
-            aria-label="Free Starter Pack • 3 Evaluated Copies • 2026 Cutoff Trends "
-          >
-            <defs>
-              <path
-                id="sec08-curve-path-extended"
-                d="M -152.58 150 L 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2184.58 150"
-              />
-              <mask id="sec08-curve-mask" maskUnits="userSpaceOnUse">
-                <rect x="0" y="0" width="2032" height="300" fill="black" />
-                <path
-                  d="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2184.58 150"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="150.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </mask>
-            </defs>
-            <path
-              d="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2184.58 150"
-              fill="none"
-              stroke="rgb(255, 255, 255)"
-              strokeWidth="72.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <text
-              dy="6.9"
-              style={{
-                fontFamily: '"Instrument Sans", sans-serif',
-                fontSize: "24px",
-                fontWeight: 600,
-                letterSpacing: "2px"
-              }}
-              fill="rgb(37, 91, 115)"
-              textAnchor="start"
-              mask="url(#sec08-curve-mask)"
-            >
-              <textPath href="#sec08-curve-path-extended" startOffset="0">
-                FREE STARTER PACK • 3 EVALUATED COPIES • 2026 CUTOFF TRACKER • ZERO SPAM • FREE STARTER PACK • 3 EVALUATED COPIES • 
-              </textPath>
-            </text>
-          </svg>
-        </div>
-      </div>
+      {/* Rotating Volunteer SVG Ribbon (Criss-crossing back at -18deg with smooth glide) */}
+      <AnimatedCurvedRibbon
+        id="ribbon-starter"
+        unitText="FREE STARTER PACK • 3 EVALUATED COPIES • 2026 CUTOFF TRACKER • ZERO SPAM • "
+        angle={-18}
+        direction={1}
+        baseSpeed={0.8}
+        scrollSpeed={0.5}
+        containerClass="framer-v0aev5-container"
+        containerStyle={{ transform: "translateY(-50%) rotate(-18deg)" }}
+        svgWidth={2032}
+        svgHeight={300}
+        viewBox="0 0 2032 300"
+        pathD="M 101.5 150 L 330.1 198.5 L 787.4 101.5 L 1244.6 198.5 L 1701.9 101.5 L 2184.58 150"
+        strokeColor="rgb(255, 255, 255)"
+        textColor="rgb(37, 91, 115)"
+      />
     </section>
   );
 }
