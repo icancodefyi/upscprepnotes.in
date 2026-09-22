@@ -62,3 +62,5 @@ data/download-stats.json
 
 # Claude project files (contains actual topper data)
 claude-project/
+impiseo-insights.md
+sih.md

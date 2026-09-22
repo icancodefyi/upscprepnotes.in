@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import IndiaCommunityMap from "@/components/IndiaCommunityMap";
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,6 +11,7 @@ import {
   Minus,
   Check,
   ArrowUpRight,
+  ArrowRight,
   BookOpen,
   FileText,
   TrendingUp,
@@ -21,7 +23,31 @@ import {
   Award,
   FileCheck2,
   ExternalLink,
+  MapPin,
+  Users,
+  Radio,
+  Database,
+  ShieldCheck,
+  Code,
+  GraduationCap,
+  Layers,
+  Search,
 } from "lucide-react";
+import Image from "next/image";
+import {
+  AltruistMarquee,
+  AltruistPurpose,
+  AltruistCuratedStore,
+  AltruistMainsBlueprints,
+  AltruistGazetteRecords,
+  AltruistTestimonials,
+  AltruistOptionalBenchmarks,
+  AltruistFaq,
+  AltruistStarterPackLead,
+  AltruistCommunityVoices,
+  AltruistFooter,
+} from "./AltruistSections";
+
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -41,186 +67,165 @@ const MARQUEE_ITEMS = [
   { name: "IASbaba", src: "/images/logos/iasbaba.png", heightClass: "h-9 sm:h-11" },
 ];
 
-// Purpose Tabs (Academic Pillars)
+// Purpose Tabs (Academic Pillars) with Authentic UPSC Imagery
 const PURPOSE_TABS = [
   {
     id: "gs-papers",
     label: "GS Papers 1–4",
     icon: BookOpen,
     quote: "Break down real scoring benchmarks from GS1 through GS4 Ethics with exact paper marks.",
-    image: "/images/altruist/purpose_edu.webp",
+    image: "/images/altruist/upsc_hero_academic.webp",
   },
   {
     id: "answer-copies",
     label: "Handwritten Copies",
     icon: FileText,
     quote: "Study topper intros, structured diagrams, and examiner margin remarks line by line.",
-    image: "/images/altruist/purpose_water.webp",
+    image: "/images/toppers/ishita-kishore.jpg",
   },
   {
     id: "optional-analysis",
     label: "Optional Analysis",
     icon: TrendingUp,
     quote: "Compare average marks, scoring shifts, and topper papers across 37 recognized optionals.",
-    image: "/images/altruist/purpose_house.webp",
+    image: "/images/altruist/upsc_hero_academy.webp",
   },
   {
     id: "ai-mentor",
     label: "AI Mentor & Strategy",
     icon: Bot,
     quote: "Ask targeted syllabus queries and compare preparation paths against verified rank-1 frameworks.",
-    image: "/images/altruist/purpose_med.webp",
+    image: "/images/altruist/upsc_hero_altruist.webp",
   },
 ];
 
-// Featured Topper Dossiers (Ongoing Projects Layout)
-const FEATURED_DOSSIERS = [
+// Core Academic Portals & Verification Tools
+const CORE_TOOLS = [
   {
-    title: "Aditya Srivastava",
-    rank: "AIR 01 · CSE 2023",
-    scoreBadge: "1099 Marks",
-    details: "Electrical Engg · Highest GS4 in CSE History (143/250)",
-    slug: "/toppers/aditya-srivastava-air-1",
-    image: "/images/altruist/project_1.png",
+    icon: Database,
+    title: "Marks Database",
+    badge: "280+ Marksheets",
+    badgeTheme: "bg-[#FEF9EE] border-[#F7E7CD] text-[#7A4B13]",
+    desc: "Paper-wise score breakdown for 271+ UPSC toppers. Compare scores across CSE 2021–2025 and optionals.",
+    href: "/toppers/marks-database",
+    cta: "Compare Scores",
   },
   {
-    title: "Donuru Ananya Reddy",
-    rank: "AIR 03 · CSE 2023",
-    scoreBadge: "1065 Marks",
-    details: "Anthropology · 298/500 Optional on First Attempt",
-    slug: "/toppers/donuru-ananya-reddy-air-3",
-    image: "/images/altruist/project_2.png",
+    icon: FileText,
+    title: "Handwritten Copies",
+    badge: "50+ Uncut Copies",
+    badgeTheme: "bg-[#EEF7F2] border-[#D2E7D9] text-[#1A4D32]",
+    desc: "Authentic handwritten answer booklets evaluated by premier academies with examiner margin remarks.",
+    href: "/toppers/toppers-copy-compilation",
+    cta: "Browse Copies",
   },
   {
-    title: "Animesh Pradhan",
-    rank: "AIR 02 · CSE 2023",
-    scoreBadge: "1067 Marks",
-    details: "Sociology · Top Scorer in GS-2 (118) & Essay (128)",
-    slug: "/toppers/animesh-pradhan-air-2",
-    image: "/images/altruist/project_3.png",
-  },
-];
-
-// Mission 2026 Goals
-const MISSION_GOALS = [
-  {
-    badge: "280+ Marksheets Indexed in 2025",
-    title: "Index 500+ Official Marksheets",
-    desc: "Complete paper-by-paper score history across CSE 2021–2025, enabling transparent cut-off and scoring trend comparisons with zero guesswork.",
-    img1: "/images/altruist/purpose_house.webp",
-    img2: "/images/altruist/purpose_water.webp",
+    icon: Bot,
+    title: "Ask AI Mentor",
+    badge: "20 Free Daily",
+    badgeTheme: "bg-[#F5F2FC] border-[#DFD5F2] text-[#4D2882]",
+    desc: "Vector-search intelligence trained on verified ranker strategies to answer targeted preparation queries.",
+    href: "/ask",
+    cta: "Try AI Mentor Free",
   },
   {
-    badge: "50+ Copies Evaluated in 2025",
-    title: "Curate 100+ Handwritten Answer Copies",
-    desc: "Handwritten tests with original examiner rubrics, corrections, and margin comments from VisionIAS and ForumIAS test series.",
-    img1: "/images/altruist/goal_bhu.webp",
-    img2: "/images/altruist/goal_answ.webp",
+    icon: Sparkles,
+    title: "Monthly Current Affairs",
+    badge: "60 Topics / Mo",
+    badgeTheme: "bg-[#FAF0EC] border-[#F6D7CF] text-[#82331F]",
+    desc: "High-yield monthly current affairs distilled across 12 syllabus sections with Prelims & Mains relevance.",
+    href: "/current-affairs",
+    cta: "Read Compilations",
   },
   {
-    badge: "37 Optionals Mapped in 2025",
-    title: "Complete Optional Subject Intelligence",
-    desc: "Historical score variance, scaling data, and topper strategy notes for every recognized UPSC optional subject to calibrate your preparation.",
-    img1: "/images/altruist/goal_kgma.webp",
-    img2: "/images/altruist/goal_zqh.webp",
-  },
-];
-
-// Aspirant Testimonials
-const TESTIMONIALS = [
-  {
-    quote:
-      "Comparing Aditya Srivastava's GS4 answers with my own test copies completely changed how I approach stakeholder dilemmas. The paper-wise score breakdown is something no coaching institute provides.",
-    author: "Rank 48 Candidate",
-    location: "New Delhi",
-    avatar: "/images/altruist/test_1.png",
+    icon: BookOpen,
+    title: "Free Study Materials",
+    badge: "2,700+ Free PDFs",
+    badgeTheme: "bg-[#EEF7F2] border-[#D2E7D9] text-[#1A4D32]",
+    desc: "Curated repository of test series questions, answer keys, subject notes, and government reports.",
+    href: "/free-materials",
+    cta: "Access Materials",
   },
   {
-    quote:
-      "The optional subject score distribution saved me from making the wrong choice. Seeing real marksheets with 290+ scores showed me exactly what depth of syllabus coverage was required.",
-    author: "Mains 2024 Candidate",
-    location: "Bengaluru",
-    avatar: "/images/altruist/test_2.png",
-  },
-  {
-    quote:
-      "UPSCPrepNotes eliminates 90% of the noise on Telegram and YouTube. You get the raw marksheets, real evaluated copies, and factual marks without coaching marketing.",
-    author: "First Attempt Aspirant",
-    location: "Pune",
-    avatar: "/images/altruist/test_3.png",
+    icon: FileCheck2,
+    title: "Previous Year Questions",
+    badge: "10-Year Archive",
+    badgeTheme: "bg-[#FEF9EE] border-[#F7E7CD] text-[#7A4B13]",
+    desc: "PYQs organized by year, paper, and topic with trend analysis and topper answer structure patterns.",
+    href: "/pyq",
+    cta: "Explore PYQs",
   },
 ];
 
-// Notes from the Community (Aspirant Voice Cards)
-const COMMUNITY_NOTES = [
-  {
-    quote:
-      "Finding verified marksheet breakdowns for GS1, GS2, GS3, and GS4 in one single place saved me weeks of frantic searching across Telegram channels.",
-    from: "From New Delhi (Karol Bagh)",
-  },
-  {
-    quote:
-      "The evaluated handwritten answer copies showed me how toppers structure 15-marker questions under real 3-hour exam conditions.",
-    from: "From Bengaluru",
-  },
-  {
-    quote:
-      "Seeing the exact interview marks compared to written mains scores gives a realistic perspective on how much cushion you need in written papers.",
-    from: "From Hyderabad",
-  },
-  {
-    quote:
-      "The Anthropology optional score matrix helped me understand why topper scores range between 290 and 310, and how syllabus coverage impacts marks.",
-    from: "From Pune",
-  },
-  {
-    quote:
-      "Zero coaching promotion, zero clickbait. Just clean official data and topper answer sheets organized with high academic quality.",
-    from: "From Patna",
-  },
-  {
-    quote:
-      "The AI Mentor helped me cross-reference ethics case studies with Supreme Court judgments cited in actual AIR 1 answer sheets.",
-    from: "From Jaipur",
-  },
-  {
-    quote:
-      "Instant PDF downloads with high-resolution handwritten copies. I keep them open side by side while writing my weekly test series.",
-    from: "From Lucknow",
-  },
+// Optional Subjects Pill Directory
+const OPTIONAL_SUBJECTS = [
+  { name: "PSIR", href: "/optional/psir", score: "★ 313 Record" },
+  { name: "Anthropology", href: "/optional/anthropology", score: "298 Benchmark" },
+  { name: "Sociology", href: "/optional/sociology", score: "Top GS-2 Pair" },
+  { name: "Mathematics", href: "/optional/mathematics", score: "298 Technical" },
+  { name: "Geography", href: "/optional/geography", score: "Map & Diagrams" },
+  { name: "History", href: "/optional/history", score: "High Conversion" },
+  { name: "Public Administration", href: "/optional/public-administration", score: "Governance" },
+  { name: "Philosophy", href: "/optional/philosophy", score: "High Ethics Link" },
 ];
 
-// Compilations & Releases (Schedule Layout)
-const COMPILATIONS = [
+const YEARS = [2022, 2023, 2024, 2025];
+
+// Strategy Guides & Paper Target Blueprints
+const STRATEGY_GUIDES = [
+  { title: "Score 130+ in GS1", desc: "Society, History & Geography topper-backed frameworks with real marks data.", href: "/content/how-to-score-130-plus-in-gs1", score: "130+", paper: "GS1" },
+  { title: "Score 120+ in GS2", desc: "Polity, Governance & Social Justice — constitutional article frameworks.", href: "/content/how-to-score-120-plus-in-gs2", score: "120+", paper: "GS2" },
+  { title: "Score 120+ in GS3", desc: "Economy, Agriculture & Security — data matrices and committee citations.", href: "/content/how-to-score-120-plus-in-gs3", score: "120+", paper: "GS3" },
+  { title: "Score 100+ in GS4", desc: "Ethics & Case Studies — stakeholder analysis and administrative SOPs.", href: "/content/how-to-score-100-plus-in-gs4", score: "100+", paper: "GS4" },
+  { title: "Score 300+ in PSIR", desc: "Political Science & IR — complete strategy with topper answer copies.", href: "/content/how-to-score-300-plus-in-psir-optional", score: "300+", paper: "PSIR" },
+  { title: "Optional Subject Marks Analysis", desc: "Comprehensive scoring trend report across 37 optional subjects.", href: "/content/upsc-optional-subject-marks-analysis", score: "Analysis", paper: "All" },
+];
+
+// Curated Official Store Products (From Store Catalog)
+const CURATED_PRODUCTS = [
   {
-    date: "Mon, Sep 22",
-    title: "CSE 2024 Topper Marksheet Dossier (Complete 280+ Profiles)",
-    tag: "Instant PDF",
-    image: "/images/altruist/purpose_med.webp",
+    slug: "top-10-rankers-strategy",
+    title: "Top 10 Rankers Strategy",
+    tagline: "AIR 1–10 complete strategies & marks deep dives in one PDF",
+    price: 299,
+    originalPrice: 990,
+    badge: "Most Popular",
+    badgeTheme: "bg-[#FEF9EE] border-[#F7E7CD] text-[#7A4B13]",
+    image: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-464,h-600,f-auto,q-80",
+    features: ["Paper-wise marks analysis", "Weakest vs strongest paper breakdown", "Interview insights"],
   },
   {
-    date: "Sat, Oct 05",
-    title: "GS-4 Ethics Case Studies & Frameworks Compendium",
-    tag: "140+ Pages",
-    image: "/images/altruist/event_1.webp",
+    slug: "answer-copies-compilation",
+    title: "Answer Copies Compilation",
+    tagline: "50+ actual handwritten answer sheets from rank holders (GS1–4, Essay)",
+    price: 799,
+    originalPrice: 1999,
+    badge: "Top Rated",
+    badgeTheme: "bg-[#EEF7F2] border-[#D2E7D9] text-[#1A4D32]",
+    image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
+    features: ["50+ genuine exam hall booklets", "Examiner corrections & rubrics", "All 4 GS Papers + Essay"],
   },
   {
-    date: "Wed, Oct 15",
-    title: "VisionIAS Prelims 2026 Test Series 1–10 Archive",
-    tag: "Full Keys",
-    image: "/images/altruist/event_2.webp",
+    slug: "government-schemes-compilation",
+    title: "Government Schemes Compendium",
+    tagline: "All ministry-wise schemes with objectives, budget, and key facts",
+    price: 99,
+    originalPrice: 199,
+    badge: "Essential",
+    badgeTheme: "bg-[#FAF0EC] border-[#F6D7CF] text-[#82331F]",
+    image: "/images/altruist/starter_pack.webp",
+    features: ["Organized by Ministry & Sector", "Prelims & Mains ready facts", "Updated for CSE 2025/2026"],
   },
   {
-    date: "Wed, Oct 22",
-    title: "ForumIAS Mains 2025 Evaluated Copies Compendium",
-    tag: "50+ Tests",
-    image: "/images/altruist/event_3.webp",
-  },
-  {
-    date: "Sun, Nov 02",
-    title: "37 Optional Subjects Score Trend Report 2021–2025",
-    tag: "Verified Data",
-    image: "/images/altruist/event_4.webp",
+    slug: "all-strategy-reports",
+    title: "All Strategy Reports Bundle",
+    tagline: "Complete archive of paper-wise and optional strategy reports",
+    price: 499,
+    originalPrice: 1490,
+    badge: "Best Value",
+    badgeTheme: "bg-[#F5F2FC] border-[#DFD5F2] text-[#4D2882]",
+    image: "/images/altruist/upsc_hero_academic.webp",
+    features: ["GS1–4 Strategy Reports", "Optional scoring matrices", "Immediate PDF bundle"],
   },
 ];
 
@@ -256,21 +261,42 @@ const HERO_TOPPERS = [
     badge: "AIR 1 · CSE 2022",
     rankNum: "AIR 01",
     year: "CSE 2022",
+    initials: "IK",
+    cadre: "IAS · Uttar Pradesh Cadre",
+    photo: "/images/toppers/ishita-portrait.jpg",
     institute: "ForumIAS MGP",
     evaluatorLogo: "/images/logos/forumias.png",
     roll: "Roll No. 1910080460",
-    testCode: "Test Code: 51061",
-    paper: "GS Paper 1 · Full Length Test",
-    image: "/images/toppers/ishita-kishore.jpg",
+    testCode: "MGP Test 51061",
+    paper: "GS Paper 1 (Society & Geography)",
+    copyScanImage: "/images/toppers/ishita-kishore.jpg",
     total: "1,094 / 2,025",
     writtenTotal: "901",
     interviewTotal: "193",
+    cutoffDelta: "+134 vs Cutoff (Top 0.01%)",
     downloads: "24,850",
     pages: "42 Pages",
     fileSize: "18.4 MB",
     optionalSubject: "PSIR",
+    optionalScore: "313 / 500",
+    optionalHighlight: "★ 313 in PSIR (5-Yr Record)",
+    rankTheme: {
+      badgeBg: "bg-[#FEF9EE]",
+      badgeBorder: "border-[#F7E7CD]",
+      badgeText: "text-[#7A4B13]",
+      accent: "text-[#7A4B13]",
+    },
+    slug: "ishita-kishore-rank-1-2022",
     highlight: "Highest PSIR Optional score in 5 years (313/500). AIR 1 on 3rd attempt.",
+    sampleQuestion: "Examine how rapid urbanization in peninsular India has exacerbated urban flash floods, and evaluate traditional micro-catchment harvesting as a sustainable resilience model.",
+    evaluatorAnnotations: [
+      { tag: "Structure (+3.5)", text: "Direct 3-tier subheadings with Article 21 & Sendai Framework cited in introduction." },
+      { tag: "Visual Diagram (+3.0)", text: "Hand-drawn cross-section diagram of sponge-city drainage vs traditional Eri tanks." },
+      { tag: "Policy Blueprint (+2.5)", text: "Integrated Mihir Shah Committee recommendations into concluding policy matrix." },
+    ],
+    evaluatorScore: "11.5 / 15",
     keyTakeaway: "Clear subheading hierarchy, structured 2-tier diagrams for geography, and constitutional articles quoted in every intro.",
+    strategicQuote: "Don't write long narrative paragraphs. Break every 15-marker into 4 distinct dimensions: Constitutional, Socio-Economic, Environmental, and Administrative interventions.",
     marks: [
       { label: "Essay", val: "137", max: "250", pct: 55, tag: "Top 2%" },
       { label: "GS 1", val: "121", max: "250", pct: 48, tag: "Benchmark" },
@@ -287,21 +313,42 @@ const HERO_TOPPERS = [
     badge: "AIR 2 · CSE 2022",
     rankNum: "AIR 02",
     year: "CSE 2022",
+    initials: "GL",
+    cadre: "IAS · Bihar Cadre",
+    photo: "/images/toppers/garima-portrait.jpg",
     institute: "ForumIAS MGP",
     evaluatorLogo: "/images/logos/forumias.png",
     roll: "Roll No. 1910102924",
-    testCode: "Test Code: 51051",
-    paper: "GS Paper 2 & Essay",
-    image: "/images/toppers/garima-lohia.jpg",
+    testCode: "MGP Test 51051",
+    paper: "GS Paper 2 (Polity & Governance)",
+    copyScanImage: "/images/toppers/garima-lohia.jpg",
     total: "1,063 / 2,025",
     writtenTotal: "876",
     interviewTotal: "187",
+    cutoffDelta: "+103 vs Cutoff (Rank 2)",
     downloads: "19,420",
     pages: "38 Pages",
     fileSize: "16.2 MB",
     optionalSubject: "Commerce",
+    optionalScore: "263 / 500",
+    optionalHighlight: "★ 141 in Essay (Home Prep)",
+    rankTheme: {
+      badgeBg: "bg-[#F5F2FC]",
+      badgeBorder: "border-[#DFD5F2]",
+      badgeText: "text-[#4D2882]",
+      accent: "text-[#4D2882]",
+    },
+    slug: "garima-lohia-rank-2-2022",
     highlight: "Scored 141 in Essay & 127 in GS2 purely through self-study at home in Buxar.",
+    sampleQuestion: "Analyze how the Governor's discretionary authority under Article 163 impacts cooperative federalism during legislative deadlock, citing relevant Supreme Court precedents.",
+    evaluatorAnnotations: [
+      { tag: "Case Law (+3.5)", text: "Precise citation of S.R. Bommai (1994) & Nabam Rebia (2016) in active doctrine analysis." },
+      { tag: "Commission Links (+3.0)", text: "Direct point-wise comparison of Sarkaria vs Punchhi commission recommendations." },
+      { tag: "Judicial Restraint (+2.5)", text: "Clear normative conclusion distinguishing political convenience from constitutional morality." },
+    ],
+    evaluatorScore: "12.0 / 15",
     keyTakeaway: "Anecdotal essay openings, direct Committee recommendations (Punchhi, Sarkaria) in GS2, and crisp bullet-point summaries.",
+    strategicQuote: "I prepared purely at home without classroom coaching. What mattered was solving test papers under strict timer and memorizing 40 landmark SC judgments.",
     marks: [
       { label: "Essay", val: "141", max: "250", pct: 56, tag: "★ Highest 2022" },
       { label: "GS 1", val: "110", max: "250", pct: 44, tag: "Structured" },
@@ -318,28 +365,49 @@ const HERO_TOPPERS = [
     badge: "AIR 105 · CSE 2021",
     rankNum: "AIR 105",
     year: "CSE 2021",
+    initials: "DT",
+    cadre: "IPS / IAS · Haryana",
+    photo: "/images/toppers/divya-portrait.jpg",
     institute: "Drishti IAS",
     evaluatorLogo: "/images/logos/drishti.png",
     roll: "Roll No. 0854715",
-    testCode: "Test Code: 250",
-    paper: "Samanya Adhyayan (Hindi Medium)",
-    image: "/images/toppers/divya-tanwar.jpg",
-    total: "994 / 2025",
+    testCode: "Mains Test 250",
+    paper: "GS Paper 4 (Ethics & Cases)",
+    copyScanImage: "/images/toppers/divya-tanwar.jpg",
+    total: "994 / 2,025",
     writtenTotal: "815",
     interviewTotal: "179",
+    cutoffDelta: "+34 vs Cutoff (1st Attempt)",
     downloads: "28,190",
     pages: "44 Pages",
     fileSize: "19.8 MB",
-    optionalSubject: "Hindi Literature",
+    optionalSubject: "Hindi Lit",
+    optionalScore: "278 / 500",
+    optionalHighlight: "★ Age 21, 1st Attempt (Hindi)",
+    rankTheme: {
+      badgeBg: "bg-[#EEF7F2]",
+      badgeBorder: "border-[#D2E7D9]",
+      badgeText: "text-[#1A4D32]",
+      accent: "text-[#1A4D32]",
+    },
+    slug: "divya-tanwar-rank-105-2022",
     highlight: "Cracked UPSC at age 21 on first attempt from rural Mahendragarh, Haryana.",
+    sampleQuestion: "प्रशासनिक निर्णय प्रक्रिया में भावनात्मक बुद्धिमत्ता (Emotional Intelligence) किस प्रकार सार्वजनिक हित और अंतरात्मा के संकट को साधने में सहायक सिद्ध होती है?",
+    evaluatorAnnotations: [
+      { tag: "Hindi Calligraphy (+3.5)", text: "Impeccable Hindi script structuring with distinct ethical matrix diagrams." },
+      { tag: "Philosophical Depth (+3.0)", text: "Grounded quotes from Kabir, Gandhi, and modern civil service administrative dilemmas." },
+      { tag: "Pragmatic Solution (+2.5)", text: "Constructed realistic 4-step administrative SOP addressing vulnerable tribal communities." },
+    ],
+    evaluatorScore: "11.5 / 15",
     keyTakeaway: "Exceptional Hindi calligraphy, balanced flowchart integration in GS answers, and concise quotes from classical Hindi poets.",
+    strategicQuote: "Hindi medium is not a disadvantage if your answer presentation is clean, structured, and backed by authentic administrative case studies.",
     marks: [
-      { label: "Evaluated", val: "120.5", max: "250", pct: 48, tag: "Top Test" },
-      { label: "Essay", val: "131", max: "250", pct: 52, tag: "Hindi Benchmark" },
+      { label: "Essay", val: "131", max: "250", pct: 52, tag: "Hindi Top" },
       { label: "GS 1", val: "104", max: "250", pct: 42, tag: "High Flow" },
       { label: "GS 2", val: "115", max: "250", pct: 46, tag: "Precision" },
+      { label: "GS 3", val: "90", max: "250", pct: 36, tag: "Balanced" },
       { label: "GS 4", val: "118", max: "250", pct: 47, tag: "Top Ethics" },
-      { label: "Hindi Lit", val: "278", max: "500", pct: 56, tag: "★ Record Score" },
+      { label: "Hindi Lit", val: "278", max: "500", pct: 56, tag: "★ Record" },
       { label: "Interview", val: "179", max: "275", pct: 65, tag: "1st Attempt" },
     ],
   },
@@ -349,55 +417,336 @@ const HERO_TOPPERS = [
     badge: "AIR 16 · CSE 2023",
     rankNum: "AIR 16",
     year: "CSE 2023",
+    initials: "AJ",
+    cadre: "IAS · Madhya Pradesh Cadre",
+    photo: "/images/toppers/ayan-portrait.jpg",
     institute: "Vision IAS",
     evaluatorLogo: "/images/logos/visionias.png",
-    roll: "Registration 1040520",
-    testCode: "Test Code: 2420",
-    paper: "GS Paper 4 Ethics & Case Studies",
-    image: "/images/toppers/ayan-jain.jpg",
-    total: "1,028 / 2025",
+    roll: "Roll No. 1040520",
+    testCode: "Abhyas Test 2420",
+    paper: "GS Paper 3 (Economy & Security)",
+    copyScanImage: "/images/toppers/ayan-jain.jpg",
+    total: "1,028 / 2,025",
     writtenTotal: "844",
     interviewTotal: "184",
+    cutoffDelta: "+68 vs Cutoff (Top Engineering)",
     downloads: "14,310",
     pages: "36 Pages",
     fileSize: "15.7 MB",
-    optionalSubject: "Mathematics",
+    optionalSubject: "Maths",
+    optionalScore: "298 / 500",
+    optionalHighlight: "★ 298 in Maths (Top Rank)",
+    rankTheme: {
+      badgeBg: "bg-[#FAF0EC]",
+      badgeBorder: "border-[#F6D7CF]",
+      badgeText: "text-[#82331F]",
+      accent: "text-[#82331F]",
+    },
+    slug: "ayan-jain-rank-16-2023",
     highlight: "Rank 16 in CSE 2023 with 298/500 in Mathematics Optional. Former IPS to IAS.",
+    sampleQuestion: "Evaluate how unmanned aerial systems (drones) and cyber-kinetic warfare have reshaped border surveillance in difficult terrain like the Western Sector.",
+    evaluatorAnnotations: [
+      { tag: "Technical Depth (+3.5)", text: "Integrated Comprehensive Integrated Border Management System (CIBMS) technological blueprint." },
+      { tag: "Threat Matrix (+3.0)", text: "Drawn 2x2 asymmetric warfare threat matrix linking radar surveillance with satellite data." },
+      { tag: "Doctrinal Vision (+2.5)", text: "Cited Shekatkar Committee recommendations on theaterisation & modern electronic border warfare." },
+    ],
+    evaluatorScore: "12.5 / 15",
     keyTakeaway: "Mathematical precision in case study stakeholder matrices, ethical dilemma decision trees, and crisp analytical conclusions.",
+    strategicQuote: "Bring engineering and mathematical precision into GS answers. Use tables, stakeholder impact matrices, and actionable timelines instead of long stories.",
     marks: [
       { label: "Essay", val: "128", max: "250", pct: 51, tag: "Structured" },
       { label: "GS 1", val: "114", max: "250", pct: 46, tag: "Analytical" },
       { label: "GS 2", val: "118", max: "250", pct: 47, tag: "Case Law" },
       { label: "GS 3", val: "96", max: "250", pct: 38, tag: "Scientific" },
       { label: "GS 4", val: "122", max: "250", pct: 49, tag: "Top 1% Ethics" },
-      { label: "Maths", val: "298", max: "500", pct: 60, tag: "★ Maths Highest" },
+      { label: "Maths", val: "298", max: "500", pct: 60, tag: "★ Record" },
       { label: "Interview", val: "184", max: "275", pct: 67, tag: "IPS to IAS" },
     ],
   },
 ];
 
+// Interactive Bento Intelligence Datasets
+const BENTO_TOPPERS = [
+  {
+    id: "ishita",
+    name: "Ishita Kishore",
+    rank: "AIR 1 · CSE 2022",
+    cadre: "IAS · Uttar Pradesh Cadre",
+    roll: "1910080460",
+    total: 1094,
+    maxTotal: 2025,
+    written: 901,
+    interview: 193,
+    cutoffDelta: "+134 vs Cutoff",
+    pct: 54.0,
+    optional: "PSIR",
+    optionalScore: 313,
+    papers: [
+      { code: "Essay", name: "Essay Paper", score: 137, max: 250, pct: 54.8 },
+      { code: "GS 1", name: "Heritage & Geography", score: 121, max: 250, pct: 48.4 },
+      { code: "GS 2", name: "Polity & Governance", score: 130, max: 250, pct: 52.0 },
+      { code: "GS 3", name: "Economy & Security", score: 88, max: 250, pct: 35.2 },
+      { code: "GS 4", name: "Ethics & Integrity", score: 112, max: 250, pct: 44.8 },
+      { code: "PSIR", name: "Optional Record", score: 313, max: 500, pct: 62.6, highlight: true },
+      { code: "Interview", name: "Personality Test", score: 193, max: 275, pct: 70.2 },
+    ],
+  },
+  {
+    id: "garima",
+    name: "Garima Lohia",
+    rank: "AIR 2 · CSE 2022",
+    cadre: "IAS · Bihar Cadre",
+    roll: "1509177810",
+    total: 1063,
+    maxTotal: 2025,
+    written: 876,
+    interview: 187,
+    cutoffDelta: "+103 vs Cutoff",
+    pct: 52.5,
+    optional: "Commerce",
+    optionalScore: 263,
+    papers: [
+      { code: "Essay", name: "Essay Paper", score: 134, max: 250, pct: 53.6 },
+      { code: "GS 1", name: "Heritage & Geography", score: 118, max: 250, pct: 47.2 },
+      { code: "GS 2", name: "Polity & Governance", score: 124, max: 250, pct: 49.6 },
+      { code: "GS 3", name: "Economy & Security", score: 94, max: 250, pct: 37.6 },
+      { code: "GS 4", name: "Ethics & Integrity", score: 119, max: 250, pct: 47.6 },
+      { code: "Commerce", name: "Commerce & Accountancy", score: 263, max: 500, pct: 52.6 },
+      { code: "Interview", name: "Personality Test", score: 187, max: 275, pct: 68.0 },
+    ],
+  },
+  {
+    id: "divya",
+    name: "Divya Tanwar",
+    rank: "AIR 105 · CSE 2022",
+    cadre: "IPS · Haryana Cadre",
+    roll: "0844781940",
+    total: 994,
+    maxTotal: 2025,
+    written: 815,
+    interview: 179,
+    cutoffDelta: "+34 vs Cutoff",
+    pct: 49.1,
+    optional: "Hindi Lit",
+    optionalScore: 278,
+    papers: [
+      { code: "Essay", name: "Essay Paper", score: 128, max: 250, pct: 51.2 },
+      { code: "GS 1", name: "Heritage & Geography", score: 110, max: 250, pct: 44.0 },
+      { code: "GS 2", name: "Polity & Governance", score: 116, max: 250, pct: 46.4 },
+      { code: "GS 3", name: "Economy & Security", score: 82, max: 250, pct: 32.8 },
+      { code: "GS 4", name: "Ethics & Integrity", score: 105, max: 250, pct: 42.0 },
+      { code: "Hindi Lit", name: "Hindi Literature", score: 278, max: 500, pct: 55.6, highlight: true },
+      { code: "Interview", name: "Personality Test", score: 179, max: 275, pct: 65.1 },
+    ],
+  },
+  {
+    id: "ayan",
+    name: "Ayan Jain",
+    rank: "AIR 16 · CSE 2023",
+    cadre: "IAS · MP Cadre",
+    roll: "0803719402",
+    total: 1028,
+    maxTotal: 2025,
+    written: 844,
+    interview: 184,
+    cutoffDelta: "+68 vs Cutoff",
+    pct: 50.8,
+    optional: "Maths",
+    optionalScore: 298,
+    papers: [
+      { code: "Essay", name: "Essay Paper", score: 132, max: 250, pct: 52.8 },
+      { code: "GS 1", name: "Heritage & Geography", score: 114, max: 250, pct: 45.6 },
+      { code: "GS 2", name: "Polity & Governance", score: 118, max: 250, pct: 47.2 },
+      { code: "GS 3", name: "Economy & Security", score: 96, max: 250, pct: 38.4 },
+      { code: "GS 4", name: "Ethics & Integrity", score: 122, max: 250, pct: 48.8, highlight: true },
+      { code: "Maths", name: "Mathematics Record", score: 298, max: 500, pct: 59.6, highlight: true },
+      { code: "Interview", name: "Personality Test", score: 184, max: 275, pct: 66.9 },
+    ],
+  },
+];
+
+const MENTOR_PRESETS = [
+  {
+    id: "ethics",
+    tabLabel: "GS4 Ethics SOPs",
+    query: "How do rankers structure a 15-marker GS4 ethics question?",
+    response: "Rankers construct a 2×2 Stakeholder Impact Grid (Primary vs Secondary Stakeholders). They map ethical dilemmas using constitutional values (Art. 14, 21), cite thinkers like Rawls (Veil of Ignorance) or Kant, and provide an actionable 3-phase administrative SOP with concrete 30-day milestones.",
+    citations: ["Rawlsian Veil of Ignorance", "ARC-2 Ethical Framework", "Nolan Principles of Public Life"],
+  },
+  {
+    id: "anthro",
+    tabLabel: "Anthro 290+ Scoring",
+    query: "What specific structural details push Anthropology Paper 1 past 150 marks?",
+    response: "Physical anthropology answers must feature hand-drawn fossil cranium line sketches (Homo erectus vs Neanderthal) alongside clear morphometric indices. Ground social theory in contemporary Indian tribal micro-ethnographies.",
+    citations: ["Ember & Ember Ch. 11", "Xaxa Committee (2014)", "Verrier Elwin Tribal Policy"],
+  },
+  {
+    id: "psir",
+    tabLabel: "Ishita 313 PSIR",
+    query: "What was Ishita Kishore's exact synthesis technique for PSIR Paper 1 Section A?",
+    response: "Every western political thought concept was bridged directly into contemporary Indian democratic friction. E.g., Gramscian hegemony was mapped onto civil society autonomy, and Rawlsian justice was cited in affirmative action debates.",
+    citations: ["Antonio Gramsci Quaderni", "Amartya Sen Idea of Justice", "Subrata Mitra Federal Model"],
+  },
+];
+
+const SCRIPT_PREVIEWS = [
+  {
+    id: "gs1",
+    author: "Ishita Kishore · AIR 01",
+    paper: "GS Paper 1 (Society & Geography)",
+    badge: "13.5 / 15",
+    toggleLabel: "Flip to GS2 Polity",
+    toggleTarget: "gs2",
+    question: "Evaluate micro-catchment harvesting as a sustainable resilience model against urban flash floods.",
+    examinerNote: "Strong 3-tier structure. Hand-drawn cross-section diagram of Eri tanks vs modern drainage adds +2.5 marks. NDMA guidelines properly integrated.",
+    image: "/images/toppers/ishita-kishore.jpg",
+  },
+  {
+    id: "gs2",
+    author: "Garima Lohia · AIR 02",
+    paper: "GS Paper 2 (Polity & Governance)",
+    badge: "14.0 / 15",
+    toggleLabel: "Flip to GS1 Geography",
+    toggleTarget: "gs1",
+    question: "Discuss the constitutional safeguards against arbitrary governor discretion under Article 163.",
+    examinerNote: "Exceptional legal depth. Directly cited Shamsher Singh (1974), Nabam Rebia (2016), and Sarkaria Commission recommendations in tabular format.",
+    image: "/images/toppers/garima-lohia.jpg",
+  },
+];
+
+const OPTIONAL_BENCHMARKS = [
+  {
+    id: "psir",
+    name: "PSIR",
+    peak: "Peak: 313",
+    topperScore: "313 / 500",
+    topper: "Ishita Kishore (AIR 1)",
+    tag: "PSIR Record",
+    insight: "Quote classical Western & Indian political thinkers (Plato, Kautilya, Gramsci) in paper 1, ground Paper 2 in foreign policy whitepapers.",
+  },
+  {
+    id: "anthro",
+    name: "Anthropology",
+    peak: "Peak: 298",
+    topperScore: "298 / 500",
+    topper: "Akshat Jain (AIR 2)",
+    tag: "Anthro Top 0.1%",
+    insight: "Physical anthropology answers require neat anatomical sketches. Paper 2 tribal studies require government committee citations (Xaxa Report).",
+  },
+  {
+    id: "socio",
+    name: "Sociology",
+    peak: "Peak: 295",
+    topperScore: "295 / 500",
+    topper: "Shruti Sharma (AIR 1)",
+    tag: "Sociology Peak",
+    insight: "Integrate empirical sociological field studies (MN Srinivas, Andre Beteille) with contemporary demographic surveys and census trends.",
+  },
+  {
+    id: "maths",
+    name: "Mathematics",
+    peak: "Peak: 298",
+    topperScore: "298 / 500",
+    topper: "Ayan Jain (AIR 16)",
+    tag: "Maths Record",
+    insight: "Unforgiving calculation precision required. Rankers solve entire 10-year question banks under strict 3-hour timed exam hall conditions.",
+  },
+];
+
+const PYQ_THEMES = [
+  {
+    theme: "Polity & Governance",
+    recurrence: "Very High",
+    badgeTheme: "bg-[#FEF9EE] text-[#7A4B13] border-[#F7E7CD]",
+    qCount: "420+ Questions",
+    focus: "Judicial Review vs Due Process (Repeated 4x)",
+  },
+  {
+    theme: "Modern History & Freedom Struggle",
+    recurrence: "High",
+    badgeTheme: "bg-[#EEF7F2] text-[#1A4D32] border-[#D2E7D9]",
+    qCount: "310+ Questions",
+    focus: "1940s Tribal Uprisings & Peasant Movements",
+  },
+  {
+    theme: "Economy & Agriculture",
+    recurrence: "Very High",
+    badgeTheme: "bg-[#FEF9EE] text-[#7A4B13] border-[#F7E7CD]",
+    qCount: "390+ Questions",
+    focus: "Direct Benefit Transfer & Subsidies Restructuring",
+  },
+  {
+    theme: "Internal Security & Defense",
+    recurrence: "High",
+    badgeTheme: "bg-[#F5F2FC] text-[#4D2882] border-[#DFD5F2]",
+    qCount: "280+ Questions",
+    focus: "Cyber-Kinetic Drone Warfare in Border Belts",
+  },
+  {
+    theme: "Ethics & Integrity Case Studies",
+    recurrence: "Critical",
+    badgeTheme: "bg-[#FAF0EC] text-[#82331F] border-[#F6D7CF]",
+    qCount: "340+ Questions",
+    focus: "Public Land Encroachment & Administrative Discretion",
+  },
+];
+
 export default function AltruistUPSCPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeHeroTopper, setActiveHeroTopper] = useState(0);
+  const [inspectingTopper, setInspectingTopper] = useState<typeof HERO_TOPPERS[0] | null>(null);
   const [activePurposeTab, setActivePurposeTab] = useState("gs-papers");
-  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  
+  // Interactive Bento Deck States
+  const [activeBentoTopperId, setActiveBentoTopperId] = useState("ishita");
+  const [activeMentorQueryId, setActiveMentorQueryId] = useState("ethics");
+  const [activeScriptCopyId, setActiveScriptCopyId] = useState("gs1");
+  const [activeOptionalId, setActiveOptionalId] = useState("psir");
+  
+  // Starter Pack Lead Form State
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadOptional, setLeadOptional] = useState("PSIR");
+  const [leadLoading, setLeadLoading] = useState(false);
+  const [leadError, setLeadError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const currentHeroTopper = HERO_TOPPERS[activeHeroTopper];
   const currentTab = PURPOSE_TABS.find((t) => t.id === activePurposeTab) || PURPOSE_TABS[0];
-  const currentTestimonial = TESTIMONIALS[activeTestimonialIdx];
 
-  const handleNextTestimonial = () => {
-    setActiveTestimonialIdx((prev) => (prev + 1) % TESTIMONIALS.length);
-  };
-
-  const handlePrevTestimonial = () => {
-    setActiveTestimonialIdx((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadEmail.trim()) return;
+    setLeadLoading(true);
+    setLeadError("");
+    try {
+      const res = await fetch("/api/hero-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: leadEmail,
+          name: leadName,
+          phone: leadPhone,
+          optional: leadOptional,
+          source: "landing_starter_pack",
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setLeadError(data.error || "Failed to register. Please try again.");
+        setLeadLoading(false);
+        return;
+      }
+      setFormSubmitted(true);
+      setLeadLoading(false);
+    } catch {
+      setLeadError("Network error. Please try again.");
+      setLeadLoading(false);
+    }
   };
 
   return (
-    <div className={`min-h-screen overflow-x-hidden bg-[#FFFFFC] text-[#000000] selection:bg-[#DEEFF8] selection:text-[#116E99] ${plusJakartaSans.className}`}>
+    <div className={`min-h-screen overflow-x-hidden bg-white text-[#000000] selection:bg-[#EAEAEA] selection:text-black ${plusJakartaSans.className}`}>
       
       {/* ─────────────────────────────────────────────────────────────
           1. NAVIGATION (Exact 1:1 Altruist Chassis: max-w-[880px], #FFFFFC, Inset Shadow)
@@ -405,9 +754,9 @@ export default function AltruistUPSCPage() {
       <div className="fixed top-4 md:top-[25px] left-0 right-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none">
         <div className="pointer-events-auto w-full max-w-[880px]">
           <nav
-            className="w-full rounded-[15px] border border-black/5 bg-[#FFFFFC] px-3.5 py-2 sm:px-5 sm:py-2.5 transition-all duration-200"
+            className="w-full rounded-[15px] border border-black/5 bg-white px-3.5 py-2 sm:px-5 sm:py-2.5 transition-all duration-200"
             style={{
-              boxShadow: "inset 0px 0px 14px 0px rgba(22, 82, 110, 0.08)",
+              boxShadow: "inset 0px 0px 14px 0px rgba(0, 0, 0, 0.04)",
             }}
           >
             <div className="flex items-center justify-between">
@@ -415,51 +764,59 @@ export default function AltruistUPSCPage() {
               <div className="flex items-center pl-1 sm:pl-2">
                 <Link
                   href="/"
-                  className="whitespace-nowrap text-[18px] sm:text-[19px] font-bold tracking-tight text-[#16526E] transition hover:opacity-80"
+                  className="whitespace-nowrap text-[18px] sm:text-[19px] font-bold tracking-tight text-black transition hover:opacity-80"
                 >
-                  UPSCPrepNotes
+                 <Image
+  src="/logo.png"
+  alt="Altruist Wordmark Logo"
+  width={180}
+  height={42}
+  className="h-[42px] w-auto sm:h-[46px]"
+/>
+
                 </Link>
               </div>
 
               {/* Right Group: Links + CTA Button (Matches Altruist right-aligned navigation cluster) */}
               <div className="flex items-center gap-5 lg:gap-7">
                 {/* Desktop Navigation (visible on desktop) */}
-                <div className="hidden lg:flex items-center gap-5 xl:gap-6 text-[14px] font-semibold text-[#16526E]/70">
+                <div className="hidden lg:flex items-center gap-5 xl:gap-6 text-[14px] font-semibold text-black/65">
                   <Link
                     href="/toppers"
-                    className="whitespace-nowrap transition-colors hover:text-[#16526E]"
+                    className="whitespace-nowrap transition-colors hover:text-black"
                   >
                     Toppers
                   </Link>
                   <a
                     href="#topper-showcase"
-                    className="whitespace-nowrap transition-colors hover:text-[#16526E]"
+                    className="whitespace-nowrap transition-colors hover:text-black"
                   >
                     Answer Copies
                   </a>
                   <Link
                     href="/free-materials"
-                    className="whitespace-nowrap transition-colors hover:text-[#16526E]"
+                    className="whitespace-nowrap transition-colors hover:text-black"
                   >
                     Materials
                   </Link>
                   <Link
                     href="/current-affairs"
-                    className="whitespace-nowrap transition-colors hover:text-[#16526E]"
+                    className="whitespace-nowrap transition-colors hover:text-black"
                   >
                     Current Affairs
                   </Link>
                   <Link
                     href="/pyq"
-                    className="whitespace-nowrap transition-colors hover:text-[#16526E]"
+                    className="whitespace-nowrap transition-colors hover:text-black"
                   >
                     PYQs
                   </Link>
                   <Link
                     href="/ask"
-                    className="whitespace-nowrap font-semibold text-[#116E99] transition-colors hover:text-[#16526E]"
+                    className="inline-flex items-center gap-1.5 whitespace-nowrap font-bold text-[#4D2882] bg-[#F5F2FC] border border-[#DFD5F2] px-2.5 py-1 rounded-full text-[13px] transition hover:bg-[#EDE7F6]"
                   >
-                    Ask AI
+                    <Sparkles size={13} />
+                    <span>Ask AI</span>
                   </Link>
                 </div>
 
@@ -467,7 +824,7 @@ export default function AltruistUPSCPage() {
                 <div className="flex items-center gap-2">
                   <Link
                     href="/store"
-                    className="hidden lg:flex h-[40px] items-center justify-center rounded-[10px] bg-[#16526E] px-5 text-[14px] font-semibold text-white whitespace-nowrap transition hover:bg-[#0E3E55] active:scale-[0.98]"
+                    className="hidden lg:flex h-[40px] items-center justify-center rounded-[10px] bg-black px-5 text-[14px] font-semibold text-white whitespace-nowrap transition hover:bg-neutral-800 active:scale-[0.98]"
                   >
                     Explore Store
                   </Link>
@@ -476,16 +833,16 @@ export default function AltruistUPSCPage() {
                   <button
                     type="button"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="flex h-[38px] w-[38px] items-center justify-center rounded-[10px] text-[#16526E] transition hover:bg-black/5 lg:hidden"
+                    className="flex h-[38px] w-[38px] items-center justify-center rounded-[10px] text-black transition hover:bg-black/5 lg:hidden"
                     aria-label="Toggle navigation menu"
                   >
                     {mobileMenuOpen ? (
-                      <X size={20} className="text-[#16526E]" />
+                      <X size={20} className="text-black" />
                     ) : (
                       <div className="flex flex-col items-center justify-center gap-[4px] w-5">
-                        <span className="h-[2px] w-5 rounded-full bg-[#116E99]" />
-                        <span className="h-[2px] w-5 rounded-full bg-[#116E99]" />
-                        <span className="h-[2px] w-5 rounded-full bg-[#116E99]" />
+                        <span className="h-[2px] w-5 rounded-full bg-black" />
+                        <span className="h-[2px] w-5 rounded-full bg-black" />
+                        <span className="h-[2px] w-5 rounded-full bg-black" />
                       </div>
                     )}
                   </button>
@@ -499,54 +856,54 @@ export default function AltruistUPSCPage() {
                 <Link
                   href="/toppers"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#16526E]/80 transition hover:bg-[#DEEFF8]/50 hover:text-[#16526E]"
+                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black/80 transition hover:bg-black/5 hover:text-black"
                 >
                   Toppers Marksheets
                 </Link>
                 <a
                   href="#topper-showcase"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#16526E]/80 transition hover:bg-[#DEEFF8]/50 hover:text-[#16526E]"
+                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black/80 transition hover:bg-black/5 hover:text-black"
                 >
                   Evaluated Answer Copies
                 </a>
                 <Link
                   href="/free-materials"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#16526E]/80 transition hover:bg-[#DEEFF8]/50 hover:text-[#16526E]"
+                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black/80 transition hover:bg-black/5 hover:text-black"
                 >
                   Free Materials & Test Series
                 </Link>
                 <Link
                   href="/current-affairs"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#16526E]/80 transition hover:bg-[#DEEFF8]/50 hover:text-[#16526E]"
+                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black/80 transition hover:bg-black/5 hover:text-black"
                 >
                   Current Affairs Hub
                 </Link>
                 <Link
                   href="/pyq"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#16526E]/80 transition hover:bg-[#DEEFF8]/50 hover:text-[#16526E]"
+                  className="rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black/80 transition hover:bg-black/5 hover:text-black"
                 >
                   PYQs (2022–2025)
                 </Link>
                 <Link
                   href="/ask"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between rounded-[8px] px-3 py-2 text-[14px] font-semibold text-[#116E99] transition hover:bg-[#DEEFF8]/50"
+                  className="flex items-center justify-between rounded-[8px] px-3 py-2 text-[14px] font-semibold text-black transition hover:bg-black/5"
                 >
                   <div className="flex items-center gap-1.5">
                     <Sparkles size={14} />
                     <span>Ask AI Mentor</span>
                   </div>
-                  <span className="rounded-[4px] bg-[#116E99] px-2 py-0.5 text-[10px] font-bold text-white">NEW</span>
+                  <span className="rounded-[4px] bg-black px-2 py-0.5 text-[10px] font-bold text-white">NEW</span>
                 </Link>
                 <div className="pt-2 border-t border-black/5 mt-1">
                   <Link
                     href="/store"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex h-[42px] w-full items-center justify-center rounded-[10px] bg-[#16526E] text-[14px] font-semibold text-white shadow-xs transition hover:bg-[#0E3E55]"
+                    className="flex h-[42px] w-full items-center justify-center rounded-[10px] bg-black text-[14px] font-semibold text-white shadow-xs transition hover:bg-neutral-800"
                   >
                     Explore Store
                   </Link>
@@ -563,7 +920,7 @@ export default function AltruistUPSCPage() {
       <div className="px-2.5 pt-2.5 sm:px-3 sm:pt-3">
         <main
           id="hero"
-          className="relative isolate flex h-[90vh] min-h-[620px] max-h-[860px] w-full flex-col justify-between overflow-hidden rounded-[16px] px-6 py-12 text-center sm:px-12 sm:py-16"
+          className="relative isolate flex min-h-[640px] max-h-[860px] h-[90vh] w-full flex-col items-center justify-between overflow-hidden rounded-[16px] px-4 pt-20 pb-12 sm:px-12 sm:pt-28 sm:pb-16 text-center"
         >
           {/* Hero Background Image: Historic LBSNAA Academy Campus at Golden Hour */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[16px]">
@@ -577,36 +934,35 @@ export default function AltruistUPSCPage() {
                 className="h-full w-full object-cover object-center"
               />
             </picture>
-            {/* Altruist gradient overlay: high text contrast while showcasing campus and mountains */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/60" />
+            {/* Altruist gradient overlay: calibrated for high contrast and razor-sharp text legibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70" />
+            {/* Subtle radial scrim behind central text */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.3)_0%,transparent_75%)]" />
           </div>
 
-          {/* Spacer top for floating nav */}
-          <div className="h-10" />
-
           {/* Centered Straight Heading & Value Proposition (Airy & Uncluttered) */}
-          <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center justify-center text-center px-2 sm:px-4">
-            <h1 className="text-[23px] xs:text-[26px] sm:text-5xl md:text-[64px] font-extrabold tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.4)] sm:leading-[1.15]">
+          <div className="relative z-10 mx-auto my-auto flex max-w-4xl flex-col items-center justify-center text-center px-2 sm:px-4">
+            <h1 className="text-[25px] xs:text-[28px] sm:text-5xl md:text-[64px] font-extrabold tracking-tight text-white drop-shadow-[0_3px_16px_rgba(0,0,0,0.5)] sm:leading-[1.15]">
               <span className="block">Every mark. Every topper.</span>
               <span className="mt-2 block sm:mt-3">
                 Decoded with{" "}
-                <span className="inline-flex items-center rounded-full bg-white px-3 py-0.5 sm:px-6 sm:py-1 text-[#116E99] shadow-2xl align-middle font-extrabold whitespace-nowrap">
+                <span className="inline-flex items-center rounded-[12px] sm:rounded-[18px] bg-[#FEF9EE] px-3.5 py-0.5 sm:px-6 sm:py-1 text-[#7A4B13] border border-[#F7E7CD] shadow-2xl align-middle font-extrabold whitespace-nowrap ml-1 sm:ml-2">
                   zero fluff.
                 </span>
               </span>
             </h1>
 
-            <p className="mx-auto mt-4 sm:mt-5 max-w-xl text-sm sm:text-base md:text-[17px] leading-relaxed text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.35)]">
+            <p className="mx-auto mt-4 sm:mt-5 max-w-xl text-[14px] sm:text-base md:text-[17px] font-medium leading-relaxed tracking-[-0.01em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]">
               280+ verified marksheet breakdowns and authentic evaluated answer copies. Organized in one searchable archive for serious civil services aspirants.
             </p>
           </div>
 
           {/* Bottom CTA Button & Social Proof (Clean & Spacious) */}
-          <div className="relative z-10 mx-auto flex flex-col items-center gap-4">
+          <div className="relative z-10 mx-auto flex flex-col items-center gap-3.5 sm:gap-4 pb-2 sm:pb-4">
             <div className="flex flex-col items-center gap-3">
               <a
                 href="#topper-showcase"
-                className="flex h-[46px] sm:h-[48px] items-center justify-center rounded-[12px] bg-[#16526E] px-7 sm:px-8 text-sm sm:text-base font-semibold text-white shadow-xl transition hover:bg-[#0E3E55] active:scale-[0.98]"
+                className="flex h-[48px] sm:h-[50px] items-center justify-center rounded-[12px] bg-black px-7 sm:px-8 text-sm sm:text-base font-semibold text-white shadow-xl transition hover:bg-neutral-800 active:scale-[0.98]"
               >
                 Explore Marksheets Database
               </a>
@@ -635,7 +991,7 @@ export default function AltruistUPSCPage() {
                     className="h-6 w-6 sm:h-7 sm:w-7 rounded-full border-2 border-white object-cover"
                   />
                 </div>
-                <span className="text-[11px] sm:text-xs font-semibold text-[#16526E] whitespace-nowrap">
+                <span className="text-[11px] sm:text-xs font-semibold text-black whitespace-nowrap">
                   <span className="inline sm:hidden">280+ Marksheets Indexed · Verified</span>
                   <span className="hidden sm:inline">280+ Official Marksheets Indexed · Gazette Verified</span>
                 </span>
@@ -646,721 +1002,21 @@ export default function AltruistUPSCPage() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. RECOGNIZED SECTION (Continuous Infinite Logo Marquee)
+          3. EXACT ALTRUIST SECTIONS (DERIVED DIRECTLY FROM EXTRACTION)
       ───────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 lg:px-8">
-        <p className="text-center text-xs sm:text-sm font-semibold tracking-wider text-black/50 uppercase">
-          Evaluated copies & test series sourced from premier institutes:
-        </p>
-
-        {/* Infinite Seamless Marquee */}
-        <div className="relative mt-10 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <div className="animate-altruist-marquee flex items-center gap-14 sm:gap-20 py-4">
-            {/* First Set of Large Direct Logos */}
-            {MARQUEE_ITEMS.map((item, i) => (
-              <div
-                key={`m1-${i}`}
-                className="flex shrink-0 items-center justify-center transition-transform duration-200 hover:scale-105"
-              >
-                <img
-                  src={item.src}
-                  alt={item.name}
-                  className={`${item.heightClass} w-auto max-w-[220px] object-contain opacity-85 transition-opacity duration-200 hover:opacity-100`}
-                />
-              </div>
-            ))}
-
-            {/* Second Set of Large Direct Logos (for seamless infinite loop) */}
-            {MARQUEE_ITEMS.map((item, i) => (
-              <div
-                key={`m2-${i}`}
-                className="flex shrink-0 items-center justify-center transition-transform duration-200 hover:scale-105"
-              >
-                <img
-                  src={item.src}
-                  alt={item.name}
-                  className={`${item.heightClass} w-auto max-w-[220px] object-contain opacity-85 transition-opacity duration-200 hover:opacity-100`}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          3.5 TOPPER INTELLIGENCE STAGE (Archival Examination Desk & Verified Downloads)
-      ───────────────────────────────────────────────────────────── */}
-     
-
-      {/* ─────────────────────────────────────────────────────────────
-          4. OUR PURPOSE SECTION (Interactive Tabs & Rotating Badge)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="our-purpose" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="flex flex-col items-center text-center">
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            Our Purpose
-          </span>
-          <h2 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px] md:leading-[1.2]">
-            Topper preparation intelligence shouldn’t be a privilege
-          </h2>
-          <p className="mt-3 max-w-xl text-base text-black/70">
-            From paper-wise mark distributions to real handwritten answer sheets with examiner feedback, we organize civil services intelligence with academic rigor.
-          </p>
-        </div>
-
-        {/* Big Card Container */}
-        <div className="relative mt-14 overflow-hidden rounded-[16px] bg-black p-6 sm:p-10 lg:p-14 text-white">
-          
-          {/* Curved rotating SVG text badge */}
-          <div className="absolute top-4 right-4 z-20 hidden md:block" style={{ transform: "rotate(-10deg)" }}>
-            <div className="flex h-28 w-28 items-center justify-center rounded-full border border-white/20 bg-white/10 text-[9px] font-bold tracking-widest text-[#EBF8FF] uppercase backdrop-blur-md animate-[spin_20s_linear_infinite]">
-              ✦ For Every Aspirant ✦ For Every Attempt
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
-            
-            {/* Left Column: What We Stand For + Tabs */}
-            <div className="lg:col-span-5">
-              <h3 className="text-xl font-bold tracking-tight text-white/90">
-                What We Stand For
-              </h3>
-
-              <div className="mt-6 flex flex-col gap-2.5">
-                {PURPOSE_TABS.map((tab) => {
-                  const Icon = tab.icon;
-                  const isActive = tab.id === activePurposeTab;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActivePurposeTab(tab.id)}
-                      className={`flex w-full items-center gap-3.5 rounded-[6px] px-4 py-3 text-left font-semibold transition-all ${
-                        isActive
-                          ? "bg-[rgba(230,237,245,0.18)] text-white shadow-inner"
-                          : "bg-transparent text-white/60 hover:bg-white/5 hover:text-white"
-                      }`}
-                    >
-                      <div
-                        className={`flex h-8 w-8 items-center justify-center rounded-[5px] transition ${
-                          isActive
-                            ? "bg-[#16526E] text-[#EBF8FF] shadow-md"
-                            : "bg-[#EBF8FF] text-[#16526E]"
-                        }`}
-                      >
-                        <Icon size={16} />
-                      </div>
-                      <span className="text-base">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Column: Dynamic Image with Dark Overlay & Quote */}
-            <div className="relative h-[340px] overflow-hidden rounded-[12px] bg-zinc-900 sm:h-[420px] lg:col-span-7">
-              <img
-                src={currentTab.image}
-                alt={currentTab.label}
-                className="h-full w-full object-cover transition-opacity duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8">
-                <h4 className="text-xl font-bold text-white sm:text-2xl md:text-[28px] leading-snug">
-                  “{currentTab.quote}”
-                </h4>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          5. FEATURED DOSSIERS (Ongoing Projects Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="dossiers" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="max-w-2xl">
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            In Progress
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Featured Topper Dossiers
-          </h2>
-          <p className="mt-3 text-base text-black/70">
-            Deep-dive into verified marksheets, handwritten evaluated tests, and optional scores of recent UPSC toppers.
-          </p>
-        </div>
-
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_DOSSIERS.map((dossier, i) => (
-            <div
-              key={i}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[17px] bg-[#EBF8FF] p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-            >
-              {/* Image Container */}
-              <div className="relative h-72 w-full overflow-hidden rounded-[12px]">
-                <img
-                  src={dossier.image}
-                  alt={dossier.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                
-                {/* Score Tag */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-[6px] bg-white/95 px-3 py-1 text-xs font-bold text-black shadow-xs">
-                  <span className="text-black/60">{dossier.rank}</span>
-                  <span className="text-[#116E99]">· {dossier.scoreBadge}</span>
-                </div>
-              </div>
-
-              {/* Bottom Card Info Stack */}
-              <div className="mt-4 flex items-center justify-between rounded-[12px] bg-white p-4 shadow-xs">
-                <div>
-                  <h3 className="text-base font-bold text-black">{dossier.title}</h3>
-                  <p className="text-xs text-black/60 line-clamp-1">{dossier.details}</p>
-                </div>
-
-                <Link
-                  href={dossier.slug}
-                  className="shrink-0 rounded-[10px] bg-[#16526E] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#0E3E55]"
-                >
-                  View Marks
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          6. GOALS SECTION (Mission For CSE 2026 Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="goals" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="flex flex-col items-center text-center">
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            Goals
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Mission For CSE 2026
-          </h2>
-          <p className="mt-3 max-w-xl text-base text-black/70">
-            A single, transparent destination where civil services preparation is driven by verified data, not coaching hype.
-          </p>
-        </div>
-
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {MISSION_GOALS.map((goal, i) => (
-            <div
-              key={i}
-              className="flex flex-col justify-between overflow-hidden rounded-[17px] border border-black/5 bg-[#FFFFFC] p-6 shadow-sm transition hover:shadow-md"
-            >
-              <div>
-                <span className="inline-block rounded-full bg-[#FFF2E3] px-3 py-1 text-xs font-semibold text-[#6E4616]">
-                  {goal.badge}
-                </span>
-
-                <h3 className="mt-4 text-xl font-bold text-black">
-                  {goal.title}
-                </h3>
-
-                <p className="mt-2 text-sm leading-relaxed text-black/70">
-                  {goal.desc}
-                </p>
-              </div>
-
-              {/* Stacked Images */}
-              <div className="mt-6 flex gap-3 overflow-hidden rounded-[12px]">
-                <img
-                  src={goal.img1}
-                  alt={goal.title}
-                  className="h-40 w-1/2 rounded-[10px] object-cover"
-                />
-                <img
-                  src={goal.img2}
-                  alt={goal.title}
-                  className="h-40 w-1/2 rounded-[10px] object-cover"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          7. IMPACTS SECTION (Changes We Proudly Made Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="flex flex-col items-center text-center">
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            Impacts
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Empowering Serious Aspirants Across India
-          </h2>
-          <p className="mt-3 max-w-xl text-base text-black/70">
-            Thousands of aspirants use UPSCPrepNotes daily to calibrate their answers and benchmark their scores.
-          </p>
-        </div>
-
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* Bento Card 1 */}
-          <div className="group relative h-80 overflow-hidden rounded-[17px] bg-black">
-            <img
-              src="/images/altruist/impact_1.webp"
-              alt="Aspirants Prepared"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-2xl font-bold text-white">
-                10,000+ Active Aspirants
-              </h3>
-            </div>
-          </div>
-
-          {/* Bento Card 2 */}
-          <div className="group relative h-80 overflow-hidden rounded-[17px] bg-black">
-            <img
-              src="/images/altruist/impact_2.webp"
-              alt="PDF Downloads"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-2xl font-bold text-white">
-                50,000+ PDF Downloads Across India
-              </h3>
-            </div>
-          </div>
-
-          {/* Bento Card 3 */}
-          <div className="group relative h-80 overflow-hidden rounded-[17px] bg-black">
-            <img
-              src="/images/altruist/impact_3.webp"
-              alt="Sub-Second Retrieval"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-2xl font-bold text-white">
-                Sub-Second Retrieval Across All Papers
-              </h3>
-            </div>
-          </div>
-        </div>
-
-        {/* Circular badge strip */}
-        <div className="mt-8 flex justify-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-[#EBF8FF] px-5 py-2 text-xs font-semibold text-[#116E99]">
-            <span>✦ Gazette Verified</span>
-            <span>•</span>
-            <span>Zero Fluff Intelligence ✦</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          8. TESTIMONIALS SECTION (Trusted by Rankers Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="testimonials" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:items-end">
-          <div>
-            <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-              Testimonials
-            </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-              Trusted by rankers and serious aspirants
-            </h2>
-            <p className="mt-2 text-base text-black/70">
-              Here is what candidates preparing from Delhi, Bengaluru, and home libraries have to say.
-            </p>
-          </div>
-
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrevTestimonial}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-black transition hover:bg-black hover:text-white"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={handleNextTestimonial}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-black transition hover:bg-black hover:text-white"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-
-        {/* Active Testimonial Card */}
-        <div className="mt-10 overflow-hidden rounded-[17px] border border-black/6 bg-[#EBF8FF] p-8 sm:p-12">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-            <img
-              src={currentTestimonial.avatar}
-              alt={currentTestimonial.author}
-              className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-sm sm:h-24 sm:w-24"
-            />
-            <div>
-              <p className="text-xl font-medium leading-relaxed text-black/90 sm:text-2xl">
-                “{currentTestimonial.quote}”
-              </p>
-              <p className="mt-4 text-sm font-bold text-[#16526E]">
-                {currentTestimonial.author}, {currentTestimonial.location}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          9. COMMUNITY VOICES ("Notes from the community" Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="flex flex-col items-center text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Notes from the community
-          </h2>
-          <p className="mt-3 max-w-xl text-base text-black/70">
-            Real voices from aspirants who replaced Telegram rumors with verified data.
-          </p>
-          <Link
-            href="/store"
-            className="mt-6 inline-flex h-[42px] items-center rounded-[10px] bg-[#16526E] px-6 text-sm font-semibold text-white shadow-xs transition hover:bg-[#0E3E55]"
-          >
-            Explore Store Compilations
-          </Link>
-        </div>
-
-        {/* Grid of Community Cards */}
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {COMMUNITY_NOTES.map((note, i) => (
-            <div
-              key={i}
-              className="flex flex-col justify-between rounded-[15px] border border-black/6 bg-white p-6 shadow-xs transition hover:shadow-sm"
-            >
-              <p className="text-sm sm:text-[15px] leading-relaxed text-black/80">
-                “{note.quote}”
-              </p>
-              <div className="mt-4 pt-4 border-t border-black/5">
-                <span className="text-xs font-bold text-[#116E99]">
-                  {note.from}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          10. COMPILATIONS & RELEASES (Schedule Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="compilations" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div>
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            Compilations
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Latest Study Materials & Archives
-          </h2>
-          <p className="mt-2 text-base text-black/70">
-            Handpicked compilations, test series archives, and topper answer dossiers available for instant download.
-          </p>
-        </div>
-
-        <div className="mt-12 flex flex-col divide-y divide-black/8 border-y border-black/8">
-          {COMPILATIONS.map((item, i) => (
-            <div
-              key={i}
-              className="group flex flex-col justify-between gap-4 py-6 transition hover:bg-[#EBF8FF]/40 sm:flex-row sm:items-center px-4 -mx-4 rounded-[8px]"
-            >
-              <div className="flex items-center gap-4 sm:gap-6">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-16 w-16 rounded-[10px] object-cover"
-                />
-                <div>
-                  <span className="text-xs font-semibold text-black/50">
-                    {item.date}
-                  </span>
-                  <h3 className="text-lg font-bold text-black group-hover:text-[#116E99] transition">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-medium text-black/70">
-                  {item.tag}
-                </span>
-                <Link
-                  href="/store"
-                  className="rounded-[8px] border border-[#16526E] px-4 py-1.5 text-xs font-semibold text-[#16526E] transition hover:bg-[#16526E] hover:text-white"
-                >
-                  Access
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          11. FAQ SECTION (Interactive Accordion)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="faq" className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-        
-        <div className="text-center">
-          <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-            FAQ
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[42px]">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-3 text-base text-black/70">
-            Everything you need to know about our data sources, answer copies, and downloads.
-          </p>
-        </div>
-
-        <div className="mt-12 flex flex-col gap-3">
-          {FAQS.map((faq, i) => {
-            const isOpen = openFaq === i;
-            return (
-              <div
-                key={i}
-                className="overflow-hidden rounded-[12px] border border-black/6 bg-white transition-shadow hover:shadow-xs"
-              >
-                <button
-                  onClick={() => setOpenFaq(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between p-5 text-left font-semibold text-black transition"
-                >
-                  <span className="text-base sm:text-lg">{faq.q}</span>
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-black">
-                    {isOpen ? <Minus size={14} /> : <Plus size={14} />}
-                  </div>
-                </button>
-
-                {isOpen && (
-                  <div className="px-5 pb-5 text-sm leading-relaxed text-black/70 border-t border-black/5 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          12. STARTER PACK LEAD CAPTURE (Volunteer Layout)
-      ───────────────────────────────────────────────────────────── */}
-      <section id="join-us" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="overflow-hidden rounded-[20px] bg-[#EBF8FF] p-8 sm:p-12 lg:p-16">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-            
-            {/* Left: Copy & Form */}
-            <div className="lg:col-span-7">
-              <span className="rounded-[10px] bg-[#DEEFF8] px-3.5 py-1 text-xs font-bold text-[#116E99]">
-                Starter Pack
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-black sm:text-4xl md:text-[44px] md:leading-[1.15]">
-                Get the Free UPSC Starter Pack
-              </h2>
-              <p className="mt-3 text-base text-black/70 leading-relaxed max-w-lg">
-                Get instant access to 5 topper answer copies, the 4-year marksheet trend sheet, and high-scoring GS4 framework templates delivered straight to your email.
-              </p>
-
-              {/* Checklist */}
-              <div className="mt-6 flex flex-col gap-2.5">
-                {[
-                  "Top 5 Verified Handwritten Answer Copies (PDF)",
-                  "4-Year Paper-wise Marksheet Benchmarks",
-                  "High-yield GS Ethics & Essay Frameworks",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-sm font-semibold text-black/85">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#16526E] text-white">
-                      <Check size={12} />
-                    </div>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Form */}
-              <div className="mt-8 rounded-[15px] bg-white p-6 shadow-sm sm:p-8">
-                {formSubmitted ? (
-                  <div className="rounded-[10px] bg-[#DEEFF8] p-6 text-center text-[#116E99]">
-                    <h3 className="text-lg font-bold">Starter Pack Sent!</h3>
-                    <p className="mt-1 text-sm">Check your inbox for your instant download links.</p>
-                  </div>
-                ) : (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setFormSubmitted(true);
-                    }}
-                    className="flex flex-col gap-4"
-                  >
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-xs font-semibold text-black/70 mb-1">Full Name</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Aspirant Name"
-                          className="w-full rounded-[8px] border border-black/10 bg-[#FFFFFC] px-3.5 py-2 text-sm text-black placeholder:text-black/40 focus:border-[#16526E] focus:outline-hidden"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-black/70 mb-1">Email ID</label>
-                        <input
-                          type="email"
-                          required
-                          placeholder="aspirant@gmail.com"
-                          className="w-full rounded-[8px] border border-black/10 bg-[#FFFFFC] px-3.5 py-2 text-sm text-black placeholder:text-black/40 focus:border-[#16526E] focus:outline-hidden"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-xs font-semibold text-black/70 mb-1">Phone Number</label>
-                        <input
-                          type="tel"
-                          placeholder="+91 98765 43210"
-                          className="w-full rounded-[8px] border border-black/10 bg-[#FFFFFC] px-3.5 py-2 text-sm text-black placeholder:text-black/40 focus:border-[#16526E] focus:outline-hidden"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-black/70 mb-1">Optional Subject</label>
-                        <select
-                          className="w-full rounded-[8px] border border-black/10 bg-[#FFFFFC] px-3.5 py-2 text-sm text-black focus:border-[#16526E] focus:outline-hidden"
-                        >
-                          <option>PSIR</option>
-                          <option>Anthropology</option>
-                          <option>Sociology</option>
-                          <option>Geography</option>
-                          <option>History</option>
-                          <option>Public Administration</option>
-                          <option>Other Optional</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="mt-2 flex h-[44px] w-full items-center justify-center rounded-[10px] bg-[#16526E] text-sm font-bold text-white shadow-xs transition hover:bg-[#0E3E55]"
-                    >
-                      Download Free Starter Pack
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-
-            {/* Right: Graphic Card with Rotating Badge (Loaded Locally) */}
-            <div className="relative h-[480px] overflow-hidden rounded-[16px] lg:col-span-5">
-              <img
-                src="/images/altruist/starter_pack.webp"
-                alt="Aspirants studying"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-              
-              {/* Rotating Circular Badge */}
-              <div className="absolute bottom-6 right-6">
-                <div className="flex h-24 w-24 items-center justify-center rounded-full border border-white/20 bg-white/20 text-[9px] font-bold tracking-widest text-white uppercase backdrop-blur-md animate-[spin_18s_linear_infinite]">
-                  ✦ Free Starter Pack ✦
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          13. FOOTER
-      ───────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-black/8 bg-[#FFFFFC] py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
-            
-            {/* Brand column */}
-            <div className="md:col-span-5">
-              <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-[#16526E] text-white shadow-xs">
-                  <span className="text-sm font-bold">U</span>
-                </div>
-                <span className="text-lg font-bold tracking-tight text-[#16526E]">
-                  UPSCPrepNotes
-                </span>
-              </div>
-              <p className="mt-4 text-sm text-black/60 max-w-sm">
-                India&apos;s premier verified civil services preparation intelligence archive.
-              </p>
-              <p className="mt-2 text-sm font-semibold text-[#16526E]">
-                <a href="mailto:support@upscprepnotes.in" className="hover:underline">
-                  support@upscprepnotes.in
-                </a>
-              </p>
-            </div>
-
-            {/* Links Columns */}
-            <div className="grid grid-cols-2 gap-8 md:col-span-7 sm:grid-cols-3">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black/40">
-                  Database
-                </h4>
-                <ul className="mt-4 flex flex-col gap-2.5 text-sm font-medium text-black/75">
-                  <li><a href="#dossiers" className="hover:text-black">Topper Marksheets</a></li>
-                  <li><a href="#our-purpose" className="hover:text-black">Handwritten Copies</a></li>
-                  <li><a href="#goals" className="hover:text-black">Optional Analysis</a></li>
-                  <li><Link href="/store" className="hover:text-black">Study Material Store</Link></li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black/40">
-                  Platform
-                </h4>
-                <ul className="mt-4 flex flex-col gap-2.5 text-sm font-medium text-black/75">
-                  <li><a href="#our-purpose" className="hover:text-black">Our Purpose</a></li>
-                  <li><a href="#testimonials" className="hover:text-black">Aspirant Reviews</a></li>
-                  <li><a href="#goals" className="hover:text-black">2026 Roadmap</a></li>
-                  <li><a href="#faq" className="hover:text-black">FAQs</a></li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black/40">
-                  Ethics & Quality
-                </h4>
-                <p className="mt-4 text-xs leading-relaxed text-black/60">
-                  All candidate marksheets are cross-verified against official UPSC Gazette records. No sponsored coaching endorsements.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-black/5 pt-8 text-xs text-black/50 sm:flex-row">
-            <p>© 2026 UPSCPrepNotes.in. All rights reserved.</p>
-            <p>Crafted for Serious Civil Services Aspirants</p>
-          </div>
-        </div>
-      </footer>
-
+      <div className="framer-pOLR9 framer-0EsbE framer-pqx4O framer-AB6d5 framer-xhscK framer-8ZgQf framer-7Em8r framer-hXo03 framer-jVAG2 framer-72rtr7" style={{ width: "100%", position: "relative", overflow: "hidden" }}>
+        <AltruistMarquee />
+        <AltruistPurpose />
+        <AltruistCuratedStore />
+        <AltruistMainsBlueprints />
+        <AltruistGazetteRecords />
+        <AltruistTestimonials />
+        <AltruistOptionalBenchmarks />
+        <AltruistFaq />
+        <AltruistStarterPackLead />
+        <AltruistCommunityVoices />
+      </div>
+      <AltruistFooter />
     </div>
   );
 }
