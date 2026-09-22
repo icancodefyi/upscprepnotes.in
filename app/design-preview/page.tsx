@@ -282,9 +282,9 @@ export default function AltruistInspiredHero() {
 
                 {/* Stat Badges in Soft Altruist Colors */}
                 <div className="mt-4 grid grid-cols-3 gap-2.5 text-xs">
-                  <div className="rounded-xl border border-black/5 bg-[#DEEFF8]/60 p-2.5">
-                    <span className="text-[10px] font-semibold text-[#116E99] uppercase tracking-wider">Written Marks</span>
-                    <p className="mt-0.5 font-mono text-sm font-bold text-[#16526E]">{topper.written} / 1750</p>
+                  <div className="rounded-xl border border-black/5 bg-[#EEF7F2] p-2.5">
+                    <span className="text-[10px] font-semibold text-[#1A4D32] uppercase tracking-wider">Written Marks</span>
+                    <p className="mt-0.5 font-mono text-sm font-bold text-black">{topper.written} / 1750</p>
                   </div>
                   <div className="rounded-xl border border-black/5 bg-[#FFF2E3]/80 p-2.5">
                     <span className="text-[10px] font-semibold text-[#6E4616] uppercase tracking-wider">Interview Score</span>
