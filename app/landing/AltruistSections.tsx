@@ -24,7 +24,15 @@ const MARQUEE_ITEMS = [
 ───────────────────────────────────────────────────────────── */
 export function AltruistMarquee() {
   return (
-    <section className="framer-1iz3aqe" data-framer-name="Recognized Section">
+    <section
+      className="framer-1iz3aqe"
+      data-framer-name="Recognized Section"
+      style={{
+        backgroundColor: "var(--token-4a66cce6-00d5-40f7-836a-7512ad740f85, rgb(255, 255, 252))",
+        paddingTop: "32px",
+        paddingBottom: "32px"
+      }}
+    >
       <div className="framer-14l6v7v" data-framer-name="Content Stack">
         <div className="framer-1n52tai" data-framer-component-type="RichTextContainer" style={{ transform: "none" }}>
           <p
@@ -352,6 +360,7 @@ export function AltruistPurpose() {
 export function AltruistCuratedStore() {
   const storeProducts = [
     {
+      slug: "top-10-rankers-strategy",
       title: "Top 10 Rankers Strategy",
       subtitle: "AIR 1–10 complete strategies & marks deep dives in one PDF",
       location: "Instant PDF Download",
@@ -359,9 +368,10 @@ export function AltruistCuratedStore() {
       oldPrice: "₹990",
       tagLabel: "Save 70%",
       img: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-600,h-450,f-auto,q-80",
-      href: "/store"
+      href: "/store/top-10-rankers-strategy"
     },
     {
+      slug: "answer-copies-compilation",
       title: "Answer Copies Compilation",
       subtitle: "50+ actual handwritten answer sheets from rank holders (GS1–4, Essay)",
       location: "50+ Uncut Copies · Rubrics",
@@ -369,9 +379,10 @@ export function AltruistCuratedStore() {
       oldPrice: "₹1,999",
       tagLabel: "Save 60%",
       img: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-600,h-450,f-auto,q-80",
-      href: "/store"
+      href: "/store/answer-copies-compilation"
     },
     {
+      slug: "government-schemes-compilation",
       title: "Government Schemes Compendium",
       subtitle: "All ministry-wise schemes with objectives, budget, and key facts",
       location: "Updated for CSE 2025/26",
@@ -379,7 +390,7 @@ export function AltruistCuratedStore() {
       oldPrice: "₹199",
       tagLabel: "Save 50%",
       img: "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-600,h-450,f-auto,q-80",
-      href: "/store"
+      href: "/store/government-schemes-compilation"
     }
   ];
 
@@ -426,7 +437,7 @@ export function AltruistCuratedStore() {
             <div key={idx} className="ssr-variant">
               <div className="framer-a9k4av-container" style={{ opacity: 1, transform: "none" }}>
                 <div
-                  className="framer-TLXzn framer-pqx4O framer-jVAG2 framer-1n3rv63 framer-v-1n3rv63"
+                  className="framer-TLXzn framer-pqx4O framer-jVAG2 framer-1n3rv63 framer-v-1n3rv63 group transition-transform duration-200 hover:-translate-y-1"
                   data-framer-name="Variant 1"
                   style={{
                     backgroundColor: "var(--token-a7cc2964-d8ca-4e2b-a4dc-bf1002d1db68, rgb(235, 248, 255))",
@@ -438,30 +449,41 @@ export function AltruistCuratedStore() {
                     overflow: "hidden"
                   }}
                 >
-                  {/* Top Background Image */}
-                  <div
-                    className="framer-ojezjg"
+                  {/* Top Product Showcase Frame (Uncropped 3D Mockup with Soft Light Backdrop) */}
+                  <Link
+                    href={p.href}
+                    className="framer-ojezjg block transition-colors"
                     data-framer-name="Image"
                     style={{
-                      mask: "linear-gradient(rgba(0, 0, 0, 0.85) 0%, rgb(0, 0, 0) 100%)",
-                      opacity: 1
+                      opacity: 1,
+                      background: "linear-gradient(180deg, #EBF5FB 0%, #D8EAF5 100%)",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "24px 20px 32px",
+                      overflow: "hidden"
                     }}
                   >
-                    <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0 }} data-framer-background-image-wrapper="true">
+                    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <img
                         src={p.img}
                         alt={p.title}
                         style={{
                           display: "block",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "inherit",
+                          maxHeight: "100%",
+                          maxWidth: "100%",
+                          width: "auto",
+                          height: "auto",
                           objectPosition: "center",
-                          objectFit: "cover"
+                          objectFit: "contain",
+                          filter: "drop-shadow(0 14px 22px rgba(22, 82, 110, 0.22))",
+                          transition: "transform 0.3s ease"
                         }}
+                        className="group-hover:scale-105"
                       />
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Floating Pill Tag (Top-Right) */}
                   <div
@@ -474,7 +496,8 @@ export function AltruistCuratedStore() {
                       display: "flex",
                       alignItems: "center",
                       gap: "6px",
-                      padding: "4px 8px"
+                      padding: "4px 8px",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.06)"
                     }}
                   >
                     <div className="framer-h5id97" data-framer-component-type="RichTextContainer" style={{ opacity: 0.8, transform: "none" }}>
@@ -500,11 +523,11 @@ export function AltruistCuratedStore() {
                     }}
                   >
                     <div className="framer-16cvhaq" data-framer-name="Text" style={{ opacity: 1 }}>
-                      <div className="framer-ce3pnb" data-framer-component-type="RichTextContainer" style={{ "--framer-paragraph-spacing": "0px", transform: "none", opacity: 1 } as React.CSSProperties}>
-                        <p className="framer-text framer-styles-preset-149n7s4" dir="auto" style={{ fontWeight: 700, fontSize: "16px", color: "#000" }}>
+                      <Link href={p.href} className="group/title block">
+                        <p className="framer-text framer-styles-preset-149n7s4 group-hover/title:text-[#16526e] transition-colors" dir="auto" style={{ fontWeight: 700, fontSize: "16px", color: "#000" }}>
                           {p.title}
                         </p>
-                      </div>
+                      </Link>
                       <div className="framer-9hgaq5" data-framer-component-type="RichTextContainer" style={{ "--framer-paragraph-spacing": "0px", transform: "none", opacity: 1 } as React.CSSProperties}>
                         <p className="framer-text framer-styles-preset-1n9fr5k" dir="auto" style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", marginTop: "3px" }}>
                           {p.subtitle}
@@ -514,7 +537,7 @@ export function AltruistCuratedStore() {
 
                     <div className="framer-1cn3wfy-container" style={{ opacity: 1 }}>
                       <Link
-                        className="framer-2Cqzj framer-pqx4O framer-9hvwit framer-v-9hvwit framer-1wkh8kp"
+                        className="framer-2Cqzj framer-pqx4O framer-9hvwit framer-v-9hvwit framer-1wkh8kp transition hover:opacity-90 active:scale-[0.98]"
                         data-framer-name="Variant 1"
                         href={p.href}
                         tabIndex={0}
@@ -557,7 +580,7 @@ export function AltruistCuratedStore() {
         <div className="mt-8 flex justify-center">
           <Link
             href="/store"
-            className="inline-flex items-center gap-2 rounded-[12px] bg-black px-7 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-neutral-800"
+            className="inline-flex items-center gap-2 rounded-[12px] bg-[#16526e] hover:bg-[#114258] px-7 py-3 text-sm font-semibold text-white shadow-md transition active:scale-[0.98]"
           >
             <span>View All Official Store Compilations</span>
             <ArrowRight size={15} />
