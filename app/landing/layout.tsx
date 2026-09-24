@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./altruist.css";
+import { LANDING_FAQS } from "@/components/landing/faqs-data";
 
 export const metadata: Metadata = {
   title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides for UPSC CSE",
@@ -36,6 +37,7 @@ const webPageSchema = {
     "@type": "Organization",
     name: "UPSCPrepNotes",
     url: "https://upscprepnotes.in",
+    logo: "https://upscprepnotes.in/logo.png",
   },
   breadcrumb: {
     "@type": "BreadcrumbList",
@@ -50,6 +52,19 @@ const webPageSchema = {
   },
 };
 
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: LANDING_FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
 export default function LandingLayout({
   children,
 }: {
@@ -61,6 +76,11 @@ export default function LandingLayout({
         id="landing-webpage-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      <Script
+        id="landing-faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
       />
       {children}
     </>
