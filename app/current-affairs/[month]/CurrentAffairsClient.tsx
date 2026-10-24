@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useCallback } from "react";
 import { getMonth } from "@/lib/current-affairs-utils";
+import AskLink from "@/components/AskLink";
 import HeroLeadForm from "@/components/hero/HeroLeadForm";
 
 const CANVAS = "#f6f5f4";
@@ -119,10 +120,10 @@ export default function CurrentAffairsPage({ slug }: { slug: string }) {
           </div>
         )}
         <div className="mt-4">
-          <Link href={`/ask?q=${encodeURIComponent(`Ask about: ${s.title} current affairs`)}`}
+          <AskLink query={`Ask about: ${s.title} current affairs`}
             className="inline-flex items-center gap-1.5 text-[13px] font-medium transition hover:opacity-70" style={{ color: INK_FAINT }}>
             Ask AI about this section →
-          </Link>
+          </AskLink>
         </div>
       </div>
     );

@@ -8,7 +8,7 @@ interface RateLimitConfig {
 }
 
 const DEFAULTS: Record<string, RateLimitConfig> = {
-  ai: { maxRequests: 30, windowMs: 60000 },
+  ai: { maxRequests: 5, windowMs: 60000 },
   broadcast: { maxRequests: 5, windowMs: 60000 },
   cron: { maxRequests: 10, windowMs: 60000 },
   "debug-email": { maxRequests: 3, windowMs: 60000 },

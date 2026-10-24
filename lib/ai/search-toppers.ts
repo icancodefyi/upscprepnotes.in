@@ -85,6 +85,59 @@ function scoreTopper(topper: any, keywords: string[]): number {
   return score;
 }
 
+function toTopperResult(t: any): TopperResult {
+  return {
+    name: `${t.firstName || t.firstname || ""} ${t.lastName || t.lastname || ""}`.trim(),
+    slug: t.slug,
+    rank: t.rank,
+    year: t.year,
+    optionalSubject: t.optionalSubject || "",
+    marks: (t.marks as Record<string, number>) || {},
+    bio: t.bio || "",
+    strategy: (t.strategy || "").slice(0, 2000),
+    insights: t.insights || [],
+  };
+}
+
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Exact-ish lookup by person name (used by the zero-token fast path).
+ * Only returns a topper when the match is unambiguous — otherwise null,
+ * so we never answer about the wrong person.
+ */
+export async function findTopperByName(fullName: string): Promise<TopperResult | null> {
+  await connectDB();
+
+  const parts = fullName.split(/\s+/).filter(Boolean).slice(0, 4);
+  if (parts.length === 0) return null;
+
+  const or = parts.flatMap((p) => [
+    { firstName: { $regex: `^${escapeRegex(p)}$`, $options: "i" } },
+    { firstname: { $regex: `^${escapeRegex(p)}$`, $options: "i" } },
+    { lastName: { $regex: `^${escapeRegex(p)}$`, $options: "i" } },
+    { lastname: { $regex: `^${escapeRegex(p)}$`, $options: "i" } },
+  ]);
+
+  const docs = await TopperModel.find({ $or: or })
+    .select(
+      "firstName lastName firstname lastname slug rank year optionalSubject marks bio strategy insights",
+    )
+    .limit(10)
+    .lean();
+  if (docs.length === 0) return null;
+
+  const want = fullName.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const exact = docs.filter(
+    (d) => toTopperResult(d).name.toLowerCase().replace(/[^a-z0-9]/g, "") === want,
+  );
+  if (exact.length > 0) return toTopperResult(exact[0]);
+  if (docs.length === 1) return toTopperResult(docs[0]);
+  return null; // ambiguous partial name → let the LLM handle it
+}
+
 export async function searchToppers(query: string): Promise<TopperResult[]> {
   await connectDB();
 
@@ -124,17 +177,7 @@ export async function searchToppers(query: string): Promise<TopperResult[]> {
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 
-  const results = scored.map((s) => ({
-    name: `${s.topper.firstName || s.topper.firstname || ""} ${s.topper.lastName || s.topper.lastname || ""}`.trim(),
-    slug: s.topper.slug,
-    rank: s.topper.rank,
-    year: s.topper.year,
-    optionalSubject: s.topper.optionalSubject || "",
-    marks: (s.topper.marks as Record<string, number>) || {},
-    bio: s.topper.bio || "",
-    strategy: (s.topper.strategy || "").slice(0, 2000),
-    insights: s.topper.insights || [],
-  }));
+  const results = scored.map((s) => toTopperResult(s.topper));
 
   return results;
 }

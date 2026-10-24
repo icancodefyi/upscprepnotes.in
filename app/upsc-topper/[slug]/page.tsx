@@ -10,6 +10,7 @@ import {
   getToppersByYear,
 } from "@/services/topper.service";
 import { topperImageSrc } from "@/lib/utils";
+import AskLink from "@/components/AskLink";
 import TrackingProvider from "./TrackingProvider";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
@@ -393,13 +394,13 @@ export default async function TopperPage({ params }: Props) {
               >
                 Browse store &rarr;
               </Link>
-              <Link
-                href={`/ask?q=Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`}
+              <AskLink
+                query={`Tell me about ${topper.firstName} ${topper.lastName}'s UPSC strategy`}
                 data-track="topper-ask-ai"
                 className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
               >
                 Ask AI
-              </Link>
+              </AskLink>
             </div>
 
             <div className="mt-4 flex items-center gap-4 text-xs">

@@ -29,6 +29,7 @@ import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -123,7 +124,18 @@ type AskStatusEvent =
   | { t: "begin"; label?: string }
   | { t: "status"; label?: string }
   | { t: "sources"; items?: { domain: string; label: string }[] }
+  | { t: "error"; code?: string; message?: string; retryAfter?: number }
   | { t: "end" };
+
+// Plain-language fallbacks — never surface raw HTTP/provider errors to users
+function friendlyHttpError(status: number, serverMsg: unknown): string {
+  if (typeof serverMsg === "string" && serverMsg.trim() && serverMsg.length < 180)
+    return serverMsg.trim();
+  if (status === 401 || status === 403) return "Please sign in to continue asking questions.";
+  if (status === 429) return "You've reached your daily limit. Please try again later.";
+  if (status >= 500) return "We hit a snag on our side. Please try again in a moment.";
+  return "We couldn't send that just now. Please try again.";
+}
 
 function stripSearchIndicator(content: string): string {
   const idx = content.indexOf("\n\n", content.indexOf("\uD83D\uDD0D"));
@@ -422,6 +434,12 @@ function AskPage() {
   const [shareData, setShareData] = useState<{ question: string; answer: string } | null>(null);
   const [shareImageBlob, setShareImageBlob] = useState<Blob | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+
+  const [askError, setAskError] = useState<{ code?: string; message: string } | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportNote, setReportNote] = useState("");
+  const [reportEmail, setReportEmail] = useState("");
+  const [reportState, setReportState] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const shareCanvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -449,6 +467,7 @@ function AskPage() {
     try {
       setActiveId(id);
       setMessages([]);
+      setAskError(null);
       const res = await fetch(`/api/ai/conversations/${id}`);
       if (!res.ok) return;
       const data = await res.json();
@@ -458,15 +477,18 @@ function AskPage() {
 
   useEffect(() => {
     if (loading || initialQueryDone.current) return;
-    const q = searchParams.get("q");
-    if (q) {
-      initialQueryDone.current = true;
-      setInput(q);
-      setTimeout(() => {
-        const form = document.querySelector("form");
-        if (form) form.requestSubmit();
-      }, 500);
+    initialQueryDone.current = true;
+    // Prefill only — never auto-submit. Auto-submitting a ?q= URL turned /ask
+    // into a free, unauthenticated LLM endpoint that crawlers harvested
+    // (~200 requests/day from rotating cloud IPs, Oct 2026).
+    let q = searchParams.get("q");
+    if (!q) {
+      try {
+        q = sessionStorage.getItem("ask:prefill");
+        sessionStorage.removeItem("ask:prefill");
+      } catch {}
     }
+    if (q) setInput(q);
   }, [loading, searchParams]);
 
   useEffect(() => {
@@ -544,6 +566,7 @@ function AskPage() {
       setActiveId(id);
       setMessages([]);
       setInput("");
+      setAskError(null);
       setFollowUpQuestions([]);
       await fetchConversations();
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -555,11 +578,19 @@ function AskPage() {
     const text = input.trim();
     if (!text || streaming) return;
 
-    const userMsg: Message = { role: "user", content: text };
-
-    setMessages((prev) => [...prev, userMsg]);
     setInput("");
     if (inputRef.current) inputRef.current.style.height = "auto";
+    await sendQuestion(text, false);
+  }
+
+  // reuseUserMessage = true on retry (the user bubble is already in the thread)
+  async function sendQuestion(text: string, reuseUserMessage: boolean) {
+    if (!text || streaming) return;
+
+    if (!reuseUserMessage) {
+      setMessages((prev) => [...prev, { role: "user", content: text }]);
+    }
+    setAskError(null);
     setStreaming(true);
     setStreamingMessage(null);
     setSearchedOnce(false);
@@ -610,10 +641,8 @@ function AskPage() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: err.error || `Error ${res.status}` },
-        ]);
+        const message = friendlyHttpError(res.status, err.error);
+        setAskError({ code: `http_${res.status}`, message });
         setStreamingMessage(null);
         trackClientEvent("ask_error", {
           status: res.status,
@@ -633,6 +662,7 @@ function AskPage() {
       let fullContent = "";
       let hasShownSearch = false;
       let buffer = "";
+      let streamErr: { code?: string; message: string } | null = null;
 
       // Handle server control frames (status/source updates)
       const applyEvent = (ev: AskStatusEvent) => {
@@ -648,6 +678,20 @@ function AskPage() {
           case "sources":
             if (Array.isArray(ev.items)) setResearchSources(ev.items);
             break;
+          case "error": {
+            const detail = {
+              code: ev.code,
+              message:
+                ev.message || "We couldn't write an answer this time. Please try again.",
+            };
+            streamErr = detail;
+            setAskError(detail);
+            trackClientEvent("ask_error", {
+              code: ev.code || "unknown",
+              via: "stream",
+            });
+            break;
+          }
           case "end":
             setIsSearching(false);
             break;
@@ -698,6 +742,12 @@ function AskPage() {
       setResearchLabel("");
       setResearchSources([]);
 
+      if (streamErr) {
+        // Server saved nothing — the friendly error card renders instead
+        setStreamingMessage(null);
+        return;
+      }
+
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: fullContent },
@@ -715,10 +765,11 @@ function AskPage() {
         wasSearching: hasShownSearch,
       });
     } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Something went wrong." },
-      ]);
+      setAskError({
+        code: "network",
+        message:
+          "We lost the connection while writing your answer. Check your internet and try again.",
+      });
       setStreamingMessage(null);
       trackClientEvent("ask_error", { error: "fetch_crash" });
     } finally {
@@ -727,6 +778,61 @@ function AskPage() {
       setIsSearching(false);
       setResearchLabel("");
       setResearchSources([]);
+    }
+  }
+
+  function lastUserQuestion(): string {
+    return [...messages].reverse().find((m) => m.role === "user")?.content || "";
+  }
+
+  async function retryLastQuestion() {
+    const q = lastUserQuestion();
+    if (!q) return;
+    await sendQuestion(q, true);
+  }
+
+  function openReport() {
+    try {
+      setReportEmail(localStorage.getItem("upsc-email") || "");
+    } catch {}
+    setReportNote("");
+    setReportState("idle");
+    setReportOpen(true);
+  }
+
+  async function submitReport() {
+    const email = reportEmail.trim();
+    if (!email || reportState === "sending") return;
+    setReportState("sending");
+
+    const lines = [
+      `[Ask error] ${askError?.code || "unknown"}`,
+      `question: ${lastUserQuestion().slice(0, 200)}`,
+      `conversation: ${activeId || "new"}`,
+      `time: ${new Date().toISOString()}`,
+      reportNote.trim() ? `user note: ${reportNote.trim()}` : "",
+    ].filter(Boolean);
+
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          type: "bug",
+          message: lines.join("\n"),
+          url: typeof window !== "undefined" ? window.location.href : "",
+        }),
+      });
+      if (!res.ok) throw new Error("report failed");
+      setReportState("sent");
+      trackClientEvent("ask_error_reported", { code: askError?.code || "unknown" });
+      setTimeout(() => {
+        setReportOpen(false);
+        setReportNote("");
+      }, 1500);
+    } catch {
+      setReportState("failed");
     }
   }
 
@@ -994,6 +1100,61 @@ async function copyShareText() {
                 Browse premium resources
               </Link>
             </p>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bug report dialog — opened from the answer error card */}
+      <Dialog
+        open={reportOpen}
+        onOpenChange={(open) => {
+          setReportOpen(open);
+          if (open) setReportState("idle");
+        }}
+      >
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Report a problem</DialogTitle>
+            <DialogDescription>
+              Tell us what went wrong — the details below help us find the exact error.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Textarea
+              rows={3}
+              value={reportNote}
+              onChange={(e) => setReportNote(e.target.value)}
+              placeholder="What happened? (optional)"
+            />
+            <Input
+              type="email"
+              value={reportEmail}
+              onChange={(e) => setReportEmail(e.target.value)}
+              placeholder="Your email (so we can update you)"
+            />
+            <div className="space-y-0.5 rounded-md bg-muted/60 p-2.5 text-[11px] leading-relaxed text-muted-foreground">
+              <p>Problem: {askError?.code || "unknown"}</p>
+              <p>Conversation: {activeId ? activeId.slice(-8) : "new"}</p>
+              <p>Time: {new Date().toLocaleString()}</p>
+            </div>
+          </div>
+          <DialogFooter className="items-center">
+            {reportState === "sent" ? (
+              <p className="text-sm text-muted-foreground">Thanks — your report was sent.</p>
+            ) : (
+              <>
+                {reportState === "failed" && (
+                  <p className="text-sm text-destructive">Couldn't send. Please try again.</p>
+                )}
+                <Button
+                  type="button"
+                  onClick={submitReport}
+                  disabled={reportState === "sending" || !reportEmail.trim()}
+                >
+                  {reportState === "sending" ? "Sending..." : "Send report"}
+                </Button>
+              </>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1382,6 +1543,54 @@ async function copyShareText() {
                     )}
                   </div>
                 ))}
+
+                {/* Answer error card — plain-language message + retry/report */}
+                {askError && !streaming && !streamingMessage && (
+                  <div className="border-b border-border/60 last:border-b-0">
+                    <Message align="start" className="py-5">
+                      <MessageAvatar>
+                        <Avatar className="size-8 ring-1 ring-border">
+                          <AvatarImage src="/logo.png" alt="AI Mentor" />
+                          <AvatarFallback>AI</AvatarFallback>
+                        </Avatar>
+                      </MessageAvatar>
+                      <MessageContent>
+                        <div className="rounded-xl border border-amber-500/40 bg-amber-500/5 p-4">
+                          <div className="flex items-start gap-3">
+                            <svg
+                              className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              aria-hidden="true"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                              />
+                            </svg>
+                            <div className="min-w-0 space-y-1">
+                              <p className="text-sm font-medium text-foreground">
+                                We couldn't answer that
+                              </p>
+                              <p className="text-sm text-muted-foreground">{askError.message}</p>
+                            </div>
+                          </div>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <Button type="button" size="sm" onClick={retryLastQuestion}>
+                              Try again
+                            </Button>
+                            <Button type="button" size="sm" variant="outline" onClick={openReport}>
+                              Report a problem
+                            </Button>
+                          </div>
+                        </div>
+                      </MessageContent>
+                    </Message>
+                  </div>
+                )}
 
                 {/* Streaming assistant message */}
                 {streamingMessage && (

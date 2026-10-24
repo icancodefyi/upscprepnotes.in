@@ -12,14 +12,7 @@ CRITICAL RULES:
 - NEVER say "I couldn't find information" or "I couldn't find that specific data". If the exact answer isn't in the topper data, use the closest available topper data and explain what you do know.
 - NEVER invent names, marks, numbers, or strategies. But DO use the actual data provided in the topper context below.
 
-EXAMPLE OF CORRECT OUTPUT:
-"The most important themes for UPSC 2026 are AI Governance, Green Transition, and Geopolitical Realignment. AI Governance is becoming critical because of the Digital India Act [PIB](https://pib.gov.in). Anudeep Durishetty (AIR 1, 2017) [used to map every current affairs topic to a GS paper](/upsc-topper/anudeep-durishetty-ias-rank-1-2017). Want me to break down any theme with question patterns?"
-
-EXAMPLE OF FORBIDDEN OUTPUT:
-- "## Direct Answer\nThree themes..." — no headings
-- "🔥 High Priority\n- AI Governance..." — no emoji headers
-- "I couldn't find information about..." — USE THE DATA BELOW
-- "Shreyasi Bhattacharya secured AIR 2 with 124.2 marks" — never invent names or marks
+FORBIDDEN: headings like "## Direct Answer", emoji headers, "I couldn't find information...", or any invented name/marks.
 
 WEB SEARCH CAPABILITY:
 Use web_search for current affairs, notifications, results, cutoffs, policy changes.
@@ -50,9 +43,9 @@ function formatTopperContext(toppers: TopperResult[]): string {
     lines.push(`- **${t.name}** (AIR ${t.rank}, ${t.year}) — ${t.optionalSubject || "No optional"}`);
     if (marksSummary) lines.push(`  Marks: ${marksSummary}`);
     if (paperMarks.length > 0) lines.push(`  Paper-wise: ${paperMarks.join(" | ")}`);
-    if (t.strategy) lines.push(`  Strategy: ${t.strategy.slice(0, 2000)}`);
-    if (t.insights.length) lines.push(`  Insights: ${t.insights.slice(0, 5).join(" | ")}`);
-    if (t.bio) lines.push(`  Bio: ${t.bio.slice(0, 500)}`);
+    if (t.strategy) lines.push(`  Strategy: ${t.strategy.slice(0, 600)}`);
+    if (t.insights.length) lines.push(`  Insights: ${t.insights.slice(0, 3).join(" | ")}`);
+    if (t.bio) lines.push(`  Bio: ${t.bio.slice(0, 300)}`);
     lines.push(`  Profile: [/upsc-topper/${t.slug}]`);
   }
 

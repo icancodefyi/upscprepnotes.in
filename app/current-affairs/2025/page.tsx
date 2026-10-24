@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CA_2025 } from "@/lib/current-affairs-2025";
+import AskLink from "@/components/AskLink";
 import YearlyTOC from "./YearlyTOC";
 
 const totalEvents = (() => {
@@ -155,12 +156,12 @@ export default function CurrentAffairs2025Page() {
                           </div>
                           <p className="mt-2 text-sm font-bold leading-snug text-[#000000e8]">{event.title}</p>
                           <p className="mt-1 text-xs leading-relaxed text-[#615d59]">{event.description}</p>
-                          <Link
-                            href={`/ask?q=${encodeURIComponent(`Tell me more about: ${event.title} (UPSC)`)}`}
+                          <AskLink
+                            query={`Tell me more about: ${event.title} (UPSC)`}
                             className="mt-2 inline-flex text-[11px] font-medium text-[#0075de] hover:text-[#005bab] transition"
                           >
                             Ask AI →
-                          </Link>
+                          </AskLink>
                         </div>
                       ))}
                     </div>
