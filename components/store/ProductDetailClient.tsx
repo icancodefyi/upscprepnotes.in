@@ -214,6 +214,18 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               </div>
             )}
 
+            {/* Sources — be explicit about where the material comes from */}
+            {product.sourceNote && (
+              <div className="mt-8">
+                <SectionLabel>Sources</SectionLabel>
+                <div className="rounded-2xl border border-border bg-muted/40 p-5">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {product.sourceNote}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* File list */}
             {product.files && product.files.length > 0 && (
               <div className="mt-8">

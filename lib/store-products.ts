@@ -40,6 +40,7 @@ export interface StoreProduct {
   totalSizeMB?: number;
   files?: ProductFile[];
   specs?: { label: string; value: string }[];
+  sourceNote?: string;
   highlights?: { label: string; desc: string }[];
   faqs?: { q: string; a: string }[];
   reviews?: ProductReview[];
@@ -153,10 +154,11 @@ export const PRODUCTS: StoreProduct[] = [
     comingSoon: false,
     specs: [
       { label: "Format", value: "PDF" },
-      { label: "Pages", value: "120+" },
+      { label: "Pages", value: "34" },
       { label: "Toppers Covered", value: "AIR 1-10" },
       { label: "Last Updated", value: "June 2025" },
     ],
+    sourceNote: "Original UPSCPrepNotes compilation built from publicly reported scorecards, interviews and strategy write-ups.",
     highlights: [
       { label: "Verified Marks", desc: "Every score pulled from official UPSC result PDFs" },
       { label: "Paper-wise Analysis", desc: "See exactly which papers each topper scored highest in" },
@@ -207,10 +209,11 @@ export const PRODUCTS: StoreProduct[] = [
     comingSoon: false,
     specs: [
       { label: "Format", value: "Scanned PDFs" },
-      { label: "Answer Sheets", value: "50+" },
+      { label: "Answer Sheets", value: "60+" },
       { label: "Papers Covered", value: "GS1-4 + Essay" },
-      { label: "Total Size", value: "~800 MB" },
+      { label: "Total Size", value: "832 MB" },
     ],
+    sourceNote: "Each file is a full answer booklet written by the topper named on it, reproduced exactly as submitted. 27 toppers, 63 booklets.",
     highlights: [
       { label: "Real Exam Hall Copies", desc: "Actual handwritten sheets — not typed reconstructions" },
       { label: "Marks Labelled", desc: "Each copy shows topper name, AIR, year, and marks obtained" },
@@ -265,6 +268,7 @@ export const PRODUCTS: StoreProduct[] = [
       { label: "Access", value: "Lifetime + Updates" },
       { label: "Last Updated", value: "June 2025" },
     ],
+    sourceNote: "Compiled strategy reports from multiple sources, delivered as PDF.",
     highlights: [
       { label: "Every Topper", desc: "Complete strategy for all 271+ verified profiles — not just top 10" },
       { label: "Lifetime Access", desc: "New topper reports added automatically as UPSC publishes results" },
@@ -326,6 +330,7 @@ export const PRODUCTS: StoreProduct[] = [
       { label: "Organized By", value: "Ministry & Sector" },
       { label: "Best For", value: "Prelims + Mains" },
     ],
+    sourceNote: "Original UPSCPrepNotes compilation of central government schemes, organised by ministry.",
     highlights: [
       { label: "Objective + Features + Budget", desc: "Every scheme broken down with objective, features, budget, and target beneficiaries" },
       { label: "Ministry-wise Organized", desc: "Education, health, agriculture, rural development, social welfare — find any scheme fast" },
@@ -391,9 +396,10 @@ export const PRODUCTS: StoreProduct[] = [
     specs: [
       { label: "Format", value: "PDF Bundle" },
       { label: "Files", value: "81" },
-      { label: "Total Size", value: "3 GB" },
+      { label: "Total Size", value: "2.9 GB" },
       { label: "Toppers Featured", value: "AIR 9, 16, 82, 86" },
     ],
+    sourceNote: "Compiled from the topper notes and coaching material named above (Madhav AIR 16, Asad Zuberi AIR 86, Satyam Gandhi AIR 82, Dr Apala Mishra AIR 9, PRAHAAR, Antriksh, Abhijit Ray, Lukman IAS, Gunjita). Not affiliated with or endorsed by any coaching institute.",
     highlights: [
       { label: "5 Bundles in 1", desc: "GS1, GS2, GS3, GS4/Ethics, and Prelims Prep — all in one download" },
       { label: "Topper Notes", desc: "Actual notes from AIR 9, 16, 82, 86 — not coaching institute recycled content" },
@@ -452,9 +458,10 @@ export const PRODUCTS: StoreProduct[] = [
     specs: [
       { label: "Format", value: "PDF Bundle" },
       { label: "Files", value: "14" },
-      { label: "Total Size", value: "548 MB" },
+      { label: "Total Size", value: "555 MB" },
       { label: "Toppers Featured", value: "AIR 9, 176" },
     ],
+    sourceNote: "Notes and answer booklets by the toppers named in each file, reproduced as-is. Includes Dr Apala Mishra (AIR 9) and Laghima Tiwari (AIR 176).",
     highlights: [
       { label: "Paper 1 + Paper 2", desc: "Complete syllabus coverage for both Anthropology papers" },
       { label: "Topper Notes", desc: "Notes by Laghima Tiwari (AIR 176) and Dr. Apala Mishra (AIR 9)" },
@@ -514,8 +521,9 @@ export const PRODUCTS: StoreProduct[] = [
       { label: "Format", value: "PDF Bundle" },
       { label: "Tests", value: "10" },
       { label: "Papers Covered", value: "GS 1-4" },
-      { label: "Total Size", value: "34 MB" },
+      { label: "Total Size", value: "35 MB" },
     ],
+    sourceNote: "Test papers from the Vision IAS Mains 2026 series, all 10 tests, GS 1-4. Not affiliated with or endorsed by Vision IAS.",
     highlights: [
       { label: "10 Full Tests", desc: "Complete Vision IAS Mains test series — all 10 tests in one download" },
       { label: "GS 1-4 Coverage", desc: "Every test covers all 4 GS papers just like the real Mains" },
