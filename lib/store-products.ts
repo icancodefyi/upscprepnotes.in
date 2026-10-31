@@ -482,7 +482,7 @@ export const PRODUCTS: StoreProduct[] = [
     images: [
       "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-1.png?tr=w-464,h-600,f-auto,q-80",
       "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-2.png?tr=w-464,h-600,f-auto,q-80",
-      "https://ik.imagekit.io/impiclabs/products/vision-ias-mains-test-series-3.png?tr=w-464,h-600,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/vision-ias-mains-test-series-3b.jpg?tr=w-1000,f-auto,q-80",
     ],
     longDescription: [
       "This is the complete Vision IAS Mains 2026 test series — 10 full-length tests designed to simulate the actual UPSC CSE Mains examination. Each test covers GS Papers 1 through 4 with questions structured exactly like the real exam.",
