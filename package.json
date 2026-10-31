@@ -13,6 +13,7 @@
     "generate-pdfs": "npx tsx scripts/generate-current-affairs-pdfs.tsx",
     "generate-2025-pdf": "npx tsx scripts/generate-2025-pdf.tsx",
     "tg:post": "npx tsx scripts/post-telegram.ts",
+    "check:prices": "npx tsx scripts/check-prices.ts",
     "syndicate": "npx tsx scripts/syndicate-content.ts",
     "dataset": "npx tsx scripts/generate-dataset.ts",
     "find-resources": "npx tsx scripts/find-resource-pages.ts"

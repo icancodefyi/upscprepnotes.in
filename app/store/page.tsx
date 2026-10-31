@@ -4,14 +4,14 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "UPSC Store — Topper Answer Copies, Notes & Test Series at ₹99",
+  title: "UPSC Store — Topper Answer Copies, Notes & Test Series from ₹49",
   description:
-    "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery. Starting at ₹99.",
+    "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery. Starting at ₹49.",
   alternates: {
     canonical: "https://upscprepnotes.in/store",
   },
   openGraph: {
-    title: "UPSC Store — Topper Answer Copies, Notes & Test Series at ₹99",
+    title: "UPSC Store — Topper Answer Copies, Notes & Test Series from ₹49",
     description:
       "Curated UPSC topper resources — strategy compilations, answer copies, notes bundles, test series, and more. Instant PDF delivery.",
     url: "https://upscprepnotes.in/store",

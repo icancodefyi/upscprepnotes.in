@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DodoPayments } from "dodopayments";
 import { PRODUCTS } from "@/lib/store-products";
-import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { AnalyticsEventModel } from "@/models/analytics-event.model";
@@ -30,12 +29,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { items, email, successUrl, cancelUrl, offeredPrice } = body as {
+    const { items, email, successUrl, cancelUrl } = body as {
       items: CheckoutItem[];
       email?: string;
       successUrl?: string;
       cancelUrl?: string;
-      offeredPrice?: number;
     };
 
     const origin = request.headers.get("origin") || request.headers.get("referer") || "https://upscprepnotes.in";
@@ -64,11 +62,9 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-      // DodoPayments charges the dashboard-configured price regardless of `amount` sent.
-      // Flash sale: use flash price. Otherwise: use minOfferPrice (lowest entitlement price).
-      const itemPrice = isFlashSaleActive()
-        ? getEffectivePrice(product)
-        : (product.minOfferPrice ?? product.price);
+      // One price per product, defined only in lib/store-products.ts.
+      // The client's `price` field is ignored — never trust it.
+      const itemPrice = product.price;
       total += itemPrice * item.quantity;
       resolvedItems.push({ slug: item.slug, quantity: item.quantity, price: itemPrice, title: product.title });
     }
@@ -87,13 +83,15 @@ export async function POST(request: NextRequest) {
       status: "pending",
     });
 
-    // Build product_cart with the correct Dodo product ID per item
+    // Build product_cart with the correct Dodo product ID per item.
+    // `amount` is intentionally omitted: Dodo ignores it for fixed-price products
+    // and charges the price configured on the product in the Dodo dashboard.
+    // Run `npm run check:prices` after changing any price in lib/store-products.ts.
     const productCart = resolvedItems.map((item) => {
       const product = PRODUCTS.find((p) => p.slug === item.slug);
       return {
         product_id: product?.dodoProductId || fallbackProductId,
         quantity: item.quantity,
-        amount: item.price * 100,
       };
     });
 

@@ -7,9 +7,10 @@ export interface FlashSale {
   label: string;
 }
 
-// Launch sale: all products at ₹99
+// Disabled on purpose: price overrides made the displayed price drift away
+// from the charged price. One product = one price, set in lib/store-products.ts.
 export const FLASH_SALE: FlashSale = {
-  active: true,
+  active: false,
   endDate: "2026-08-10T23:59:59+05:30",
   price: 99,
   label: "Launch Sale",

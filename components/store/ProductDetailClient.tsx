@@ -13,7 +13,6 @@ import {
 import { ArrowRight, ChevronDown } from "lucide-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
-import { FLASH_SALE, getEffectivePrice, getFlashSalePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
@@ -339,21 +338,6 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 }
 
 function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddToCart: () => void }) {
-  const flashActive = isFlashSaleActive();
-  const flashPrice = getFlashSalePrice();
-  const effectivePrice = getEffectivePrice(product);
-  const minPrice = product.minOfferPrice ?? product.price;
-  const suggestedPrice = Math.round(product.price * 0.6);
-  const [offerPrice, setOfferPrice] = useState(product.price);
-  const clampedPrice = Math.max(minPrice, Math.min(offerPrice, product.price));
-  const isDiscounted = clampedPrice < product.price;
-
-  const quickPicks = [
-    { label: `Min ₹${minPrice}`, value: minPrice },
-    { label: `Fair ₹${suggestedPrice}`, value: suggestedPrice },
-    { label: `Full ₹${product.price}`, value: product.price },
-  ];
-
   return (
     <div className="relative">
       <div className="absolute -right-3 -top-3 h-full w-full rounded-2xl bg-[#C4F9D7]" />
@@ -401,88 +385,10 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           </span>
         </div>
 
-        {/* Flash sale price */}
-        {flashActive ? (
-          <div className="mt-5">
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-[#C4F9D7] px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-emerald-900">
-                Launch Sale
-              </span>
-              <span className="text-[11px] font-semibold text-muted-foreground">ends in <SaleCountdown /></span>
-            </div>
-            <div className="mt-3 flex items-baseline gap-3">
-              <span className="text-4xl font-black tracking-tight text-emerald-700">₹{flashPrice}</span>
-              <span className="text-base text-muted-foreground line-through">₹{product.price.toLocaleString("en-IN")}</span>
-              <span className="rounded-full bg-brand-muted px-2.5 py-0.5 text-xs font-bold text-brand">
-                {Math.round((1 - flashPrice! / product.price) * 100)}% off
-              </span>
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Every product at ₹{flashPrice} during the launch sale. Price returns to ₹{product.price.toLocaleString("en-IN")} after.
-            </p>
-          </div>
-        ) : product.minOfferPrice ? (
-          <div className="mt-5">
-            <div className="mb-2 flex items-center justify-between">
-              <label className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Name your price</label>
-              <span className="text-[11px] text-muted-foreground">min ₹{minPrice}</span>
-            </div>
-            <div className="flex items-stretch overflow-hidden rounded-xl border border-black bg-white">
-              <span className="flex items-center pl-4 text-2xl font-bold text-foreground">₹</span>
-              <input
-                type="number"
-                min={minPrice}
-                max={product.price}
-                value={offerPrice}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value) || minPrice;
-                  setOfferPrice(val);
-                }}
-                onBlur={() => setOfferPrice(clampedPrice)}
-                className="w-full px-2 py-3 text-3xl font-bold text-foreground outline-none"
-              />
-            </div>
-            {/* Quick pick pills */}
-            <div className="mt-2.5 flex gap-2">
-              {quickPicks.map((pick) => (
-                <button
-                  key={pick.value}
-                  type="button"
-                  onClick={() => setOfferPrice(pick.value)}
-                  className={`flex-1 rounded-lg border-2 px-2 py-1.5 text-xs font-bold transition-all ${
-                    clampedPrice === pick.value
-                      ? "border-black bg-foreground text-white"
-                      : "border-border bg-white text-muted-foreground hover:border-black"
-                  }`}
-                >
-                  {pick.label}
-                </button>
-              ))}
-            </div>
-            {product.originalPrice && (
-              <p className="mt-2 text-xs text-muted-foreground">
-                Listed at <span className="line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span> · pay what feels fair
-              </p>
-            )}
-            {isDiscounted && (
-              <p className="mt-1 text-xs font-semibold text-brand">
-                You save ₹{product.price - clampedPrice} ({Math.round((1 - clampedPrice / product.price) * 100)}% off)
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className="mt-4 flex items-baseline gap-3">
-            <span className="text-3xl font-bold tracking-tight">₹{product.price}</span>
-            {product.originalPrice && (
-              <>
-                <span className="text-sm text-muted-foreground line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-                <span className="rounded-full bg-brand-muted px-2.5 py-0.5 text-xs font-bold text-brand">
-                  {Math.round((1 - product.price / product.originalPrice) * 100)}% off
-                </span>
-              </>
-            )}
-          </div>
-        )}
+        {/* Fixed price — one number, same everywhere */}
+        <div className="mt-4 flex items-baseline gap-3">
+          <span className="text-3xl font-bold tracking-tight">₹{product.price.toLocaleString("en-IN")}</span>
+        </div>
 
         {/* Trust badges */}
         <div className="mt-5 grid grid-cols-2 gap-2">
@@ -519,14 +425,13 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
         ) : (
           <div className="mt-6 space-y-3">
             <PayButton
-              amount={flashActive ? effectivePrice : clampedPrice}
-              items={[{ slug: product.slug, quantity: 1, price: flashActive ? effectivePrice : clampedPrice }]}
+              amount={product.price}
+              items={[{ slug: product.slug, quantity: 1, price: product.price }]}
               tracking={`buy-${product.slug}`}
-              offeredPrice={!flashActive && isDiscounted ? clampedPrice : undefined}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-4 text-base font-bold text-white transition hover:bg-gray-800 active:scale-[0.97]"
             >
               <IconShoppingCart size={18} />
-              {flashActive ? `Get it for ₹${effectivePrice}` : `Pay ₹${clampedPrice}`}
+              Pay ₹{product.price.toLocaleString("en-IN")}
             </PayButton>
             <button
               type="button"
@@ -659,21 +564,5 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
         </div>
       )}
     </>
-  );
-}
-
-function SaleCountdown() {
-  const [, force] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => force((v) => v + 1), 60 * 1000);
-    return () => clearInterval(id);
-  }, []);
-  const remaining = Math.max(0, new Date(FLASH_SALE.endDate).getTime() - Date.now());
-  const hours = Math.floor(remaining / (60 * 60 * 1000));
-  const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-  return (
-    <span className="font-bold text-brand">
-      {hours}h {minutes}m
-    </span>
   );
 }
