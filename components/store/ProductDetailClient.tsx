@@ -548,7 +548,7 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
         className="w-full max-h-[480px] object-contain object-top bg-secondary"
       />
       {images.length > 1 && (
-        <div className="flex items-center justify-center gap-2 border-t border-border bg-white px-3 py-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 border-t border-border bg-white px-3 py-3">
           {images.map((img, i) => (
             <button
               key={i}

@@ -119,6 +119,12 @@ export const PRODUCTS: StoreProduct[] = [
     dodoProductId: "pdt_0NiRYsqj11mE2Xcw8A1nJ",
     title: "Top 10 Rankers Strategy",
     image: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-464,h-600,f-auto,q-80",
+    images: [
+      "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-800,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/top-10-rankers-strategy-1.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/top-10-rankers-strategy-2.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/top-10-rankers-strategy-3.jpg?tr=w-1000,f-auto,q-80",
+    ],
     tagline: "AIR 1-10 complete strategies in one PDF",
     description: "Full strategies, marks analysis, paper-by-paper breakdowns, and score deep dives for AIR 1 through AIR 10.",
     longDescription: [
@@ -281,6 +287,12 @@ export const PRODUCTS: StoreProduct[] = [
     dodoProductId: "pdt_0NiRYsuBZ0zyVvmW4gDKN",
     title: "Government Schemes Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-464,h-600,f-auto,q-80",
+    images: [
+      "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-800,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/government-schemes-compilation-1.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/government-schemes-compilation-2.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/government-schemes-compilation-3.jpg?tr=w-1000,f-auto,q-80",
+    ],
     tagline: "All important government schemes for UPSC 2026",
     description: "Comprehensive compilation of all central government schemes, categorized by ministry and sector.",
     longDescription: [
@@ -354,6 +366,9 @@ export const PRODUCTS: StoreProduct[] = [
       "https://ik.imagekit.io/impiclabs/products/gs3-notes-bundle.png?tr=w-464,h-600,f-auto,q-80",
       "https://ik.imagekit.io/impiclabs/products/ethics-gs4-bundle.png?tr=w-464,h-600,f-auto,q-80",
       "https://ik.imagekit.io/impiclabs/products/prelims-prep-pack.png?tr=w-464,h-600,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/complete-gs-notes-bundle-1.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/complete-gs-notes-bundle-2.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/complete-gs-notes-bundle-3.jpg?tr=w-1000,f-auto,q-80",
     ],
     features: [
       "81+ files spanning GS 1-4, Ethics, and Prelims — over 3 GB",
@@ -426,6 +441,12 @@ export const PRODUCTS: StoreProduct[] = [
     link: null,
     comingSoon: false,
     image: "https://ik.imagekit.io/impiclabs/products/anthropology-bundle.png?tr=w-464,h-600,f-auto,q-80",
+    images: [
+      "https://ik.imagekit.io/impiclabs/products/anthropology-bundle.png?tr=w-800,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/anthropology-bundle-1.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/anthropology-bundle-2.jpg?tr=w-1000,f-auto,q-80",
+      "https://ik.imagekit.io/impiclabs/products/previews/anthropology-bundle-3.jpg?tr=w-1000,f-auto,q-80",
+    ],
     fileCount: 14,
     totalSizeMB: 548,
     specs: [
