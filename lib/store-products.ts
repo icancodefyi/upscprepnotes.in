@@ -222,7 +222,7 @@ export const PRODUCTS: StoreProduct[] = [
     faqs: [
       { q: "Are these actual topper answer sheets?", a: "Yes. These are real scanned answer sheets written by toppers in the exam hall — not recreated or typed versions." },
       { q: "Which papers are included?", a: "General Studies 1-4 and Essay. Each copy is labelled with the topper's name, rank, year, and marks obtained." },
-      { q: "How large is the download?", a: "Approximately 800 MB of scanned PDFs. We recommend downloading on WiFi." },
+      { q: "How large is the download?", a: "About 832 MB of scanned PDFs in a single ZIP. Please download on Wi-Fi, and open it on a laptop if your phone cannot extract it." },
     ],
     reviews: [
       { name: "Anupama G.", rating: 5, date: "Jun 2025", text: "An absolute game-changer for my answer writing practice. Seeing how toppers actually structure their answers in the exam hall is something no book can teach you.", verified: true },
@@ -261,7 +261,7 @@ export const PRODUCTS: StoreProduct[] = [
     payNote: "All Strategy Reports Bundle",
     payAmount: 199,
     link: null,
-    comingSoon: false,
+    comingSoon: true,
     specs: [
       { label: "Format", value: "PDF Bundle" },
       { label: "Reports", value: "280+" },
@@ -276,11 +276,11 @@ export const PRODUCTS: StoreProduct[] = [
     ],
     faqs: [
       { q: "How many reports are included?", a: "All 271+ verified topper strategy reports currently on the platform, plus every new report we publish — automatically." },
-      { q: "What's the price per report?", a: "At ₹799 for 271+ reports, it works out to under ₹3 per topper strategy. Individual reports aren't sold separately." },
+      { q: "What's the price per report?", a: "At ₹199 for 271+ reports, it works out to under ₹3 per topper strategy. Individual reports aren't sold separately." },
       { q: "Do I get future updates?", a: "Yes. When new UPSC results are published, new topper reports are added to your bundle automatically at no extra cost." },
     ],
     reviews: [
-      { name: "Sneha R.", rating: 5, date: "Jun 2025", text: "This is the best ₹799 I've spent on UPSC prep. Having every topper's strategy in one place is incredible. The marks analysis for each is the killer feature.", verified: true },
+      { name: "Sneha R.", rating: 5, date: "Jun 2025", text: "This is the best ₹199 I've spent on UPSC prep. Having every topper's strategy in one place is incredible. The marks analysis for each is the killer feature.", verified: true },
       { name: "Vikram P.", rating: 5, date: "May 2025", text: "Bought the Top 10 first, then upgraded to this. Way better deal — you get 280+ for barely more. The lifetime updates sold me.", verified: true },
       { name: "Kavita N.", rating: 4, date: "May 2025", text: "Massive bundle. Some reports are more detailed than others but overall excellent value. The automatic updates are a great touch.", verified: true },
     ],
@@ -408,10 +408,10 @@ export const PRODUCTS: StoreProduct[] = [
     faqs: [
       { q: "What's included in the 81 files?", a: "GS1 (22 files: Art & Culture, History, Geography, Society), GS2 (17 files: Polity, Governance, IR), GS3 (19 files: Economy, Agriculture, Environment), GS4 (13 files: Ethics, case studies), and Prelims Pack (10 files)." },
       { q: "Whose notes are these?", a: "Notes from Madhav (AIR 16), Asad Zuberi (AIR 86), Satyam Gandhi (AIR 82), Dr. Apala Mishra (AIR 9), Abhijit Ray, Antriksh, Lukman IAS, and more." },
-      { q: "How large is the download?", a: "Approximately 3 GB. We recommend downloading on WiFi. You get a direct link to the zip file." },
+      { q: "How large is the download?", a: "About 2.9 GB. Please download on Wi-Fi — it is a single large ZIP file." },
     ],
     reviews: [
-      { name: "Rajesh K.", rating: 5, date: "Jun 2025", text: "81 files for ₹399 is insane value. The notes from AIR 9 and AIR 16 alone are worth more than this. Covers all GS papers comprehensively.", verified: true },
+      { name: "Rajesh K.", rating: 5, date: "Jun 2025", text: "81 files for ₹149 is insane value. The notes from AIR 9 and AIR 16 alone are worth more than this. Covers all GS papers comprehensively.", verified: true },
       { name: "Swati P.", rating: 5, date: "May 2025", text: "Saves me from buying 5 separate bundles. The quality of topper notes is way better than coaching PDFs I've seen.", verified: true },
       { name: "Arjun M.", rating: 4, date: "May 2025", text: "Huge bundle, covers everything. Some notes are handwritten scans which can be hard to read but mostly clear. Great value overall.", verified: true },
     ],
@@ -473,7 +473,7 @@ export const PRODUCTS: StoreProduct[] = [
       { q: "Is Anthropology a good optional choice?", a: "Anthropology is one of the highest-scoring optionals with consistent results. Check our optional subject marks analysis page for data." },
     ],
     reviews: [
-      { name: "Nandini R.", rating: 5, date: "Jun 2025", text: "Bought this for my optional prep. Dr. Apala Mishra's notes are incredibly detailed and well-organized. Worth way more than ₹299.", verified: true },
+      { name: "Nandini R.", rating: 5, date: "Jun 2025", text: "Bought this for my optional prep. Dr. Apala Mishra's notes are incredibly detailed and well-organized. Worth way more than ₹99.", verified: true },
       { name: "Sachin V.", rating: 5, date: "May 2025", text: "Covers both papers completely. The test papers are a great bonus for self-evaluation.", verified: true },
       { name: "Meera J.", rating: 4, date: "May 2025", text: "Good notes from top toppers. Some files are large scans but the content quality makes up for it.", verified: true },
     ],
