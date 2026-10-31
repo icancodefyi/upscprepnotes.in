@@ -222,7 +222,7 @@ export const PRODUCTS: StoreProduct[] = [
     faqs: [
       { q: "Are these actual topper answer sheets?", a: "Yes. These are real scanned answer sheets written by toppers in the exam hall — not recreated or typed versions." },
       { q: "Which papers are included?", a: "General Studies 1-4 and Essay. Each copy is labelled with the topper's name, rank, year, and marks obtained." },
-      { q: "How large is the download?", a: "About 832 MB of scanned PDFs in a single ZIP. Please download on Wi-Fi, and open it on a laptop if your phone cannot extract it." },
+      { q: "How large is the download?", a: "About 832 MB of scanned PDFs. Your download page lists every booklet separately so you can download one at a time on a phone — no need to pull the whole ZIP." },
     ],
     reviews: [
       { name: "Anupama G.", rating: 5, date: "Jun 2025", text: "An absolute game-changer for my answer writing practice. Seeing how toppers actually structure their answers in the exam hall is something no book can teach you.", verified: true },
@@ -396,7 +396,7 @@ export const PRODUCTS: StoreProduct[] = [
     specs: [
       { label: "Format", value: "PDF Bundle" },
       { label: "Files", value: "81" },
-      { label: "Total Size", value: "2.9 GB" },
+      { label: "Total Size", value: "3.2 GB" },
       { label: "Toppers Featured", value: "AIR 9, 16, 82, 86" },
     ],
     sourceNote: "Compiled from the topper notes and coaching material named above (Madhav AIR 16, Asad Zuberi AIR 86, Satyam Gandhi AIR 82, Dr Apala Mishra AIR 9, PRAHAAR, Antriksh, Abhijit Ray, Lukman IAS, Gunjita). Not affiliated with or endorsed by any coaching institute.",
@@ -408,7 +408,7 @@ export const PRODUCTS: StoreProduct[] = [
     faqs: [
       { q: "What's included in the 81 files?", a: "GS1 (22 files: Art & Culture, History, Geography, Society), GS2 (17 files: Polity, Governance, IR), GS3 (19 files: Economy, Agriculture, Environment), GS4 (13 files: Ethics, case studies), and Prelims Pack (10 files)." },
       { q: "Whose notes are these?", a: "Notes from Madhav (AIR 16), Asad Zuberi (AIR 86), Satyam Gandhi (AIR 82), Dr. Apala Mishra (AIR 9), Abhijit Ray, Antriksh, Lukman IAS, and more." },
-      { q: "How large is the download?", a: "About 2.9 GB. Please download on Wi-Fi — it is a single large ZIP file." },
+      { q: "How large is the download?", a: "About 3.2 GB of PDFs. Your download page lists every file separately — download them one at a time on Wi-Fi. The whole bundle as one ZIP is also available." },
     ],
     reviews: [
       { name: "Rajesh K.", rating: 5, date: "Jun 2025", text: "81 files for ₹149 is insane value. The notes from AIR 9 and AIR 16 alone are worth more than this. Covers all GS papers comprehensively.", verified: true },
@@ -458,7 +458,7 @@ export const PRODUCTS: StoreProduct[] = [
     specs: [
       { label: "Format", value: "PDF Bundle" },
       { label: "Files", value: "14" },
-      { label: "Total Size", value: "555 MB" },
+      { label: "Total Size", value: "574 MB" },
       { label: "Toppers Featured", value: "AIR 9, 176" },
     ],
     sourceNote: "Notes and answer booklets by the toppers named in each file, reproduced as-is. Includes Dr Apala Mishra (AIR 9) and Laghima Tiwari (AIR 176).",

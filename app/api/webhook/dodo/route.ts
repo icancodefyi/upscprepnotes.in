@@ -9,7 +9,7 @@ import { generateDownloadToken, sendAdminNotification, sendOrderConfirmationEmai
 function buildDownloadUrl(token: string, items: { slug?: string }[]): string {
   const base = process.env.SITE_URL || "https://upscprepnotes.in";
   const firstSlug = items?.[0]?.slug;
-  return `${base}/api/download/${token}${firstSlug ? `?slug=${firstSlug}` : ""}`;
+  return `${base}/download/${token}${firstSlug ? `?slug=${firstSlug}` : ""}`;
 }
 
 async function sendConfirmationSafely(

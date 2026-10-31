@@ -4,8 +4,9 @@ import { OrderModel } from "@/models/order.model";
 import { PendingPurchaseModel } from "@/models/pending-purchase.model";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendEmail } from "@/lib/resend";
+import { CDN_BASE, getProductFiles } from "@/lib/download-manifest";
 
-const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
+const VPS_URL = CDN_BASE;
 
 const ZIP_NAMES: Record<string, string> = {
   "answer-copies-compilation": "Answer-Copies-Compilation.zip",
@@ -42,6 +43,14 @@ export async function GET(
 
     const zipName = ZIP_NAMES[targetSlug];
     const zipUrl = `${VPS_URL}/${zipName}`;
+
+    // If we have individual PDFs for this product, send the customer to the
+    // file-list page instead of making them pull one huge ZIP.
+    if (getProductFiles(targetSlug)) {
+      const pageUrl = new URL(`/download/${token}`, request.url);
+      pageUrl.searchParams.set("slug", targetSlug);
+      return NextResponse.redirect(pageUrl, 302);
+    }
 
     // Check if the file actually exists on VPS before redirecting
     try {
