@@ -32,7 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <span className="relative text-xs sm:text-sm font-bold">
               <span className="text-brand">Best Value</span>
               <span className="text-white/60 mx-2">—</span>
-              Starting at <span className="text-brand">₹99</span>
+              Starting at <span className="text-brand">₹49</span>
               <span className="text-white/60 mx-2 hidden sm:inline">—</span>
               <span className="hidden sm:inline text-white/60">Instant download</span>
               <span className="ml-2 sm:ml-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-black">
@@ -54,8 +54,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const isAdmin = pathname?.startsWith("/admin");
   const isLanding = pathname === "/landing" || pathname?.startsWith("/landing");
+  const isTry = pathname === "/try" || pathname?.startsWith("/try");
 
-  if (isLanding) {
+  if (isLanding || isTry) {
     return <CartProvider>{children}</CartProvider>;
   }
 
@@ -65,9 +66,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="group relative bg-gradient-to-r from-zinc-900 via-black to-zinc-900 text-white py-2.5 sticky top-0 z-50 border-b border-brand/20 overflow-hidden">
           <a href="/store" className="block text-[11px] sm:text-xs font-medium tracking-wide cursor-pointer pr-10">
             <div className="flex animate-marquee whitespace-nowrap gap-12 group-hover:[animation-play-state:paused]">
-              <span><span className="text-brand font-bold">Places in News</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">₹99</span><span className="text-white/60 mx-2">·</span><span>Instant download</span></span>
-              <span><span className="text-brand font-bold">Govt Schemes Compilation</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">₹99</span><span className="text-white/60 mx-2">·</span><span>7-day refund guarantee</span></span>
-              <span><span className="text-brand font-bold">Answer Copies</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">From ₹799</span><span className="text-white/60 mx-2">·</span><span>50+ topper sheets</span></span>
+              <span><span className="text-brand font-bold">Govt Schemes Compilation</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">₹49</span><span className="text-white/60 mx-2">·</span><span>7-day refund guarantee</span></span>
+              <span><span className="text-brand font-bold">Answer Copies</span><span className="text-white/60 mx-2">—</span><span className="text-white font-semibold">₹199</span><span className="text-white/60 mx-2">·</span><span>50+ topper sheets</span></span>
             </div>
           </a>
           <button

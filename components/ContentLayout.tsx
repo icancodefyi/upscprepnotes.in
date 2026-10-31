@@ -5,7 +5,7 @@ import type { ContentPage } from "@/data/content";
 import type { Components } from "react-markdown";
 
 const DEFAULTS = {
-  ctaIntro: "Starting at ₹99. Strategy compilations, answer copies, notes bundles, test series, and more.",
+  ctaIntro: "Starting at ₹49. Strategy compilations, answer copies, notes bundles, test series, and more.",
   ctaIntroBtn: "Shop Now →",
   ctaIntroHref: "/store",
   ctaMid: "Get the detailed strategy report with topper marks data, subject-wise breakdown, and answer templates.",
