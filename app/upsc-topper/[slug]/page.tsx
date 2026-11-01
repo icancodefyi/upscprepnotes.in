@@ -238,7 +238,7 @@ export default async function TopperPage({ params }: Props) {
       name: `Can I download ${topper.firstName} ${topper.lastName}'s answer copy PDF?`,
       acceptedAnswer: {
         "@type": "Answer" as const,
-        text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹99.`,
+        text: `Yes. Get a free sample answer copy of ${topper.firstName} ${topper.lastName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹199.`,
       },
     },
     {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { Suspense, useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 const PER_PAGE = 20;
@@ -15,9 +16,18 @@ type Topper = {
   isFeatured: boolean;
 };
 
-export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
-  const [query, setQuery] = useState("");
+function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
+  const searchParams = useSearchParams();
+  const urlQ = searchParams?.get("search") || searchParams?.get("q") || "";
+  const [query, setQuery] = useState(urlQ);
   const [page, setPage] = useState(1);
+
+  // When the URL's search changes (e.g. a new linked search), adopt it. Done during render, not in an effect.
+  const [prevUrlQ, setPrevUrlQ] = useState(urlQ);
+  if (urlQ !== prevUrlQ) {
+    setPrevUrlQ(urlQ);
+    setQuery(urlQ);
+  }
 
   const filtered = useMemo(() => {
     if (!query.trim()) return toppers;
@@ -171,5 +181,13 @@ export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
         {filtered.length < toppers.length && query.trim() && ` (filtered from ${toppers.length})`}
       </p>
     </div>
+  );
+}
+
+export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
+  return (
+    <Suspense fallback={<div className="py-8 text-center text-sm text-muted-foreground">Loading topper search...</div>}>
+      <ToppersSearchInner toppers={toppers} />
+    </Suspense>
   );
 }

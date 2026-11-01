@@ -89,7 +89,7 @@ export default function AnswerCopyPreview({ topper }: Props) {
           <div>
             <span className="rounded-full bg-emerald-500 px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">Offer</span>
             <p className="mt-2 text-sm font-bold text-white">
-              Starting at ₹99
+              Starting at ₹199
             </p>
             <p className="text-xs text-emerald-200/80 mt-0.5">
               Instant download · 7-day refund guarantee.

@@ -213,7 +213,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             </a>
             <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
               <p className="text-xs font-bold">Want 50+ topper copies + 21 guides?</p>
-              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. Just ₹99 during launch sale.</p>
+              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. Just ₹199.</p>
               <button
                 onClick={() => {
                   window.open("/store", "_blank");
@@ -240,7 +240,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
               <p className="text-xs font-bold">Don&apos;t wait — get 50+ copies now</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                50+ verified topper copies (GS1-4, Essay, Optional) + 21 strategy guides. Just ₹99 during the launch sale — 84% off.
+                50+ verified topper copies (GS1-4, Essay, Optional) + 21 strategy guides. Just ₹199.
               </p>
               <button
                 onClick={() => {
@@ -249,9 +249,9 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
                 }}
                 className="mt-2.5 w-full rounded-full bg-foreground px-4 py-2.5 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
               >
-                Get the Full Compilation for ₹99 &rarr;
+                Get the Full Compilation for ₹199 &rarr;
               </button>
-              <p className="mt-1.5 text-[10px] text-muted-foreground">7-day refund · Instant download · Price back to ₹799 after the sale</p>
+              <p className="mt-1.5 text-[10px] text-muted-foreground">7-day refund · Instant download · Now ₹199.</p>
             </div>
             <button
               onClick={() => onOpenChange(false)}
