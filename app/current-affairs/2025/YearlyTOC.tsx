@@ -66,68 +66,44 @@ export default function YearlyTOC() {
   }, []);
 
   return (
-    <aside className={`hidden lg:block w-56 shrink-0 transition-opacity duration-300 ${scrolled ? "opacity-100" : "opacity-60"}`}>
-      <div className="sticky top-24">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.125em] text-[#a39e98] mb-4">Jump to Month</p>
-        <nav className="space-y-0.5">
-          {MONTHS.map((label, i) => {
-            const slug = SLUGS[i];
-            const isActive = active === slug;
-            return (
-              <a
-                key={slug}
-                href={`#${slug}`}
-                className={`block rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                  isActive
-                    ? "bg-[#000000e8] text-white"
-                    : "text-[#615d59] hover:bg-[#e6e6e6] hover:text-[#000000e8]"
-                }`}
-              >
-                <span className={`inline-block w-1.5 h-1.5 rounded-full mr-2 transition-colors ${
-                  isActive ? "bg-white" : "bg-[#d4d4d4]"
-                }`} />
-                {label}
-              </a>
-            );
-          })}
-        </nav>
-        <div className="mt-6 border-t border-[#e6e6e6] pt-4">
-          <a
-            href="/api/generate-current-affairs?month=2025"
-            className="flex items-center gap-2 rounded-full bg-[#000000e8] px-4 py-2 text-[11px] font-semibold text-white transition hover:opacity-90"
-          >
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+    <aside className="hidden w-60 shrink-0 lg:block">
+      <div className={`sticky top-24 space-y-4 transition-opacity duration-300 ${scrolled ? "opacity-100" : "opacity-80"}`}>
+        <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)]">
+          <p className="text-m font-bold">Jump to Month</p>
+          <nav className="mt-3 space-y-0.5">
+            {MONTHS.map((label, i) => {
+              const slug = SLUGS[i];
+              const isActive = active === slug;
+              return (
+                <a
+                  key={slug}
+                  href={`#${slug}`}
+                  className={`flex items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-s transition-colors ${isActive ? "bg-[var(--ink)] font-bold text-white" : "text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]"}`}
+                >
+                  <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${isActive ? "bg-white" : "bg-[var(--line-2)]"}`} />
+                  {label}
+                </a>
+              );
+            })}
+          </nav>
+          <a href="/api/generate-current-affairs?month=2025" className="btn btn-blue mt-4 h-10 w-full justify-center [--btn-fs:14px]">
             Download PDF
           </a>
         </div>
-
         {/* Product Ads */}
-        <div className="mt-8 border-t border-[#e6e6e6] pt-6">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.125em] text-[#a39e98] mb-3">Premium Resources</p>
-          <div className="space-y-3">
-            <Link
-              href="/store/top-10-rankers-strategy"
-              className="block rounded-lg bg-gradient-to-r from-amber-50 to-white p-3 ring-1 ring-[#e6e6e6] hover:ring-amber-200 transition"
-            >
-              <p className="text-[11px] font-bold text-[#000000e8] leading-tight">Top 10 Rankers Strategy</p>
-              <p className="text-[10px] text-[#615d59] mt-0.5">Compiled strategies · ₹299</p>
-            </Link>
-            <Link
-              href="/store/answer-copies-compilation"
-              className="block rounded-lg bg-gradient-to-r from-blue-50 to-white p-3 ring-1 ring-[#e6e6e6] hover:ring-blue-200 transition"
-            >
-              <p className="text-[11px] font-bold text-[#000000e8] leading-tight">Answer Copies Compilation</p>
-              <p className="text-[10px] text-[#615d59] mt-0.5">60+ topper answer copies · ₹799</p>
-            </Link>
-            <Link
-              href="/store/all-strategy-reports"
-              className="block rounded-lg bg-gradient-to-r from-emerald-50 to-white p-3 ring-1 ring-[#e6e6e6] hover:ring-emerald-200 transition"
-            >
-              <p className="text-[11px] font-bold text-[#000000e8] leading-tight">Complete Strategy Bundle</p>
-              <p className="text-[10px] text-[#615d59] mt-0.5">280+ toppers · ₹799</p>
-            </Link>
+        <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)]">
+          <p className="text-m font-bold">Premium Resources</p>
+          <div className="mt-3 space-y-2">
+            {[
+              { href: "/store/top-10-rankers-strategy", t: "Top 10 Rankers Strategy", d: "Compiled strategies · ₹299" },
+              { href: "/store/answer-copies-compilation", t: "Answer Copies Compilation", d: "60+ topper answer copies · ₹799" },
+              { href: "/store/all-strategy-reports", t: "Complete Strategy Bundle", d: "280+ toppers · ₹799" },
+            ].map((x) => (
+              <Link key={x.href} href={x.href} className="block rounded-[14px] bg-[var(--canvas)] p-3 hover:bg-[#e9edff]">
+                <p className="text-s font-bold leading-tight">{x.t}</p>
+                <p className="mt-0.5 text-s text-[var(--muted)]">{x.d}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import CurrentAffairsClient from "./CurrentAffairsClient";
+import BrandShell from "@/components/brand/BrandShell";
 import { getMonth, getCanonical, monthMeta, getSlug, MONTHS } from "@/lib/current-affairs-utils";
 
 export async function generateStaticParams() {
@@ -72,76 +73,59 @@ export default async function MonthPage({ params }: { params: Promise<{ month: s
   const otherEditions = editionLinks.filter((e) => e.slug !== month);
 
   return (
-    <>
+    <BrandShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <section className="bg-white border-b border-[#e6e6e6]">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-          <span className="inline-flex items-center rounded-full border border-[#e6e6e6] bg-[#f6f5f4] px-3.5 py-1 text-xs font-semibold tracking-wider text-[#615d59]">
-            Monthly Edition
-          </span>
-          <h1 className="mt-5 text-4xl font-bold tracking-tight text-black sm:text-5xl">
+      <div className="pt-28 sm:pt-32">
+        <header className="mx-auto max-w-[1120px] px-6 pb-12">
+          <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <span aria-hidden>/</span>
+            <Link href="/current-affairs" className="hover:text-[var(--ink)]">Current Affairs</Link>
+            <span aria-hidden>/</span>
+            <span className="text-[var(--ink-2)]">{data.month} {data.year}</span>
+          </nav>
+          <h1 className="t-display mt-8 text-h1">
             {data.month} {data.year}
           </h1>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-[#615d59]">
-            UPSC Monthly Current Affairs — {data.sections.length} sections, {totalTopics} topics.
-            Each topic includes key facts, data points, and context structured for quick revision.
+          <p className="mt-4 max-w-xl text-m leading-[1.6] text-[var(--ink-2)]">
+            UPSC Monthly Current Affairs — {data.sections.length} sections, {totalTopics} topics. Each topic includes key facts, data points, and context structured for quick revision.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href={`/api/generate-current-affairs?month=${month}`}
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download PDF
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link href={`/api/generate-current-affairs?month=${month}`} className="btn btn-blue">
+              Download PDF <span className="knob">↓</span>
             </Link>
-            <Link href="/store"
-              className="inline-flex items-center gap-2 rounded-full border border-[#e6e6e6] bg-white px-6 py-2.5 text-sm font-semibold text-[#615d59] transition hover:text-black">
+            <Link href="/store" className="btn btn-paper">
               Browse Store
             </Link>
-            <a href="https://t.me/+2eV0YCTGdNcyNmFl" target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#0088cc]/30 bg-[#e8f4fd] px-5 py-2.5 text-sm font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]">
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            <a href="https://t.me/+2eV0YCTGdNcyNmFl" target="_blank" rel="noopener noreferrer" className="btn btn-paper">
               Telegram
             </a>
           </div>
-        </div>
-      </section>
+        </header>
+      </div>
 
       <CurrentAffairsClient slug={month} />
 
-      <section className="bg-[#f6f5f4]">
-        <div className="mx-auto max-w-5xl px-6 pb-20">
-          <div className="rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-            <h2 className="text-sm font-bold text-[#000000e8]">More Resources for UPSC Preparation</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-              {otherEditions.map((e) => (
-                <Link key={e.slug} href={`/current-affairs/${e.slug}`} className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-                  <span>📅</span>
-                  <span>{e.label} Edition</span>
-                </Link>
-              ))}
-              <Link href="/current-affairs/2025" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-                <span>📅</span>
-                <span>2025 Yearly Compilation — All 12 Months</span>
+      <section className="mx-auto max-w-[1120px] px-6 pb-24">
+        <div className="rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:p-8">
+          <h2 className="text-m font-bold">More Resources for UPSC Preparation</h2>
+          <div className="mt-4 grid gap-2 text-s sm:grid-cols-2">
+            {[
+              ...otherEditions.map((e) => ({ href: `/current-affairs/${e.slug}`, label: `${e.label} Edition` })),
+              { href: "/current-affairs/2025", label: "2025 Yearly Compilation — All 12 Months" },
+              { href: "/current-affairs/download", label: "Download Current Affairs PDFs" },
+              { href: "/toppers", label: "Topper Strategies & Marks" },
+              { href: "/store", label: "Premium Notes & Test Series" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} className="flex items-center justify-between rounded-[12px] bg-[var(--canvas)] px-4 py-3 text-[var(--ink-2)] hover:text-[var(--ink)]">
+                {l.label} <span aria-hidden>→</span>
               </Link>
-              <Link href="/current-affairs/download" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-                <span>📥</span>
-                <span>Download Current Affairs PDFs</span>
-              </Link>
-              <Link href="/toppers" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-                <span>🏆</span>
-                <span>Topper Strategies &amp; Marks</span>
-              </Link>
-              <Link href="/store" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-                <span>📚</span>
-                <span>Premium Notes &amp; Test Series</span>
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
-    </>
+    </BrandShell>
   );
 }

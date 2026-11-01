@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { MONTHS, getSlug } from "@/lib/current-affairs-utils";
+import { MONTHS } from "@/lib/current-affairs-utils";
+import BrandShell from "@/components/brand/BrandShell";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
 export const metadata: Metadata = {
   title: "Current Affairs for UPSC 2026 – Free Monthly & Yearly Compilations",
@@ -72,238 +75,168 @@ const breadcrumbSchema = {
   ],
 };
 
-export default function CurrentAffairsHub() {
+export default async function CurrentAffairsHub() {
   return (
-    <main className="min-h-screen bg-[#f6f5f4]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <div className="mx-auto max-w-5xl px-6 py-20 sm:py-28">
-        {/* Hero */}
-        <div className="max-w-3xl">
-          <span className="rounded-full bg-[#0075de]/10 px-3 py-0.5 text-xs font-semibold uppercase tracking-[0.125em] text-[#0075de]">
-            Current Affairs
-          </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-[-0.625px] text-[#000000e8] sm:text-4xl lg:text-5xl">
-            Current Affairs for UPSC — Free Monthly & Yearly Compilations
-          </h1>
-          <p className="mt-3 text-sm leading-relaxed text-[#615d59] sm:text-base">
-            Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers
-            12 UPSC-relevant sections with 60 topics, daily quizzes, AI-powered explanations, and
-            downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
-          </p>
-        </div>
-
-        {/* Editorial Intro */}
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-          <h2 className="text-sm font-bold text-[#000000e8]">Why Current Affairs Matter for UPSC</h2>
-          <div className="mt-3 space-y-3 text-sm leading-relaxed text-[#615d59]">
-            <p>
-              Current affairs form the backbone of UPSC preparation. With 30-40% of Prelims questions, 
-              every Mains General Studies paper, and the entire Interview stage drawing from recent events, 
-              a structured current affairs strategy can make the difference between qualifying and 
-              ranking. Yet most aspirants struggle with information overload — reading multiple newspapers, 
-              following too many sources, and failing to connect events to the syllabus.
+    <BrandShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <div className="pb-24 pt-28 sm:pt-32">
+        <div className="mx-auto max-w-[1120px] px-6">
+          {/* Hero */}
+          <header className="max-w-[48rem]">
+            <h1 className="t-display text-h1">Current Affairs for UPSC — Free Monthly & Yearly Compilations</h1>
+            <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+              Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers 12 UPSC-relevant sections with 60 topics, daily quizzes, AI-powered explanations, and downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
             </p>
-            <p>
-              That is why we built UPSCPrepNotes current affairs differently. Each monthly edition distills 
-              thousands of news items into 60 tightly curated topics across 12 UPSC-relevant sections — 
-              National News, International Relations, Economy, Environment, Science &amp; Technology, 
-              Government Schemes, Important Reports, Awards, Appointments, Obituaries, Sports, and 
-              Summits &amp; Important Days. 
-              Every topic includes key facts, data points, and context structured for quick revision. 
-              No fluff, no filler — just what you need for Prelims, Mains, and Interview.
-            </p>
-            <p>
-              Beyond monthly compilations, we offer AI-powered explanations that break down complex 
-              events, interactive quizzes for self-assessment, and downloadable PDFs for offline study. 
-              Our 2025 yearly compilation brings together all 12 months in one place — over 850 events 
-              tagged by section for targeted revision. Whether you are preparing for the 2026 cycle or 
-              building your foundation for 2027, our current affairs coverage adapts to your pace.
-            </p>
-          </div>
-        </div>
-
-        {/* Editions */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2">
-          {Object.entries(MONTHS).map(([slug, data], i) => {
-            const labels: string[] = [];
-            if (i === 0) labels.push("Latest");
-            labels.push(`${data.sections.length} sections · ${data.sections.reduce((a, s) => a + s.items.length, 0)} topics`);
-            labels.push("with quiz & AI");
-            return (
-              <Link
-                key={slug}
-                href={`/current-affairs/${slug}`}
-                className="group rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#000000e8] text-sm font-bold text-white">{data.month[0]}</span>
-                  <div>
-                    <p className="text-sm font-bold text-[#000000e8] group-hover:text-[#0075de] transition">{data.month} {data.year} Edition</p>
-                    <p className="text-xs text-[#615d59]">{labels.slice(0, 2).join(" · ")}</p>
-                  </div>
-                  {i === 0 && <span className="ml-auto rounded-full bg-[#1aae39]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#1aae39]">New</span>}
-                </div>
-                <div className="mt-4 flex gap-2 text-xs text-[#615d59]">
-                  <span>Interactive reading</span>
-                  <span>·</span>
-                  <span>Daily quiz</span>
-                  <span>·</span>
-                  <span>PDF download</span>
-                </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/current-affairs/july-2026" className="btn btn-blue">
+                Read July 2026 Edition →
               </Link>
-            );
-          })}
+              <Link href="/current-affairs/download" className="btn btn-paper">
+                Download PDFs
+              </Link>
+            </div>
+          </header>
 
-          <Link
-            href="/current-affairs/2025"
-            className="group rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] transition hover:shadow-[0_0.175px_1.041px_rgba(0,0,0,0.01),0_0.8px_2.925px_rgba(0,0,0,0.02),0_2.025px_7.847px_rgba(0,0,0,0.027),0_4px_18px_rgba(0,0,0,0.04)]"
-          >
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dd5b00]/15 text-sm font-bold text-[#dd5b00]">25</span>
-              <div>
-                <p className="text-sm font-bold text-[#000000e8] group-hover:text-[#0075de] transition">2025 Yearly Compilation</p>
-                <p className="text-xs text-[#615d59]">12 months · ~850+ events · 11 sections per month</p>
+          {/* Editions */}
+          <section className="mt-14 grid gap-4 sm:grid-cols-2">
+            {Object.entries(MONTHS).map(([slug, data], i) => {
+              const labels: string[] = [];
+              if (i === 0) labels.push("Latest");
+              labels.push(`${data.sections.length} sections · ${data.sections.reduce((a, sec) => a + sec.items.length, 0)} topics`);
+              labels.push("with quiz & AI");
+              return (
+                <Link key={slug} href={`/current-affairs/${slug}`} className={`${card} group p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[var(--ink)] text-m font-bold text-white">{data.month[0]}</span>
+                    <div className="min-w-0">
+                      <p className="text-m font-bold group-hover:text-[var(--accent)]">{data.month} {data.year} Edition</p>
+                      <p className="text-s text-[var(--muted)]">{labels.slice(0, 2).join(" · ")}</p>
+                    </div>
+                    {i === 0 && <span className="ml-auto rounded-full bg-[#d4f1df] px-2.5 py-0.5 text-s font-bold text-[#14532d]">New</span>}
+                  </div>
+                  <p className="mt-4 text-s text-[var(--ink-2)]">Interactive reading · Daily quiz · PDF download</p>
+                </Link>
+              );
+            })}
+            <Link href="/current-affairs/2025" className={`${card} group p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
+              <div className="flex items-center gap-3">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[var(--hl)] text-m font-bold text-[var(--hl-ink)]">25</span>
+                <div className="min-w-0">
+                  <p className="text-m font-bold group-hover:text-[var(--accent)]">2025 Yearly Compilation</p>
+                  <p className="text-s text-[var(--muted)]">12 months · ~850+ events · 11 sections per month</p>
+                </div>
               </div>
-            </div>
-            <div className="mt-4 flex gap-2 text-xs text-[#615d59]">
-              <span>All 12 months · Jan–Dec 2025</span>
-              <span>·</span>
-              <span>Server-rendered</span>
-              <span>·</span>
-              <span>PDF download</span>
-            </div>
-          </Link>
-        </div>
+              <p className="mt-4 text-s text-[var(--ink-2)]">All 12 months · Jan–Dec 2025 · Server-rendered · PDF download</p>
+            </Link>
+          </section>
 
-        {/* Stats */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
-            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">12</p>
-            <p className="text-xs text-[#615d59] mt-0.5">Sections per edition</p>
-          </div>
-          <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
-            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">60</p>
-            <p className="text-xs text-[#615d59] mt-0.5">Topics per month</p>
-          </div>
-          <div className="rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]">
-            <p className="text-2xl font-black tracking-[-0.5px] text-[#000000e8]">Free</p>
-            <p className="text-xs text-[#615d59] mt-0.5">Always free to read & download</p>
-          </div>
-        </div>
-
-        {/* Sections preview */}
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-          <h2 className="text-sm font-bold text-[#000000e8]">12 UPSC-Relevant Sections Covered Every Edition</h2>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2 text-sm text-[#615d59]">
+          {/* Stats */}
+          <section className="mt-6 grid gap-4 sm:grid-cols-3">
             {[
-              ["🇮🇳", "National News"],
-              ["🌐", "International Relations"],
-              ["💰", "Economy & Finance"],
-              ["🌿", "Environment & Ecology"],
-              ["🔬", "Science & Technology"],
-              ["📋", "Schemes & Policies"],
-              ["📊", "Important Reports"],
-              ["🏆", "Awards & Honours"],
-              ["👤", "Appointments"],
-              ["🕊️", "Obituaries"],
-              ["🏏", "Sports"],
-              ["📅", "Summits & Important Days"],
-            ].map(([emoji, label]) => (
-              <div key={label} className="flex items-center gap-2">
-                <span>{emoji as string}</span>
-                <span>{label as string}</span>
+              { v: "12", k: "Sections per edition" },
+              { v: "60", k: "Topics per month" },
+              { v: "Free", k: "Always free to read & download" },
+            ].map((x) => (
+              <div key={x.k} className={`${card} p-5`}>
+                <p className="t-display tab text-l leading-none">{x.v}</p>
+                <p className="mt-1.5 text-s text-[var(--muted)]">{x.k}</p>
               </div>
             ))}
-          </div>
-        </div>
+          </section>
 
-        {/* FAQs */}
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-          <h2 className="text-sm font-bold text-[#000000e8]">Frequently Asked Questions</h2>
-          <div className="mt-4 space-y-4 text-sm text-[#615d59]">
-            <div>
-              <p className="font-semibold text-[#000000e8]">What is covered in UPSCPrepNotes current affairs?</p>
-              <p className="mt-1 leading-relaxed">Each monthly edition covers 12 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section (60 topics total). Yearly compilations cover all months with 400+ events.</p>
+          <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <div className="space-y-14">
+              {/* Editorial Intro */}
+              <section>
+                <h2 className="t-head text-l">Why Current Affairs Matter for UPSC</h2>
+                <div className="mt-5 space-y-4 text-m leading-[1.7] text-[var(--ink-2)]">
+                  <p>
+                    Current affairs form the backbone of UPSC preparation. With 30-40% of Prelims questions, every Mains General Studies paper, and the entire Interview stage drawing from recent events, a structured current affairs strategy can make the difference between qualifying and ranking. Yet most aspirants struggle with information overload — reading multiple newspapers, following too many sources, and failing to connect events to the syllabus.
+                  </p>
+                  <p>
+                    That is why we built UPSCPrepNotes current affairs differently. Each monthly edition distills thousands of news items into 60 tightly curated topics across 12 UPSC-relevant sections — National News, International Relations, Economy, Environment, Science &amp; Technology, Government Schemes, Important Reports, Awards, Appointments, Obituaries, Sports, and Summits &amp; Important Days. Every topic includes key facts, data points, and context structured for quick revision. No fluff, no filler — just what you need for Prelims, Mains, and Interview.
+                  </p>
+                  <p>
+                    Beyond monthly compilations, we offer AI-powered explanations that break down complex events, interactive quizzes for self-assessment, and downloadable PDFs for offline study. Our 2025 yearly compilation brings together all 12 months in one place — over 850 events tagged by section for targeted revision. Whether you are preparing for the 2026 cycle or building your foundation for 2027, our current affairs coverage adapts to your pace.
+                  </p>
+                </div>
+              </section>
+
+              {/* FAQs */}
+              <section>
+                <h2 className="t-head text-l">Frequently Asked Questions</h2>
+                <div className={`${card} mt-5 divide-y divide-[var(--line)]`}>
+                  {[
+                    { q: "What is covered in UPSCPrepNotes current affairs?", a: <>Each monthly edition covers 12 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section (60 topics total). Yearly compilations cover all months with 400+ events.</> },
+                    { q: "Is the current affairs content free?", a: <>Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. We also offer an AI-powered reading experience and interactive quiz for every edition.</> },
+                    { q: "Can I download current affairs as PDF?", a: <>Yes, every monthly edition and the yearly compilation is available as a free downloadable PDF. Visit the <Link href="/current-affairs/download" className="font-bold text-[var(--accent)] hover:underline">Current Affairs PDF download page</Link> to get your copy.</> },
+                  ].map((f, i) => (
+                    <details key={f.q} open={i === 0} className="group px-6 py-5">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                        <h3 className="text-m font-bold">{f.q}</h3>
+                        <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
+                      </summary>
+                      <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
             </div>
-            <div>
-              <p className="font-semibold text-[#000000e8]">Is the current affairs content free?</p>
-              <p className="mt-1 leading-relaxed">Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. We also offer an AI-powered reading experience and interactive quiz for every edition.</p>
-            </div>
-            <div>
-              <p className="font-semibold text-[#000000e8]">Can I download current affairs as PDF?</p>
-              <p className="mt-1 leading-relaxed">Yes, every monthly edition and the yearly compilation is available as a free downloadable PDF. Visit the <Link href="/current-affairs/download" className="text-[#0075de] hover:underline">Current Affairs PDF download page</Link> to get your copy.</p>
-            </div>
+
+            <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+              {/* Sections preview */}
+              <div className={`${card} p-5`}>
+                <h2 className="text-m font-bold">12 UPSC-Relevant Sections Covered Every Edition</h2>
+                <ul className="mt-4 space-y-2 text-s text-[var(--ink-2)]">
+                  {["National News", "International Relations", "Economy & Finance", "Environment & Ecology", "Science & Technology", "Schemes & Policies", "Important Reports", "Awards & Honours", "Appointments", "Obituaries", "Sports", "Summits & Important Days"].map((label) => (
+                    <li key={label} className="flex items-center gap-2.5">
+                      <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
+                      {label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Related Resources */}
+              <div className={`${card} p-5`}>
+                <h2 className="text-m font-bold">More Resources for UPSC Preparation</h2>
+                <ul className="mt-3 space-y-1 text-s">
+                  {[
+                    { href: "/toppers", label: "Toppers Strategies & Marks" },
+                    { href: "/store", label: "Premium Notes & Test Series" },
+                    { href: "/pyq", label: "Previous Year Questions (PYQ)" },
+                    { href: "/ask", label: "Ask AI — UPSC Query Assistant", track: "ai-mentor-cta" },
+                  ].map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} data-track={l.track} className="flex items-center justify-between rounded-[10px] px-2 py-1.5 text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]">
+                        {l.label} <span aria-hidden>→</span>
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <a href="https://t.me/+2eV0YCTGdNcyNmFl" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-[10px] px-2 py-1.5 font-bold text-[var(--accent)] hover:bg-[var(--accent-soft)]">
+                      Join Telegram — Daily Current Affairs <span aria-hidden>↗</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </aside>
           </div>
-        </div>
 
-        {/* Related Resources */}
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6] sm:p-8">
-          <h2 className="text-sm font-bold text-[#000000e8]">More Resources for UPSC Preparation</h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-            <Link href="/toppers" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>🏆</span>
-              <span>Toppers Strategies & Marks</span>
+          {/* AI mentor */}
+          <section className={`${card} mt-16 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8`}>
+            <div>
+              <h2 className="text-m font-bold">Connect current affairs to your syllabus</h2>
+              <p className="mt-1 text-s text-[var(--ink-2)]">Ask our AI Mentor to map today&apos;s news to GS papers and PYQ themes.</p>
+            </div>
+            <Link href="/ask" className="btn btn-ink shrink-0 self-start sm:self-center">
+              Ask AI Mentor &rarr;
             </Link>
-            <Link href="/store" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>📚</span>
-              <span>Premium Notes & Test Series</span>
-            </Link>
-            <Link href="/pyq" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>📝</span>
-              <span>Previous Year Questions (PYQ)</span>
-            </Link>
-            <Link href="/ask" data-track="ai-mentor-cta" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>🤖</span>
-              <span>Ask AI — UPSC Query Assistant</span>
-            </Link>
-            <a
-              href="https://t.me/+2eV0YCTGdNcyNmFl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-[#e8f4fd] px-4 py-3 text-[#0088cc] hover:text-[#006699] transition font-semibold"
-            >
-              <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              <span>Join Telegram — Daily Current Affairs</span>
-            </a>
-          </div>
-        </div>
+          </section>
 
-        {/* CTA */}
-        <div className="mt-12 flex flex-wrap gap-3">
-          <Link
-            href="/current-affairs/july-2026"
-            className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
-          >
-            Read July 2026 Edition →
-          </Link>
-          <Link
-            href="/current-affairs/download"
-            className="inline-flex items-center gap-2 rounded-full border border-[#e6e6e6] bg-white px-6 py-2.5 text-sm font-medium text-[#615d59] transition hover:text-[#000000e8]"
-          >
-            Download PDFs
-          </Link>
+          <p className="mt-12 border-t border-[var(--line)] pt-6 text-center text-s text-[var(--muted)]">UPSCPrepNotes · Monthly &amp; Yearly Current Affairs for UPSC · Free PDF Downloads</p>
         </div>
-
-        <footer className="mt-16 border-t border-[#e6e6e6] pt-6 text-center text-xs text-[#a39e98]">
-          <p>UPSCPrepNotes · Monthly &amp; Yearly Current Affairs for UPSC · Free PDF Downloads</p>
-        </footer>
       </div>
-      <section className="py-12 bg-gradient-to-b from-zinc-50 to-white">
-      <div className="mx-auto max-w-3xl text-center px-4">
-        <h2 className="text-lg font-semibold text-zinc-800">Connect current affairs to your syllabus</h2>
-        <p className="mt-2 text-sm text-zinc-500">Ask our AI Mentor to map today's news to GS papers and PYQ themes.</p>
-        <Link href="/ask" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800">
-          Ask AI Mentor &rarr;
-        </Link>
-      </div>
-    </section>
-  </main>
+    </BrandShell>
   );
 }

@@ -1,5 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import BrandShell from "@/components/brand/BrandShell";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
 export const metadata: Metadata = {
   title: "Current Affairs PDF – Free Monthly & Yearly Download for UPSC",
@@ -31,69 +34,43 @@ const editions = [
   { month: "2025 Yearly", slug: "2025", label: "2025 Yearly Compilation", desc: "12 months (Jan–Dec) — ~850+ events across 11 sections" },
 ];
 
-export default function CurrentAffairsDownloadPage() {
+export default async function CurrentAffairsDownloadPage() {
   return (
-    <main className="min-h-screen bg-[#f6f5f4]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <div className="mx-auto max-w-3xl px-6 py-20 sm:py-28">
-        <span className="rounded-full bg-[#1aae39]/15 px-3 py-0.5 text-xs font-semibold uppercase tracking-[0.125em] text-[#1aae39]">
-          Free Download
-        </span>
-        <h1 className="mt-4 text-3xl font-bold tracking-[-0.625px] text-[#000000e8] sm:text-4xl">
-          Current Affairs PDF – Monthly & Yearly Editions
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-[#615d59]">
-          Download free current affairs PDFs for UPSC preparation. Each monthly edition covers 12 sections —
-          National News, International Relations, Economy, Environment, Science & Tech, Schemes, Reports,
-          Awards, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section. The yearly compilation
-          covers all 12 months of 2025 with ~850+ key events.
+    <BrandShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-28 sm:pt-32">
+        <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">
+          <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+          <span aria-hidden>/</span>
+          <Link href="/current-affairs" className="hover:text-[var(--ink)]">Current Affairs</Link>
+          <span aria-hidden>/</span>
+          <span className="text-[var(--ink-2)]">Free Download</span>
+        </nav>
+        <h1 className="t-display mt-8 text-h1">Current Affairs PDF – Monthly & Yearly Editions</h1>
+        <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+          Download free current affairs PDFs for UPSC preparation. Each monthly edition covers 12 sections — National News, International Relations, Economy, Environment, Science & Tech, Schemes, Reports, Awards, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section. The yearly compilation covers all 12 months of 2025 with ~850+ key events.
         </p>
 
-        <div className="mt-10 space-y-4">
+        <div className="mt-10 space-y-3">
           {editions.map((ed) => (
-            <div
-              key={ed.slug}
-              className="flex items-center justify-between rounded-xl bg-white p-5 ring-1 ring-[#e6e6e6]"
-            >
+            <div key={ed.slug} className={`${card} flex items-center justify-between gap-4 p-5`}>
               <div>
-                <p className="text-sm font-bold text-[#000000e8]">{ed.label}</p>
-                <p className="text-xs text-[#615d59]">{ed.desc}</p>
+                <p className="text-m font-bold">{ed.label}</p>
+                <p className="text-s text-[var(--muted)]">{ed.desc}</p>
               </div>
-              <Link
-                href={`/api/generate-current-affairs?month=${ed.slug}`}
-                className="inline-flex items-center gap-2 rounded-full bg-[#000000e8] px-5 py-2 text-xs font-semibold text-white transition hover:opacity-90"
-              >
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Download PDF
+              <Link href={`/api/generate-current-affairs?month=${ed.slug}`} className="btn btn-blue h-10 shrink-0 px-4 [--btn-fs:14px]">
+                Download PDF ↓
               </Link>
             </div>
           ))}
         </div>
 
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6]">
-          <h2 className="text-sm font-bold text-[#000000e8]">What&apos;s inside each edition</h2>
-          <ul className="mt-4 grid gap-2 text-sm text-[#615d59] sm:grid-cols-2">
-            {[
-              "🇮🇳 National News",
-              "🌐 International Relations",
-              "💰 Economy & Finance",
-              "🌿 Environment & Ecology",
-              "🔬 Science & Technology",
-              "📋 Government Schemes",
-              "📊 Important Reports",
-              "🏆 Awards & Honours",
-              "👤 Appointments",
-              "🕊️ Obituaries",
-              "🏏 Sports",
-              "📅 Summits & Important Days",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-[#e6e6e6]" />
+        <div className={`${card} mt-10 p-6`}>
+          <h2 className="text-m font-bold">What&apos;s inside each edition</h2>
+          <ul className="mt-4 grid gap-2 text-s text-[var(--ink-2)] sm:grid-cols-2">
+            {["National News", "International Relations", "Economy & Finance", "Environment & Ecology", "Science & Technology", "Government Schemes", "Important Reports", "Awards & Honours", "Appointments", "Obituaries", "Sports", "Summits & Important Days"].map((item) => (
+              <li key={item} className="flex items-center gap-2.5">
+                <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
                 {item}
               </li>
             ))}
@@ -101,37 +78,28 @@ export default function CurrentAffairsDownloadPage() {
         </div>
 
         {/* Related Resources */}
-        <div className="mt-12 rounded-xl bg-white p-6 ring-1 ring-[#e6e6e6]">
-          <h2 className="text-sm font-bold text-[#000000e8]">More UPSC Resources</h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-            <Link href="/current-affairs" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>🏠</span>
-              <span>Current Affairs Hub — All Editions</span>
-            </Link>
-            <Link href="/current-affairs/july-2026" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>📖</span>
-              <span>Read July 2026 Edition Online</span>
-            </Link>
-            <Link href="/store" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>📚</span>
-              <span>Premium Notes &amp; Test Series</span>
-            </Link>
-            <Link href="/toppers" className="flex items-center gap-2 rounded-lg bg-[#f6f5f4] px-4 py-3 text-[#615d59] hover:text-[#000000e8] transition">
-              <span>🏆</span>
-              <span>Topper Strategies &amp; Marks</span>
-            </Link>
+        <div className={`${card} mt-6 p-6`}>
+          <h2 className="text-m font-bold">More UPSC Resources</h2>
+          <div className="mt-4 grid gap-2 text-s sm:grid-cols-2">
+            {[
+              { href: "/current-affairs", label: "Current Affairs Hub — All Editions" },
+              { href: "/current-affairs/july-2026", label: "Read July 2026 Edition Online" },
+              { href: "/store", label: "Premium Notes & Test Series" },
+              { href: "/toppers", label: "Topper Strategies & Marks" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} className="flex items-center justify-between rounded-[12px] bg-[var(--canvas)] px-4 py-3 text-[var(--ink-2)] hover:text-[var(--ink)]">
+                {l.label} <span aria-hidden>→</span>
+              </Link>
+            ))}
           </div>
         </div>
 
         <div className="mt-8 text-center">
-          <Link
-            href="/current-affairs"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0075de] hover:text-[#005bab] transition"
-          >
+          <Link href="/current-affairs" className="text-s font-bold text-[var(--accent)] hover:underline">
             ← Read online instead
           </Link>
         </div>
       </div>
-    </main>
+    </BrandShell>
   );
 }
