@@ -29,6 +29,8 @@ import { About, Faq, Insights, StrategyBlock, type QA } from "./_components/Cont
 import Related, { type RelatedGroup, type RelatedTopper } from "./_components/Related";
 import { Section } from "./_components/ui";
 import StickyCopyBar from "./_components/StickyCopyBar";
+import { CompareBox, ContinueReading, type Suggestion } from "./_components/Next";
+import type { PickItem } from "@/components/brand/ComparePicker";
 
 export const revalidate = 3600;
 
@@ -179,6 +181,47 @@ export default async function TopperPage({ params }: Props) {
     },
   ];
 
+  // Compare + continue reading.
+  const valid = (t: LeanTopper) => !isPlaceholder(t) && totalOf(t) > 0;
+  const sugg = (t: LeanTopper, reason: string): Suggestion => ({
+    slug: t.slug ?? "",
+    name: displayName(t),
+    rank: t.rank ?? 0,
+    year: t.year ?? 0,
+    optional: subjectOf(t.optionalSubject),
+    total: totalOf(t),
+    avatar: avatarOf(t),
+    reason,
+  });
+  const sameOpt = optional ? others.filter((t) => subjectOf(t.optionalSubject) === optional && valid(t)).sort(byTotal) : [];
+  const sameYear = others.filter((t) => t.year === topper.year).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+  const above = [...sameYear].reverse().find((t) => (t.rank ?? 0) < topper.rank) ?? null;
+  const below = sameYear.find((t) => (t.rank ?? 0) > topper.rank) ?? null;
+  const yearTop = sameYear.find((t) => t.rank === 1 && valid(t));
+
+  const picks: Suggestion[] = [];
+  const addPick = (t: LeanTopper | null | undefined, reason: string) => {
+    if (t && valid(t) && !picks.some((p) => p.slug === t.slug) && picks.length < 3) picks.push(sugg(t, reason));
+  };
+  addPick(sameOpt[0], `Top ${optional} scorer`);
+  addPick(yearTop, `AIR 1, CSE ${topper.year}`);
+  addPick(above ?? below, `AIR ${(above ?? below)?.rank} · same year`);
+  addPick(sameOpt[1], `${optional} topper`);
+
+  const pickItems: PickItem[] = [...all]
+    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || (a.rank ?? 0) - (b.rank ?? 0))
+    .map((t) => ({ slug: t.slug ?? "", name: displayName(t), rank: t.rank ?? 0, year: t.year ?? 0, optional: subjectOf(t.optionalSubject), avatar: avatarOf(t) }));
+
+  const withCopy = sameOpt.find((t) => freeCopiesOf(t).length > 0);
+  const mainNext = withCopy
+    ? sugg(withCopy, `Free answer copy · ${optional}`)
+    : sameOpt[0]
+      ? sugg(sameOpt[0], `Same optional · ${optional}`)
+      : below
+        ? sugg(below, `Next rank · CSE ${topper.year}`)
+        : null;
+  const prevNext = (t: LeanTopper | null) => (t && t.slug !== mainNext?.slug ? sugg(t, `AIR ${t.rank} · CSE ${t.year}`) : null);
+
   // FAQ: the same honest text in the page and in the schema.
   const topGs = papers.filter((p) => p.max === 250).sort((a, b) => b.score - a.score)[0];
   const faqs: QA[] = [
@@ -210,6 +253,7 @@ export default async function TopperPage({ params }: Props) {
   const toc = [
     ...(topper.bio ? [{ id: "about", label: "About" }] : []),
     { id: "marksheet", label: "Marksheet" },
+    ...(papers.length ? [{ id: "compare", label: "Compare" }] : []),
     { id: "answer-copy", label: "Answer copy" },
     ...(topper.strategy ? [{ id: "strategy", label: "Preparation strategy" }] : []),
     ...(insights.length ? [{ id: "insights", label: "Key takeaways" }] : []),
@@ -292,6 +336,12 @@ export default async function TopperPage({ params }: Props) {
                 )}
               </Section>
 
+              {papers.length > 0 && (
+                <Section id="compare" title={`Compare ${first} with another topper`}>
+                  <CompareBox base={topper.slug} first={first} items={pickItems} picks={picks} />
+                </Section>
+              )}
+
               <Section id="answer-copy" title={`${first}'s answer copy`} meta={requests > 0 ? `${fmt(requests)} requests` : undefined}>
                 <AnswerCopy name={name} first={first} slug={topper.slug} pdfCount={pdfs.length} preview={preview} requests={requests} others={freeOthers} compilation={compilation} />
               </Section>
@@ -314,6 +364,10 @@ export default async function TopperPage({ params }: Props) {
 
               <Section id="faq" title={`Questions about ${first}`}>
                 <Faq items={faqs} />
+              </Section>
+
+              <Section id="continue" title="Continue reading">
+                <ContinueReading main={mainNext} prev={prevNext(above)} next={prevNext(below)} />
               </Section>
             </div>
 
