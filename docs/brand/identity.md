@@ -79,3 +79,15 @@ Borrowed from Emil Kowalski / Rauno Freiberg practice.
 
 ## 8. Imagery
 Real scans and real numbers only. No stock photos, no AI illustrations, no avatars of people who aren't who they claim to be. Scans keep their watermarks; we never crop out a source. Pages carrying another reseller's watermark are not used.
+
+## 9. Building a page on the brand
+Shared pieces live in `components/brand/`:
+
+| File | What it is |
+|---|---|
+| `BrandShell.tsx` | Wrap a page in it: brand tokens, fonts, pill nav, yellow footer |
+| `routes.ts` | Add the route to `BRAND_ROUTES` so the old header, footer and banner stay off it |
+| `brand.css` | Tokens and utilities (`.btn`, `.panel`, `.h-sec`, `.swipe`, `.paper`…), scoped to `.up` |
+| `SectionHead.tsx` | The one section heading pattern: title, lead, optional action |
+| `Props.tsx` | Push pin (`red`, `blue`, `yellow`) and paperclip |
+| `Lens.tsx` | Magnifier over a real scan |

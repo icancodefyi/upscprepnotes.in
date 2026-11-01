@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Funnel_Display, Geist, Geist_Mono } from "next/font/google";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
@@ -8,7 +7,6 @@ import { PDFModel } from "@/models/pdf.model";
 import { PYQModel } from "@/models/pyq.model";
 import { PRODUCTS } from "@/lib/store-products";
 import { getFeaturedToppers } from "@/services/topper.service";
-import Nav from "./_components/Nav";
 import Hero from "./_components/Hero";
 import Pillars from "./_components/Pillars";
 import StackedSheets from "./_components/StackedSheets";
@@ -21,9 +19,8 @@ import Verify from "./_components/Verify";
 import Founder from "./_components/Founder";
 import LeadPack from "./_components/LeadPack";
 import Faq, { FAQS } from "./_components/Faq";
-import Closing from "./_components/Closing";
+import BrandShell from "@/components/brand/BrandShell";
 import type { Booklet } from "./_components/types";
-import "./brand.css";
 
 export const revalidate = 3600;
 
@@ -50,9 +47,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const sans = Geist({ subsets: ["latin"], variable: "--up-sans" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--up-mono" });
-const display = Funnel_Display({ subsets: ["latin"], variable: "--up-display" });
 
 type LeanTopper = {
   firstName?: string;
@@ -296,25 +290,21 @@ export default async function TryPage() {
   ];
 
   return (
-    <div className={`up ${sans.variable} ${mono.variable} ${display.variable}`}>
+    <BrandShell footer={{ counts: { toppers: counts.toppers }, featured }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <Nav />
-      <main>
-        {/* The story: the exam, the proof, the relief, the choices, the work, the list, the tools, the trust, the start. */}
-        <Hero booklets={booklets} counts={counts} />
-        <StackedSheets booklets={booklets.filter((b) => b.papers)} />
-        <MarksStory story={story} />
-        <OptionalFolders optionals={optionals} />
-        <Guides guides={guides} />
-        <Years years={years} />
-        <Pillars counts={counts} />
-        <StoreShelf items={shelf} />
-        <Verify counts={counts} />
-        <Founder counts={counts} />
-        <LeadPack />
-        <Faq counts={counts} />
-      </main>
-      <Closing counts={counts} featured={featured} />
-    </div>
+      {/* The story: the exam, the proof, the relief, the choices, the work, the list, the tools, the trust, the start. */}
+      <Hero booklets={booklets} counts={counts} />
+      <StackedSheets booklets={booklets.filter((b) => b.papers)} />
+      <MarksStory story={story} />
+      <OptionalFolders optionals={optionals} />
+      <Guides guides={guides} />
+      <Years years={years} />
+      <Pillars counts={counts} />
+      <StoreShelf items={shelf} />
+      <Verify counts={counts} />
+      <Founder counts={counts} />
+      <LeadPack />
+      <Faq counts={counts} />
+    </BrandShell>
   );
 }

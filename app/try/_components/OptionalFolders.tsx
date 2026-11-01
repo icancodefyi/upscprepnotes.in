@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SectionHead from "./SectionHead";
-import { Paperclip } from "./Props";
+import SectionHead from "@/components/brand/SectionHead";
+import { Paperclip } from "@/components/brand/Props";
 
 export type OptionalTile = {
   subject: string;

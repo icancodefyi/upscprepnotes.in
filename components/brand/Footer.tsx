@@ -79,7 +79,7 @@ function Badge() {
   );
 }
 
-export default function Closing({ counts, featured = [] }: { counts: { toppers: number; full: number; aspirants: number }; featured?: { href: string; label: string }[] }) {
+export default function Footer({ counts, featured = [] }: { counts: { toppers: number }; featured?: { href: string; label: string }[] }) {
   return (
     <footer className="panel relative bg-[var(--hl)]">
       <div className="mx-auto max-w-[1120px] px-6 pt-24 sm:pt-32">
@@ -90,10 +90,10 @@ export default function Closing({ counts, featured = [] }: { counts: { toppers: 
               {`Every topper on this page once sat where you are. Study the ${fmt(counts.toppers)} who made it, free.`}
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link href="/toppers" data-track="try-closing-primary" className="btn btn-ink">
+              <Link href="/toppers" data-track="footer-start-topper" className="btn btn-ink">
                 Start with a topper <span className="knob">↗</span>
               </Link>
-              <Link href="/free-materials" data-track="try-closing-free" className="btn btn-paper">
+              <Link href="/free-materials" data-track="footer-free-material" className="btn btn-paper">
                 Free study material
               </Link>
             </div>

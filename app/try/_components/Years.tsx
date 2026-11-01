@@ -1,6 +1,6 @@
 import Link from "next/link";
-import SectionHead from "./SectionHead";
-import { Pin } from "./Props";
+import SectionHead from "@/components/brand/SectionHead";
+import { Pin } from "@/components/brand/Props";
 
 export type YearCard = {
   year: number;

@@ -9,6 +9,7 @@ import AskHeader from "@/components/AskHeader";
 import { CartProvider } from "@/lib/cart-context";
 import { trackClientEvent } from "@/lib/client-analytics";
 import { markPopup } from "@/lib/popup-state";
+import { isBrandRoute } from "@/components/brand/routes";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -53,9 +54,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isAdmin = pathname?.startsWith("/admin");
-  const isTry = pathname === "/try" || pathname?.startsWith("/try");
-
-  if (isTry) {
+  // Redesigned pages bring their own nav and footer (components/brand/BrandShell).
+  if (isBrandRoute(pathname)) {
     return <CartProvider>{children}</CartProvider>;
   }
 

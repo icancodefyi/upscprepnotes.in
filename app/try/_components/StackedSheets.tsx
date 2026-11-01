@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Lens from "./Lens";
+import Lens from "@/components/brand/Lens";
 import type { Booklet } from "./types";
-import SectionHead from "./SectionHead";
+import SectionHead from "@/components/brand/SectionHead";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
 

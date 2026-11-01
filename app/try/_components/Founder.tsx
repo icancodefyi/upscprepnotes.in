@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Counts } from "./types";
-import { Pin } from "./Props";
+import { Pin } from "@/components/brand/Props";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
 

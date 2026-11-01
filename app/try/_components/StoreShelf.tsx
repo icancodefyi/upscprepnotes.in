@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import SectionHead from "./SectionHead";
+import SectionHead from "@/components/brand/SectionHead";
 
 export type ShelfItem = {
   slug: string;

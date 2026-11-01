@@ -1,4 +1,4 @@
-/* UPSCPrepNotes brand — see docs/brand/identity.md. Scoped to .up so the live site is untouched. */
+/* UPSCPrepNotes brand — see docs/brand/identity.md. Scoped to .up (set by BrandShell) so pages not yet redesigned are untouched. */
 @layer components {
 .up {
   --paper: #ffffff;

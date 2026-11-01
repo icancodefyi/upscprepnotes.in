@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Counts } from "./types";
-import SectionHead from "./SectionHead";
+import SectionHead from "@/components/brand/SectionHead";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
 
