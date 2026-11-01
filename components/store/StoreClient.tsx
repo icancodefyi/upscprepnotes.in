@@ -3,10 +3,8 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/store-products";
-import { CartProvider, useCart } from "@/lib/cart-context";
-import { fmt, folderOf, Star, Meta, AddButton, Price, Sheet, Badge, ProductCard } from "./Shelf";
+import { fmt, folderOf, Star, Meta, BuyButton, PayMethods, Price, Sheet, Badge, ProductCard } from "./Shelf";
 import { Paperclip, Pin } from "@/components/brand/Props";
-import CartSlideover from "./CartSlideover";
 import EmailCapture from "./EmailCapture";
 import FlashSaleBanner from "./FlashSaleBanner";
 
@@ -25,9 +23,8 @@ const SHELVES: { key: string; label: string; match: (p: Product) => boolean }[] 
 /** The lead product, opened out: big cover with a paperclip, full description. */
 function Spotlight({ product }: { product: Product }) {
   return (
-    <Link
-      href={`/store/${product.slug}`}
-      className="group grid overflow-hidden rounded-[28px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] transition-shadow duration-300 hover:shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.3)] md:grid-cols-[1fr_1.1fr]"
+    <div
+      className="group relative grid overflow-hidden rounded-[28px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] transition-shadow duration-300 hover:shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.3)] md:grid-cols-[1fr_1.1fr]"
     >
       <div className="grain relative min-h-[300px] overflow-hidden sm:min-h-[380px]" style={{ background: folderOf(product) }}>
         <Badge product={product} />
@@ -41,15 +38,22 @@ function Spotlight({ product }: { product: Product }) {
       </div>
       <div className="flex flex-col p-6 sm:p-9">
         <Meta product={product} />
-        <h3 className="t-display mt-3 text-l group-hover:text-[var(--accent)]">{product.title}</h3>
+        <h3 className="t-display mt-3 text-l group-hover:text-[var(--accent)]">
+          <Link href={`/store/${product.slug}`} className="after:absolute after:inset-0 after:content-['']">
+            {product.title}
+          </Link>
+        </h3>
         <p className="mt-2 text-m font-bold text-[var(--ink-2)]">{product.tagline}</p>
         <p className="mt-4 max-w-[38rem] text-m leading-[1.65] text-[var(--ink-2)]">{product.description}</p>
-        <div className="mt-auto flex items-center gap-4 pt-8">
+        <div className="mt-auto flex flex-wrap items-center gap-4 pt-8">
           <Price product={product} big />
-          <AddButton product={product} big />
+          <div className="relative z-10">
+            <BuyButton product={product} label={`Buy now`} className="btn btn-blue h-12 px-6" track={`spotlight-buy-${product.slug}`} />
+          </div>
         </div>
+        <PayMethods className="mt-4" />
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -71,22 +75,6 @@ function Desk() {
         </span>
       </div>
     </Link>
-  );
-}
-
-function CartButton({ onOpen }: { onOpen: () => void }) {
-  const { totalItems } = useCart();
-  return (
-    <button type="button" onClick={onOpen} aria-label="Open cart" className="btn btn-paper relative h-11 shrink-0 px-4 [--btn-fs:14px]">
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M6 7h12l-1 13H7L6 7z" />
-        <path d="M9 7a3 3 0 016 0" />
-      </svg>
-      Cart
-      {totalItems > 0 && (
-        <span className="tab grid h-5 min-w-5 place-items-center rounded-full bg-[var(--accent)] px-1.5 text-s font-bold text-white">{totalItems > 99 ? "99+" : totalItems}</span>
-      )}
-    </button>
   );
 }
 
@@ -147,7 +135,6 @@ function StoreFooter() {
 export default function StoreClient() {
   const [search, setSearch] = useState("");
   const [shelf, setShelf] = useState("all");
-  const [cartOpen, setCartOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const s = SHELVES.find((x) => x.key === shelf) ?? SHELVES[0];
@@ -162,7 +149,7 @@ export default function StoreClient() {
   const count = (key: string) => VISIBLE.filter((SHELVES.find((x) => x.key === key) ?? SHELVES[0]).match).length;
 
   return (
-    <CartProvider>
+    <>
       <FlashSaleBanner />
       <div className="pb-24 pt-28 sm:pt-32">
         <div className="mx-auto max-w-[1120px] px-6">
@@ -185,7 +172,7 @@ export default function StoreClient() {
                   <Link href="/store/answer-copies-compilation" className="btn btn-blue">
                     Shop answer copies <span className="knob">→</span>
                   </Link>
-                  <Link href="/store/all-strategy-reports" className="btn btn-paper">
+                  <Link href="#products" className="btn btn-paper">
                     View all products
                   </Link>
                 </div>
@@ -219,7 +206,6 @@ export default function StoreClient() {
                   className="h-11 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
                 />
               </label>
-              <CartButton onOpen={() => setCartOpen(true)} />
             </div>
             <div role="tablist" aria-label="Filter products" className="mt-3 flex gap-2 overflow-x-auto [scrollbar-width:none]">
               {SHELVES.filter((s) => count(s.key) > 0).map((s) => {
@@ -244,7 +230,7 @@ export default function StoreClient() {
           </div>
 
           {filtered !== null ? (
-            <section className="mt-8">
+            <section id="products" className="mt-8 scroll-mt-48">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="t-head text-l">{filtered.length === 0 ? "No results" : `${filtered.length} result${filtered.length !== 1 ? "s" : ""}`}</h2>
                 <button
@@ -272,7 +258,7 @@ export default function StoreClient() {
               )}
             </section>
           ) : (
-            <section className="mt-8">
+            <section id="products" className="mt-8 scroll-mt-48">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="t-head text-l">Featured</h2>
                 <span className="text-s text-[var(--muted)]">{VISIBLE.length} products</span>
@@ -299,7 +285,6 @@ export default function StoreClient() {
           <StoreFooter />
         </div>
       </div>
-      <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
-    </CartProvider>
+    </>
   );
 }

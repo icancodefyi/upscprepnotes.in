@@ -5,11 +5,8 @@ import Link from "next/link";
 import posthog from "posthog-js";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
-import { CartProvider, useCart } from "@/lib/cart-context";
 import { Paperclip } from "@/components/brand/Props";
-import CartSlideover from "./CartSlideover";
-import CartIcon from "./CartIcon";
-import { fmt, folderOf, ProductCard } from "./Shelf";
+import { fmt, folderOf, ProductCard, BuyButton, PayMethods, Sheet, pairOf } from "./Shelf";
 import { TOPPERS } from "@/components/topper/sales-page-data";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
@@ -37,11 +34,7 @@ function Tick({ className = "" }: { className?: string }) {
 }
 
 export default function ProductDetailClient({ product }: { product: StoreProduct }) {
-  return (
-    <CartProvider>
-      <ProductDetailInner product={product} />
-    </CartProvider>
-  );
+  return <ProductDetailInner product={product} />;
 }
 
 /** A section on the product page: one plain heading, then its content. */
@@ -204,8 +197,6 @@ function SamplePreview() {
 }
 
 function ProductDetailInner({ product }: { product: StoreProduct }) {
-  const [cartOpen, setCartOpen] = useState(false);
-  const { addItem } = useCart();
   const related = PRODUCTS.filter((p) => p.slug !== product.slug && !p.comingSoon).slice(0, 3);
   const buyRef = useRef<HTMLDivElement>(null);
   const [showBar, setShowBar] = useState(false);
@@ -228,17 +219,6 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
     return () => io.disconnect();
   }, []);
 
-  function handleAddToCart() {
-    addItem(product);
-    setCartOpen(true);
-    posthog.capture("add_to_cart", {
-      product_slug: product.slug,
-      product_title: product.title,
-      product_price: product.price,
-      product_category: product.category,
-    });
-  }
-
   const reviews = product.reviews || [];
   const buyable = !product.comingSoon && !product.link;
 
@@ -258,7 +238,6 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             <Link href="/store" data-track="detail-back-to-store" className="hidden text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)] sm:inline">
               ← Back to Store
             </Link>
-            <CartIcon onClick={() => setCartOpen(true)} />
           </div>
         </div>
         <Link href="/store" data-track="detail-back-to-store" className="mt-2 inline-block text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)] sm:hidden">
@@ -272,7 +251,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 
             {/* Mobile purchase card */}
             <div ref={buyRef} className="mt-6 lg:hidden">
-              <PurchaseCard product={product} onAddToCart={handleAddToCart} />
+              <PurchaseCard product={product} />
             </div>
 
             {product.specs && product.specs.length > 0 && (
@@ -397,7 +376,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
           {/* Right: desktop purchase card, stays in view while you read */}
           <div className="hidden lg:col-span-5 lg:block">
             <div className="sticky top-24">
-              <PurchaseCard product={product} onAddToCart={handleAddToCart} />
+              <PurchaseCard product={product} />
             </div>
           </div>
         </div>
@@ -425,19 +404,52 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               <p className="truncate text-s font-bold">{product.title}</p>
               <p className="tab text-m font-bold">₹{fmt(product.price)}</p>
             </div>
-            <button type="button" tabIndex={showBar ? 0 : -1} onClick={handleAddToCart} className="btn btn-blue h-12 shrink-0 px-6 [--btn-fs:15px]">
-              Add to Cart
-            </button>
+            <div className="shrink-0">
+              <BuyButton product={product} label={`Pay ₹${fmt(product.price)}`} className="btn btn-blue h-12 px-6 [--btn-fs:15px]" track={`mobilebar-buy-${product.slug}`} />
+            </div>
           </div>
         </div>
       )}
 
-      <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );
 }
 
-function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddToCart: () => void }) {
+/** "Buy both": this product with its natural partner, in one checkout. */
+function BuyBoth({ product }: { product: StoreProduct }) {
+  const other = pairOf(product);
+  if (!other) return null;
+  const total = product.price + other.price;
+  return (
+    <div className="mt-6 rounded-[20px] bg-[var(--canvas)] p-4">
+      <div className="flex items-center gap-3">
+        <div className="relative h-16 w-[72px] shrink-0">
+          <Sheet product={product} className="absolute left-0 top-1 w-11 rotate-[-6deg]" />
+          <Sheet product={other} className="absolute right-0 top-0 w-11 rotate-[5deg]" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-s text-[var(--muted)]">Students also pick up</p>
+          <Link href={`/store/${other.slug}`} className="block text-s font-bold leading-snug hover:text-[var(--accent)]">
+            {other.title} · ₹{fmt(other.price)}
+          </Link>
+        </div>
+      </div>
+      <PayButton
+        amount={total}
+        items={[
+          { slug: product.slug, quantity: 1, price: product.price },
+          { slug: other.slug, quantity: 1, price: other.price },
+        ]}
+        tracking={`buyboth-${product.slug}-${other.slug}`}
+        className="btn btn-ink mt-3 h-11 w-full justify-center [--btn-fs:14px]"
+      >
+        Buy both · ₹{fmt(total)}
+      </PayButton>
+    </div>
+  );
+}
+
+function PurchaseCard({ product }: { product: StoreProduct }) {
   return (
     <div className="rounded-[28px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.35)] sm:p-7">
       {product.badge && <span className={`inline-block rounded-full px-3 py-1 text-s font-bold ${badgeCls(product.badgeColor)}`}>{product.badge}</span>}
@@ -477,7 +489,7 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           View Full Product Details
         </Link>
       ) : (
-        <div className="mt-6 space-y-2.5">
+        <div className="mt-6 space-y-3">
           <PayButton
             amount={product.price}
             items={[{ slug: product.slug, quantity: 1, price: product.price }]}
@@ -486,11 +498,11 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
           >
             Pay ₹{fmt(product.price)}
           </PayButton>
-          <button type="button" data-track={`detail-addtocart-${product.slug}`} onClick={onAddToCart} className="btn btn-paper w-full justify-center">
-            Add to Cart
-          </button>
+          <PayMethods className="justify-center pt-1" />
         </div>
       )}
+
+      {!product.comingSoon && !product.link && <BuyBoth product={product} />}
 
       <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5">
         {["Instant download", "7-day refund", "Lifetime access", "1,400+ students"].map((label) => (

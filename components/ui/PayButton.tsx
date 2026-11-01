@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import posthog from "posthog-js";
 
 interface CartItem {
@@ -107,32 +108,6 @@ export default function PayButton({
     await proceedToCheckout(trimmed);
   }, [emailInput, proceedToCheckout]);
 
-  if (showEmailPrompt) {
-    return (
-      <div className="space-y-2">
-        <p className="text-xs font-medium text-gray-600">Enter your email to continue</p>
-        <input
-          type="email"
-          value={emailInput}
-          onChange={(e) => setEmailInput(e.target.value)}
-          placeholder="your@email.com"
-          autoFocus
-          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-900"
-          onKeyDown={(e) => { if (e.key === "Enter") handleEmailSubmit(); }}
-        />
-        <button
-          type="button"
-          onClick={handleEmailSubmit}
-          disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-500"
-        >
-          {loading ? "Processing..." : "Continue to Payment"}
-        </button>
-        {error && <p className="text-xs text-red-500">{error}</p>}
-      </div>
-    );
-  }
-
   return (
     <>
       <button
@@ -155,9 +130,87 @@ export default function PayButton({
         )}
       </button>
 
-      {error && (
-        <p className="mt-2 text-xs text-red-500">{error}</p>
+      {error && !showEmailPrompt && (
+        <p className="mt-2 text-s text-[var(--mark-deep)]">{error}</p>
       )}
+
+      {showEmailPrompt &&
+        createPortal(
+          <EmailDialog
+            value={emailInput}
+            onChange={setEmailInput}
+            onSubmit={handleEmailSubmit}
+            onClose={() => {
+              setShowEmailPrompt(false);
+              setError("");
+            }}
+            loading={loading}
+            error={error}
+          />,
+          document.body,
+        )}
     </>
+  );
+}
+
+/** Asks once for the email the PDFs are sent to, then hands off to checkout. */
+function EmailDialog({
+  value,
+  onChange,
+  onSubmit,
+  onClose,
+  loading,
+  error,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onSubmit: () => void;
+  onClose: () => void;
+  loading: boolean;
+  error: string;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    // The dialog is portalled but React events still bubble to the button's ancestors (often a card link): stop them here.
+    <div
+      className="up fixed inset-0 z-[120] flex items-end justify-center p-4 backdrop-blur-sm sm:items-center"
+      style={{ background: "rgba(11,12,16,0.55)" }}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <form
+        role="dialog"
+        aria-modal="true"
+        aria-label="Enter your email to continue"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+        className="w-full max-w-[420px] rounded-[28px] bg-white p-6 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] sm:p-7"
+      >
+        <p className="text-m font-bold text-[var(--ink)]">Enter your email to continue</p>
+        <input
+          type="email"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="your@email.com"
+          autoFocus
+          className="mt-4 h-12 w-full rounded-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none focus:shadow-[0_0_0_2px_var(--accent)]"
+        />
+        {error && <p className="mt-2 text-s text-[var(--mark-deep)]">{error}</p>}
+        <button type="submit" disabled={loading} className="btn btn-blue mt-4 w-full justify-center">
+          {loading ? "Processing..." : "Continue to Payment"}
+        </button>
+        <button type="button" onClick={onClose} className="mt-2 w-full py-2 text-s font-bold text-[var(--muted)] hover:text-[var(--ink)]">
+          Cancel
+        </button>
+      </form>
+    </div>
   );
 }
