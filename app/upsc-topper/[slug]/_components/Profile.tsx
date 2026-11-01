@@ -34,10 +34,20 @@ function ResultCard({ h }: { h: HeaderData }) {
     ...(h.written > 0 ? [{ k: "Written examination", max: "1,750", v: fmt(h.written) }] : []),
     ...(h.interview > 0 ? [{ k: "Personality test", max: "275", v: String(h.interview) }] : []),
   ];
-  const fields = [
-    { k: "Candidate", v: h.name, strong: true },
-    { k: "All India Rank", v: String(h.rank), strong: true },
-    ...(h.optional ? [{ k: "Optional", v: h.optional, strong: false }] : []),
+  // Marked up like a printout: rank highlighted, optional in blue ink, total circled in red.
+  const fields: { k: string; v: React.ReactNode }[] = [
+    { k: "Candidate", v: <span className="font-bold">{h.name}</span> },
+    { k: "All India Rank", v: <span className="swipe font-bold">{`AIR ${h.rank}`}</span> },
+    ...(h.optional
+      ? [{
+          k: "Optional",
+          v: h.optionalHref ? (
+            <Link href={h.optionalHref} className="font-bold text-[var(--accent)] underline decoration-[var(--accent)]/40 decoration-2 underline-offset-[3px] hover:decoration-[var(--accent)]">{h.optional}</Link>
+          ) : (
+            <span className="font-bold text-[var(--accent)]">{h.optional}</span>
+          ),
+        }]
+      : []),
   ];
   return (
     <div className="w-full pt-5 lg:w-[410px]">
@@ -50,7 +60,7 @@ function ResultCard({ h }: { h: HeaderData }) {
               {fields.map((f) => (
                 <div key={f.k} className="grid grid-cols-[100px_1fr] gap-2">
                   <dt className="text-[var(--muted)]">{f.k}</dt>
-                  <dd className={`min-w-0 break-words ${f.strong ? "font-bold" : ""}`}>{f.v}</dd>
+                  <dd className="min-w-0 break-words">{f.v}</dd>
                 </div>
               ))}
             </dl>
