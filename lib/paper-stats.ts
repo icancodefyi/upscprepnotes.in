@@ -102,12 +102,32 @@ export async function getPaperStats(key: PaperKey): Promise<PaperStats | null> {
  * Fills {{median}}, {{top10}}, {{top25}}, {{best}}, {{low}}, {{n}}, {{years}}, {{bestName}},
  * {{atLeast:120}} and {{share:120}} in guide text with live values.
  */
-export function fillTokens(text: string, s: PaperStats | null) {
-  if (!s) return text;
-  const values = s.values;
-  const top = s.top[0];
+/** Site-wide facts any guide can quote: {{profiles}}, {{marksheets}}, {{compPrice}}, {{compSheets}}, {{compPapers}}, {{compHref}}. */
+export type SiteFacts = { profiles: number; marksheets: number; compPrice: number | null; compSheets: string; compPapers: string; compHref: string };
+
+export async function getSiteFacts(): Promise<SiteFacts> {
+  await connectDB();
+  const { PRODUCTS } = await import("@/lib/store-products");
+  const all = (await TopperModel.find({}, { marks: 1 }).lean()) as LeanTopper[];
+  const comp = PRODUCTS.find((p) => p.slug === "answer-copies-compilation" && !p.comingSoon);
+  const spec = (label: string) => comp?.specs?.find((x) => x.label === label)?.value ?? "";
+  return { profiles: all.length, marksheets: all.filter(isComplete).length, compPrice: comp?.price ?? null, compSheets: spec("Answer Sheets"), compPapers: spec("Papers Covered"), compHref: comp ? `/store/${comp.slug}` : "/store" };
+}
+
+export function fillTokens(text: string, s: PaperStats | null, site?: SiteFacts) {
+  const values = s?.values ?? [];
+  const top = s?.top[0];
   return text.replace(/\{\{(\w+)(?::(\d+))?\}\}/g, (m, k: string, arg?: string) => {
     const x = Number(arg);
+    if (site) {
+      if (k === "profiles") return String(site.profiles);
+      if (k === "marksheets") return String(site.marksheets);
+      if (k === "compPrice") return site.compPrice ? `₹${site.compPrice}` : "";
+      if (k === "compSheets") return site.compSheets;
+      if (k === "compPapers") return site.compPapers;
+      if (k === "compHref") return site.compHref;
+    }
+    if (!s) return m;
     switch (k) {
       case "median": return String(s.median);
       case "top10": return String(s.top10);
@@ -122,4 +142,65 @@ export function fillTokens(text: string, s: PaperStats | null) {
       default: return m;
     }
   });
+}
+
+/** One row per optional with enough complete marksheets to compare. */
+export type OptionalRow = { subject: string; slug: string; n: number; optMedian: number; optBest: number; bestName: string; totalMedian: number; gsMedian: number };
+export type OptionalStats = { rows: OptionalRow[]; subjects: number; marksheets: number; corr: number; minN: number };
+
+export async function getOptionalStats(minN = 5): Promise<OptionalStats> {
+  await connectDB();
+  const { optionalSlug, totalOf } = await import("@/lib/topper-stats");
+  const all = (await TopperModel.find({}, { firstName: 1, lastName: 1, rank: 1, year: 1, optionalSubject: 1, marks: 1 }).lean()) as LeanTopper[];
+  const full = all.filter(isComplete);
+  const opt = (t: LeanTopper) => n(t, "optional1") + n(t, "optional2");
+  const gs = (t: LeanTopper) => n(t, "gs1") + n(t, "gs2") + n(t, "gs3") + n(t, "gs4");
+  const groups = new Map<string, LeanTopper[]>();
+  for (const t of full) {
+    const s = subjectOf(t.optionalSubject);
+    if (s) groups.set(s, [...(groups.get(s) ?? []), t]);
+  }
+  const rows = [...groups]
+    .filter(([, ts]) => ts.length >= minN)
+    .map(([subject, ts]) => {
+      const best = [...ts].sort((a, b) => opt(b) - opt(a))[0];
+      return {
+        subject,
+        slug: optionalSlug(subject),
+        n: ts.length,
+        optMedian: median(ts.map(opt)),
+        optBest: opt(best),
+        bestName: `${displayName(best)} (AIR ${best.rank}, ${best.year})`,
+        totalMedian: median(ts.map(totalOf)),
+        gsMedian: median(ts.map(gs)),
+      };
+    })
+    .sort((a, b) => b.optMedian - a.optMedian);
+  // Pearson correlation between GS total and optional total across every complete marksheet.
+  const xs = full.map(gs);
+  const ys = full.map(opt);
+  const mean = (a: number[]) => a.reduce((s, v) => s + v, 0) / a.length;
+  const mx = mean(xs);
+  const my = mean(ys);
+  const cov = xs.reduce((s, x, i) => s + (x - mx) * (ys[i] - my), 0);
+  const corr = cov / Math.sqrt(xs.reduce((s, x) => s + (x - mx) ** 2, 0) * ys.reduce((s, y) => s + (y - my) ** 2, 0));
+  return { rows, subjects: groups.size, marksheets: full.length, corr: Math.round(corr * 100) / 100, minN };
+}
+
+/** Fills {{optHighest}}, {{optLowest}}, {{optMostChosen}}, {{optSubjects}}, {{optCompared}}, {{gsOptCorr}}, {{optMinN}}. */
+export function fillOptionalTokens(text: string, o: OptionalStats | null) {
+  if (!o || !o.rows.length) return text;
+  const hi = o.rows[0];
+  const lo = o.rows[o.rows.length - 1];
+  const most = [...o.rows].sort((a, b) => b.n - a.n)[0];
+  const map: Record<string, string> = {
+    optHighest: `${hi.subject} (median ${hi.optMedian}/500, ${hi.n} toppers)`,
+    optLowest: `${lo.subject} (median ${lo.optMedian}/500, ${lo.n} toppers)`,
+    optMostChosen: `${most.subject} (${most.n} toppers)`,
+    optSubjects: String(o.subjects),
+    optCompared: String(o.rows.length),
+    gsOptCorr: o.corr.toFixed(2),
+    optMinN: String(o.minN),
+  };
+  return text.replace(/\{\{(opt\w+|gsOptCorr)\}\}/g, (m, k: string) => map[k] ?? m);
 }

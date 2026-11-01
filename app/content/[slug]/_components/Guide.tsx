@@ -4,8 +4,9 @@ import remarkGfm from "remark-gfm";
 import type { ContentPage } from "@/data/content";
 import { Section, card } from "@/components/brand/ui";
 import Toc from "@/components/brand/Toc";
-import type { PaperStats } from "@/lib/paper-stats";
+import type { OptionalStats, PaperStats } from "@/lib/paper-stats";
 import PaperData from "./PaperData";
+import OptionalData from "./OptionalData";
 
 export const slugify = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9ऀ-ॿ]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "section";
@@ -46,12 +47,12 @@ const fmtDate = (iso: string, hi: boolean) => new Date(iso).toLocaleDateString(h
  * A guide as a document: title and byline, the intro as a lead, sections with a sticky contents
  * list, and (on strategy guides) the live marks data placed after the first section.
  */
-export default function Guide({ page, stats }: { page: ContentPage; stats: PaperStats | null }) {
+export default function Guide({ page, stats, optionals = null }: { page: ContentPage; stats: PaperStats | null; optionals?: OptionalStats | null }) {
   const hi = page.lang === "hi";
   const sections = page.sections.map((s) => ({ ...s, id: slugify(s.heading) }));
   const toc = [
     ...sections.slice(0, 1).map((s) => ({ id: s.id, label: s.heading })),
-    ...(stats ? [{ id: "the-numbers", label: hi ? "आँकड़े" : "The numbers" }] : []),
+    ...(stats || optionals ? [{ id: "the-numbers", label: hi ? "आँकड़े" : "The numbers" }] : []),
     ...sections.slice(1).map((s) => ({ id: s.id, label: s.heading })),
     ...(page.faq?.length ? [{ id: "faq", label: hi ? "प्रश्न" : "Questions" }] : []),
   ];
@@ -75,7 +76,7 @@ export default function Guide({ page, stats }: { page: ContentPage; stats: Paper
               <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[var(--ink)] hover:text-[var(--accent)]">Zaid Rakhange</a>
               <br />
               {`${hi ? "अपडेट" : "Updated"} ${fmtDate(page.lastUpdated, hi)}`}
-              {stats && <>{` · ${hi ? "अंक" : "Marks from"} ${stats.n} ${hi ? "टॉपर्स की मार्कशीट" : "complete marksheets"}`}</>}
+              {(stats || optionals) && <>{` · ${hi ? "अंक" : "Marks from"} ${stats?.n ?? optionals?.marksheets} ${hi ? "टॉपर्स की मार्कशीट" : "complete marksheets"}`}</>}
             </p>
           </div>
           <div className="mt-7 border-l-[3px] border-[var(--hl)] pl-5 [&_p]:text-m [&_p]:text-[var(--ink)]">
@@ -93,6 +94,11 @@ export default function Guide({ page, stats }: { page: ContentPage; stats: Paper
                 {i === 0 && stats && (
                   <Section id="the-numbers" title={hi ? "आँकड़े" : `${stats.label}: the numbers`} meta={`CSE ${stats.years}`}>
                     <PaperData s={stats} />
+                  </Section>
+                )}
+                {i === 0 && optionals && (
+                  <Section id="the-numbers" title="Optional marks, compared" meta={`${optionals.marksheets} complete marksheets`}>
+                    <OptionalData o={optionals} />
                   </Section>
                 )}
               </div>

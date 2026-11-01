@@ -5,7 +5,7 @@ const page: ContentPage = {
   title: "How I Get UPSC Topper Data — Full Process, Sources & Honest Limitations",
   description:
     "I manually extract every UPSC topper mark from official UPSC.gov.in result PDFs. Here is exactly how I do it, how I verify things, and where the gaps are.",
-  lastUpdated: "2026-06-25",
+  lastUpdated: "2026-11-01",
   h1: "How I Get UPSC Topper Data",
 
   intro:
@@ -27,20 +27,22 @@ I do not use AI to extract data. I do not outsource. I sit down with a PDF and m
 3. I cross-check each entry against the original PDF before saving it. If something looks off, I check again.
 4. Optional subject details come from topper interviews, DAF disclosures, or coaching records. I cross-reference wherever possible.
 
-**Current count:** 50+ indexed profiles from UPSC CSE 2021 to 2025. Growing with every result cycle.`,
+**Current count:** {{profiles}} topper profiles, {{marksheets}} of them with a complete paper-wise marksheet. Growing with every result cycle.
+
+**Checks before a marksheet is used:** every paper must be within its maximum (250 for each written paper, 275 for the interview), the totals must add up, and the record can't repeat one number across papers (a sign of a placeholder). Records that fail are hidden from comparisons until they're fixed.`,
     },
     {
       heading: "How Strategy Pages Are Built",
-      body: `Strategy pages (e.g., "How to Score 130+ in GS1") come from three things:
+      body: `Strategy pages (for example the GS Paper 1 guide) come from three things:
 
 **1. The marks data**
-I analyze score distributions across 38+ topper profiles. Every statistic on a strategy page is computed from this dataset. I do not guess numbers.
+Every number on a strategy page (medians, top-10% cut-offs, the highest scores and who scored them) is computed live from the {{marksheets}} complete marksheets each time the page is built. Nothing is typed in by hand, so a guide can't quote a score that isn't in the data.
 
-**2. Topper interviews**
-I read and watch topper interviews to extract preparation patterns. When I say "toppers who scored 130+ in GS1 focused on World History," it is because I have seen that pattern across multiple profiles — not because I read one interview and generalized.
+**2. The exam itself**
+Paper structure, word limits and syllabus areas come from UPSC's notification and previous year papers.
 
-**3. Syllabus and book research**
-Book recommendations come from cross-referencing what toppers actually used against standard UPSC materials.
+**3. Standard references**
+Book lists are the standard texts commonly recommended for each paper, not a claim about what any one topper read.
 
 **What these pages are not:**
 - Not AI-generated content copied from other sites
@@ -53,10 +55,8 @@ Book recommendations come from cross-referencing what toppers actually used agai
 
 - **Marks** extracted from UPSC result PDFs, paper by paper
 - **Quick facts** — rank, year, optional subject
-- **Strategy content** — the topper's own words from interviews, minimally edited
-- **Answer copies** — scanned PDFs checked against published marksheets
-
-If a profile has answer copies, the source is marked.`,
+- **Strategy notes**: a summary of the topper's preparation approach, written by us. They are not quotes from the topper.
+- **Answer copies**: scans of the topper's handwritten answers where we have them. Most are from coaching test series written during preparation; the header on each scan shows its source.`,
     },
     {
       heading: "Mistakes and Limitations",
@@ -99,14 +99,14 @@ If you are a UPSC topper and want to share your strategy or answer copies, I wou
       description: "Get in touch for questions, corrections, or contributions.",
     },
     {
-      title: "How to Score 130+ in GS1",
+      title: "GS Paper 1 marks and strategy",
       href: "/content/how-to-score-130-plus-in-gs1",
       description: "Strategy page built from the marks dataset.",
     },
     {
       title: "UPSC Topper Answer Copies",
       href: "/content/upsc-topper-answer-copies",
-      description: "Browse verified topper answer copies.",
+      description: "What topper answer copies are and how to use them.",
     },
   ],
 };

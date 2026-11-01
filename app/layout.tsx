@@ -85,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" className={cn("font-sans", figtree.variable, sora.variable)}>
+      <html lang="en" suppressHydrationWarning className={cn("font-sans", figtree.variable, sora.variable)}>
       <head>
         <AnalyticsScripts />
 

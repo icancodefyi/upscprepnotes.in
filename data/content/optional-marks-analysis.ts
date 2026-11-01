@@ -1,175 +1,73 @@
 import type { ContentPage } from "./index";
 
+/** Numbers in {{braces}} are filled from the live marks database at render time. */
 const page: ContentPage = {
   slug: "upsc-optional-subject-marks-analysis",
-  title: "UPSC Optional Subject Marks Analysis — Which Optional Scores Highest? Data from 50 Rank Holders",
+  dataset: "optionals",
+  title: "UPSC Optional Subject Marks Analysis — Which Optional Scores Highest? Data from {{marksheets}} Toppers",
   description:
-    "Which UPSC optional scores highest? Mathematics avg 1012, Anthropology 985, Commerce 972. Real data from 50+ toppers — average scores, GS correlation, and limitations.",
-  lastUpdated: "2026-06-25",
-  h1: "UPSC Optional Subject Marks Analysis",
-
+    "Which UPSC optional scores highest? Median optional marks for {{optCompared}} optionals from {{marksheets}} complete topper marksheets. Highest: {{optHighest}}. Plus how optional and GS marks relate.",
+  lastUpdated: "2026-11-01",
+  h1: "Which UPSC optional scores highest? The marks data",
   intro:
-    "I have manually extracted marks from 50+ UPSC topper profiles across 2022-2025. This page ranks optional subjects by average total marks, shows sample sizes, and answers the question everyone asks: which optional actually scores highest? Spoiler: the data is not as clean as you would hope.",
-
+    "This page compares optional subjects using UPSC's published marks for {{marksheets}} toppers with a complete marksheet. Among optionals with at least {{optMinN}} toppers, **{{optHighest}}** has the highest median optional score and **{{optLowest}}** the lowest. Read the table as how toppers scored, not how hard each optional is for everyone.",
   sections: [
     {
-      heading: "Top Optionals by Average Total Marks",
-      body: `Here is every optional subject in my dataset ranked by average total marks (written + interview):
+      heading: "How to read this data",
+      body: `The table below ranks optionals by their **median optional score** (Paper I + Paper II, out of 500) among toppers. Median, not average, so one unusually high or low score doesn't move the result.
 
-| Rank | Optional Subject | Avg Total Marks | Profiles | Highest | Lowest |
-|------|-----------------|----------------|----------|---------|--------|
-| 1 | Mathematics | 1012 | 8 | 1049 | 972 |
-| 2 | Anthropology | 985 | 7 | 1025 | 638 |
-| 3 | Commerce & Accountancy | 972 | 5 | 1028 | 657 |
-| 4 | Sociology | 958 | 6 | 1030 | 892 |
-| 5 | PSIR | 941 | 9 | 1032 | 861 |
-| 6 | Economics | 938 | 4 | 1000 | 884 |
-| 7 | Geology | 924 | 3 | 987 | 876 |
-| 8 | Philosophy | 918 | 4 | 952 | 891 |
-| 9 | Law | 907 | 2 | 924 | 891 |
+It also shows each optional's median GS I–IV total and median final total, so you can see whether toppers of one optional did better overall or only in the optional.
 
-Mathematics tops the table — consistently high scores across 8 profiles. But look at the Anthropology row: the lowest score is 638 (Mayur Hazarika, AIR 5, 2022). That rank 5 has a lower total than most rank 100+ candidates. Optional alone does not tell the full story.
-
-Also notice: sample sizes range from 2 (Law) to 9 (PSIR). The averages for Geology, Philosophy, and Law are based on very few profiles and could shift significantly with more data.`,
+Optionals with fewer than {{optMinN}} complete marksheets are left out: with three or four toppers, one person changes the median.`,
     },
     {
-      heading: "Which Optional Has the Highest Ceiling?",
-      body: `If you look at the highest single score per optional:
+      heading: "Does your optional affect your GS marks?",
+      body: `Barely. Across all {{marksheets}} complete marksheets, the correlation between a topper's GS I–IV total and their optional total is **{{gsOptCorr}}**, which is close to zero. A high optional score says almost nothing about that person's GS score, and the other way round.
 
-| Optional | Best Score | Topper |
-|----------|-----------|--------|
-| Mathematics | 1049 | Kush Motwani (AIR 11, 2023) |
-| PSIR | 1032 | Komal Punia (AIR 6, 2024) |
-| Sociology | 1030 | Wardah Khan (AIR 18, 2023) |
-| Commerce & Accountancy | 1028 | Vaishali Chopra (AIR 23, 2022) |
-| Anthropology | 1025 | Uma Harathi (AIR 3, 2022) |
-| Economics | 1000 | Priya Rani (AIR 69, 2023) |
-| Geology | 987 | Madhav Upadhyay (AIR 148, 2022) |
-
-Mathematics has both the highest average AND the highest single score in the dataset. But PSIR and Sociology also produce top-tier totals in the 1030 range. The ceiling is high across several optionals — not just one.`,
+So the worry that a "non-scoring" optional will drag your GS down isn't supported by the data. GS and the optional are prepared, and marked, largely independently.`,
     },
     {
-      heading: "GS Marks vs Optional Marks — Does Optional Choice Affect GS Scoring?",
-      body: `This is the question I was most curious about. Here is the average GS total (GS1+GS2+GS3+GS4) by optional:
+      heading: "Which optionals toppers choose",
+      body: `**{{optMostChosen}}** is the most common optional among the toppers in this data. That reflects who cleared the exam in these years, not which optional is better: popular optionals produce more toppers partly because more people take them.
 
-| Optional | Avg GS Total | Avg Optional Total |
-|----------|-------------|-------------------|
-| Mathematics | 388 | 321 |
-| Anthropology | 382 | 305 |
-| Commerce & Accountancy | 376 | 312 |
-| Sociology | 371 | 298 |
-| PSIR | 365 | 294 |
-| Economics | 362 | 296 |
-| Geology | 358 | 288 |
-| Philosophy | 354 | 285 |
-| Law | 348 | 280 |
-
-The order stays roughly the same. Optionals with higher GS scores also have higher optional scores. This suggests that the candidate's overall preparation quality matters more than any specific optional advantage.
-
-**The finding that surprised me:** Toppers who scored 130+ in any GS paper did NOT have significantly higher optional marks than those who scored 100-110 in GS. The correlation between GS performance and optional performance is weaker than I expected. You can be great at GS and average in your optional, or great at your optional and average in GS.
-
-This matters because a lot of aspirants worry that choosing a "non-scoring" optional will drag down their GS prep. The data does not support that fear.`,
+Browse the toppers for any optional from its name in the table.`,
     },
     {
-      heading: "Which Optionals Have the Most Profiles in the Dataset?",
-      body: `| Optional | Profiles | Share |
-|----------|----------|-------|
-| PSIR | 9 | 17% |
-| Mathematics | 8 | 15% |
-| Anthropology | 7 | 13% |
-| Sociology | 6 | 11% |
-| Commerce & Accountancy | 5 | 9% |
-| Economics | 4 | 8% |
-| Philosophy | 4 | 8% |
-| Geology | 3 | 6% |
-| Law | 2 | 4% |
+      heading: "What this data can't tell you",
+      body: `- **Success rates.** We only have toppers. UPSC doesn't publish how many candidates took each optional or how they scored, so this can't show which optional gives anyone the best chance.
+- **Difficulty for you.** An optional that suits a mathematician may be the wrong choice for a history graduate. Your background and interest matter more than a few marks of median difference.
+- **Year-to-year swings.** Optional marking varies by year. The table pools CSE years together.
 
-PSIR, Mathematics, and Anthropology make up nearly half the dataset. This is not because they are better optionals — it is because more toppers in the rank bracket I have data for happen to have chosen them. The sample is skewed by who cleared the exam, not by a controlled experiment.`,
-    },
-    {
-      heading: "Honest Limitations of This Data",
-      body: `I want to be upfront about what this data can and cannot tell you:
-
-**What it can tell you:**
-- Which optionals produced the highest average scores in this specific set of 50+ toppers
-- The range of scores within each optional
-- Whether GS performance correlates with optional choice
-
-**What it cannot tell you:**
-- Which optional is "best" for you personally
-- How you will perform in any given optional
-- The success rate of each optional (I do not have fail data, only pass data)
-- The number of total candidates who chose each optional (I only have the ones who made it)
-
-**Sample size warning:** Some optionals (Law, Geology) have fewer than 5 profiles. Their averages should be treated as indicative, not definitive.
-
-The best way to use this data: cross-reference it with your own aptitude, interest, and the syllabus of each optional. Do not pick Mathematics just because it averages 1012 — pick it if you are good at math and enjoy it.`,
-    },
-    {
-      heading: "Methodology",
-      body: `If you want the full details on how I extract and verify this data, read the [data methodology page](/content/data-methodology-and-editorial-standards).
-
-**Quick summary:**
-- Every mark on this page was manually extracted from UPSC's official result PDFs
-- I cross-check each entry against the original PDF
-- Optional subject info comes from topper interviews, DAF disclosures, or coaching records
-- This dataset grows with every UPSC result cycle
-
-**Found an error?** Hit the Report button on any topper profile or reach out through the contact page.`,
+The best use of this table: once you've shortlisted two or three optionals you'd enjoy, check that none of them is far below the others.`,
     },
   ],
-
   faq: [
     {
-      q: "Which optional subject has the highest average marks in UPSC?",
-      a: "In my dataset of 50+ topper profiles, Mathematics has the highest average total marks at 1012, followed by Anthropology (985) and Commerce & Accountancy (972). However, sample sizes vary — Math has 8 profiles while Law has only 2 — so these averages should be treated with appropriate caution.",
+      q: "Which optional subject scores the highest marks in UPSC?",
+      a: "Among optionals with at least {{optMinN}} complete topper marksheets, {{optHighest}} has the highest median optional score; {{optLowest}} has the lowest. These are toppers' scores only.",
     },
     {
       q: "Does optional choice affect GS marks?",
-      a: "Not significantly. Toppers who scored 130+ in any GS paper did not have meaningfully higher optional marks than those who scored 100-110 in GS. The correlation between GS and optional performance is weak — being good at one does not guarantee being good at the other.",
+      a: "Hardly. The correlation between toppers' GS I–IV totals and their optional totals is {{gsOptCorr}}, close to zero.",
     },
     {
-      q: "Which optional has the most toppers in the dataset?",
-      a: "PSIR (9 profiles), Mathematics (8), and Anthropology (7) are the most represented. This reflects the distribution of successful candidates, not an objective ranking of optional quality.",
+      q: "Which optional do most toppers choose?",
+      a: "{{optMostChosen}} is the most common among the toppers in our data. Popularity reflects how many people take an optional, not that it scores more.",
     },
     {
-      q: "Is Mathematics the best optional for UPSC?",
-      a: "Mathematics has the highest average total marks in this dataset, but it also requires strong aptitude. The data shows that PSIR, Sociology, and Commerce can produce equally high top-end scores (1030+). Pick what suits your strengths.",
+      q: "Should I pick the highest-scoring optional?",
+      a: "Not on marks alone. The differences in medians are small next to the difference your interest and background make. Shortlist optionals you'd enjoy, then use the table to check none is far behind.",
     },
   ],
-
   relatedPages: [
-    {
-      title: "How to Score 130+ in GS1",
-      href: "/content/how-to-score-130-plus-in-gs1",
-      description: "Strategy page built from the same marks dataset.",
-    },
-    {
-      title: "How to Score 120+ in GS3",
-      href: "/content/how-to-score-120-plus-in-gs3",
-      description: "GS3 strategy with optional subject correlation data.",
-    },
-    {
-      title: "UPSC Previous Year Papers (PYQ)",
-      href: "/pyq",
-      description: "Download official UPSC PYQ PDFs for Prelims and Mains — free.",
-    },
-    {
-      title: "Data Methodology & Editorial Standards",
-      href: "/content/data-methodology-and-editorial-standards",
-      description: "How I extract and verify every data point on this site.",
-    },
-    {
-      title: "Forum IAS Test Series Review 2026",
-      href: "/content/forum-ias-test-series-review",
-      description: "Review of ForumIAS optional test series — coverage, pricing, and evaluation quality for Sociology, PSIR, Anthropology, and more.",
-    },
+    { title: "PSIR optional marks and strategy", href: "/content/how-to-score-300-plus-in-psir-optional", description: "The most chosen optional, in detail." },
+    { title: "UPSC marks database", href: "/toppers/marks-database", description: "Filter every topper by optional and sort by any paper." },
+    { title: "GS Paper 1 marks and strategy", href: "/content/how-to-score-130-plus-in-gs1", description: "What toppers really score in GS1." },
+    { title: "How we collect and check marks", href: "/content/data-methodology-and-editorial-standards", description: "Where the numbers come from." },
   ],
   sources: [
-    { label: "UPSC CSE 2022 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2022-08/Civil-Services-Examination-2021-Final-Result.pdf" },
-    { label: "UPSC CSE 2023 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2023-08/Civil-Services-Examination-2022-Final-Result.pdf" },
-    { label: "UPSC CSE 2024 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2024-08/Civil-Services-Examination-2023-Final-Result.pdf" },
-    { label: "Data Methodology & Editorial Standards — UPSCPrepNotes", url: "https://upscprepnotes.in/content/data-methodology-and-editorial-standards" },
+    { label: "UPSC: marks of recommended candidates (Examinations → Results)", url: "https://upsc.gov.in" },
+    { label: "How we collect and check marks", url: "https://upscprepnotes.in/content/data-methodology-and-editorial-standards" },
   ],
 };
 

@@ -3,18 +3,22 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
 import { getPage, getAllSlugs, getEnglishSlug, getHindiSlug } from "@/data/content/registry";
 import type { ContentPage } from "@/data/content";
-import { fillTokens, getPaperStats, type PaperStats } from "@/lib/paper-stats";
+import { fillOptionalTokens, fillTokens, getOptionalStats, getPaperStats, getSiteFacts, type OptionalStats, type PaperStats } from "@/lib/paper-stats";
 import Guide from "./_components/Guide";
 
 export const revalidate = 3600;
 
 /** Load a guide and, for strategy guides, fill its {{tokens}} with live marks data. */
-async function load(slug: string): Promise<{ page: ContentPage; stats: PaperStats | null } | null> {
+async function load(slug: string): Promise<{ page: ContentPage; stats: PaperStats | null; optionals: OptionalStats | null } | null> {
   const mod = getPage(slug);
   if (!mod) return null;
   const { default: raw } = await mod();
-  const stats = raw.paper ? await getPaperStats(raw.paper) : null;
-  const f = (t: string) => fillTokens(t, stats);
+  const [stats, site, optionals] = await Promise.all([
+    raw.paper ? getPaperStats(raw.paper) : null,
+    getSiteFacts(),
+    raw.dataset === "optionals" ? getOptionalStats() : null,
+  ]);
+  const f = (t: string) => fillOptionalTokens(fillTokens(t, stats, site), optionals);
   const page: ContentPage = {
     ...raw,
     title: f(raw.title),
@@ -25,7 +29,7 @@ async function load(slug: string): Promise<{ page: ContentPage; stats: PaperStat
     faq: raw.faq?.map((x) => ({ q: f(x.q), a: f(x.a) })),
     relatedPages: raw.relatedPages?.map((r) => ({ ...r, description: f(r.description) })),
   };
-  return { page, stats };
+  return { page, stats, optionals };
 }
 
 type Props = { params: Promise<{ slug: string }> };
@@ -81,7 +85,7 @@ export default async function ContentPage({ params }: Props) {
   const { slug } = await params;
   const d = await load(slug);
   if (!d) notFound();
-  const { page, stats } = d;
+  const { page, stats, optionals } = d;
 
   const contentPath = `/content/${slug}`;
 
@@ -144,7 +148,7 @@ export default async function ContentPage({ params }: Props) {
           }}
         />
       )}
-      <Guide page={page} stats={stats} />
+      <Guide page={page} stats={stats} optionals={optionals} />
     </BrandShell>
   );
 }
