@@ -25,9 +25,9 @@ export default function PurchaseSidebar({ topperName }: Props) {
         data-track="topper-sidebar-buy-answer-copies"
         className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-emerald-400 active:scale-[0.97]"
       >
-        Shop Now — ₹99
+        Shop Now — ₹199
       </Link>
-      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Starting at ₹99</p>
+      <p className="mt-1.5 text-center text-[9px] text-zinc-400">Starting at ₹199</p>
     </div>
   );
 }

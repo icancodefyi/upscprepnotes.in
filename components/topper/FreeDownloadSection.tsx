@@ -74,7 +74,7 @@ export function FreeDownloadSection({
               </div>
               <div className="flex items-center gap-3">
                 <div>
-                  <span className="text-lg font-bold tabular-nums">₹99</span>
+                  <span className="text-lg font-bold tabular-nums">₹199</span>
                   <span className="ml-1 text-xs text-muted-foreground">starting</span>
                 </div>
                 <Link

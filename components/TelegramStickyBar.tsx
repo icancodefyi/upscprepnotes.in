@@ -11,7 +11,7 @@ export default function TelegramStickyBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (pathname === "/landing" || pathname?.startsWith("/landing")) return;
+    if (pathname === "/try" || pathname?.startsWith("/try")) return;
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (!dismissed) {
       const timer = setTimeout(() => setVisible(true), 4000);
@@ -24,7 +24,7 @@ export default function TelegramStickyBar() {
     localStorage.setItem(STORAGE_KEY, "1");
   }
 
-  if (!visible || pathname === "/landing" || pathname?.startsWith("/landing")) return null;
+  if (!visible || pathname === "/try" || pathname?.startsWith("/try")) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">

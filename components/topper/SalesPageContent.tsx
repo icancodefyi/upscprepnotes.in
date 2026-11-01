@@ -110,7 +110,6 @@ export default function SalesPageContent() {
                 <span className="inline-block rounded-full bg-brand px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-brand-foreground">Offer</span>
                 <div className="mt-4 flex items-baseline justify-center gap-2">
                   <span className="text-5xl font-bold tracking-[-0.03em] text-foreground">₹99</span>
-                  <span className="text-sm text-muted-foreground line-through">₹4,999</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">Starting at ₹99 · Instant download</p>
               </div>
