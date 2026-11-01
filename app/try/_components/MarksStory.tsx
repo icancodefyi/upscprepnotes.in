@@ -52,6 +52,7 @@ export default function MarksStory({ story }: { story: Story }) {
     return () => io.disconnect();
   }, []);
 
+  const weakPaper = story.papers.filter((p) => p.max === 250).reduce((a, b) => (b.score < a.score ? b : a));
   const weakest = story.papers.filter((p) => p.max === 250).reduce((a, b) => (b.score < a.score ? b : a)).key;
   const done = active >= steps;
   const running = done ? story.total : story.papers.slice(0, active + 1).reduce((s, p) => s + p.score, 0);
@@ -60,12 +61,12 @@ export default function MarksStory({ story }: { story: Story }) {
   const interview = story.papers.find((p) => p.key === "interview")?.score ?? 0;
 
   return (
-    <section className="panel grain relative bg-[var(--accent)] py-24 text-white sm:py-32">
+    <section className="panel relative bg-[var(--accent)] py-24 text-white sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark
-          title={<>How AIR&nbsp;{story.rank} <span className="whitespace-nowrap">{story.name}</span> <span className="text-[var(--hl)]">{`scored ${fmt(story.total)}.`}</span></>}
-          lead={`One paper at a time, measured against the ${story.compared} complete topper marksheets in our archive.`}
+          title={<>Even AIR&nbsp;{story.rank} had a <span className="text-[var(--hl)]">weak paper.</span></>}
+          lead={`${story.name} scored ${weakPaper.score} in ${weakPaper.label} and still topped CSE ${story.year} with ${fmt(story.total)} marks. Scroll through every paper, compared with ${story.compared} topper marksheets.`}
         />
       </div>
 

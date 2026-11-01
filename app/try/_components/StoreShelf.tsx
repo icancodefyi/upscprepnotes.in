@@ -34,7 +34,7 @@ function Featured({ p }: { p: ShelfItem }) {
     <Link
       href={`/store/${p.slug}`}
       data-track="try-store-featured"
-      className="group grid overflow-hidden rounded-[32px] bg-white shadow-[0_0_0_1px_var(--line),0_40px_80px_-40px_rgba(11,12,16,0.45)] lg:grid-cols-[1.05fr_0.95fr]"
+      className="group grid overflow-hidden rounded-[32px] bg-white shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] lg:grid-cols-[1.05fr_0.95fr]"
     >
       <div className="relative min-h-[380px] overflow-hidden bg-[#e9edff] sm:min-h-[460px]">
         {PAGES.map((src, i) => (
@@ -97,7 +97,7 @@ function Cover({ p, i }: { p: ShelfItem; i: number }) {
             <img src={p.image} alt={p.title} loading="lazy" className="h-full w-full object-cover" />
           )}
           {/* spine */}
-          <span aria-hidden className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 to-transparent" />
+          <span aria-hidden className="absolute inset-y-0 left-0 w-[3px] bg-black/20" />
         </div>
         <span
           className="absolute -right-2 -top-2 rounded-[8px] bg-[var(--hl)] px-3 py-1 text-[16px] font-bold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)]"
@@ -139,8 +139,8 @@ export default function StoreShelf({ items }: { items: ShelfItem[] }) {
     <section className="panel bg-[var(--canvas)] py-24 sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
-          title={<>Topper compilations, <span className="text-[var(--accent)]">in one file.</span></>}
-          lead="Everything stays free to read online. These are one-time downloads for offline study."
+          title={<>For the nights <span className="text-[var(--accent)]">without Wi-Fi.</span></>}
+          lead="Everything stays free to read online. Topper compilations are one-time downloads you can study offline."
           action={
             <Link href="/store" className="btn btn-ink">
               Visit the store <span className="knob">↗</span>

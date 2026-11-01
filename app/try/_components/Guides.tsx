@@ -20,7 +20,7 @@ function Card({ g, i }: { g: Guide; i: number }) {
   return (
     <Link
       href={`/content/${g.slug}`}
-      className="group relative flex h-[400px] w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] p-7 shadow-[0_0_0_1px_var(--line),0_24px_48px_-28px_rgba(11,12,16,0.45)] transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1.5 sm:w-[340px]"
+      className="group relative flex h-[400px] w-[300px] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] p-7 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1.5 sm:w-[340px]"
       style={{
         background: CARD_TONES[i % CARD_TONES.length],
         backgroundImage: "repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(31,63,214,0.08) 31px, rgba(31,63,214,0.08) 32px)",
@@ -64,8 +64,8 @@ export default function Guides({ guides }: { guides: Guide[] }) {
     <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
-          title={<>Paper-wise Mains strategy, <span className="text-[var(--accent)]">from real marks.</span></>}
-          lead="Each guide starts from the best score we hold for that paper, then shows how toppers got there."
+          title={<>Then you take it <span className="text-[var(--accent)]">paper by paper.</span></>}
+          lead="UPSC Mains strategy for every paper, starting from the best score we hold and how toppers reached it."
           action={
             <div className="flex gap-2">
               <button aria-label="Previous guides" disabled={edge.start} onClick={() => step(-1)} className="btn btn-paper h-12 w-12 justify-center p-0 disabled:opacity-35">←</button>

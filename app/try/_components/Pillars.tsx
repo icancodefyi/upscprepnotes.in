@@ -17,7 +17,7 @@ type Tile = {
 const TONES = {
   blue: "bg-[var(--accent)] text-white",
   yellow: "bg-[var(--hl)] text-[var(--ink)]",
-  paper: "bg-white text-[var(--ink)] shadow-[0_0_0_1px_var(--line),0_18px_40px_-24px_rgba(11,12,16,0.35)]",
+  paper: "bg-white text-[var(--ink)] shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)]",
   ink: "bg-[var(--ink)] text-white",
   sky: "bg-[#e9edff] text-[var(--ink)]",
 };
@@ -80,8 +80,8 @@ export default function Pillars({ counts }: { counts: Counts }) {
     <section className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
-          title={<>Everything in the <span className="text-[var(--accent)]">topper archive.</span></>}
-          lead="Marksheets, answer copies, optional analysis, PYQs and free material, built from real UPSC results."
+          title={<>Everything you need, <span className="text-[var(--accent)]">in one place.</span></>}
+          lead="The UPSC topper archive: marksheets, answer copies, optional analysis, PYQs and free study material."
         />
 
         <div className="mt-14 grid gap-4 lg:grid-cols-12">

@@ -31,7 +31,7 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
 
   return (
     <article
-      className="stack-card relative overflow-hidden rounded-[32px] p-6 shadow-[0_-1px_0_rgba(255,255,255,0.3)_inset,0_40px_80px_-30px_rgba(11,12,16,0.45)] sm:p-10 lg:p-12"
+      className="stack-card relative overflow-hidden rounded-[32px] p-6 shadow-[0_10px_24px_-14px_rgba(11,12,16,0.35)] sm:p-10 lg:p-12"
       style={{ background: t.bg, color: t.fg }}
     >
       <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
@@ -109,8 +109,8 @@ export default function StackedSheets({ booklets }: { booklets: Booklet[] }) {
     <section id="sheets" className="relative scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
-          title={<>Their booklets. <span className="text-[var(--accent)]">Their marks.</span></>}
-          lead="Real answer booklets beside the marks they earned. Hover a scan to read it up close."
+          title={<>They sat the same exam. <span className="text-[var(--accent)]">Here&apos;s what they wrote.</span></>}
+          lead="Real UPSC topper answer copies beside the marks each paper earned. Hover a scan to read the handwriting."
         />
 
         <div className="mt-14">

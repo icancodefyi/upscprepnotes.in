@@ -299,13 +299,14 @@ export default async function TryPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Nav />
       <main>
+        {/* The story: the exam, the proof, the relief, the choices, the work, the list, the tools, the trust, the start. */}
         <Hero booklets={booklets} counts={counts} />
-        <Pillars counts={counts} />
         <StackedSheets booklets={booklets.filter((b) => b.papers)} />
         <MarksStory story={story} />
-        <Guides guides={guides} />
         <OptionalFolders optionals={optionals} />
+        <Guides guides={guides} />
         <Years years={years} />
+        <Pillars counts={counts} />
         <StoreShelf items={shelf} />
         <Verify counts={counts} />
         <LeadPack />

@@ -47,8 +47,8 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
     <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
-          title={<>Choose your optional <span className="swipe">with evidence.</span></>}
-          lead="Every dot is one topper's optional total out of 500. Read it as a ceiling, not a forecast."
+          title={<>Your first big decision: <span className="swipe">the optional.</span></>}
+          lead="UPSC optional subject marks of real toppers. Every dot is one topper's total out of 500, a ceiling rather than a forecast."
         />
 
         <div className="mt-14">
@@ -79,7 +79,7 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
 
           {/* Folder body */}
           <div
-            className="folder-body relative -mt-px rounded-[28px] p-6 shadow-[0_30px_60px_-30px_rgba(11,12,16,0.35)] sm:p-10 lg:p-14"
+            className="folder-body relative -mt-px rounded-[28px] p-6 shadow-[0_10px_24px_-14px_rgba(11,12,16,0.35)] sm:p-10 lg:p-14"
             style={{ background: color }}
           >
             <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">

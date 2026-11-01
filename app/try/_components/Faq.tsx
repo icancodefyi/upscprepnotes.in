@@ -39,7 +39,7 @@ export default function Faq({ counts }: { counts: Counts }) {
     <section className="py-24 sm:py-32">
       <div className="mx-auto grid max-w-[1120px] gap-12 px-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
-          <h2 className="t-display h-sec">Questions aspirants ask.</h2>
+          <h2 className="t-display h-sec">Questions you might be asking.</h2>
           <p className="mt-5 max-w-[24rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
             Still unsure? Read the <Link href="/faq" className="font-semibold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">full FAQ</Link> or{" "}
             <Link href="/contact" className="font-semibold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">write to us</Link>.
@@ -50,7 +50,7 @@ export default function Faq({ counts }: { counts: Counts }) {
             <details
               key={f.q}
               open={i === 0}
-              className="group rounded-[22px] bg-white p-6 shadow-[0_0_0_1px_var(--line),0_14px_30px_-24px_rgba(11,12,16,0.4)] open:bg-[#f7f8ff] sm:p-7"
+              className="group rounded-[22px] bg-white p-6 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] open:bg-[#f7f8ff] sm:p-7"
             >
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
                 <h3 className="t-head text-[20px] sm:text-[22px]">{f.q}</h3>

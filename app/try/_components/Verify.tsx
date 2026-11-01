@@ -16,7 +16,7 @@ export default function Verify({ counts }: { counts: Counts }) {
       <div className="mx-auto grid max-w-[1120px] gap-14 px-6 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <h2 className="t-display h-sec">
-            How we check <span className="swipe">every mark.</span>
+            Why you can trust <span className="swipe">these numbers.</span>
           </h2>
           <p className="mt-5 max-w-[28rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
             Coaching ads claim toppers. We publish their numbers, and show our working.
@@ -29,7 +29,7 @@ export default function Verify({ counts }: { counts: Counts }) {
           {steps.map((s, i) => (
             <li
               key={s.n}
-              className="relative flex gap-6 rounded-[24px] bg-white p-7 shadow-[0_0_0_1px_var(--line),0_18px_40px_-28px_rgba(11,12,16,0.4)]"
+              className="relative flex gap-6 rounded-[24px] bg-white p-7 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)]"
               style={{ marginLeft: `${(i % 2) * 28}px` }}
             >
               <span className="t-display grid h-14 w-14 shrink-0 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-[26px] text-[var(--mark)]" style={{ transform: "rotate(-8deg)" }}>

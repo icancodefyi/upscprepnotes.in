@@ -25,14 +25,14 @@ export default function LeadPack() {
 
   return (
     <section>
-      <div className="panel grain relative bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
+      <div className="panel relative bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h2 className="t-display h-sec">
-              Get the Government Schemes Compendium, <span className="text-[var(--hl)]">free.</span>
+              Start tonight, <span className="text-[var(--hl)]">for free.</span>
             </h2>
             <p className="mt-5 max-w-[30rem] text-[18px] leading-[1.55] text-white/70">
-              Central schemes, ministry by ministry, with objectives and key facts for prelims and mains. Enter your email and we&apos;ll send the PDF.
+              Get the Government Schemes Compendium: central schemes, ministry by ministry, with the facts prelims and mains ask for. We&apos;ll email you the PDF.
             </p>
 
             {status === "done" ? (
@@ -40,7 +40,7 @@ export default function LeadPack() {
                 Sent. Check your inbox, and the Promotions or Spam folder.
               </p>
             ) : (
-              <form onSubmit={submit} className="mt-9 flex max-w-[30rem] items-center rounded-full bg-white p-1.5 pl-6 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.5)]">
+              <form onSubmit={submit} className="mt-9 flex max-w-[30rem] items-center rounded-full bg-white p-1.5 pl-6 ">
                 <label htmlFor="lead-email" className="sr-only">Email address</label>
                 <input
                   id="lead-email"
@@ -66,7 +66,7 @@ export default function LeadPack() {
             {[2, 1, 0].map((k) => (
               <div
                 key={k}
-                className="absolute inset-x-6 top-0 h-[280px] rounded-[10px] bg-white shadow-[0_24px_48px_-20px_rgba(0,0,0,0.55)]"
+                className="absolute inset-x-6 top-0 h-[280px] rounded-[10px] bg-white shadow-[0_8px_18px_-10px_rgba(0,0,0,0.4)]"
                 style={{ transform: `rotate(${k * 5 - 4}deg) translateY(${k * 8}px)`, opacity: 1 - k * 0.12 }}
               >
                 {k === 0 && (

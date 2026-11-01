@@ -13,19 +13,19 @@ const fmt = (n: number) => n.toLocaleString("en-IN");
 /** One "result notice" per exam year, like the lists pinned outside UPSC's gate. */
 export default function Years({ years }: { years: YearCard[] }) {
   return (
-    <section className="panel grain relative bg-[var(--ink)] py-24 text-white sm:py-32">
+    <section className="panel relative bg-[var(--ink)] py-24 text-white sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark
-          title={<>UPSC toppers <span className="text-[var(--hl)]">by year.</span></>}
-          lead="Every result from CSE 2022 to CSE 2025, with each rank holder's paper-wise marks."
+          title={<>Every year, the list <span className="text-[var(--hl)]">gets new names.</span></>}
+          lead="UPSC toppers from CSE 2022 to 2025, with every rank holder's marks. The next list is still being written."
         />
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {years.map((y, i) => (
             <div
               key={y.year}
-              className="group relative flex flex-col rounded-[24px] bg-white p-6 text-[var(--ink)] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)] transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1.5"
+              className="group relative flex flex-col rounded-[24px] bg-white p-6 text-[var(--ink)] shadow-[0_10px_24px_-14px_rgba(11,12,16,0.35)] transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1.5"
               style={{ transform: `rotate(${[-1.5, 1, -0.8, 1.6][i % 4]}deg)` }}
             >
               {/* pin */}

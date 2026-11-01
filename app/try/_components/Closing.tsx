@@ -72,7 +72,7 @@ function Badge() {
           <textPath href="#ring">{RING}</textPath>
         </text>
       </svg>
-      <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_12px_24px_-10px_rgba(255,74,61,0.8)] sm:inset-[40px]">
+      <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white  sm:inset-[40px]">
         <span className="t-display text-[30px] sm:text-[36px]">AIR</span>
       </div>
     </div>
@@ -87,7 +87,7 @@ export default function Closing({ counts, featured = [] }: { counts: { toppers: 
           <div className="max-w-[40rem]">
             <h2 className="t-display h-sec">Your three hours are coming.</h2>
             <p className="mt-6 max-w-[30rem] text-[19px] leading-[1.55] text-[rgba(11,12,16,0.72)]">
-              {`Study the ones that worked: ${fmt(counts.toppers)} toppers and ${fmt(counts.full)} complete marksheets, free to read.`}
+              {`Every topper on this page once sat where you are. Study the ${fmt(counts.toppers)} who made it, free.`}
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link href="/toppers" data-track="try-closing-primary" className="btn btn-ink">
