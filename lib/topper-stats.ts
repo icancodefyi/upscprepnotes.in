@@ -24,7 +24,13 @@ export const displayName = (t: { firstName?: string; lastName?: string }) =>
   `${t.firstName ?? ""} ${t.lastName ?? ""}`.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_, a: string, b: string) => a + b.toLowerCase());
 
 /** PSIR is stored under two spellings; everything else is trimmed. */
-export const subjectOf = (s?: string) => (s && /political science/i.test(s) ? "PSIR" : (s ?? "").trim());
+export const subjectOf = (s?: string) => {
+  if (!s) return "";
+  if (/political science/i.test(s)) return "PSIR";
+  // "Literature of Hindi" / "kannada Literature" → "Hindi Literature" / "Kannada Literature"
+  const t = s.trim().replace(/^literature of (\w+)$/i, "$1 Literature");
+  return t.charAt(0).toUpperCase() + t.slice(1);
+};
 
 export const optTotal = (t: LeanTopper) => n(t, "optional1") + n(t, "optional2");
 
