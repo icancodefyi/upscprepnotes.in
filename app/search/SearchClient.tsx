@@ -79,63 +79,51 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
   const allResults = topperResults.length + productResults.length + pageResults.length;
 
   return (
-    <main className="min-h-screen bg-background text-black">
-      <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-        <div className="mb-8">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Search</p>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Search UPSCPrepNotes
-          </h1>
-        </div>
+    <div className="pb-24 pt-28 sm:pt-32">
+      <div className="mx-auto max-w-[880px] px-6">
+        <h1 className="t-display text-h1">Search UPSCPrepNotes</h1>
 
-        <div className="relative mb-8">
-          <svg className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <label className="mt-8 flex items-center gap-3 rounded-full bg-white pl-5 pr-2 shadow-[0_0_0_1px_var(--line-2)] focus-within:shadow-[0_0_0_2px_var(--accent)]">
+          <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--muted)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.5-3.5" />
           </svg>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search toppers, store products, pages, topics..."
-            className="w-full rounded-2xl border border-zinc-200 bg-white py-4 pl-12 pr-4 text-sm outline-none transition focus:border-zinc-400"
+            className="h-14 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
             autoFocus
           />
-        </div>
+        </label>
 
         {q && allResults === 0 && (
           <div className="py-16 text-center">
-            <p className="text-zinc-500">No results found matching &ldquo;{query}&rdquo;</p>
-            <p className="mt-1 text-sm text-zinc-400">Try searching by topper name, product name, subject, or topic.</p>
+            <p className="text-m text-[var(--ink-2)]">No results found matching &ldquo;{query}&rdquo;</p>
+            <p className="mt-1 text-s text-[var(--muted)]">Try searching by topper name, product name, subject, or topic.</p>
           </div>
         )}
 
         {q && allResults > 0 && (
-          <div className="space-y-8">
+          <div className="mt-10 space-y-10">
             {topperResults.length > 0 && (
               <section>
-                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-400">Toppers</p>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <h2 className="text-m font-bold">Toppers</h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {topperResults.map((t) => (
-                    <Link
-                      key={t.slug}
-                      href={`/upsc-topper/${t.slug}`}
-                      className="group rounded-xl border border-zinc-100 bg-white p-4 transition hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-sm"
-                    >
-                      <div className="flex items-start justify-between">
+                    <Link key={t.slug} href={`/upsc-topper/${t.slug}`} className="group rounded-[20px] bg-white p-4 shadow-[0_0_0_1px_var(--line-2)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
+                      <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <h3 className="truncate text-sm font-semibold group-hover:text-emerald-600">
+                          <h3 className="truncate text-m font-bold group-hover:text-[var(--accent)]">
                             {t.firstName} {t.lastName}
                           </h3>
-                          <p className="mt-0.5 text-xs text-zinc-500">
+                          <p className="text-s text-[var(--ink-2)]">
                             AIR {t.rank} &middot; {t.year}
                           </p>
-                          {t.optionalSubject && (
-                            <p className="mt-1 truncate text-xs text-zinc-400">{t.optionalSubject}</p>
-                          )}
+                          {t.optionalSubject && <p className="truncate text-s text-[var(--muted)]">{t.optionalSubject}</p>}
                         </div>
-                        {t.isFeatured && (
-                          <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600">Featured</span>
-                        )}
+                        {t.isFeatured && <span className="shrink-0 rounded-full bg-[var(--hl)] px-2 py-0.5 text-s font-bold text-[var(--hl-ink)]">Featured</span>}
                       </div>
                     </Link>
                   ))}
@@ -145,20 +133,16 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
 
             {productResults.length > 0 && (
               <section>
-                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-400">Store Products</p>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <h2 className="text-m font-bold">Store Products</h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {productResults.map((p) => (
-                    <Link
-                      key={p.slug}
-                      href={`/store/${p.slug}`}
-                      className="group rounded-xl border border-zinc-100 bg-white p-4 transition hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-sm"
-                    >
-                      <div className="flex items-start justify-between">
+                    <Link key={p.slug} href={`/store/${p.slug}`} className="group rounded-[20px] bg-white p-4 shadow-[0_0_0_1px_var(--line-2)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
+                      <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <h3 className="truncate text-sm font-semibold group-hover:text-emerald-600">{p.title}</h3>
-                          <p className="mt-0.5 text-xs text-zinc-500">{p.tagline}</p>
+                          <h3 className="truncate text-m font-bold group-hover:text-[var(--accent)]">{p.title}</h3>
+                          <p className="text-s text-[var(--ink-2)]">{p.tagline}</p>
                         </div>
-                        <span className="ml-3 shrink-0 text-xs font-semibold text-emerald-600">₹{p.price}</span>
+                        <span className="tab shrink-0 rounded-[6px] bg-[var(--hl)] px-2 py-0.5 text-s font-bold">₹{p.price}</span>
                       </div>
                     </Link>
                   ))}
@@ -168,16 +152,12 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
 
             {pageResults.length > 0 && (
               <section>
-                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-400">Pages</p>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <h2 className="text-m font-bold">Pages</h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {pageResults.map((p) => (
-                    <Link
-                      key={p.href}
-                      href={p.href}
-                      className="group rounded-xl border border-zinc-100 bg-white p-4 transition hover:-translate-y-0.5 hover:border-zinc-200 hover:shadow-sm"
-                    >
-                      <h3 className="truncate text-sm font-semibold group-hover:text-emerald-600">{p.title}</h3>
-                      <p className="mt-0.5 text-xs text-zinc-400">{p.href}</p>
+                    <Link key={p.href} href={p.href} className="group rounded-[20px] bg-white p-4 shadow-[0_0_0_1px_var(--line-2)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
+                      <h3 className="truncate text-m font-bold group-hover:text-[var(--accent)]">{p.title}</h3>
+                      <p className="text-s text-[var(--muted)]">{p.href}</p>
                     </Link>
                   ))}
                 </div>
@@ -188,10 +168,10 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
 
         {!q && (
           <div className="py-16 text-center">
-            <p className="text-sm text-zinc-400">Start typing to search toppers, store products, and pages</p>
+            <p className="text-m text-[var(--muted)]">Start typing to search toppers, store products, and pages</p>
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { getAllToppersList } from "@/services/topper.service";
+import { connectDB } from "@/lib/mongodb";
+import { TopperModel } from "@/models/topper.model";
+import { topperImageSrc } from "@/lib/utils";
+import BrandShell from "@/components/brand/BrandShell";
 import ToppersSearch from "./ToppersSearch";
 
 export const metadata = {
@@ -23,68 +27,59 @@ export const metadata = {
   },
 };
 
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
+
 export default async function ToppersPage() {
-  const toppers = await getAllToppersList();
+  const list = await getAllToppersList();
+  // Photos for the cards (real photo where we have one, the same avatar the profile uses otherwise).
+  await connectDB();
+  const photos = new Map(
+    ((await TopperModel.find({}, { slug: 1, ProfileImage: 1 }).lean()) as unknown as { slug: string; ProfileImage?: string }[]).map((t) => [t.slug, t.ProfileImage]),
+  );
+  const toppers = list.map((t) => ({ ...t, avatar: topperImageSrc({ ...t, ProfileImage: photos.get(t.slug) }) }));
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="mb-10 text-center">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-            UPSC Toppers
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Browse All UPSC Toppers
-          </h1>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Search {toppers.length}+ rank holders by name, rank, year, or optional subject. View marks, answer copies, and preparation strategies.
-          </p>
-        </div>
+    <BrandShell>
+      <div className="pb-24 pt-28 sm:pt-32">
+        <div className="mx-auto max-w-[1120px] px-6">
+          <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <span aria-hidden>/</span>
+            <span className="text-[var(--ink-2)]">Toppers</span>
+          </nav>
 
-        <ToppersSearch toppers={toppers} />
+          <header className="mt-8 max-w-[44rem]">
+            <h1 className="t-display text-h1">Browse All UPSC Toppers</h1>
+            <p className="mt-4 text-m leading-[1.6] text-[var(--ink-2)]">
+              Search {toppers.length}+ rank holders by name, rank, year, or optional subject. View marks, answer copies, and preparation strategies.
+            </p>
+          </header>
 
-        {/* Free Materials CTA */}
-        <div className="mt-16 max-w-3xl mx-auto space-y-4">
-          <div className="rounded-2xl border border-brand/20 bg-brand-muted p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-brand-muted border border-brand/20">
-                <span className="text-2xl">📚</span>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-base font-bold text-foreground">Free UPSC Study Material</h2>
-                <p className="mt-1 text-sm text-brand">
-                  2,700+ resources from top coaching institutes — test series, notes, books, magazines. All free to download.
-                </p>
-              </div>
-              <Link
-                href="/free-materials"
-                data-track="toppers-free-materials-cta"
-                className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-brand px-6 py-2.5 text-xs font-bold text-white hover:bg-brand transition-colors"
-              >
+          <div className="mt-10">
+            <ToppersSearch toppers={toppers} />
+          </div>
+
+          {/* Free Materials CTA */}
+          <div className="mt-16 grid gap-4 md:grid-cols-2">
+            <div className={`${card} flex flex-col p-6 sm:p-7`}>
+              <h2 className="text-m font-bold">Free UPSC Study Material</h2>
+              <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
+                2,700+ resources from top coaching institutes — test series, notes, books, magazines. All free to download.
+              </p>
+              <Link href="/free-materials" data-track="toppers-free-materials-cta" className="btn btn-blue mt-5 self-start [--btn-fs:14px]">
                 Browse Free Materials &rarr;
               </Link>
             </div>
+            <Link href="/toppers/marks-database" data-track="toppers-marks-database" className={`${card} group flex flex-col p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5 sm:p-7`}>
+              <h2 className="text-m font-bold group-hover:text-[var(--accent)]">UPSC Topper Marks Database</h2>
+              <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
+                Sortable marksheets for 50+ rank holders — compare GS papers, optional scores, interview marks, and totals.
+              </p>
+              <span aria-hidden className="mt-5 text-m text-[var(--accent)] transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
           </div>
-          <Link
-            href="/toppers/marks-database"
-            data-track="toppers-marks-database"
-            className="flex items-center justify-between rounded-2xl border border-brand/20 bg-brand-muted p-6 hover:border-brand transition-all group"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-muted border border-brand/20">
-                <span className="text-xl">📊</span>
-              </div>
-              <div>
-                <h2 className="text-base font-bold text-foreground">UPSC Topper Marks Database</h2>
-                <p className="mt-0.5 text-sm text-brand">
-                  Sortable marksheets for 50+ rank holders — compare GS papers, optional scores, interview marks, and totals.
-                </p>
-              </div>
-            </div>
-            <span className="text-brand group-hover:text-brand transition-colors">&rarr;</span>
-          </Link>
         </div>
       </div>
-    </main>
+    </BrandShell>
   );
 }

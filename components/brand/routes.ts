@@ -3,7 +3,7 @@
  * so AppShell skips the old header, footer, banner and floating buttons for them.
  * Add a route here when its page is redesigned.
  */
-export const BRAND_ROUTES = ["/try", "/upsc-topper", "/compare", "/free-materials", "/toppers/marks-database", "/toppers/toppers-copy-compilation", "/content", "/store", "/download"];
+export const BRAND_ROUTES = ["/try", "/upsc-topper", "/compare", "/free-materials", "/toppers", "/year", "/optional", "/content", "/store", "/download", "/search"];
 
 export function isBrandRoute(pathname: string | null | undefined) {
   if (!pathname) return false;

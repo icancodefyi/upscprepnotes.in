@@ -14,6 +14,7 @@ type Topper = {
   optionalSubject: string;
   slug: string;
   isFeatured: boolean;
+  avatar?: string;
 };
 
 function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
@@ -68,16 +69,11 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
 
   return (
     <div>
-      <div className="mb-8 space-y-4">
-        <div className="relative">
-          <svg
-            className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      <div className="sticky top-[76px] z-20 -mx-2 rounded-[28px] bg-white/90 px-2 py-3 backdrop-blur">
+        <label className="flex items-center gap-3 rounded-full bg-white py-0 pl-5 pr-2 shadow-[0_0_0_1px_var(--line-2)] focus-within:shadow-[0_0_0_2px_var(--accent)]">
+          <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--muted)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.5-3.5" />
           </svg>
           <input
             type="text"
@@ -87,46 +83,40 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
               setQuery(e.target.value);
               setPage(1);
             }}
-            className="w-full rounded-2xl border border-border bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-muted-foreground focus:ring-0 sm:py-4"
+            className="h-12 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
             autoFocus
             data-track="toppers-search-input"
           />
-        </div>
+        </label>
       </div>
 
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-sm text-muted-foreground">No toppers found matching &ldquo;{query}&rdquo;</p>
+          <p className="text-m text-[var(--muted)]">No toppers found matching &ldquo;{query}&rdquo;</p>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {paginated.map((t) => (
               <Link
                 key={t.slug}
                 href={`/upsc-topper/${t.slug}`}
                 data-track={`toppers-card-${t.slug}`}
-                className="group rounded-2xl border border-border bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-md"
+                className="group flex items-center gap-3 rounded-[20px] bg-white p-4 shadow-[0_0_0_1px_var(--line-2)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5"
               >
-                <div className="flex items-start justify-between">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-semibold text-foreground group-hover:text-brand">
-                      {t.firstName} {t.lastName}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      AIR {t.rank} &middot; {t.year}
-                    </p>
-                    {t.optionalSubject && (
-                      <p className="mt-1 truncate text-xs text-muted-foreground">
-                        {t.optionalSubject}
-                      </p>
-                    )}
-                  </div>
-                  {t.isFeatured && (
-                    <span className="shrink-0 rounded-full bg-brand-muted px-2 py-0.5 text-[10px] font-medium text-brand">
-                      Featured
-                    </span>
-                  )}
+                {t.avatar && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={t.avatar} alt="" aria-hidden loading="lazy" width={48} height={48} className="h-12 w-12 shrink-0 rounded-full bg-[#e9edff] object-cover object-top shadow-[0_0_0_1px_var(--line)]" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-m font-bold group-hover:text-[var(--accent)]">
+                    {t.firstName} {t.lastName}
+                  </h3>
+                  <p className="flex items-center gap-2 text-s text-[var(--ink-2)]">
+                    <span>AIR {t.rank} &middot; {t.year}</span>
+                    {t.isFeatured && <span className="rounded-full bg-[var(--hl)] px-1.5 text-s font-bold text-[var(--hl-ink)]">Featured</span>}
+                  </p>
+                  {t.optionalSubject && <p className="truncate text-s text-[var(--muted)]">{t.optionalSubject}</p>}
                 </div>
               </Link>
             ))}
@@ -137,16 +127,17 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
               <button
                 onClick={() => goTo(safePage - 1)}
                 disabled={safePage <= 1}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-sm text-muted-foreground transition hover:bg-secondary disabled:opacity-30 disabled:hover:bg-transparent"
+                aria-label="Previous page"
+                className="grid h-10 w-10 place-items-center rounded-full text-[var(--ink-2)] transition hover:bg-[var(--canvas)] disabled:opacity-30 disabled:hover:bg-transparent"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                ←
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
                 const isActive = p === safePage;
                 const isNear = Math.abs(p - safePage) <= 1 || p === 1 || p === totalPages;
                 if (!isNear) {
                   if (p === safePage - 2 || p === safePage + 2) {
-                    return <span key={p} className="text-xs text-muted-foreground">···</span>;
+                    return <span key={p} className="text-s text-[var(--muted)]">···</span>;
                   }
                   return null;
                 }
@@ -154,11 +145,7 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
                   <button
                     key={p}
                     onClick={() => goTo(p)}
-                    className={`flex h-9 w-9 items-center justify-center rounded-xl text-sm font-medium transition ${
-                      isActive
-                        ? "bg-brand text-white shadow-sm"
-                        : "text-muted-foreground hover:bg-secondary"
-                    }`}
+                    className={`tab grid h-10 w-10 place-items-center rounded-full text-s font-bold transition ${isActive ? "bg-[var(--ink)] text-white" : "text-[var(--ink-2)] hover:bg-[var(--canvas)]"}`}
                   >
                     {p}
                   </button>
@@ -167,16 +154,17 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
               <button
                 onClick={() => goTo(safePage + 1)}
                 disabled={safePage >= totalPages}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-sm text-muted-foreground transition hover:bg-secondary disabled:opacity-30 disabled:hover:bg-transparent"
+                aria-label="Next page"
+                className="grid h-10 w-10 place-items-center rounded-full text-[var(--ink-2)] transition hover:bg-[var(--canvas)] disabled:opacity-30 disabled:hover:bg-transparent"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                →
               </button>
             </div>
           )}
         </>
       )}
 
-      <p className="mt-8 text-center text-xs text-muted-foreground">
+      <p className="mt-8 text-center text-s text-[var(--muted)]">
         Showing {paginated.length} of {filtered.length} topper{filtered.length !== 1 ? "s" : ""}
         {filtered.length < toppers.length && query.trim() && ` (filtered from ${toppers.length})`}
       </p>
@@ -186,7 +174,7 @@ function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
 
 export default function ToppersSearch({ toppers }: { toppers: Topper[] }) {
   return (
-    <Suspense fallback={<div className="py-8 text-center text-sm text-muted-foreground">Loading topper search...</div>}>
+    <Suspense fallback={<div className="py-8 text-center text-s text-[var(--muted)]">Loading topper search...</div>}>
       <ToppersSearchInner toppers={toppers} />
     </Suspense>
   );

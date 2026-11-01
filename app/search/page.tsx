@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getAllToppersList } from "@/services/topper.service";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import SearchClient from "./SearchClient";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata: Metadata = {
   title: "Search — UPSC Toppers, Answer Copies & Resources",
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 export default async function SearchPage() {
   const toppers = await getAllToppersList();
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -35,10 +36,10 @@ export default async function SearchPage() {
         ]}
       />
       <Suspense fallback={
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center text-sm text-zinc-500">Loading...</div>
+        <div className="mx-auto max-w-4xl px-6 pb-24 pt-36 text-center text-s text-[var(--muted)]">Loading...</div>
       }>
         <SearchClient toppers={toppers} />
       </Suspense>
-    </>
+    </BrandShell>
   );
 }

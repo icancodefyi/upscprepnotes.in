@@ -3,6 +3,9 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
 interface Props {
   params: Promise<{
@@ -470,11 +473,11 @@ export default async function SubjectPage({ params }: Props) {
 
   if (!subjectInfo) {
     return (
-      <main className="min-h-screen bg-background">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <h1 className="text-4xl font-semibold">Subject not found</h1>
+      <BrandShell>
+        <div className="mx-auto max-w-4xl px-6 pb-24 pt-36 text-center">
+          <h1 className="t-display text-h1">Subject not found</h1>
         </div>
-      </main>
+      </BrandShell>
     );
   }
 
@@ -506,8 +509,11 @@ export default async function SubjectPage({ params }: Props) {
     ([key]) => key !== subjectKey
   );
 
+  const hasAbout =
+    subjectInfo.overview || subjectInfo.whyPopular || (subjectInfo.syllabusTopics || []).length > 0 || (subjectInfo.booklist || []).length > 0 || (subjectInfo.prepInsights || []).length > 0 || subjectInfo.scoringTrend;
+
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -515,244 +521,192 @@ export default async function SubjectPage({ params }: Props) {
           { name: subjectInfo.name, href: `/optional/${subjectKey}` },
         ]}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
 
-      {/* HERO */}
-      <section className="mx-auto max-w-5xl px-6 py-24 md:py-32">
-        {/* BREADCRUMB */}
-        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          <Link href="/" data-track="optional-breadcrumb-home" className="transition hover:text-foreground">
-            Home
-          </Link>
-          <span>•</span>
-          <span>{subjectInfo.name}</span>
-        </div>
+      <div className="pb-24 pt-28 sm:pt-32">
+        <div className="mx-auto max-w-[1120px] px-6">
+          {/* BREADCRUMB */}
+          <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-2">
+            <Link href="/" data-track="optional-breadcrumb-home" className="hover:text-[var(--ink)]">Home</Link>
+            <span aria-hidden>•</span>
+            <span className="text-[var(--ink-2)]">{subjectInfo.name}</span>
+          </nav>
 
-        <div className="mb-12">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            Optional Subject Intelligence
-          </p>
-
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-            {subjectInfo.name} — UPSC Optional Subject, Toppers &amp; Strategy
-          </h1>
-
-          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-foreground/80">
-            {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
-          </p>
-        </div>
-
-        {/* STATS */}
-        {stats && (
-          <div className="grid gap-4 sm:gap-8 grid-cols-2 sm:grid-cols-4">
+          {/* HERO */}
+          <header className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-end">
             <div>
-              <p className="text-2xl sm:text-3xl font-semibold">{stats.totalToppers}</p>
-              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Toppers</p>
-            </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-semibold">{stats.avgMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Avg Marks</p>
-            </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-semibold">{stats.maxMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Highest Marks</p>
-            </div>
-            <div>
-              <p className="text-2xl sm:text-3xl font-semibold">{stats.minMarks}</p>
-              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Lowest Marks</p>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* COMPUTED INSIGHTS */}
-      {insights.length > 0 && (
-        <section className="mx-auto max-w-5xl px-6 pb-8">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Key Insights — {subjectInfo.name}
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {insights.map((insight, i) => (
-              <div key={i} className="rounded-xl border border-border bg-secondary p-4 text-sm leading-6 text-foreground/70">
-                {insight}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* SUBJECT DETAIL SECTIONS */}
-      {(subjectInfo.overview || subjectInfo.whyPopular || (subjectInfo.syllabusTopics || []).length > 0 || (subjectInfo.booklist || []).length > 0 || (subjectInfo.prepInsights || []).length > 0 || subjectInfo.scoringTrend) && (
-        <section className="mx-auto max-w-5xl px-6 py-8 md:py-12">
-          <div className="mb-8">
-            <h2 className="text-3xl font-semibold">About {subjectInfo.name}</h2>
-          </div>
-
-          {subjectInfo.overview && (
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold">Subject Overview</h3>
-              <p className="mt-3 text-foreground/70 leading-8">{subjectInfo.overview}</p>
-            </div>
-          )}
-
-          {subjectInfo.whyPopular && (
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold">Why {subjectInfo.name} Is Popular</h3>
-              <p className="mt-3 text-foreground/70 leading-8">{subjectInfo.whyPopular}</p>
-            </div>
-          )}
-
-          {(subjectInfo.syllabusTopics || []).length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold">Key Syllabus Topics</h3>
-              <ul className="mt-3 list-disc pl-6 text-foreground/70 space-y-1">
-                {subjectInfo.syllabusTopics!.map((topic, idx) => (
-                  <li key={idx}>{topic}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {(subjectInfo.booklist || []).length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold">Recommended Books</h3>
-              <ul className="mt-3 list-disc pl-6 text-foreground/70 space-y-1">
-                {subjectInfo.booklist!.map((book, idx) => (
-                  <li key={idx}>{book}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {(subjectInfo.prepInsights || []).length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold">Preparation Insights</h3>
-              <div className="mt-3 grid gap-4 md:grid-cols-2">
-                {subjectInfo.prepInsights!.map((insight, idx) => (
-                  <div key={idx} className="rounded-lg border border-border bg-background p-4">
-                    <p className="text-foreground/70 leading-7">{insight}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {subjectInfo.scoringTrend && (
-            <div className="mb-8 rounded-xl border border-border bg-secondary p-6">
-              <h3 className="text-lg font-semibold">Scoring Trend</h3>
-              <p className="mt-2 text-foreground/70 leading-7">{subjectInfo.scoringTrend}</p>
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* FULL MARKS TABLE */}
-      {toppers.length > 0 && (
-        <section className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            {subjectInfo.name} Topper Marks Table
-          </p>
-          <div className="overflow-x-auto rounded-2xl border border-border">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border bg-secondary">
-                  <th className="p-4 font-semibold">AIR</th>
-                  <th className="p-4 font-semibold">Name</th>
-                  <th className="p-4 font-semibold">Year</th>
-                  <th className="p-4 font-semibold">Opt P1</th>
-                  <th className="p-4 font-semibold">Opt P2</th>
-                  <th className="p-4 font-semibold">Essay</th>
-                  <th className="p-4 font-semibold">Written</th>
-                  <th className="p-4 font-semibold">Interview</th>
-                  <th className="p-4 font-semibold">Total</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {toppers.map((t) => (
-                  <tr key={t.slug} className="hover:bg-secondary transition">
-                    <td className="p-4 font-semibold">{t.rank}</td>
-                    <td className="p-4">
-                      <Link
-                        href={`/upsc-topper/${t.slug}`}
-                        data-track={`optional-topper-${t.slug}`}
-                        className="font-medium text-brand underline underline-offset-2 hover:text-brand"
-                      >
-                        {t.firstName} {t.lastName}
-                      </Link>
-                    </td>
-                    <td className="p-4 text-muted-foreground">
-                      <Link href={`/year/${t.year}`} className="text-brand underline underline-offset-2 hover:text-brand">
-                        {t.year}
-                      </Link>
-                    </td>
-                    <td className="p-4">{t.marks.optional1 || "—"}</td>
-                    <td className="p-4">{t.marks.optional2 || "—"}</td>
-                    <td className="p-4">{t.marks.essay || "—"}</td>
-                    <td className="p-4">{t.marks.written || "—"}</td>
-                    <td className="p-4">{t.marks.interview || "—"}</td>
-                    <td className="p-4 font-semibold">{t.marks.total || "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-8">
-            <Link
-              href="/"
-              data-track="optional-browse-all-toppers"
-              className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
-            >
-              Browse All Toppers &rarr;
-            </Link>
-          </div>
-        </section>
-      )}
-
-      {/* OTHER OPTIONAL SUBJECTS */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Explore Other Optional Subjects
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {OTHER_SUBJECTS.map(([key, info]) => (
-            <Link
-              key={key}
-              href={`/optional/${key}`}
-              data-track={`optional-other-${key}`}
-              className="rounded-xl border border-border bg-secondary p-4 text-sm font-medium transition hover:bg-secondary"
-            >
-              {info.name}
-            </Link>
-          ))}
-        </div>
-      </section>
-      {/* GREAT WEEKEND SALE */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
-        <div className="rounded-2xl border border-brand/20 bg-foreground p-6 md:p-8">
-          <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
-              <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
-                Starting at ₹99
-              </h2>
-              <p className="mt-1 text-sm text-brand/80">
-                Starting at ₹99 · Instant download.
+              <h1 className="t-display text-l">{subjectInfo.name} — UPSC Optional Subject, Toppers &amp; Strategy</h1>
+              <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+                {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
               </p>
             </div>
-            <Link
-              href="/store"
-              data-track="optional-compilation-upsell"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition hover:bg-brand"
-            >
-              Shop Now &rarr;
-            </Link>
+            {stats && (
+              <dl className={`${card} grid grid-cols-2 divide-[var(--line)] sm:grid-cols-4 sm:divide-x lg:grid-cols-2 lg:divide-x-0`}>
+                {[
+                  { k: "Toppers", v: stats.totalToppers },
+                  { k: "Avg Marks", v: stats.avgMarks },
+                  { k: "Highest Marks", v: stats.maxMarks },
+                  { k: "Lowest Marks", v: stats.minMarks },
+                ].map((x) => (
+                  <div key={x.k} className="px-5 py-4">
+                    <dd className="t-display tab text-l leading-none">{x.v}</dd>
+                    <dt className="mt-1.5 text-s text-[var(--muted)]">{x.k}</dt>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </header>
+
+          <div className="mt-14 space-y-14">
+            {/* COMPUTED INSIGHTS */}
+            {insights.length > 0 && (
+              <section>
+                <h2 className="t-head text-l">Key Insights — {subjectInfo.name}</h2>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {insights.map((insight, i) => (
+                    <div key={i} className={`${card} p-4 text-m leading-[1.55] text-[var(--ink-2)]`}>{insight}</div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* SUBJECT DETAIL SECTIONS */}
+            {hasAbout && (
+              <section className="max-w-[48rem]">
+                <h2 className="t-head text-l">About {subjectInfo.name}</h2>
+
+                {subjectInfo.overview && (
+                  <div className="mt-8">
+                    <h3 className="text-m font-bold">Subject Overview</h3>
+                    <p className="mt-2 text-m leading-[1.7] text-[var(--ink-2)]">{subjectInfo.overview}</p>
+                  </div>
+                )}
+
+                {subjectInfo.whyPopular && (
+                  <div className="mt-8">
+                    <h3 className="text-m font-bold">Why {subjectInfo.name} Is Popular</h3>
+                    <p className="mt-2 text-m leading-[1.7] text-[var(--ink-2)]">{subjectInfo.whyPopular}</p>
+                  </div>
+                )}
+
+                {(subjectInfo.syllabusTopics || []).length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-m font-bold">Key Syllabus Topics</h3>
+                    <ul className="mt-3 space-y-2">
+                      {subjectInfo.syllabusTopics!.map((topic, idx) => (
+                        <li key={idx} className="flex gap-3 text-m leading-[1.6] text-[var(--ink-2)]">
+                          <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
+                          {topic}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {(subjectInfo.booklist || []).length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-m font-bold">Recommended Books</h3>
+                    <ul className={`${card} mt-3 divide-y divide-[var(--line)]`}>
+                      {subjectInfo.booklist!.map((book, idx) => (
+                        <li key={idx} className="px-5 py-3 text-m text-[var(--ink-2)]">{book}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {(subjectInfo.prepInsights || []).length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-m font-bold">Preparation Insights</h3>
+                    <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      {subjectInfo.prepInsights!.map((insight, idx) => (
+                        <div key={idx} className={`${card} p-4`}>
+                          <p className="text-m leading-[1.6] text-[var(--ink-2)]">{insight}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {subjectInfo.scoringTrend && (
+                  <div className="mt-8 rounded-[20px] bg-[#fff8d6] p-6">
+                    <h3 className="text-m font-bold">Scoring Trend</h3>
+                    <p className="mt-2 text-m leading-[1.6] text-[var(--ink)]">{subjectInfo.scoringTrend}</p>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* FULL MARKS TABLE */}
+            {toppers.length > 0 && (
+              <section>
+                <h2 className="t-head text-l">{subjectInfo.name} Topper Marks Table</h2>
+                <div className={`${card} mt-5 overflow-x-auto`}>
+                  <table className="w-full min-w-[760px] text-left text-s">
+                    <thead>
+                      <tr className="text-[var(--muted)]">
+                        {["AIR", "Name", "Year", "Opt P1", "Opt P2", "Essay", "Written", "Interview", "Total"].map((h, i) => (
+                          <th key={h} className={`px-4 py-3 font-normal ${i > 2 ? "text-right" : ""}`}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="tab">
+                      {toppers.map((t) => (
+                        <tr key={t.slug} className="border-t border-[var(--line)] hover:bg-[#f8f9fc]">
+                          <td className="px-4 py-3 font-bold text-[var(--mark-deep)]">{t.rank}</td>
+                          <td className="px-4 py-3">
+                            <Link href={`/upsc-topper/${t.slug}`} data-track={`optional-topper-${t.slug}`} className="font-bold hover:text-[var(--accent)]">
+                              {t.firstName} {t.lastName}
+                            </Link>
+                          </td>
+                          <td className="px-4 py-3">
+                            <Link href={`/year/${t.year}`} className="text-[var(--accent)] underline decoration-[var(--accent)]/30 underline-offset-2 hover:decoration-[var(--accent)]">
+                              {t.year}
+                            </Link>
+                          </td>
+                          <td className="px-4 py-3 text-right font-bold">{t.marks.optional1 || "—"}</td>
+                          <td className="px-4 py-3 text-right font-bold">{t.marks.optional2 || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.essay || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.written || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.interview || "—"}</td>
+                          <td className="px-4 py-3 text-right font-bold text-[var(--accent)]">{t.marks.total || "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <Link href="/" data-track="optional-browse-all-toppers" className="btn btn-ink mt-6">
+                  Browse All Toppers &rarr;
+                </Link>
+              </section>
+            )}
+
+            {/* OTHER OPTIONAL SUBJECTS */}
+            <section className="border-t border-[var(--line)] pt-12">
+              <h2 className="t-head text-l">Explore Other Optional Subjects</h2>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {OTHER_SUBJECTS.map(([key, info]) => (
+                  <Link key={key} href={`/optional/${key}`} data-track={`optional-other-${key}`} className={`${card} group flex items-center justify-between p-4 text-m font-bold transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
+                    <span className="group-hover:text-[var(--accent)]">{info.name}</span>
+                    <span aria-hidden className="text-[var(--muted)] group-hover:text-[var(--accent)]">→</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            {/* OFFER */}
+            <section className="flex flex-col gap-4 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <div>
+                <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">Offer</span>
+                <h2 className="t-head mt-3 text-l">Starting at ₹99</h2>
+                <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹99 · Instant download.</p>
+              </div>
+              <Link href="/store" data-track="optional-compilation-upsell" className="btn btn-blue shrink-0 self-start sm:self-center">
+                Shop Now &rarr;
+              </Link>
+            </section>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </BrandShell>
   );
 }

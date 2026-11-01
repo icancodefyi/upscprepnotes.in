@@ -3,6 +3,9 @@ import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
 const OPTIONAL_SLUG_MAP: Record<string, string> = {
   "Political Science & International Relations": "psir",
@@ -20,7 +23,7 @@ function renderOptionalLink(name: string | null | undefined) {
   if (!name) return "—";
   const slug = OPTIONAL_SLUG_MAP[name];
   return slug ? (
-    <Link href={`/optional/${slug}`} className="text-brand underline underline-offset-2 hover:text-brand">
+    <Link href={`/optional/${slug}`} className="text-[var(--accent)] underline decoration-[var(--accent)]/30 underline-offset-2 hover:decoration-[var(--accent)]">
       {name}
     </Link>
   ) : (
@@ -186,11 +189,11 @@ export default async function YearPage({ params }: Props) {
 
   if (isNaN(yearNum)) {
     return (
-      <main className="min-h-screen bg-background">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <h1 className="text-4xl font-semibold">Invalid year</h1>
+      <BrandShell>
+        <div className="mx-auto max-w-4xl px-6 pb-24 pt-36 text-center">
+          <h1 className="t-display text-h1">Invalid year</h1>
         </div>
-      </main>
+      </BrandShell>
     );
   }
 
@@ -227,187 +230,140 @@ export default async function YearPage({ params }: Props) {
   const prevYear = yearIndex > 0 ? ALL_YEARS[yearIndex - 1] : null;
   const nextYear = yearIndex < ALL_YEARS.length - 1 ? ALL_YEARS[yearIndex + 1] : null;
 
+  const analysis = getYearAnalysis(yearNum);
+
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
           { name: `Year ${yearNum}`, href: `/year/${yearNum}` },
         ]}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
 
-      <section className="mx-auto max-w-7xl px-6 py-24 md:py-32">
-        {/* BREADCRUMB */}
-        <div className="mb-10 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          <Link href="/" className="transition hover:text-foreground">
-            Home
-          </Link>
-          <span>•</span>
-          <span>Year {yearNum}</span>
-        </div>
+      <div className="pb-24 pt-28 sm:pt-32">
+        <div className="mx-auto max-w-[1180px] px-6">
+          {/* BREADCRUMB */}
+          <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-2">
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <span aria-hidden>•</span>
+            <span className="text-[var(--ink-2)]">Year {yearNum}</span>
+          </nav>
 
-        <div className="mb-12">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            Yearly Archive
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight">UPSC {yearNum} Toppers — Complete Marks Dataset</h1>
-          <p className="mt-6 max-w-2xl text-base md:text-lg leading-8 text-foreground/80">
-            Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
-          </p>
-        </div>
+          <header className="mt-8 max-w-[48rem]">
+            <h1 className="t-display text-h1">UPSC {yearNum} Toppers — Complete Marks Dataset</h1>
+            <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+              Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
+            </p>
+          </header>
 
-        {/* YEAR SELECTOR */}
-        <div className="mb-16 flex flex-wrap items-center gap-3">
-          {prevYear && (
-            <Link
-              href={`/year/${prevYear}`}
-              className="rounded-full border border-border px-5 py-2 text-sm font-medium transition hover:bg-secondary"
-            >
-              &larr; {prevYear}
-            </Link>
-          )}
-          {ALL_YEARS.map((y) => (
-            <Link
-              key={y}
-              href={`/year/${y}`}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${
-                y === yearNum
-                  ? "bg-foreground text-white"
-                  : "border border-border hover:bg-secondary"
-              }`}
-            >
-              {y}
-            </Link>
-          ))}
-          {nextYear && (
-            <Link
-              href={`/year/${nextYear}`}
-              className="rounded-full border border-border px-5 py-2 text-sm font-medium transition hover:bg-secondary"
-            >
-              {nextYear} &rarr;
-            </Link>
-          )}
-        </div>
-
-        {toppers.length === 0 ? (
-          <div className="mx-auto max-w-2xl text-center py-24">
-            <p className="text-muted-foreground">No topper profiles found for this year.</p>
+          {/* YEAR SELECTOR */}
+          <div className="mt-8 flex flex-wrap items-center gap-2">
+            {prevYear && (
+              <Link href={`/year/${prevYear}`} className="rounded-full bg-white px-4 py-2 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]">
+                &larr; {prevYear}
+              </Link>
+            )}
+            {ALL_YEARS.map((y) => (
+              <Link
+                key={y}
+                href={`/year/${y}`}
+                className={`tab rounded-full px-4 py-2 text-s font-bold transition ${y === yearNum ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]"}`}
+              >
+                {y}
+              </Link>
+            ))}
+            {nextYear && (
+              <Link href={`/year/${nextYear}`} className="rounded-full bg-white px-4 py-2 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]">
+                {nextYear} &rarr;
+              </Link>
+            )}
           </div>
-        ) : (
-          <>
-            {/* YEARLY ANALYSIS */}
-            {(() => {
-              const analysis = getYearAnalysis(yearNum);
-              if (!analysis) return null;
-              return (
-                <section className="mb-16">
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Analysis</p>
-                  <h2 className="mb-6 text-2xl font-semibold tracking-tight">{analysis.title}</h2>
-                  <div className="space-y-4 text-base leading-7 text-foreground/70">
-                    {analysis.paragraphs.map((p, i) => (
-                      <p key={i}>{p}</p>
+
+          {toppers.length === 0 ? (
+            <div className="mx-auto max-w-2xl py-24 text-center">
+              <p className="text-m text-[var(--muted)]">No topper profiles found for this year.</p>
+            </div>
+          ) : (
+            <div className="mt-14 space-y-14">
+              {/* YEARLY ANALYSIS */}
+              {analysis && (
+                <section className="max-w-[48rem]">
+                  <h2 className="t-head text-l">{analysis.title}</h2>
+                  <p className="mt-1 text-s text-[var(--muted)]">Analysis</p>
+                  <div className="mt-5 space-y-4">
+                    {analysis.paragraphs.map((para, i) => (
+                      <p key={i} className="text-m leading-[1.7] text-[var(--ink-2)]">{para}</p>
                     ))}
                   </div>
                 </section>
-              );
-            })()}
+              )}
 
-            {/* COMPUTED INSIGHTS */}
-            {insights.length > 0 && (
-              <section className="mb-16">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Key Insights — UPSC {yearNum}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {insights.map((insight, i) => (
-                    <div key={i} className="rounded-xl border border-border bg-secondary p-4 text-sm leading-6 text-foreground/70">
-                      {insight}
-                    </div>
-                  ))}
+              {/* COMPUTED INSIGHTS */}
+              {insights.length > 0 && (
+                <section>
+                  <h2 className="t-head text-l">Key Insights — UPSC {yearNum}</h2>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {insights.map((insight, i) => (
+                      <div key={i} className={`${card} p-4 text-m leading-[1.55] text-[var(--ink-2)]`}>{insight}</div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* FULL MARKS TABLE */}
+              <section>
+                <h2 className="t-head text-l">Topper Marks Table</h2>
+                <div className={`${card} mt-5 overflow-x-auto`}>
+                  <table className="w-full min-w-[900px] text-left text-s">
+                    <thead>
+                      <tr className="text-[var(--muted)]">
+                        {["AIR", "Name", "Optional", "GS1", "GS2", "GS3", "GS4", "Essay", "Written", "Interview", "Total"].map((h, i) => (
+                          <th key={h} className={`px-4 py-3 font-normal ${i > 2 ? "text-right" : ""}`}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="tab">
+                      {toppers.map((t) => (
+                        <tr key={t.slug} className="border-t border-[var(--line)] hover:bg-[#f8f9fc]">
+                          <td className="px-4 py-3 font-bold text-[var(--mark-deep)]">{t.rank}</td>
+                          <td className="px-4 py-3">
+                            <Link href={`/upsc-topper/${t.slug}`} className="font-bold hover:text-[var(--accent)]">
+                              {t.firstName} {t.lastName}
+                            </Link>
+                          </td>
+                          <td className="px-4 py-3 text-[var(--ink-2)]">{renderOptionalLink(t.optionalSubject)}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.gs1 || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.gs2 || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.gs3 || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.gs4 || "—"}</td>
+                          <td className="px-4 py-3 text-right">{t.marks.essay || "—"}</td>
+                          <td className="px-4 py-3 text-right font-bold">{t.marks.written || "—"}</td>
+                          <td className="px-4 py-3 text-right font-bold">{t.marks.interview || "—"}</td>
+                          <td className="px-4 py-3 text-right font-bold text-[var(--accent)]">{t.marks.total || "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </section>
-            )}
-
-            {/* FULL MARKS TABLE */}
-            <section>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Topper Marks Table
-              </p>
-              <div className="overflow-x-auto rounded-2xl border border-border">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-border bg-secondary">
-                      <th className="p-4 font-semibold">AIR</th>
-                      <th className="p-4 font-semibold">Name</th>
-                      <th className="p-4 font-semibold">Optional</th>
-                      <th className="p-4 font-semibold">GS1</th>
-                      <th className="p-4 font-semibold">GS2</th>
-                      <th className="p-4 font-semibold">GS3</th>
-                      <th className="p-4 font-semibold">GS4</th>
-                      <th className="p-4 font-semibold">Essay</th>
-                      <th className="p-4 font-semibold">Written</th>
-                      <th className="p-4 font-semibold">Interview</th>
-                      <th className="p-4 font-semibold">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {toppers.map((t) => (
-                      <tr key={t.slug} className="hover:bg-secondary transition">
-                        <td className="p-4 font-semibold">{t.rank}</td>
-                        <td className="p-4">
-                          <Link
-                            href={`/upsc-topper/${t.slug}`}
-                            className="font-medium text-brand underline underline-offset-2 hover:text-brand"
-                          >
-                            {t.firstName} {t.lastName}
-                          </Link>
-                        </td>
-                        <td className="p-4 text-muted-foreground">{renderOptionalLink(t.optionalSubject)}</td>
-                        <td className="p-4">{t.marks.gs1 || "—"}</td>
-                        <td className="p-4">{t.marks.gs2 || "—"}</td>
-                        <td className="p-4">{t.marks.gs3 || "—"}</td>
-                        <td className="p-4">{t.marks.gs4 || "—"}</td>
-                        <td className="p-4">{t.marks.essay || "—"}</td>
-                        <td className="p-4">{t.marks.written || "—"}</td>
-                        <td className="p-4">{t.marks.interview || "—"}</td>
-                        <td className="p-4 font-semibold">{t.marks.total || "—"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          </>
-        )}
-      </section>
-
-      {/* GREAT WEEKEND SALE */}
-      <section className="mx-auto max-w-5xl px-6 py-16 md:py-24 border-t border-border">
-        <div className="rounded-2xl border border-brand/20 bg-foreground p-6 md:p-8">
-          <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
-              <h2 className="mt-2 text-lg font-bold text-white md:text-xl">
-                Starting at ₹99
-              </h2>
-              <p className="mt-1 text-sm text-brand/80">
-                Starting at ₹99 · Instant download.
-              </p>
             </div>
-            <Link
-              href="/store"
-              data-track="year-compilation-upsell"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition hover:bg-brand"
-            >
+          )}
+
+          {/* OFFER */}
+          <section className="mt-20 flex flex-col gap-4 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">Offer</span>
+              <h2 className="t-head mt-3 text-l">Starting at ₹99</h2>
+              <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹99 · Instant download.</p>
+            </div>
+            <Link href="/store" data-track="year-compilation-upsell" className="btn btn-blue shrink-0 self-start sm:self-center">
               Shop Now &rarr;
             </Link>
-          </div>
+          </section>
         </div>
-      </section>
-    </main>
+      </div>
+    </BrandShell>
   );
 }
