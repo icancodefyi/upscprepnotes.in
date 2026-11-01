@@ -3,6 +3,7 @@ import AskLink from "@/components/AskLink";
 import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
 import Toc from "@/components/brand/Toc";
+import AfterHeader from "./AfterHeader";
 import { RankStamp, card } from "@/components/brand/ui";
 import { Paperclip } from "@/components/brand/Props";
 
@@ -44,6 +45,10 @@ function ResultCard({ h }: { h: HeaderData }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={h.avatar} alt={h.name} width={64} height={78} className="h-[78px] w-[64px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_12px_-6px_rgba(11,12,16,0.4)]" />
           <Paperclip className="absolute -top-7 left-3 h-[84px] w-[31px] rotate-[-8deg]" />
+          {/* attested: the rank stamp pressed across the photo's corner */}
+          <span className="absolute -bottom-7 -right-7 rotate-[-8deg] opacity-90 mix-blend-multiply">
+            <RankStamp rank={h.rank} size={60} />
+          </span>
         </div>
 
         <p className="t-meta">MARKS STATEMENT</p>
@@ -95,23 +100,7 @@ function ResultCard({ h }: { h: HeaderData }) {
           <p className="mt-4 border-y-2 border-[var(--ink)] py-3 text-s leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
         )}
 
-        <div className="mt-3 flex items-start justify-between gap-3">
-          <p className="pt-1 text-s leading-[1.4] text-[var(--muted)]">{`Source: UPSC final result, CSE ${h.year}`}</p>
-          {/* pressed onto the sheet, overlapping the closing rule */}
-          <span className="-mt-6 mr-20 opacity-90 mix-blend-multiply">
-            <RankStamp rank={h.rank} size={64} />
-          </span>
-        </div>
-
-        {h.requests > 0 && (
-          <a href="#answer-copy" className="mt-4 flex items-center justify-between gap-3 rounded-[12px] bg-[#e9edff] px-3.5 py-2.5 text-s text-[var(--accent-deep)] hover:bg-[#dfe5ff]">
-            <span>
-              <span className="tab font-bold">{fmt(h.requests)}</span>
-              {` aspirant${h.requests === 1 ? "" : "s"} requested ${h.first}'s copy`}
-            </span>
-            <span aria-hidden>↓</span>
-          </a>
-        )}
+        <p className="mt-3 text-s text-[var(--muted)]">{`Source: UPSC final result, CSE ${h.year}`}</p>
       </div>
     </div>
   );
@@ -120,7 +109,7 @@ function ResultCard({ h }: { h: HeaderData }) {
 /** Profile header: who and which rank on the left, the result on paper on the right. */
 export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; label: string }[] }) {
   return (
-    <header>
+    <header id="profile-header">
       <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-x-2 gap-y-1">
         {crumbs.map((c, i) => (
           <span key={c.label} className="flex items-center gap-2">
@@ -130,9 +119,9 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
         ))}
       </nav>
 
-      <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
-        <div className="min-w-0 max-w-[40rem]">
-          <h1 className="t-display text-l leading-[1]">{h.name}</h1>
+      <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 max-w-[40rem] lg:pt-10">
+          <h1 className="t-display text-h1">{h.name}</h1>
           <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-m text-[var(--ink-2)]">
             <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 font-bold text-[var(--ink)]">{`AIR ${h.rank}`}</span>
             <Link href={`/year/${h.year}`} className="hover:text-[var(--accent)]">{`UPSC CSE ${h.year}`}</Link>
@@ -175,7 +164,9 @@ export type SidebarData = {
 export function Sidebar({ s }: { s: SidebarData }) {
   return (
     <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-      <div className={`${card} hidden p-5 lg:block`}>
+      <div className="hidden lg:block">
+      <AfterHeader>
+      <div className={`${card} mb-4 p-5`}>
         <a href="#answer-copy" data-track="topper-side-copy" className="btn btn-blue w-full justify-between [--btn-fs:14px]">
           {s.copyLabel} <span className="knob">↓</span>
         </a>
@@ -187,6 +178,8 @@ export function Sidebar({ s }: { s: SidebarData }) {
         >
           {`Ask AI about ${s.first} →`}
         </AskLink>
+      </div>
+      </AfterHeader>
       </div>
 
       <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>

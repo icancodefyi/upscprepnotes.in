@@ -214,7 +214,7 @@ export default async function PDFDetailPage({ params }: Props) {
                   <span className="rounded-full px-2.5 py-0.5 font-bold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
                   {c.brand && <span className="text-[var(--ink-2)]">{`by ${c.brand}`}</span>}
                 </p>
-                <h1 className="t-display mt-3 text-l leading-[1.05]">{p.title}</h1>
+                <h1 className="t-display mt-3 text-l">{p.title}</h1>
                 {p.description && <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
                 <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-s text-[var(--muted)]">
                   {facts.map((f) => (

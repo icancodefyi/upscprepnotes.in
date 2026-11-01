@@ -156,7 +156,7 @@ export default async function ComparePage({ params }: Props) {
             <span className="text-[var(--ink-2)]">Compare</span>
           </nav>
 
-          <h1 className="t-display mt-8 text-l leading-[1.02]">
+          <h1 className="t-display mt-8 text-h1">
             {an} <span className="text-[var(--muted)]">vs</span> {bn}
           </h1>
           <p className="mt-4 max-w-[44rem] text-m leading-[1.6] text-[var(--ink-2)]">{verdict || "UPSC marks, paper by paper, from the final result."}</p>

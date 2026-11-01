@@ -184,7 +184,7 @@
 
 
 /* Heading scale: every section heading is one size and never runs past two lines on desktop. */
-.up .h-hero { font-size: var(--text-l); max-width: 24ch; margin-inline: auto; }
+.up .h-hero { font-size: var(--text-h1); line-height: 1.02; max-width: 24ch; margin-inline: auto; }
 .up .h-sec { font-size: var(--text-l); max-width: 24ch; line-height: 1.12; }
 
 /* Inset panels: coloured sections sit inside the page frame instead of bleeding edge to edge. */

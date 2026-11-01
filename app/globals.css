@@ -12,6 +12,9 @@
   --text-m--line-height: 1.55;
   --text-l: clamp(28px, 1.8vw + 16px, 40px);
   --text-l--line-height: 1.12;
+  /* Page title (one H1 per page) only. */
+  --text-h1: clamp(38px, 2.6vw + 22px, 60px);
+  --text-h1--line-height: 1.02;
 }
 
 

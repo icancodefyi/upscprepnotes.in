@@ -211,7 +211,7 @@ export default async function MarksDatabasePage() {
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <h1 className="t-display text-l leading-[1.02]">UPSC topper marks, paper by paper</h1>
+              <h1 className="t-display text-h1">UPSC topper marks, paper by paper</h1>
               <p className="mt-4 max-w-[46rem] text-m leading-[1.6] text-[var(--ink-2)]">
                 {`Essay, GS I–IV, optional, interview and final total for ${fmt(rows.length)} rank holders from CSE ${years[years.length - 1]}–${years[0]}, taken from UPSC's published marks. Sort any column, filter by optional, and press + on two rows to compare them.`}
               </p>

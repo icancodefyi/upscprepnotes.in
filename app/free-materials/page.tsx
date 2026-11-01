@@ -52,7 +52,7 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
 
           <header className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div className="max-w-[40rem]">
-              <h1 className="t-display text-l leading-[1]">
+              <h1 className="t-display text-h1">
                 Free UPSC study material, <span className="swipe">in one shelf.</span>
               </h1>
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">

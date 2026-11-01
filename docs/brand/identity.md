@@ -28,7 +28,7 @@ The senior who kept every copy. Calm, exact, generous.
 - Always label a source. If we don't know who wrote a page, we say so.
 
 ## 4. Typography
-One typeface, two weights, three sizes. Nothing else.
+One typeface, two weights, three sizes, plus one page-title size for the H1.
 
 **Face:** Funnel Sans (the text cut of Funnel Display, our original display face), loaded in `components/brand/fonts.ts` with weights 400 and 700 only. Chosen over Inter, Plus Jakarta Sans, Instrument Sans and Figtree for keeping the brand voice in headings while staying legible in 14px tables.
 
@@ -36,7 +36,8 @@ One typeface, two weights, three sizes. Nothing else.
 |---|---|---|---|---|
 | Small | `text-s` | 14px | 1.45 | Labels, meta, chips, table cells, captions |
 | Medium | `text-m` | 17px | 1.55 | Body, buttons, card titles, inputs |
-| Large | `text-l` | 28–40px (fluid) | 1.12 | Page titles, section headings, headline numbers |
+| Large | `text-l` | 28–40px (fluid) | 1.12 | Section headings, headline numbers, long page titles |
+| Page title | `text-h1` | 38–60px (fluid) | 1.02 | The one H1 per page, when it is short (a name, a page name). The only exception to three sizes, so the title always outranks section headings |
 
 | Weight | Class | Use |
 |---|---|---|
