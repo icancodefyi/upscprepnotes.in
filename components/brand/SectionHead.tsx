@@ -17,7 +17,7 @@ export default function SectionHead({
     <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
       <div className="max-w-[40rem]">
         <h2 className="t-display h-sec">{title}</h2>
-        <p className={`mt-5 max-w-[34rem] text-[18px] leading-[1.55] tracking-[-0.011em] ${dark ? "text-white/70" : "text-[var(--ink-2)]"}`}>
+        <p className={`mt-5 max-w-[34rem] text-m leading-[1.55] tracking-[-0.011em] ${dark ? "text-white/70" : "text-[var(--ink-2)]"}`}>
           {lead}
         </p>
       </div>

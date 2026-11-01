@@ -328,7 +328,7 @@ export default async function TopperPage({ params }: Props) {
 
               <Section id="marksheet" title={`UPSC CSE ${topper.year} marksheet`} meta={papers.length ? `Compared with ${pool.length} complete topper marksheets` : undefined}>
                 {placeholder ? (
-                  <p className="rounded-[24px] bg-white p-6 text-[15.5px] leading-[1.6] text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line)]">
+                  <p className="rounded-[24px] bg-white p-6 text-m leading-[1.6] text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line)]">
                     {`We're checking ${first}'s marks against UPSC's published result. They'll appear here once they match.`}
                   </p>
                 ) : (

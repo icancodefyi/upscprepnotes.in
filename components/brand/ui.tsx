@@ -16,8 +16,8 @@ export function Section({
   return (
     <section id={id} className="scroll-mt-28">
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
-        <h2 className="t-head text-[24px] sm:text-[28px]">{title}</h2>
-        {meta && <div className="text-[13.5px] text-[var(--muted)]">{meta}</div>}
+        <h2 className="t-head text-l">{title}</h2>
+        {meta && <div className="text-s text-[var(--muted)]">{meta}</div>}
       </div>
       <div className="mt-5">{children}</div>
     </section>

@@ -109,8 +109,8 @@ export default function Files({
     return (
       <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_10px_24px_-16px_rgba(11,12,16,0.3)]">
         <p className="t-meta">FREE PDF</p>
-        <p className="mt-1.5 text-[16px] font-semibold leading-snug">{f.name}</p>
-        {f.section && <p className="mt-0.5 text-[13px] text-[var(--muted)]">{f.section}</p>}
+        <p className="mt-1.5 text-m font-bold leading-snug">{f.name}</p>
+        {f.section && <p className="mt-0.5 text-s text-[var(--muted)]">{f.section}</p>}
         {unlocked ? (
           <a href={f.downloadUrl} target="_blank" rel="noopener noreferrer" data-track={`material-file-${slug}`} className="btn btn-blue mt-4 w-full justify-between">
             Download PDF <span className="knob">↓</span>
@@ -131,15 +131,15 @@ export default function Files({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
-              className="h-12 w-full rounded-full bg-[var(--canvas)] px-5 text-[15px] outline-none shadow-[inset_0_0_0_1px_var(--line)] placeholder:text-[var(--muted)] focus:shadow-[inset_0_0_0_2px_var(--accent)]"
+              className="h-12 w-full rounded-full bg-[var(--canvas)] px-5 text-m outline-none shadow-[inset_0_0_0_1px_var(--line)] placeholder:text-[var(--muted)] focus:shadow-[inset_0_0_0_2px_var(--accent)]"
             />
             <button type="submit" disabled={status === "loading"} data-track={`material-file-gate-${slug}`} className="btn btn-blue mt-2.5 w-full justify-between">
               {status === "loading" ? "Opening…" : "Download free PDF"} <span className="knob">↓</span>
             </button>
-            {status === "error" && <p className="mt-2 text-[13px] text-[var(--mark-deep)]">That didn&apos;t go through. Try again.</p>}
+            {status === "error" && <p className="mt-2 text-s text-[var(--mark-deep)]">That didn&apos;t go through. Try again.</p>}
           </form>
         )}
-        <p className="mt-3 text-center text-[12.5px] text-[var(--muted)]">
+        <p className="mt-3 text-center text-s text-[var(--muted)]">
           {downloads > 0 ? `${downloads.toLocaleString("en-IN")} aspirants downloaded this · ` : ""}
           {unlocked ? "Unlocked on this device" : "Opens in a new tab, link also emailed"}
         </p>
@@ -148,7 +148,7 @@ export default function Files({
   }
 
   const chip = (on: boolean) =>
-    `shrink-0 rounded-full px-3 py-1.5 text-[13.5px] font-medium transition-colors ${on ? "bg-[var(--ink)] text-white" : "bg-[var(--canvas)] text-[var(--ink-2)] hover:text-[var(--ink)]"}`;
+    `shrink-0 rounded-full px-3 py-1.5 text-s transition-colors ${on ? "bg-[var(--ink)] text-white" : "bg-[var(--canvas)] text-[var(--ink-2)] hover:text-[var(--ink)]"}`;
 
   return (
     <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2)]">
@@ -160,7 +160,7 @@ export default function Files({
               <path d="M20 20l-3.5-3.5" />
             </svg>
             <span className="sr-only">Search files</span>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${files.length} files`} className="h-10 min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-[var(--muted)]" />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${files.length} files`} className="h-10 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]" />
           </label>
           {(sections.length > 1 || (hasHindi && hasEnglish)) && (
             <div className="flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none]">
@@ -186,9 +186,9 @@ export default function Files({
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-3 bg-[var(--canvas)]/60 px-5 py-2.5 text-[13px] text-[var(--muted)]">
+      <div className="flex items-center justify-between gap-3 bg-[var(--canvas)]/60 px-5 py-2.5 text-s text-[var(--muted)]">
         <span>{shown.length === files.length ? `${files.length} file${files.length === 1 ? "" : "s"}` : `${shown.length} of ${files.length} files`}</span>
-        <span className={unlocked ? "font-semibold text-[#14532d]" : ""}>{unlocked ? "✓ Unlocked on this device" : "One email unlocks every file here"}</span>
+        <span className={unlocked ? "font-bold text-[#14532d]" : ""}>{unlocked ? "✓ Unlocked on this device" : "One email unlocks every file here"}</span>
       </div>
 
       <ul className="max-h-[720px] divide-y divide-[var(--line)] overflow-y-auto">
@@ -197,16 +197,16 @@ export default function Files({
             <div className="flex items-center gap-3 px-5 py-3">
               <span className="t-meta tab w-8 shrink-0">{String(f.i + 1).padStart(2, "0")}</span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[15px] font-medium">{f.name}</span>
+                <span className="block truncate text-m">{f.name}</span>
                 {(f.section || f.language === "hi") && (
-                  <span className="mt-0.5 flex items-center gap-2 text-[12px] text-[var(--muted)]">
+                  <span className="mt-0.5 flex items-center gap-2 text-s text-[var(--muted)]">
                     {f.section && <span className="truncate">{f.section}</span>}
-                    {f.language === "hi" && <span className="rounded-full bg-[#FDE9C4] px-1.5 font-semibold text-[#7a4b00]">हिंदी</span>}
+                    {f.language === "hi" && <span className="rounded-full bg-[#FDE9C4] px-1.5 font-bold text-[#7a4b00]">हिंदी</span>}
                   </span>
                 )}
               </span>
               {unlocked ? (
-                <a href={f.downloadUrl} target="_blank" rel="noopener noreferrer" data-track={`material-file-${slug}`} className="btn btn-blue h-9 shrink-0 px-4 text-[13.5px]">
+                <a href={f.downloadUrl} target="_blank" rel="noopener noreferrer" data-track={`material-file-${slug}`} className="btn btn-blue h-9 shrink-0 px-4 [--btn-fs:14px]">
                   Download
                 </a>
               ) : (
@@ -214,7 +214,7 @@ export default function Files({
                   type="button"
                   onClick={() => (email && pending === null && read(EMAIL_KEY) ? unlock(f.i) : setPending(f.i))}
                   data-track={`material-file-gate-${slug}`}
-                  className="btn btn-ink h-9 shrink-0 px-4 text-[13.5px]"
+                  className="btn btn-ink h-9 shrink-0 px-4 [--btn-fs:14px]"
                 >
                   Download
                 </button>
@@ -228,7 +228,7 @@ export default function Files({
                 }}
                 className="mx-4 mb-4 rounded-[18px] bg-[#e9edff] p-4"
               >
-                <label htmlFor={`m-email-${f.i}`} className="text-[14px] font-medium text-[var(--accent-deep)]">
+                <label htmlFor={`m-email-${f.i}`} className="text-s text-[var(--accent-deep)]">
                   {files.length > 1 ? `Enter your email once to unlock all ${files.length} files.` : "Enter your email to download."}
                 </label>
                 <div className="mt-2.5 flex items-center rounded-full bg-white p-1 pl-4 shadow-[0_0_0_1px_var(--line-2)] focus-within:shadow-[0_0_0_2px_var(--accent)]">
@@ -240,19 +240,19 @@ export default function Files({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@email.com"
-                    className="h-10 min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-[var(--muted)]"
+                    className="h-10 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
                   />
-                  <button type="submit" disabled={status === "loading"} className="btn btn-blue h-10 px-4 text-[14px]">
+                  <button type="submit" disabled={status === "loading"} className="btn btn-blue h-10 px-4 [--btn-fs:14px]">
                     {status === "loading" ? "Opening…" : "Download"}
                   </button>
                 </div>
-                {status === "error" && <p className="mt-2 text-[13px] text-[var(--mark-deep)]">That didn&apos;t go through. Try again.</p>}
-                <p className="mt-2 text-[12px] text-[var(--accent-deep)]/70">The file opens in a new tab and the link is emailed to you.</p>
+                {status === "error" && <p className="mt-2 text-s text-[var(--mark-deep)]">That didn&apos;t go through. Try again.</p>}
+                <p className="mt-2 text-s text-[var(--accent-deep)]/70">The file opens in a new tab and the link is emailed to you.</p>
               </form>
             )}
           </li>
         ))}
-        {shown.length === 0 && <li className="px-5 py-8 text-center text-[14.5px] text-[var(--muted)]">{`No file matches “${q}”.`}</li>}
+        {shown.length === 0 && <li className="px-5 py-8 text-center text-s text-[var(--muted)]">{`No file matches “${q}”.`}</li>}
       </ul>
     </div>
   );

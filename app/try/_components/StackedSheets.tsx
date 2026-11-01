@@ -39,7 +39,7 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="t-meta" style={{ color: t.sub }}>{`CSE ${b.year} · ${b.optional}`}</p>
-              <h3 className="t-display mt-3 text-[clamp(36px,4.6vw,64px)]">{b.name}</h3>
+              <h3 className="t-display mt-3 text-l">{b.name}</h3>
             </div>
             {/* rubber stamp */}
             <div
@@ -47,8 +47,8 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
               style={{ borderColor: t.stamp, color: t.stamp, "--d": "200ms" } as React.CSSProperties}
             >
               <div>
-                <p className="t-meta text-[10.5px] tracking-[0.12em]" style={{ color: t.stamp }}>AIR</p>
-                <p className="t-display tab text-[40px] sm:text-[48px]">{b.rank}</p>
+                <p className="t-meta text-s tracking-[0.12em]" style={{ color: t.stamp }}>AIR</p>
+                <p className="t-display tab text-l">{b.rank}</p>
               </div>
             </div>
           </div>
@@ -57,18 +57,18 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
             {ROWS.map((r) => (
               <li
                 key={r.key}
-                className="flex items-baseline justify-between gap-3 py-2.5 text-[15px]"
+                className="flex items-baseline justify-between gap-3 py-2.5 text-m"
                 style={{ borderBottom: `1px solid ${t.rule}` }}
               >
                 <span style={{ color: t.sub }}>{r.label}</span>
-                <span className="relative tab font-semibold">
+                <span className="relative tab font-bold">
                   {p[r.key]}
                   {r.key === best && (
                     <svg aria-hidden viewBox="0 0 60 34" preserveAspectRatio="none" className="pointer-events-none absolute -left-5 -top-2 h-[calc(100%+16px)] w-[calc(100%+30px)] overflow-visible">
                       <path d="M8 18 C 8 6, 40 2, 54 10 C 62 16, 54 30, 30 31 C 12 32, 2 24, 10 12" fill="none" stroke={t.stamp} strokeWidth="2.2" strokeLinecap="round" />
                     </svg>
                   )}
-                  <span className="ml-1 text-[12px] font-normal" style={{ color: t.sub }}>{`/${r.max}`}</span>
+                  <span className="ml-1 text-s font-normal" style={{ color: t.sub }}>{`/${r.max}`}</span>
                 </span>
               </li>
             ))}
@@ -77,9 +77,9 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="t-meta" style={{ color: t.sub }}>FINAL MARKS</p>
-              <p className="t-display tab mt-1 text-[clamp(56px,6.4vw,88px)]">
+              <p className="t-display tab mt-1 text-l">
                 {fmt(b.total)}
-                <span className="ml-2 text-[20px] font-medium tracking-normal" style={{ color: t.sub }}>/ 2,025</span>
+                <span className="ml-2 text-m tracking-normal" style={{ color: t.sub }}>marks</span>
               </p>
             </div>
             <Link

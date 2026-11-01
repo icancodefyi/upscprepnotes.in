@@ -50,12 +50,12 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
             <span className="text-[var(--ink-2)]">Free study material</span>
           </nav>
 
-          <header className="mt-8 grid items-end gap-10 lg:grid-cols-[1fr_auto]">
+          <header className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div className="max-w-[40rem]">
-              <h1 className="t-display text-[clamp(38px,4.6vw,60px)] leading-[1]">
+              <h1 className="t-display text-l leading-[1]">
                 Free UPSC study material, <span className="swipe">in one shelf.</span>
               </h1>
-              <p className="mt-5 text-[17px] leading-[1.6] text-[var(--ink-2)]">
+              <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
                 {`${fmt(files)} PDFs in ${collections.length} collections from ${publishers} publishers: test series, notes, books, magazines and current affairs. Free to download; we only ask for an email once per collection.`}
               </p>
             </div>
@@ -66,16 +66,16 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
                   {popular.map((c, i) => (
                     <li key={c.slug}>
                       <Link href={`/free-materials/${c.slug}`} data-track="free-materials-popular" className="group flex items-center gap-3 rounded-[12px] px-2 py-2 hover:bg-[var(--canvas)]">
-                        <span className="t-display tab w-5 text-[18px] text-[var(--accent)]">{i + 1}</span>
+                        <span className="t-display tab w-5 text-m text-[var(--accent)]">{i + 1}</span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[14.5px] font-semibold group-hover:text-[var(--accent)]">{c.title}</span>
-                          <span className="block text-[12.5px] text-[var(--muted)]">{`${fmt(c.requests)} downloads · ${fmt(c.files)} ${c.files === 1 ? "file" : "files"}`}</span>
+                          <span className="block truncate text-s font-bold group-hover:text-[var(--accent)]">{c.title}</span>
+                          <span className="block text-s text-[var(--muted)]">{`${fmt(c.requests)} downloads · ${fmt(c.files)} ${c.files === 1 ? "file" : "files"}`}</span>
                         </span>
                       </Link>
                     </li>
                   ))}
                 </ol>
-                <p className="mt-3 border-t border-[var(--line)] pt-3 text-[12.5px] text-[var(--muted)]">{`${fmt(downloads)} downloads so far, counted by unique email.`}</p>
+                <p className="mt-3 border-t border-[var(--line)] pt-3 text-s text-[var(--muted)]">{`${fmt(downloads)} downloads so far, counted by unique email.`}</p>
               </div>
             )}
           </header>
@@ -87,15 +87,15 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
           {/* Cross-links: what this audience reads next */}
           <div className="mt-20 grid gap-4 md:grid-cols-3">
             <Link href="/toppers/toppers-copy-compilation" className="group rounded-[24px] bg-[var(--accent)] p-6 text-white shadow-[0_12px_30px_-16px_rgba(31,63,214,0.7)] md:col-span-2">
-              <p className="t-head text-[24px]">Coaching notes tell you what to study. Topper copies show how it was written.</p>
-              <p className="mt-2 text-[15px] text-white/75">Real handwritten Mains answer booklets from rank holders, free to read.</p>
+              <p className="t-head text-l">Coaching notes tell you what to study. Topper copies show how it was written.</p>
+              <p className="mt-2 text-m text-white/75">Real handwritten Mains answer booklets from rank holders, free to read.</p>
               <span className="btn mt-5 bg-white text-[var(--accent)] group-hover:bg-white/90">
                 Read topper answer copies <span className="knob bg-[var(--accent-soft)]">↗</span>
               </span>
             </Link>
             <Link href="/pyq" className="group flex flex-col justify-between rounded-[24px] bg-[#FFE45C] p-6">
-              <p className="t-display tab text-[56px] leading-none">{fmt(pyqs)}</p>
-              <p className="mt-4 text-[16px] font-semibold">UPSC Mains previous year questions, by year and paper →</p>
+              <p className="t-display tab text-l leading-none">{fmt(pyqs)}</p>
+              <p className="mt-4 text-m font-bold">UPSC Mains previous year questions, by year and paper →</p>
             </Link>
           </div>
         </div>

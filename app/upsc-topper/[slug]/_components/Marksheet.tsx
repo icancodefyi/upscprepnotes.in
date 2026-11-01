@@ -27,7 +27,7 @@ export default function Marksheet({
   return (
     <div className={`${card} overflow-hidden`}>
       <div className="overflow-x-auto">
-        <table className="w-full text-[14px] sm:text-[15px]">
+        <table className="w-full text-s sm:text-m">
           <thead>
             <tr className="t-meta text-left">
               <th className="px-4 pb-3 pt-5 font-normal sm:px-6">PAPER</th>
@@ -43,15 +43,15 @@ export default function Marksheet({
               return (
                 <tr key={p.key} className="border-t border-[var(--line)]">
                   <td className="px-4 py-3.5 sm:px-6">
-                    <span className="font-medium">{p.key === "optional" ? `Optional · ${optional}` : p.label}</span>
+                    <span className="">{p.key === "optional" ? `Optional · ${optional}` : p.label}</span>
                     {tag && (
-                      <span className={`ml-2 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${tag === "Strongest" ? "bg-[var(--hl)] text-[var(--hl-ink)]" : "bg-[#ffe4de] text-[var(--mark-deep)]"}`}>
+                      <span className={`ml-2 inline-block rounded-full px-2 py-0.5 text-s font-bold ${tag === "Strongest" ? "bg-[var(--hl)] text-[var(--hl-ink)]" : "bg-[#ffe4de] text-[var(--mark-deep)]"}`}>
                         {tag}
                       </span>
                     )}
                   </td>
                   <td className="tab whitespace-nowrap px-3 py-3.5 text-right">
-                    <span className="font-semibold">{p.score}</span>
+                    <span className="font-bold">{p.score}</span>
                     <span className="text-[var(--muted)]">{` / ${p.max}`}</span>
                   </td>
                   <td className="hidden w-[28%] px-3 py-3.5 sm:table-cell">
@@ -60,7 +60,7 @@ export default function Marksheet({
                       <span className="absolute -top-[3px] h-3 w-[2px] rounded bg-[var(--ink)]" style={{ left: `${(p.median / p.max) * 100}%` }} title={`Median ${p.median}`} />
                     </span>
                   </td>
-                  <td className={`tab whitespace-nowrap px-4 py-3.5 text-right font-medium sm:px-6 ${diff >= 0 ? "text-[var(--accent)]" : "text-[var(--mark-deep)]"}`}>
+                  <td className={`tab whitespace-nowrap px-4 py-3.5 text-right sm:px-6 ${diff >= 0 ? "text-[var(--accent)]" : "text-[var(--mark-deep)]"}`}>
                     {diff === 0 ? "at median" : `${diff > 0 ? "+" : "−"}${Math.abs(diff)}`}
                     <span className="ml-2 hidden font-normal text-[var(--muted)] sm:inline">{`#${p.position} of ${p.of}`}</span>
                   </td>
@@ -72,7 +72,7 @@ export default function Marksheet({
             {written > 0 && (
               <tr className="border-t border-[var(--line-2)] bg-[var(--canvas)]/60">
                 <td className="px-4 py-3.5 text-[var(--ink-2)] sm:px-6">Written total</td>
-                <td className="tab px-3 py-3.5 text-right font-semibold">{`${fmt(written)}`}<span className="font-normal text-[var(--muted)]"> / 1,750</span></td>
+                <td className="tab px-3 py-3.5 text-right font-bold">{`${fmt(written)}`}<span className="font-normal text-[var(--muted)]"> / 1,750</span></td>
                 <td className="hidden sm:table-cell" />
                 <td />
               </tr>
@@ -80,21 +80,21 @@ export default function Marksheet({
             {papers.length === 0 && interview > 0 && (
               <tr className="border-t border-[var(--line)]">
                 <td className="px-4 py-3.5 text-[var(--ink-2)] sm:px-6">Personality Test</td>
-                <td className="tab px-3 py-3.5 text-right font-semibold">{interview}<span className="font-normal text-[var(--muted)]"> / 275</span></td>
+                <td className="tab px-3 py-3.5 text-right font-bold">{interview}<span className="font-normal text-[var(--muted)]"> / 275</span></td>
                 <td className="hidden sm:table-cell" />
                 <td />
               </tr>
             )}
             <tr className="border-t border-[var(--line-2)] bg-[#e9edff]">
-              <td className="px-4 py-4 font-semibold text-[var(--accent-deep)] sm:px-6">Final total</td>
+              <td className="px-4 py-4 font-bold text-[var(--accent-deep)] sm:px-6">Final total</td>
               <td className="tab px-3 py-4 text-right">
                 <span className="relative inline-block">
-                  <span className="t-head text-[22px] text-[var(--accent-deep)]">{fmt(total)}</span>
+                  <span className="t-head text-l text-[var(--accent-deep)]">{fmt(total)}</span>
                   <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-3 -top-2 h-[calc(100%+16px)] w-[calc(100%+24px)] overflow-visible" style={{ "--d": "400ms" } as React.CSSProperties}>
                     <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3.5" strokeLinecap="round" />
                   </svg>
                 </span>
-                <span className="ml-3 text-[var(--muted)]">/ 2,025</span>
+                <span className="ml-3 text-[var(--muted)]">marks</span>
               </td>
               <td className="hidden sm:table-cell" />
               <td />
@@ -102,7 +102,7 @@ export default function Marksheet({
           </tfoot>
         </table>
       </div>
-      <p className="border-t border-[var(--line)] px-6 py-3.5 text-[13px] leading-[1.5] text-[var(--muted)]">
+      <p className="border-t border-[var(--line)] px-6 py-3.5 text-s leading-[1.5] text-[var(--muted)]">
         {papers.length
           ? `Black tick: the median of ${pool} complete topper marksheets. #1 is the highest score among them. Source: UPSC final result.`
           : "UPSC's result lists the written and interview totals for this topper. Paper-by-paper marks are not on record yet."}

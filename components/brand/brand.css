@@ -32,10 +32,10 @@
 .up ::selection { background: var(--hl); color: var(--ink); }
 
 /* Type */
-.up .t-display { font-family: var(--up-display), var(--up-sans), sans-serif; font-weight: 700; letter-spacing: -0.035em; line-height: 0.95; text-wrap: balance; }
-.up .t-head { font-family: var(--up-display), var(--up-sans), sans-serif; font-weight: 650; letter-spacing: -0.025em; line-height: 1.05; text-wrap: balance; }
+.up .t-display { font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance; }
+.up .t-head { font-weight: 700; letter-spacing: -0.022em; line-height: 1.12; text-wrap: balance; }
 .up .t-body { letter-spacing: -0.011em; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
-.up .t-meta { font-family: var(--up-mono), ui-monospace, monospace; font-size: 12px; color: var(--muted); letter-spacing: 0; }
+.up .t-meta { font-size: 14px; line-height: 1.45; font-weight: 400; color: var(--muted); letter-spacing: 0; }
 .up .tab { font-variant-numeric: tabular-nums; }
 
 /* Paper: real scans get grain + layered, warm-cast shadows so they read as objects, not images. */
@@ -62,7 +62,7 @@
 }
 
 /* Buttons */
-.up .btn { position: relative; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px; font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; transition: transform 160ms var(--ease), background-color 160ms ease, box-shadow 200ms ease, color 160ms ease; }
+.up .btn { position: relative; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px; font-size: var(--btn-fs, 17px); font-weight: 700; white-space: nowrap; letter-spacing: -0.01em; transition: transform 160ms var(--ease), background-color 160ms ease, box-shadow 200ms ease, color 160ms ease; }
 .up .btn:active { transform: scale(0.97); }
 .up .btn-ink { background: var(--ink); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 1px 2px rgba(0,0,0,0.2), 0 8px 20px -8px rgba(11,12,16,0.5); }
 .up .btn-ink:hover { background: #1f2229; }
@@ -184,8 +184,8 @@
 
 
 /* Heading scale: every section heading is one size and never runs past two lines on desktop. */
-.up .h-hero { font-size: clamp(40px, 4.6vw, 72px); max-width: 24ch; margin-inline: auto; }
-.up .h-sec { font-size: clamp(32px, 3.3vw, 50px); max-width: 24ch; line-height: 1.04; }
+.up .h-hero { font-size: var(--text-l); max-width: 24ch; margin-inline: auto; }
+.up .h-sec { font-size: var(--text-l); max-width: 24ch; line-height: 1.12; }
 
 /* Inset panels: coloured sections sit inside the page frame instead of bleeding edge to edge. */
 .up .panel {

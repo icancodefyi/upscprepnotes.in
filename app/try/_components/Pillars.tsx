@@ -56,8 +56,8 @@ function Art({ kind, light }: { kind: Tile["art"]; light: boolean }) {
   if (kind === "chat")
     return (
       <div aria-hidden className="mt-6 space-y-1.5">
-        <span className="block w-fit rounded-[12px] rounded-bl-[4px] px-3 py-1.5 text-[12.5px]" style={{ background: fill }}>Best optional for engineers?</span>
-        <span className="ml-auto block w-fit rounded-[12px] rounded-br-[4px] bg-[var(--hl)] px-3 py-1.5 text-[12.5px] text-[var(--ink)]">Here is what toppers chose…</span>
+        <span className="block w-fit rounded-[12px] rounded-bl-[4px] px-3 py-1.5 text-s" style={{ background: fill }}>Best optional for engineers?</span>
+        <span className="ml-auto block w-fit rounded-[12px] rounded-br-[4px] bg-[var(--hl)] px-3 py-1.5 text-s text-[var(--ink)]">Here is what toppers chose…</span>
       </div>
     );
   return null;
@@ -94,14 +94,14 @@ export default function Pillars({ counts }: { counts: Counts }) {
                 className={`group relative flex min-h-[230px] flex-col justify-between overflow-hidden rounded-[28px] p-7 transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1 sm:p-8 ${TONES[t.tone]} ${t.span}`}
               >
                 <div>
-                  <p className="t-display tab text-[clamp(44px,4.4vw,64px)]">{t.value}</p>
-                  <h3 className="t-head mt-3 text-[22px]">{t.title}</h3>
-                  <p className={`mt-2 max-w-[30rem] text-[15px] leading-[1.5] ${light ? "text-white/75" : "text-[var(--ink-2)]"}`}>{t.desc}</p>
+                  <p className="t-display tab text-l">{t.value}</p>
+                  <h3 className="t-head mt-3 text-l">{t.title}</h3>
+                  <p className={`mt-2 max-w-[30rem] text-m leading-[1.5] ${light ? "text-white/75" : "text-[var(--ink-2)]"}`}>{t.desc}</p>
                   <Art kind={t.art} light={light} />
                 </div>
                 <span
                   aria-hidden
-                  className={`absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-full text-[16px] transition-transform duration-300 group-hover:rotate-45 ${light ? "bg-white/15" : "bg-[rgba(11,12,16,0.06)]"}`}
+                  className={`absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-full text-m transition-transform duration-300 group-hover:rotate-45 ${light ? "bg-white/15" : "bg-[rgba(11,12,16,0.06)]"}`}
                 >
                   ↗
                 </span>

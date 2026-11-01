@@ -19,7 +19,7 @@ export default function Founder({ counts }: { counts: Counts }) {
               loading="lazy"
               className="aspect-square w-full rounded-[8px] object-cover"
             />
-            <p className="mt-3 text-center text-[15px] font-semibold tracking-[-0.01em] text-[var(--ink)]">Zaid Rakhange</p>
+            <p className="mt-3 text-center text-m font-bold tracking-[-0.01em] text-[var(--ink)]">Zaid Rakhange</p>
             <p className="t-meta text-center">Runs UPSCPrepNotes</p>
             <Pin tone="blue" className="absolute -top-5 left-1/2 h-11 w-10 -translate-x-1/2" />
           </div>
@@ -28,17 +28,17 @@ export default function Founder({ counts }: { counts: Counts }) {
             <h2 className="t-display h-sec">
               One person, <span className="text-[var(--accent)]">every result PDF.</span>
             </h2>
-            <p className="mt-5 max-w-[36rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
+            <p className="mt-5 max-w-[36rem] text-m leading-[1.55] text-[var(--ink-2)]">
               {`I'm Zaid, a software engineer. I've read every UPSC CSE result published since 2022 and entered the marks myself, paper by paper. That's how ${fmt(counts.toppers)} toppers ended up in one place you can compare.`}
             </p>
-            <p className="mt-4 max-w-[36rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
+            <p className="mt-4 max-w-[36rem] text-m leading-[1.55] text-[var(--ink-2)]">
               Not a coaching institute. If a number looks wrong, tell me and I&apos;ll check it against the result.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/about" className="btn btn-ink">
                 About the archive <span className="knob">↗</span>
               </Link>
-              <a href="mailto:hello@impiclabs.com" className="text-[15px] font-semibold text-[var(--accent)] hover:underline">
+              <a href="mailto:hello@impiclabs.com" className="text-m font-bold text-[var(--accent)] hover:underline">
                 hello@impiclabs.com
               </a>
             </div>

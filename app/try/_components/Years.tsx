@@ -32,29 +32,29 @@ export default function Years({ years }: { years: YearCard[] }) {
               <Pin className="absolute -top-5 left-1/2 h-11 w-10 -translate-x-1/2" />
               <Link href={`/year/${y.year}`} className="block">
                 <p className="t-meta">{`${fmt(y.count)} toppers on record`}</p>
-                <p className="t-display tab mt-2 text-[72px] group-hover:text-[var(--accent)]">{y.year}</p>
+                <p className="t-display tab mt-2 text-l group-hover:text-[var(--accent)]">{y.year}</p>
                 <h3 className="sr-only">{`UPSC CSE ${y.year} toppers`}</h3>
               </Link>
               {y.air1 && (
                 <Link href={`/upsc-topper/${y.air1.slug}`} className="mt-4 block rounded-[14px] bg-[var(--hl)] p-4 hover:brightness-95">
                   <p className="t-meta text-[var(--hl-ink)]">AIR 1</p>
-                  <p className="mt-1 text-[17px] font-semibold tracking-[-0.01em]">{y.air1.name}</p>
-                  <p className="text-[13px] text-[rgba(11,12,16,0.65)]">
+                  <p className="mt-1 text-m font-bold tracking-[-0.01em]">{y.air1.name}</p>
+                  <p className="text-s text-[rgba(11,12,16,0.65)]">
                     {y.air1.total > 0 ? `${fmt(y.air1.total)} marks · ${y.air1.optional}` : y.air1.optional}
                   </p>
                 </Link>
               )}
-              <ul className="mt-4 space-y-1.5 text-[14px]">
+              <ul className="mt-4 space-y-1.5 text-s">
                 {y.top3.filter((t) => t.rank !== 1).map((t) => (
                   <li key={t.slug}>
                     <Link href={`/upsc-topper/${t.slug}`} className="flex justify-between gap-3 text-[var(--ink-2)] hover:text-[var(--accent)]">
                       <span className="truncate">{t.name}</span>
-                      <span className="tab shrink-0 font-semibold text-[var(--ink)]">{`AIR ${t.rank}`}</span>
+                      <span className="tab shrink-0 font-bold text-[var(--ink)]">{`AIR ${t.rank}`}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link href={`/year/${y.year}`} className="mt-auto pt-6 text-[14px] font-semibold text-[var(--accent)]">
+              <Link href={`/year/${y.year}`} className="mt-auto pt-6 text-s font-bold text-[var(--accent)]">
                 {`All CSE ${y.year} toppers →`}
               </Link>
             </div>

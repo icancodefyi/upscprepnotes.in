@@ -18,7 +18,7 @@ export default function Verify({ counts }: { counts: Counts }) {
           <h2 className="t-display h-sec">
             Why you can trust <span className="swipe">these numbers.</span>
           </h2>
-          <p className="mt-5 max-w-[28rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
+          <p className="mt-5 max-w-[28rem] text-m leading-[1.55] text-[var(--ink-2)]">
             Coaching ads claim toppers. We publish their numbers, and show our working.
           </p>
           <Link href="/content/data-methodology-and-editorial-standards" className="btn btn-paper mt-8">
@@ -32,12 +32,12 @@ export default function Verify({ counts }: { counts: Counts }) {
               className="relative flex gap-6 rounded-[24px] bg-white p-7 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)]"
               style={{ marginLeft: `${(i % 2) * 28}px` }}
             >
-              <span className="t-display grid h-14 w-14 shrink-0 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-[26px] text-[var(--mark)]" style={{ transform: "rotate(-8deg)" }}>
+              <span className="t-display grid h-14 w-14 shrink-0 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-l text-[var(--mark)]" style={{ transform: "rotate(-8deg)" }}>
                 {s.n}
               </span>
               <div>
-                <h3 className="t-head text-[22px]">{s.title}</h3>
-                <p className="mt-2 text-[15.5px] leading-[1.55] text-[var(--ink-2)]">{s.body}</p>
+                <h3 className="t-head text-l">{s.title}</h3>
+                <p className="mt-2 text-m leading-[1.55] text-[var(--ink-2)]">{s.body}</p>
               </div>
             </li>
           ))}

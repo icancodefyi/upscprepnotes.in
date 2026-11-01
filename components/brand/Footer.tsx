@@ -68,12 +68,12 @@ function Badge() {
         <defs>
           <path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
         </defs>
-        <text style={{ fontFamily: "var(--up-mono)", fontSize: 13, letterSpacing: 2.2 }} fill="var(--ink)">
+        <text style={{ fontFamily: "var(--up-sans)", fontSize: 13, letterSpacing: 2.2 }} fill="var(--ink)">
           <textPath href="#ring">{RING}</textPath>
         </text>
       </svg>
       <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_12px_24px_-10px_rgba(255,74,61,0.8)] sm:inset-[40px]">
-        <span className="t-display text-[30px] sm:text-[36px]">AIR</span>
+        <span className="t-display text-l">AIR</span>
       </div>
     </div>
   );
@@ -86,7 +86,7 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
         <div className="flex flex-wrap items-start justify-between gap-10">
           <div className="max-w-[40rem]">
             <h2 className="t-display h-sec">Your three hours are coming.</h2>
-            <p className="mt-6 max-w-[30rem] text-[19px] leading-[1.55] text-[rgba(11,12,16,0.72)]">
+            <p className="mt-6 max-w-[30rem] text-m leading-[1.55] text-[rgba(11,12,16,0.72)]">
               {`Every topper on this page once sat where you are. Study the ${fmt(counts.toppers)} who made it, free.`}
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
@@ -101,8 +101,8 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
           <Badge />
         </div>
 
-        <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-[14.5px] sm:grid-cols-3 lg:grid-cols-7">
-          <div className="col-span-2 sm:col-span-3 lg:col-span-7 flex items-center gap-2.5 text-[16px] font-semibold">
+        <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-s sm:grid-cols-3 lg:grid-cols-7">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-7 flex items-center gap-2.5 text-m font-bold">
             <Mark size={22} /> UPSCPrepNotes
           </div>
           {[...FOOTER.slice(0, 2), ...(featured.length ? [{ title: "Featured toppers", links: featured }] : []), ...FOOTER.slice(2)].map((col) => (
@@ -118,7 +118,7 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
             </nav>
           ))}
         </div>
-        <p className="mt-10 text-[13px] text-[rgba(11,12,16,0.6)]">
+        <p className="mt-10 text-s text-[rgba(11,12,16,0.6)]">
           UPSCPrepNotes is independent and not affiliated with the Union Public Service Commission. Marks are taken from published UPSC results.
         </p>
       </div>

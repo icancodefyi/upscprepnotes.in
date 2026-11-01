@@ -76,9 +76,9 @@ export default function ComparePicker({
           role="combobox"
           aria-expanded={open}
           aria-controls="compare-results"
-          className="h-10 min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-[var(--muted)]"
+          className="h-10 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
         />
-        <span className="hidden rounded-full bg-[var(--canvas)] px-3 py-2 text-[12.5px] text-[var(--muted)] sm:inline">Name, AIR or optional</span>
+        <span className="hidden rounded-full bg-[var(--canvas)] px-3 py-2 text-s text-[var(--muted)] sm:inline">Name, AIR or optional</span>
       </label>
 
       {open && results.length > 0 && (
@@ -98,10 +98,10 @@ export default function ComparePicker({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={r.avatar} alt="" aria-hidden loading="lazy" className="h-9 w-9 shrink-0 rounded-full bg-[#e9edff] object-cover object-top" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[14.5px] font-medium">{r.name}</span>
-                  <span className="block truncate text-[12.5px] text-[var(--muted)]">{`AIR ${r.rank} · CSE ${r.year}${r.optional ? ` · ${r.optional}` : ""}`}</span>
+                  <span className="block truncate text-s">{r.name}</span>
+                  <span className="block truncate text-s text-[var(--muted)]">{`AIR ${r.rank} · CSE ${r.year}${r.optional ? ` · ${r.optional}` : ""}`}</span>
                 </span>
-                <span className="text-[13px] font-semibold text-[var(--accent)]">Compare →</span>
+                <span className="text-s font-bold text-[var(--accent)]">Compare →</span>
               </button>
             </li>
           ))}

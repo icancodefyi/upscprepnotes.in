@@ -31,12 +31,12 @@ export default function LeadPack() {
             <h2 className="t-display h-sec">
               Start tonight, <span className="text-[var(--hl)]">for free.</span>
             </h2>
-            <p className="mt-5 max-w-[30rem] text-[18px] leading-[1.55] text-white/70">
+            <p className="mt-5 max-w-[30rem] text-m leading-[1.55] text-white/70">
               Get the Government Schemes Compendium: central schemes, ministry by ministry, with the facts prelims and mains ask for. We&apos;ll email you the PDF.
             </p>
 
             {status === "done" ? (
-              <p className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3.5 text-[15.5px] font-semibold text-[var(--accent)]">
+              <p className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3.5 text-m font-bold text-[var(--accent)]">
                 Sent. Check your inbox, and the Promotions or Spam folder.
               </p>
             ) : (
@@ -50,15 +50,15 @@ export default function LeadPack() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@email.com"
                   disabled={status === "loading"}
-                  className="min-w-0 flex-1 bg-transparent text-[16px] text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
+                  className="min-w-0 flex-1 bg-transparent text-m text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
                 />
                 <button type="submit" disabled={status === "loading"} data-track="try-lead-submit" className="btn btn-ink h-12">
                   {status === "loading" ? "Sending…" : "Send it"}
                 </button>
               </form>
             )}
-            {status === "error" && <p className="mt-3 text-[14px] text-[var(--hl)]">That didn&apos;t go through. Try again in a moment.</p>}
-            <p className="mt-4 text-[13px] text-white/60">One email with the PDF, then occasional topper breakdowns. Unsubscribe any time.</p>
+            {status === "error" && <p className="mt-3 text-s text-[var(--hl)]">That didn&apos;t go through. Try again in a moment.</p>}
+            <p className="mt-4 text-s text-white/60">One email with the PDF, then occasional topper breakdowns. Unsubscribe any time.</p>
           </div>
 
           {/* The compendium as a physical document */}
@@ -72,13 +72,13 @@ export default function LeadPack() {
                 {k === 0 && (
                   <div className="p-6 text-[var(--ink)]">
                     <p className="t-meta">UPSCPrepNotes</p>
-                    <p className="t-display mt-3 text-[30px] leading-[1]">Government Schemes Compendium</p>
+                    <p className="t-display mt-3 text-l leading-[1]">Government Schemes Compendium</p>
                     <div className="mt-5 space-y-2">
                       {[90, 70, 84, 60, 76].map((w, i) => (
                         <span key={i} className="block h-2 rounded-full bg-[var(--canvas)]" style={{ width: `${w}%` }} />
                       ))}
                     </div>
-                    <span className="stamp absolute bottom-6 right-6 grid h-16 w-16 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-[13px] font-bold text-[var(--mark)]" style={{ "--d": "300ms" } as React.CSSProperties}>
+                    <span className="stamp absolute bottom-6 right-6 grid h-16 w-16 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-s font-bold text-[var(--mark)]" style={{ "--d": "300ms" } as React.CSSProperties}>
                       FREE
                     </span>
                   </div>

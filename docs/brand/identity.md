@@ -28,17 +28,28 @@ The senior who kept every copy. Calm, exact, generous.
 - Always label a source. If we don't know who wrote a page, we say so.
 
 ## 4. Typography
-One family, two cuts.
+One typeface, two weights, three sizes. Nothing else.
 
-| Role | Face | Size / weight | Tracking | Leading |
+**Face:** Inter, loaded in `components/brand/fonts.ts` with weights 400 and 700 only.
+
+| Size | Class | Value | Leading | Use |
 |---|---|---|---|---|
-| Display / H1 | Funnel Display | 40–72px / 700 | -0.035em | 0.95 |
-| Section heading (H2) | Funnel Display | 32–50px / 700, max 24ch, 2 lines | -0.035em | 1.04 |
-| Body | Geist | 17–19px / 400 | -0.011em | 1.55 |
-| UI | Geist | 13–15px / 500 | -0.005em | 1.4 |
-| Data & meta | Geist Mono | 11–13px / 400 | 0 | 1.4 |
+| Small | `text-s` | 14px | 1.45 | Labels, meta, chips, table cells, captions |
+| Medium | `text-m` | 17px | 1.55 | Body, buttons, card titles, inputs |
+| Large | `text-l` | 28–40px (fluid) | 1.12 | Page titles, section headings, headline numbers |
 
-Rules: tabular figures for every number; `text-wrap: balance` on headings; body measure 55–70 characters.
+| Weight | Class | Use |
+|---|---|---|
+| Regular 400 | (default) / `font-normal` | Body, meta, secondary text |
+| Bold 700 | `font-bold`, `t-head`, `t-display` | Headings, names, key numbers, buttons |
+
+Rules:
+- Never use an arbitrary size (`text-[15px]`) or another weight (500, 600). Pick one of the three.
+- Buttons are medium by default; a compact button uses small via `[--btn-fs:14px]`.
+- Hierarchy comes from weight, colour (`--ink` vs `--ink-2` vs `--muted`) and space, not from more sizes.
+- Tabular figures for every number; `text-wrap: balance` on headings; body measure 55–70 characters.
+- Max marks are written "of 2,025 marks", never "/ 2,025", which reads as the year 2025.
+- Graphic badges (the rank stamp, the footer seal) scale their lettering with the artwork and are exempt.
 
 ## 5. Colour (v1, in use on /try)
 Three brand colours carry everything: **ballpoint blue, paper white, highlighter yellow.** Examiner red is an accent for marks only.

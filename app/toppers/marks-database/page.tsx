@@ -211,14 +211,14 @@ export default async function MarksDatabasePage() {
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <h1 className="t-display text-[clamp(34px,4.4vw,58px)] leading-[1.02]">UPSC topper marks, paper by paper</h1>
-              <p className="mt-4 max-w-[46rem] text-[17px] leading-[1.6] text-[var(--ink-2)]">
+              <h1 className="t-display text-l leading-[1.02]">UPSC topper marks, paper by paper</h1>
+              <p className="mt-4 max-w-[46rem] text-m leading-[1.6] text-[var(--ink-2)]">
                 {`Essay, GS I–IV, optional, interview and final total for ${fmt(rows.length)} rank holders from CSE ${years[years.length - 1]}–${years[0]}, taken from UPSC's published marks. Sort any column, filter by optional, and press + on two rows to compare them.`}
               </p>
-              <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[14px] text-[var(--muted)]">
-                <span><span className="tab font-semibold text-[var(--ink)]">{fmt(full.length)}</span> complete marksheets</span>
-                <span><span className="tab font-semibold text-[var(--ink)]">{optionals.length}</span> optionals</span>
-                <span>Median total <span className="tab font-semibold text-[var(--ink)]">{fmt(rec.total.median)}</span> / 2,025</span>
+              <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-s text-[var(--muted)]">
+                <span><span className="tab font-bold text-[var(--ink)]">{fmt(full.length)}</span> complete marksheets</span>
+                <span><span className="tab font-bold text-[var(--ink)]">{optionals.length}</span> optionals</span>
+                <span>Median total <span className="tab font-bold text-[var(--ink)]">{fmt(rec.total.median)}</span> marks</span>
               </p>
             </div>
             {/* The best score on record, written like an examiner's note */}
@@ -226,13 +226,13 @@ export default async function MarksDatabasePage() {
               <Link href={`/upsc-topper/${best.slug}`} className={`${card} group hidden w-[300px] p-5 lg:block`}>
                 <p className="t-meta">HIGHEST TOTAL ON RECORD</p>
                 <p className="relative mt-3 inline-block">
-                  <span className="t-display tab text-[44px] leading-none">{fmt(best.total)}</span>
+                  <span className="t-display tab text-l leading-none">{fmt(best.total)}</span>
                   <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible">
                     <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3" strokeLinecap="round" />
                   </svg>
                 </p>
-                <p className="mt-3 text-[15px] font-semibold group-hover:text-[var(--accent)]">{best.name}</p>
-                <p className="text-[13.5px] text-[var(--muted)]">{`AIR ${best.rank} · CSE ${best.year} · ${best.optional}`}</p>
+                <p className="mt-3 text-m font-bold group-hover:text-[var(--accent)]">{best.name}</p>
+                <p className="text-s text-[var(--muted)]">{`AIR ${best.rank} · CSE ${best.year} · ${best.optional}`}</p>
               </Link>
             )}
           </div>
@@ -247,21 +247,21 @@ export default async function MarksDatabasePage() {
                 <ul className={`${card} divide-y divide-[var(--line)]`}>
                   {records.map((r) => (
                     <li key={r.key} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 px-5 py-4 sm:grid-cols-[180px_120px_1fr] sm:px-6">
-                      <span className="text-[15px] font-semibold">{r.label}</span>
-                      <span className="tab whitespace-nowrap text-right text-[15px] sm:text-left">
+                      <span className="text-m font-bold">{r.label}</span>
+                      <span className="tab whitespace-nowrap text-right text-m sm:text-left">
                         <span className="font-bold text-[var(--accent)]">{fmt(r.best)}</span>
-                        <span className="text-[var(--muted)]">{` / ${fmt(r.max)}`}</span>
+                        <span className="text-[var(--muted)]">{` of ${fmt(r.max)}`}</span>
                       </span>
-                      <span className="col-span-2 text-[14px] text-[var(--ink-2)] sm:col-span-1">
+                      <span className="col-span-2 text-s text-[var(--ink-2)] sm:col-span-1">
                         {r.who.slice(0, 3).map((w, i) => (
                           <span key={w.slug}>
                             {i > 0 && ", "}
-                            <Link href={`/upsc-topper/${w.slug}`} className="font-medium hover:text-[var(--accent)] hover:underline">{w.name}</Link>
+                            <Link href={`/upsc-topper/${w.slug}`} className=" hover:text-[var(--accent)] hover:underline">{w.name}</Link>
                             <span className="text-[var(--muted)]">{` (AIR ${w.rank}, ${w.year})`}</span>
                           </span>
                         ))}
                         {r.who.length > 3 && <span className="text-[var(--muted)]">{` +${r.who.length - 3} more`}</span>}
-                        <span className="block text-[12.5px] text-[var(--muted)]">{`Median ${fmt(r.median)}`}</span>
+                        <span className="block text-s text-[var(--muted)]">{`Median ${fmt(r.median)}`}</span>
                       </span>
                     </li>
                   ))}
@@ -271,7 +271,7 @@ export default async function MarksDatabasePage() {
               <Section id="patterns" title="What the numbers say">
                 <ol className="space-y-4">
                   {facts.map((f, i) => (
-                    <li key={i} className="flex gap-4 text-[16px] leading-[1.65] text-[var(--ink-2)]">
+                    <li key={i} className="flex gap-4 text-m leading-[1.65] text-[var(--ink-2)]">
                       <span className="t-meta tab mt-1 shrink-0">{String(i + 1).padStart(2, "0")}</span>
                       <p>{f}</p>
                     </li>
@@ -292,8 +292,8 @@ export default async function MarksDatabasePage() {
                             ))}
                           </span>
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-[15px] font-semibold group-hover:text-[var(--accent)]">{`${a.name.split(" ")[0]} vs ${b.name.split(" ")[0]}`}</span>
-                            <span className="block truncate text-[13px] text-[var(--muted)]">{`AIR ${a.rank} '${String(a.year).slice(2)} · AIR ${b.rank} '${String(b.year).slice(2)}`}</span>
+                            <span className="block truncate text-m font-bold group-hover:text-[var(--accent)]">{`${a.name.split(" ")[0]} vs ${b.name.split(" ")[0]}`}</span>
+                            <span className="block truncate text-s text-[var(--muted)]">{`AIR ${a.rank} '${String(a.year).slice(2)} · AIR ${b.rank} '${String(b.year).slice(2)}`}</span>
                           </span>
                           <span aria-hidden className="text-[var(--muted)] group-hover:text-[var(--accent)]">→</span>
                         </Link>
@@ -308,10 +308,10 @@ export default async function MarksDatabasePage() {
                   {faqs.map((f, i) => (
                     <details key={f.q} open={i === 0} className="group px-6 py-5">
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-                        <h3 className="text-[16.5px] font-semibold tracking-[-0.01em]">{f.q}</h3>
-                        <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[16px] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
+                        <h3 className="text-m font-bold tracking-[-0.01em]">{f.q}</h3>
+                        <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
                       </summary>
-                      <p className="mt-3 text-[15.5px] leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+                      <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
                     </details>
                   ))}
                 </div>
@@ -321,11 +321,11 @@ export default async function MarksDatabasePage() {
             <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
               <div className={`${card} p-5`}>
                 <p className="t-meta">BY OPTIONAL</p>
-                <ul className="mt-3 space-y-1 text-[14.5px]">
+                <ul className="mt-3 space-y-1 text-s">
                   {optionals.slice(0, 8).map(([s, c]) => (
                     <li key={s}>
                       <Link href={`/optional/${optionalSlug(s)}`} className="flex items-center justify-between rounded-[10px] px-2 py-1.5 text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]">
-                        {`${s} toppers`} <span className="tab text-[13px] text-[var(--muted)]">{c}</span>
+                        {`${s} toppers`} <span className="tab text-s text-[var(--muted)]">{c}</span>
                       </Link>
                     </li>
                   ))}
@@ -339,16 +339,16 @@ export default async function MarksDatabasePage() {
                     <img src={comp.image} alt="" aria-hidden loading="lazy" className="h-[92px] w-[72px] shrink-0 rounded-[8px] object-cover shadow-[0_0_0_1px_var(--line)]" />
                   )}
                   <span className="min-w-0">
-                    <span className="block text-[15px] font-semibold leading-tight group-hover:text-[var(--accent)]">{comp.title}</span>
-                    <span className="mt-1 block text-[13px] leading-[1.45] text-[var(--muted)]">{`${booklets ? `${booklets} handwritten booklets` : comp.tagline}: see how these marks were written`}</span>
-                    <span className="mt-2 inline-block rounded-[6px] bg-[var(--hl)] px-2 py-0.5 text-[14px] font-bold">{`₹${comp.price}`}</span>
+                    <span className="block text-m font-bold leading-tight group-hover:text-[var(--accent)]">{comp.title}</span>
+                    <span className="mt-1 block text-s leading-[1.45] text-[var(--muted)]">{`${booklets ? `${booklets} handwritten booklets` : comp.tagline}: see how these marks were written`}</span>
+                    <span className="mt-2 inline-block rounded-[6px] bg-[var(--hl)] px-2 py-0.5 text-s font-bold">{`₹${comp.price}`}</span>
                   </span>
                 </Link>
               )}
 
               <div className={`${card} p-5`}>
                 <p className="t-meta">EXPLORE</p>
-                <ul className="mt-3 space-y-1 text-[14.5px]">
+                <ul className="mt-3 space-y-1 text-s">
                   {[
                     ...years.map((y) => ({ href: `/year/${y}`, label: `All CSE ${y} toppers` })),
                     { href: "/toppers", label: "Every topper profile" },

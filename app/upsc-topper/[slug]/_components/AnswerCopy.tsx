@@ -50,7 +50,7 @@ function Unlock({ slug, first, pdfCount }: { slug: string; first: string; pdfCou
   if (status === "done") {
     return (
       <div className="mt-5">
-        <p className="text-[15px] font-semibold">{`Ready. We've also emailed the link${urls.length > 1 ? "s" : ""} to you.`}</p>
+        <p className="text-m font-bold">{`Ready. We've also emailed the link${urls.length > 1 ? "s" : ""} to you.`}</p>
         <div className="mt-3 flex flex-wrap gap-2.5">
           {urls.map((u, i) => (
             <a key={u} href={u} target="_blank" rel="noopener noreferrer" data-track="topper-copy-download" className="btn btn-blue h-11">
@@ -74,14 +74,14 @@ function Unlock({ slug, first, pdfCount }: { slug: string; first: string; pdfCou
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
           disabled={status === "loading"}
-          className="min-w-0 flex-1 bg-transparent text-[15.5px] outline-none placeholder:text-[var(--muted)]"
+          className="min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
         />
         <button type="submit" disabled={status === "loading"} data-track="topper-copy-unlock" className="btn btn-blue h-11 px-5">
           {status === "loading" ? "Getting it…" : pdfCount > 1 ? `Get ${pdfCount} PDFs` : "Get the PDF"}
         </button>
       </div>
-      {status === "error" && <p className="mt-2 text-[14px] text-[var(--mark-deep)]">That didn&apos;t go through. Try again in a moment.</p>}
-      <p className="mt-2.5 text-[12.5px] text-[var(--muted)]">{`Free. The download opens here, and ${first}'s copy is also emailed to you.`}</p>
+      {status === "error" && <p className="mt-2 text-s text-[var(--mark-deep)]">That didn&apos;t go through. Try again in a moment.</p>}
+      <p className="mt-2.5 text-s text-[var(--muted)]">{`Free. The download opens here, and ${first}'s copy is also emailed to you.`}</p>
     </form>
   );
 }
@@ -98,7 +98,7 @@ function Thumb({ name, preview }: { name: string; preview: string | null }) {
   return (
     <div aria-hidden className="paper relative flex aspect-[5/7] flex-col p-4">
       <span className="t-meta">UPSC · MAINS</span>
-      <span className="t-head mt-3 text-[16px] leading-tight">{name}</span>
+      <span className="t-head mt-3 text-m leading-tight">{name}</span>
       <span className="t-meta mt-1">ANSWER BOOKLET</span>
       <span className="mt-4 space-y-2.5">
         {[90, 76, 84, 64, 80, 70].map((w, i) => (
@@ -122,16 +122,16 @@ export default function AnswerCopy({ name, first, slug, pdfCount, preview, reque
         </div>
         <div className="flex flex-col">
           <span
-            className={`self-start rounded-full px-2.5 py-1 text-[12px] font-semibold ${
+            className={`self-start rounded-full px-2.5 py-1 text-s font-bold ${
               hasPdf ? "bg-[#d4f1df] text-[#14532d]" : preview ? "bg-[#e9edff] text-[var(--accent-deep)]" : "bg-[var(--canvas)] text-[var(--ink-2)]"
             }`}
           >
             {status}
           </span>
-          <h3 className="t-head mt-3 text-[21px]">
+          <h3 className="t-head mt-3 text-m">
             {hasPdf ? `${first}'s handwritten answer copy` : preview ? `A page from ${first}'s answer booklet` : `We don't hold ${first}'s answer copy`}
           </h3>
-          <p className="mt-2 text-[15px] leading-[1.6] text-[var(--ink-2)]">
+          <p className="mt-2 text-m leading-[1.6] text-[var(--ink-2)]">
             {hasPdf
               ? "Scanned as written, with the examiner's marks. The header shows where it comes from, often a coaching test series."
               : preview
@@ -139,14 +139,14 @@ export default function AnswerCopy({ name, first, slug, pdfCount, preview, reque
                 : `We only link copies we actually hold. No scan of ${first}'s booklet has reached us yet, so there is nothing to download here.`}
           </p>
           {requests > 0 && (
-            <p className="mt-4 flex items-center gap-2 text-[14px] text-[var(--ink)]">
+            <p className="mt-4 flex items-center gap-2 text-s text-[var(--ink)]">
               <span className="flex -space-x-1.5" aria-hidden>
                 {["#1f3fd6", "#ffe45c", "#ff4a3d"].map((c) => (
                   <span key={c} className="h-5 w-5 rounded-full border-2 border-white" style={{ background: c }} />
                 ))}
               </span>
               <span>
-                <span className="tab font-semibold">{fmt(requests)}</span>
+                <span className="tab font-bold">{fmt(requests)}</span>
                 {` aspirant${requests === 1 ? " has" : "s have"} requested ${first}'s copy`}
               </span>
             </p>
@@ -159,7 +159,7 @@ export default function AnswerCopy({ name, first, slug, pdfCount, preview, reque
                 <Link href={compilation.href} data-track="topper-copy-compilation" className="btn btn-ink h-11">
                   {`Browse the ${compilation.title}`} <span className="knob">↗</span>
                 </Link>
-                <span className="text-[13px] text-[var(--muted)]">{compilation.detail}</span>
+                <span className="text-s text-[var(--muted)]">{compilation.detail}</span>
               </div>
             )
           )}
@@ -168,7 +168,7 @@ export default function AnswerCopy({ name, first, slug, pdfCount, preview, reque
 
       {!hasPdf && others.length > 0 && (
         <div className={`${card} p-5 sm:p-6`}>
-          <p className="text-[15px] font-semibold">Free copies you can read right now</p>
+          <p className="text-m font-bold">Free copies you can read right now</p>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2">
             {others.map((t) => (
               <li key={t.slug}>
@@ -179,10 +179,10 @@ export default function AnswerCopy({ name, first, slug, pdfCount, preview, reque
                 >
                   <Avatar src={t.avatar} alt={t.name} size={44} />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[15px] font-medium group-hover:text-[var(--accent)]">{t.name}</span>
-                    <span className="block truncate text-[13px] text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year} · ${t.optional}`}</span>
+                    <span className="block truncate text-m group-hover:text-[var(--accent)]">{t.name}</span>
+                    <span className="block truncate text-s text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year} · ${t.optional}`}</span>
                   </span>
-                  {t.same && <span className="shrink-0 rounded-full bg-[var(--hl)] px-2 py-0.5 text-[11px] font-semibold text-[var(--hl-ink)]">Same optional</span>}
+                  {t.same && <span className="shrink-0 rounded-full bg-[var(--hl)] px-2 py-0.5 text-s font-bold text-[var(--hl-ink)]">Same optional</span>}
                 </Link>
               </li>
             ))}

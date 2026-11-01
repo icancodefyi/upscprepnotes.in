@@ -73,10 +73,10 @@ export default function MarksStory({ story }: { story: Story }) {
       {/* Mobile: running total stays visible */}
       <div className="sticky top-[76px] z-20 mx-4 mt-10 rounded-[14px] bg-white px-4 py-3 text-[var(--ink)] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.4)] lg:hidden">
         <div className="flex items-baseline justify-between">
-          <span className="text-[13px] text-[var(--muted)]">{done ? "Final total" : story.papers[active]?.label}</span>
-          <span className="t-head tab text-[22px]">
+          <span className="text-s text-[var(--muted)]">{done ? "Final total" : story.papers[active]?.label}</span>
+          <span className="t-head tab text-l">
             {fmt(running)}
-            <span className="ml-1 text-[12px] font-normal tracking-normal text-[var(--muted)]">/ 2,025</span>
+            <span className="ml-1 text-s font-normal tracking-normal text-[var(--muted)]">marks</span>
           </span>
         </div>
       </div>
@@ -92,11 +92,11 @@ export default function MarksStory({ story }: { story: Story }) {
               style={{ opacity: active === i ? 1 : 0.28 }}
             >
               <p className="t-meta text-white/60">{`${String(i + 1).padStart(2, "0")} — ${p.label}`}</p>
-              <p className="t-display tab mt-4 text-[96px] sm:text-[140px]">
+              <p className="t-display tab mt-4 text-l">
                 {p.score}
-                <span className="ml-3 text-[24px] font-medium tracking-[-0.02em] text-white/55">{`/ ${p.max}`}</span>
+                <span className="ml-3 text-l tracking-[-0.02em] text-white/55">{`/ ${p.max}`}</span>
               </p>
-              <p className="mt-5 max-w-[28rem] text-[19px] leading-[1.55] text-white/80">{narrate(p, story, weakest)}</p>
+              <p className="mt-5 max-w-[28rem] text-m leading-[1.55] text-white/80">{narrate(p, story, weakest)}</p>
             </li>
           ))}
           <li
@@ -104,8 +104,8 @@ export default function MarksStory({ story }: { story: Story }) {
             data-i={steps}
             className="flex min-h-[66vh] flex-col justify-center py-12"
           >
-            <p className="t-head text-[34px] sm:text-[44px]">{`${fmt(written)} written + ${interview} interview.`}</p>
-            <p className="mt-5 max-w-[28rem] text-[19px] leading-[1.55] text-white/80">
+            <p className="t-head text-l">{`${fmt(written)} written + ${interview} interview.`}</p>
+            <p className="mt-5 max-w-[28rem] text-m leading-[1.55] text-white/80">
               {`No single paper made ${first} AIR ${story.rank}. It was a steady score across all seven. Every topper in the archive has a sheet like this.`}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -124,7 +124,7 @@ export default function MarksStory({ story }: { story: Story }) {
             <div className="paper ml-auto max-w-[480px] rotate-[1.5deg] p-8 text-[var(--ink)]">
               <div className="flex items-start justify-between border-b border-[var(--line)] pb-5">
                 <div>
-                  <p className="t-head text-[22px]">{story.name}</p>
+                  <p className="t-head text-l">{story.name}</p>
                   <p className="t-meta mt-1.5">{`AIR ${story.rank} · CSE ${story.year} · ${story.optional}`}</p>
                 </div>
               </div>
@@ -134,22 +134,22 @@ export default function MarksStory({ story }: { story: Story }) {
                   return (
                     <li
                       key={p.key}
-                      className="fade grid grid-cols-[1fr_6.5rem_3rem] items-center gap-4 rounded-[10px] px-3 py-2.5 text-[14px]"
+                      className="fade grid grid-cols-[1fr_6.5rem_3rem] items-center gap-4 rounded-[10px] px-3 py-2.5 text-s"
                       style={{ background: i === active && !done ? "var(--hl)" : "transparent" }}
                     >
                       <span className={filled ? "" : "text-[var(--muted)]"}>{p.label}</span>
                       <span className="relative h-[6px] overflow-hidden rounded-full bg-[var(--canvas)] shadow-[inset_0_0_0_1px_var(--line)]">
                         <span className="bar absolute inset-0 rounded-full bg-[var(--accent)]" style={{ transform: `scaleX(${filled ? p.score / p.max : 0})` }} />
                       </span>
-                      <span className={`tab text-right font-semibold ${filled ? "" : "text-[var(--line-2)]"}`}>{filled ? p.score : "—"}</span>
+                      <span className={`tab text-right font-bold ${filled ? "" : "text-[var(--line-2)]"}`}>{filled ? p.score : "—"}</span>
                     </li>
                   );
                 })}
               </ul>
               <div className="mt-5 flex items-end justify-between border-t border-[var(--line)] pt-5">
-                <span className="text-[13px] text-[var(--muted)]">Total, out of 2,025</span>
+                <span className="text-s text-[var(--muted)]">Total, out of 2,025 marks</span>
                 <span className="relative">
-                  <span className="t-display tab text-[52px]">{fmt(running)}</span>
+                  <span className="t-display tab text-l">{fmt(running)}</span>
                   {done && (
                     <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible">
                       <path

@@ -25,16 +25,16 @@ export function strategySections(md: string) {
 }
 
 const md: Components = {
-  p: ({ children }) => <p className="mt-3 text-[16px] leading-[1.7] text-[var(--ink-2)] first:mt-0">{children}</p>,
+  p: ({ children }) => <p className="mt-3 text-m leading-[1.7] text-[var(--ink-2)] first:mt-0">{children}</p>,
   ul: ({ children }) => <ul className="mt-3 space-y-2">{children}</ul>,
-  ol: ({ children }) => <ol className="mt-3 list-decimal space-y-2 pl-5 text-[16px] leading-[1.6] text-[var(--ink-2)]">{children}</ol>,
+  ol: ({ children }) => <ol className="mt-3 list-decimal space-y-2 pl-5 text-m leading-[1.6] text-[var(--ink-2)]">{children}</ol>,
   li: ({ children }) => (
-    <li className="relative pl-5 text-[16px] leading-[1.6] text-[var(--ink-2)] [ol_&]:pl-1">
+    <li className="relative pl-5 text-m leading-[1.6] text-[var(--ink-2)] [ol_&]:pl-1">
       <span aria-hidden className="absolute left-0 top-[0.6em] h-[6px] w-[6px] rounded-full bg-[var(--accent)] [ol_&]:hidden" />
       {children}
     </li>
   ),
-  strong: ({ children }) => <strong className="font-semibold text-[var(--ink)]">{children}</strong>,
+  strong: ({ children }) => <strong className="font-bold text-[var(--ink)]">{children}</strong>,
   a: ({ href, children }) => (
     <a href={href} className="text-[var(--accent)] underline underline-offset-2" target={href?.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
       {children}
@@ -62,7 +62,7 @@ export function StrategyBlock({ first, strategy, generated }: { first: string; s
   return (
     <div className={`${card} overflow-hidden`}>
       {!generated && (
-        <p className="flex items-start gap-2.5 border-b border-[var(--line)] bg-[var(--canvas)] px-6 py-3.5 text-[13.5px] leading-[1.5] text-[var(--ink-2)]">
+        <p className="flex items-start gap-2.5 border-b border-[var(--line)] bg-[var(--canvas)] px-6 py-3.5 text-s leading-[1.5] text-[var(--ink-2)]">
           {`Put together from ${first}'s public interviews and reports, in our words.`}
         </p>
       )}
@@ -70,8 +70,8 @@ export function StrategyBlock({ first, strategy, generated }: { first: string; s
         {parts.map((s, i) => (
           <details key={s.title || i} open={i < 2} className="group px-6 py-5">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-              <h3 className="t-head text-[19px]">{s.title || "Overview"}</h3>
-              <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[16px] transition-transform duration-200 group-open:rotate-45">+</span>
+              <h3 className="t-head text-m">{s.title || "Overview"}</h3>
+              <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-200 group-open:rotate-45">+</span>
             </summary>
             <div className="mt-3">
               <Prose>{s.body}</Prose>
@@ -88,8 +88,8 @@ export function Insights({ items }: { items: string[] }) {
     <ol className="grid gap-3 sm:grid-cols-2">
       {items.map((text, i) => (
         <li key={i} className={`${card} flex gap-4 p-5`}>
-          <span className="t-display tab text-[22px] leading-none text-[var(--accent)]">{String(i + 1).padStart(2, "0")}</span>
-          <p className="text-[15px] leading-[1.6] text-[var(--ink-2)]">{text}</p>
+          <span className="t-display tab text-l leading-none text-[var(--accent)]">{String(i + 1).padStart(2, "0")}</span>
+          <p className="text-m leading-[1.6] text-[var(--ink-2)]">{text}</p>
         </li>
       ))}
     </ol>
@@ -104,10 +104,10 @@ export function Faq({ items }: { items: QA[] }) {
       {items.map((f, i) => (
         <details key={f.q} open={i === 0} className="group px-6 py-5">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-            <h3 className="text-[16.5px] font-semibold tracking-[-0.01em]">{f.q}</h3>
-            <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[16px] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
+            <h3 className="text-m font-bold tracking-[-0.01em]">{f.q}</h3>
+            <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
           </summary>
-          <p className="mt-3 max-w-[44rem] text-[15.5px] leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+          <p className="mt-3 max-w-[44rem] text-m leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
         </details>
       ))}
     </div>

@@ -51,7 +51,7 @@ function Fan({ booklets }: { booklets: Booklet[] }) {
               />
             </div>
             <span
-              className="fan-note absolute -top-6 left-1/2 w-max rounded-[7px] bg-[var(--hl)] px-3 py-1.5 text-[12.5px] font-semibold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.4)]"
+              className="fan-note absolute -top-6 left-1/2 w-max rounded-[7px] bg-[var(--hl)] px-3 py-1.5 text-s font-bold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.4)]"
               style={{ opacity: on ? 1 : 0, transform: `translateX(-50%) rotate(${on ? -3 : 0}deg) translateY(${on ? 0 : 8}px)` }}
             >
               {`${b.name} · AIR ${b.rank} · ${fmt(b.total)} marks`}
@@ -72,7 +72,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
             Before AIR 1, there was a <span className="text-[var(--accent)]">blue pen</span> and{" "}
             <span className="swipe">three hours.</span>
           </span>
-          <span className="rise t-body mx-auto mt-6 block max-w-[30rem] text-[18px] sm:text-[19px]" style={{ "--i": 1 } as React.CSSProperties}>
+          <span className="rise t-body mx-auto mt-6 block max-w-[30rem] text-m" style={{ "--i": 1 } as React.CSSProperties}>
             {`Real answer copies and marksheets of ${counts.toppers} UPSC toppers, CSE 2022–2025.`}
           </span>
         </h1>
@@ -89,14 +89,14 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
             name="search"
             autoComplete="off"
             placeholder="Search a topper, rank or optional"
-            className="min-w-0 flex-1 bg-transparent text-[16px] tracking-[-0.01em] outline-none placeholder:text-[var(--muted)]"
+            className="min-w-0 flex-1 bg-transparent text-m tracking-[-0.01em] outline-none placeholder:text-[var(--muted)]"
           />
           <button type="submit" data-track="try-hero-search" className="btn btn-blue h-12">
             Search
           </button>
         </form>
 
-        <nav aria-label="Popular" className="rise mx-auto mt-5 flex max-w-[32rem] flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-[14px] text-[var(--muted)]" style={{ "--i": 3 } as React.CSSProperties}>
+        <nav aria-label="Popular" className="rise mx-auto mt-5 flex max-w-[32rem] flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-s text-[var(--muted)]" style={{ "--i": 3 } as React.CSSProperties}>
           <span>Popular: </span>
           {POPULAR.map((p, i) => (
             <span key={p.href} className="whitespace-nowrap">

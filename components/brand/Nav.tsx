@@ -68,7 +68,7 @@ export default function Nav() {
         aria-label="Main"
         className="nav pointer-events-auto mx-auto flex h-14 max-w-[1000px] items-center justify-between rounded-full pl-4 pr-2"
       >
-        <Link href="/" className="flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.02em]">
+        <Link href="/" className="flex items-center gap-2.5 text-m font-bold tracking-[-0.02em]">
           <Mark />
           UPSCPrepNotes
         </Link>
@@ -78,14 +78,14 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               aria-current={pathname === l.href ? "page" : undefined}
-              className="rounded-full px-3.5 py-2 text-[14px] text-[var(--ink-2)] transition-colors duration-150 hover:bg-[var(--canvas)] hover:text-[var(--ink)] aria-[current=page]:text-[var(--ink)]"
+              className="rounded-full px-3.5 py-2 text-s text-[var(--ink-2)] transition-colors duration-150 hover:bg-[var(--canvas)] hover:text-[var(--ink)] aria-[current=page]:text-[var(--ink)]"
             >
               {l.label}
             </Link>
           ))}
         </div>
         <div className="flex items-center gap-1.5">
-          <Link href="/store" className="btn btn-ink h-10 px-4 text-[14px]">
+          <Link href="/store" className="btn btn-ink h-10 px-4 [--btn-fs:14px]">
             Store
           </Link>
           <button
@@ -111,7 +111,7 @@ export default function Nav() {
           <ul>
             {[...LINKS, ...MORE].map((l) => (
               <li key={l.href}>
-                <Link href={l.href} onClick={() => setOpen(false)} className="block rounded-[16px] px-4 py-3 text-[16px] font-medium text-[var(--ink)] hover:bg-[var(--canvas)]">
+                <Link href={l.href} onClick={() => setOpen(false)} className="block rounded-[16px] px-4 py-3 text-m text-[var(--ink)] hover:bg-[var(--canvas)]">
                   {l.label}
                 </Link>
               </li>

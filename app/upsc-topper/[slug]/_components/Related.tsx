@@ -34,7 +34,7 @@ export default function Related({ groups }: { groups: RelatedGroup[] }) {
             role="tab"
             aria-selected={g.id === group.id}
             onClick={() => setActive(g.id)}
-            className={`rounded-full px-3.5 py-1.5 text-[14px] font-medium transition-colors duration-150 ${
+            className={`rounded-full px-3.5 py-1.5 text-s transition-colors duration-150 ${
               g.id === group.id ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]"
             }`}
           >
@@ -53,14 +53,14 @@ export default function Related({ groups }: { groups: RelatedGroup[] }) {
             >
               <Avatar src={t.avatar} alt={t.name} size={52} />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[15.5px] font-semibold group-hover:text-[var(--accent)]">{t.name}</span>
-                <span className="block truncate text-[13px] text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year} · ${t.optional}`}</span>
-                {t.freeCopy && <span className="mt-1 inline-block rounded-full bg-[#d4f1df] px-2 py-0.5 text-[11px] font-semibold text-[#14532d]">Free copy</span>}
+                <span className="block truncate text-m font-bold group-hover:text-[var(--accent)]">{t.name}</span>
+                <span className="block truncate text-s text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year} · ${t.optional}`}</span>
+                {t.freeCopy && <span className="mt-1 inline-block rounded-full bg-[#d4f1df] px-2 py-0.5 text-s font-bold text-[#14532d]">Free copy</span>}
               </span>
               {t.total > 0 && (
                 <span className="tab shrink-0 text-right">
-                  <span className="block text-[16px] font-semibold">{fmt(t.total)}</span>
-                  <span className="block text-[11.5px] text-[var(--muted)]">/ 2,025</span>
+                  <span className="block text-m font-bold">{fmt(t.total)}</span>
+                  <span className="block text-s text-[var(--muted)]">marks</span>
                 </span>
               )}
             </Link>

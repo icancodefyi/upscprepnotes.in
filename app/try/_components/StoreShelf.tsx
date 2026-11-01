@@ -56,17 +56,17 @@ function Featured({ p }: { p: ShelfItem }) {
             className="paper absolute left-1/2 top-[8%] w-[58%] -translate-x-1/2 rounded-[10px] transition-transform duration-700 ease-[var(--ease)] group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]"
           />
         )}
-        <span className="absolute bottom-6 left-6 rotate-[-4deg] rounded-[10px] bg-[var(--hl)] px-4 py-2 text-[22px] font-bold tracking-[-0.02em] text-[var(--ink)] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]">
+        <span className="absolute bottom-6 left-6 rotate-[-4deg] rounded-[10px] bg-[var(--hl)] px-4 py-2 text-l font-bold tracking-[-0.02em] text-[var(--ink)] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]">
           {`₹${p.price}`}
         </span>
       </div>
 
       <div className="flex flex-col p-8 sm:p-12">
-        <h3 className="t-display text-[clamp(32px,3.2vw,46px)] group-hover:text-[var(--accent)]">{p.title}</h3>
-        <p className="mt-3 text-[17px] leading-[1.55] text-[var(--ink-2)]">{p.tagline}</p>
+        <h3 className="t-display text-l group-hover:text-[var(--accent)]">{p.title}</h3>
+        <p className="mt-3 text-m leading-[1.55] text-[var(--ink-2)]">{p.tagline}</p>
         <ul className="mt-8 space-y-3.5">
           {p.features.map((f) => (
-            <li key={f} className="flex gap-3 text-[15.5px] leading-[1.5] text-[var(--ink)]">
+            <li key={f} className="flex gap-3 text-m leading-[1.5] text-[var(--ink)]">
               <Tick />
               {f}
             </li>
@@ -76,7 +76,7 @@ function Featured({ p }: { p: ShelfItem }) {
           <span className="btn btn-blue">
             {`Get it for ₹${p.price}`} <span className="knob">↗</span>
           </span>
-          <span className="text-[14px] text-[var(--muted)]">One-time · instant download</span>
+          <span className="text-s text-[var(--muted)]">One-time · instant download</span>
         </div>
       </div>
     </Link>
@@ -100,19 +100,19 @@ function Cover({ p, i }: { p: ShelfItem; i: number }) {
           <span aria-hidden className="absolute inset-y-0 left-0 w-[4px] bg-[var(--ink)]/20" />
         </div>
         <span
-          className="absolute -right-2 -top-2 rounded-[8px] bg-[var(--hl)] px-3 py-1 text-[16px] font-bold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)]"
+          className="absolute -right-2 -top-2 rounded-[8px] bg-[var(--hl)] px-3 py-1 text-m font-bold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)]"
           style={{ transform: `rotate(${i % 2 ? 5 : -4}deg)` }}
         >
           {`₹${p.price}`}
         </span>
         {p.fileCount && (
-          <span className="t-meta absolute bottom-3 left-4 rounded-full bg-white/90 px-2.5 py-1 text-[11px] text-[var(--ink)] backdrop-blur">
+          <span className="t-meta absolute bottom-3 left-4 rounded-full bg-white/90 px-2.5 py-1 text-s text-[var(--ink)] backdrop-blur">
             {`${p.fileCount} FILES`}
           </span>
         )}
       </div>
-      <h3 className="t-head mt-5 text-[19px] group-hover:text-[var(--accent)]">{p.title}</h3>
-      <p className="mt-1.5 line-clamp-2 text-[14.5px] leading-[1.5] text-[var(--ink-2)]">{p.tagline}</p>
+      <h3 className="t-head mt-5 text-m group-hover:text-[var(--accent)]">{p.title}</h3>
+      <p className="mt-1.5 line-clamp-2 text-s leading-[1.5] text-[var(--ink-2)]">{p.tagline}</p>
     </Link>
   );
 }
@@ -152,7 +152,7 @@ export default function StoreShelf({ items }: { items: ShelfItem[] }) {
           <Featured p={featured} />
         </div>
 
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[14px] text-[var(--ink-2)]">
+        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-s text-[var(--ink-2)]">
           {TRUST.map((t) => (
             <li key={t} className="flex items-center gap-2">
               <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
@@ -162,7 +162,7 @@ export default function StoreShelf({ items }: { items: ShelfItem[] }) {
         </ul>
 
         <div className="mt-20 flex items-end justify-between gap-6">
-          <h3 className="t-head text-[26px]">More from the store</h3>
+          <h3 className="t-head text-l">More from the store</h3>
           <div className="flex gap-2">
             <button aria-label="Previous products" disabled={edge.start} onClick={() => rail.current?.scrollBy({ left: -296, behavior: "smooth" })} className="btn btn-paper h-11 w-11 justify-center p-0 disabled:opacity-35">←</button>
             <button aria-label="Next products" disabled={edge.end} onClick={() => rail.current?.scrollBy({ left: 296, behavior: "smooth" })} className="btn btn-ink h-11 w-11 justify-center p-0 disabled:opacity-35">→</button>

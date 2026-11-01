@@ -127,7 +127,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
   const pickedRows = picked.map((s) => rows.find((r) => r.slug === s)).filter(Boolean) as Row[];
 
   const chip = (on: boolean) =>
-    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors duration-150 ${
+    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-s transition-colors duration-150 ${
       on ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]"
     }`;
   const filtered = !!(year || optional || q.trim());
@@ -139,10 +139,10 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
         <button
           type="button"
           onClick={() => toggleSort(k)}
-          className={`t-meta inline-flex h-11 w-full items-center justify-end gap-1 whitespace-nowrap px-3 hover:text-[var(--ink)] ${on ? "!text-[var(--accent)]" : ""}`}
+          className={`t-meta inline-flex h-11 w-full items-center justify-end gap-1 whitespace-nowrap px-2.5 hover:text-[var(--ink)] ${on ? "!text-[var(--accent)]" : ""}`}
         >
-          {label.toUpperCase()}
-          <span aria-hidden className={`text-[10px] ${on ? "" : "opacity-0"}`}>{sort.dir === "asc" ? "▲" : "▼"}</span>
+          {label}
+          <span aria-hidden className={`text-s ${on ? "" : "opacity-0"}`}>{sort.dir === "asc" ? "▲" : "▼"}</span>
         </button>
       </th>
     );
@@ -162,10 +162,10 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search a name, rank or optional"
-            className="h-11 min-w-0 flex-1 bg-transparent text-[15.5px] outline-none placeholder:text-[var(--muted)]"
+            className="h-11 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
           />
           {q && (
-            <button type="button" onClick={() => setQ("")} className="rounded-full px-3 py-2 text-[13px] text-[var(--muted)] hover:text-[var(--ink)]">
+            <button type="button" onClick={() => setQ("")} className="rounded-full px-3 py-2 text-s text-[var(--muted)] hover:text-[var(--ink)]">
               Clear
             </button>
           )}
@@ -175,14 +175,14 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
           <select
             value={optional}
             onChange={(e) => setOptional(e.target.value)}
-            className="h-[52px] w-full appearance-none rounded-full bg-transparent pl-5 pr-10 text-[15px] font-medium outline-none"
+            className="h-[52px] w-full appearance-none rounded-full bg-transparent pl-5 pr-10 text-m outline-none"
           >
             <option value="">Every optional</option>
             {optionals.map(([s, c]) => (
               <option key={s} value={s}>{`${s} (${c})`}</option>
             ))}
           </select>
-          <span aria-hidden className="pointer-events-none absolute right-5 text-[12px] text-[var(--muted)]">▼</span>
+          <span aria-hidden className="pointer-events-none absolute right-5 text-s text-[var(--muted)]">▼</span>
         </label>
       </div>
       <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
@@ -200,7 +200,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
               setOptional("");
               setQ("");
             }}
-            className="ml-auto shrink-0 px-2 text-[13.5px] font-semibold text-[var(--accent)] hover:underline"
+            className="ml-auto shrink-0 px-2 text-s font-bold text-[var(--accent)] hover:underline"
           >
             Reset
           </button>
@@ -209,9 +209,9 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
 
       {/* Table */}
       <div className="mt-5 overflow-hidden rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]">
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3 text-[13px] text-[var(--muted)] sm:px-5">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3 text-s text-[var(--muted)] sm:px-5">
           <span>
-            <span className="tab font-semibold text-[var(--ink)]">{fmt(shown.length)}</span>
+            <span className="tab font-bold text-[var(--ink)]">{fmt(shown.length)}</span>
             {` of ${fmt(rows.length)} toppers · tap a column to sort`}
           </span>
           <span className="flex items-center gap-1.5">
@@ -220,13 +220,13 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
         </div>
 
         <div className="max-h-[min(78vh,860px)] overflow-auto overscroll-x-contain">
-          <table className="w-full min-w-[1040px] border-separate border-spacing-0 text-[14.5px]">
+          <table className="w-full min-w-[1040px] border-separate border-spacing-0 text-s">
             <thead className="sticky top-0 z-20">
               <tr>
                 <th scope="col" className="sticky left-0 z-30 bg-white p-0 text-left font-normal shadow-[inset_-1px_-1px_0_var(--line-2)]">
                   <button type="button" onClick={() => toggleSort("rank")} className={`t-meta inline-flex h-11 items-center gap-1 pl-[44px] pr-3 sm:pl-[52px] hover:text-[var(--ink)] ${sort.key === "rank" ? "!text-[var(--accent)]" : ""}`}>
-                    AIR · TOPPER
-                    <span aria-hidden className={`text-[10px] ${sort.key === "rank" ? "" : "opacity-0"}`}>{sort.dir === "asc" ? "▲" : "▼"}</span>
+                    AIR · Topper
+                    <span aria-hidden className={`text-s ${sort.key === "rank" ? "" : "opacity-0"}`}>{sort.dir === "asc" ? "▲" : "▼"}</span>
                   </button>
                 </th>
                 {COLS.map((c) => (
@@ -238,11 +238,11 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
               {shown.length > 0 && (
                 <tr className="bg-[var(--canvas)]">
                   <td className="sticky left-0 z-10 bg-[var(--canvas)] py-2.5 pl-[44px] pr-3 sm:pl-[52px] shadow-[inset_-1px_0_0_var(--line-2)]">
-                    <span className="text-[13.5px] font-semibold">Median</span>
-                    <span className="ml-1.5 text-[12.5px] text-[var(--muted)]">{filtered ? "of this view" : "of everyone"}</span>
+                    <span className="text-s font-bold">Median</span>
+                    <span className="ml-1.5 text-s text-[var(--muted)]">{filtered ? "of this view" : "of everyone"}</span>
                   </td>
                   {COLS.map((c) => (
-                    <td key={c.key} className={`tab px-3 py-2.5 text-right text-[13.5px] font-semibold text-[var(--ink-2)] ${c.key === "written" ? "border-l border-[var(--line)]" : ""}`}>
+                    <td key={c.key} className={`tab px-3 py-2.5 text-right text-s font-bold text-[var(--ink-2)] ${c.key === "written" ? "border-l border-[var(--line)]" : ""}`}>
                       {c.max ? (med[c.key] ? fmt(med[c.key]) : "—") : ""}
                     </td>
                   ))}
@@ -260,19 +260,19 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
                         aria-pressed={on}
                         aria-label={on ? `Remove ${r.name} from comparison` : `Compare ${r.name}`}
                         title={on ? "Remove from comparison" : "Add to comparison"}
-                        className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-[15px] leading-none transition-colors ${
+                        className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-m leading-none transition-colors ${
                           on ? "bg-[var(--ink)] text-white" : "text-[var(--muted)] shadow-[inset_0_0_0_1px_var(--line-2)] hover:text-[var(--accent)] hover:shadow-[inset_0_0_0_1.5px_var(--accent)]"
                         }`}
                       >
                         {on ? "✓" : "+"}
                       </button>
                       <Link href={`/upsc-topper/${r.slug}`} className="flex w-[124px] items-center gap-2 sm:w-[230px] sm:gap-2.5">
-                        <span className="tab w-7 shrink-0 sm:w-9 text-right text-[13px] font-semibold text-[var(--mark-deep)]">{r.rank}</span>
+                        <span className="tab w-7 shrink-0 sm:w-9 text-right text-s font-bold text-[var(--mark-deep)]">{r.rank}</span>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={r.avatar} alt="" aria-hidden loading="lazy" width={28} height={28} className="hidden h-7 w-7 shrink-0 rounded-full bg-[#e9edff] object-cover object-top sm:block" />
                         <span className="min-w-0">
-                          <span className="line-clamp-2 block font-semibold leading-[1.2] hover:text-[var(--accent)] sm:truncate">{r.name}</span>
-                          <span className="block truncate text-[12.5px] text-[var(--muted)]">{r.optional || "—"}</span>
+                          <span className="line-clamp-2 block font-bold leading-[1.2] hover:text-[var(--accent)] sm:truncate">{r.name}</span>
+                          <span className="block truncate text-s text-[var(--muted)]">{r.optional || "—"}</span>
                         </span>
                       </Link>
                       </span>
@@ -283,8 +283,8 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
                       return (
                         <td
                           key={c.key}
-                          className={`tab border-t border-[var(--line)] px-3 py-1.5 text-right ${c.key === "written" ? "border-l" : ""} ${
-                            c.key === "year" ? "text-[13.5px] text-[var(--muted)]" : c.strong ? "font-semibold" : "text-[var(--ink-2)]"
+                          className={`tab border-t border-[var(--line)] px-2.5 py-1.5 text-right ${c.key === "written" ? "border-l" : ""} ${
+                            c.key === "year" ? "text-s text-[var(--muted)]" : c.strong ? "font-bold" : "text-[var(--ink-2)]"
                           }`}
                         >
                           {v > 0 ? (
@@ -302,7 +302,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
               })}
               {shown.length === 0 && (
                 <tr>
-                  <td colSpan={COLS.length + 1} className="px-5 py-12 text-center text-[15px] text-[var(--ink-2)]">
+                  <td colSpan={COLS.length + 1} className="px-5 py-12 text-center text-m text-[var(--ink-2)]">
                     {`No topper matches${q ? ` “${q}”` : ""} with these filters.`}
                   </td>
                 </tr>
@@ -310,7 +310,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
             </tbody>
           </table>
         </div>
-        <p className="border-t border-[var(--line)] px-4 py-3 text-[13px] leading-[1.5] text-[var(--muted)] sm:px-5">
+        <p className="border-t border-[var(--line)] px-4 py-3 text-s leading-[1.5] text-[var(--muted)] sm:px-5">
           Essay, GS and optional papers are out of 250, interview out of 275, final total out of 2,025. A dash means UPSC&apos;s paper-wise marks for that topper aren&apos;t on record yet. Press + on any two rows to compare them.
         </p>
       </div>
@@ -319,11 +319,11 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
       {pickedRows.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
           <div className="mx-auto flex max-w-[640px] items-center gap-3 rounded-[22px] bg-[var(--ink)] p-2 pl-4 text-white shadow-[0_18px_40px_-16px_rgba(11,12,16,0.7)]">
-            <div className="flex min-w-0 flex-1 items-center gap-2 text-[14px]">
+            <div className="flex min-w-0 flex-1 items-center gap-2 text-s">
               {pickedRows.map((r, i) => (
                 <span key={r.slug} className="flex min-w-0 items-center gap-2">
                   {i > 0 && <span className="text-white/50">vs</span>}
-                  <button type="button" onClick={() => pick(r.slug)} className="min-w-0 truncate rounded-full bg-white/10 px-3 py-1.5 font-semibold hover:bg-white/20" title="Remove">
+                  <button type="button" onClick={() => pick(r.slug)} className="min-w-0 truncate rounded-full bg-white/10 px-3 py-1.5 font-bold hover:bg-white/20" title="Remove">
                     {r.name.split(" ")[0]} <span className="text-white/60">×</span>
                   </button>
                 </span>
@@ -331,11 +331,11 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
               {pickedRows.length === 1 && <span className="truncate text-white/60">Pick one more</span>}
             </div>
             {pickedRows.length === 2 ? (
-              <Link href={`/compare/${pickedRows[0].slug}-vs-${pickedRows[1].slug}`} data-track="marks-db-compare" className="btn btn-blue h-11 shrink-0 px-4 text-[14.5px]">
+              <Link href={`/compare/${pickedRows[0].slug}-vs-${pickedRows[1].slug}`} data-track="marks-db-compare" className="btn btn-blue h-11 shrink-0 px-4 [--btn-fs:14px]">
                 Compare <span className="knob">→</span>
               </Link>
             ) : (
-              <button type="button" onClick={() => setPicked([])} className="shrink-0 rounded-full px-3 py-2 text-[13.5px] text-white/70 hover:text-white">
+              <button type="button" onClick={() => setPicked([])} className="shrink-0 rounded-full px-3 py-2 text-s text-white/70 hover:text-white">
                 Clear
               </button>
             )}

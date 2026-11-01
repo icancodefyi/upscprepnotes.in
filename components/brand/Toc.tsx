@@ -44,8 +44,8 @@ export default function Toc({ items }: { items: { id: string; label: string }[] 
             <a
               href={`#${t.id}`}
               aria-current={on ? "location" : undefined}
-              className={`flex h-9 items-center gap-3 rounded-[10px] pl-6 pr-2 text-[14.5px] transition-colors duration-150 ${
-                on ? "font-semibold text-[var(--ink)]" : "text-[var(--ink-2)] hover:text-[var(--ink)]"
+              className={`flex h-9 items-center gap-3 rounded-[10px] pl-6 pr-2 text-s transition-colors duration-150 ${
+                on ? "font-bold text-[var(--ink)]" : "text-[var(--ink-2)] hover:text-[var(--ink)]"
               }`}
             >
               <span className={`t-meta tab w-5 ${on ? "text-[var(--accent)]" : ""}`}>{String(i + 1).padStart(2, "0")}</span>

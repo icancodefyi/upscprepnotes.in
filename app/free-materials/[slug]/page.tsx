@@ -210,17 +210,17 @@ export default async function PDFDetailPage({ params }: Props) {
                 <Folder c={c} />
               </div>
               <div className="min-w-0">
-                <p className="flex flex-wrap items-center gap-2 text-[14px]">
-                  <span className="rounded-full px-2.5 py-0.5 font-semibold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
+                <p className="flex flex-wrap items-center gap-2 text-s">
+                  <span className="rounded-full px-2.5 py-0.5 font-bold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
                   {c.brand && <span className="text-[var(--ink-2)]">{`by ${c.brand}`}</span>}
                 </p>
-                <h1 className="t-display mt-3 text-[clamp(28px,3.2vw,42px)] leading-[1.05]">{p.title}</h1>
-                {p.description && <p className="mt-3 text-[16px] leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
-                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[13.5px] text-[var(--muted)]">
+                <h1 className="t-display mt-3 text-l leading-[1.05]">{p.title}</h1>
+                {p.description && <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-s text-[var(--muted)]">
                   {facts.map((f) => (
                     <li key={f.k}>
                       {`${f.k} `}
-                      <span className="tab font-semibold text-[var(--ink)]">{f.v}</span>
+                      <span className="tab font-bold text-[var(--ink)]">{f.v}</span>
                     </li>
                   ))}
                 </ul>
@@ -235,19 +235,19 @@ export default async function PDFDetailPage({ params }: Props) {
             ) : (
               <div className={`${card} p-5`}>
                 <p className="t-meta">{`WHAT'S INSIDE · ${fmt(c.files)} FILES`}</p>
-                <ul className="mt-3 space-y-1.5 text-[14px]">
+                <ul className="mt-3 space-y-1.5 text-s">
                   {sections.slice(0, 6).map(([name, k]) => (
                     <li key={name} className="flex items-baseline justify-between gap-3">
                       <span className="truncate text-[var(--ink-2)]">{name}</span>
-                      <span className="tab shrink-0 font-semibold">{k}</span>
+                      <span className="tab shrink-0 font-bold">{k}</span>
                     </li>
                   ))}
-                  {sections.length > 6 && <li className="text-[13px] text-[var(--muted)]">{`+ ${sections.length - 6} more sections`}</li>}
+                  {sections.length > 6 && <li className="text-s text-[var(--muted)]">{`+ ${sections.length - 6} more sections`}</li>}
                 </ul>
                 <a href="#files" data-track="material-header-download" className="btn btn-blue mt-4 w-full justify-between">
                   {`Browse all ${fmt(c.files)} files`} <span className="knob">↓</span>
                 </a>
-                {c.requests > 0 && <p className="mt-2.5 text-center text-[12.5px] text-[var(--muted)]">{`${fmt(c.requests)} aspirants have downloaded from this`}</p>}
+                {c.requests > 0 && <p className="mt-2.5 text-center text-s text-[var(--muted)]">{`${fmt(c.requests)} aspirants have downloaded from this`}</p>}
               </div>
             )}
           </header>
@@ -261,14 +261,14 @@ export default async function PDFDetailPage({ params }: Props) {
               )}
 
               <Section id="about" title="About this material">
-                <div className={`${card} space-y-4 p-6 sm:p-7 text-[16px] leading-[1.7] text-[var(--ink-2)]`}>
+                <div className={`${card} space-y-4 p-6 sm:p-7 text-m leading-[1.7] text-[var(--ink-2)]`}>
                   <p>{whatsIncluded}</p>
                   <p>{editorial}</p>
                   {v2Content?.map((para, i) => <p key={i}>{para}</p>)}
                   {keyTopics.length > 0 && (
                     <ul className="flex flex-wrap gap-2 pt-2">
                       {keyTopics.map((t) => (
-                        <li key={t} className="rounded-full bg-[var(--canvas)] px-3 py-1 text-[13px] text-[var(--ink-2)]">{t}</li>
+                        <li key={t} className="rounded-full bg-[var(--canvas)] px-3 py-1 text-s text-[var(--ink-2)]">{t}</li>
                       ))}
                     </ul>
                   )}
@@ -277,12 +277,12 @@ export default async function PDFDetailPage({ params }: Props) {
 
               <Section id="how-to-use" title="How to use it for UPSC">
                 <div className={`${card} p-6 sm:p-7`}>
-                  <p className="text-[16px] leading-[1.7] text-[var(--ink-2)]">{howToUse}</p>
+                  <p className="text-m leading-[1.7] text-[var(--ink-2)]">{howToUse}</p>
                   {studyTips.length > 0 && (
                     <ol className="mt-5 grid gap-3 sm:grid-cols-2">
                       {studyTips.map((tip, i) => (
-                        <li key={i} className="flex gap-3 rounded-[16px] bg-[var(--canvas)] p-4 text-[14.5px] leading-[1.55] text-[var(--ink-2)]">
-                          <span className="t-display tab text-[18px] leading-none text-[var(--accent)]">{String(i + 1).padStart(2, "0")}</span>
+                        <li key={i} className="flex gap-3 rounded-[16px] bg-[var(--canvas)] p-4 text-s leading-[1.55] text-[var(--ink-2)]">
+                          <span className="t-display tab text-m leading-none text-[var(--accent)]">{String(i + 1).padStart(2, "0")}</span>
                           {tip}
                         </li>
                       ))}
@@ -297,10 +297,10 @@ export default async function PDFDetailPage({ params }: Props) {
                     {faqs.map((f, i) => (
                       <details key={f.q} open={i === 0} className="group px-6 py-5">
                         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-                          <h3 className="text-[16.5px] font-semibold tracking-[-0.01em]">{f.q}</h3>
-                          <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[16px] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
+                          <h3 className="text-m font-bold tracking-[-0.01em]">{f.q}</h3>
+                          <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
                         </summary>
-                        <p className="mt-3 text-[15.5px] leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+                        <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
                       </details>
                     ))}
                   </div>
@@ -326,9 +326,9 @@ export default async function PDFDetailPage({ params }: Props) {
                 <Toc items={toc} />
               </nav>
               <Link href="/toppers/toppers-copy-compilation" data-track="material-side-copies" className="group block rounded-[24px] bg-[var(--accent)] p-5 text-white">
-                <p className="text-[16px] font-semibold leading-snug">See how toppers actually wrote their answers</p>
-                <p className="mt-1.5 text-[13.5px] text-white/70">Real Mains booklets from rank holders, free to read.</p>
-                <span className="mt-3 inline-block text-[14px] font-semibold text-[var(--hl)] group-hover:underline">Topper answer copies →</span>
+                <p className="text-m font-bold leading-snug">See how toppers actually wrote their answers</p>
+                <p className="mt-1.5 text-s text-white/70">Real Mains booklets from rank holders, free to read.</p>
+                <span className="mt-3 inline-block text-s font-bold text-[var(--hl)] group-hover:underline">Topper answer copies →</span>
               </Link>
               {opt && optToppers.length > 0 && (
                 <div className={`${card} p-5`}>
@@ -336,18 +336,18 @@ export default async function PDFDetailPage({ params }: Props) {
                   <ul className="mt-3 space-y-1">
                     {optToppers.map((t) => (
                       <li key={t.slug}>
-                        <Link href={`/upsc-topper/${t.slug}`} data-track="material-optional-topper" className="flex items-center justify-between gap-3 rounded-[10px] px-2 py-1.5 text-[14px] hover:bg-[var(--canvas)]">
+                        <Link href={`/upsc-topper/${t.slug}`} data-track="material-optional-topper" className="flex items-center justify-between gap-3 rounded-[10px] px-2 py-1.5 text-s hover:bg-[var(--canvas)]">
                           <span className="min-w-0">
-                            <span className="block truncate font-medium">{displayName(t)}</span>
-                            <span className="block text-[12px] text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year}`}</span>
+                            <span className="block truncate">{displayName(t)}</span>
+                            <span className="block text-s text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year}`}</span>
                           </span>
-                          <span className="tab shrink-0 text-[13px] font-semibold text-[var(--accent)]">{`${(t.marks?.optional1 ?? 0) + (t.marks?.optional2 ?? 0)}/500`}</span>
+                          <span className="tab shrink-0 text-s font-bold text-[var(--accent)]">{`${(t.marks?.optional1 ?? 0) + (t.marks?.optional2 ?? 0)}/500`}</span>
                         </Link>
                       </li>
                     ))}
                   </ul>
                   {optHref && (
-                    <Link href={optHref} className="mt-3 block border-t border-[var(--line)] pt-3 text-[14px] font-semibold text-[var(--accent)] hover:underline">
+                    <Link href={optHref} className="mt-3 block border-t border-[var(--line)] pt-3 text-s font-bold text-[var(--accent)] hover:underline">
                       {`All ${opt.subject} optional toppers →`}
                     </Link>
                   )}
@@ -355,7 +355,7 @@ export default async function PDFDetailPage({ params }: Props) {
               )}
               <div className={`${card} p-5`}>
                 <p className="t-meta">EXPLORE</p>
-                <ul className="mt-3 space-y-1 text-[14.5px]">
+                <ul className="mt-3 space-y-1 text-s">
                   {[
                     { href: `/free-materials?category=${c.category}`, label: `All ${cat.label.toLowerCase()}` },
                     { href: "/free-materials", label: "Free study material" },

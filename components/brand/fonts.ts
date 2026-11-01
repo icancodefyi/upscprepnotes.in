@@ -1,8 +1,6 @@
-import { Funnel_Display, Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const sans = Geist({ subsets: ["latin"], variable: "--up-sans" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--up-mono" });
-const display = Funnel_Display({ subsets: ["latin"], variable: "--up-display" });
+/** One typeface for the whole brand: Inter, regular (400) and bold (700) only. */
+const inter = Inter({ subsets: ["latin"], weight: ["400", "700"], variable: "--up-sans", display: "swap" });
 
-/** Class names that expose the brand fonts as --up-sans / --up-mono / --up-display. */
-export const brandFonts = `${sans.variable} ${mono.variable} ${display.variable}`;
+export const brandFonts = inter.variable;

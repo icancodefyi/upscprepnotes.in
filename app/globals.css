@@ -4,6 +4,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Brand type scale: three sizes only (small, medium, large). Used as text-s / text-m / text-l. */
+@theme {
+  --text-s: 14px;
+  --text-s--line-height: 1.45;
+  --text-m: 17px;
+  --text-m--line-height: 1.55;
+  --text-l: clamp(28px, 1.8vw + 16px, 40px);
+  --text-l--line-height: 1.12;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -71,8 +71,8 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
                     boxShadow: on ? "0 -6px 16px -10px rgba(0,0,0,0.25)" : "none",
                   }}
                 >
-                  <span className="block text-[15px] font-semibold tracking-[-0.01em]">{o.subject}</span>
-                  <span className="t-meta block text-[11px] text-[rgba(11,12,16,0.55)]">{`${o.count} toppers`}</span>
+                  <span className="block text-m font-bold tracking-[-0.01em]">{o.subject}</span>
+                  <span className="t-meta block text-s text-[rgba(11,12,16,0.55)]">{`${o.count} toppers`}</span>
                 </button>
               );
             })}
@@ -85,18 +85,18 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
           >
             <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
               <div key={t.subject} className="rise">
-                <p className="t-display text-[clamp(44px,5.4vw,76px)]">{t.subject}</p>
+                <p className="t-display text-l">{t.subject}</p>
                 <div className="mt-8 grid grid-cols-2 gap-6">
                   <div>
                     <p className="t-meta text-[rgba(11,12,16,0.55)]">MEDIAN</p>
-                    <p className="t-display tab mt-1 text-[64px]">{t.median}</p>
+                    <p className="t-display tab mt-1 text-l">{t.median}</p>
                   </div>
                   <div>
                     <p className="t-meta text-[rgba(11,12,16,0.55)]">HIGHEST</p>
-                    <p className="t-display tab mt-1 text-[64px] text-[var(--mark-deep)]">{t.best.score}</p>
+                    <p className="t-display tab mt-1 text-l text-[var(--mark-deep)]">{t.best.score}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-[15px] text-[rgba(11,12,16,0.7)]">
+                <p className="mt-4 text-m text-[rgba(11,12,16,0.7)]">
                   {`Best on record: ${t.best.name}, AIR ${t.best.rank}, CSE ${t.best.year}.`}
                 </p>
                 {SLUGS[t.subject] && (

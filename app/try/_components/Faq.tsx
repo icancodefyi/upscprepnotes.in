@@ -40,9 +40,9 @@ export default function Faq({ counts }: { counts: Counts }) {
       <div className="mx-auto grid max-w-[1120px] gap-12 px-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <h2 className="t-display h-sec">Questions you might be asking.</h2>
-          <p className="mt-5 max-w-[24rem] text-[18px] leading-[1.55] text-[var(--ink-2)]">
-            Still unsure? Read the <Link href="/faq" className="font-semibold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">full FAQ</Link> or{" "}
-            <Link href="/contact" className="font-semibold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">write to us</Link>.
+          <p className="mt-5 max-w-[24rem] text-m leading-[1.55] text-[var(--ink-2)]">
+            Still unsure? Read the <Link href="/faq" className="font-bold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">full FAQ</Link> or{" "}
+            <Link href="/contact" className="font-bold text-[var(--accent)] underline decoration-[var(--accent-soft)] underline-offset-4 hover:decoration-[var(--accent)]">write to us</Link>.
           </p>
         </div>
         <div className="space-y-3">
@@ -53,15 +53,15 @@ export default function Faq({ counts }: { counts: Counts }) {
               className="group rounded-[22px] bg-white p-6 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] open:bg-[#f7f8ff] sm:p-7"
             >
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
-                <h3 className="t-head text-[20px] sm:text-[22px]">{f.q}</h3>
+                <h3 className="t-head text-m sm:text-l">{f.q}</h3>
                 <span
                   aria-hidden
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[18px] transition-transform duration-300 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white"
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-300 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white"
                 >
                   +
                 </span>
               </summary>
-              <p className="mt-4 max-w-[40rem] text-[16px] leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+              <p className="mt-4 max-w-[40rem] text-m leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
             </details>
           ))}
         </div>

@@ -10,7 +10,7 @@ const fmt = (n: number) => n.toLocaleString("en-IN");
 export function CompareBox({ base, first, items, picks }: { base: string; first: string; items: PickItem[]; picks: Suggestion[] }) {
   return (
     <div className={`${card} p-5 sm:p-6`}>
-      <p className="text-[15px] leading-[1.55] text-[var(--ink-2)]">
+      <p className="text-m leading-[1.55] text-[var(--ink-2)]">
         {`Put ${first}'s marksheet next to any other topper's, paper by paper.`}
       </p>
       <div className="mt-4">
@@ -27,8 +27,8 @@ export function CompareBox({ base, first, items, picks }: { base: string; first:
               >
                 <Avatar src={p.avatar} alt={p.name} size={40} />
                 <span className="min-w-0">
-                  <span className="block truncate text-[14px] font-semibold group-hover:text-[var(--accent)]">{`vs ${p.name}`}</span>
-                  <span className="block truncate text-[12.5px] text-[var(--muted)]">{p.reason}</span>
+                  <span className="block truncate text-s font-bold group-hover:text-[var(--accent)]">{`vs ${p.name}`}</span>
+                  <span className="block truncate text-s text-[var(--muted)]">{p.reason}</span>
                 </span>
               </Link>
             </li>
@@ -54,14 +54,14 @@ export function ContinueReading({ main, prev, next }: { main: Suggestion | null;
           <img src={main.avatar} alt={main.name} loading="lazy" className="h-24 w-24 shrink-0 rounded-[26px] bg-white object-cover object-top shadow-[0_0_0_4px_rgba(255,255,255,0.25)]" />
           <span className="min-w-0 flex-1">
             <span className="t-meta text-white/65">{`UP NEXT · ${main.reason.toUpperCase()}`}</span>
-            <span className="t-head mt-2 block text-[28px] sm:text-[34px]">{main.name}</span>
-            <span className="mt-1 block text-[15px] text-white/75">{`AIR ${main.rank} · CSE ${main.year} · ${main.optional}`}</span>
+            <span className="t-head mt-2 block text-l">{main.name}</span>
+            <span className="mt-1 block text-m text-white/75">{`AIR ${main.rank} · CSE ${main.year} · ${main.optional}`}</span>
           </span>
           <span className="flex items-center gap-5 sm:flex-col sm:items-end sm:gap-3">
             {main.total > 0 && (
               <span className="tab text-right">
-                <span className="t-display block text-[40px] leading-none">{fmt(main.total)}</span>
-                <span className="text-[12.5px] text-white/60">of 2,025</span>
+                <span className="t-display block text-l leading-none">{fmt(main.total)}</span>
+                <span className="text-s text-white/60">of 2,025 marks</span>
               </span>
             )}
             <span className="btn bg-white text-[var(--accent)] group-hover:bg-white/90">
@@ -80,11 +80,11 @@ export function ContinueReading({ main, prev, next }: { main: Suggestion | null;
                 data-track={i === 0 ? "topper-continue-prev" : "topper-continue-next"}
                 className={`${card} group flex items-center gap-4 p-4 ${i === 1 ? "sm:flex-row-reverse sm:text-right" : ""}`}
               >
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[18px] transition-transform group-hover:scale-105">{i === 0 ? "←" : "→"}</span>
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform group-hover:scale-105">{i === 0 ? "←" : "→"}</span>
                 <Avatar src={t.avatar} alt={t.name} size={44} />
                 <span className="min-w-0 flex-1">
                   <span className="t-meta block">{t.reason.toUpperCase()}</span>
-                  <span className="block truncate text-[15.5px] font-semibold group-hover:text-[var(--accent)]">{t.name}</span>
+                  <span className="block truncate text-m font-bold group-hover:text-[var(--accent)]">{t.name}</span>
                 </span>
               </Link>
             ) : (

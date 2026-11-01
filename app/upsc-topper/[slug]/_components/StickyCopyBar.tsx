@@ -39,8 +39,8 @@ export default function StickyCopyBar({ label, note }: { label: string; note: st
         className="mx-auto flex max-w-[520px] items-center justify-between gap-3 rounded-full bg-[var(--ink)] py-2 pl-5 pr-2 text-white shadow-[0_12px_30px_-10px_rgba(11,12,16,0.6)]"
       >
         <span className="min-w-0">
-          <span className="block truncate text-[14.5px] font-semibold">{label}</span>
-          <span className="block truncate text-[12px] text-white/60">{note}</span>
+          <span className="block truncate text-s font-bold">{label}</span>
+          <span className="block truncate text-s text-white/60">{note}</span>
         </span>
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--hl)] text-[var(--ink)]">↓</span>
       </a>

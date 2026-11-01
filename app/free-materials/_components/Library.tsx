@@ -32,7 +32,7 @@ export default function Library({ collections, active }: { collections: Collecti
   const groups = active || q ? [{ key: active ?? "results", items: shown }] : CATEGORY_ORDER.map((k) => ({ key: k, items: shown.filter((c) => c.category === k) })).filter((g) => g.items.length);
 
   const chip = (on: boolean) =>
-    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors duration-150 ${
+    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-s transition-colors duration-150 ${
       on ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]"
     }`;
 
@@ -49,10 +49,10 @@ export default function Library({ collections, active }: { collections: Collecti
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search Vision IAS, Shankar, Yojana, PSIR, ethics…"
-            className="h-11 min-w-0 flex-1 bg-transparent text-[15.5px] outline-none placeholder:text-[var(--muted)]"
+            className="h-11 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
           />
           {q && (
-            <button type="button" onClick={() => setQ("")} className="rounded-full px-3 py-2 text-[13px] text-[var(--muted)] hover:text-[var(--ink)]">
+            <button type="button" onClick={() => setQ("")} className="rounded-full px-3 py-2 text-s text-[var(--muted)] hover:text-[var(--ink)]">
               Clear
             </button>
           )}
@@ -75,7 +75,7 @@ export default function Library({ collections, active }: { collections: Collecti
       </div>
 
       {shown.length === 0 ? (
-        <p className="mt-10 rounded-[24px] bg-[var(--canvas)] p-8 text-center text-[15.5px] text-[var(--ink-2)]">
+        <p className="mt-10 rounded-[24px] bg-[var(--canvas)] p-8 text-center text-m text-[var(--ink-2)]">
           {`Nothing matches “${q}”. Try a publisher name like Vision, Forum or Drishti.`}
         </p>
       ) : (
@@ -84,11 +84,11 @@ export default function Library({ collections, active }: { collections: Collecti
             <section key={g.key} id={g.key}>
               {g.key !== "results" && (
                 <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="t-head text-[24px] sm:text-[28px]">{CATEGORY[g.key]?.label ?? "Results"}</h2>
-                  <span className="text-[13.5px] text-[var(--muted)]">{`${g.items.length} collections · ${fmt(g.items.reduce((s, c) => s + c.files, 0))} files`}</span>
+                  <h2 className="t-head text-l">{CATEGORY[g.key]?.label ?? "Results"}</h2>
+                  <span className="text-s text-[var(--muted)]">{`${g.items.length} collections · ${fmt(g.items.reduce((s, c) => s + c.files, 0))} files`}</span>
                 </div>
               )}
-              {g.key === "results" && <p className="text-[14px] text-[var(--muted)]">{`${shown.length} collection${shown.length === 1 ? "" : "s"}`}</p>}
+              {g.key === "results" && <p className="text-s text-[var(--muted)]">{`${shown.length} collection${shown.length === 1 ? "" : "s"}`}</p>}
               <ul className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 {g.items.map((c) => (
                   <li key={c.slug}>
