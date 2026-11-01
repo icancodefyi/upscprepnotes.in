@@ -10,7 +10,7 @@ export default function AfterHeader({ children }: { children: React.ReactNode })
   const [show, setShow] = useState(false);
   useEffect(() => {
     const header = document.getElementById("profile-header");
-    if (!header) return setShow(true);
+    if (!header) return;
     const io = new IntersectionObserver(([e]) => setShow(!e.isIntersecting && e.boundingClientRect.top < 0));
     io.observe(header);
     return () => io.disconnect();
