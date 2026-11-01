@@ -35,11 +35,16 @@ const FOOTER = [
     { href: "/content/how-to-score-100-plus-in-gs4", label: "GS IV ethics strategy" },
     { href: "/content/upsc-topper-answer-copies", label: "How to use answer copies" },
     { href: "/content/upsc-syllabus", label: "UPSC syllabus" },
+    { href: "/content/upsc-free-material", label: "Free UPSC material guide" },
+    { href: "/content/upsc-full-form", label: "UPSC full form" },
+    { href: "/content/upsc-full-form-hindi", label: "UPSC full form (Hindi)" },
+    { href: "/resources", label: "All resources" },
   ] },
   { title: "Store", links: [
     { href: "/store/answer-copies-compilation", label: "Answer copies compilation" },
     { href: "/store/top-10-rankers-strategy", label: "Top 10 rankers strategy" },
     { href: "/store/government-schemes-compilation", label: "Government schemes" },
+    { href: "/store/all-strategy-reports", label: "All strategy reports" },
     { href: "/store", label: "All products" },
   ] },
   { title: "Company", links: [
@@ -50,6 +55,7 @@ const FOOTER = [
     { href: "/privacy-policy", label: "Privacy policy" },
     { href: "/terms", label: "Terms of use" },
     { href: "/disclaimer", label: "Disclaimer" },
+    { href: "/llms.txt", label: "llms.txt (for AI)" },
   ] },
 ];
 
@@ -73,7 +79,7 @@ function Badge() {
   );
 }
 
-export default function Closing({ counts }: { counts: { toppers: number; full: number; aspirants: number } }) {
+export default function Closing({ counts, featured = [] }: { counts: { toppers: number; full: number; aspirants: number }; featured?: { href: string; label: string }[] }) {
   return (
     <footer className="panel relative bg-[var(--hl)]">
       <div className="mx-auto max-w-[1120px] px-6 pt-24 sm:pt-32">
@@ -95,11 +101,11 @@ export default function Closing({ counts }: { counts: { toppers: number; full: n
           <Badge />
         </div>
 
-        <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-[14.5px] sm:grid-cols-3 lg:grid-cols-6">
-          <div className="col-span-2 sm:col-span-3 lg:col-span-6 flex items-center gap-2.5 text-[16px] font-semibold">
+        <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-[14.5px] sm:grid-cols-3 lg:grid-cols-7">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-7 flex items-center gap-2.5 text-[16px] font-semibold">
             <Mark size={22} /> UPSCPrepNotes
           </div>
-          {FOOTER.map((col) => (
+          {[...FOOTER.slice(0, 2), ...(featured.length ? [{ title: "Featured toppers", links: featured }] : []), ...FOOTER.slice(2)].map((col) => (
             <nav key={col.title} aria-label={col.title}>
               <p className="t-meta text-[rgba(11,12,16,0.55)]">{col.title.toUpperCase()}</p>
               <ul className="mt-4 space-y-2.5">

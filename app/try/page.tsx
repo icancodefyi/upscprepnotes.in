@@ -7,6 +7,7 @@ import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { PDFModel } from "@/models/pdf.model";
 import { PYQModel } from "@/models/pyq.model";
 import { PRODUCTS } from "@/lib/store-products";
+import { getFeaturedToppers } from "@/services/topper.service";
 import Nav from "./_components/Nav";
 import Hero from "./_components/Hero";
 import Pillars from "./_components/Pillars";
@@ -30,6 +31,21 @@ export const metadata: Metadata = {
   title: "UPSC Topper Answer Copies & Marksheets (CSE 2022–2025) | UPSCPrepNotes",
   description:
     "Read real UPSC topper answer copies and paper-wise marksheets of 290 rank holders from CSE 2022–2025. Compare GS, essay, optional and interview marks, and study free topper strategy.",
+  alternates: { canonical: "https://upscprepnotes.in" },
+  openGraph: {
+    title: "UPSC Topper Answer Copies & Marksheets (CSE 2022–2025)",
+    description: "Real answer copies and paper-wise marks of 290 UPSC toppers. Compare every paper, free.",
+    url: "https://upscprepnotes.in",
+    siteName: "UPSCPrepNotes",
+    images: [{ url: "/logo.png", width: 512, height: 512 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UPSC Topper Answer Copies & Marksheets (CSE 2022–2025)",
+    description: "Real answer copies and paper-wise marks of 290 UPSC toppers. Compare every paper, free.",
+  },
+  // Preview only. Remove this line when the page replaces app/page.tsx.
   robots: { index: false, follow: false },
 };
 
@@ -187,6 +203,11 @@ async function getData() {
     .slice(0, 6)
     .map((p) => ({ slug: p.slug, title: p.title, tagline: p.tagline, price: p.price, image: p.image ?? null }));
 
+  const featured = (await getFeaturedToppers()).map((t) => ({
+    href: `/upsc-topper/${t.slug}`,
+    label: `${t.firstName} ${t.lastName}`.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_: string, a: string, b: string) => a + b.toLowerCase()),
+  }));
+
   const [dl, mat, pdfs, pyqCount, pyqYears] = await Promise.all([
     FreeDownloadLeadModel.distinct("email"),
     FreeMaterialLeadModel.distinct("email"),
@@ -200,6 +221,7 @@ async function getData() {
   ).length;
 
   return {
+    featured,
     booklets,
     optionals,
     guides,
@@ -231,7 +253,7 @@ async function getData() {
 
 
 export default async function TryPage() {
-  const { booklets, optionals, guides, years, shelf, counts, story } = await getData();
+  const { featured, booklets, optionals, guides, years, shelf, counts, story } = await getData();
 
   const schema = [
     {
@@ -242,6 +264,11 @@ export default async function TryPage() {
       description: `Real answer copies and paper-wise marks of ${counts.toppers} UPSC toppers from CSE 2022–2025.`,
       about: { "@id": "https://en.wikipedia.org/wiki/Union_Public_Service_Commission" },
       publisher: { "@type": "Organization", name: "UPSCPrepNotes", url: "https://upscprepnotes.in" },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" }],
     },
     {
       "@context": "https://schema.org",
@@ -278,7 +305,7 @@ export default async function TryPage() {
         <LeadPack />
         <Faq counts={counts} />
       </main>
-      <Closing counts={counts} />
+      <Closing counts={counts} featured={featured} />
     </div>
   );
 }
