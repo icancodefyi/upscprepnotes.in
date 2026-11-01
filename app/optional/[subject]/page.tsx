@@ -536,6 +536,7 @@ export default async function SubjectPage({ params }: Props) {
           <header className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-end">
             <div>
               <h1 className="t-display text-l">{subjectInfo.name} — UPSC Optional Subject, Toppers &amp; Strategy</h1>
+              <p className="mt-2 text-s font-bold text-[var(--muted)]">Optional Subject Intelligence</p>
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
                 {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
               </p>

@@ -85,6 +85,7 @@ export default async function CurrentAffairsHub() {
           {/* Hero */}
           <header className="max-w-[48rem]">
             <h1 className="t-display text-h1">Current Affairs for UPSC — Free Monthly & Yearly Compilations</h1>
+            <p className="mt-2 text-s font-bold text-[var(--muted)]">Current Affairs</p>
             <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
               Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers 12 UPSC-relevant sections with 60 topics, daily quizzes, AI-powered explanations, and downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
             </p>

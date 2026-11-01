@@ -253,6 +253,7 @@ export default async function YearPage({ params }: Props) {
 
           <header className="mt-8 max-w-[48rem]">
             <h1 className="t-display text-h1">UPSC {yearNum} Toppers — Complete Marks Dataset</h1>
+            <p className="mt-2 text-s font-bold text-[var(--muted)]">Yearly Archive</p>
             <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
               Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
             </p>

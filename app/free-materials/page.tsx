@@ -61,6 +61,7 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
           <header className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div className="max-w-[40rem]">
               <h1 className="t-display text-h1">Free UPSC Study Material</h1>
+              <p className="mt-2 text-s font-bold text-[var(--muted)]">Free Resource Library</p>
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
                 Download free UPSC study material curated from top coaching institutes. Test series, notes, books, magazines — all in one place.
                 <span className="mt-1 block text-s text-[var(--muted)]">{`${totalResources.toLocaleString()} individual resources available`}</span>

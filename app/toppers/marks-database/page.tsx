@@ -91,6 +91,7 @@ export default async function MarksDatabasePage() {
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h1 className="t-display text-h1">UPSC Topper Marks &amp; Scores Database</h1>
+              <p className="mt-2 text-s font-bold text-[var(--muted)]">UPSC Marks Database</p>
               <p className="mt-4 max-w-[46rem] text-m leading-[1.6] text-[var(--ink-2)]">
                 Complete marksheets of {toppers.length}+ UPSC rank holders — sortable by every subject. See how the toppers scored across GS papers, essay, optional, written, and interview. Free data for your UPSC prep strategy.
               </p>

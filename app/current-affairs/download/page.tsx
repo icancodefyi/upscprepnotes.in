@@ -47,6 +47,7 @@ export default async function CurrentAffairsDownloadPage() {
           <span className="text-[var(--ink-2)]">Free Download</span>
         </nav>
         <h1 className="t-display mt-8 text-h1">Current Affairs PDF – Monthly & Yearly Editions</h1>
+        <p className="mt-2 text-s font-bold text-[var(--muted)]">Free Download</p>
         <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
           Download free current affairs PDFs for UPSC preparation. Each monthly edition covers 12 sections — National News, International Relations, Economy, Environment, Science & Tech, Schemes, Reports, Awards, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section. The yearly compilation covers all 12 months of 2025 with ~850+ key events.
         </p>

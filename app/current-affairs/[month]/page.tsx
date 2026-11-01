@@ -89,6 +89,7 @@ export default async function MonthPage({ params }: { params: Promise<{ month: s
           <h1 className="t-display mt-8 text-h1">
             {data.month} {data.year}
           </h1>
+          <p className="mt-2 text-s font-bold text-[var(--muted)]">Monthly Edition</p>
           <p className="mt-4 max-w-xl text-m leading-[1.6] text-[var(--ink-2)]">
             UPSC Monthly Current Affairs — {data.sections.length} sections, {totalTopics} topics. Each topic includes key facts, data points, and context structured for quick revision.
           </p>

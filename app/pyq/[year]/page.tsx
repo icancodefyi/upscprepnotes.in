@@ -6,26 +6,10 @@ import {
   getAllPYQYears,
   getFormattedYearData,
 } from "@/data/upsc/pyq/cse-pyq";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Calendar,
-  Download,
-  FileText,
-  Sparkles,
-  CheckCircle2,
-  TrendingUp,
-  Star,
-  Target,
-  ChevronDown,
-  HelpCircle,
-  ExternalLink,
-  BookOpen,
-  BarChart3,
-  Lightbulb,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import BrandShell from "@/components/brand/BrandShell";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
 interface Props {
   params: Promise<{ year: string }>;
@@ -116,69 +100,37 @@ export default async function PYQYearPage({ params }: Props) {
     (p) => p.category === "Mains GS" || p.category === "Mains Essay"
   );
 
-  function PaperCard({
-    paper,
-  }: {
-    paper: (typeof papers)[0];
-  }) {
+  function PaperCard({ paper }: { paper: (typeof papers)[0] }) {
     const hasUrl = Boolean(paper.pdfUrl);
-
+    const id = paper.subject.toLowerCase().replace(/\s+/g, "-");
     return (
-      <div className="group bg-white border border-border p-5 hover:border-foreground transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-start gap-4 flex-1 min-w-0">
-          <div className="mt-1 text-brand-mint shrink-0">
-            <FileText
-              size={22}
-              className="fill-current stroke-foreground"
-            />
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-bold group-hover:underline decoration-brand-mint decoration-2 underline-offset-4 transition-all truncate">
-              {paper.subject}
-            </h3>
-            <p className="text-muted-foreground text-sm truncate">
-              {paper.description}
-            </p>
-          </div>
+      <div className={`${card} flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center`}>
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-m font-bold">{paper.subject}</h3>
+          <p className="truncate text-s text-[var(--muted)]">{paper.description}</p>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex shrink-0 gap-2">
           {hasUrl ? (
             <>
-              <Button
-                className="bg-white text-foreground border border-border hover:border-foreground"
-                asChild
-              >
-                <a
-                  href={paper.pdfUrl}
-                  data-track={`pyq-view-${paper.subject.toLowerCase().replace(/\s+/g, '-')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FileText className="w-4 h-4 mr-2" /> View
-                </a>
-              </Button>
-              <Button
-                className="bg-foreground text-white hover:bg-foreground/80"
-                asChild
-              >
-                <a href={paper.pdfUrl} data-track={`pyq-download-${paper.subject.toLowerCase().replace(/\s+/g, '-')}`} download>
-                  <Download className="w-4 h-4 mr-2" /> Download
-                </a>
-              </Button>
+              <a href={paper.pdfUrl} data-track={`pyq-view-${id}`} target="_blank" rel="noopener noreferrer" className="btn btn-paper h-10 px-4 [--btn-fs:14px]">
+                View
+              </a>
+              <a href={paper.pdfUrl} data-track={`pyq-download-${id}`} download className="btn btn-ink h-10 px-4 [--btn-fs:14px]">
+                Download ↓
+              </a>
             </>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground border border-dashed border-border">
-              <Sparkles size={12} />
-              Coming Soon
-            </span>
+            <span className="rounded-full bg-[var(--canvas)] px-3 py-1.5 text-s text-[var(--muted)]">Coming Soon</span>
           )}
         </div>
       </div>
     );
   }
 
+  const analysis = getPYQAnalysis(year);
+
   return (
-    <div className="min-h-screen bg-background">
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -186,97 +138,59 @@ export default async function PYQYearPage({ params }: Props) {
           { name: `CSE ${year}`, href: `/pyq/${year}` },
         ]}
       />
-      <div className="mx-auto max-w-7xl px-4 py-8">
-        {/* Breadcrumb */}
-        <div className="mb-8">
-          <Link
-            href="/pyq"
-            data-track="pyq-year-back"
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to PYQ Archive
-          </Link>
-        </div>
+      <div className="mx-auto max-w-[1180px] px-6 pb-24 pt-28 sm:pt-32">
+        <Link href="/pyq" data-track="pyq-year-back" className="text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)]">
+          ← Back to PYQ Archive
+        </Link>
 
-        <div className="grid lg:grid-cols-12 gap-12">
+        <div className="mt-8 grid gap-12 lg:grid-cols-12">
           {/* Main Content */}
-          <div className="lg:col-span-8 space-y-10">
-            {/* Header */}
-            <div>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-mint text-foreground border border-foreground rounded-full text-xs font-bold tracking-wider uppercase">
-                  Official Papers
-                </div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-muted-foreground border border-border rounded-full text-xs font-medium uppercase tracking-wider">
-                  <Calendar size={12} />
-                  Year: {year}
-                </div>
-              </div>
-
-              <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-                UPSC CSE{" "}
-                <span className="bg-brand-mint px-2 border border-foreground">
-                  {year}
-                </span>{" "}
-                Question Papers
+          <div className="min-w-0 space-y-12 lg:col-span-8">
+            <header>
+              <h1 className="t-display text-h1">
+                UPSC CSE <span className="swipe">{year}</span> Question Papers
               </h1>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Official UPSC Civil Services Examination {year} question papers
-                for Prelims (GS + CSAT) and Mains (Essay + GS Papers).
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-[var(--ink)] px-3 py-1 text-s font-bold text-white">Official Papers</span>
+                <span className="rounded-full bg-white px-3 py-1 text-s text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)]">Year: {year}</span>
+              </div>
+              <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+                Official UPSC Civil Services Examination {year} question papers for Prelims (GS + CSAT) and Mains (Essay + GS Papers).
               </p>
-            </div>
+            </header>
 
-            {/* Year Analysis */}
-            {(() => {
-              const analysis = getPYQAnalysis(year);
-              if (!analysis) return null;
-              return (
-                <section className="bg-white border border-border p-6 md:p-8">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">Analysis</p>
-                  <h2 className="text-2xl font-bold mb-4">{analysis.title}</h2>
-                  <div className="space-y-4 text-foreground/70 leading-relaxed">
-                    {analysis.paragraphs.map((p, i) => (
-                      <p key={i}>{p}</p>
-                    ))}
-                  </div>
-                </section>
-              );
-            })()}
+            {analysis && (
+              <section className={`${card} p-6 md:p-8`}>
+                <h2 className="t-head text-l">{analysis.title}</h2>
+                <p className="mt-1 text-s text-[var(--muted)]">Analysis</p>
+                <div className="mt-4 space-y-4">
+                  {analysis.paragraphs.map((para, i) => (
+                    <p key={i} className="text-m leading-[1.7] text-[var(--ink-2)]">{para}</p>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Inline Conversion */}
-            <div className="bg-white border border-border p-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Target className="w-5 h-5 text-foreground" />
-                    <span className="font-bold">Pro Tip from Toppers</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Don&apos;t just solve PYQs —{" "}
-                    <strong>analyze how toppers wrote their answers</strong>.
-                    See real answer copies with marks.
-                  </p>
-                </div>
-                <a
-                  href="/store"
-                  data-track="pyq-view-copies"
-                  className="inline-flex items-center gap-2 bg-foreground text-white font-bold px-6 py-3 hover:bg-foreground/80 transition-colors shrink-0 text-sm"
-                >
-                  Browse Store <ArrowRight className="w-4 h-4" />
-                </a>
+            <div className="flex flex-col gap-4 rounded-[20px] bg-[#fff8d6] p-6 sm:flex-row sm:items-center">
+              <div className="flex-1">
+                <p className="text-m font-bold">Pro Tip from Toppers</p>
+                <p className="mt-1 text-s text-[var(--ink-2)]">
+                  Don&apos;t just solve PYQs — <strong>analyze how toppers wrote their answers</strong>. See real answer copies with marks.
+                </p>
               </div>
+              <Link href="/store" data-track="pyq-view-copies" className="btn btn-ink h-11 shrink-0 px-5 [--btn-fs:14px]">
+                Browse Store →
+              </Link>
             </div>
 
-            {/* Prelims Section */}
             {prelimsPapers.length > 0 && (
               <section>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm">
-                    1
-                  </span>
+                <h2 className="t-head flex items-center gap-3 text-l">
+                  <span className="tab grid h-9 w-9 place-items-center rounded-full bg-[var(--ink)] text-s text-white">1</span>
                   Prelims Examination
                 </h2>
-                <div className="grid gap-4">
+                <div className="mt-5 grid gap-3">
                   {prelimsPapers.map((paper, idx) => (
                     <PaperCard key={idx} paper={paper} />
                   ))}
@@ -284,16 +198,13 @@ export default async function PYQYearPage({ params }: Props) {
               </section>
             )}
 
-            {/* Mains Section */}
             {mainsPapers.length > 0 && (
               <section>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-8 h-8 bg-brand-mint text-foreground border border-foreground flex items-center justify-center text-sm">
-                    2
-                  </span>
+                <h2 className="t-head flex items-center gap-3 text-l">
+                  <span className="tab grid h-9 w-9 place-items-center rounded-full bg-[var(--accent)] text-s text-white">2</span>
                   Mains Examination
                 </h2>
-                <div className="grid gap-4">
+                <div className="mt-5 grid gap-3">
                   {mainsPapers.map((paper, idx) => (
                     <PaperCard key={idx} paper={paper} />
                   ))}
@@ -302,149 +213,100 @@ export default async function PYQYearPage({ params }: Props) {
             )}
 
             {/* Paper Structure & Breakdown */}
-            <section className="bg-white border border-border p-6 md:p-8">
-              <div className="flex items-center gap-2 mb-1">
-                <BarChart3 className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Breakdown</span>
+            <section className={`${card} p-6 md:p-8`}>
+              <h2 className="t-head text-l">UPSC CSE {year} Paper Structure & Breakdown</h2>
+              <p className="mt-1 text-s text-[var(--muted)]">Breakdown</p>
+              <div className="mt-4 space-y-4 text-m leading-[1.7] text-[var(--ink-2)]">
+                <p>
+                  The UPSC Civil Services Examination {year} consisted of two stages: Prelims and Mains. The Prelims included two objective-type papers — General Studies (GS) Paper 1 and CSAT (Paper 2). GS Paper 1 covered History, Geography, Polity, Economy, Science & Technology, Environment, and Current Affairs. CSAT tested comprehension, logical reasoning, and quantitative aptitude.
+                </p>
+                <p>
+                  The Mains examination comprised 9 papers: Essay (one paper with two essays), GS Paper 1 (Heritage, History, Geography, Society), GS Paper 2 (Polity, Governance, International Relations), GS Paper 3 (Economy, Environment, Security, Technology), GS Paper 4 (Ethics, Integrity, Aptitude), two Optional Subject papers, and two language papers (qualifying in nature). Each GS paper carried 250 marks, totaling 1750 marks for the written segment.
+                </p>
               </div>
-              <h2 className="text-2xl font-bold mb-4">UPSC CSE {year} Paper Structure & Breakdown</h2>
-              <div className="space-y-4 text-foreground/70 leading-relaxed">
-                <p>
-                  The UPSC Civil Services Examination {year} consisted of two stages: Prelims and Mains. 
-                  The Prelims included two objective-type papers — General Studies (GS) Paper 1 and CSAT (Paper 2). 
-                  GS Paper 1 covered History, Geography, Polity, Economy, Science & Technology, Environment, and Current Affairs. 
-                  CSAT tested comprehension, logical reasoning, and quantitative aptitude.
-                </p>
-                <p>
-                  The Mains examination comprised 9 papers: Essay (one paper with two essays), GS Paper 1 (Heritage, History, Geography, Society), 
-                  GS Paper 2 (Polity, Governance, International Relations), GS Paper 3 (Economy, Environment, Security, Technology), 
-                  GS Paper 4 (Ethics, Integrity, Aptitude), two Optional Subject papers, and two language papers (qualifying in nature). 
-                  Each GS paper carried 250 marks, totaling 1750 marks for the written segment.
-                </p>
-                <div className="bg-secondary border border-border p-5 mt-4">
-                  <h3 className="font-bold mb-3 text-base">Quick Stats: {year} Papers</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div>
-                      <span className="text-2xl font-black">{prelimsPapers.length}</span>
-                      <p className="text-xs text-muted-foreground">Prelims Papers</p>
+              <div className="mt-6 rounded-[16px] bg-[var(--canvas)] p-5">
+                <h3 className="text-m font-bold">Quick Stats: {year} Papers</h3>
+                <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  {[
+                    { v: prelimsPapers.length, k: "Prelims Papers" },
+                    { v: mainsPapers.length, k: "Mains Papers" },
+                    { v: papers.length, k: "Total Papers" },
+                    { v: year, k: "Exam Year" },
+                  ].map((x) => (
+                    <div key={x.k}>
+                      <span className="t-display tab text-l leading-none">{x.v}</span>
+                      <p className="mt-1 text-s text-[var(--muted)]">{x.k}</p>
                     </div>
-                    <div>
-                      <span className="text-2xl font-black">{mainsPapers.length}</span>
-                      <p className="text-xs text-muted-foreground">Mains Papers</p>
-                    </div>
-                    <div>
-                      <span className="text-2xl font-black">{papers.length}</span>
-                      <p className="text-xs text-muted-foreground">Total Papers</p>
-                    </div>
-                    <div>
-                      <span className="text-2xl font-black">{year}</span>
-                      <p className="text-xs text-muted-foreground">Exam Year</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </section>
 
             {/* How to Use These Papers */}
-            <section className="bg-white border border-border p-6 md:p-8">
-              <div className="flex items-center gap-2 mb-1">
-                <Lightbulb className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Guide</span>
-              </div>
-              <h2 className="text-2xl font-bold mb-4">How to Use the {year} Question Papers for Maximum Benefit</h2>
-              <div className="space-y-4 text-foreground/70 leading-relaxed">
-                <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">1</span>
-                  <div>
-                    <h3 className="font-bold">Start with Prelims Papers</h3>
-                    <p className="text-sm">Attempt GS Paper 1 under timed conditions (2 hours, 100 questions). Review each incorrect answer and note the topic. Repeat with CSAT. Track your accuracy percentage and identify weak subjects for focused revision.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">2</span>
-                  <div>
-                    <h3 className="font-bold">Analyze Mains Paper Demands</h3>
-                    <p className="text-sm">Read each GS paper thoroughly before attempting to write. Note the keyword demands — "Discuss", "Analyze", "Critically examine" each requires a different answer structure. Create a mind map of topics tested across all four GS papers to understand the syllabus coverage.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">3</span>
-                  <div>
-                    <h3 className="font-bold">Practice Answer Writing</h3>
-                    <p className="text-sm">Select 5 questions from each GS paper and write full answers within the word limit (150-200 words for 10-mark, 200-250 for 15-mark questions). Compare your answers with topper copies to improve structure and content quality.</p>
-                  </div>
-                </div>
-              </div>
+            <section className={`${card} p-6 md:p-8`}>
+              <h2 className="t-head text-l">How to Use the {year} Question Papers for Maximum Benefit</h2>
+              <p className="mt-1 text-s text-[var(--muted)]">Guide</p>
+              <ol className="mt-5 space-y-5">
+                {[
+                  { t: "Start with Prelims Papers", d: "Attempt GS Paper 1 under timed conditions (2 hours, 100 questions). Review each incorrect answer and note the topic. Repeat with CSAT. Track your accuracy percentage and identify weak subjects for focused revision." },
+                  { t: "Analyze Mains Paper Demands", d: 'Read each GS paper thoroughly before attempting to write. Note the keyword demands — "Discuss", "Analyze", "Critically examine" each requires a different answer structure. Create a mind map of topics tested across all four GS papers to understand the syllabus coverage.' },
+                  { t: "Practice Answer Writing", d: "Select 5 questions from each GS paper and write full answers within the word limit (150-200 words for 10-mark, 200-250 for 15-mark questions). Compare your answers with topper copies to improve structure and content quality." },
+                ].map((x, i) => (
+                  <li key={x.t} className="flex items-start gap-4">
+                    <span className="tab grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-s font-bold text-[var(--accent)]">{i + 1}</span>
+                    <div>
+                      <h3 className="text-m font-bold">{x.t}</h3>
+                      <p className="mt-1 text-s leading-[1.6] text-[var(--ink-2)]">{x.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </section>
 
             {/* Answer Keys & Solutions */}
-            <section className="bg-white border border-border p-6 md:p-8">
-              <div className="flex items-center gap-2 mb-1">
-                <HelpCircle className="w-5 h-5" />
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Solutions</span>
-              </div>
-              <h2 className="text-2xl font-bold mb-4">Answer Keys & Solutions for {year} Papers</h2>
-              <p className="text-foreground/70 mb-4">
-                After solving the papers, check your answers against reliable answer keys. For Prelims, 
-                compare with answer keys published by leading coaching institutes. For Mains, review 
-                model answers to understand the expected content depth and structure.
+            <section className={`${card} p-6 md:p-8`}>
+              <h2 className="t-head text-l">Answer Keys & Solutions for {year} Papers</h2>
+              <p className="mt-1 text-s text-[var(--muted)]">Solutions</p>
+              <p className="mt-4 text-m leading-[1.7] text-[var(--ink-2)]">
+                After solving the papers, check your answers against reliable answer keys. For Prelims, compare with answer keys published by leading coaching institutes. For Mains, review model answers to understand the expected content depth and structure.
               </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <a
-                  href="/store"
-                  data-track="pyq-answer-keys-store"
-                  className="flex items-center justify-between p-4 bg-secondary border border-border hover:border-foreground transition-all group"
-                >
-                  <div className="flex items-center gap-3">
-                    <BookOpen className="w-5 h-5 text-muted-foreground" />
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {[
+                  { href: "/store", track: "pyq-answer-keys-store", t: "Topper Answer Copies", d: "See how AIR-1 to AIR-10 wrote answers" },
+                  { href: "/free-materials", track: "pyq-answer-keys-free", t: "Free Study Materials", d: "Notes, test series & current affairs" },
+                ].map((x) => (
+                  <Link key={x.href} href={x.href} data-track={x.track} className="group flex items-center justify-between gap-3 rounded-[16px] bg-[var(--canvas)] p-4">
                     <div>
-                      <span className="font-bold text-sm">Topper Answer Copies</span>
-                      <p className="text-xs text-muted-foreground">See how AIR-1 to AIR-10 wrote answers</p>
+                      <span className="text-s font-bold group-hover:text-[var(--accent)]">{x.t}</span>
+                      <p className="text-s text-[var(--muted)]">{x.d}</p>
                     </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a
-                  href="/free-materials"
-                  data-track="pyq-answer-keys-free"
-                  className="flex items-center justify-between p-4 bg-secondary border border-border hover:border-foreground transition-all group"
-                >
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <span className="font-bold text-sm">Free Study Materials</span>
-                      <p className="text-xs text-muted-foreground">Notes, test series & current affairs</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                    <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                ))}
               </div>
             </section>
 
             {/* FAQ */}
-            <section className="bg-white border border-border p-6 md:p-8">
-              <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions about UPSC CSE {year} Papers</h2>
-              <div className="space-y-3">
+            <section>
+              <h2 className="t-head text-l">Frequently Asked Questions about UPSC CSE {year} Papers</h2>
+              <div className={`${card} mt-5 divide-y divide-[var(--line)]`}>
                 {[
                   { q: `What is included in the UPSC CSE ${year} question papers PDF?`, a: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` },
                   { q: `Where can I find solutions for UPSC ${year} question papers?`, a: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies to understand answer writing standards.` },
                   { q: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, a: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied for incorrect answers.` },
                   { q: `What topics were emphasized in the ${year} Mains GS papers?`, a: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples. GS Paper 4 (Ethics) featured longer case studies requiring multi-stakeholder analysis.` },
-                ].map((faq, i) => (
-                  <details key={i} className="group border border-border [&>summary]:open:border-foreground">
-                    <summary className="flex items-center justify-between p-4 cursor-pointer list-none font-bold text-sm hover:bg-secondary transition-colors">
-                      {faq.q}
-                      <ChevronDown className="w-4 h-4 shrink-0 group-open:rotate-180 transition-transform" />
+                ].map((faq) => (
+                  <details key={faq.q} className="group px-6 py-5">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                      <span className="text-m font-bold">{faq.q}</span>
+                      <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
                     </summary>
-                    <div className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm border-t border-border pt-3">
-                      {faq.a}
-                    </div>
+                    <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{faq.a}</p>
                   </details>
                 ))}
               </div>
             </section>
 
-            {/* FAQ Schema */}
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{
@@ -452,180 +314,90 @@ export default async function PYQYearPage({ params }: Props) {
                   "@context": "https://schema.org",
                   "@type": "FAQPage",
                   mainEntity: [
-                    {
-                      "@type": "Question",
-                      name: `What is included in the UPSC CSE ${year} question papers PDF?`,
-                      acceptedAnswer: { "@type": "Answer", text: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` }
-                    },
-                    {
-                      "@type": "Question",
-                      name: `Where can I find solutions for UPSC ${year} question papers?`,
-                      acceptedAnswer: { "@type": "Answer", text: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies.` }
-                    },
-                    {
-                      "@type": "Question",
-                      name: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`,
-                      acceptedAnswer: { "@type": "Answer", text: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied.` }
-                    },
-                    {
-                      "@type": "Question",
-                      name: `What topics were emphasized in the ${year} Mains GS papers?`,
-                      acceptedAnswer: { "@type": "Answer", text: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples.` }
-                    },
-                  ]
-                })
+                    { "@type": "Question", name: `What is included in the UPSC CSE ${year} question papers PDF?`, acceptedAnswer: { "@type": "Answer", text: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` } },
+                    { "@type": "Question", name: `Where can I find solutions for UPSC ${year} question papers?`, acceptedAnswer: { "@type": "Answer", text: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies.` } },
+                    { "@type": "Question", name: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, acceptedAnswer: { "@type": "Answer", text: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied.` } },
+                    { "@type": "Question", name: `What topics were emphasized in the ${year} Mains GS papers?`, acceptedAnswer: { "@type": "Answer", text: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples.` } },
+                  ],
+                }),
               }}
             />
 
             {/* CTA */}
-            <section className="bg-foreground p-8">
-              <div className="text-center max-w-xl mx-auto">
-                <div className="inline-flex items-center gap-2 bg-brand-mint/20 border border-brand-mint/30 px-4 py-2 mb-4">
-                  <Sparkles className="w-4 h-4 text-brand-mint" />
-                  <span className="text-sm text-brand-mint font-bold">
-                    RECOMMENDED
-                  </span>
-                </div>
-                <h3 className="text-2xl font-black text-white mb-3">
-                  Downloaded the Papers? <br />
-                  <span className="text-brand-mint">Now See the Answers.</span>
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  50+ verified topper answer copies. See how
-                  AIR-1 toppers structured their answers.
-                </p>
-                <div className="grid grid-cols-2 gap-3 mb-6 text-left max-w-sm mx-auto">
-                  {[
-                    "GS 1-4 Model Answers",
-                    "Essay Topper Copies",
-                    "Marks-wise Breakdown",
-                    "Strategy Notes",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-brand-mint shrink-0" />
-                      <span className="text-muted-foreground">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <a
-                  href="/store"
-                  data-track="pyq-explore-compilation"
-                  className="inline-flex items-center gap-2 bg-brand-mint text-foreground font-bold px-8 py-4 hover:bg-white transition-colors"
-                >
-                  Browse Store <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
+            <section className="rounded-[28px] bg-[var(--ink)] p-8 text-center text-white">
+              <h3 className="t-head text-l">
+                Downloaded the Papers? <br />
+                <span className="text-[var(--hl)]">Now See the Answers.</span>
+              </h3>
+              <p className="mt-1 text-s font-bold text-white/60">RECOMMENDED</p>
+              <p className="mx-auto mt-4 max-w-md text-m text-white/70">50+ verified topper answer copies. See how AIR-1 toppers structured their answers.</p>
+              <ul className="mx-auto mt-5 grid max-w-sm grid-cols-2 gap-2 text-left text-s text-white/80">
+                {["GS 1-4 Model Answers", "Essay Topper Copies", "Marks-wise Breakdown", "Strategy Notes"].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span aria-hidden className="font-bold text-[var(--hl)]">&#10003;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/store" data-track="pyq-explore-compilation" className="btn btn-blue mt-7">
+                Browse Store <span className="knob">→</span>
+              </Link>
             </section>
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
-            {/* Year Selector */}
-            <div className="bg-white border border-border p-6 sticky top-24">
-              <h3 className="font-bold text-lg mb-4">Other Years</h3>
-              <div className="flex flex-wrap gap-2">
+          <aside className="space-y-4 lg:col-span-4">
+            <div className={`${card} p-6 lg:sticky lg:top-24`}>
+              <h3 className="text-m font-bold">Other Years</h3>
+              <div className="mt-4 flex flex-wrap gap-2">
                 {allYears.map((y: string) => (
                   <Link
                     key={y}
                     href={`/pyq/${y}`}
                     data-track={`pyq-year-sidebar-${y}`}
-                    className={`px-4 py-2 text-sm font-bold border-2 transition-all ${
-                      y === year
-                        ? "bg-foreground text-white border-foreground"
-                        : "bg-white text-muted-foreground border-border hover:border-foreground hover:text-foreground"
-                    }`}
+                    className={`tab rounded-full px-4 py-2 text-s font-bold transition ${y === year ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--ink)]"}`}
                   >
                     {y}
                   </Link>
                 ))}
               </div>
 
-              {/* Sidebar Conversion */}
-              <div className="mt-6 pt-6 border-t border-border">
-                <div className="bg-foreground p-5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-semibold text-brand">₹799 Launch</span>
-                    <span className="text-[11px] text-muted-foreground line-through">₹4,999</span>
+              <div className="mt-6 border-t border-[var(--line)] pt-6">
+                <div className="rounded-[18px] bg-[var(--canvas)] p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-[var(--hl)] px-2 py-0.5 text-s font-bold text-[var(--hl-ink)]">₹799 Launch</span>
+                    <span className="text-s text-[var(--muted)] line-through">₹4,999</span>
                   </div>
-                  <h4 className="font-bold text-white mb-1">Complete Compilation</h4>
-                  <p className="text-xs text-muted-foreground mb-4">
-                    21 strategy guides + topper copies + interview prep. Everything in one pack.
-                  </p>
-                <a
-                  href="/free-materials"
-                  data-track="pyq-sidebar-free-materials"
-                  className="flex items-center justify-between p-3 bg-brand-muted border border-brand/20 hover:border-brand/40 transition-all group"
-                >
-                  <span className="text-sm font-medium text-brand group-hover:text-foreground">
-                    Free Study Material
-                  </span>
-                  <ArrowRight
-                    size={14}
-                    className="text-brand/70 group-hover:text-brand transform group-hover:translate-x-1 transition-all"
-                  />
-                </a>
-                <a
-                    href="/store"
-                    data-track="pyq-sidebar-bundle"
-                    className="inline-flex items-center justify-center w-full bg-white text-foreground font-bold px-4 py-3 hover:bg-secondary transition-colors text-sm"
-                  >
-                    Browse Store — ₹799 <ArrowRight className="w-3 h-3 ml-2" />
-                  </a>
+                  <h4 className="mt-2 text-m font-bold">Complete Compilation</h4>
+                  <p className="mt-1 text-s text-[var(--ink-2)]">21 strategy guides + topper copies + interview prep. Everything in one pack.</p>
+                  <Link href="/free-materials" data-track="pyq-sidebar-free-materials" className="mt-4 flex items-center justify-between rounded-[12px] bg-white px-3 py-2.5 text-s font-bold text-[var(--accent)] shadow-[0_0_0_1px_var(--line-2)]">
+                    Free Study Material <span aria-hidden>→</span>
+                  </Link>
+                  <Link href="/store" data-track="pyq-sidebar-bundle" className="btn btn-ink mt-2 h-11 w-full justify-center [--btn-fs:14px]">
+                    Browse Store — ₹799 →
+                  </Link>
                 </div>
               </div>
             </div>
 
             {/* Related Resources */}
-            <div className="bg-white border border-border p-6">
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-brand-mint" />
-                Related Resources
-              </h3>
-              <div className="space-y-3">
-                <a
-                  href={`/year/${year}`}
-                  data-track="pyq-related-year"
-                  className="flex items-center justify-between p-3 bg-secondary border border-border hover:border-foreground transition-all group"
-                >
-                  <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground">
-                    UPSC Toppers {year}
-                  </span>
-                  <ArrowRight
-                    size={14}
-                    className="text-muted-foreground group-hover:text-foreground transform group-hover:translate-x-1 transition-all"
-                  />
-                </a>
-                <a
-                  href="/optional"
-                  data-track="pyq-related-optional"
-                  className="flex items-center justify-between p-3 bg-secondary border border-border hover:border-foreground transition-all group"
-                >
-                  <span className="text-sm font-medium text-foreground/70 group-hover:text-foreground">
-                    Optional Subject Notes
-                  </span>
-                  <ArrowRight
-                    size={14}
-                    className="text-muted-foreground group-hover:text-foreground transform group-hover:translate-x-1 transition-all"
-                  />
-                </a>
-                <a
-                  href="/store"
-                  data-track="pyq-sidebar-browse"
-                  className="flex items-center justify-between p-3 bg-brand-mint/20 border border-brand-mint hover:border-foreground transition-all group"
-                >
-                  <span className="text-sm font-bold text-foreground">
-                    Browse Store
-                  </span>
-                  <ArrowRight
-                    size={14}
-                    className="text-foreground transform group-hover:translate-x-1 transition-all"
-                  />
-                </a>
+            <div className={`${card} p-6`}>
+              <h3 className="text-m font-bold">Related Resources</h3>
+              <div className="mt-3 space-y-1 text-s">
+                {[
+                  { href: `/year/${year}`, track: "pyq-related-year", label: `UPSC Toppers ${year}` },
+                  { href: "/optional", track: "pyq-related-optional", label: "Optional Subject Notes" },
+                  { href: "/store", track: "pyq-sidebar-browse", label: "Browse Store" },
+                ].map((l) => (
+                  <Link key={l.href} href={l.href} data-track={l.track} className="flex items-center justify-between rounded-[10px] px-2 py-1.5 text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]">
+                    {l.label} <span aria-hidden>→</span>
+                  </Link>
+                ))}
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
-    </div>
+    </BrandShell>
   );
 }

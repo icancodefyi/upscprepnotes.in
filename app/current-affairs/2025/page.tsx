@@ -58,6 +58,7 @@ export default async function CurrentAffairs2025Page() {
         {/* Hero */}
         <header className="mt-8 max-w-[48rem]">
           <h1 className="t-display text-h1">Current Affairs 2025 — Complete Yearly Compilation</h1>
+          <p className="mt-2 text-s font-bold text-[var(--muted)]">Yearly Compilation</p>
           <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
             A complete month-by-month compilation of major events in 2025 relevant for UPSC Prelims, Mains, and Interview. Covers all 12 months (January to December 2025) with {totalEvents}+ key events across 11 UPSC-relevant sections. Free PDF download included.
           </p>

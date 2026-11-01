@@ -50,6 +50,7 @@ export default async function ToppersPage() {
 
           <header className="mt-8 max-w-[44rem]">
             <h1 className="t-display text-h1">Browse All UPSC Toppers</h1>
+            <p className="mt-2 text-s font-bold text-[var(--muted)]">UPSC Toppers</p>
             <p className="mt-4 text-m leading-[1.6] text-[var(--ink-2)]">
               Search {toppers.length}+ rank holders by name, rank, year, or optional subject. View marks, answer copies, and preparation strategies.
             </p>

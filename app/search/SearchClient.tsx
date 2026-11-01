@@ -82,6 +82,7 @@ export default function SearchClient({ toppers }: { toppers: Topper[] }) {
     <div className="pb-24 pt-28 sm:pt-32">
       <div className="mx-auto max-w-[880px] px-6">
         <h1 className="t-display text-h1">Search UPSCPrepNotes</h1>
+        <p className="mt-2 text-s font-bold text-[var(--muted)]">Search</p>
 
         <label className="mt-8 flex items-center gap-3 rounded-full bg-white pl-5 pr-2 shadow-[0_0_0_1px_var(--line-2)] focus-within:shadow-[0_0_0_2px_var(--accent)]">
           <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--muted)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
