@@ -54,18 +54,18 @@ export default function AboutPage() {
 
         <section className="space-y-5">
         <h2 className="text-2xl font-semibold">I am Zaid. I read UPSC result PDFs for fun.</h2>
-        <div className="flex items-start gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+        <div className="flex items-start gap-4 rounded-[20px] bg-[#e9edff] p-5">
           <img
             src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=1080&q=75"
             alt="Zaid Rakhange"
-            className="h-14 w-14 rounded-full object-cover shrink-0"
+            className="h-14 w-14 shrink-0 rounded-full object-cover shadow-[0_0_0_2px_#fff]"
           />
           <div>
-            <p className="font-semibold text-gray-900">
-              <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors underline underline-offset-2">Zaid Rakhange</a>
+            <p className="font-bold text-[var(--ink)]">
+              <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="!text-[var(--ink)] hover:!text-[var(--accent)]">Zaid Rakhange</a>
             </p>
-            <p className="text-sm text-emerald-700">Software engineer, founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-emerald-600 transition-colors">ImpicLabs</a></p>
-            <p className="mt-2 text-sm leading-6 text-zinc-600">
+            <p className="!text-s !text-[var(--accent-deep)]">Software engineer, founder of <a href="https://impiclabs.com" target="_blank" rel="noopener noreferrer" className="!text-[var(--accent-deep)]">ImpicLabs</a></p>
+            <p className="mt-2 !text-s !leading-[1.6]">
               I have read every UPSC CSE result PDF published since 2022. Cover to cover. I have extracted marks from thousands of rows — GS1, GS2, GS3, GS4, Essay, Optional 1, Optional 2, Interview, Written Total, Grand Total. I know this data better than most people because I touched every single number with my own hands. No AI did this. No intern. Just me and a PDF reader.
             </p>
           </div>
