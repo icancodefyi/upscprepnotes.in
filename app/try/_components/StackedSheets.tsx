@@ -38,8 +38,8 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
         <div>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="t-meta" style={{ color: t.sub }}>{`CSE ${b.year} · ${b.optional}`}</p>
-              <h3 className="t-display mt-3 text-l">{b.name}</h3>
+              <h3 className="t-display text-l">{b.name}</h3>
+              <p className="mt-2 text-s" style={{ color: t.sub }}>{`CSE ${b.year} · ${b.optional}`}</p>
             </div>
             {/* rubber stamp */}
             <div
@@ -76,8 +76,7 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
 
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="t-meta" style={{ color: t.sub }}>FINAL MARKS</p>
-              <p className="t-display tab mt-1 text-l">
+              <p className="t-display tab text-l">
                 {fmt(b.total)}
                 <span className="ml-2 text-m tracking-normal" style={{ color: t.sub }}>marks</span>
               </p>

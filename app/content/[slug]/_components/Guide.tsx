@@ -67,12 +67,11 @@ const Md = ({ text }: { text: string }) => (
 
 const fmtDate = (iso: string, hi: boolean) => new Date(iso).toLocaleDateString(hi ? "hi-IN" : "en-IN", { year: "numeric", month: "long", day: "numeric" });
 
-/** One numbered chapter of a guide. */
-function Chapter({ id, n, title, meta, children }: { id: string; n: number; title: string; meta?: string; children: React.ReactNode }) {
+/** One chapter of a guide. */
+function Chapter({ id, title, meta, children }: { id: string; title: string; meta?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-28">
-      <p className="t-meta tab text-[var(--accent)]">{String(n).padStart(2, "0")}</p>
-      <div className="mt-1 flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1">
         <h2 className="t-head max-w-[30ch] text-l">{title}</h2>
         {meta && <p className="text-s text-[var(--muted)]">{meta}</p>}
       </div>
@@ -109,7 +108,6 @@ export default function Guide({
     ...sections.slice(1).map((s) => ({ id: s.id, label: s.heading })),
     ...(page.faq?.length ? [{ id: "faq", label: hi ? "प्रश्न" : "Questions" }] : []),
   ];
-  const num = (id: string) => chapters.findIndex((c) => c.id === id) + 1;
 
   const words = [page.intro, ...page.sections.map((s) => s.body), ...(page.faq ?? []).map((f) => f.a)].join(" ").split(/\s+/).length;
   const minutes = Math.max(2, Math.round(words / 220));
@@ -180,16 +178,16 @@ export default function Guide({
 
               {sections.map((s, i) => (
                 <div key={s.id} className="space-y-16">
-                  <Chapter id={s.id} n={num(s.id)} title={s.heading}>
+                  <Chapter id={s.id} title={s.heading}>
                     <Md text={s.body} />
                   </Chapter>
                   {i === 0 && stats && (
-                    <Chapter id="the-numbers" n={num("the-numbers")} title={hi ? "आँकड़े" : `${stats.label}: the numbers`} meta={`${stats.n} marksheets · CSE ${stats.years}`}>
+                    <Chapter id="the-numbers" title={hi ? "आँकड़े" : `${stats.label}: the numbers`} meta={`${stats.n} marksheets · CSE ${stats.years}`}>
                       <PaperData s={stats} />
                     </Chapter>
                   )}
                   {i === 0 && optionals && (
-                    <Chapter id="the-numbers" n={num("the-numbers")} title="Optional marks, compared" meta={`${optionals.marksheets} complete marksheets`}>
+                    <Chapter id="the-numbers" title="Optional marks, compared" meta={`${optionals.marksheets} complete marksheets`}>
                       <OptionalData o={optionals} />
                     </Chapter>
                   )}
@@ -197,7 +195,7 @@ export default function Guide({
               ))}
 
               {page.faq && page.faq.length > 0 && (
-                <Chapter id="faq" n={num("faq")} title={hi ? "अक्सर पूछे जाने वाले प्रश्न" : "Questions"}>
+                <Chapter id="faq" title={hi ? "अक्सर पूछे जाने वाले प्रश्न" : "Questions"}>
                   <div className={`${card} divide-y divide-[var(--line)]`}>
                     {page.faq.map((f, i) => (
                       <details key={f.q} open={i === 0} className="group px-6 py-5">
@@ -220,11 +218,10 @@ export default function Guide({
                     data-track="guide-up-next"
                     className="group relative block overflow-hidden rounded-[28px] bg-[var(--accent)] p-7 text-white shadow-[0_18px_40px_-20px_rgba(19,35,138,0.8)] sm:p-9"
                   >
-                    <p className="text-s text-white/70">{hi ? "आगे पढ़ें" : "Up next"}</p>
-                    <p className="t-head mt-2 max-w-[24ch] text-l">{next.title}</p>
+                    <p className="t-head max-w-[24ch] text-l">{next.title}</p>
                     <p className="mt-2 max-w-[40ch] text-m text-white/80">{next.description}</p>
                     <span className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-s font-bold text-[var(--accent)] transition-transform duration-200 ease-[var(--ease)] group-hover:translate-x-1">
-                      {hi ? "पढ़ें" : "Read"} <span aria-hidden>→</span>
+                      {hi ? "आगे पढ़ें" : "Read next"} <span aria-hidden>→</span>
                     </span>
                   </Link>
                   {more.length > 0 && (
@@ -264,7 +261,7 @@ export default function Guide({
             {/* At a glance (guides with live numbers only) */}
             {glance && (
             <div className={`${card} p-5`}>
-              <p className="t-meta">{hi ? "एक नज़र में" : "AT A GLANCE"}</p>
+              <p className="text-m font-bold">{hi ? "एक नज़र में" : `${stats?.label} at a glance`}</p>
               {glance && (
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {glance.map((g) => (
@@ -282,7 +279,7 @@ export default function Guide({
             {chapters.length > 2 && (
               <nav aria-label="On this page" className={`${card} p-5`}>
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="t-meta">{hi ? "इस पेज पर" : "ON THIS PAGE"}</p>
+                  <p className="text-m font-bold">{hi ? "इस पेज पर" : "On this page"}</p>
                   {!glance && <p className="text-s text-[var(--muted)]">{`${minutes} ${hi ? "मिनट" : "min read"}`}</p>}
                 </div>
                 <Toc items={chapters} />

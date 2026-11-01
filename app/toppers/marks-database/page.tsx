@@ -224,15 +224,14 @@ export default async function MarksDatabasePage() {
             {/* The best score on record, written like an examiner's note */}
             {best && (
               <Link href={`/upsc-topper/${best.slug}`} className={`${card} group hidden w-[300px] p-5 lg:block`}>
-                <p className="t-meta">HIGHEST TOTAL ON RECORD</p>
-                <p className="relative mt-3 inline-block">
+                <p className="relative mt-2 inline-block">
                   <span className="t-display tab text-l leading-none">{fmt(best.total)}</span>
                   <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible">
                     <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3" strokeLinecap="round" />
                   </svg>
                 </p>
                 <p className="mt-3 text-m font-bold group-hover:text-[var(--accent)]">{best.name}</p>
-                <p className="text-s text-[var(--muted)]">{`AIR ${best.rank} · CSE ${best.year} · ${best.optional}`}</p>
+                <p className="text-s text-[var(--muted)]">{`Highest total on record · AIR ${best.rank}, CSE ${best.year}`}</p>
               </Link>
             )}
           </div>
@@ -320,7 +319,7 @@ export default async function MarksDatabasePage() {
 
             <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
               <div className={`${card} p-5`}>
-                <p className="t-meta">BY OPTIONAL</p>
+                <p className="text-m font-bold">By optional</p>
                 <ul className="mt-3 space-y-1 text-s">
                   {optionals.slice(0, 8).map(([s, c]) => (
                     <li key={s}>
@@ -347,7 +346,7 @@ export default async function MarksDatabasePage() {
               )}
 
               <div className={`${card} p-5`}>
-                <p className="t-meta">EXPLORE</p>
+                <p className="text-m font-bold">Explore</p>
                 <ul className="mt-3 space-y-1 text-s">
                   {[
                     ...years.map((y) => ({ href: `/year/${y}`, label: `All CSE ${y} toppers` })),

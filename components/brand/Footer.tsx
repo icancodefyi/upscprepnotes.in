@@ -107,7 +107,7 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
           </div>
           {[...FOOTER.slice(0, 2), ...(featured.length ? [{ title: "Featured toppers", links: featured }] : []), ...FOOTER.slice(2)].map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <p className="t-meta text-[rgba(11,12,16,0.55)]">{col.title.toUpperCase()}</p>
+              <p className="text-s font-bold text-[var(--ink)]">{col.title}</p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>

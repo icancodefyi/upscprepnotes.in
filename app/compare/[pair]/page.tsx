@@ -172,9 +172,9 @@ export default async function ComparePage({ params }: Props) {
           {rows.length > 0 && (
             <div className="mt-10 overflow-hidden rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2)]">
               <div className="t-meta grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-[var(--line)] px-5 py-3.5 sm:px-6">
-                <span className="truncate">{af.toUpperCase()}</span>
-                <span>PAPER</span>
-                <span className="truncate text-right">{bf.toUpperCase()}</span>
+                <span className="truncate">{af}</span>
+                <span>Paper</span>
+                <span className="truncate text-right">{bf}</span>
               </div>
               <ul className="divide-y divide-[var(--line)]">
                 {rows.map((r) => {

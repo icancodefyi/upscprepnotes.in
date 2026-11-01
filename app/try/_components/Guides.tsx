@@ -28,12 +28,11 @@ function Card({ g, i }: { g: Guide; i: number }) {
       }}
     >
       <span aria-hidden className="absolute right-6 top-6 h-4 w-4 rounded-full bg-[var(--canvas)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.25)]" />
-      <p className="t-meta text-[var(--ink-2)]">{g.paper}</p>
-      <p className="t-display tab mt-2 text-l text-[var(--mark-deep)]">
+      <p className="t-display tab text-l text-[var(--mark-deep)]">
         {g.top.score}
         <span className="ml-1.5 text-m tracking-normal text-[var(--ink-2)]">{`/ ${g.top.max}`}</span>
       </p>
-      <p className="text-s text-[var(--ink-2)]">{`Highest on record · ${g.top.name}, AIR ${g.top.rank}`}</p>
+      <p className="text-s text-[var(--ink-2)]">{`Highest ${g.paper} on record · ${g.top.name}, AIR ${g.top.rank}`}</p>
       <h3 className="t-head mt-auto text-l group-hover:text-[var(--accent)]">{g.title}</h3>
       <p className="mt-2 text-s leading-[1.5] text-[var(--ink-2)]">{g.blurb}</p>
       <span className="mt-5 inline-flex items-center gap-1.5 text-s font-bold text-[var(--accent)]">

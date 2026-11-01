@@ -54,8 +54,8 @@ function ResultCard({ h }: { h: HeaderData }) {
       <div className="relative rounded-[6px] border-t-[3px] border-[var(--ink)] bg-white px-6 pb-5 pt-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.05),0_18px_40px_-20px_rgba(11,12,16,0.35)]">
         <div className="flex items-start justify-between gap-5">
           <div className="min-w-0">
-            <p className="t-meta">STATEMENT OF MARKS</p>
-            <p className="mt-0.5 text-m font-bold">{`Civil Services Examination ${h.year}`}</p>
+            <p className="text-m font-bold">Statement of marks</p>
+            <p className="text-s text-[var(--muted)]">{`Civil Services Examination ${h.year}`}</p>
             <dl className="mt-4 space-y-1.5 text-s">
               {fields.map((f) => (
                 <div key={f.k} className="grid grid-cols-[100px_1fr] gap-2">
@@ -199,7 +199,7 @@ export function Sidebar({ s }: { s: SidebarData }) {
       </div>
 
       <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
-        <p className="t-meta">ON THIS PAGE</p>
+        <p className="text-m font-bold">On this page</p>
         <Toc items={s.toc} />
       </nav>
 
@@ -218,7 +218,7 @@ export function Sidebar({ s }: { s: SidebarData }) {
       )}
 
       <div className={`${card} p-5`}>
-        <p className="t-meta">EXPLORE</p>
+        <p className="text-m font-bold">Explore</p>
         <ul className="mt-3 space-y-1 text-s">
           {[
             { href: `/year/${s.year}`, label: `All CSE ${s.year} toppers` },

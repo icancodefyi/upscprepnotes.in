@@ -61,7 +61,7 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
             </div>
             {popular.length > 0 && (
               <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] lg:w-[340px]">
-                <p className="t-meta">MOST DOWNLOADED</p>
+                <p className="text-m font-bold">Most downloaded</p>
                 <ol className="mt-3 space-y-1">
                   {popular.map((c, i) => (
                     <li key={c.slug}>

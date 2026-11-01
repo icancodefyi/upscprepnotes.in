@@ -108,8 +108,7 @@ export default function Files({
     const f = indexed[0];
     return (
       <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_10px_24px_-16px_rgba(11,12,16,0.3)]">
-        <p className="t-meta">FREE PDF</p>
-        <p className="mt-1.5 text-m font-bold leading-snug">{f.name}</p>
+        <p className="text-m font-bold leading-snug">{f.name}</p>
         {f.section && <p className="mt-0.5 text-s text-[var(--muted)]">{f.section}</p>}
         {unlocked ? (
           <a href={f.downloadUrl} target="_blank" rel="noopener noreferrer" data-track={`material-file-${slug}`} className="btn btn-blue mt-4 w-full justify-between">

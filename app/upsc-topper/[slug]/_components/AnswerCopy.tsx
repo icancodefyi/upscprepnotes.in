@@ -97,9 +97,8 @@ function Thumb({ name, preview }: { name: string; preview: string | null }) {
   }
   return (
     <div aria-hidden className="paper relative flex aspect-[5/7] flex-col p-4">
-      <span className="t-meta">UPSC · MAINS</span>
-      <span className="t-head mt-3 text-m leading-tight">{name}</span>
-      <span className="t-meta mt-1">ANSWER BOOKLET</span>
+      <span className="t-head text-m leading-tight">{name}</span>
+      <span className="t-meta mt-1">Answer copy</span>
       <span className="mt-4 space-y-2.5">
         {[90, 76, 84, 64, 80, 70].map((w, i) => (
           <span key={i} className="block h-[2px] rounded-full bg-[rgba(31,63,214,0.18)]" style={{ width: `${w}%` }} />

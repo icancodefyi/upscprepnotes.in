@@ -91,12 +91,12 @@ export default function MarksStory({ story }: { story: Story }) {
               className={`fade flex min-h-[62vh] flex-col py-12 ${i === 0 ? "justify-start pt-6" : "justify-center"}`}
               style={{ opacity: active === i ? 1 : 0.28 }}
             >
-              <p className="t-meta text-white/60">{`${String(i + 1).padStart(2, "0")} — ${p.label}`}</p>
-              <p className="t-display tab mt-4 text-l">
+              <p className="t-display tab text-l">
                 {p.score}
                 <span className="ml-3 text-l tracking-[-0.02em] text-white/55">{`/ ${p.max}`}</span>
               </p>
-              <p className="mt-5 max-w-[28rem] text-m leading-[1.55] text-white/80">{narrate(p, story, weakest)}</p>
+              <p className="mt-2 text-m font-bold">{p.label}</p>
+              <p className="mt-4 max-w-[28rem] text-m leading-[1.55] text-white/80">{narrate(p, story, weakest)}</p>
             </li>
           ))}
           <li

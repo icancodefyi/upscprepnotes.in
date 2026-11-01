@@ -88,12 +88,12 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
                 <p className="t-display text-l">{t.subject}</p>
                 <div className="mt-8 grid grid-cols-2 gap-6">
                   <div>
-                    <p className="t-meta text-[rgba(11,12,16,0.55)]">MEDIAN</p>
-                    <p className="t-display tab mt-1 text-l">{t.median}</p>
+                    <p className="t-display tab text-l">{t.median}</p>
+                    <p className="mt-1 text-s text-[rgba(11,12,16,0.6)]">Median topper</p>
                   </div>
                   <div>
-                    <p className="t-meta text-[rgba(11,12,16,0.55)]">HIGHEST</p>
-                    <p className="t-display tab mt-1 text-l text-[var(--mark-deep)]">{t.best.score}</p>
+                    <p className="t-display tab text-l text-[var(--mark-deep)]">{t.best.score}</p>
+                    <p className="mt-1 text-s text-[rgba(11,12,16,0.6)]">Highest</p>
                   </div>
                 </div>
                 <p className="mt-4 text-m text-[rgba(11,12,16,0.7)]">

@@ -234,7 +234,7 @@ export default async function PDFDetailPage({ params }: Props) {
               </div>
             ) : (
               <div className={`${card} p-5`}>
-                <p className="t-meta">{`WHAT'S INSIDE · ${fmt(c.files)} FILES`}</p>
+                <p className="flex items-baseline justify-between gap-3"><span className="text-m font-bold">What&apos;s inside</span><span className="text-s text-[var(--muted)]">{`${fmt(c.files)} files`}</span></p>
                 <ul className="mt-3 space-y-1.5 text-s">
                   {sections.slice(0, 6).map(([name, k]) => (
                     <li key={name} className="flex items-baseline justify-between gap-3">
@@ -322,7 +322,7 @@ export default async function PDFDetailPage({ params }: Props) {
 
             <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
               <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
-                <p className="t-meta">ON THIS PAGE</p>
+                <p className="text-m font-bold">On this page</p>
                 <Toc items={toc} />
               </nav>
               <Link href="/toppers/toppers-copy-compilation" data-track="material-side-copies" className="group block rounded-[24px] bg-[var(--accent)] p-5 text-white">
@@ -332,7 +332,7 @@ export default async function PDFDetailPage({ params }: Props) {
               </Link>
               {opt && optToppers.length > 0 && (
                 <div className={`${card} p-5`}>
-                  <p className="t-meta">{`TOP ${opt.subject.toUpperCase()} SCORERS`}</p>
+                  <p className="text-m font-bold">{`Top ${opt.subject} scorers`}</p>
                   <ul className="mt-3 space-y-1">
                     {optToppers.map((t) => (
                       <li key={t.slug}>
@@ -354,7 +354,7 @@ export default async function PDFDetailPage({ params }: Props) {
                 </div>
               )}
               <div className={`${card} p-5`}>
-                <p className="t-meta">EXPLORE</p>
+                <p className="text-m font-bold">Explore</p>
                 <ul className="mt-3 space-y-1 text-s">
                   {[
                     { href: `/free-materials?category=${c.category}`, label: `All ${cat.label.toLowerCase()}` },

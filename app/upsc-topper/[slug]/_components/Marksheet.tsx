@@ -29,11 +29,11 @@ export default function Marksheet({
       <div className="overflow-x-auto">
         <table className="w-full text-s sm:text-m">
           <thead>
-            <tr className="t-meta text-left">
-              <th className="px-4 pb-3 pt-5 font-normal sm:px-6">PAPER</th>
-              <th className="px-3 pb-3 pt-5 text-right font-normal">MARKS</th>
+            <tr className="text-left text-s text-[var(--muted)]">
+              <th className="px-4 pb-3 pt-5 font-normal sm:px-6">Paper</th>
+              <th className="px-3 pb-3 pt-5 text-right font-normal">Marks</th>
               <th className="hidden px-3 pb-3 pt-5 font-normal sm:table-cell" aria-label="Share of maximum" />
-              <th className="px-4 pb-3 pt-5 text-right font-normal sm:px-6"><span className="sm:hidden">VS MEDIAN</span><span className="hidden sm:inline">VS TOPPER MEDIAN</span></th>
+              <th className="px-4 pb-3 pt-5 text-right font-normal sm:px-6"><span className="sm:hidden">vs median</span><span className="hidden sm:inline">vs topper median</span></th>
             </tr>
           </thead>
           <tbody>

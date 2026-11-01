@@ -53,9 +53,9 @@ export function ContinueReading({ main, prev, next }: { main: Suggestion | null;
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={main.avatar} alt={main.name} loading="lazy" className="h-24 w-24 shrink-0 rounded-[26px] bg-white object-cover object-top shadow-[0_0_0_4px_rgba(255,255,255,0.25)]" />
           <span className="min-w-0 flex-1">
-            <span className="t-meta text-white/65">{`UP NEXT · ${main.reason.toUpperCase()}`}</span>
-            <span className="t-head mt-2 block text-l">{main.name}</span>
+            <span className="t-head block text-l">{main.name}</span>
             <span className="mt-1 block text-m text-white/75">{`AIR ${main.rank} · CSE ${main.year} · ${main.optional}`}</span>
+            <span className="mt-1 block text-s text-white/60">{main.reason}</span>
           </span>
           <span className="flex items-center gap-5 sm:flex-col sm:items-end sm:gap-3">
             {main.total > 0 && (
@@ -83,8 +83,8 @@ export function ContinueReading({ main, prev, next }: { main: Suggestion | null;
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform group-hover:scale-105">{i === 0 ? "←" : "→"}</span>
                 <Avatar src={t.avatar} alt={t.name} size={44} />
                 <span className="min-w-0 flex-1">
-                  <span className="t-meta block">{t.reason.toUpperCase()}</span>
                   <span className="block truncate text-m font-bold group-hover:text-[var(--accent)]">{t.name}</span>
+                  <span className="block text-s text-[var(--muted)]">{t.reason}</span>
                 </span>
               </Link>
             ) : (
