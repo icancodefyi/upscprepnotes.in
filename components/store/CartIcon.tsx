@@ -9,11 +9,11 @@ export default function CartIcon({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       aria-label={`Open cart${totalItems > 0 ? `, ${totalItems} items` : ""}`}
-      className="relative flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:border-brand hover:text-brand"
+      className="relative grid h-11 w-11 place-items-center rounded-full bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] transition hover:text-[var(--accent)] hover:shadow-[0_0_0_1px_var(--accent)]"
     >
       <IconShoppingBag size={18} />
       {totalItems > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold text-brand-foreground">
+        <span className="tab absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[var(--accent)] px-1 text-s font-bold text-white">
           {totalItems > 99 ? "99+" : totalItems}
         </span>
       )}

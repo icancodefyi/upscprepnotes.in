@@ -2,20 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IconArrowLeft, IconShoppingCart, IconStarFilled } from "@tabler/icons-react";
 import type { Institute, StoreProduct } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import { getEffectivePrice, isFlashSaleActive } from "@/lib/flash-sale";
 import CartSlideover from "@/components/store/CartSlideover";
 import CartIcon from "@/components/store/CartIcon";
 
-export default function InstitutePageClient({
-  institute,
-  products,
-}: {
-  institute: Institute;
-  products: StoreProduct[];
-}) {
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
+
+export default function InstitutePageClient({ institute, products }: { institute: Institute; products: StoreProduct[] }) {
   return (
     <CartProvider>
       <InstituteContent institute={institute} products={products} />
@@ -23,13 +18,7 @@ export default function InstitutePageClient({
   );
 }
 
-function InstituteContent({
-  institute,
-  products,
-}: {
-  institute: Institute;
-  products: StoreProduct[];
-}) {
+function InstituteContent({ institute, products }: { institute: Institute; products: StoreProduct[] }) {
   const [cartOpen, setCartOpen] = useState(false);
   const { addItem } = useCart();
 
@@ -39,51 +28,43 @@ function InstituteContent({
   }
 
   return (
-    <div className="mx-auto min-h-screen bg-white">
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16">
+    <div className="pb-24 pt-28 sm:pt-32">
+      <div className="mx-auto max-w-[1120px] px-6">
         {/* Top bar */}
-        <div className="mb-6 flex items-center justify-between">
-          <Link
-            href="/store"
-            data-track="institute-back-to-store"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground/80"
-          >
-            <IconArrowLeft size={15} />
-            Back to Store
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/store" data-track="institute-back-to-store" className="text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)]">
+            ← Back to Store
           </Link>
           <CartIcon onClick={() => setCartOpen(true)} />
         </div>
 
         {/* Institute header */}
-        <div className={`relative mb-8 flex items-center gap-5 rounded-xl ${institute.gradient} p-6 sm:p-8`}>
-          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-white/20 text-xl font-bold text-white backdrop-blur-sm">
-            {institute.logo.startsWith("/") ? (
+        <header className="mt-8 flex items-center gap-5">
+          <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-[20px] bg-white text-l font-bold shadow-[0_0_0_1px_var(--line-2)]">
+            {institute.logo.startsWith("/") || institute.logo.startsWith("http") ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img src={institute.logo} alt={institute.name} className="h-full w-full object-contain p-2" />
             ) : (
               institute.logo
             )}
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">{institute.name}</h1>
-            <p className="mt-1 text-sm text-white/70">{institute.description}</p>
-            <p className="mt-0.5 text-xs text-white/50">{products.length} products</p>
+          <div className="min-w-0">
+            <h1 className="t-display text-h1">{institute.name}</h1>
+            <p className="mt-2 text-m text-[var(--ink-2)]">{institute.description}</p>
+            <p className="mt-0.5 text-s text-[var(--muted)]">{products.length} products</p>
           </div>
-        </div>
+        </header>
 
         {/* Products */}
-        <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Products</h2>
+        <h2 className="t-head mt-12 text-l">Products</h2>
         {products.length === 0 ? (
-          <div className="flex min-h-[200px] items-center justify-center rounded-xl border border-dashed border-border">
-            <p className="text-sm text-muted-foreground">No products available yet.</p>
+          <div className="mt-5 grid min-h-[200px] place-items-center rounded-[24px] bg-[var(--canvas)]">
+            <p className="text-m text-[var(--muted)]">No products available yet.</p>
           </div>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => (
-              <ProductCard
-                key={product.slug}
-                product={product}
-                onAddToCart={() => handleAddToCart(product)}
-              />
+              <ProductCard key={product.slug} product={product} onAddToCart={() => handleAddToCart(product)} />
             ))}
           </div>
         )}
@@ -93,54 +74,31 @@ function InstituteContent({
   );
 }
 
-function ProductCard({
-  product,
-  onAddToCart,
-}: {
-  product: StoreProduct;
-  onAddToCart: () => void;
-}) {
+function ProductCard({ product, onAddToCart }: { product: StoreProduct; onAddToCart: () => void }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white transition hover:border-border hover:shadow-sm">
-      <div className={`relative flex h-40 items-center justify-center ${product.gradient}`}>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
-        <div className="relative text-center px-4">
-          <span className="text-2xl font-black text-white drop-shadow-sm">{product.title.split(" ").slice(0, 2).join(" ")}</span>
-        </div>
-        {product.badge && (
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-foreground/70 shadow-sm">
-            {product.badge}
-          </span>
-        )}
+    <div className={`${card} group flex flex-col p-3`}>
+      <div className="relative grid h-40 place-items-center rounded-[16px] bg-[#e9edff] px-4 text-center">
+        <span className="t-head text-l text-[var(--accent-deep)]">{product.title.split(" ").slice(0, 2).join(" ")}</span>
+        {product.badge && <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-0.5 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)]">{product.badge}</span>}
         {product.originalPrice && (
-          <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-brand shadow-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">
             -{Math.round((1 - product.price / product.originalPrice) * 100)}%
           </span>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="text-sm font-semibold text-foreground leading-snug" data-track={`institute-card-${product.slug}`}>{product.title}</h3>
-        <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">{product.tagline}</p>
+      <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
+        <h3 className="text-m font-bold leading-snug" data-track={`institute-card-${product.slug}`}>{product.title}</h3>
+        <p className="mt-1 line-clamp-2 text-s text-[var(--ink-2)]">{product.tagline}</p>
         <div className="flex-1" />
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-base font-bold text-foreground">
-              {isFlashSaleActive() ? `₹${getEffectivePrice(product)}` : `₹${product.price}`}
-            </span>
-            {isFlashSaleActive() && product.price > 99 ? (
-              <span className="text-xs text-muted-foreground line-through">₹{product.price.toLocaleString("en-IN")}</span>
-            ) : product.originalPrice ? (
-              <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-            ) : null}
-          </div>
+        <div className="mt-4 flex items-baseline gap-1.5">
+          <span className="tab text-m font-bold">{isFlashSaleActive() ? `₹${getEffectivePrice(product)}` : `₹${product.price}`}</span>
+          {isFlashSaleActive() && product.price > 99 ? (
+            <span className="tab text-s text-[var(--muted)] line-through">₹{product.price.toLocaleString("en-IN")}</span>
+          ) : product.originalPrice ? (
+            <span className="tab text-s text-[var(--muted)] line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
+          ) : null}
         </div>
-        <button
-          type="button"
-          data-track={`institute-addtocart-${product.slug}`}
-          onClick={onAddToCart}
-          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-md bg-gray-900 py-2 text-xs font-semibold text-white transition hover:bg-brand"
-        >
-          <IconShoppingCart size={13} />
+        <button type="button" data-track={`institute-addtocart-${product.slug}`} onClick={onAddToCart} className="btn btn-ink mt-3 h-10 w-full justify-center [--btn-fs:14px]">
           Add to Cart
         </button>
       </div>

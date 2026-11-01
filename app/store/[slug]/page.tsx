@@ -4,6 +4,7 @@ import { PRODUCTS, getProductBySlug } from "@/lib/store-products";
 import { getEffectivePrice } from "@/lib/flash-sale";
 import ProductDetailClient from "@/components/store/ProductDetailClient";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +92,7 @@ export default async function ProductPage({
   }
 
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -106,6 +107,6 @@ export default async function ProductPage({
         }}
       />
       <ProductDetailClient product={product} />
-    </>
+    </BrandShell>
   );
 }

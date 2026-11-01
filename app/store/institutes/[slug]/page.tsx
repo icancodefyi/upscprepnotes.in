@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { INSTITUTES, getProductsByInstitute } from "@/lib/store-products";
 import InstitutePageClient from "./InstitutePageClient";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -42,7 +43,7 @@ export default async function InstitutePage({ params }: Props) {
   const products = getProductsByInstitute(slug);
 
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -51,6 +52,6 @@ export default async function InstitutePage({ params }: Props) {
         ]}
       />
       <InstitutePageClient institute={institute} products={products} />
-    </>
+    </BrandShell>
   );
 }

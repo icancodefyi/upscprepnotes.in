@@ -3,21 +3,29 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import posthog from "posthog-js";
-import {
-  IconArrowLeft,
-  IconShoppingCart,
-  IconStarFilled,
-  IconShoppingBag,
-  IconUsers,
-} from "@tabler/icons-react";
-import { ArrowRight, ChevronDown } from "lucide-react";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
 import { CartProvider, useCart } from "@/lib/cart-context";
 import CartSlideover from "./CartSlideover";
 import CartIcon from "./CartIcon";
 import { TOPPERS } from "@/components/topper/sales-page-data";
-import FakePurchaseToast from "./FakePurchaseToast";
+
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
+const fmt = (n: number) => n.toLocaleString("en-IN");
+
+const BADGE: Record<string, string> = {
+  amber: "bg-[var(--hl)] text-[var(--hl-ink)]",
+  emerald: "bg-[#d4f1df] text-[#14532d]",
+};
+const badgeCls = (c?: string | null) => BADGE[c ?? ""] ?? "bg-[var(--canvas)] text-[var(--ink)]";
+
+function Star({ on = true, className = "" }: { on?: boolean; className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={`h-3.5 w-3.5 ${on ? "text-[var(--accent)]" : "text-[var(--line-2)]"} ${className}`} fill="currentColor" aria-hidden>
+      <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z" />
+    </svg>
+  );
+}
 
 export default function ProductDetailClient({ product }: { product: StoreProduct }) {
   return (
@@ -27,11 +35,20 @@ export default function ProductDetailClient({ product }: { product: StoreProduct
   );
 }
 
-function SectionLabel({ children }: { children: string }) {
+/** A section heading on the product page (the old uppercase labels, now plain headings with the same words). */
+function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-5 flex items-center gap-3">
-      <span className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">{children}</span>
-      <span className="h-px flex-1 bg-secondary" />
+    <section className="mt-12">
+      <h2 className="t-head text-l">{title}</h2>
+      <div className="mt-5">{children}</div>
+    </section>
+  );
+}
+
+function Cover({ title, letter }: { title: string; letter?: boolean }) {
+  return (
+    <div className="grid h-full min-h-64 w-full place-items-center bg-[var(--canvas)]">
+      <span aria-label={title} className="t-display text-l text-[var(--muted)]">{letter ? title.charAt(0) : ""}</span>
     </div>
   );
 }
@@ -63,56 +80,37 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
   const reviews = product.reviews || [];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-20">
+    <div className="pb-24 pt-28 sm:pt-32">
+      <div className="mx-auto max-w-[1120px] px-6">
         {/* Top bar */}
-        <div className="mb-6 flex items-center justify-between">
-          <Link
-            href="/store"
-            data-track="detail-back-to-store"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <IconArrowLeft size={14} />
-            Back to Store
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/store" data-track="detail-back-to-store" className="text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)]">
+            ← Back to Store
           </Link>
           <CartIcon onClick={() => setCartOpen(true)} />
         </div>
 
-        {/* Breadcrumb-style title row */}
-        <div className="mb-6 flex items-center gap-3 text-xs text-muted-foreground">
-          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/store" className="hover:text-foreground transition-colors">Store</Link>
-          <span>/</span>
-          <span className="font-medium text-muted-foreground">{product.title}</span>
-        </div>
+        <nav aria-label="Breadcrumb" className="t-meta mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+          <span aria-hidden>/</span>
+          <Link href="/store" className="hover:text-[var(--ink)]">Store</Link>
+          <span aria-hidden>/</span>
+          <span className="text-[var(--ink-2)]">{product.title}</span>
+        </nav>
 
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10 lg:items-start">
-          {/* Left: Image + content */}
-          <div className="lg:col-span-7">
-            {/* Product image */}
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-white">
+        <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-start">
+          {/* Left: image + content */}
+          <div className="min-w-0 lg:col-span-7">
+            <div className={`${card} overflow-hidden`}>
               {product.images ? (
                 <ImageCarousel images={product.images} title={product.title} />
               ) : product.image ? (
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full max-h-[480px] object-contain object-top bg-secondary"
-                />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={product.image} alt={product.title} className="max-h-[480px] w-full bg-[var(--canvas)] object-contain object-top" />
               ) : (
-                <div className={`flex h-64 items-center justify-center ${product.gradient}`}>
-                  <div className="text-center text-white">
-                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2" className="opacity-70">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                      </svg>
-                    </div>
-                    {product.comingSoon && (
-                      <p className="mt-3 text-xs font-bold uppercase tracking-widest text-white/60">Coming Soon</p>
-                    )}
-                  </div>
+                <div className="relative">
+                  <Cover title={product.title} letter />
+                  {product.comingSoon && <p className="absolute inset-x-0 bottom-6 text-center text-s font-bold text-[var(--muted)]">Coming Soon</p>}
                 </div>
               )}
             </div>
@@ -122,356 +120,236 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
               <PurchaseCard product={product} onAddToCart={handleAddToCart} />
             </div>
 
-            {/* Specs grid — tight, info-dense */}
             {product.specs && product.specs.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>Product Details</SectionLabel>
+              <Block title="Product Details">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {product.specs.map((spec) => (
-                    <div key={spec.label} className="rounded-xl border border-border bg-white p-3">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{spec.label}</p>
-                      <p className="mt-1 text-sm font-bold text-foreground">{spec.value}</p>
+                    <div key={spec.label} className={`${card} p-4`}>
+                      <p className="text-s text-[var(--muted)]">{spec.label}</p>
+                      <p className="mt-1 text-m font-bold">{spec.value}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* About */}
-            <div className="mt-8">
-              <SectionLabel>About this product</SectionLabel>
+            <Block title="About this product">
               <div className="space-y-4">
                 {product.longDescription.map((para, i) => (
-                  <p key={i} className="text-sm leading-7 text-muted-foreground">{para}</p>
+                  <p key={i} className="text-m leading-[1.7] text-[var(--ink-2)]">{para}</p>
                 ))}
               </div>
-            </div>
+            </Block>
 
-            {/* Highlights — bold value props */}
             {product.highlights && product.highlights.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>Why buy this</SectionLabel>
+              <Block title="Why buy this">
                 <div className="space-y-3">
                   {product.highlights.map((hl) => (
-                    <div key={hl.label} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#C4F9D7] border border-black">
-                        <span className="text-xs font-bold text-foreground">&#10003;</span>
-                      </span>
+                    <div key={hl.label} className={`${card} flex items-start gap-3 p-4`}>
+                      <span aria-hidden className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-s font-bold text-[var(--accent)]">&#10003;</span>
                       <div>
-                        <p className="text-sm font-bold text-foreground">{hl.label}</p>
-                        <p className="mt-0.5 text-sm text-muted-foreground">{hl.desc}</p>
+                        <p className="text-m font-bold">{hl.label}</p>
+                        <p className="mt-0.5 text-s leading-[1.5] text-[var(--ink-2)]">{hl.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* Answer copies sample preview */}
             {product.slug === "answer-copies-compilation" && (
-              <div className="mt-8">
-                <SectionLabel>Sample Preview</SectionLabel>
-                <p className="mb-4 text-sm text-muted-foreground">Actual answer sheets from 8 toppers included in this compilation</p>
+              <Block title="Sample Preview">
+                <p className="mb-4 text-s text-[var(--ink-2)]">Actual answer sheets from 8 toppers included in this compilation</p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {TOPPERS.slice(0, 8).map((topper) => (
-                    <a
-                      key={topper.slug}
-                      href={topper.previewImageUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative overflow-hidden rounded-xl border border-border bg-secondary transition hover:border-black"
-                    >
-                      <img
-                        src={topper.previewImageUrl}
-                        alt={`${topper.name} answer copy preview`}
-                        className="aspect-[3/4] w-full object-cover transition duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2">
-                        <p className="text-[10px] font-semibold text-white leading-tight">{topper.name}</p>
-                        <p className="text-[9px] text-white/70">{topper.rank} · {topper.year}</p>
-                      </div>
+                    <a key={topper.slug} href={topper.previewImageUrl} target="_blank" rel="noopener noreferrer" className="group block">
+                      <span className="paper block overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={topper.previewImageUrl} alt={`${topper.name} answer copy preview`} loading="lazy" className="aspect-[3/4] w-full object-cover transition duration-300 group-hover:scale-[1.03]" />
+                      </span>
+                      <span className="mt-2 block text-s font-bold leading-tight group-hover:text-[var(--accent)]">{topper.name}</span>
+                      <span className="block text-s text-[var(--muted)]">{topper.rank} · {topper.year}</span>
                     </a>
                   ))}
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* Features — bordered card */}
             {product.features.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>What&apos;s included</SectionLabel>
-                <div className="rounded-2xl border border-border bg-white p-6">
+              <Block title="What's included">
+                <div className={`${card} p-6`}>
                   <ul className="grid gap-3 sm:grid-cols-2">
                     {product.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                        <span className="mt-0.5 shrink-0 text-brand font-bold">&#10003;</span>
+                      <li key={f} className="flex items-start gap-2.5 text-s leading-[1.55] text-[var(--ink-2)]">
+                        <span aria-hidden className="mt-0.5 shrink-0 font-bold text-[var(--accent)]">&#10003;</span>
                         {f}
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* Sources — be explicit about where the material comes from */}
             {product.sourceNote && (
-              <div className="mt-8">
-                <SectionLabel>Sources</SectionLabel>
-                <div className="rounded-2xl border border-border bg-muted/40 p-5">
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {product.sourceNote}
-                  </p>
+              <Block title="Sources">
+                <div className="rounded-[20px] bg-[var(--canvas)] p-5">
+                  <p className="text-s leading-[1.6] text-[var(--ink-2)]">{product.sourceNote}</p>
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* File list */}
             {product.files && product.files.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>Files in this bundle</SectionLabel>
-                <p className="mb-3 text-sm text-muted-foreground">{product.fileCount} files · {product.totalSizeMB} MB total</p>
-                <div className="space-y-1.5 max-h-48 overflow-y-auto rounded-2xl border border-border bg-white p-4">
+              <Block title="Files in this bundle">
+                <p className="mb-3 text-s text-[var(--muted)]">{product.fileCount} files · {product.totalSizeMB} MB total</p>
+                <div className={`${card} max-h-56 space-y-1.5 overflow-y-auto p-3`}>
                   {product.files.map((f, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-lg bg-secondary px-3 py-2">
-                      <span className="truncate text-xs text-muted-foreground">{f.name}</span>
-                      <span className="ml-2 shrink-0 text-[11px] text-muted-foreground">{f.sizeMB} MB</span>
+                    <div key={i} className="flex items-center justify-between gap-3 rounded-[10px] bg-[var(--canvas)] px-3 py-2">
+                      <span className="truncate text-s text-[var(--ink-2)]">{f.name}</span>
+                      <span className="tab shrink-0 text-s text-[var(--muted)]">{f.sizeMB} MB</span>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* Reviews */}
             {reviews.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>{`Customer Reviews (${reviews.length})`}</SectionLabel>
+              <Block title={`Customer Reviews (${reviews.length})`}>
                 <ReviewsBlock reviews={reviews} rating={product.rating} reviewCount={product.reviewCount} />
-              </div>
+              </Block>
             )}
 
-            {/* Product FAQ */}
             {product.faqs && product.faqs.length > 0 && (
-              <div className="mt-8">
-                <SectionLabel>Questions & Answers</SectionLabel>
-                <div className="space-y-3">
+              <Block title="Questions & Answers">
+                <div className={`${card} divide-y divide-[var(--line)]`}>
                   {product.faqs.map((faq) => (
-                    <details key={faq.q} className="group rounded-xl border border-border bg-white p-4 hover:border-black transition-all">
-                      <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
-                        <h3 className="text-sm font-bold leading-tight">{faq.q}</h3>
-                        <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition group-open:rotate-180" />
+                    <details key={faq.q} className="group px-5 py-4">
+                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                        <h3 className="text-m font-bold leading-snug">{faq.q}</h3>
+                        <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
                       </summary>
-                      <p className="mt-3 text-sm text-muted-foreground leading-6">{faq.a}</p>
+                      <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{faq.a}</p>
                     </details>
                   ))}
                 </div>
-              </div>
+              </Block>
             )}
 
-            {/* Guarantee */}
             {!product.comingSoon && (
-              <div className="mt-8 rounded-2xl border border-dashed border-border bg-white p-5 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#C4F9D7] border border-black">
-                  <svg className="h-5 w-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </div>
-                <p className="mt-3 text-sm font-semibold text-foreground">Instant preview after purchase</p>
-                <p className="mt-1 text-xs text-muted-foreground">Every PDF opens in your browser. Download and keep forever.</p>
+              <div className="mt-12 rounded-[20px] bg-[var(--canvas)] p-6 text-center">
+                <p className="text-m font-bold">Instant preview after purchase</p>
+                <p className="mt-1 text-s text-[var(--ink-2)]">Every PDF opens in your browser. Download and keep forever.</p>
               </div>
             )}
           </div>
 
-          {/* Right: Desktop purchase card (sticky) */}
+          {/* Right: desktop purchase card (sticky) */}
           <div className="hidden lg:col-span-5 lg:block">
-            <div className="sticky top-6">
+            <div className="sticky top-24">
               <PurchaseCard product={product} onAddToCart={handleAddToCart} />
             </div>
           </div>
         </div>
 
-        {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-16 border-t border-border pt-12">
-            <SectionLabel>Related Products</SectionLabel>
-            <div className="grid gap-4 sm:grid-cols-3">
+          <section className="mt-20 border-t border-[var(--line)] pt-12">
+            <h2 className="t-head text-l">Related Products</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
               {related.map((r) => (
-                <Link
-                  key={r.slug}
-                  href={`/store/${r.slug}`}
-                  data-track={`detail-related-${r.slug}`}
-                  className="group bg-white border border-border hover:border-black transition-all flex flex-col"
-                >
-                  <div className="relative aspect-[3/4] overflow-hidden border-b border-border bg-secondary">
+                <Link key={r.slug} href={`/store/${r.slug}`} data-track={`detail-related-${r.slug}`} className={`${card} group flex flex-col p-3 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-1`}>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-[16px] bg-[var(--canvas)]">
                     {r.image ? (
-                      <img
-                        src={r.image}
-                        alt={r.title}
-                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={r.image} alt={r.title} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" />
                     ) : (
-                      <div className={`flex h-full items-center justify-center ${r.gradient}`}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="opacity-50">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                      </div>
+                      <Cover title={r.title} letter />
                     )}
-                    {r.badge && (
-                      <span className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-black ${
-                        r.badgeColor === "emerald" ? "bg-[#C4F9D7] text-foreground" :
-                        r.badgeColor === "amber" ? "bg-brand-muted text-brand" :
-                        "bg-secondary text-foreground/70"
-                      }`}>
-                        {r.badge}
-                      </span>
-                    )}
+                    {r.badge && <span className={`absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-s font-bold ${badgeCls(r.badgeColor)}`}>{r.badge}</span>}
                   </div>
-                  <div className="p-4 flex flex-1 flex-col">
-                    <h3 className="text-sm font-bold leading-tight">{r.title}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2 flex-1">{r.tagline}</p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <span className="text-lg font-bold">₹{r.price}</span>
-                      <ArrowRight className="w-4 h-4 text-gray-300 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
+                    <h3 className="text-m font-bold leading-snug group-hover:text-[var(--accent)]">{r.title}</h3>
+                    <p className="mt-1 line-clamp-2 flex-1 text-s text-[var(--ink-2)]">{r.tagline}</p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="tab rounded-[6px] bg-[var(--hl)] px-2 py-0.5 text-m font-bold">₹{r.price}</span>
+                      <span aria-hidden className="text-[var(--muted)] transition-transform group-hover:translate-x-1 group-hover:text-[var(--accent)]">→</span>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
-          </div>
+          </section>
         )}
       </div>
       <CartSlideover open={cartOpen} onClose={() => setCartOpen(false)} />
-      <FakePurchaseToast />
     </div>
   );
 }
 
 function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddToCart: () => void }) {
   return (
-    <div className="relative">
-      <div className="absolute -right-3 -top-3 h-full w-full rounded-2xl bg-[#C4F9D7]" />
-      <div className="relative rounded-2xl border border-black bg-white p-6 shadow-xl">
-        {product.badge && (
-          <div className="mb-3">
-            <span className={`inline-block rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-black ${
-              product.badgeColor === "emerald"
-                ? "bg-[#C4F9D7] text-foreground"
-                : product.badgeColor === "amber"
-                  ? "bg-brand-muted text-brand"
-                  : "bg-secondary text-foreground/70"
-            }`}>
-              {product.badge}
-            </span>
-          </div>
-        )}
+    <div className="rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2),0_18px_40px_-20px_rgba(11,12,16,0.35)]">
+      {product.badge && <span className={`inline-block rounded-full px-3 py-1 text-s font-bold ${badgeCls(product.badgeColor)}`}>{product.badge}</span>}
 
-        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{product.title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>
+      <h1 className={`t-head text-l ${product.badge ? "mt-3" : ""}`}>{product.title}</h1>
+      <p className="mt-2 text-m leading-[1.5] text-[var(--ink-2)]">{product.tagline}</p>
 
-        {product.rating && (
-          <div className="mt-3 flex items-center gap-2">
-            <span className="inline-flex items-center gap-0.5">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <IconStarFilled
-                  key={s}
-                  size={14}
-                  className={s <= Math.round(product.rating!) ? "text-brand" : "text-gray-200"}
-                />
-              ))}
-            </span>
-            <span className="text-sm font-medium text-foreground/70">{product.rating}</span>
-            <span className="text-sm text-muted-foreground">({product.reviewCount} reviews)</span>
-          </div>
-        )}
-
-        <div className="mt-3 flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+      {product.rating && (
+        <div className="mt-4 flex items-center gap-2">
+          <span className="inline-flex items-center gap-0.5">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} on={s <= Math.round(product.rating!)} />
+            ))}
           </span>
-          <span className="text-xs text-muted-foreground">
-            {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}1,400+ students
-          </span>
+          <span className="text-s font-bold">{product.rating}</span>
+          <span className="text-s text-[var(--muted)]">({product.reviewCount} reviews)</span>
         </div>
+      )}
 
-        {/* Fixed price — one number, same everywhere */}
-        <div className="mt-4 flex items-baseline gap-3">
-          <span className="text-3xl font-bold tracking-tight">₹{product.price.toLocaleString("en-IN")}</span>
+      <p className="mt-2 flex items-center gap-2 text-s text-[var(--muted)]">
+        <span aria-hidden className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+        {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}1,400+ students
+      </p>
+
+      {/* Fixed price — one number, same everywhere */}
+      <p className="mt-5">
+        <span className="t-display tab text-l">₹{fmt(product.price)}</span>
+      </p>
+
+      <ul className="mt-5 grid grid-cols-2 gap-2">
+        {["Instant download", "7-day refund", "Lifetime access", "1,400+ students"].map((label) => (
+          <li key={label} className="flex items-center gap-2 rounded-[12px] bg-[var(--canvas)] px-3 py-2 text-s text-[var(--ink-2)]">
+            <span aria-hidden className="font-bold text-[var(--accent)]">&#10003;</span>
+            {label}
+          </li>
+        ))}
+      </ul>
+
+      {product.comingSoon ? (
+        <div className="mt-6 rounded-full bg-[var(--canvas)] py-3 text-center text-m font-bold text-[var(--muted)]">Coming Soon</div>
+      ) : product.link ? (
+        <Link href={product.link} data-track={`detail-view-${product.slug}`} className="btn btn-ink mt-6 w-full justify-center">
+          View Full Product Details
+        </Link>
+      ) : (
+        <div className="mt-6 space-y-2.5">
+          <PayButton
+            amount={product.price}
+            items={[{ slug: product.slug, quantity: 1, price: product.price }]}
+            tracking={`buy-${product.slug}`}
+            className="btn btn-blue w-full justify-center"
+          >
+            Pay ₹{fmt(product.price)}
+          </PayButton>
+          <button type="button" data-track={`detail-addtocart-${product.slug}`} onClick={onAddToCart} className="btn btn-paper w-full justify-center">
+            Add to Cart
+          </button>
         </div>
+      )}
 
-        {/* Trust badges */}
-        <div className="mt-5 grid grid-cols-2 gap-2">
-          {[
-            { icon: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4", label: "Instant download" },
-            { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", label: "7-day refund" },
-            { icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", label: "Lifetime access" },
-            { icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", label: "1,400+ students" },
-          ].map((badge) => (
-            <div key={badge.label} className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-2">
-              <svg className="h-4 w-4 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d={badge.icon} />
-              </svg>
-              <span className="text-[11px] font-medium text-muted-foreground">{badge.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* CTAs */}
-        {product.comingSoon ? (
-          <div className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-secondary px-5 py-3 text-sm font-medium text-muted-foreground">
-            Coming Soon
-          </div>
-        ) : product.link ? (
-          <div className="mt-6">
-            <Link
-              href={product.link}
-              data-track={`detail-view-${product.slug}`}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-bold text-white transition hover:bg-gray-800"
-            >
-              View Full Product Details
-            </Link>
-          </div>
-        ) : (
-          <div className="mt-6 space-y-3">
-            <PayButton
-              amount={product.price}
-              items={[{ slug: product.slug, quantity: 1, price: product.price }]}
-              tracking={`buy-${product.slug}`}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-4 text-base font-bold text-white transition hover:bg-gray-800 active:scale-[0.97]"
-            >
-              <IconShoppingCart size={18} />
-              Pay ₹{product.price.toLocaleString("en-IN")}
-            </PayButton>
-            <button
-              type="button"
-              data-track={`detail-addtocart-${product.slug}`}
-              onClick={onAddToCart}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-5 py-3 text-sm font-semibold text-foreground/70 transition hover:border-black hover:text-foreground"
-            >
-              <IconShoppingBag size={16} />
-              Add to Cart
-            </button>
-          </div>
-        )}
-
-        <div className="mt-4 rounded-xl border border-brand/20 bg-brand-muted p-3">
-          <div className="flex items-center gap-2">
-            <svg className="h-5 w-5 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            <div>
-              <p className="text-xs font-bold text-emerald-800">7-Day Money-Back Guarantee</p>
-              <p className="text-[11px] text-brand">Not satisfied? Get a full refund within 7 days.</p>
-            </div>
-          </div>
-        </div>
-        <p className="mt-3 text-center text-[11px] text-muted-foreground">
-          Secure payment · PDF delivered instantly
-        </p>
+      <div className="mt-5 rounded-[16px] bg-[#d4f1df] p-4">
+        <p className="text-s font-bold text-[#14532d]">7-Day Money-Back Guarantee</p>
+        <p className="mt-0.5 text-s text-[#14532d]/80">Not satisfied? Get a full refund within 7 days.</p>
       </div>
+      <p className="mt-3 text-center text-s text-[var(--muted)]">Secure payment · PDF delivered instantly</p>
     </div>
   );
 }
@@ -479,69 +357,53 @@ function PurchaseCard({ product, onAddToCart }: { product: StoreProduct; onAddTo
 function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview[]; rating: number | null; reviewCount: number | null }) {
   return (
     <div>
-      {/* Summary */}
-      <div className="flex items-center gap-6 rounded-2xl border border-border bg-white p-5 mb-4">
+      <div className={`${card} mb-4 flex items-center gap-6 p-5`}>
         <div className="text-center">
-          <p className="text-4xl font-bold tracking-tight">{rating || "—"}</p>
+          <p className="t-display tab text-l">{rating || "—"}</p>
           <div className="mt-1 flex items-center justify-center gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
-              <IconStarFilled
-                key={s}
-                size={14}
-                className={s <= Math.round(rating || 0) ? "text-brand" : "text-gray-200"}
-              />
+              <Star key={s} on={s <= Math.round(rating || 0)} />
             ))}
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">{reviewCount || reviews.length} reviews</p>
+          <p className="mt-1 text-s text-[var(--muted)]">{reviewCount || reviews.length} reviews</p>
         </div>
         <div className="flex-1 space-y-1.5">
           {[5, 4, 3].map((star) => {
             const pct = star === 5 ? 85 : star === 4 ? 12 : 3;
             return (
               <div key={star} className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground w-3">{star}</span>
-                <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-                  <div className="h-full rounded-full bg-brand-muted" style={{ width: `${pct}%` }} />
+                <span className="tab w-3 text-s text-[var(--muted)]">{star}</span>
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-[var(--canvas)]">
+                  <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${pct}%` }} />
                 </div>
-                <span className="text-xs text-muted-foreground w-8 text-right">{pct}%</span>
+                <span className="tab w-9 text-right text-s text-[var(--muted)]">{pct}%</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Individual reviews */}
       <div className="space-y-3">
         {reviews.map((review, i) => (
-          <div key={i} className="rounded-xl border border-border bg-white p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary border border-border">
-                  <span className="text-xs font-bold text-muted-foreground">{review.name.charAt(0)}</span>
-                </div>
+          <div key={i} className={`${card} p-5`}>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-[#e9edff] text-s font-bold text-[var(--accent-deep)]">{review.name.charAt(0)}</div>
                 <div>
-                  <p className="text-sm font-bold">{review.name}</p>
+                  <p className="text-s font-bold">{review.name}</p>
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center gap-0.5">
                       {[1, 2, 3, 4, 5].map((s) => (
-                        <IconStarFilled
-                          key={s}
-                          size={10}
-                          className={s <= review.rating ? "text-brand" : "text-gray-200"}
-                        />
+                        <Star key={s} on={s <= review.rating} className="h-3 w-3" />
                       ))}
                     </span>
-                    <span className="text-xs text-muted-foreground">{review.date}</span>
+                    <span className="text-s text-[var(--muted)]">{review.date}</span>
                   </div>
                 </div>
               </div>
-              {review.verified && (
-                <span className="rounded-full bg-[#C4F9D7] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-black text-foreground">
-                  Verified Buyer
-                </span>
-              )}
+              {review.verified && <span className="rounded-full bg-[#d4f1df] px-2.5 py-0.5 text-s font-bold text-[#14532d]">Verified Buyer</span>}
             </div>
-            <p className="mt-3 text-sm text-muted-foreground leading-6">{review.text}</p>
+            <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">{review.text}</p>
           </div>
         ))}
       </div>
@@ -551,25 +413,20 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
 
 function ImageCarousel({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
-
   return (
     <>
-      <img
-        src={images[active]}
-        alt={`${title} - ${active + 1}`}
-        className="w-full max-h-[480px] object-contain object-top bg-secondary"
-      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={images[active]} alt={`${title} - ${active + 1}`} className="max-h-[480px] w-full bg-[var(--canvas)] object-contain object-top" />
       {images.length > 1 && (
-        <div className="flex flex-wrap items-center justify-center gap-2 border-t border-border bg-white px-3 py-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 border-t border-[var(--line)] px-3 py-3">
           {images.map((img, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setActive(i)}
-              className={`h-10 w-10 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                i === active ? "border-black opacity-100" : "border-transparent opacity-60 hover:opacity-80"
-              }`}
+              className={`h-12 w-10 shrink-0 overflow-hidden rounded-[8px] transition ${i === active ? "shadow-[0_0_0_2px_var(--accent)]" : "opacity-60 hover:opacity-90"}`}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={img} alt={`${title} preview ${i + 1}`} className="h-full w-full object-cover" />
             </button>
           ))}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { IconMail, IconCheck } from "@tabler/icons-react";
 
 export default function EmailCapture() {
   const [email, setEmail] = useState("");
@@ -27,38 +26,41 @@ export default function EmailCapture() {
 
   if (status === "success") {
     return (
-      <div className="email-capture email-capture--success">
-        <IconCheck size={20} />
-        <span>You&rsquo;re subscribed! We&rsquo;ll notify you when new resources drop.</span>
+      <div className="mx-auto max-w-[1120px] px-6">
+        <div className="flex items-center gap-3 rounded-[24px] bg-[#d4f1df] p-6 text-m font-bold text-[#14532d]">
+          <span aria-hidden>✓</span>
+          <span>You&rsquo;re subscribed! We&rsquo;ll notify you when new resources drop.</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="email-capture">
-      <div className="email-capture__inner">
-        <IconMail size={24} className="email-capture__icon" />
-        <h3 className="email-capture__title">New resources every week</h3>
-        <p className="email-capture__desc">
-          Get notified when we add new answer copies, notes bundles, and strategy reports.
-        </p>
-        <form onSubmit={handleSubmit} className="email-capture__form">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            required
-            className="email-capture__input"
-            aria-label="Email address"
-          />
-          <button type="submit" className="email-capture__btn" disabled={status === "loading"}>
-            {status === "loading" ? "Subscribing…" : "Subscribe"}
-          </button>
-        </form>
-        {status === "error" && (
-          <p className="email-capture__error">Something went wrong. Try again.</p>
-        )}
+    <section className="mx-auto max-w-[1120px] px-6">
+      <div className="grid gap-6 rounded-[28px] bg-[var(--accent)] p-7 text-white sm:p-10 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <h3 className="t-head text-l">New resources every week</h3>
+          <p className="mt-2 max-w-[34rem] text-m leading-[1.6] text-white/80">
+            Get notified when we add new answer copies, notes bundles, and strategy reports.
+          </p>
+        </div>
+        <div className="md:w-[380px]">
+          <form onSubmit={handleSubmit} className="flex items-center rounded-full bg-white p-1.5 pl-5">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
+              aria-label="Email address"
+              className="h-10 min-w-0 flex-1 bg-transparent text-m text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
+            />
+            <button type="submit" disabled={status === "loading"} className="btn btn-ink h-10 shrink-0 px-5 [--btn-fs:14px]">
+              {status === "loading" ? "Subscribing…" : "Subscribe"}
+            </button>
+          </form>
+          {status === "error" && <p className="mt-2 text-s text-white">Something went wrong. Try again.</p>}
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import StoreRouter from "@/components/store/StoreRouter";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const dynamic = "force-dynamic";
 
@@ -24,9 +25,9 @@ export const metadata = {
   },
 };
 
-export default function StorePage() {
+export default async function StorePage() {
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -51,6 +52,6 @@ export default function StorePage() {
         }}
       />
       <StoreRouter />
-    </>
+    </BrandShell>
   );
 }
