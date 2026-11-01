@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
-import { Button } from "@/components/ui/button";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import {
   generateWhatsIncluded,
@@ -11,11 +10,14 @@ import {
   generateKeyTopics,
   generateStudyTips,
   generateFAQs,
-  getCategoryLabel,
   generateEditorialContent,
 } from "@/lib/pdf-content";
-import ResourceSearch from "@/components/ResourceSearch";
-import FreeMaterialDownload from "@/components/FreeMaterialDownload";
+import BrandShell from "@/components/brand/BrandShell";
+import Toc from "@/components/brand/Toc";
+import { Section, card } from "@/components/brand/ui";
+import { CATEGORY, getCollection, getCollections } from "@/lib/materials";
+import Files from "../_components/Files";
+import { CollectionCard, Folder } from "../_components/Cover";
 
 // Edward playbook: republish under new URL to get fresh indexing judgment
 const V2_SLUGS = new Set([
@@ -79,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   await connectDB();
   const pdf = await PDFModel.findOne({ slug: dbSlug }).lean();
   if (!pdf) return { title: "PDF Not Found" };
-  const p = pdf as any;
+  const p = pdf as unknown as Parameters<typeof generateWhatsIncluded>[0] & { title: string };
   const metaDesc = generateWhatsIncluded(p).slice(0, 160);
   return {
     title: `${p.title} — Free PDF Download`,
@@ -99,38 +101,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const CATEGORY_META: Record<string, { label: string; icon: string }> = {
-  "test-series": { label: "Test Series", icon: "📝" },
-  "notes": { label: "Notes & Material", icon: "📓" },
-  "books": { label: "Books", icon: "📚" },
-  "magazines": { label: "Magazines", icon: "📰" },
-  "current-affairs": { label: "Current Affairs", icon: "📰" },
-  "optional": { label: "Optional Subjects", icon: "🎯" },
-  "other": { label: "Resources", icon: "📄" },
-};
+const fmt = (n: number) => n.toLocaleString("en-IN");
 
 export default async function PDFDetailPage({ params }: Props) {
   const { slug } = await params;
   const dbSlug = originalSlug(slug);
-  await connectDB();
-  const doc = await PDFModel.findOne({ slug: dbSlug }).lean();
-  if (!doc) notFound();
+  const data = await getCollection(dbSlug);
+  if (!data) notFound();
+  const { meta: c, raw: p, files, single } = data;
+  const cat = CATEGORY[c.category] ?? CATEGORY.other;
 
-  const p = doc as any;
-  const cat = CATEGORY_META[p.category] || CATEGORY_META.other;
-  const downloadUrl = p.downloadUrl || p.imagekitUrl || "#";
-  const sourceUrl = p.sourceUrl || "";
-
-  const whatsIncluded = generateWhatsIncluded(p);
-  const howToUse = generateHowToUse(p);
-  const keyTopics = generateKeyTopics(p);
-  const studyTips = generateStudyTips(p);
-  const faqs = generateFAQs(p);
-  const editorial = generateEditorialContent(p);
+  const whatsIncluded = generateWhatsIncluded(p as never);
+  const howToUse = generateHowToUse(p as never);
+  const keyTopics = generateKeyTopics(p as never);
+  const studyTips = generateStudyTips(p as never);
+  const faqs = generateFAQs(p as never);
+  const editorial = generateEditorialContent(p as never);
   const v2Content = V2_EXTRA_CONTENT[slug];
 
+  const all = await getCollections();
+  const related = all
+    .filter((x) => x.slug !== c.slug)
+    .sort((a, b) => Number(b.category === c.category) - Number(a.category === c.category) || Number(!!c.brand && b.brand === c.brand) - Number(!!c.brand && a.brand === c.brand) || b.requests - a.requests)
+    .slice(0, 6);
+
+  const facts = [
+    { k: "Files", v: fmt(c.files) },
+    ...(c.requests > 0 ? [{ k: "Downloads", v: fmt(c.requests) }] : []),
+    { k: "Language", v: c.hindi ? (files.some((f) => f.language !== "hi") ? "English + हिंदी" : "हिंदी") : "English" },
+    ...(c.fileSize ? [{ k: "Size", v: c.fileSize }] : []),
+    ...(c.pageCount ? [{ k: "Pages", v: fmt(c.pageCount) }] : []),
+    ...(c.year ? [{ k: "Edition", v: String(c.year) }] : []),
+  ];
+
+  const toc = [
+    { id: "files", label: single ? "Download" : "Files" },
+    { id: "about", label: "About this material" },
+    { id: "how-to-use", label: "How to use it" },
+    ...(faqs.length ? [{ id: "faq", label: "Questions" }] : []),
+    ...(related.length ? [{ id: "more", label: "More like this" }] : []),
+  ];
+
   return (
-    <main className="min-h-screen bg-white">
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -144,312 +157,153 @@ export default async function PDFDetailPage({ params }: Props) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: faqs.map((f) => ({
-              "@type": "Question",
-              name: f.q,
-              acceptedAnswer: { "@type": "Answer", text: f.a },
-            })),
+            mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
           }),
         }}
       />
-      <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-28">
-        {/* BREADCRUMB */}
-        <nav className="mb-10 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-          <Link href="/" data-track="pdf-detail-home" className="hover:text-zinc-800 transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/free-materials" data-track="pdf-detail-free-materials" className="hover:text-zinc-800 transition-colors">Free Materials</Link>
-          <span>/</span>
-          <span className="text-zinc-800 font-medium">{p.title}</span>
-        </nav>
 
-        {/* HEADER */}
-        <section className="mb-12">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-lg">{cat.icon}</span>
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-              {cat.label}
-            </span>
-            {p.brand && (
-              <>
-                <span className="text-zinc-300">·</span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-                  {p.brand}
-                </span>
-              </>
-            )}
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            {p.title}
-          </h1>
-          {p.description && (
-            <p className="mt-4 max-w-2xl text-base leading-8 text-zinc-600">
-              {p.description}
-            </p>
-          )}
-          {p.fileSize && (
-            <p className="mt-2 text-sm text-zinc-400">
-              File size: {p.fileSize} {p.pageCount ? `· ${p.pageCount} pages` : ""}
-            </p>
-          )}
-          <a
-            href="https://t.me/+2eV0YCTGdNcyNmFl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#0088cc]/30 bg-[#e8f4fd] px-4 py-2 text-xs font-semibold text-[#0088cc] transition hover:bg-[#d4edfc]"
-          >
-            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            Join Telegram — Daily Current Affairs
-          </a>
-        </section>
+      <div className="pb-24 pt-28 sm:pt-32">
+        <div className="mx-auto max-w-[1120px] px-6">
+          <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-x-2 gap-y-1">
+            <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+            <span aria-hidden>/</span>
+            <Link href="/free-materials" className="hover:text-[var(--ink)]">Free study material</Link>
+            <span aria-hidden>/</span>
+            <Link href={`/free-materials?category=${c.category}`} className="hover:text-[var(--ink)]">{cat.label}</Link>
+          </nav>
 
-        {/* WHAT'S INCLUDED */}
-        <section className="mb-12">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
-            What&rsquo;s Included
-          </h2>
-          <p className="text-base leading-8 text-zinc-700">
-            {whatsIncluded}
-          </p>
-          {keyTopics.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {keyTopics.map((topic) => (
-                <span
-                  key={topic}
-                  className="text-xs bg-zinc-100 text-zinc-600 rounded-full px-3 py-1"
-                >
-                  {topic}
-                </span>
-              ))}
+          <header className="mt-8 flex flex-col gap-8 sm:flex-row sm:items-center">
+            <div className="shrink-0">
+              <Folder c={c} size="lg" />
             </div>
-          )}
-        </section>
-
-        {/* EDITORIAL CONTENT */}
-        <section className="mb-12">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
-            About This Resource
-          </h2>
-          <p className="text-base leading-8 text-zinc-700">
-            {editorial}
-          </p>
-          {v2Content && (
-            <div className="mt-4 space-y-3 rounded-xl border border-brand/20 bg-brand-muted/50 p-5">
-              {v2Content.map((para, i) => (
-                <p key={i} className="text-sm leading-7 text-zinc-700">
-                  {para}
-                </p>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* HOW TO USE */}
-        <section className="mb-12 rounded-2xl bg-zinc-50 border border-zinc-200 p-6 sm:p-8">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-3">
-            How to Use This for UPSC Prep
-          </h2>
-          <p className="text-base leading-8 text-zinc-700">
-            {howToUse}
-          </p>
-          {studyTips.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {studyTips.map((tip, i) => (
-                <div key={i} className="flex items-start gap-2.5 text-sm text-zinc-600">
-                  <span className="text-brand mt-0.5 shrink-0">&#10003;</span>
-                  <span>{tip}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* RESOURCES LIST (multi-item collections like test series) */}
-        {p.resources && p.resources.length > 0 && (
-          <ResourceSearch resources={p.resources} slug={p.slug} />
-        )}
-
-        {/* DOWNLOAD SECTION (single item) */}
-        {(!p.resources || p.resources.length === 0) && (
-          <>
-            <FreeMaterialDownload
-              downloadUrl={downloadUrl}
-              pdfSlug={p.slug}
-              pdfTitle={p.title}
-              category={p.category || "other"}
-            />
-            {sourceUrl && (
-              <p className="mb-16 -mt-12 text-xs text-zinc-400 text-center sm:text-left">
-                Source:{" "}
-                <a href={sourceUrl} target="_blank" rel="noopener noreferrer" data-track="pdf-detail-source-link" className="underline hover:text-zinc-600">
-                  pdfnotes.co
+            <div className="min-w-0">
+              <p className="flex flex-wrap items-center gap-2 text-[14px]">
+                <span className="rounded-full px-2.5 py-0.5 font-semibold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
+                {c.brand && <span className="text-[var(--ink-2)]">{`by ${c.brand}`}</span>}
+              </p>
+              <h1 className="t-display mt-3 text-[clamp(30px,3.6vw,46px)] leading-[1.04]">{p.title}</h1>
+              {p.description && <p className="mt-4 max-w-[40rem] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a href="#files" data-track="material-header-download" className="btn btn-blue">
+                  {single ? "Download free PDF" : `See all ${fmt(c.files)} files`} <span className="knob">↓</span>
                 </a>
-              </p>
-            )}
-          </>
-        )}
-
-        {/* GREAT WEEKEND SALE */}
-        <section className="mb-16 rounded-2xl border border-brand/20 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand/20 border border-brand/20 shrink-0">
-              <span className="text-3xl">🎉</span>
+                {c.requests > 0 && <span className="text-[14px] text-[var(--muted)]">{`${fmt(c.requests)} aspirants have downloaded this`}</span>}
+              </div>
             </div>
-            <div className="flex-1">
-              <span className="rounded-full bg-brand px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Offer</span>
-              <h2 className="mt-2 text-lg font-bold text-white">Starting at ₹99</h2>
-              <p className="mt-1 text-sm text-emerald-200/80">
-                Starting at ₹99 · Instant download.
-              </p>
-            </div>
-            <Button
-              asChild
-              size="lg"
-              className="shrink-0 rounded-full bg-brand px-8 text-sm font-bold text-white hover:bg-brand shadow-lg"
-            >
-              <Link href="/store" data-track={`pdf-upsell-${p.slug}`}>
-                Shop Now &rarr;
-              </Link>
-            </Button>
-          </div>
-        </section>
+          </header>
 
-        {/* FAQ */}
-        {faqs.length > 0 && (
-          <section className="mb-16">
-            <h2 className="text-lg font-bold text-zinc-800 mb-6">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-3">
-              {faqs.map((faq, i) => (
-                <details
-                  key={i}
-                  className="group rounded-xl border border-zinc-200 bg-white overflow-hidden"
-                >
-                  <summary className="flex items-center justify-between gap-3 px-5 py-3.5 cursor-pointer hover:bg-zinc-50 transition-colors list-none">
-                    <span className="text-sm font-semibold text-zinc-800 pr-4">
-                      {faq.q}
-                    </span>
-                    <svg
-                      className="w-4 h-4 text-zinc-400 shrink-0 transition-transform group-open:rotate-180"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="border-t border-zinc-100 px-5 py-4">
-                    <p className="text-sm leading-7 text-zinc-600">
-                      {faq.a}
-                    </p>
+          <dl className={`${card} mt-10 flex flex-wrap divide-x divide-[var(--line)]`}>
+            {facts.map((f) => (
+              <div key={f.k} className="min-w-[120px] flex-1 px-5 py-4">
+                <dt className="t-meta">{f.k.toUpperCase()}</dt>
+                <dd className="t-head tab mt-1 text-[20px]">{f.v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <div className="min-w-0 space-y-14">
+              <Section id="files" title={single ? "Download" : `All ${fmt(c.files)} files`} meta={c.brand ? `Source: ${c.brand}` : undefined}>
+                <Files slug={c.slug} title={p.title} category={c.category} files={files} single={single} />
+              </Section>
+
+              <Section id="about" title="About this material">
+                <div className={`${card} space-y-4 p-6 sm:p-7 text-[16px] leading-[1.7] text-[var(--ink-2)]`}>
+                  <p>{whatsIncluded}</p>
+                  <p>{editorial}</p>
+                  {v2Content?.map((para, i) => <p key={i}>{para}</p>)}
+                  {keyTopics.length > 0 && (
+                    <ul className="flex flex-wrap gap-2 pt-2">
+                      {keyTopics.map((t) => (
+                        <li key={t} className="rounded-full bg-[var(--canvas)] px-3 py-1 text-[13px] text-[var(--ink-2)]">{t}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </Section>
+
+              <Section id="how-to-use" title="How to use it for UPSC">
+                <div className={`${card} p-6 sm:p-7`}>
+                  <p className="text-[16px] leading-[1.7] text-[var(--ink-2)]">{howToUse}</p>
+                  {studyTips.length > 0 && (
+                    <ol className="mt-5 grid gap-3 sm:grid-cols-2">
+                      {studyTips.map((tip, i) => (
+                        <li key={i} className="flex gap-3 rounded-[16px] bg-[var(--canvas)] p-4 text-[14.5px] leading-[1.55] text-[var(--ink-2)]">
+                          <span className="t-display tab text-[18px] leading-none text-[var(--accent)]">{String(i + 1).padStart(2, "0")}</span>
+                          {tip}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              </Section>
+
+              {faqs.length > 0 && (
+                <Section id="faq" title="Questions">
+                  <div className={`${card} divide-y divide-[var(--line)]`}>
+                    {faqs.map((f, i) => (
+                      <details key={f.q} open={i === 0} className="group px-6 py-5">
+                        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                          <h3 className="text-[16.5px] font-semibold tracking-[-0.01em]">{f.q}</h3>
+                          <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-[16px] transition-transform duration-200 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white">+</span>
+                        </summary>
+                        <p className="mt-3 text-[15.5px] leading-[1.6] text-[var(--ink-2)]">{f.a}</p>
+                      </details>
+                    ))}
                   </div>
-                </details>
-              ))}
+                </Section>
+              )}
+
+              {related.length > 0 && (
+                <Section id="more" title="More like this">
+                  <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    {related.map((r) => (
+                      <li key={r.slug}>
+                        <CollectionCard c={r} />
+                      </li>
+                    ))}
+                  </ul>
+                </Section>
+              )}
             </div>
-          </section>
-        )}
 
-        {/* EXPLORE MORE */}
-        <section className="mb-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-4">
-            Explore More Free Resources
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Link
-              href="/toppers"
-              data-track="pdf-detail-toppers"
-              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
-            >
-              <span className="text-2xl">🏆</span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-800">Topper Answer Copies</p>
-                <p className="text-xs text-zinc-500 mt-0.5">280+ verified topper profiles with marks and copies</p>
+            <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+              <div className={`${card} hidden p-5 lg:block`}>
+                <a href="#files" data-track="material-side-download" className="btn btn-blue w-full justify-between">
+                  {single ? "Download free PDF" : `Browse ${fmt(c.files)} files`} <span className="knob">↓</span>
+                </a>
+                <p className="mt-2.5 text-center text-[12.5px] text-[var(--muted)]">{c.requests > 0 ? `${fmt(c.requests)} downloads so far` : "Free, one email per collection"}</p>
               </div>
-            </Link>
-            <Link
-              href="/pyq"
-              data-track="pdf-detail-pyq"
-              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
-            >
-              <span className="text-2xl">📋</span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-800">Previous Year Questions</p>
-                <p className="text-xs text-zinc-500 mt-0.5">310+ PYQ papers with detailed analysis</p>
+              <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
+                <p className="t-meta">ON THIS PAGE</p>
+                <Toc items={toc} />
+              </nav>
+              <Link href="/toppers/toppers-copy-compilation" data-track="material-side-copies" className="group block rounded-[24px] bg-[var(--accent)] p-5 text-white">
+                <p className="text-[16px] font-semibold leading-snug">See how toppers actually wrote their answers</p>
+                <p className="mt-1.5 text-[13.5px] text-white/70">Real Mains booklets from rank holders, free to read.</p>
+                <span className="mt-3 inline-block text-[14px] font-semibold text-[var(--hl)] group-hover:underline">Topper answer copies →</span>
+              </Link>
+              <div className={`${card} p-5`}>
+                <p className="t-meta">EXPLORE</p>
+                <ul className="mt-3 space-y-1 text-[14.5px]">
+                  {[
+                    { href: `/free-materials?category=${c.category}`, label: `All ${cat.label.toLowerCase()}` },
+                    { href: "/free-materials", label: "Free study material" },
+                    { href: "/pyq", label: "Previous year questions" },
+                    { href: "/toppers/marks-database", label: "Topper marks database" },
+                  ].map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="flex items-center justify-between rounded-[10px] px-2 py-1.5 text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]">
+                        {l.label} <span aria-hidden>→</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </Link>
-            <Link
-              href="/free-materials"
-              data-track="pdf-detail-more-free-materials"
-              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
-            >
-              <span className="text-2xl">📚</span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-800">More Free Study Material</p>
-                <p className="text-xs text-zinc-500 mt-0.5">2,700+ resources across test series, notes, books, magazines</p>
-              </div>
-            </Link>
-            <Link
-              href="/resources"
-              data-track="pdf-detail-guides"
-              className="flex items-center gap-3 rounded-xl bg-white border border-zinc-200 p-4 hover:border-zinc-300 hover:shadow-sm transition-all"
-            >
-              <span className="text-2xl">📖</span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-800">UPSC Guides</p>
-                <p className="text-xs text-zinc-500 mt-0.5">Full form, syllabus breakdown, free material guide</p>
-              </div>
-            </Link>
+            </aside>
           </div>
-        </section>
-
-        {/* RELATED PDFs — same category */}
-        <PDFRelated category={p.category} currentSlug={p.slug} currentTitle={p.title} />
+        </div>
       </div>
-    </main>
-  );
-}
-
-async function PDFRelated({
-  category,
-  currentSlug,
-  currentTitle,
-}: {
-  category: string;
-  currentSlug: string;
-  currentTitle: string;
-}) {
-  await connectDB();
-  const related = await PDFModel.find({
-    category,
-    slug: { $ne: currentSlug },
-  })
-    .sort({ createdAt: -1 })
-    .limit(6)
-    .lean();
-
-  if (related.length === 0) return null;
-
-  return (
-    <section className="border-t border-zinc-100 pt-12">
-      <h2 className="text-lg font-bold text-zinc-800 mb-6">More {CATEGORY_META[category]?.label || "Resources"}</h2>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {related.map((r: any) => (
-          <Link
-            key={r._id}
-            href={`/free-materials/${r.slug}`}
-            data-track={`pdf-detail-related-${r.slug}`}
-            className="group rounded-xl border border-zinc-200 bg-white p-4 transition-all hover:border-zinc-300 hover:shadow-sm"
-          >
-            <h3 className="text-sm font-semibold text-zinc-800 group-hover:text-foreground transition-colors truncate">
-              {r.title}
-            </h3>
-            {r.brand && (
-              <p className="mt-0.5 text-xs text-zinc-400">{r.brand}</p>
-            )}
-            <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{r.description}</p>
-          </Link>
-        ))}
-      </div>
-    </section>
+    </BrandShell>
   );
 }

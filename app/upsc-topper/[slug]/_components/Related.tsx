@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Avatar, card } from "./ui";
+import { Avatar, card } from "@/components/brand/ui";
 
 export type RelatedTopper = {
   name: string;

@@ -27,7 +27,7 @@ import Marksheet from "./_components/Marksheet";
 import AnswerCopy, { type FreeTopper } from "./_components/AnswerCopy";
 import { About, Faq, Insights, StrategyBlock, type QA } from "./_components/Content";
 import Related, { type RelatedGroup, type RelatedTopper } from "./_components/Related";
-import { Section } from "./_components/ui";
+import { Section } from "@/components/brand/ui";
 import StickyCopyBar from "./_components/StickyCopyBar";
 import { CompareBox, ContinueReading, type Suggestion } from "./_components/Next";
 import type { PickItem } from "@/components/brand/ComparePicker";

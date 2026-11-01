@@ -1,6 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
-import { card } from "./ui";
+import { card } from "@/components/brand/ui";
 
 /** Splits strategy markdown into its sections; top-level "##" titles are dropped and repeated lines removed. */
 export function strategySections(md: string) {

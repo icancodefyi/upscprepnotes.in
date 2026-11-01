@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ComparePicker, { type PickItem } from "@/components/brand/ComparePicker";
-import { Avatar, card } from "./ui";
+import { Avatar, card } from "@/components/brand/ui";
 
 export type Suggestion = { slug: string; name: string; rank: number; year: number; optional: string; total: number; avatar: string; reason: string };
 

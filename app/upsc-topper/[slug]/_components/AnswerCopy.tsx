@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Lens from "@/components/brand/Lens";
 import { Paperclip } from "@/components/brand/Props";
-import { Avatar, card } from "./ui";
+import { Avatar, card } from "@/components/brand/ui";
 
 export type FreeTopper = { name: string; slug: string; rank: number; year: number; optional: string; same: boolean; avatar: string };
 export type Compilation = { href: string; title: string; price: number; detail: string; image: string | null };

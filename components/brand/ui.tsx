@@ -1,4 +1,4 @@
-/** Small building blocks shared by the topper profile. */
+/** Small building blocks for document-style brand pages (topper profile, free materials…). */
 
 export const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 

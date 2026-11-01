@@ -1,5 +1,5 @@
 import { fmt, type PaperStat } from "@/lib/topper-stats";
-import { card } from "./ui";
+import { card } from "@/components/brand/ui";
 
 /**
  * The marksheet as UPSC prints it, plus one quiet column: how each paper compares with the

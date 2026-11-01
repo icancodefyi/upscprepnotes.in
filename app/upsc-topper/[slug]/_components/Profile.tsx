@@ -2,8 +2,8 @@ import Link from "next/link";
 import AskLink from "@/components/AskLink";
 import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
-import Toc from "./Toc";
-import { RankStamp, card } from "./ui";
+import Toc from "@/components/brand/Toc";
+import { RankStamp, card } from "@/components/brand/ui";
 
 export type HeaderData = {
   name: string;
