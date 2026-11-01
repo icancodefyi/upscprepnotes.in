@@ -18,6 +18,7 @@ import OptionalFolders, { type OptionalTile } from "./_components/OptionalFolder
 import Years, { type YearCard } from "./_components/Years";
 import StoreShelf, { type ShelfItem } from "./_components/StoreShelf";
 import Verify from "./_components/Verify";
+import Founder from "./_components/Founder";
 import LeadPack from "./_components/LeadPack";
 import Faq, { FAQS } from "./_components/Faq";
 import Closing from "./_components/Closing";
@@ -309,6 +310,7 @@ export default async function TryPage() {
         <Pillars counts={counts} />
         <StoreShelf items={shelf} />
         <Verify counts={counts} />
+        <Founder counts={counts} />
         <LeadPack />
         <Faq counts={counts} />
       </main>
