@@ -32,8 +32,8 @@ One family, two cuts.
 
 | Role | Face | Size / weight | Tracking | Leading |
 |---|---|---|---|---|
-| Display | Geist | 56–104px / 600 | -0.045em | 1.0 |
-| Heading | Geist | 28–40px / 600 | -0.03em | 1.1 |
+| Display / H1 | Funnel Display | 40–72px / 700 | -0.035em | 0.95 |
+| Section heading (H2) | Funnel Display | 32–50px / 700, max 24ch, 2 lines | -0.035em | 1.04 |
 | Body | Geist | 17–19px / 400 | -0.011em | 1.55 |
 | UI | Geist | 13–15px / 500 | -0.005em | 1.4 |
 | Data & meta | Geist Mono | 11–13px / 400 | 0 | 1.4 |
@@ -66,8 +66,8 @@ Folder stock (optional-subject tabs only): `#FFE45C`, `#DBE2FF`, `#FFD8CF`, `#D4
 
 ## 6. Shape, depth, spacing
 - **Radius scale:** 8 / 12 / 20 / 28. Nested corners are concentric (inner = outer − padding).
-- **Borders:** 1px `--line`. **Shadows:** layered and soft, never a single dark drop.
-- **Spacing:** 4px base; sections 120–160px apart; content width 1200px.
+- **Borders:** 1px `--line`. **Shadows:** short and crisp under the object; no wide blurred haze.
+- **Spacing:** 4px base; sections 96–128px apart; content width 1120px; coloured panels max 1360px, inset 24px from the edge, 40px radius.
 
 ## 7. Motion
 Borrowed from Emil Kowalski / Rauno Freiberg practice.
