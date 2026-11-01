@@ -1,0 +1,126 @@
+import Link from "next/link";
+import { Mark } from "./Nav";
+
+const fmt = (n: number) => n.toLocaleString("en-IN");
+const FOOTER = [
+  { title: "Archive", links: [
+    { href: "/toppers", label: "UPSC toppers" },
+    { href: "/toppers/marks-database", label: "Marks database" },
+    { href: "/toppers/toppers-copy-compilation", label: "Topper answer copies" },
+    { href: "/pyq", label: "Previous year questions" },
+    { href: "/current-affairs", label: "Current affairs" },
+    { href: "/free-materials", label: "Free study material" },
+    { href: "/ask", label: "Ask AI mentor" },
+  ] },
+  { title: "By year", links: [
+    { href: "/year/2025", label: "CSE 2025 toppers" },
+    { href: "/year/2024", label: "CSE 2024 toppers" },
+    { href: "/year/2023", label: "CSE 2023 toppers" },
+    { href: "/year/2022", label: "CSE 2022 toppers" },
+  ] },
+  { title: "Optionals", links: [
+    { href: "/optional/psir", label: "PSIR" },
+    { href: "/optional/sociology", label: "Sociology" },
+    { href: "/optional/anthropology", label: "Anthropology" },
+    { href: "/optional/geography", label: "Geography" },
+    { href: "/optional/mathematics", label: "Mathematics" },
+    { href: "/optional/history", label: "History" },
+    { href: "/optional/public-administration", label: "Public Administration" },
+    { href: "/optional/philosophy", label: "Philosophy" },
+  ] },
+  { title: "Strategy", links: [
+    { href: "/content/how-to-score-130-plus-in-gs1", label: "GS I strategy" },
+    { href: "/content/how-to-score-120-plus-in-gs2", label: "GS II strategy" },
+    { href: "/content/how-to-score-120-plus-in-gs3", label: "GS III strategy" },
+    { href: "/content/how-to-score-100-plus-in-gs4", label: "GS IV ethics strategy" },
+    { href: "/content/upsc-topper-answer-copies", label: "How to use answer copies" },
+    { href: "/content/upsc-syllabus", label: "UPSC syllabus" },
+  ] },
+  { title: "Store", links: [
+    { href: "/store/answer-copies-compilation", label: "Answer copies compilation" },
+    { href: "/store/top-10-rankers-strategy", label: "Top 10 rankers strategy" },
+    { href: "/store/government-schemes-compilation", label: "Government schemes" },
+    { href: "/store", label: "All products" },
+  ] },
+  { title: "Company", links: [
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/faq", label: "FAQ" },
+    { href: "/content/data-methodology-and-editorial-standards", label: "Data methodology" },
+    { href: "/privacy-policy", label: "Privacy policy" },
+    { href: "/terms", label: "Terms of use" },
+    { href: "/disclaimer", label: "Disclaimer" },
+  ] },
+];
+
+const RING = "REAL BOOKLETS • REAL MARKS • REAL TOPPERS • ";
+
+function Badge() {
+  return (
+    <div className="relative h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]">
+      <svg viewBox="0 0 200 200" className="spin absolute inset-0 h-full w-full" aria-hidden>
+        <defs>
+          <path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+        </defs>
+        <text style={{ fontFamily: "var(--up-mono)", fontSize: 13, letterSpacing: 2.2 }} fill="var(--ink)">
+          <textPath href="#ring">{RING}</textPath>
+        </text>
+      </svg>
+      <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_12px_24px_-10px_rgba(255,74,61,0.8)] sm:inset-[40px]">
+        <span className="t-display text-[30px] sm:text-[36px]">AIR</span>
+      </div>
+    </div>
+  );
+}
+
+export default function Closing({ counts }: { counts: { toppers: number; full: number; aspirants: number } }) {
+  return (
+    <footer className="panel relative bg-[var(--hl)]">
+      <div className="mx-auto max-w-[1120px] px-6 pt-24 sm:pt-32">
+        <div className="flex flex-wrap items-start justify-between gap-10">
+          <div className="max-w-[40rem]">
+            <h2 className="t-display h-sec">Your three hours are coming.</h2>
+            <p className="mt-6 max-w-[30rem] text-[19px] leading-[1.55] text-[rgba(11,12,16,0.72)]">
+              {`Study the ones that worked: ${fmt(counts.toppers)} toppers and ${fmt(counts.full)} complete marksheets, free to read.`}
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link href="/toppers" data-track="try-closing-primary" className="btn btn-ink">
+                Start with a topper <span className="knob">↗</span>
+              </Link>
+              <Link href="/free-materials" data-track="try-closing-free" className="btn btn-paper">
+                Free study material
+              </Link>
+            </div>
+          </div>
+          <Badge />
+        </div>
+
+        <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-[14.5px] sm:grid-cols-3 lg:grid-cols-6">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-6 flex items-center gap-2.5 text-[16px] font-semibold">
+            <Mark size={22} /> UPSCPrepNotes
+          </div>
+          {FOOTER.map((col) => (
+            <nav key={col.title} aria-label={col.title}>
+              <p className="t-meta text-[rgba(11,12,16,0.55)]">{col.title.toUpperCase()}</p>
+              <ul className="mt-4 space-y-2.5">
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="hover:underline">{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
+        <p className="mt-10 text-[13px] text-[rgba(11,12,16,0.6)]">
+          UPSCPrepNotes is independent and not affiliated with the Union Public Service Commission. Marks are taken from published UPSC results.
+        </p>
+      </div>
+
+      {/* Giant wordmark, cropped by the page edge */}
+      <p aria-hidden className="t-display mt-16 select-none whitespace-nowrap px-4 text-center text-[17.5vw] leading-[0.78] tracking-[-0.06em] text-[var(--ink)]">
+        UPSCPrep
+      </p>
+    </footer>
+  );
+}
