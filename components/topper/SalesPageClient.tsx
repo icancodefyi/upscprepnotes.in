@@ -97,25 +97,24 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
 
       {/* Preview lightbox */}
       {previewImg && (
-        <div className="fixed inset-0 z-[100] flex cursor-pointer items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setPreviewImg(null)}>
-          <button onClick={() => setPreviewImg(null)} className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+        <div className="fixed inset-0 z-[100] grid cursor-zoom-out place-items-center bg-[rgba(11,12,16,0.75)] p-4" onClick={() => setPreviewImg(null)}>
+          <button onClick={() => setPreviewImg(null)} aria-label="Close preview" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white text-[var(--ink)]">
+            ✕
           </button>
-          <img src={previewImg} alt="Preview" className="max-h-[90vh] max-w-[92vw] rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={previewImg} alt="Preview" className="max-h-[90vh] max-w-[92vw] rounded-[8px] bg-white object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
 
-      {/* Mobile Sticky CTA */}
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/[0.06] bg-white/95 backdrop-blur-md lg:hidden">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex flex-col">
-            <span className="text-lg font-bold tracking-tight text-gray-900">₹{PRICE}</span>
-            <span className="text-[10px] text-gray-400">72 resources · 7-day refund</span>
+      {/* Mobile sticky CTA */}
+      <div className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(12px,env(safe-area-inset-bottom))] lg:hidden">
+        <div className="mx-auto flex max-w-[520px] items-center justify-between gap-3 rounded-full bg-[var(--ink)] py-2 pl-5 pr-2 text-white shadow-[0_12px_30px_-10px_rgba(11,12,16,0.6)]">
+          <div className="flex flex-col leading-tight">
+            <span className="tab text-m font-bold">₹{PRICE}</span>
+            <span className="text-s text-white/60">72 resources · 7-day refund</span>
           </div>
-          <PayButton amount={PRICE} productSlug="all-strategy-reports" tracking="dodo-mobile-sticky" className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 active:scale-[0.97]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-            Get the Compilation
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <PayButton amount={PRICE} productSlug="all-strategy-reports" tracking="dodo-mobile-sticky" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">
+            Get the Compilation →
           </PayButton>
         </div>
       </div>

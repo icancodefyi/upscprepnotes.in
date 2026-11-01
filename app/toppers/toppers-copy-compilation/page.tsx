@@ -1,6 +1,7 @@
 import Script from "next/script";
 import SalesPage from "@/components/topper/SalesPage";
 import type { Metadata } from "next";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata: Metadata = {
   title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹99 Launch Sale | UPSCPrepNotes",
@@ -147,9 +148,9 @@ const breadcrumbSchema = {
   ],
 };
 
-export default function Page() {
+export default async function Page() {
   return (
-    <>
+    <BrandShell>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -163,6 +164,6 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <SalesPage />
-    </>
+    </BrandShell>
   );
 }
