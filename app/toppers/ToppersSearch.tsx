@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useMemo, useEffect } from "react";
+import { Suspense, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -18,16 +18,16 @@ type Topper = {
 
 function ToppersSearchInner({ toppers }: { toppers: Topper[] }) {
   const searchParams = useSearchParams();
-  const initialQ = searchParams?.get("search") || searchParams?.get("q") || "";
-  const [query, setQuery] = useState(initialQ);
+  const urlQ = searchParams?.get("search") || searchParams?.get("q") || "";
+  const [query, setQuery] = useState(urlQ);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const q = searchParams?.get("search") || searchParams?.get("q");
-    if (q !== null && q !== undefined) {
-      setQuery(q);
-    }
-  }, [searchParams]);
+  // When the URL's search changes (e.g. a new linked search), adopt it. Done during render, not in an effect.
+  const [prevUrlQ, setPrevUrlQ] = useState(urlQ);
+  if (urlQ !== prevUrlQ) {
+    setPrevUrlQ(urlQ);
+    setQuery(urlQ);
+  }
 
   const filtered = useMemo(() => {
     if (!query.trim()) return toppers;
