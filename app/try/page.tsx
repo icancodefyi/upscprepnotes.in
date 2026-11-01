@@ -199,9 +199,15 @@ async function getData() {
     });
 
   // Store: real titles and prices only. Ratings and review counts are deliberately not shown.
-  const shelf: ShelfItem[] = PRODUCTS.filter((p) => !p.comingSoon)
-    .slice(0, 6)
-    .map((p) => ({ slug: p.slug, title: p.title, tagline: p.tagline, price: p.price, image: p.image ?? null }));
+  const shelf: ShelfItem[] = PRODUCTS.filter((p) => !p.comingSoon).map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    tagline: p.tagline,
+    price: p.price,
+    image: p.image ?? p.images?.[0] ?? null,
+    features: p.features.slice(0, 4),
+    fileCount: p.fileCount ?? null,
+  }));
 
   const featured = (await getFeaturedToppers()).map((t) => ({
     href: `/upsc-topper/${t.slug}`,
