@@ -4,6 +4,7 @@ import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
 import Toc from "@/components/brand/Toc";
 import { RankStamp, card } from "@/components/brand/ui";
+import { Paperclip } from "@/components/brand/Props";
 
 export type HeaderData = {
   name: string;
@@ -22,49 +23,88 @@ export type HeaderData = {
   summary: string;
 };
 
-/** The result as a marks statement on paper, with the examiner's red circle round the total. */
+/**
+ * The result as a printed marks statement clipped to the page: a passport photo held by a paperclip,
+ * ruled rows like a real marksheet, the AIR stamped in red and the total circled in examiner's ink.
+ * Deliberately not styled as an official UPSC document; the source line says where the marks come from.
+ */
 function ResultCard({ h }: { h: HeaderData }) {
   const rows = [
-    ...(h.written > 0 ? [{ k: "Written", v: fmt(h.written), of: "1,750" }] : []),
-    ...(h.interview > 0 ? [{ k: "Interview", v: String(h.interview), of: "275" }] : []),
-    ...(h.optionalScore > 0 ? [{ k: `Optional${h.optional ? ` · ${h.optional}` : ""}`, v: String(h.optionalScore), of: "500" }] : []),
+    ...(h.written > 0 ? [{ k: "Written (mains)", max: "1,750", v: fmt(h.written) }] : []),
+    ...(h.optionalScore > 0 ? [{ k: "incl. Optional", max: "500", v: String(h.optionalScore), sub: true }] : []),
+    ...(h.interview > 0 ? [{ k: "Personality test", max: "275", v: String(h.interview) }] : []),
   ];
   return (
-    <div className="relative w-full lg:w-[340px]">
-      <div aria-hidden className="paper absolute inset-x-3 inset-y-3 rotate-[3deg] opacity-60" />
-      <div className="paper relative -rotate-[1deg] p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="t-meta">{`RESULT · UPSC CSE ${h.year}`}</p>
-            <p className="mt-1 text-s text-[var(--ink-2)]">Final total, out of 2,025 marks</p>
-          </div>
-          <RankStamp rank={h.rank} size={54} />
+    <div className="relative w-full pt-4 lg:w-[380px]">
+      {/* the sheet underneath, slightly askew */}
+      <div aria-hidden className="paper absolute inset-x-4 bottom-2 top-7 rotate-[2.5deg] opacity-70" />
+      <div className="paper relative -rotate-[0.8deg] px-6 pb-5 pt-6">
+        {/* passport photo, clipped on */}
+        <div className="absolute -top-4 right-6 rotate-[4deg]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={h.avatar} alt="" aria-hidden width={64} height={78} className="h-[78px] w-[64px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_12px_-6px_rgba(11,12,16,0.4)]" />
+          <Paperclip className="absolute -top-7 left-3 h-[84px] w-[31px] rotate-[-8deg]" />
         </div>
+
+        <p className="t-meta">MARKS STATEMENT</p>
+        <p className="mt-0.5 text-m font-bold">{`Civil Services Examination ${h.year}`}</p>
+
+        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-s">
+          <dt className="text-[var(--muted)]">Name</dt>
+          <dd className="truncate font-bold">{h.name}</dd>
+          {h.optional && (
+            <>
+              <dt className="text-[var(--muted)]">Optional</dt>
+              <dd className="truncate">{h.optional}</dd>
+            </>
+          )}
+        </dl>
+
         {h.total > 0 ? (
-          <p className="relative mt-3 inline-block">
-            <span className="t-display tab text-l leading-none">{fmt(h.total)}</span>
-            <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible" style={{ "--d": "500ms" } as React.CSSProperties}>
-              <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-          </p>
+          <table className="mt-4 w-full border-collapse text-s">
+            <thead>
+              <tr className="border-y-2 border-[var(--ink)] text-left">
+                <th scope="col" className="py-1.5 font-bold">Paper</th>
+                <th scope="col" className="py-1.5 text-right font-bold">Max</th>
+                <th scope="col" className="py-1.5 pl-3 text-right font-bold">Marks</th>
+              </tr>
+            </thead>
+            <tbody className="tab">
+              {rows.map((r) => (
+                <tr key={r.k} className="border-b border-[var(--line-2)]">
+                  <td className={`max-w-0 truncate py-1.5 ${r.sub ? "pl-3 text-[var(--muted)]" : ""}`}>{r.k}</td>
+                  <td className="py-1.5 text-right text-[var(--muted)]">{r.max}</td>
+                  <td className={`py-1.5 pl-3 text-right ${r.sub ? "text-[var(--muted)]" : "font-bold"}`}>{r.v}</td>
+                </tr>
+              ))}
+              <tr className="border-b-2 border-[var(--ink)]">
+                <td className="py-2 font-bold">Grand total</td>
+                <td className="py-2 text-right text-[var(--muted)]">2,025</td>
+                <td className="py-2 pl-3 text-right">
+                  <span className="relative inline-block">
+                    <span className="t-display text-l leading-none">{fmt(h.total)}</span>
+                    <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible" style={{ "--d": "500ms" } as React.CSSProperties}>
+                      <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         ) : (
-          <p className="mt-4 text-s leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
+          <p className="mt-4 border-y-2 border-[var(--ink)] py-3 text-s leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
         )}
-        {rows.length > 0 && (
-          <dl className="mt-5 space-y-2 border-t border-dashed border-[var(--line-2)] pt-4 text-s">
-            {rows.map((r) => (
-              <div key={r.k} className="flex items-baseline justify-between gap-3">
-                <dt className="truncate text-[var(--ink-2)]">{r.k}</dt>
-                <dd className="tab shrink-0">
-                  <span className="font-bold">{r.v}</span>
-                  <span className="text-[var(--muted)]">{` / ${r.of}`}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        )}
+
+        <div className="mt-3 flex items-start justify-between gap-3">
+          <p className="pt-1 text-s leading-[1.4] text-[var(--muted)]">{`Source: UPSC final result, CSE ${h.year}`}</p>
+          {/* pressed onto the sheet, overlapping the closing rule */}
+          <span className="-mt-6 mr-20 opacity-90 mix-blend-multiply">
+            <RankStamp rank={h.rank} size={64} />
+          </span>
+        </div>
+
         {h.requests > 0 && (
-          <a href="#answer-copy" className="mt-5 flex items-center justify-between gap-3 rounded-[12px] bg-[#e9edff] px-3.5 py-2.5 text-s text-[var(--accent-deep)] hover:bg-[#dfe5ff]">
+          <a href="#answer-copy" className="mt-4 flex items-center justify-between gap-3 rounded-[12px] bg-[#e9edff] px-3.5 py-2.5 text-s text-[var(--accent-deep)] hover:bg-[#dfe5ff]">
             <span>
               <span className="tab font-bold">{fmt(h.requests)}</span>
               {` aspirant${h.requests === 1 ? "" : "s"} requested ${h.first}'s copy`}
