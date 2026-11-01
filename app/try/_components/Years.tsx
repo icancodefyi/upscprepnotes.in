@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SectionHead from "./SectionHead";
+import { Pin } from "./Props";
 
 export type YearCard = {
   year: number;
@@ -28,8 +29,7 @@ export default function Years({ years }: { years: YearCard[] }) {
               className="group relative flex flex-col rounded-[24px] bg-white p-6 text-[var(--ink)] shadow-[0_10px_24px_-14px_rgba(11,12,16,0.35)] transition-transform duration-300 ease-[var(--ease)] hover:-translate-y-1.5"
               style={{ transform: `rotate(${[-1.5, 1, -0.8, 1.6][i % 4]}deg)` }}
             >
-              {/* pin */}
-              <span aria-hidden className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-[var(--mark)] shadow-[0_3px_6px_rgba(0,0,0,0.4),inset_0_-2px_0_rgba(0,0,0,0.2)]" />
+              <Pin className="absolute -top-5 left-1/2 h-11 w-10 -translate-x-1/2" />
               <Link href={`/year/${y.year}`} className="block">
                 <p className="t-meta">{`${fmt(y.count)} toppers on record`}</p>
                 <p className="t-display tab mt-2 text-[72px] group-hover:text-[var(--accent)]">{y.year}</p>

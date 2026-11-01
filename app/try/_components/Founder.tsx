@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Counts } from "./types";
+import { Pin } from "./Props";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
 
@@ -20,7 +21,7 @@ export default function Founder({ counts }: { counts: Counts }) {
             />
             <p className="mt-3 text-center text-[15px] font-semibold tracking-[-0.01em] text-[var(--ink)]">Zaid Rakhange</p>
             <p className="t-meta text-center">Runs UPSCPrepNotes</p>
-            <span aria-hidden className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-[var(--accent)] shadow-[0_3px_6px_rgba(0,0,0,0.35)]" />
+            <Pin tone="blue" className="absolute -top-5 left-1/2 h-11 w-10 -translate-x-1/2" />
           </div>
 
           <div>

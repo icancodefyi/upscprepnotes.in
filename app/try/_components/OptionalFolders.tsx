@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import SectionHead from "./SectionHead";
+import { Paperclip } from "./Props";
 
 export type OptionalTile = {
   subject: string;
@@ -107,7 +108,7 @@ export default function OptionalFolders({ optionals }: { optionals: OptionalTile
 
               {/* Beeswarm on a sheet of paper clipped into the folder */}
               <div className="paper relative rotate-[-1deg] p-6 sm:p-8">
-                <span aria-hidden className="absolute -top-3 left-10 h-8 w-4 rounded-full border-[3px] border-[#9aa0ab] border-b-transparent" />
+                <Paperclip className="absolute -top-7 left-10 h-[76px] w-[28px] rotate-[4deg]" />
                 <div className="relative h-[240px] sm:h-[280px]">
                   <div className="absolute inset-x-0 bottom-8 h-px bg-[var(--line-2)]" />
                   <div className="absolute bottom-8 top-6 w-px bg-[var(--ink)] transition-[left] duration-500" style={{ left: pct(t.median) }}>
