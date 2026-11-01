@@ -88,6 +88,9 @@ export default async function ContentPage({ params }: Props) {
   const { page, stats, optionals } = d;
 
   const contentPath = `/content/${slug}`;
+  const enSlug = getEnglishSlug(slug);
+  const hiSlug = getHindiSlug(enSlug);
+  const alt = page.lang === "hi" ? { href: `/content/${enSlug}`, label: "Read in English" } : hiSlug ? { href: `/content/${hiSlug}`, label: "हिंदी में पढ़ें" } : null;
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -148,7 +151,7 @@ export default async function ContentPage({ params }: Props) {
           }}
         />
       )}
-      <Guide page={page} stats={stats} optionals={optionals} />
+      <Guide page={page} stats={stats} optionals={optionals} alt={alt} />
     </BrandShell>
   );
 }

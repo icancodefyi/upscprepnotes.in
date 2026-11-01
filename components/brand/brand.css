@@ -198,3 +198,10 @@
 @media (min-width: 640px) { .up .panel { margin-inline: max(24px, calc((100vw - 1360px) / 2)); } }
 
 }
+
+/* Guide lists: blue dots for bullets, numbered discs for steps */
+.up .guide-li { position: relative; }
+.up ul > .guide-li { padding-left: 1.25rem; }
+.up ul > .guide-li::before { content: ""; position: absolute; left: 0.2rem; top: 0.68em; width: 6px; height: 6px; border-radius: 999px; background: var(--accent); }
+.up ol > .guide-li { counter-increment: step; padding-left: 2.4rem; }
+.up ol > .guide-li::before { content: counter(step); position: absolute; left: 0; top: 0.1em; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
