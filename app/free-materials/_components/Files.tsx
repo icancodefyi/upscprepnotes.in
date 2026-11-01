@@ -24,7 +24,24 @@ const write = (k: string, v: string) => {
  * Every file in a collection. The first download asks for an email (recorded through the existing
  * /api/free-material-download); after that the whole collection opens directly, with no repeat forms.
  */
-export default function Files({ slug, title, category, files, single }: { slug: string; title: string; category: string; files: Resource[]; single: boolean }) {
+// Some file names are button labels scraped from the source ("Download PDF Now"); show the collection title instead.
+const GENERIC = /^(download|click here|get (the )?pdf)|pdf now$/i;
+
+export default function Files({
+  slug,
+  title,
+  category,
+  files,
+  single,
+  downloads = 0,
+}: {
+  slug: string;
+  title: string;
+  category: string;
+  files: Resource[];
+  single: boolean;
+  downloads?: number;
+}) {
   const [q, setQ] = useState("");
   const [section, setSection] = useState<string>("all");
   const [lang, setLang] = useState<"all" | "hi" | "en">("all");
@@ -39,7 +56,7 @@ export default function Files({ slug, title, category, files, single }: { slug: 
     setEmail(read(EMAIL_KEY) ?? "");
   }, [slug]);
 
-  const indexed = useMemo(() => files.map((f, i) => ({ ...f, i })), [files]);
+  const indexed = useMemo(() => files.map((f, i) => ({ ...f, name: GENERIC.test(f.name.trim()) ? title : f.name, i })), [files, title]);
   const sections = useMemo(() => {
     const m = new Map<string, number>();
     for (const f of files) if (f.section) m.set(f.section, (m.get(f.section) ?? 0) + 1);
@@ -84,6 +101,50 @@ export default function Files({ slug, title, category, files, single }: { slug: 
       tab?.close();
       setStatus("error");
     }
+  }
+
+  // One file: a compact download card with the email field already open.
+  if (files.length === 1) {
+    const f = indexed[0];
+    return (
+      <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_10px_24px_-16px_rgba(11,12,16,0.3)]">
+        <p className="t-meta">FREE PDF</p>
+        <p className="mt-1.5 text-[16px] font-semibold leading-snug">{f.name}</p>
+        {f.section && <p className="mt-0.5 text-[13px] text-[var(--muted)]">{f.section}</p>}
+        {unlocked ? (
+          <a href={f.downloadUrl} target="_blank" rel="noopener noreferrer" data-track={`material-file-${slug}`} className="btn btn-blue mt-4 w-full justify-between">
+            Download PDF <span className="knob">↓</span>
+          </a>
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              unlock(0);
+            }}
+            className="mt-4"
+          >
+            <label htmlFor="m-email-0" className="sr-only">Email address</label>
+            <input
+              id="m-email-0"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@email.com"
+              className="h-12 w-full rounded-full bg-[var(--canvas)] px-5 text-[15px] outline-none shadow-[inset_0_0_0_1px_var(--line)] placeholder:text-[var(--muted)] focus:shadow-[inset_0_0_0_2px_var(--accent)]"
+            />
+            <button type="submit" disabled={status === "loading"} data-track={`material-file-gate-${slug}`} className="btn btn-blue mt-2.5 w-full justify-between">
+              {status === "loading" ? "Opening…" : "Download free PDF"} <span className="knob">↓</span>
+            </button>
+            {status === "error" && <p className="mt-2 text-[13px] text-[var(--mark-deep)]">That didn&apos;t go through. Try again.</p>}
+          </form>
+        )}
+        <p className="mt-3 text-center text-[12.5px] text-[var(--muted)]">
+          {downloads > 0 ? `${downloads.toLocaleString("en-IN")} aspirants downloaded this · ` : ""}
+          {unlocked ? "Unlocked on this device" : "Opens in a new tab, link also emailed"}
+        </p>
+      </div>
+    );
   }
 
   const chip = (on: boolean) =>

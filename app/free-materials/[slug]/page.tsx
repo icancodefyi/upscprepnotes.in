@@ -123,15 +123,22 @@ export default async function PDFDetailPage({ params }: Props) {
   const dbSlug = originalSlug(slug);
   const data = await getCollection(dbSlug);
   if (!data) notFound();
-  const { meta: c, raw: p, files, single } = data;
+  const { meta: c, raw: p, files } = data;
+  // One file: the download sits in the header and there is no file list section.
+  const single = files.length === 1;
+  const sectionMap = new Map<string, number>();
+  for (const f of files) sectionMap.set(f.section || "Files", (sectionMap.get(f.section || "Files") ?? 0) + 1);
+  const sections = [...sectionMap];
   const cat = CATEGORY[c.category] ?? CATEGORY.other;
 
-  const whatsIncluded = generateWhatsIncluded(p as never);
-  const howToUse = generateHowToUse(p as never);
-  const keyTopics = generateKeyTopics(p as never);
-  const studyTips = generateStudyTips(p as never);
-  const faqs = generateFAQs(p as never);
-  const editorial = generateEditorialContent(p as never);
+  // Some scraped file names are button labels ("Download PDF Now"); use the title for those in generated text.
+  const clean = { ...p, resources: p.resources?.map((r) => ({ ...r, name: /^(download|click here|get (the )?pdf)|pdf now$/i.test(r.name.trim()) ? p.title : r.name })) };
+  const whatsIncluded = generateWhatsIncluded(clean as never);
+  const howToUse = generateHowToUse(clean as never);
+  const keyTopics = generateKeyTopics(clean as never);
+  const studyTips = generateStudyTips(clean as never);
+  const faqs = generateFAQs(clean as never);
+  const editorial = generateEditorialContent(clean as never);
   const v2Content = V2_EXTRA_CONTENT[slug];
 
   const all = await getCollections();
@@ -151,7 +158,7 @@ export default async function PDFDetailPage({ params }: Props) {
   const optHref = opt ? `/optional/${optionalSlug(opt.subject)}` : null;
 
   const facts = [
-    { k: "Files", v: fmt(c.files) },
+    ...(single ? [] : [{ k: "Files", v: fmt(c.files) }]),
     ...(c.requests > 0 ? [{ k: "Downloads", v: fmt(c.requests) }] : []),
     { k: "Language", v: c.hindi ? (files.some((f) => f.language !== "hi") ? "English + हिंदी" : "हिंदी") : "English" },
     ...(c.fileSize ? [{ k: "Size", v: c.fileSize }] : []),
@@ -160,7 +167,7 @@ export default async function PDFDetailPage({ params }: Props) {
   ];
 
   const toc = [
-    { id: "files", label: single ? "Download" : "Files" },
+    ...(single ? [] : [{ id: "files", label: "Files" }]),
     { id: "about", label: "About this material" },
     { id: "how-to-use", label: "How to use it" },
     ...(faqs.length ? [{ id: "faq", label: "Questions" }] : []),
@@ -197,40 +204,61 @@ export default async function PDFDetailPage({ params }: Props) {
             <Link href={`/free-materials?category=${c.category}`} className="hover:text-[var(--ink)]">{cat.label}</Link>
           </nav>
 
-          <header className="mt-8 flex flex-col gap-8 sm:flex-row sm:items-center">
-            <div className="shrink-0">
-              <Folder c={c} size="lg" />
-            </div>
-            <div className="min-w-0">
-              <p className="flex flex-wrap items-center gap-2 text-[14px]">
-                <span className="rounded-full px-2.5 py-0.5 font-semibold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
-                {c.brand && <span className="text-[var(--ink-2)]">{`by ${c.brand}`}</span>}
-              </p>
-              <h1 className="t-display mt-3 text-[clamp(30px,3.6vw,46px)] leading-[1.04]">{p.title}</h1>
-              {p.description && <p className="mt-4 max-w-[40rem] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a href="#files" data-track="material-header-download" className="btn btn-blue">
-                  {single ? "Download free PDF" : `See all ${fmt(c.files)} files`} <span className="knob">↓</span>
-                </a>
-                {c.requests > 0 && <span className="text-[14px] text-[var(--muted)]">{`${fmt(c.requests)} aspirants have downloaded this`}</span>}
+          <header className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-12">
+            <div className="flex min-w-0 flex-col gap-6 sm:flex-row sm:items-start">
+              <div className="w-[150px] shrink-0 sm:w-[170px]">
+                <Folder c={c} />
+              </div>
+              <div className="min-w-0">
+                <p className="flex flex-wrap items-center gap-2 text-[14px]">
+                  <span className="rounded-full px-2.5 py-0.5 font-semibold" style={{ background: cat.tone, color: cat.ink }}>{cat.label}</span>
+                  {c.brand && <span className="text-[var(--ink-2)]">{`by ${c.brand}`}</span>}
+                </p>
+                <h1 className="t-display mt-3 text-[clamp(28px,3.2vw,42px)] leading-[1.05]">{p.title}</h1>
+                {p.description && <p className="mt-3 text-[16px] leading-[1.6] text-[var(--ink-2)]">{p.description}</p>}
+                <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[13.5px] text-[var(--muted)]">
+                  {facts.map((f) => (
+                    <li key={f.k}>
+                      {`${f.k} `}
+                      <span className="tab font-semibold text-[var(--ink)]">{f.v}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </header>
 
-          <dl className={`${card} mt-10 flex flex-wrap divide-x divide-[var(--line)]`}>
-            {facts.map((f) => (
-              <div key={f.k} className="min-w-[120px] flex-1 px-5 py-4">
-                <dt className="t-meta">{f.k.toUpperCase()}</dt>
-                <dd className="t-head tab mt-1 text-[20px]">{f.v}</dd>
+            {/* Right of the title: the download itself for one-file collections, the contents for series */}
+            {single ? (
+              <div id="files" className="scroll-mt-28">
+                <Files slug={c.slug} title={p.title} category={c.category} files={files} single={!p.resources?.length} downloads={c.requests} />
               </div>
-            ))}
-          </dl>
+            ) : (
+              <div className={`${card} p-5`}>
+                <p className="t-meta">{`WHAT'S INSIDE · ${fmt(c.files)} FILES`}</p>
+                <ul className="mt-3 space-y-1.5 text-[14px]">
+                  {sections.slice(0, 6).map(([name, k]) => (
+                    <li key={name} className="flex items-baseline justify-between gap-3">
+                      <span className="truncate text-[var(--ink-2)]">{name}</span>
+                      <span className="tab shrink-0 font-semibold">{k}</span>
+                    </li>
+                  ))}
+                  {sections.length > 6 && <li className="text-[13px] text-[var(--muted)]">{`+ ${sections.length - 6} more sections`}</li>}
+                </ul>
+                <a href="#files" data-track="material-header-download" className="btn btn-blue mt-4 w-full justify-between">
+                  {`Browse all ${fmt(c.files)} files`} <span className="knob">↓</span>
+                </a>
+                {c.requests > 0 && <p className="mt-2.5 text-center text-[12.5px] text-[var(--muted)]">{`${fmt(c.requests)} aspirants have downloaded from this`}</p>}
+              </div>
+            )}
+          </header>
 
           <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="min-w-0 space-y-14">
-              <Section id="files" title={single ? "Download" : `All ${fmt(c.files)} files`} meta={c.brand ? `Source: ${c.brand}` : undefined}>
-                <Files slug={c.slug} title={p.title} category={c.category} files={files} single={single} />
-              </Section>
+              {!single && (
+                <Section id="files" title={`All ${fmt(c.files)} files`} meta={c.brand ? `Source: ${c.brand}` : undefined}>
+                  <Files slug={c.slug} title={p.title} category={c.category} files={files} single={false} downloads={c.requests} />
+                </Section>
+              )}
 
               <Section id="about" title="About this material">
                 <div className={`${card} space-y-4 p-6 sm:p-7 text-[16px] leading-[1.7] text-[var(--ink-2)]`}>
@@ -293,12 +321,6 @@ export default async function PDFDetailPage({ params }: Props) {
             </div>
 
             <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-              <div className={`${card} hidden p-5 lg:block`}>
-                <a href="#files" data-track="material-side-download" className="btn btn-blue w-full justify-between">
-                  {single ? "Download free PDF" : `Browse ${fmt(c.files)} files`} <span className="knob">↓</span>
-                </a>
-                <p className="mt-2.5 text-center text-[12.5px] text-[var(--muted)]">{c.requests > 0 ? `${fmt(c.requests)} downloads so far` : "Free, one email per collection"}</p>
-              </div>
               <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
                 <p className="t-meta">ON THIS PAGE</p>
                 <Toc items={toc} />
