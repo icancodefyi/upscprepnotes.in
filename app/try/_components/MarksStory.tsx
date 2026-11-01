@@ -61,7 +61,7 @@ export default function MarksStory({ story }: { story: Story }) {
   const interview = story.papers.find((p) => p.key === "interview")?.score ?? 0;
 
   return (
-    <section className="panel relative bg-[var(--accent)] py-24 text-white sm:py-32">
+    <section className="panel grain relative bg-[var(--accent)] py-24 text-white sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark

@@ -80,7 +80,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
         <form
           action="/toppers"
           method="GET"
-          className="rise mx-auto mt-10 flex max-w-[32rem] items-center rounded-full bg-white p-1.5 pl-6 shadow-[0_0_0_1px_var(--line-2)] transition-shadow duration-200 focus-within:shadow-[0_0_0_2px_var(--accent)]"
+          className="rise mx-auto mt-10 flex max-w-[32rem] items-center rounded-full bg-white p-1.5 pl-6 shadow-[0_0_0_1px_var(--line-2),0_2px_4px_rgba(11,12,16,0.04)] transition-shadow duration-200 focus-within:shadow-[0_0_0_2px_var(--accent)]"
           style={{ "--i": 2 } as React.CSSProperties}
         >
           <label htmlFor="up-search" className="sr-only">Search UPSC toppers</label>
@@ -112,6 +112,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
       {/* Real booklets peek up from the bottom edge. */}
       <div className="absolute inset-x-0 bottom-0">
         <Fan booklets={booklets} />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[45] h-20 bg-gradient-to-t from-white to-transparent" />
       </div>
     </section>
   );

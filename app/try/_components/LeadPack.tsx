@@ -25,7 +25,7 @@ export default function LeadPack() {
 
   return (
     <section>
-      <div className="panel relative bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
+      <div className="panel grain relative bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h2 className="t-display h-sec">
@@ -66,7 +66,7 @@ export default function LeadPack() {
             {[2, 1, 0].map((k) => (
               <div
                 key={k}
-                className="absolute inset-x-6 top-0 h-[280px] rounded-[10px] bg-white shadow-[0_8px_18px_-10px_rgba(0,0,0,0.4)]"
+                className="absolute inset-x-6 top-0 h-[280px] rounded-[10px] bg-white shadow-[0_24px_48px_-20px_rgba(0,0,0,0.55)]"
                 style={{ transform: `rotate(${k * 5 - 4}deg) translateY(${k * 8}px)`, opacity: 1 - k * 0.12 }}
               >
                 {k === 0 && (

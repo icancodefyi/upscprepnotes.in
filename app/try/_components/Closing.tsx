@@ -72,7 +72,7 @@ function Badge() {
           <textPath href="#ring">{RING}</textPath>
         </text>
       </svg>
-      <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white  sm:inset-[40px]">
+      <div className="absolute inset-[34px] grid place-items-center rounded-full bg-[var(--mark)] text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.3),0_12px_24px_-10px_rgba(255,74,61,0.8)] sm:inset-[40px]">
         <span className="t-display text-[30px] sm:text-[36px]">AIR</span>
       </div>
     </div>

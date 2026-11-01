@@ -13,7 +13,7 @@ const fmt = (n: number) => n.toLocaleString("en-IN");
 /** One "result notice" per exam year, like the lists pinned outside UPSC's gate. */
 export default function Years({ years }: { years: YearCard[] }) {
   return (
-    <section className="panel relative bg-[var(--ink)] py-24 text-white sm:py-32">
+    <section className="panel grain relative bg-[var(--ink)] py-24 text-white sm:py-32">
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark
