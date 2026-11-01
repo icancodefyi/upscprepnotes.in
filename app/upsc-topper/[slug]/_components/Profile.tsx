@@ -4,7 +4,7 @@ import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
 import Toc from "@/components/brand/Toc";
 import AfterHeader from "./AfterHeader";
-import { RankStamp, card } from "@/components/brand/ui";
+import { card } from "@/components/brand/ui";
 import { Paperclip } from "@/components/brand/Props";
 
 export type HeaderData = {
@@ -25,67 +25,67 @@ export type HeaderData = {
 };
 
 /**
- * The result as a printed marks statement clipped to the page: a passport photo held by a paperclip,
- * ruled rows like a real marksheet, the AIR stamped in red and the total circled in examiner's ink.
- * Deliberately not styled as an official UPSC document; the source line says where the marks come from.
+ * The result as a statement of marks: straight, ruled and quiet, so it reads like a record rather
+ * than a sticker. The photo is clipped into an ID frame; the only red on the sheet is the circled total.
+ * Deliberately not styled as an official UPSC document; the footer names the source.
  */
 function ResultCard({ h }: { h: HeaderData }) {
   const rows = [
-    ...(h.written > 0 ? [{ k: "Written (mains)", max: "1,750", v: fmt(h.written) }] : []),
-    ...(h.optionalScore > 0 ? [{ k: "incl. Optional", max: "500", v: String(h.optionalScore), sub: true }] : []),
+    ...(h.written > 0 ? [{ k: "Written examination", max: "1,750", v: fmt(h.written) }] : []),
     ...(h.interview > 0 ? [{ k: "Personality test", max: "275", v: String(h.interview) }] : []),
   ];
+  const fields = [
+    { k: "Candidate", v: h.name, strong: true },
+    { k: "All India Rank", v: String(h.rank), strong: true },
+    ...(h.optional ? [{ k: "Optional", v: h.optional, strong: false }] : []),
+  ];
   return (
-    <div className="relative w-full pt-4 lg:w-[380px]">
-      {/* the sheet underneath, slightly askew */}
-      <div aria-hidden className="paper absolute inset-x-4 bottom-2 top-7 rotate-[2.5deg] opacity-70" />
-      <div className="paper relative -rotate-[0.8deg] px-6 pb-5 pt-6">
-        {/* passport photo, clipped on */}
-        <div className="absolute -top-4 right-6 rotate-[4deg]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={h.avatar} alt={h.name} width={64} height={78} className="h-[78px] w-[64px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_12px_-6px_rgba(11,12,16,0.4)]" />
-          <Paperclip className="absolute -top-7 left-3 h-[84px] w-[31px] rotate-[-8deg]" />
-          {/* attested: the rank stamp pressed across the photo's corner */}
-          <span className="absolute -bottom-7 -right-7 rotate-[-8deg] opacity-90 mix-blend-multiply">
-            <RankStamp rank={h.rank} size={60} />
-          </span>
+    <div className="w-full pt-5 lg:w-[410px]">
+      <div className="relative rounded-[6px] border-t-[3px] border-[var(--ink)] bg-white px-6 pb-5 pt-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.05),0_18px_40px_-20px_rgba(11,12,16,0.35)]">
+        <div className="flex items-start justify-between gap-5">
+          <div className="min-w-0">
+            <p className="t-meta">STATEMENT OF MARKS</p>
+            <p className="mt-0.5 text-m font-bold">{`Civil Services Examination ${h.year}`}</p>
+            <dl className="mt-4 space-y-1.5 text-s">
+              {fields.map((f) => (
+                <div key={f.k} className="grid grid-cols-[100px_1fr] gap-2">
+                  <dt className="text-[var(--muted)]">{f.k}</dt>
+                  <dd className={`min-w-0 break-words ${f.strong ? "font-bold" : ""}`}>{f.v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          {/* photo in an ID frame, held by the clip */}
+          <div className="relative -mt-9 shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={h.avatar} alt={h.name} width={72} height={88} className="h-[88px] w-[72px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_14px_-8px_rgba(11,12,16,0.45)]" />
+            <Paperclip className="absolute -top-6 left-2 h-[80px] w-[29px] rotate-[-6deg]" />
+          </div>
         </div>
 
-        <p className="t-meta">MARKS STATEMENT</p>
-        <p className="mt-0.5 text-m font-bold">{`Civil Services Examination ${h.year}`}</p>
-
-        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-s">
-          <dt className="text-[var(--muted)]">Name</dt>
-          <dd className="truncate font-bold">{h.name}</dd>
-          {h.optional && (
-            <>
-              <dt className="text-[var(--muted)]">Optional</dt>
-              <dd className="truncate">{h.optional}</dd>
-            </>
-          )}
-        </dl>
-
         {h.total > 0 ? (
-          <table className="mt-4 w-full border-collapse text-s">
+          <table className="mt-5 w-full border-collapse text-s">
             <thead>
-              <tr className="border-y-2 border-[var(--ink)] text-left">
-                <th scope="col" className="py-1.5 font-bold">Paper</th>
-                <th scope="col" className="py-1.5 text-right font-bold">Max</th>
-                <th scope="col" className="py-1.5 pl-3 text-right font-bold">Marks</th>
+              <tr className="border-b border-[var(--ink)] text-left">
+                <th scope="col" className="pb-2 font-normal text-[var(--muted)]">Component</th>
+                <th scope="col" className="pb-2 text-right font-normal text-[var(--muted)]">Max</th>
+                <th scope="col" className="pb-2 pl-4 text-right font-normal text-[var(--muted)]">Obtained</th>
               </tr>
             </thead>
             <tbody className="tab">
               {rows.map((r) => (
                 <tr key={r.k} className="border-b border-[var(--line-2)]">
-                  <td className={`max-w-0 truncate py-1.5 ${r.sub ? "pl-3 text-[var(--muted)]" : ""}`}>{r.k}</td>
-                  <td className="py-1.5 text-right text-[var(--muted)]">{r.max}</td>
-                  <td className={`py-1.5 pl-3 text-right ${r.sub ? "text-[var(--muted)]" : "font-bold"}`}>{r.v}</td>
+                  <td className="py-2.5">{r.k}</td>
+                  <td className="py-2.5 text-right text-[var(--muted)]">{r.max}</td>
+                  <td className="py-2.5 pl-4 text-right font-bold">{r.v}</td>
                 </tr>
               ))}
-              <tr className="border-b-2 border-[var(--ink)]">
-                <td className="py-2 font-bold">Grand total</td>
-                <td className="py-2 text-right text-[var(--muted)]">2,025</td>
-                <td className="py-2 pl-3 text-right">
+            </tbody>
+            <tfoot className="tab">
+              <tr className="border-t-[3px] border-double border-[var(--ink)]">
+                <td className="pt-3 font-bold">Total</td>
+                <td className="pt-3 text-right text-[var(--muted)]">2,025</td>
+                <td className="pt-3 pl-4 text-right">
                   <span className="relative inline-block">
                     <span className="t-display text-l leading-none">{fmt(h.total)}</span>
                     <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible" style={{ "--d": "500ms" } as React.CSSProperties}>
@@ -94,13 +94,19 @@ function ResultCard({ h }: { h: HeaderData }) {
                   </span>
                 </td>
               </tr>
-            </tbody>
+            </tfoot>
           </table>
         ) : (
-          <p className="mt-4 border-y-2 border-[var(--ink)] py-3 text-s leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
+          <p className="mt-5 border-y border-[var(--ink)] py-3 text-s leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
         )}
 
-        <p className="mt-3 text-s text-[var(--muted)]">{`Source: UPSC final result, CSE ${h.year}`}</p>
+        <p className="mt-5 flex items-center gap-2 border-t border-[var(--line)] pt-3 text-s text-[var(--muted)]">
+          <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="8" cy="8" r="6.5" />
+            <path d="M5.2 8.2l1.9 1.9 3.7-3.9" />
+          </svg>
+          {`As published in UPSC's final result, CSE ${h.year}`}
+        </p>
       </div>
     </div>
   );
