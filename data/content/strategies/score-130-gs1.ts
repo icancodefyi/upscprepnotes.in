@@ -1,125 +1,97 @@
 import type { ContentPage } from "../index";
 
+/** Numbers in {{braces}} are filled from the live marks database at render time. */
 const page: ContentPage = {
   slug: "how-to-score-130-plus-in-gs1",
-  title: "Highest Marks in GS1 — UPSC Topper Scores, Strategy & Paper Analysis",
+  paper: "gs1",
+  title: "GS1 Marks of UPSC Toppers: Highest Score, Median and What Is Realistic",
   description:
-    "130+ in GS1 puts you in the top 10%. Real marks from 7 toppers (2024-2025): highest 141. Topic weightage, booklist, and answer-writing strategy from top rankers.",
-  lastUpdated: "2026-06-24",
-  h1: "How to Score 130+ in UPSC GS Paper 1",
+    "The highest GS1 score among {{n}} UPSC topper marksheets is {{best}}. Median {{median}}, top 10% from {{top10}}. Real scores by rank, the toppers who scored most, and a GS1 strategy.",
+  lastUpdated: "2026-11-01",
+  h1: "How to score high in UPSC GS Paper 1",
   intro:
-    "Want to know how to score 130+ in UPSC GS Paper 1? GS Paper 1 (Indian Heritage & Culture, History, Geography, Society) is often the most unpredictable paper, but scoring 130+ is achievable with the right strategy. Here's how toppers do it — with real marks data, topic prioritization, and answer frameworks.",
+    "Many guides promise 130+ in GS Paper 1. In UPSC's own published marks, no topper in our {{n}} complete marksheets reached that: the highest is **{{best}}**, by {{bestName}}. The median topper scored **{{median}}**, and **{{top10}}** was enough for the top 10%. This guide shows the real numbers and what the high scorers had in common.",
   sections: [
     {
-      heading: "What Score Do You Need in GS1?",
-      body: `In UPSC CSE Mains, GS Paper 1 carries 250 marks. Based on topper data from 2022-2025:
+      heading: "What score is realistic in GS1",
+      body: `GS Paper 1 carries 250 marks and covers Indian heritage and culture, history (modern, post-independence and world), geography, and Indian society.
 
-- **130+**: Top 10% of successful candidates
-- **110-129**: Solid score, competitive for top 100 ranks
-- **90-109**: Average score among selected candidates
-- **Below 90**: Needs improvement
+Across {{n}} complete topper marksheets from CSE {{years}}:
 
-Toppers who scored 130+ in GS1 typically scored **900+ overall written marks**, making GS1 a key differentiator for top ranks.`,
+- **{{median}}** is the median topper's score.
+- **{{top25}}+** puts you in the top quarter of toppers.
+- **{{top10}}+** puts you in the top 10%.
+- **{{atLeast:120}}** toppers scored 120 or more. **{{atLeast:130}}** scored 130 or more.
+
+GS1 is marked tightly for everyone, so a score in the low 100s is already strong. Treat **110+** as an ambitious, realistic target rather than 130+.`,
     },
     {
-      heading: "Topic Prioritization for GS1",
-      body: `Based on topper strategy compilations, here's the weightage and effort matrix:
+      heading: "Where GS1 marks come from",
+      body: `UPSC sets 20 questions in GS1: ten 10-mark questions (about 150 words) and ten 15-mark questions (about 250 words). The paper draws from four areas:
 
-**High weightage (focus here)**
-- Modern Indian History (1857-1947) — 40-50 marks
-- Indian Society & Diversity — 30-40 marks  
-- World History (WW1, WW2, Cold War) — 20-30 marks
+- **History**: modern India and the freedom struggle, post-independence consolidation, and world history from the 18th century.
+- **Art and culture**: architecture, literature and art forms from ancient to modern times.
+- **Geography**: physical geography, resources, and the distribution of industries, along with geophysical phenomena.
+- **Indian society**: diversity, women, population, urbanisation, globalisation, communalism, regionalism and secularism.
 
-**Medium weightage**
-- Indian Art & Culture — 15-25 marks
-- Physical Geography — 15-20 marks
-- Social Justice — 10-15 marks
-
-**Low weightage (revise, don't deep-dive)**
-- Salient features of Indian Society
-- World Physical Geography`,
+The split between these areas changes every year. Solve the last ten years of GS1 questions topic by topic to see the pattern for yourself before deciding where to spend time; [previous year papers are free here](/pyq).`,
     },
     {
-      heading: "Topper Marks Data — GS1",
-      body: `Here are actual GS1 marks of top-ranked toppers:
+      heading: "Standard references",
+      body: `These are the books most commonly recommended for GS1. None of them is a shortcut; the marks come from answer writing.
 
-| Topper | Rank | Year | GS1 Marks |
-|--------|------|------|-----------|
-| Aniket Shukla | 3 | 2025 | 141 |
-| Shubham Shukla | 4 | 2025 | 136 |
-| Shubham Jain | 5 | 2025 | 133 |
-| Raghav Verma | 10 | 2025 | 131 |
-| Aditya Srivastava | 1 | 2024 | 139 |
-| Animesh Pradhan | 2 | 2024 | 135 |
-| Anmol Gagan | 6 | 2024 | 137 |
-
-**Key insight**: Toppers scoring 130+ in GS1 are consistently 30+ marks above the average. This margin comes from mastering **World History** and **Indian Society** — two areas where most candidates lose marks.`,
+1. NCERT History (Class 11–12) and *India's Struggle for Independence* (Bipan Chandra) for modern history
+2. NCERT *Themes in World History* and a standard world-history text
+3. NCERT *Indian Society* and *Social Change and Development in India* (Class 12)
+4. NCERT Geography (Class 11–12) and G.C. Leong, *Certificate Physical and Human Geography*
+5. Nitin Singhania, *Indian Art and Culture*`,
     },
     {
-      heading: "Booklist for 130+ in GS1",
-      body: `**Must-read (cover 80% of syllabus)**
-1. NCERT Class 11 & 12 — India Since Independence, Themes in World History
-2. Bipan Chandra — Struggle for India's Independence
-3. NCERT Class 12 — Indian Society, Social Change & Development
-4. G.C. Leong — Certificate Physical & Human Geography
-
-**Supplementary (for 130+ edge)**
-5. J.C. Johari — Indian Government & Politics (selected chapters)
-6. Nitin Singhania — Indian Art & Culture
-7. India Year Book (relevant chapters on culture & society)
-
-**Answer writing resources**
-8. Topper answer copies (GS1) — available on UPSCPrepNotes
-9. Previous year questions (topic-wise)`,
+      heading: "Answer writing for GS1",
+      body: `1. **Answer the directive.** "Critically examine", "discuss" and "comment" ask for different things. Address the word in the first two lines.
+2. **Keep to the word limit.** About 150 words for 10-mark questions and 250 for 15-mark ones. Finishing all 20 questions matters more than polishing a few.
+3. **Use structure.** A short introduction, the body in clear points or short paragraphs, and a one-line conclusion.
+4. **Add specifics.** A date, a name, a place, a census figure or a small map sketch makes a history, geography or society answer stand out from a generic one.
+5. **Read real copies.** Compare your answers with [topper answer copies](/toppers) next to the marks that paper earned.`,
     },
     {
-      heading: "Answer Writing Strategy for GS1",
-      body: `Toppers who score 130+ follow these answer-writing principles:
+      heading: "A simple eight-month plan",
+      body: `This is a suggested structure, not a topper's timetable.
 
-**1. Direct approach**: Start with a direct answer in the first 1-2 lines. Don't beat around the bush.
-
-**2. Structure matters**: Use headings, subheadings, and bullet points. A 150-word answer should have: Introduction (2 lines) → Main body (4-6 bullet points with explanations) → Conclusion (2 lines linking to current context).
-
-**3. Add value beyond textbooks**: Mention recent government schemes (e.g., "PM Vishwakarma Yojana for traditional artisans" in culture questions), Supreme Court judgments, or contemporary examples.
-
-**4. Map-based questions**: Practice map locations daily. 3-4 marks per question add up quickly. Use topper answer copies to see how they label maps.
-
-**5. Word count discipline**: Don't exceed 200 words per 15-mark question. Quality > quantity.`,
-    },
-    {
-      heading: "Monthly Preparation Plan",
-      body: `**Months 1-2**: Read NCERTs + Bipan Chandra. Make topic-wise notes (40-50 pages).
-**Months 3-4**: Read supplementary books. Start practicing 2 answers/day.
-**Months 5-6**: Full answer writing — 5 answers/day. Analyze topper answer copies.
-**Month 7**: Revision + mock tests (3 full GS1 papers under timed conditions).
-**Month 8**: Final revision of notes + map practice daily.`,
+- **Months 1–2:** NCERTs and the modern history text. Short topic notes.
+- **Months 3–4:** World history, art and culture, society. Start two answers a day.
+- **Months 5–6:** Five answers a day across all four areas; mark them against topper copies.
+- **Month 7:** Three full GS1 papers in three hours each.
+- **Month 8:** Revise your notes and the last ten years of questions.`,
     },
   ],
   faq: [
     {
-      q: "Can I score 130+ in GS1 without coaching?",
-      a: "Yes. Most toppers in the 130+ bracket are self-studying or using online resources. The key is consistent answer writing practice and analyzing feedback.",
+      q: "What is the highest GS1 score among UPSC toppers?",
+      a: "Among {{n}} complete topper marksheets from CSE {{years}}, the highest GS1 score is {{best}}, by {{bestName}}. {{atLeast:130}} toppers scored 130 or more.",
     },
     {
-      q: "Which optional subject pairs best with GS1 preparation?",
-      a: "History, Geography, and Sociology optionals have significant overlap with GS1 syllabus. Candidates choosing these optionals often score higher in GS1 because their optional preparation covers 30-40% of GS1 topics.",
+      q: "What is a good score in GS Paper 1?",
+      a: "The median topper scored {{median}} out of 250. {{top10}} or more puts you in the top 10% of toppers, so 110+ is a strong score in GS1.",
     },
     {
-      q: "How many marks does map work contribute in GS1?",
-      a: "The map-based question is worth 15 marks (10 locations × 1.5 marks each). Toppers consistently score 12-15 marks here through regular practice.",
+      q: "Is there a map question in UPSC Mains GS1?",
+      a: "No. UPSC Mains GS1 has 20 written questions of 10 and 15 marks. Map sketches are optional additions inside answers, not a separate question.",
+    },
+    {
+      q: "Can I prepare GS1 without coaching?",
+      a: "Our data doesn't record who took coaching, so we can't say from the numbers. The standard references above are self-study books, and answer writing practice is what moves the score.",
     },
   ],
   relatedPages: [
-    { title: "How to Score 120+ in GS Paper 2", href: "/content/how-to-score-120-plus-in-gs2", description: "GS2 strategy with topper marks data" },
-    { title: "Topper Answer Copies Compilation", href: "/content/upsc-topper-answer-copies", description: "50+ topper answer copies" },
-    { title: "UPSC Previous Year Papers (PYQ)", href: "/pyq", description: "Download official UPSC PYQ PDFs for Prelims and Mains — free." },
-    { title: "Garima Lohia's GS1 Marks", href: "/upsc-topper/garima-lohia", description: "AIR 2 (2024) scored 119 in GS1 — full marksheet and strategy" },
-    { title: "Animesh Pradhan's GS1 Marks", href: "/upsc-topper/animesh-pradhan", description: "AIR 2 (2023) scored 118 in GS1 — full strategy profile" },
+    { title: "GS Paper 2 marks and strategy", href: "/content/how-to-score-120-plus-in-gs2", description: "Polity, governance and IR, with live topper scores." },
+    { title: "UPSC marks database", href: "/toppers/marks-database?sort=gs1.desc", description: "Every topper's GS1 score, sortable." },
+    { title: "Topper answer copies", href: "/content/upsc-topper-answer-copies", description: "See how high-scoring answers were written." },
+    { title: "Previous year papers", href: "/pyq", description: "Official UPSC question papers, free to download." },
   ],
   sources: [
-    { label: "UPSC CSE 2024 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2024-08/Civil-Services-Examination-2023-Final-Result.pdf" },
-    { label: "UPSC CSE 2025 Final Result — upsc.gov.in", url: "https://upsc.gov.in/sites/default/files/2025-04/CSE-2024-Final-Result.pdf" },
-    { label: "Topper answer copies compilation — UPSCPrepNotes", url: "https://upscprepnotes.in/content/upsc-topper-answer-copies" },
+    { label: "UPSC: marks of recommended candidates (Examinations → Results)", url: "https://upsc.gov.in" },
+    { label: "How we collect and check marks", url: "https://upscprepnotes.in/content/data-methodology-and-editorial-standards" },
   ],
 };
 

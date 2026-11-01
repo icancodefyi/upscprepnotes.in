@@ -33,6 +33,8 @@ export type ContentPage = {
   relatedPages?: RelatedPage[];
   sources?: { label: string; url: string }[];
   noindex?: boolean;
+  /** Strategy guides: which paper's live marks data to show. Text may use {{median}}, {{top10}}, {{best}}, {{atLeast:120}} etc. */
+  paper?: "essay" | "gs1" | "gs2" | "gs3" | "gs4" | "psir";
 };
 
 

@@ -1,7 +1,32 @@
 import { notFound } from "next/navigation";
-import ContentLayout from "@/components/ContentLayout";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 import { getPage, getAllSlugs, getEnglishSlug, getHindiSlug } from "@/data/content/registry";
+import type { ContentPage } from "@/data/content";
+import { fillTokens, getPaperStats, type PaperStats } from "@/lib/paper-stats";
+import Guide from "./_components/Guide";
+
+export const revalidate = 3600;
+
+/** Load a guide and, for strategy guides, fill its {{tokens}} with live marks data. */
+async function load(slug: string): Promise<{ page: ContentPage; stats: PaperStats | null } | null> {
+  const mod = getPage(slug);
+  if (!mod) return null;
+  const { default: raw } = await mod();
+  const stats = raw.paper ? await getPaperStats(raw.paper) : null;
+  const f = (t: string) => fillTokens(t, stats);
+  const page: ContentPage = {
+    ...raw,
+    title: f(raw.title),
+    description: f(raw.description),
+    h1: f(raw.h1),
+    intro: f(raw.intro),
+    sections: raw.sections.map((s) => ({ heading: f(s.heading), body: f(s.body) })),
+    faq: raw.faq?.map((x) => ({ q: f(x.q), a: f(x.a) })),
+    relatedPages: raw.relatedPages?.map((r) => ({ ...r, description: f(r.description) })),
+  };
+  return { page, stats };
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -11,9 +36,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const mod = getPage(slug);
-  if (!mod) return { title: "Page Not Found" };
-  const { default: page } = await mod();
+  const d = await load(slug);
+  if (!d) return { title: "Page Not Found" };
+  const { page } = d;
   const enSlug = getEnglishSlug(slug);
   const hiSlug = getHindiSlug(enSlug);
   const contentPath = `/content/${slug}`;
@@ -54,9 +79,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ContentPage({ params }: Props) {
   const { slug } = await params;
-  const mod = getPage(slug);
-  if (!mod) notFound();
-  const { default: page } = await mod();
+  const d = await load(slug);
+  if (!d) notFound();
+  const { page, stats } = d;
 
   const contentPath = `/content/${slug}`;
 
@@ -87,7 +112,7 @@ export default async function ContentPage({ params }: Props) {
   };
 
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -107,7 +132,19 @@ export default async function ContentPage({ params }: Props) {
           }}
         />
       )}
-      <ContentLayout page={page} />
-    </>
+      {page.faq && page.faq.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: page.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+            }),
+          }}
+        />
+      )}
+      <Guide page={page} stats={stats} />
+    </BrandShell>
   );
 }
