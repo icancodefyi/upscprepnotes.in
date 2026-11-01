@@ -8,19 +8,26 @@ export function Folder({ c, size = "md" }: { c: Collection; size?: "md" | "lg" }
   const cat = CATEGORY[c.category] ?? CATEGORY.other;
   const big = size === "lg";
   return (
-    <div aria-hidden className={`relative pt-[36px] ${big ? "w-[200px] sm:w-[220px]" : "w-full"}`}>
-      {/* tab */}
+    <div aria-hidden className={`relative pt-[18px] ${big ? "w-[200px] sm:w-[220px]" : "w-full"}`}>
+      {/* back of the folder, with its tab */}
+      <span className="absolute inset-x-0 bottom-0 top-[18px] rounded-[16px]" style={{ background: cat.back }} />
       <span
-        className={`absolute left-4 top-0 rounded-t-[10px] px-3 pb-2 pt-1.5 font-semibold ${big ? "text-[12px]" : "text-[11px]"}`}
-        style={{ background: cat.tone, color: cat.ink }}
+        className={`absolute left-0 top-0 flex h-[26px] items-start rounded-t-[12px] px-3 pt-[5px] font-semibold ${big ? "text-[12px]" : "text-[11px]"}`}
+        style={{ background: cat.back, color: cat.ink }}
       >
         {cat.short}
       </span>
-      {/* papers peeking out */}
-      <span className="absolute inset-x-5 top-[32px] h-6 rotate-[-2deg] rounded-[6px] bg-white shadow-[0_0_0_1px_var(--line)]" />
-      <span className="absolute inset-x-7 top-[30px] h-6 rotate-[2.5deg] rounded-[6px] bg-white shadow-[0_0_0_1px_var(--line)]" />
+      {/* sheets tucked inside */}
+      <span className="absolute inset-x-3 top-[26px] h-[46%] rotate-[-2.5deg] rounded-[6px] bg-white shadow-[0_1px_3px_rgba(11,12,16,0.18)]" />
+      <span className="absolute inset-x-4 top-[24px] h-[46%] rotate-[2deg] rounded-[6px] bg-[#fbfbfd] shadow-[0_1px_3px_rgba(11,12,16,0.18)]">
+        <span className="absolute inset-x-3 top-2.5 space-y-1.5">
+          <span className="block h-[2px] w-[70%] rounded bg-[rgba(31,63,214,0.25)]" />
+          <span className="block h-[2px] w-[55%] rounded bg-[rgba(31,63,214,0.18)]" />
+        </span>
+      </span>
+      {/* front cover */}
       <div
-        className={`relative flex flex-col justify-between rounded-[16px] p-4 shadow-[0_6px_14px_-10px_rgba(11,12,16,0.35),inset_0_1px_0_rgba(255,255,255,0.6)] ${big ? "aspect-[4/3.4]" : "aspect-[4/2.6]"}`}
+        className={`relative mt-[22px] flex flex-col justify-between rounded-[14px] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_-2px_6px_-2px_rgba(11,12,16,0.12),0_8px_16px_-10px_rgba(11,12,16,0.35)] ${big ? "aspect-[4/3]" : "aspect-[4/2.4]"}`}
         style={{ background: cat.tone, color: cat.ink }}
       >
         <span className={`t-display leading-[0.95] ${big ? "text-[26px]" : "text-[17px] sm:text-[20px]"} line-clamp-2`}>{c.brand || cat.label}</span>

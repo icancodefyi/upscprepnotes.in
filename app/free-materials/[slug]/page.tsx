@@ -16,6 +16,21 @@ import BrandShell from "@/components/brand/BrandShell";
 import Toc from "@/components/brand/Toc";
 import { Section, card } from "@/components/brand/ui";
 import { CATEGORY, getCollection, getCollections } from "@/lib/materials";
+import { TopperModel } from "@/models/topper.model";
+import { displayName, isPlaceholder, optionalSlug, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
+
+// Optional subjects a collection can be about, matched against its title, publisher and tags.
+const OPTIONALS: { match: RegExp; subject: string }[] = [
+  { match: /\bpsir\b|political science/i, subject: "PSIR" },
+  { match: /sociology/i, subject: "Sociology" },
+  { match: /anthropology/i, subject: "Anthropology" },
+  { match: /geography/i, subject: "Geography" },
+  { match: /\bhistory\b/i, subject: "History" },
+  { match: /mathematics|\bmaths\b/i, subject: "Mathematics" },
+  { match: /hindi literature/i, subject: "Hindi Literature" },
+  { match: /public administration|pub ad/i, subject: "Public Administration" },
+  { match: /philosophy/i, subject: "Philosophy" },
+];
 import Files from "../_components/Files";
 import { CollectionCard, Folder } from "../_components/Cover";
 
@@ -124,6 +139,16 @@ export default async function PDFDetailPage({ params }: Props) {
     .filter((x) => x.slug !== c.slug)
     .sort((a, b) => Number(b.category === c.category) - Number(a.category === c.category) || Number(!!c.brand && b.brand === c.brand) - Number(!!c.brand && a.brand === c.brand) || b.requests - a.requests)
     .slice(0, 6);
+
+  // If the collection is about an optional, link that optional's hub and its highest-scoring toppers.
+  const opt = OPTIONALS.find((o) => o.match.test(`${c.title} ${c.brand} ${c.tags.join(" ")}`));
+  const optToppers = opt
+    ? ((await TopperModel.find({}, { firstName: 1, lastName: 1, rank: 1, year: 1, slug: 1, optionalSubject: 1, marks: 1 }).lean()) as LeanTopper[])
+        .filter((t) => subjectOf(t.optionalSubject).toLowerCase() === opt.subject.toLowerCase() && !isPlaceholder(t) && totalOf(t) > 0)
+        .sort((a, b) => (b.marks?.optional1 ?? 0) + (b.marks?.optional2 ?? 0) - ((a.marks?.optional1 ?? 0) + (a.marks?.optional2 ?? 0)))
+        .slice(0, 4)
+    : [];
+  const optHref = opt ? `/optional/${optionalSlug(opt.subject)}` : null;
 
   const facts = [
     { k: "Files", v: fmt(c.files) },
@@ -283,6 +308,29 @@ export default async function PDFDetailPage({ params }: Props) {
                 <p className="mt-1.5 text-[13.5px] text-white/70">Real Mains booklets from rank holders, free to read.</p>
                 <span className="mt-3 inline-block text-[14px] font-semibold text-[var(--hl)] group-hover:underline">Topper answer copies →</span>
               </Link>
+              {opt && optToppers.length > 0 && (
+                <div className={`${card} p-5`}>
+                  <p className="t-meta">{`TOP ${opt.subject.toUpperCase()} SCORERS`}</p>
+                  <ul className="mt-3 space-y-1">
+                    {optToppers.map((t) => (
+                      <li key={t.slug}>
+                        <Link href={`/upsc-topper/${t.slug}`} data-track="material-optional-topper" className="flex items-center justify-between gap-3 rounded-[10px] px-2 py-1.5 text-[14px] hover:bg-[var(--canvas)]">
+                          <span className="min-w-0">
+                            <span className="block truncate font-medium">{displayName(t)}</span>
+                            <span className="block text-[12px] text-[var(--muted)]">{`AIR ${t.rank} · CSE ${t.year}`}</span>
+                          </span>
+                          <span className="tab shrink-0 text-[13px] font-semibold text-[var(--accent)]">{`${(t.marks?.optional1 ?? 0) + (t.marks?.optional2 ?? 0)}/500`}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  {optHref && (
+                    <Link href={optHref} className="mt-3 block border-t border-[var(--line)] pt-3 text-[14px] font-semibold text-[var(--accent)] hover:underline">
+                      {`All ${opt.subject} optional toppers →`}
+                    </Link>
+                  )}
+                </div>
+              )}
               <div className={`${card} p-5`}>
                 <p className="t-meta">EXPLORE</p>
                 <ul className="mt-3 space-y-1 text-[14.5px]">
