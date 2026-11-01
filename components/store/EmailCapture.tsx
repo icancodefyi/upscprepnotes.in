@@ -37,14 +37,15 @@ export default function EmailCapture() {
 
   return (
     <section className="mx-auto max-w-[1120px] px-6">
-      <div className="grid gap-6 rounded-[28px] bg-[var(--accent)] p-7 text-white sm:p-10 md:grid-cols-[1fr_auto] md:items-center">
+      <div className="relative grid gap-6 overflow-hidden rounded-[28px] bg-[var(--accent)] p-7 text-white sm:p-10 md:grid-cols-[1fr_auto] md:items-center">
+        <svg aria-hidden viewBox="0 0 200 140" className="pointer-events-none absolute -right-6 -top-8 hidden h-40 w-56 rotate-[12deg] text-white/10 md:block" fill="none" stroke="currentColor" strokeWidth="6" strokeLinejoin="round"><rect x="8" y="8" width="184" height="124" rx="10" /><path d="M10 14l90 66 90-66" /></svg>
         <div>
           <h3 className="t-head text-l">New resources every week</h3>
           <p className="mt-2 max-w-[34rem] text-m leading-[1.6] text-white/80">
             Get notified when we add new answer copies, notes bundles, and strategy reports.
           </p>
         </div>
-        <div className="md:w-[380px]">
+        <div className="relative md:w-[400px]">
           <form onSubmit={handleSubmit} className="flex items-center rounded-full bg-white p-1.5 pl-5">
             <input
               type="email"
