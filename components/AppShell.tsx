@@ -53,10 +53,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isAdmin = pathname?.startsWith("/admin");
-  const isLanding = pathname === "/landing" || pathname?.startsWith("/landing");
   const isTry = pathname === "/try" || pathname?.startsWith("/try");
 
-  if (isLanding || isTry) {
+  if (isTry) {
     return <CartProvider>{children}</CartProvider>;
   }
 
