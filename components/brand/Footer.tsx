@@ -33,6 +33,8 @@ const FOOTER = [
     { href: "/content/how-to-score-120-plus-in-gs2", label: "GS II strategy" },
     { href: "/content/how-to-score-120-plus-in-gs3", label: "GS III strategy" },
     { href: "/content/how-to-score-100-plus-in-gs4", label: "GS IV ethics strategy" },
+    { href: "/content/how-to-score-300-plus-in-psir-optional", label: "Score 300+ in PSIR Optional" },
+    { href: "/content/upsc-optional-subject-marks-analysis", label: "Optional Marks Data" },
     { href: "/content/upsc-topper-answer-copies", label: "How to use answer copies" },
     { href: "/content/upsc-syllabus", label: "UPSC syllabus" },
     { href: "/content/upsc-free-material", label: "Free UPSC material guide" },
@@ -102,9 +104,9 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
         </div>
 
         <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-[rgba(11,12,16,0.15)] pt-12 text-s sm:grid-cols-3 lg:grid-cols-7">
-          <div className="col-span-2 sm:col-span-3 lg:col-span-7 flex items-center gap-2.5 text-m font-bold">
+          <Link href="/" className="col-span-2 flex items-center gap-2.5 text-m font-bold sm:col-span-3 lg:col-span-7">
             <Mark size={22} /> UPSCPrepNotes
-          </div>
+          </Link>
           {[...FOOTER.slice(0, 2), ...(featured.length ? [{ title: "Featured toppers", links: featured }] : []), ...FOOTER.slice(2)].map((col) => (
             <nav key={col.title} aria-label={col.title}>
               <p className="text-s font-bold text-[var(--ink)]">{col.title}</p>

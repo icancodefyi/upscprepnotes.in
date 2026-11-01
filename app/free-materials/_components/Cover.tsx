@@ -33,7 +33,7 @@ export function Folder({ c, size = "md" }: { c: Collection; size?: "md" | "lg" }
         <span className={`t-display leading-[0.95] ${big ? "text-l" : "text-m sm:text-m"} line-clamp-2`}>{c.brand || cat.label}</span>
         <span className="flex items-end justify-between gap-2">
           <span className="t-meta" style={{ color: cat.ink, opacity: 0.75 }}>{c.year ? `${c.year}` : "PDF"}</span>
-          <span className={`tab font-bold ${big ? "text-m" : "text-s"}`}>{`${fmt(c.files)} ${c.files === 1 ? "file" : "files"}`}</span>
+          <span className={`tab font-bold ${big ? "text-m" : "text-s"}`}>{`${c.files} resource${c.files === 1 ? "" : "s"}`}</span>
         </span>
       </div>
     </div>

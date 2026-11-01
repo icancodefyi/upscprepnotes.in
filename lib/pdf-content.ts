@@ -38,9 +38,6 @@ function sampleSectionItems(
     return pickFirst(items, max);
 }
 
-/** "1 resource" / "3 resources". */
-const pl = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
-
 export function generateWhatsIncluded(p: PDFMeta): string {
   const sections = getSections(p.resources);
   const totalItems = p.resources?.length || 0;
@@ -71,7 +68,7 @@ export function generateWhatsIncluded(p: PDFMeta): string {
     const sampleItems = sampleSectionItems(p.resources, firstSec[0], 4);
     let text = `These notes`;
     if (brand) text += ` by ${brand}`;
-    text += ` contain ${pl(totalItems, "topic-wise resource")}${sections.size > 1 ? ` organized into ${sections.size} sections` : ""}. `;
+    text += ` contain ${totalItems} topic-wise resources organized into ${sections.size} sections. `;
 
     if (sampleItems.length > 0) {
       text += `Topics include ${sampleItems.slice(0, 3).join(", ")}${sampleItems.length > 3 ? ", and more" : ""}. `;
@@ -95,7 +92,7 @@ export function generateWhatsIncluded(p: PDFMeta): string {
     const sampleItems = sampleSectionItems(p.resources, firstSec[0], 3);
     let text = `This magazine`;
     if (brand) text += ` from ${brand}`;
-    text += ` covers ${pl(totalItems, "topic")}${sections.size > 1 ? ` across ${sections.size} sections` : ""}. `;
+    text += ` covers ${totalItems} topics across ${sections.size} sections. `;
     if (sampleItems.length > 0) {
       text += `It includes analysis on ${sampleItems.join(", ")} and more. `;
     }
@@ -268,7 +265,7 @@ export function generateFAQs(p: PDFMeta): Array<{ q: string; a: string }> {
   return [
     {
       q: `What is included in this collection?`,
-      a: `This collection includes ${pl(totalItems, "resource")}${sections.size > 1 ? ` across ${sections.size} sections` : ""}. Check the resources section above for the complete list with download links.`,
+      a: `This collection includes ${totalItems} resources${sections.size > 0 ? ` across ${sections.size} sections` : ""}. Check the resources section above for the complete list with download links.`,
     },
     {
       q: `Is this really free to download?`,
@@ -351,7 +348,7 @@ export function generateEditorialContent(p: PDFMeta): string {
 
   if (p.category === "test-series") {
     let text = `${title} is a ${brand ? brand + " " : ""}UPSC test series designed to help aspirants practice rigorously before the actual examination. `;
-    text += `This collection includes ${pl(totalItems, "test paper")} covering the full UPSC syllabus — Prelims (objective) and Mains (descriptive) formats. `;
+    text += `This collection includes ${totalItems} test papers covering the full UPSC syllabus — Prelims (objective) and Mains (descriptive) formats. `;
     text += `Each test paper follows the official UPSC examination pattern, making it an excellent resource for timed practice. `;
     if (p.resources && p.resources.length > 0) {
       const sections = [...new Set(p.resources.map(r => r.section).filter(Boolean))];
@@ -369,7 +366,7 @@ export function generateEditorialContent(p: PDFMeta): string {
     let text = `${title}${brand ? ` by ${brand}` : ""} is a comprehensive set of UPSC study notes covering essential topics across the Civil Services Examination syllabus. `;
     text += `These notes are designed for quick revision and concept clarity, making them ideal for aspirants who have already completed their standard textbooks. `;
     if (totalItems > 0) {
-      text += `The collection includes ${pl(totalItems, "topic-wise resource")} that break${totalItems === 1 ? "s" : ""} down complex subjects into digestible sections. `;
+      text += `The collection includes ${totalItems} topic-wise resources that break down complex subjects into digestible sections. `;
     }
     text += `Unlike bulky textbooks, these notes present information in a concise, structured format that facilitates faster revision. `;
     text += `Each topic is organized to highlight key facts, definitions, and analytical points that are most relevant for UPSC GS papers. `;
@@ -415,7 +412,7 @@ export function generateEditorialContent(p: PDFMeta): string {
   }
 
   let text = `${title}${brand ? ` by ${brand}` : ""} is a valuable UPSC study resource. `;
-  text += `This collection includes ${pl(totalItems, "resource")} designed to help aspirants prepare effectively for the Civil Services Examination. `;
+  text += `This collection includes ${totalItems} resources designed to help aspirants prepare effectively for the Civil Services Examination. `;
   text += `Whether you are preparing for Prelims, Mains, or both, this material provides structured content aligned with the UPSC syllabus. `;
   text += `Download the resources, study systematically, and supplement your preparation with answer writing practice and revision.`;
   return text;

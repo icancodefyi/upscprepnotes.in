@@ -29,19 +29,18 @@ type Key = "rank" | "year" | "essay" | "gs1" | "gs2" | "gs3" | "gs4" | "opt1" | 
 const COLS: { key: Exclude<Key, "rank">; label: string; max: number; strong?: boolean }[] = [
   { key: "year", label: "Year", max: 0 },
   { key: "essay", label: "Essay", max: 250 },
-  { key: "gs1", label: "GS I", max: 250 },
-  { key: "gs2", label: "GS II", max: 250 },
-  { key: "gs3", label: "GS III", max: 250 },
-  { key: "gs4", label: "GS IV", max: 250 },
-  { key: "opt1", label: "Opt I", max: 250 },
-  { key: "opt2", label: "Opt II", max: 250 },
+  { key: "gs1", label: "GS1", max: 250 },
+  { key: "gs2", label: "GS2", max: 250 },
+  { key: "gs3", label: "GS3", max: 250 },
+  { key: "gs4", label: "GS4", max: 250 },
+  { key: "opt1", label: "Opt P1", max: 250 },
+  { key: "opt2", label: "Opt P2", max: 250 },
   { key: "written", label: "Written", max: 1750, strong: true },
   { key: "interview", label: "Interview", max: 275, strong: true },
   { key: "total", label: "Total", max: 2025, strong: true },
 ];
 const MARK_KEYS = COLS.filter((c) => c.max > 0).map((c) => c.key);
 
-const fmt = (x: number) => x.toLocaleString("en-IN");
 const median = (xs: number[]) => {
   if (!xs.length) return 0;
   const s = [...xs].sort((a, b) => a - b);
@@ -161,7 +160,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search a name, rank or optional"
+            placeholder="Search by name, rank, optional subject..."
             className="h-11 min-w-0 flex-1 bg-transparent text-m outline-none placeholder:text-[var(--muted)]"
           />
           {q && (
@@ -211,8 +210,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
       <div className="mt-5 overflow-hidden rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] px-4 py-3 text-s text-[var(--muted)] sm:px-5">
           <span>
-            <span className="tab font-bold text-[var(--ink)]">{fmt(shown.length)}</span>
-            {` of ${fmt(rows.length)} toppers · tap a column to sort`}
+            {`Showing ${shown.length} of ${rows.length} toppers. Click column headers to sort. Click name for full profile.`}
           </span>
           <span className="flex items-center gap-1.5">
             <span className="tab font-bold text-[var(--accent)]">Blue</span> = top 10% in that paper
@@ -225,7 +223,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
               <tr>
                 <th scope="col" className="sticky left-0 z-30 bg-white p-0 text-left font-normal shadow-[inset_-1px_-1px_0_var(--line-2)]">
                   <button type="button" onClick={() => toggleSort("rank")} className={`t-meta inline-flex h-11 items-center gap-1 pl-[44px] pr-3 sm:pl-[52px] hover:text-[var(--ink)] ${sort.key === "rank" ? "!text-[var(--accent)]" : ""}`}>
-                    AIR · Topper
+                    Name
                     <span aria-hidden className={`text-s ${sort.key === "rank" ? "" : "opacity-0"}`}>{sort.dir === "asc" ? "▲" : "▼"}</span>
                   </button>
                 </th>
@@ -243,7 +241,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
                   </td>
                   {COLS.map((c) => (
                     <td key={c.key} className={`tab px-3 py-2.5 text-right text-s font-bold text-[var(--ink-2)] ${c.key === "written" ? "border-l border-[var(--line)]" : ""}`}>
-                      {c.max ? (med[c.key] ? fmt(med[c.key]) : "—") : ""}
+                      {c.max ? (med[c.key] ? med[c.key] : "—") : ""}
                     </td>
                   ))}
                 </tr>
@@ -289,7 +287,7 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
                         >
                           {v > 0 ? (
                             <span className={top ? "font-bold text-[var(--accent)]" : ""}>
-                              {c.key === "year" ? v : fmt(v)}
+                              {v}
                             </span>
                           ) : (
                             <span className="text-[var(--line-2)]">—</span>
@@ -310,9 +308,6 @@ export default function MarksDB({ rows, years, optionals }: { rows: Row[]; years
             </tbody>
           </table>
         </div>
-        <p className="border-t border-[var(--line)] px-4 py-3 text-s leading-[1.5] text-[var(--muted)] sm:px-5">
-          Essay, GS and optional papers are out of 250, interview out of 275, final total out of 2,025. A dash means UPSC&apos;s paper-wise marks for that topper aren&apos;t on record yet. Press + on any two rows to compare them.
-        </p>
       </div>
 
       {/* Compare tray */}

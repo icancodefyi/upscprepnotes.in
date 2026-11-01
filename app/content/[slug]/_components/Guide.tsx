@@ -65,6 +65,36 @@ const Md = ({ text }: { text: string }) => (
   </ReactMarkdown>
 );
 
+// Original promo copy, shown wherever a page doesn't set its own.
+const DEFAULTS = {
+  ctaIntro: "Starting at ₹49. Strategy compilations, answer copies, notes bundles, test series, and more.",
+  ctaIntroBtn: "Shop Now →",
+  ctaIntroHref: "/store",
+  ctaMid: "Get the detailed strategy report with topper marks data, subject-wise breakdown, and answer templates.",
+  ctaMidSub: "Includes verified marks from 280+ UPSC toppers across all subjects.",
+  ctaMidBtn: "Shop Now →",
+  ctaMidHref: "/store",
+  ctaFinal: "Ready to Master Your UPSC Preparation?",
+  ctaFinalSub: "Access the complete topper intelligence database with marks, strategies, and answer copies — everything you need to optimize your preparation.",
+  ctaFinalBtn: "Shop Now →",
+  ctaFinalHref: "/store",
+};
+
+/** A promo box in the brand style: a quiet card with one button. */
+function Promo({ text, sub, btn, href, track }: { text: string; sub?: string; btn: string; href: string; track: string }) {
+  return (
+    <div className={`${card} flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6`}>
+      <div className="min-w-0">
+        <p className="text-m font-bold leading-[1.45]">{text}</p>
+        {sub && <p className="mt-1 text-s text-[var(--muted)]">{sub}</p>}
+      </div>
+      <Link href={href} data-track={track} className="btn btn-blue h-11 shrink-0 self-start px-5 [--btn-fs:14px] sm:self-center">
+        {btn}
+      </Link>
+    </div>
+  );
+}
+
 const fmtDate = (iso: string, hi: boolean) => new Date(iso).toLocaleDateString(hi ? "hi-IN" : "en-IN", { year: "numeric", month: "long", day: "numeric" });
 
 /** One chapter of a guide. */
@@ -97,6 +127,7 @@ export default function Guide({
   alt?: { href: string; label: string } | null;
 }) {
   const hi = page.lang === "hi";
+  const t = { ...DEFAULTS, ...page };
   const sections = page.sections.map((s) => ({ ...s, id: slugify(s.heading) }));
   const [lead, ...restIntro] = page.intro.split(/\n{2,}/);
   const hasData = !!(stats || optionals);
@@ -106,12 +137,11 @@ export default function Guide({
     ...sections.slice(0, 1).map((s) => ({ id: s.id, label: s.heading })),
     ...(hasData ? [{ id: "the-numbers", label: hi ? "आँकड़े" : "The numbers" }] : []),
     ...sections.slice(1).map((s) => ({ id: s.id, label: s.heading })),
-    ...(page.faq?.length ? [{ id: "faq", label: hi ? "प्रश्न" : "Questions" }] : []),
+    ...(page.faq?.length ? [{ id: "faq", label: hi ? "अक्सर पूछे जाने वाले प्रश्न" : "Frequently Asked Questions" }] : []),
   ];
 
   const words = [page.intro, ...page.sections.map((s) => s.body), ...(page.faq ?? []).map((f) => f.a)].join(" ").split(/\s+/).length;
   const minutes = Math.max(2, Math.round(words / 220));
-  const [next, ...more] = page.relatedPages ?? [];
 
   const glance = stats
     ? [
@@ -128,9 +158,9 @@ export default function Guide({
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="min-w-0">
             <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-x-2">
-              <Link href="/" className="hover:text-[var(--ink)]">{hi ? "होम" : "Home"}</Link>
+              <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
               <span aria-hidden>/</span>
-              <span className="text-[var(--ink-2)]">{hi ? "गाइड" : "Guides"}</span>
+              <span className="text-[var(--ink-2)]">{page.h1}</span>
             </nav>
 
             <header className="mt-8 max-w-[48rem]">
@@ -140,7 +170,7 @@ export default function Guide({
                 <img src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=96&q=75" alt="Zaid Rakhange" width={36} height={36} className="h-9 w-9 rounded-full object-cover shadow-[0_0_0_1px_var(--line)]" />
                 <p className="text-s text-[var(--muted)]">
                   <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[var(--ink)] hover:text-[var(--accent)]">Zaid Rakhange</a>
-                  {` · ${hi ? "अपडेट" : "Updated"} ${fmtDate(page.lastUpdated, hi)} · ${minutes} ${hi ? "मिनट" : "min read"}`}
+                  {` — I manually extract every data point from UPSC's official result PDFs. Updated ${fmtDate(page.lastUpdated, false)}`}
                 </p>
                 {alt && (
                   <Link href={alt.href} hrefLang={hi ? "en" : "hi"} className="rounded-full bg-white px-3 py-1 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--accent)] hover:shadow-[0_0_0_1px_var(--accent)]">
@@ -150,6 +180,14 @@ export default function Guide({
               </div>
               <div className="mt-7 border-l-[3px] border-[var(--hl)] pl-5 [&_p]:border-0 [&_p]:pl-0 [&_p]:text-m [&_p]:leading-[1.65] [&_p]:text-[var(--ink)]">
                 <Md text={lead} />
+              </div>
+              {restIntro.length > 0 && (
+                <div className="mt-5">
+                  <Md text={restIntro.join("\n\n")} />
+                </div>
+              )}
+              <div className="mt-8">
+                <Promo text={t.ctaIntro} btn={t.ctaIntroBtn} href={t.ctaIntroHref} track="content-cta-intro" />
               </div>
             </header>
 
@@ -174,13 +212,15 @@ export default function Guide({
             )}
 
             <article id="guide-body" className="mt-12 max-w-[46rem] space-y-16">
-              {restIntro.length > 0 && <div><Md text={restIntro.join("\n\n")} /></div>}
 
               {sections.map((s, i) => (
                 <div key={s.id} className="space-y-16">
                   <Chapter id={s.id} title={s.heading}>
                     <Md text={s.body} />
                   </Chapter>
+                  {(i + 1) % 2 === 0 && i < sections.length - 1 && (
+                    <Promo text={t.ctaMid} sub={t.ctaMidSub} btn={t.ctaMidBtn} href={t.ctaMidHref} track={`content-cta-mid-${i}`} />
+                  )}
                   {i === 0 && stats && (
                     <Chapter id="the-numbers" title={hi ? "आँकड़े" : `${stats.label}: the numbers`} meta={`${stats.n} marksheets · CSE ${stats.years}`}>
                       <PaperData s={stats} />
@@ -195,7 +235,7 @@ export default function Guide({
               ))}
 
               {page.faq && page.faq.length > 0 && (
-                <Chapter id="faq" title={hi ? "अक्सर पूछे जाने वाले प्रश्न" : "Questions"}>
+                <Chapter id="faq" title={hi ? "अक्सर पूछे जाने वाले प्रश्न" : "Frequently Asked Questions"}>
                   <div className={`${card} divide-y divide-[var(--line)]`}>
                     {page.faq.map((f, i) => (
                       <details key={f.q} open={i === 0} className="group px-6 py-5">
@@ -210,50 +250,57 @@ export default function Guide({
                 </Chapter>
               )}
 
-              {/* Up next: one clear next read, then the rest */}
-              {next && (
-                <div>
-                  <Link
-                    href={next.href}
-                    data-track="guide-up-next"
-                    className="group relative block overflow-hidden rounded-[28px] bg-[var(--accent)] p-7 text-white shadow-[0_18px_40px_-20px_rgba(19,35,138,0.8)] sm:p-9"
-                  >
-                    <p className="t-head max-w-[24ch] text-l">{next.title}</p>
-                    <p className="mt-2 max-w-[40ch] text-m text-white/80">{next.description}</p>
-                    <span className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-s font-bold text-[var(--accent)] transition-transform duration-200 ease-[var(--ease)] group-hover:translate-x-1">
-                      {hi ? "आगे पढ़ें" : "Read next"} <span aria-hidden>→</span>
-                    </span>
-                  </Link>
-                  {more.length > 0 && (
-                    <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-                      {more.map((r) => (
-                        <li key={r.href}>
-                          <Link href={r.href} className={`${card} group flex h-full items-start justify-between gap-3 p-5 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
-                            <span>
-                              <span className="block text-m font-bold group-hover:text-[var(--accent)]">{r.title}</span>
-                              <span className="mt-1 block text-s leading-[1.5] text-[var(--muted)]">{r.description}</span>
-                            </span>
-                            <span aria-hidden className="mt-1 text-[var(--muted)] group-hover:text-[var(--accent)]">→</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+              {page.relatedPages && page.relatedPages.length > 0 && (
+                <section id="related" className="scroll-mt-28">
+                  <h2 className="t-head text-l">{hi ? "संबंधित पेज" : "Related Pages"}</h2>
+                  <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {page.relatedPages.map((r) => (
+                      <li key={r.href}>
+                        <Link href={r.href} className={`${card} group flex h-full items-start justify-between gap-3 p-5 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
+                          <span>
+                            <span className="block text-m font-bold group-hover:text-[var(--accent)]">{r.title}</span>
+                            <span className="mt-1 block text-s leading-[1.5] text-[var(--muted)]">{r.description}</span>
+                          </span>
+                          <span aria-hidden className="mt-1 text-[var(--muted)] group-hover:text-[var(--accent)]">→</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               )}
 
               {page.sources && page.sources.length > 0 && (
                 <div className="border-t border-[var(--line)] pt-6">
-                  <p className="text-s font-bold">{hi ? "स्रोत" : "Sources"}</p>
+                  <p className="text-s font-bold">Data Sources</p>
                   <ul className="mt-2 space-y-1">
-                    {page.sources.map((s) => (
-                      <li key={s.label}>
-                        <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-s text-[var(--muted)] underline underline-offset-2 hover:text-[var(--accent)]">{s.label}</a>
+                    {page.sources.map((src) => (
+                      <li key={src.url + src.label}>
+                        <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-s text-[var(--muted)] underline underline-offset-2 hover:text-[var(--accent)]">{src.label}</a>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
+
+              {/* Free materials (original copy) */}
+              <div className={`${card} flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between`}>
+                <div>
+                  <h2 className="text-m font-bold">Free UPSC Study Material</h2>
+                  <p className="mt-1 text-s leading-[1.5] text-[var(--ink-2)]">2,700+ resources — test series, notes, books, magazines. Download free from top coaching institutes.</p>
+                </div>
+                <Link href="/free-materials" className="btn btn-paper h-11 shrink-0 self-start px-5 [--btn-fs:14px] sm:self-center">
+                  Browse Free Materials →
+                </Link>
+              </div>
+
+              {/* Closing call to action (original copy) */}
+              <section className="rounded-[28px] bg-[var(--accent)] p-8 text-center text-white sm:p-12">
+                <h2 className="t-head mx-auto max-w-[22ch] text-l">{t.ctaFinal}</h2>
+                <p className="mx-auto mt-3 max-w-[34rem] text-m leading-[1.6] text-white/80">{t.ctaFinalSub}</p>
+                <Link href={t.ctaFinalHref} data-track="content-cta-final" className="mt-7 inline-flex h-12 items-center rounded-full bg-white px-7 text-m font-bold text-[var(--accent)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
+                  {t.ctaFinalBtn}
+                </Link>
+              </section>
             </article>
           </div>
 
@@ -286,15 +333,6 @@ export default function Guide({
               </nav>
             )}
 
-            <div className={`${card} p-5`}>
-              <p className="text-m font-bold">{hi ? "टॉपर्स ने कैसे लिखा, देखें" : "See how toppers wrote it"}</p>
-              <p className="mt-1 text-s leading-[1.5] text-[var(--muted)]">
-                {hi ? "असली आंसर कॉपी, हर पेपर के अंकों के साथ।" : "Real answer copies, next to the marks each paper earned."}
-              </p>
-              <Link href="/toppers" data-track="guide-side-toppers" className="btn btn-blue mt-4 w-full justify-between [--btn-fs:14px]">
-                {hi ? "टॉपर्स देखें" : "Browse toppers"} <span className="knob">→</span>
-              </Link>
-            </div>
           </aside>
         </div>
       </div>

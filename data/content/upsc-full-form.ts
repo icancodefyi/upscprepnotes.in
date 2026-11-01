@@ -36,14 +36,14 @@ const page: ContentPage = {
     },
     {
       heading: "Why Study Actual Topper Answer Copies?",
-      body: "Reading strategy guides is useful. But seeing real handwritten answers by toppers is a different level of preparation. You get to see:\n\n- How they structure a 150-word answer in GS papers\n- Where they use diagrams, tables, and flowcharts\n- How they integrate current affairs with static subjects\n- What a high-scoring answer looks like next to an average one\n- How much they write per question within the time limit\n\nSome topper pages here have a free copy, and the [Answer Copies Compilation]({{compHref}}) ({{compPrice}}) bundles {{compSheets}} handwritten sheets covering {{compPapers}}. Most are answers toppers wrote in coaching test series while preparing; the [answer copies guide](/content/upsc-topper-answer-copies) explains what that means.",
+      body: "Reading strategy guides is useful. But seeing the **actual answer sheets** that toppers wrote in the exam hall is a different level of preparation. You get to see:\n\n- How they structure a 150-word answer in GS papers\n- Where they use diagrams, tables, and flowcharts\n- How they integrate current affairs with static subjects\n- What a 130+ marks answer looks like vs an average one\n- How much they write per question within the time limit\n\nThe Complete Compilation includes marks-wise answer copies from 50+ toppers across GS1-4, Essay, and Optional papers — exactly as they appeared in the UPSC evaluation.",
     },
   ],
   noindex: true,
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
     { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },
-    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "{{profiles}} topper profiles, PYQs, AI tutor — all free" },
+    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
     { title: "UPSC Full Form (हिंदी)", href: "/content/upsc-full-form-hindi", description: "UPSC का फुल फॉर्म, परीक्षाएं और तैयारी गाइड" },
   ],
   faq: [
@@ -61,7 +61,7 @@ const page: ContentPage = {
     },
     {
       q: "Who is the current chairman of UPSC?",
-      a: "The Chairman changes over time; the current Chairman and Members are listed on the official website, upsc.gov.in, under About Us.",
+      a: "As of 2025–26, Dr. Manoj Soni is the Chairman of the Union Public Service Commission.",
     },
     {
       q: "How many exams does UPSC conduct every year?",
@@ -69,7 +69,7 @@ const page: ContentPage = {
     },
     {
       q: "Can I download UPSC topper answer copies?",
-      a: "Yes. Some topper pages here have a free answer copy, and the Answer Copies Compilation ({{compPrice}}) bundles {{compSheets}} handwritten sheets covering {{compPapers}}.",
+      a: "Yes, actual answer copy PDFs from 50+ UPSC toppers are available in the Complete Compilation — covering GS1-4, Essay, and Optional papers with verified marks.",
     },
   ],
 };

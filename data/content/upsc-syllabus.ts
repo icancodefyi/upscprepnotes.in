@@ -139,7 +139,7 @@ The **Complete Compilation** includes strategy guides mapped to every syllabus s
   relatedPages: [
     { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
     { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
-    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "{{profiles}} topper profiles, PYQs, AI tutor — all free" },
+    { title: "UPSC Free Study Material", href: "/content/upsc-free-material", description: "280+ topper profiles, PYQs, AI tutor — all free" },
     { title: "UPSC Full Form (हिंदी)", href: "/content/upsc-full-form-hindi", description: "UPSC का पूरा नाम और सिविल सेवा परीक्षा गाइड" },
     { title: "Forum IAS Test Series Review 2026", href: "/content/forum-ias-test-series-review", description: "See whether ForumIAS test series covers the full syllabus — honest breakdown with pricing and evaluation analysis." },
   ],

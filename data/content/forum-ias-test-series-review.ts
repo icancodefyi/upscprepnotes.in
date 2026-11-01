@@ -156,8 +156,22 @@ None of these replace the All India Rank benchmark or structured mentor access a
     },
   ],
 
+  ctaIntro:
+    "Practice with test questions from real topper strategies — free.",
+  ctaIntroBtn: "Browse Free Study Materials",
+  ctaIntroHref: "/free-materials",
 
+  ctaMid:
+    "Want to see how 50+ real toppers structured their Mains answers before you pay for a test series evaluation?",
+  ctaMidSub: "The full answer copy compilation includes GS, Essay, and Optional answers from AIR 1-50+.",
+  ctaMidBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaMidHref: "/store/answer-copies-compilation",
 
+  ctaFinal:
+    "Before you commit ₹20,000+ to a Mains test series, see exactly how toppers wrote the answers that scored.",
+  ctaFinalSub: "50+ topper answer copies across GS papers, Essay, and Optional — ₹799.",
+  ctaFinalBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaFinalHref: "/store/answer-copies-compilation",
 
   relatedPages: [
     {
@@ -173,7 +187,7 @@ None of these replace the All India Rank benchmark or structured mentor access a
     {
       title: "Topper Answer Copy Compilation",
       href: "/toppers/toppers-copy-compilation",
-      description: "{{compSheets}} handwritten topper answer sheets ({{compPapers}}) in one download.",
+      description: "50+ toppers' actual evaluated answer copies across GS, Essay, and Optional papers.",
     },
     {
       title: "UPSC Syllabus 2026",

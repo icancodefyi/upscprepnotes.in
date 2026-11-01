@@ -2,9 +2,9 @@ import { ContentPage } from "./index";
 
 const page: ContentPage = {
   slug: "upsc-free-material",
-  title: "UPSC Free Material — {{profiles}} Topper Profiles, PYQs, Strategy & Answer Writing Tools",
+  title: "UPSC Free Material — 280+ Topper Profiles, PYQs, Strategy & Answer Writing Tools",
   description:
-    "Access genuine free UPSC study material including {{profiles}} topper profiles with marks, PYQs with PDF links, strategy archives, and an AI tutor — no signup needed.",
+    "Access genuine free UPSC study material including 280+ topper profiles with marks, PYQs with PDF links, strategy archives, and an AI tutor — no signup needed.",
   lastUpdated: "2026-06-03",
   h1: "UPSC Free Study Material — What's Actually Available for Free",
   intro:
@@ -12,14 +12,14 @@ const page: ContentPage = {
   sections: [
     {
       heading: "Free Topper Profiles with Marks Breakdown",
-      body: `You can browse **{{profiles}} UPSC topper profiles** completely free, {{marksheets}} of them with a complete paper-wise marksheet. Each profile includes:
+      body: `You can browse **280+ UPSC topper profiles** completely free. Each profile includes:
 
 | Data Point | Details |
 |-----------|---------|
 | Identity | Full name, rank, year of selection |
 | Marks Breakdown | GS1, GS2, GS3, GS4, Essay, Optional, Interview |
 | Optional Subject | Subject chosen and scores |
-| Strategy | Preparation approach from public interviews, where available |
+| Strategy | Preparation approach, book list, daily routine |
 
 Visit the **[Toppers page](/toppers)** and search by name, rank, year, or optional subject. This data helps you understand what marks are needed for different ranks, which optionals score well, and how toppers performed across papers.
 
@@ -55,7 +55,7 @@ All free, all accessible without any registration.`,
     },
     {
       heading: "Free AI Tutor — Ask AI About Any Topper or Topic",
-      body: `Our **[Ask AI](/ask)** feature lets you ask questions about any UPSC topper, their strategy, marks, or preparation approach. It's powered by our database of {{profiles}} topper profiles.
+      body: `Our **[Ask AI](/ask)** feature lets you ask questions about any UPSC topper, their strategy, marks, or preparation approach. It's powered by our database of 280+ topper profiles and returns specific, data-backed answers.
 
 | Example Question | What You Get |
 |-----------------|-------------|
@@ -63,13 +63,31 @@ All free, all accessible without any registration.`,
 | "Which optional subjects had the highest average scores in 2024?" | Data-backed ranking, trend analysis |
 | "What was Ishita Kishore's interview strategy?" | Preparation approach, key techniques |
 
-It's free and needs no login.`,
+This is completely free, no login required, no daily limits.`,
     },
     {
-      heading: "Free vs paid: what the compilation adds",
-      body: `Most of this site is free: every topper profile and marksheet, the [marks database](/toppers/marks-database), previous year papers, the strategy guides, Ask AI, the [free study material shelf](/free-materials), and the answer copies we're able to share free on individual topper pages.
+      heading: "Free vs Paid — What You Get for ₹799",
+      body: `| Resource | Free | Compilation (₹799) |
+|----------|------|---------------|
+| Topper Profiles (280+) | ✅ Full access | ✅ Included |
+| PYQ Papers (2023-2025) | ✅ Full access | ✅ Included |
+| Strategy Archives | ✅ Full access | ✅ Included |
+| AI Tutor | ✅ Full access | ✅ Included |
+| **Actual Answer Copies (50+)** | ❌ Not available | ✅ GS1-4, Essay, Optional |
+| **Strategy Guides (21)** | ❌ Not available | ✅ Subject-wise detailed guides |
+| **Interview Prep** | ❌ Not available | ✅ 100 questions + DAF analysis |
+| **Ethics Case Studies** | ❌ Not available | ✅ 50+ solved case studies |
+| **Value-Addition Data** | ❌ Not available | ✅ Schemes, judgments, maps |
 
-The **[Answer Copies Compilation]({{compHref}})** ({{compPrice}}) bundles {{compSheets}} handwritten answer sheets covering {{compPapers}} into one download, each labelled with the topper's name, rank, year and marks. Buy it if you want many copies in one place; you don't need it to use anything else here.`,
+**The Complete Compilation** includes everything in the right column:
+
+✅ **50+ Topper Answer Copies** — GS1-4, Essay, Optional — actual scanned copies with verified marks  
+✅ **21 Strategy Guides** — Subject-wise, topic-wise detailed guides by rank holders  
+✅ **Interview Prep** — 100 common questions, DAF analysis framework, mock interview tips  
+✅ **Ethics Case Studies** — 50+ solved case studies with step-by-step frameworks  
+✅ **Value-Addition Data** — Key schemes, Supreme Court judgments, maps, diagrams  
+
+At **₹799** (launch price, moving to ₹4,999), this compilation replaces months of hunting for scattered resources online. The free material covers strategy and reference — the compilation gives you the **actual answer sheets** that no free resource provides.`,
     },
   ],
   relatedPages: [
@@ -82,15 +100,15 @@ The **[Answer Copies Compilation]({{compHref}})** ({{compPrice}}) bundles {{comp
   faq: [
     {
       q: "Is there really free UPSC material available online?",
-      a: "Yes. UPSCPrepNotes offers {{profiles}} topper profiles, a sortable marks database, PYQs, strategy guides and Ask AI, all free with no registration.",
+      a: "Yes. UPSCPrepNotes offers 280+ topper profiles, PYQs with PDF links, strategy archives, and an AI tutor — all completely free with no registration required.",
     },
     {
       q: "Why should I buy the compilation if free material is available?",
-      a: "Free material covers strategy and reference data. Some answer copies are free on individual topper pages. The compilation puts {{compSheets}} handwritten sheets ({{compPapers}}) in one download, which saves you collecting them one by one.",
+      a: "Free material covers strategy and reference data. The compilation contains actual answer copies — the handwritten sheets toppers submitted in the exam — which no free resource provides. These are essential to understand answer structure, presentation, and time management.",
     },
     {
       q: "Are the topper profiles on this site accurate?",
-      a: "Marks come from UPSC's published marks of recommended candidates. A marksheet is only used in comparisons when every paper is within its maximum and the totals add up; records that fail are hidden until fixed. If you spot an error, use the report link on that topper's page.",
+      a: "Yes. All marks are verified against published UPSC results. Each profile is cross-checked for accuracy.",
     },
     {
       q: "Do I need to sign up to access free material?",

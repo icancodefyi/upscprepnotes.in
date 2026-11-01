@@ -12,7 +12,7 @@ export default function ReportButton({ topperName }: { topperName: string }) {
         type="button"
         onClick={() => setOpen(true)}
         data-track="topper-report"
-        className="w-full rounded-xl border border-dashed border-zinc-200 px-4 py-2 text-xs text-zinc-400 transition hover:border-zinc-300 hover:text-zinc-600 hover:bg-zinc-50"
+        className="text-s text-[var(--muted)] underline decoration-[var(--line-2)] underline-offset-2 transition-colors hover:text-[var(--ink)]"
       >
         Report incorrect data
       </button>

@@ -3,6 +3,8 @@ import AskLink from "@/components/AskLink";
 import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
 import Toc from "@/components/brand/Toc";
+import LiveCounter from "@/components/topper/LiveCounter";
+import ReportButton from "@/components/ReportButton";
 import AfterHeader from "./AfterHeader";
 import { card } from "@/components/brand/ui";
 import { Paperclip } from "@/components/brand/Props";
@@ -138,24 +140,20 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
       <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 max-w-[40rem] lg:pt-10">
           <h1 className="t-display text-h1">{h.name}</h1>
-          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-m text-[var(--ink-2)]">
-            <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 font-bold text-[var(--ink)]">{`AIR ${h.rank}`}</span>
-            <Link href={`/year/${h.year}`} className="hover:text-[var(--accent)]">{`UPSC CSE ${h.year}`}</Link>
-            {h.optional && (
-              <>
-                <span aria-hidden>·</span>
-                {h.optionalHref ? <Link href={h.optionalHref} className="text-[var(--accent)] hover:underline">{`${h.optional} optional`}</Link> : <span>{`${h.optional} optional`}</span>}
-              </>
-            )}
-          </p>
-          <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">{h.summary}</p>
+          {/* original subline: AIR · year · optional */}
+          <p className="mt-3 text-m font-bold text-[var(--accent)]">{`AIR ${h.rank} · ${h.year} · ${h.optional}`}</p>
+          {h.summary && <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">{h.summary}</p>}
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <a href="#answer-copy" data-track="topper-header-copy" className="btn btn-blue">
-              {h.copyLabel} <span className="knob">↓</span>
-            </a>
+            <Link href="/store" data-track="topper-hero-store" className="btn btn-blue">
+              Browse store &rarr;
+            </Link>
             <AskLink query={`Tell me about ${h.name}'s UPSC strategy`} data-track="topper-ask-ai" className="btn btn-paper">
-              {`Ask AI about ${h.first}`}
+              Ask AI
             </AskLink>
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-4">
+            <LiveCounter />
+            <ReportButton topperName={h.name} />
           </div>
         </div>
         <ResultCard h={h} />
