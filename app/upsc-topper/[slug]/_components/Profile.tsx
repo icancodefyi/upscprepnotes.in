@@ -2,6 +2,7 @@ import Link from "next/link";
 import AskLink from "@/components/AskLink";
 import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
+import Toc from "./Toc";
 import { RankStamp, card } from "./ui";
 
 export type HeaderData = {
@@ -131,16 +132,7 @@ export function Sidebar({ s }: { s: SidebarData }) {
 
       <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
         <p className="t-meta">ON THIS PAGE</p>
-        <ol className="mt-3 space-y-0.5">
-          {s.toc.map((t, i) => (
-            <li key={t.id}>
-              <a href={`#${t.id}`} className="flex items-center gap-3 rounded-[10px] px-2 py-1.5 text-[14.5px] text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)]">
-                <span className="t-meta tab w-5">{String(i + 1).padStart(2, "0")}</span>
-                {t.label}
-              </a>
-            </li>
-          ))}
-        </ol>
+        <Toc items={s.toc} />
       </nav>
 
       {s.compilation && (

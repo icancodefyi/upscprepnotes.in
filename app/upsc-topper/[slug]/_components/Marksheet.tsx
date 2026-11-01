@@ -88,8 +88,13 @@ export default function Marksheet({
             <tr className="border-t border-[var(--line-2)] bg-[#e9edff]">
               <td className="px-4 py-4 font-semibold text-[var(--accent-deep)] sm:px-6">Final total</td>
               <td className="tab px-3 py-4 text-right">
-                <span className="t-head text-[22px] text-[var(--accent-deep)]">{fmt(total)}</span>
-                <span className="text-[var(--muted)]"> / 2,025</span>
+                <span className="relative inline-block">
+                  <span className="t-head text-[22px] text-[var(--accent-deep)]">{fmt(total)}</span>
+                  <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-3 -top-2 h-[calc(100%+16px)] w-[calc(100%+24px)] overflow-visible" style={{ "--d": "400ms" } as React.CSSProperties}>
+                    <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <span className="ml-3 text-[var(--muted)]">/ 2,025</span>
               </td>
               <td className="hidden sm:table-cell" />
               <td />

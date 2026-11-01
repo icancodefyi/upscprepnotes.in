@@ -251,7 +251,7 @@ export default async function TopperPage({ params }: Props) {
       <TrackingProvider name={`${topper.firstName} ${topper.lastName}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-      <div className="bg-[var(--canvas)] pb-24 pt-28 sm:pt-32">
+      <div className="pb-24 pt-28 sm:pt-32">
         <div className="mx-auto max-w-[1120px] px-6">
           <Header
             crumbs={crumbs}

@@ -61,12 +61,11 @@ export function StrategyBlock({ first, strategy, generated }: { first: string; s
   if (!parts.length) return null;
   return (
     <div className={`${card} overflow-hidden`}>
-      <p className={`flex items-start gap-2.5 border-b border-[var(--line)] px-6 py-3.5 text-[13.5px] leading-[1.5] ${generated ? "bg-[#fff6c2] text-[var(--hl-ink)]" : "bg-[var(--canvas)] text-[var(--ink-2)]"}`}>
-        <span aria-hidden className="mt-[3px] grid h-4 w-4 shrink-0 place-items-center rounded-full bg-current/15 text-[10px] font-bold">i</span>
-        {generated
-          ? `This preparation summary is AI-written from public information. It is not ${first}'s own words and has not been verified.`
-          : `Put together from ${first}'s public interviews and reports, in our words.`}
-      </p>
+      {!generated && (
+        <p className="flex items-start gap-2.5 border-b border-[var(--line)] bg-[var(--canvas)] px-6 py-3.5 text-[13.5px] leading-[1.5] text-[var(--ink-2)]">
+          {`Put together from ${first}'s public interviews and reports, in our words.`}
+        </p>
+      )}
       <div className="divide-y divide-[var(--line)]">
         {parts.map((s, i) => (
           <details key={s.title || i} open={i < 2} className="group px-6 py-5">
