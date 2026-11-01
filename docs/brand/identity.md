@@ -30,7 +30,7 @@ The senior who kept every copy. Calm, exact, generous.
 ## 4. Typography
 One typeface, two weights, three sizes. Nothing else.
 
-**Face:** Inter, loaded in `components/brand/fonts.ts` with weights 400 and 700 only.
+**Face:** Funnel Sans (the text cut of Funnel Display, our original display face), loaded in `components/brand/fonts.ts` with weights 400 and 700 only. Chosen over Inter, Plus Jakarta Sans, Instrument Sans and Figtree for keeping the brand voice in headings while staying legible in 14px tables.
 
 | Size | Class | Value | Leading | Use |
 |---|---|---|---|---|

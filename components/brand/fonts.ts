@@ -1,6 +1,6 @@
-import { Inter } from "next/font/google";
+import { Funnel_Sans } from "next/font/google";
 
-/** One typeface for the whole brand: Inter, regular (400) and bold (700) only. */
-const inter = Inter({ subsets: ["latin"], weight: ["400", "700"], variable: "--up-sans", display: "swap" });
+/** One typeface for the whole brand: Funnel Sans, regular (400) and bold (700) only. */
+const face = Funnel_Sans({ subsets: ["latin"], weight: ["400", "700"], variable: "--up-sans", display: "swap" });
 
-export const brandFonts = inter.variable;
+export const brandFonts = face.variable;
