@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { isBrandRoute } from "@/components/brand/routes";
 
 const STORAGE_KEY = "tg-bar-dismissed";
 const TELEGRAM_LINK = "https://t.me/+2eV0YCTGdNcyNmFl";
@@ -11,7 +12,8 @@ export default function TelegramStickyBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (pathname === "/try" || pathname?.startsWith("/try")) return;
+    // Redesigned pages have their own bottom bar (or none).
+    if (isBrandRoute(pathname)) return;
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (!dismissed) {
       const timer = setTimeout(() => setVisible(true), 4000);
@@ -24,7 +26,7 @@ export default function TelegramStickyBar() {
     localStorage.setItem(STORAGE_KEY, "1");
   }
 
-  if (!visible || pathname === "/try" || pathname?.startsWith("/try")) return null;
+  if (!visible || isBrandRoute(pathname)) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">

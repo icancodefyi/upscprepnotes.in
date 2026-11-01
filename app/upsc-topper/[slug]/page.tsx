@@ -28,6 +28,7 @@ import AnswerCopy, { type FreeTopper } from "./_components/AnswerCopy";
 import { About, Faq, Insights, StrategyBlock, type QA } from "./_components/Content";
 import Related, { type RelatedGroup, type RelatedTopper } from "./_components/Related";
 import { Section } from "./_components/ui";
+import StickyCopyBar from "./_components/StickyCopyBar";
 
 export const revalidate = 3600;
 
@@ -322,6 +323,7 @@ export default async function TopperPage({ params }: Props) {
           </div>
         </div>
       </div>
+      <StickyCopyBar label={copyLabel} note={copyNote} />
     </BrandShell>
   );
 }

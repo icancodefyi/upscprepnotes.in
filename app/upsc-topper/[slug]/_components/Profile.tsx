@@ -22,18 +22,63 @@ export type HeaderData = {
   summary: string;
 };
 
-/** Profile header: who, which rank, and the five numbers people come for. */
-export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; label: string }[] }) {
-  const COLS: Record<number, string> = { 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4", 5: "sm:grid-cols-5" };
-
-  const stats = [
-    ...(h.total > 0 ? [{ k: "Total marks", v: fmt(h.total), n: "of 2,025" }] : []),
-    ...(h.written > 0 ? [{ k: "Written", v: fmt(h.written), n: "of 1,750" }] : []),
-    ...(h.interview > 0 ? [{ k: "Interview", v: String(h.interview), n: "of 275" }] : []),
-    ...(h.optionalScore > 0 ? [{ k: "Optional", v: String(h.optionalScore), n: "of 500" }] : []),
-    { k: "Copy requests", v: fmt(h.requests), n: "aspirants" },
+/** The result as a marks statement on paper, with the examiner's red circle round the total. */
+function ResultCard({ h }: { h: HeaderData }) {
+  const rows = [
+    ...(h.written > 0 ? [{ k: "Written", v: fmt(h.written), of: "1,750" }] : []),
+    ...(h.interview > 0 ? [{ k: "Interview", v: String(h.interview), of: "275" }] : []),
+    ...(h.optionalScore > 0 ? [{ k: `Optional${h.optional ? ` · ${h.optional}` : ""}`, v: String(h.optionalScore), of: "500" }] : []),
   ];
+  return (
+    <div className="relative w-full lg:w-[340px]">
+      <div aria-hidden className="paper absolute inset-x-3 inset-y-3 rotate-[3deg] opacity-60" />
+      <div className="paper relative -rotate-[1deg] p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="t-meta">{`RESULT · UPSC CSE ${h.year}`}</p>
+            <p className="mt-1 text-[13.5px] text-[var(--ink-2)]">Final total, out of 2,025</p>
+          </div>
+          <RankStamp rank={h.rank} size={54} />
+        </div>
+        {h.total > 0 ? (
+          <p className="relative mt-3 inline-block">
+            <span className="t-display tab text-[64px] leading-none">{fmt(h.total)}</span>
+            <svg aria-hidden viewBox="0 0 160 70" preserveAspectRatio="none" className="pen pointer-events-none absolute -left-4 -top-3 h-[calc(100%+24px)] w-[calc(100%+32px)] overflow-visible" style={{ "--d": "500ms" } as React.CSSProperties}>
+              <path d="M18 38 C 18 12, 90 4, 140 16 C 166 24, 156 58, 110 64 C 60 70, 10 60, 22 30" pathLength={1} fill="none" stroke="var(--mark)" strokeWidth="3" strokeLinecap="round" />
+            </svg>
+          </p>
+        ) : (
+          <p className="mt-4 text-[14px] leading-[1.5] text-[var(--ink-2)]">Marks are being checked against UPSC&apos;s published result.</p>
+        )}
+        {rows.length > 0 && (
+          <dl className="mt-5 space-y-2 border-t border-dashed border-[var(--line-2)] pt-4 text-[14px]">
+            {rows.map((r) => (
+              <div key={r.k} className="flex items-baseline justify-between gap-3">
+                <dt className="truncate text-[var(--ink-2)]">{r.k}</dt>
+                <dd className="tab shrink-0">
+                  <span className="font-semibold">{r.v}</span>
+                  <span className="text-[var(--muted)]">{` / ${r.of}`}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {h.requests > 0 && (
+          <a href="#answer-copy" className="mt-5 flex items-center justify-between gap-3 rounded-[12px] bg-[#e9edff] px-3.5 py-2.5 text-[13.5px] text-[var(--accent-deep)] hover:bg-[#dfe5ff]">
+            <span>
+              <span className="tab font-semibold">{fmt(h.requests)}</span>
+              {` aspirant${h.requests === 1 ? "" : "s"} requested ${h.first}'s copy`}
+            </span>
+            <span aria-hidden>↓</span>
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
 
+/** Profile header: who and which rank on the left, the result on paper on the right. */
+export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; label: string }[] }) {
   return (
     <header>
       <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -45,22 +90,17 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
         ))}
       </nav>
 
-      <div className="mt-8 flex flex-col gap-7 sm:flex-row sm:items-center">
-        <div className="relative w-fit shrink-0">
+      <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0 max-w-[40rem]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={h.avatar}
             alt={h.name}
-            width={136}
-            height={136}
-            className="h-[112px] w-[112px] rounded-[32px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_1px_var(--line),0_10px_24px_-14px_rgba(11,12,16,0.45)] sm:h-[136px] sm:w-[136px]"
+            width={96}
+            height={96}
+            className="h-[88px] w-[88px] rounded-[26px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_1px_var(--line),0_10px_24px_-14px_rgba(11,12,16,0.45)] sm:h-[96px] sm:w-[96px]"
           />
-          <span className="absolute -bottom-3 -right-4 rounded-full bg-white p-1 shadow-[0_6px_14px_-8px_rgba(11,12,16,0.5)]">
-            <RankStamp rank={h.rank} size={58} />
-          </span>
-        </div>
-        <div className="min-w-0">
-          <h1 className="t-display text-[clamp(36px,4.4vw,56px)] leading-[1]">{h.name}</h1>
+          <h1 className="t-display mt-6 text-[clamp(38px,4.6vw,60px)] leading-[1]">{h.name}</h1>
           <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-[16px] text-[var(--ink-2)]">
             <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 font-semibold text-[var(--ink)]">{`AIR ${h.rank}`}</span>
             <Link href={`/year/${h.year}`} className="hover:text-[var(--accent)]">{`UPSC CSE ${h.year}`}</Link>
@@ -71,30 +111,17 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
               </>
             )}
           </p>
-          <p className="mt-4 max-w-[40rem] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">{h.summary}</p>
-        </div>
-      </div>
-
-      <dl className={`${card} mt-9 grid grid-cols-2 divide-[var(--line)] ${COLS[Math.min(stats.length, 5)]} sm:divide-x`}>
-        {stats.map((s, i) => (
-          <div
-            key={s.k}
-            className={`px-5 py-4 ${i >= 2 ? "border-t border-[var(--line)] sm:border-t-0" : ""} ${i % 2 === 1 ? "border-l border-[var(--line)] sm:border-l-0" : ""} ${i === stats.length - 1 && stats.length % 2 === 1 ? "col-span-2 sm:col-span-1" : ""}`}
-          >
-            <dt className="t-meta">{s.k.toUpperCase()}</dt>
-            <dd className={`t-head tab mt-1.5 text-[26px] ${s.k === "Copy requests" ? "text-[var(--accent)]" : ""}`}>{s.v}</dd>
-            <dd className="text-[12px] text-[var(--muted)]">{s.n}</dd>
+          <p className="mt-5 text-[17px] leading-[1.6] text-[var(--ink-2)]">{h.summary}</p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <a href="#answer-copy" data-track="topper-header-copy" className="btn btn-blue">
+              {h.copyLabel} <span className="knob">↓</span>
+            </a>
+            <AskLink query={`Tell me about ${h.name}'s UPSC strategy`} data-track="topper-ask-ai" className="btn btn-paper">
+              {`Ask AI about ${h.first}`}
+            </AskLink>
           </div>
-        ))}
-      </dl>
-
-      <div className="mt-6 flex flex-wrap items-center gap-3 lg:hidden">
-        <a href="#answer-copy" data-track="topper-mobile-copy" className="btn btn-blue">
-          {h.copyLabel} <span className="knob">↓</span>
-        </a>
-        <AskLink query={`Tell me about ${h.name}'s UPSC strategy`} data-track="topper-ask-ai" className="btn btn-paper">
-          {`Ask AI about ${h.first}`}
-        </AskLink>
+        </div>
+        <ResultCard h={h} />
       </div>
     </header>
   );
