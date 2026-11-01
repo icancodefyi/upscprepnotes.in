@@ -97,7 +97,7 @@ function Cover({ p, i }: { p: ShelfItem; i: number }) {
             <img src={p.image} alt={p.title} loading="lazy" className="h-full w-full object-cover" />
           )}
           {/* spine */}
-          <span aria-hidden className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 to-transparent" />
+          <span aria-hidden className="absolute inset-y-0 left-0 w-[4px] bg-[var(--ink)]/20" />
         </div>
         <span
           className="absolute -right-2 -top-2 rounded-[8px] bg-[var(--hl)] px-3 py-1 text-[16px] font-bold text-[var(--ink)] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)]"

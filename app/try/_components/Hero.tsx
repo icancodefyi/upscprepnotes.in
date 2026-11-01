@@ -19,14 +19,14 @@ function Fan({ booklets }: { booklets: Booklet[] }) {
   const mid = (booklets.length - 1) / 2;
 
   return (
-    <div className="relative mx-auto h-[220px] w-full max-w-[1180px] sm:h-[270px]" onPointerLeave={() => setHover(null)}>
+    <div className="relative mx-auto h-[250px] w-full max-w-[1180px] sm:h-[320px]" onPointerLeave={() => setHover(null)}>
       {booklets.map((b, i) => {
         const off = i - mid;
         const on = hover === i;
-        let rot = off * 5;
+        let rot = off * 4.5;
         if (hover !== null && !on) rot += i < hover ? -3 : 3;
         // Cards sit low so only their top third shows; the hovered one rises to reveal itself.
-        const y = 110 + Math.abs(off) * 10 - (on ? 100 : 0);
+        const y = 54 + Math.abs(off) * 12 - (on ? 70 : 0);
         return (
           <Link
             key={b.slug}
@@ -34,7 +34,7 @@ function Fan({ booklets }: { booklets: Booklet[] }) {
             onPointerEnter={() => setHover(i)}
             onFocus={() => setHover(i)}
             aria-label={`${b.name}, AIR ${b.rank}, CSE ${b.year}: answer booklet and marksheet`}
-            className="fan-card w-[150px] sm:w-[210px]"
+            className="fan-card w-[160px] sm:w-[230px]"
             style={{
               "--k": i,
               zIndex: on ? 40 : 10 + i,
@@ -65,7 +65,7 @@ function Fan({ booklets }: { booklets: Booklet[] }) {
 
 export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts: Counts }) {
   return (
-    <section className="relative overflow-hidden pb-[230px] pt-[clamp(120px,16vh,168px)] sm:pb-[260px]">
+    <section className="relative overflow-hidden pb-[260px] pt-[clamp(120px,15vh,160px)] sm:pb-[320px]">
       <div className="relative mx-auto w-full max-w-[1120px] px-6 text-center">
         <h1>
           <span className="rise t-display h-hero block" style={{ "--i": 0 } as React.CSSProperties}>
@@ -112,7 +112,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
       {/* Real booklets peek up from the bottom edge. */}
       <div className="absolute inset-x-0 bottom-0">
         <Fan booklets={booklets} />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[45] h-20 bg-gradient-to-t from-white to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[45] h-12 bg-gradient-to-t from-white to-transparent" />
       </div>
     </section>
   );

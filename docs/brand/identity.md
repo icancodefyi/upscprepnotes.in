@@ -40,21 +40,29 @@ One family, two cuts.
 
 Rules: tabular figures for every number; `text-wrap: balance` on headings; body measure 55–70 characters.
 
-## 5. Colour (structure now, final hues later)
-Neutral-first. Colour is earned by meaning.
+## 5. Colour (v1, in use on /try)
+Three brand colours carry everything: **ballpoint blue, paper white, highlighter yellow.** Examiner red is an accent for marks only.
 
-| Token | Value (placeholder) | Use |
-|---|---|---|
-| `--paper` | #FFFFFF | Page |
-| `--canvas` | #F5F6F8 | Section grounds, cards at rest |
-| `--ink` | #0A0B0D | Text, primary buttons |
-| `--ink-2` | #41464F | Secondary text |
-| `--muted` | #8A8F98 | Meta, captions |
-| `--line` | rgba(10,11,13,.08) | Rules and borders |
-| `--accent` | #2340C8 | Ballpoint: links, focus, highlighted words |
-| `--mark` | #D5372B | Examiner: marks awarded only |
+| Role | Token | Hex | Use |
+|---|---|---|---|
+| **Ballpoint blue** (primary) | `--accent` | `#1F3FD6` | Primary buttons, links, key words in headings, full-bleed story panels |
+| Blue, pressed / hover | `--accent-ink` | `#172FA3` | Hover and active states |
+| Blue, deep | `--accent-deep` | `#13238A` | Text on pale blue, dark accents |
+| Blue tint | — | `#E9EDFF` | Pale blue cards and surfaces |
+| Blue wash | `--accent-soft` | `rgba(31,63,214,0.08)` | Hover backgrounds, ruled lines |
+| **Paper white** | `--paper` | `#FFFFFF` | Page and card background |
+| Canvas | `--canvas` | `#F4F5F9` | Section panels, quiet fills |
+| **Highlighter yellow** | `--hl` | `#FFE45C` | Highlighter swipes, price stickers, active rows, footer panel |
+| Yellow ink | `--hl-ink` | `#5C4A00` | Small text on yellow |
+| Ink | `--ink` | `#0B0C10` | Headings, body text, dark panels, ink buttons |
+| Ink 2 | `--ink-2` | `#3F4450` | Secondary text |
+| Muted | `--muted` | `#858A96` | Meta, captions |
+| Rule | `--line` | `rgba(11,12,16,0.08)` | Borders and dividers |
+| Examiner red | `--mark` | `#FF4A3D` (deep `#D9342A`) | Marks awarded, rings, rank stamps. Never decoration |
 
-Swap the two hues later; nothing else needs to change.
+Folder stock (optional-subject tabs only): `#FFE45C`, `#DBE2FF`, `#FFD8CF`, `#D4F1DF`, `#EBE2FF`, `#FDE9C4`.
+
+**Gradients:** only when they are in a brand colour and do a job, such as the blue ruled lines on index cards, or the white fade that tucks the booklet fan into the page. No decorative glows, mesh backgrounds or sheens.
 
 ## 6. Shape, depth, spacing
 - **Radius scale:** 8 / 12 / 20 / 28. Nested corners are concentric (inner = outer − padding).
