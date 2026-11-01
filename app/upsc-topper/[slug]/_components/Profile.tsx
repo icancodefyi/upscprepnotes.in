@@ -42,7 +42,7 @@ function ResultCard({ h }: { h: HeaderData }) {
         {/* passport photo, clipped on */}
         <div className="absolute -top-4 right-6 rotate-[4deg]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={h.avatar} alt="" aria-hidden width={64} height={78} className="h-[78px] w-[64px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_12px_-6px_rgba(11,12,16,0.4)]" />
+          <img src={h.avatar} alt={h.name} width={64} height={78} className="h-[78px] w-[64px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_3px_#fff,0_0_0_4px_var(--line-2),0_6px_12px_-6px_rgba(11,12,16,0.4)]" />
           <Paperclip className="absolute -top-7 left-3 h-[84px] w-[31px] rotate-[-8deg]" />
         </div>
 
@@ -132,15 +132,7 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
 
       <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 max-w-[40rem]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={h.avatar}
-            alt={h.name}
-            width={96}
-            height={96}
-            className="h-[88px] w-[88px] rounded-[26px] bg-[#e9edff] object-cover object-top shadow-[0_0_0_1px_var(--line),0_10px_24px_-14px_rgba(11,12,16,0.45)] sm:h-[96px] sm:w-[96px]"
-          />
-          <h1 className="t-display mt-6 text-l leading-[1]">{h.name}</h1>
+          <h1 className="t-display text-l leading-[1]">{h.name}</h1>
           <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-m text-[var(--ink-2)]">
             <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 font-bold text-[var(--ink)]">{`AIR ${h.rank}`}</span>
             <Link href={`/year/${h.year}`} className="hover:text-[var(--accent)]">{`UPSC CSE ${h.year}`}</Link>
