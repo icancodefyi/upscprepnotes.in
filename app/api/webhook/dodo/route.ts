@@ -98,11 +98,13 @@ export async function POST(request: NextRequest) {
         });
         console.log(`[${webhookId}] Order ${existing._id} updated: pending → paid`);
         const recipientEmail = customerEmail || existing.email || "";
-        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);        await trackServer("purchase", {
+        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);
+        await trackServer("purchase", {
           email: customerEmail || existing.email,
           path: "/api/webhook/dodo",
           props: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug), payment: paymentId },
-        });        try {
+        });
+        try {
           await sendAdminNotification(customerEmail, existing.items, existing.total);
         } catch (err) {
           console.error(`[${webhookId}] Admin notification failed:`, err);
