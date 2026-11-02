@@ -181,45 +181,44 @@ export async function GET(req: NextRequest) {
       ]).then(r => r[0]?.count || 0),
     ]);
 
-    // User journeys: last 20 unique visitors with all their events (cross-session)
-    const userJourneys = await AnalyticsEventModel.aggregate([
-      { $match: { timestamp: { $gte: since }, visitorId: { $exists: true, $ne: "unknown" } } },
-      { $sort: { timestamp: 1 } },
-      { $group: {
-        _id: "$visitorId",
-        events: { $push: "$$ROOT" },
-        firstEvent: { $first: "$$ROOT.timestamp" },
-        lastEvent: { $last: "$$ROOT.timestamp" },
-        eventCount: { $sum: 1 },
-        sessions: { $addToSet: "$sessionId" },
-      }},
-      { $sort: { lastEvent: -1 } },
-      { $limit: 20 },
-      {
-        $project: {
-          visitorId: "$_id",
-          eventCount: 1,
-          firstEvent: 1,
-          lastEvent: 1,
-          sessionCount: { $size: "$sessions" },
-          deviceType: { $arrayElemAt: ["$events.deviceType", 0] },
-          userAgent: { $arrayElemAt: ["$events.userAgent", 0] },
-          events: {
-            $map: {
-              input: "$events",
-              as: "e",
-              in: {
-                event: "$$e.event",
-                pagePath: "$$e.pagePath",
-                timestamp: "$$e.timestamp",
-                sessionId: "$$e.sessionId",
-                metadata: "$$e.metadata",
-              },
-            },
-          },
-        },
-      },
-    ]);
+    // User journeys: last 20 unique visitors with all their events (cross-session).
+    // Pick the visitors first, then load only their events: grouping every event of every visitor
+    // ($push "$$ROOT") blows MongoDB's 100 MB $group limit once traffic grows.
+    const validVisitor = { timestamp: { $gte: since }, visitorId: { $exists: true, $ne: "unknown" } };
+    const recentVisitors: { _id: string; firstEvent: Date; lastEvent: Date; eventCount: number; sessions: string[] }[] =
+      await AnalyticsEventModel.aggregate([
+        { $match: validVisitor },
+        { $group: {
+          _id: "$visitorId",
+          firstEvent: { $min: "$timestamp" },
+          lastEvent: { $max: "$timestamp" },
+          eventCount: { $sum: 1 },
+          sessions: { $addToSet: "$sessionId" },
+        }},
+        { $sort: { lastEvent: -1 } },
+        { $limit: 20 },
+      ]);
+    const journeyEvents = (await AnalyticsEventModel.find({
+      ...validVisitor,
+      visitorId: { $in: recentVisitors.map((v) => v._id) },
+    })
+      .select("visitorId event pagePath timestamp sessionId metadata deviceType userAgent")
+      .sort({ timestamp: 1 })
+      .lean()) as unknown as { visitorId: string; event: string; pagePath: string; timestamp: Date; sessionId: string; metadata: unknown; deviceType?: string; userAgent?: string }[];
+    const userJourneys = recentVisitors.map((v) => {
+      const events = journeyEvents.filter((e) => e.visitorId === v._id);
+      return {
+        _id: v._id,
+        visitorId: v._id,
+        eventCount: v.eventCount,
+        firstEvent: v.firstEvent,
+        lastEvent: v.lastEvent,
+        sessionCount: v.sessions.length,
+        deviceType: events[0]?.deviceType,
+        userAgent: events[0]?.userAgent,
+        events: events.map((e) => ({ event: e.event, pagePath: e.pagePath, timestamp: e.timestamp, sessionId: e.sessionId, metadata: e.metadata })),
+      };
+    });
 
     // AI conversation counts
     const [aiConversations, aiMessagesAgg] = await Promise.all([
@@ -239,30 +238,19 @@ export async function GET(req: NextRequest) {
         AnalyticsEventModel.countDocuments({ event: "checkout_started", timestamp: { $gte: since } }),
         AnalyticsEventModel.countDocuments({ event: "file_download", timestamp: { $gte: since } }),
         AnalyticsEventModel.countDocuments({ event: "page_view", pagePath: "/toppers/toppers-copy-compilation", timestamp: { $gte: since } }),
+        // Converting visitors: filter to the converting events first, then count distinct visitors.
         AnalyticsEventModel.aggregate([
-          { $match: { timestamp: { $gte: since }, visitorId: { $exists: true, $ne: "unknown" } } },
-          { $group: { _id: "$visitorId", events: { $push: "$$ROOT" } } },
           {
             $match: {
+              timestamp: { $gte: since },
+              visitorId: { $exists: true, $ne: "unknown" },
               $or: [
-                { "events.event": "checkout_completed" },
-                { "events.event": "checkout_started" },
-                { "events.event": "file_download" },
-                { "events.event": "form_submit" },
-                { "events.event": "dialog_submit" },
-                { "events.event": "free_guide_lead" },
-                {
-                  events: {
-                    $elemMatch: { event: "click", $or: [
-                      { "metadata.trackAttr": { $regex: "bundle", $options: "i" } },
-                      { "metadata.trackAttr": { $regex: "download", $options: "i" } },
-                      { "metadata.trackAttr": { $regex: "purchase", $options: "i" } },
-                    ]},
-                  },
-                },
+                { event: { $in: ["checkout_completed", "checkout_started", "file_download", "form_submit", "dialog_submit", "free_guide_lead"] } },
+                { event: "click", "metadata.trackAttr": { $regex: "bundle|download|purchase", $options: "i" } },
               ],
             },
           },
+          { $group: { _id: "$visitorId" } },
           { $count: "count" },
         ]).then((r) => (r[0]?.count || 0)),
         // Bounce sessions (single page_view excluding exit events)
