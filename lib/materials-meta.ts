@@ -22,7 +22,7 @@ export type Collection = {
 /** Folder stock colours from the brand, one per category. */
 export const CATEGORY: Record<string, { label: string; short: string; tone: string; back: string; ink: string }> = {
   "test-series": { label: "Test series", short: "Test series", tone: "#DBE2FF", back: "#AFBEFF", ink: "#13238A" },
-  notes: { label: "Notes", short: "Notes", tone: "#D4F1DF", back: "#9CD9B3", ink: "#14532d" },
+  notes: { label: "Notes", short: "Notes", tone: "#e3e8fb", back: "#b9c6f7", ink: "#172fa3" },
   books: { label: "Books", short: "Book", tone: "#FDE9C4", back: "#F2C878", ink: "#7a4b00" },
   magazines: { label: "Magazines", short: "Magazine", tone: "#EBE2FF", back: "#C5B3FF", ink: "#3b1d8f" },
   "current-affairs": { label: "Current affairs", short: "Current affairs", tone: "#FFD8CF", back: "#FFA894", ink: "#8a1f12" },

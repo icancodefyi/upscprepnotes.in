@@ -12,11 +12,11 @@ function buildDownloadLinksHtml(urls: string[]): string {
   if (urls.length === 0) return "";
   if (urls.length === 1) {
     return `<div style="text-align:center;margin-bottom:28px">
-      <a href="${urls[0]}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download Answer Copy →</a>
+      <a href="${urls[0]}" style="display:inline-block;background:#1f3fd6;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download Answer Copy →</a>
     </div>`;
   }
   const items = urls.map((url, i) =>
-    `<tr><td style="padding:6px 0"><a href="${url}" style="color:#059669;font-weight:600;font-size:14px">Copy ${i + 1} →</a></td></tr>`
+    `<tr><td style="padding:6px 0"><a href="${url}" style="color:#1f3fd6;font-weight:600;font-size:14px">Copy ${i + 1} →</a></td></tr>`
   ).join("");
   return `<table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:28px">${items}</table>`;
 }
@@ -63,10 +63,10 @@ async function sendUnavailableEmail(email: string, topperName: string) {
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Being Scanned</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're digitizing the original answer sheet right now and will email the link within 24–48 hours.</p>
-        <div style="text-align:center;margin-bottom:24px;padding:20px;background:#e7f9ee;border-radius:16px;border:2px solid #059669">
-          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#065f46">Don't wait — get 50+ topper copies now</p>
-          <p style="margin:0 0 14px;font-size:13px;color:#065f46">50+ verified copies (GS1–4, Essay, Optional) + 21 strategy guides.<br/>Just <strong>₹99</strong> during the launch sale (84% off, ends soon).</p>
-          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#059669;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get the Full Compilation for ₹99 →</a>
+        <div style="text-align:center;margin-bottom:24px;padding:20px;background:#eef1fd;border-radius:16px;border:2px solid #1f3fd6">
+          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#172fa3">Don't wait — get 50+ topper copies now</p>
+          <p style="margin:0 0 14px;font-size:13px;color:#172fa3">50+ verified copies (GS1–4, Essay, Optional) + 21 strategy guides.<br/>Just <strong>₹99</strong> during the launch sale (84% off, ends soon).</p>
+          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get the Full Compilation for ₹99 →</a>
         </div>
         <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">7-day refund · Instant download · Price returns to ₹799 after the sale</p>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">

@@ -27,6 +27,11 @@ const STEP_DELAY_DAYS = [2, 3, 2, 3];
 const BATCH_SIZE = 10;
 
 export async function GET(req: NextRequest) {
+  // Callers must send `Authorization: Bearer $CRON_SECRET` (Vercel Cron does this automatically).
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const rl = await checkRateLimit(req, "cron");
   if (rl) return rl;
 

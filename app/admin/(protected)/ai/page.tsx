@@ -107,7 +107,7 @@ export default function AdminAIPage() {
           />
           <button
             type="submit"
-            className="rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-emerald-500"
+            className="rounded-full bg-[#1f3fd6] px-4 py-1.5 text-xs font-medium text-white hover:bg-[#172fa3]"
           >
             Search
           </button>
@@ -144,7 +144,7 @@ export default function AdminAIPage() {
               onClick={() => setSelected(selected?.id === conv.id ? null : conv)}
               className="group flex w-full items-start gap-4 rounded-2xl border border-black/[0.06] bg-white p-4 text-left transition hover:border-black/20 hover:shadow-sm"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 text-sm font-bold text-emerald-700">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 text-sm font-bold text-[#172fa3]">
                 {(conv.title || "?").charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
@@ -221,7 +221,7 @@ export default function AdminAIPage() {
                     <div
                       className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                         msg.role === "user"
-                          ? "bg-emerald-600 text-white"
+                          ? "bg-[#1f3fd6] text-white"
                           : "bg-zinc-100 text-zinc-800"
                       }`}
                     >

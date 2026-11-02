@@ -76,7 +76,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
         </form>
       ) : available ? (
         <div className="mt-4">
-          <p className="text-sm font-medium text-emerald-700">
+          <p className="text-sm font-medium text-[#172fa3]">
             ✓ Check your inbox! We sent the download link{pdfUrls.length > 1 ? "s" : ""} for <strong>{topperName}</strong>.
           </p>
           {pdfUrls.length > 0 && (
@@ -86,7 +86,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
                   key={url}
                   href={url}
                   download
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-[#1f3fd6] px-4 py-2 text-xs font-bold text-white hover:bg-[#172fa3] transition-colors"
                 >
                   <IconDownload size={14} />
                   Download {pdfUrls.length > 1 ? `Copy ${i + 1}` : "Now"}
@@ -97,13 +97,13 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
         </div>
       ) : (
         <div className="mt-3">
-          <p className="text-sm font-medium text-emerald-700">
+          <p className="text-sm font-medium text-[#172fa3]">
             ✓ We&apos;ll send the download link for <strong>{topperName}</strong>&apos;s answer copy to your email shortly.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <a
               href="/store"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-[#1f3fd6] px-4 py-2 text-xs font-bold text-white hover:bg-[#172fa3] transition-colors"
             >
               Browse 50+ topper copies in the store
             </a>

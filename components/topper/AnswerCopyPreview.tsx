@@ -38,7 +38,7 @@ export default function AnswerCopyPreview({ topper }: Props) {
             See how they structured their {topper.optionalSubject || "subject"} paper
           </p>
         </div>
-        <span className="rounded-full bg-[#d4f1df] px-2.5 py-0.5 text-s font-bold text-[#14532d]">
+        <span className="rounded-full bg-[#e3e8fb] px-2.5 py-0.5 text-s font-bold text-[#172fa3]">
           Sample
         </span>
       </div>

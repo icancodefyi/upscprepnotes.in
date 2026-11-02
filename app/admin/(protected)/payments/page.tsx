@@ -38,7 +38,7 @@ type PaymentsResponse = {
 
 const STATUS_STYLES: Record<string, string> = {
   pending: "bg-amber-50 text-amber-700",
-  paid: "bg-emerald-50 text-emerald-700",
+  paid: "bg-emerald-50 text-[#172fa3]",
   delivered: "bg-blue-50 text-blue-700",
 };
 
@@ -140,7 +140,7 @@ export default function AdminPaymentsPage() {
         </div>
         <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
           <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">Paid revenue</p>
-          <p className="mt-2 text-3xl font-semibold tracking-tight text-emerald-600">
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-[#1f3fd6]">
             {stats ? formatINR(stats.paidRevenue) : "—"}
           </p>
           <p className="mt-1 text-xs text-zinc-400">

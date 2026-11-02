@@ -10,15 +10,15 @@ export default function PreparingClient() {
 
   return (
     <div className="mx-auto max-w-lg px-6 pb-24 pt-36 text-center">
-      <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#d4f1df] text-l font-bold text-[#14532d]">✓</span>
+      <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#e3e8fb] text-l font-bold text-[#172fa3]">✓</span>
       <h1 className="t-display mt-5 text-h1">We received your order</h1>
       <p className="mt-4 text-m text-[var(--ink-2)]">
         <strong>{title}</strong> is being prepared right now.
       </p>
 
-      <div className="mt-8 rounded-[20px] bg-[#d4f1df] p-5">
-        <p className="text-m font-bold text-[#14532d]">You&apos;ll receive it within 10 minutes.</p>
-        <p className="mt-1 text-s text-[#14532d]/80">Thanks for your patience. We&apos;re on it.</p>
+      <div className="mt-8 rounded-[20px] bg-[#e3e8fb] p-5">
+        <p className="text-m font-bold text-[#172fa3]">You&apos;ll receive it within 10 minutes.</p>
+        <p className="mt-1 text-s text-[#172fa3]/80">Thanks for your patience. We&apos;re on it.</p>
       </div>
 
       <div className="mt-6 rounded-[20px] bg-white p-5 text-left shadow-[0_0_0_1px_var(--line-2)]">

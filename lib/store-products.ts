@@ -77,7 +77,7 @@ export const INSTITUTES: Institute[] = [
     name: "IAS BABA",
     shortName: "IAS BABA",
     description: "All India Open Mock Tests and Mains tests",
-    gradient: "bg-emerald-600",
+    gradient: "bg-[#1f3fd6]",
     logo: "https://ik.imagekit.io/impiclabs/institutes/ias-baba.png?tr=f-auto,q-80",
   },
   {
@@ -249,7 +249,7 @@ export const PRODUCTS: StoreProduct[] = [
     reviewCount: 18,
     badge: "Best Value",
     badgeColor: "emerald",
-    gradient: "from-emerald-600 via-emerald-500 to-teal-500",
+    gradient: "bg-[#1f3fd6]",
     features: [
       "280+ complete strategy reports with marks analysis",
       "Paper-wise breakdowns and score deep dives for every topper",

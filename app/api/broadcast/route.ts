@@ -1,3 +1,4 @@
+import { isAdminRequest } from "@/lib/admin-auth";
 import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { sendEmail } from "@/lib/resend";
@@ -15,6 +16,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 const MAX_BATCH = 100;
 
 export async function POST(request: NextRequest) {
+  if (!(await isAdminRequest(request))) return Response.json({ error: "Unauthorized" }, { status: 401 });
   const rl = await checkRateLimit(request, "broadcast");
   if (rl) return rl;
 

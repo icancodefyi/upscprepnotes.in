@@ -56,7 +56,7 @@ export default async function DownloadPage({ params, searchParams }: Props) {
       <div className="mx-auto max-w-3xl px-6 pb-24 pt-28 sm:pt-32">
         <div className={`${card} p-6 sm:p-8`}>
           <h1 className="t-display text-h1">Your files are ready</h1>
-          <p className="mt-2 text-s font-bold text-[#14532d]">Order confirmed</p>
+          <p className="mt-2 text-s font-bold text-[#172fa3]">Order confirmed</p>
           <p className="mt-1 text-s text-[var(--muted)]">
             {order.email} · Order {String(order._id).slice(-8).toUpperCase()}
           </p>

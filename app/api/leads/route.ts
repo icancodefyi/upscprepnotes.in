@@ -1,3 +1,4 @@
+import { isAdminRequest } from "@/lib/admin-auth";
 import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
@@ -8,6 +9,7 @@ import { OrderModel } from "@/models/order.model";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(req: NextRequest) {
+  if (!(await isAdminRequest(req))) return Response.json({ error: "Unauthorized" }, { status: 401 });
   const rl = await checkRateLimit(req, "leads");
   if (rl) return rl;
   try {

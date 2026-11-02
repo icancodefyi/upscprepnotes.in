@@ -25,7 +25,7 @@ async function sendGuideEmail(name: string, email: string) {
 
   const guideLinks = GUIDES.map(
     (g) =>
-      `<tr><td style="padding:8px 0"><a href="${g.url}" style="color:#059669;font-weight:600;font-size:15px">${g.title}</a></td></tr>`
+      `<tr><td style="padding:8px 0"><a href="${g.url}" style="color:#1f3fd6;font-weight:600;font-size:15px">${g.title}</a></td></tr>`
   ).join("");
 
   const html = `

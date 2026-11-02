@@ -35,9 +35,9 @@ export default function HeroLeadForm({ variant = "default" }: { variant?: "defau
 
   if (status === "success") {
     return (
-      <div className={brand ? "mt-4 flex items-center gap-2.5 rounded-[16px] bg-[#d4f1df] px-4 py-3 text-[#14532d]" : "flex items-center gap-2.5 rounded-lg border border-border bg-card px-4 py-2.5"}>
+      <div className={brand ? "mt-4 flex items-center gap-2.5 rounded-[16px] bg-[#e3e8fb] px-4 py-3 text-[#172fa3]" : "flex items-center gap-2.5 rounded-lg border border-border bg-card px-4 py-2.5"}>
         <span className={brand ? "grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white" : "flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-muted"}>
-          <Check size={13} className={brand ? "text-[#14532d]" : "text-brand"} />
+          <Check size={13} className={brand ? "text-[#172fa3]" : "text-brand"} />
         </span>
         <p className={brand ? "text-s" : "text-xs font-medium"}>
           Sent! Check your inbox for the free <span className="font-bold">Govt Schemes</span> PDF.

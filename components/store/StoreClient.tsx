@@ -101,7 +101,7 @@ function Testimonial() {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="rounded-full bg-white px-3 py-1 text-s font-bold">Answer Copies Compilation</span>
-          <span className="rounded-full bg-[#d4f1df] px-3 py-1 text-s font-bold text-[#14532d]">Verified Purchase</span>
+          <span className="rounded-full bg-[#e3e8fb] px-3 py-1 text-s font-bold text-[#172fa3]">Verified Purchase</span>
         </div>
       </figcaption>
     </figure>

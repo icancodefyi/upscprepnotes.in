@@ -23,7 +23,7 @@ const SLUGS: Record<string, string> = {
 };
 
 // Manila-folder stock, one per subject.
-const STOCK = ["#ffe45c", "#dbe2ff", "#ffd8cf", "#d4f1df", "#ebe2ff", "#fde9c4"];
+const STOCK = ["#ffe45c", "#dbe2ff", "#ffd8cf", "#e3e8fb", "#ebe2ff", "#fde9c4"];
 
 const LO = 220;
 const HI = 340;

@@ -1,3 +1,4 @@
+import { isAdminRequest } from "@/lib/admin-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
@@ -13,6 +14,7 @@ import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  if (!(await isAdminRequest(req))) return Response.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { searchParams } = new URL(req.url);
     const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));

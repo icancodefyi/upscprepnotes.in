@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 type OrderRow = { _id: unknown; email?: string; items?: { title?: string; slug?: string }[]; total?: number; status?: string; createdAt?: Date; ref?: string };
 
 const STATUS: Record<string, string> = {
-  paid: "bg-emerald-50 text-emerald-700",
-  delivered: "bg-emerald-50 text-emerald-700",
+  paid: "bg-emerald-50 text-[#172fa3]",
+  delivered: "bg-emerald-50 text-[#172fa3]",
   pending: "bg-amber-50 text-amber-700",
 };
 

@@ -114,7 +114,7 @@ export default async function CurrentAffairsHub() {
                       <p className="text-m font-bold group-hover:text-[var(--accent)]">{data.month} {data.year} Edition</p>
                       <p className="text-s text-[var(--muted)]">{labels.slice(0, 2).join(" · ")}</p>
                     </div>
-                    {i === 0 && <span className="ml-auto rounded-full bg-[#d4f1df] px-2.5 py-0.5 text-s font-bold text-[#14532d]">New</span>}
+                    {i === 0 && <span className="ml-auto rounded-full bg-[#e3e8fb] px-2.5 py-0.5 text-s font-bold text-[#172fa3]">New</span>}
                   </div>
                   <p className="mt-4 text-s text-[var(--ink-2)]">Interactive reading · Daily quiz · PDF download</p>
                 </Link>

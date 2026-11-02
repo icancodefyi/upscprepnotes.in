@@ -159,7 +159,7 @@ export default function BroadcastPage() {
             <label className="text-xs font-medium text-zinc-600">HTML Body</label>
             <button
               onClick={() => setPreview(!preview)}
-              className="text-xs text-emerald-600 hover:underline transition"
+              className="text-xs text-[#1f3fd6] hover:underline transition"
             >
               {preview ? "Edit" : "Preview"}
             </button>
@@ -217,7 +217,7 @@ export default function BroadcastPage() {
           <button
             onClick={sendAll}
             disabled={sending || !subject.trim() || !html.trim()}
-            className="rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 transition disabled:opacity-40"
+            className="rounded-xl bg-[#1f3fd6] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#172fa3] transition disabled:opacity-40"
           >
             {sending ? "Sending..." : `Send Batch of 100 (${(leadsTotal ?? 0) - batchOffset || "..."} remaining)`}
           </button>

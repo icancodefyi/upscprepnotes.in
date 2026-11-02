@@ -13,7 +13,7 @@ export type Guide = {
   top: { score: number; name: string; rank: number; year: number; max: number };
 };
 
-const CARD_TONES = ["#ffffff", "#ffe45c", "#e9edff", "#ffffff", "#ffd8cf", "#d4f1df", "#ffffff"];
+const CARD_TONES = ["#ffffff", "#ffe45c", "#e9edff", "#ffffff", "#ffd8cf", "#e3e8fb", "#ffffff"];
 
 /** Index cards: ruled lines, a punched hole, the paper's best score in red. */
 function Card({ g, i }: { g: Guide; i: number }) {

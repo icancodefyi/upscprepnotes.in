@@ -11,7 +11,7 @@ const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_
 // Each section gets one of the brand's stationery tones, so the edition reads like tabbed notes.
 const TONES = [
   { tone: "#DBE2FF", ink: "#13238A" },
-  { tone: "#D4F1DF", ink: "#14532d" },
+  { tone: "#e3e8fb", ink: "#172fa3" },
   { tone: "#FDE9C4", ink: "#7a4b00" },
   { tone: "#EBE2FF", ink: "#3b1d8f" },
   { tone: "#FFD8CF", ink: "#8a1f12" },

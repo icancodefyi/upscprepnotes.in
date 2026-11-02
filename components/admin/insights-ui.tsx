@@ -104,7 +104,7 @@ export function Stat({ label, value, sub, change, good = "up" }: { label: string
       <p className="t-display mt-1.5 text-[32px] leading-none text-zinc-900 tabular-nums">{value}</p>
       <div className="mt-2 flex items-center gap-2 text-xs">
         {show && (
-          <span className={`rounded-full px-1.5 py-0.5 font-medium tabular-nums ${change == null ? "bg-zinc-100 text-zinc-500" : isGood ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+          <span className={`rounded-full px-1.5 py-0.5 font-medium tabular-nums ${change == null ? "bg-zinc-100 text-zinc-500" : isGood ? "bg-emerald-50 text-[#172fa3]" : "bg-red-50 text-red-600"}`}>
             {change == null ? "new" : `${change > 0 ? "+" : ""}${change}%`}
           </span>
         )}
@@ -195,9 +195,9 @@ export function NoTracking() {
 type Ev = { event: string; path?: string; props?: Record<string, unknown>; email?: string };
 const s = (v: unknown) => (v == null ? "" : String(v));
 const EVENT_TONE: Record<string, string> = {
-  purchase: "bg-emerald-100 text-emerald-800",
-  checkout_started: "bg-emerald-50 text-emerald-700",
-  checkout_redirect: "bg-emerald-50 text-emerald-700",
+  purchase: "bg-[#e3e8fb] text-emerald-800",
+  checkout_started: "bg-emerald-50 text-[#172fa3]",
+  checkout_redirect: "bg-emerald-50 text-[#172fa3]",
   buy_click: "bg-blue-50 text-blue-700",
   product_view: "bg-blue-50 text-blue-700",
   ask_question: "bg-violet-50 text-violet-700",

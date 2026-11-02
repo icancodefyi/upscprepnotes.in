@@ -1,3 +1,4 @@
+import { isAdminRequest } from "@/lib/admin-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AskConversationModel, type IAskConversation } from "@/models/ask.model";
@@ -6,6 +7,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  if (!(await isAdminRequest(req))) return Response.json({ error: "Unauthorized" }, { status: 401 });
   const rl = await checkRateLimit(req, "ai");
   if (rl) return rl;
 

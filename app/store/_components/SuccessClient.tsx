@@ -89,7 +89,7 @@ export default function SuccessClient() {
   return (
     <div className="mx-auto max-w-2xl px-6 pb-24 pt-36">
       <div className="text-center">
-        <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#d4f1df] text-l font-bold text-[#14532d]">✓</span>
+        <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#e3e8fb] text-l font-bold text-[#172fa3]">✓</span>
         <h1 className="t-display mt-5 text-h1">Payment Successful!</h1>
         <p className="mt-3 text-m text-[var(--ink-2)]">
           Order <strong>{order?.orderId}</strong>

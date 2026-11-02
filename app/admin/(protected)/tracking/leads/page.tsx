@@ -69,7 +69,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                   <td className="max-w-[260px] truncate px-2 py-2 text-zinc-600">{p.sources}</td>
                   <td className="px-2 py-2 text-right tabular-nums">{p.forms}</td>
                   <td className="whitespace-nowrap px-2 py-2 text-zinc-500">{ago(p.last)}</td>
-                  <td className="px-2 py-2 text-right">{p.bought ? <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">yes</span> : <span className="text-zinc-300">—</span>}</td>
+                  <td className="px-2 py-2 text-right">{p.bought ? <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-[#172fa3]">yes</span> : <span className="text-zinc-300">—</span>}</td>
                 </tr>
               ))}
             </tbody>

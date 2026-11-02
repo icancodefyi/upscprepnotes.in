@@ -16,7 +16,7 @@ export const coverOf = (p: Product) => p.image || p.images?.[0];
 const FOLDER: Record<string, string> = {
   "answer-copies-compilation": "#DBE2FF",
   "top-10-rankers-strategy": "#FDE9C4",
-  "government-schemes-compilation": "#D4F1DF",
+  "government-schemes-compilation": "#e3e8fb",
   "complete-gs-notes-bundle": "#EBE2FF",
   "anthropology-bundle": "#FFD8CF",
   "vision-ias-mains-2026-test-series": "#E4E7EE",
@@ -25,7 +25,7 @@ export const folderOf = (p: Product) => FOLDER[p.slug] ?? "#E4E7EE";
 
 const BADGE: Record<string, string> = {
   amber: "bg-[var(--hl)] text-[var(--hl-ink)]",
-  emerald: "bg-white text-[#14532d]",
+  emerald: "bg-white text-[#172fa3]",
 };
 
 export function Star({ className = "" }: { className?: string }) {

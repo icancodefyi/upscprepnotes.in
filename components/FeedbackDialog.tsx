@@ -94,8 +94,8 @@ export default function FeedbackDialog({
 
         {sent ? (
           <div className="flex flex-col items-center px-5 py-12 text-center">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
-              <svg className="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e3e8fb]">
+              <svg className="h-6 w-6 text-[#1f3fd6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>

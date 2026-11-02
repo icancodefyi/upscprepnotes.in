@@ -20,7 +20,7 @@ function buildEmailHtml(): string {
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
         <div style="text-align:center;margin-bottom:24px">
-          <span style="display:inline-block;background:#C4F9D7;color:#111;border:1px solid #111;border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Free Exclusive</span>
+          <span style="display:inline-block;background:#dbe2fb;color:#111;border:1px solid #111;border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Free Exclusive</span>
         </div>
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center;line-height:1.3">Your Free <em>Government Schemes</em> Compendium is Ready</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">

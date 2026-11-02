@@ -4,7 +4,7 @@ import { BarList, Card, InsightTabs, PageHeader, Stat, num } from "@/components/
 export const dynamic = "force-dynamic";
 
 const ms = (n: number) => (n ? `${n >= 1000 ? (n / 1000).toFixed(1) + " s" : n + " ms"}` : "—");
-const grade = (v: number, good: number, poor: number) => (!v ? "text-zinc-400" : v <= good ? "text-emerald-600" : v <= poor ? "text-amber-600" : "text-red-600");
+const grade = (v: number, good: number, poor: number) => (!v ? "text-zinc-400" : v <= good ? "text-[#1f3fd6]" : v <= poor ? "text-amber-600" : "text-red-600");
 
 export default async function TechPage({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   const range = parseRange((await searchParams).range);

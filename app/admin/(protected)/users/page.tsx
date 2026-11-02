@@ -26,7 +26,7 @@ type UsersResponse = {
 };
 
 const TAG_COLORS: Record<string, string> = {
-  paid: "bg-emerald-50 text-emerald-700",
+  paid: "bg-emerald-50 text-[#172fa3]",
   lead: "bg-blue-50 text-blue-700",
   feedback: "bg-amber-50 text-amber-700",
   nurture_completed: "bg-purple-50 text-purple-700",
@@ -235,7 +235,7 @@ export default function AdminUsersPage() {
                         <div className="flex gap-3 text-xs text-zinc-600">
                           <span title="Downloads">{user.downloads} DL</span>
                           <span title="Feedbacks">{user.feedbacks} FB</span>
-                          {user.orders > 0 && <span className="font-semibold text-emerald-600">{user.orders} ORD</span>}
+                          {user.orders > 0 && <span className="font-semibold text-[#1f3fd6]">{user.orders} ORD</span>}
                         </div>
                       </td>
                       <td className="p-4 text-xs text-zinc-500 whitespace-nowrap">

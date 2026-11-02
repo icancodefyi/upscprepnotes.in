@@ -34,12 +34,12 @@ export async function POST(request: NextRequest) {
           <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Free Download is Ready!</h1>
           <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here is the PDF you requested: <strong>${pdfTitle}</strong></p>
           <div style="text-align:center;margin-bottom:28px">
-            <a href="${downloadUrl}" style="display:inline-block;background:#059669;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download ${pdfTitle} →</a>
+            <a href="${downloadUrl}" style="display:inline-block;background:#1f3fd6;color:#fff;padding:14px 32px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Download ${pdfTitle} →</a>
           </div>
-          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:20px;text-align:center">
-            <p style="margin:0;font-size:13px;color:#059669;font-weight:600">🔥 Starting at ₹99 — UPSC prep resources from toppers</p>
+          <div style="background:#eef1fd;border:1px solid #cfd8ff;border-radius:10px;padding:16px 20px;margin-bottom:20px;text-align:center">
+            <p style="margin:0;font-size:13px;color:#1f3fd6;font-weight:600">🔥 Starting at ₹99 — UPSC prep resources from toppers</p>
             <p style="margin:4px 0 0;font-size:12px;color:#666">Answer copies, strategy reports, and notes from AIR 1–1249. Instant download after payment.</p>
-            <a href="https://upscprepnotes.in/store" style="display:inline-block;margin-top:8px;background:#059669;color:#fff;text-decoration:none;padding:8px 24px;border-radius:8px;font-size:12px;font-weight:700">Browse Store →</a>
+            <a href="https://upscprepnotes.in/store" style="display:inline-block;margin-top:8px;background:#1f3fd6;color:#fff;text-decoration:none;padding:8px 24px;border-radius:8px;font-size:12px;font-weight:700">Browse Store →</a>
           </div>
           <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested a free download on UPSCPrepNotes.in</p>
         </div>

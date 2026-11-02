@@ -57,8 +57,8 @@ const AUDIENCE = [
   {
     title: "Study Stage",
     desc: "45% are in their first attempt, 35% in second, and 20% in third+. They spend 8–12 minutes per session consuming serious study content, not just browsing.",
-    tone: "#D4F1DF",
-    ink: "#14532d",
+    tone: "#e3e8fb",
+    ink: "#172fa3",
     icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></>,
   },
   {
@@ -189,7 +189,7 @@ export default function AdvertiseClient() {
             Reach serious UPSC aspirants <span className="swipe">who are ready to study</span>
           </h1>
           <p className="mt-3 inline-flex items-center gap-2 text-s font-bold text-[var(--muted)]">
-            <span aria-hidden className="h-2 w-2 rounded-full bg-[#1f9d55]" />
+            <span aria-hidden className="h-2 w-2 rounded-full bg-[#1f3fd6]" />
             Now accepting sponsors
           </p>
           <p className="mx-auto mt-5 max-w-[38rem] text-m leading-[1.6] text-[var(--ink-2)]">
@@ -230,7 +230,7 @@ export default function AdvertiseClient() {
                   <div key={s.l} className="p-6">
                     <dd className="t-display tab text-l leading-none">{formatCompact(s.v)}</dd>
                     <dt className="mt-2 text-s font-bold">{s.l}</dt>
-                    <p className={`mt-1 text-s ${s.up ? "text-[#1f7a46]" : "text-[var(--muted)]"}`}>{s.t}</p>
+                    <p className={`mt-1 text-s ${s.up ? "text-[#1f3fd6]" : "text-[var(--muted)]"}`}>{s.t}</p>
                   </div>
                 ))}
               </dl>
@@ -372,7 +372,7 @@ export default function AdvertiseClient() {
 
           {formStatus === "success" ? (
             <div className={`${card} -mt-6 mx-3 relative p-8 text-center sm:mx-6`}>
-              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#d4f1df] text-[#14532d]">
+              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#e3e8fb] text-[#172fa3]">
                 <Tick />
               </div>
               <p className="mt-4 text-m font-bold">Thanks, we&rsquo;ll be in touch!</p>

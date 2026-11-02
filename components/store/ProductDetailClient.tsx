@@ -13,7 +13,7 @@ const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_
 
 const BADGE: Record<string, string> = {
   amber: "bg-[var(--hl)] text-[var(--hl-ink)]",
-  emerald: "bg-[#d4f1df] text-[#14532d]",
+  emerald: "bg-[#e3e8fb] text-[#172fa3]",
 };
 const badgeCls = (c?: string | null) => BADGE[c ?? ""] ?? "bg-[var(--canvas)] text-[var(--ink)]";
 
@@ -508,14 +508,14 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
         ))}
       </ul>
 
-      <div className="mt-6 flex items-start gap-3 rounded-[18px] bg-[#d4f1df] p-4">
-        <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-[#14532d]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <div className="mt-6 flex items-start gap-3 rounded-[18px] bg-[#e3e8fb] p-4">
+        <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-[#172fa3]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" />
           <path d="M8.5 12l2.5 2.5 4.5-4.5" />
         </svg>
         <div>
-          <p className="text-s font-bold text-[#14532d]">7-Day Money-Back Guarantee</p>
-          <p className="mt-0.5 text-s text-[#14532d]/80">Not satisfied? Get a full refund within 7 days.</p>
+          <p className="text-s font-bold text-[#172fa3]">7-Day Money-Back Guarantee</p>
+          <p className="mt-0.5 text-s text-[#172fa3]/80">Not satisfied? Get a full refund within 7 days.</p>
         </div>
       </div>
     </div>
@@ -568,7 +568,7 @@ function ReviewsBlock({ reviews, rating, reviewCount }: { reviews: ProductReview
                   <p className="text-s text-[var(--muted)]">{review.date}</p>
                 </div>
               </div>
-              {review.verified && <span className="rounded-full bg-[#d4f1df] px-2.5 py-0.5 text-s font-bold text-[#14532d]">Verified Buyer</span>}
+              {review.verified && <span className="rounded-full bg-[#e3e8fb] px-2.5 py-0.5 text-s font-bold text-[#172fa3]">Verified Buyer</span>}
             </div>
           </div>
         ))}

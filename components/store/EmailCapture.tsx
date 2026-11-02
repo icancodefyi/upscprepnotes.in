@@ -27,7 +27,7 @@ export default function EmailCapture() {
   if (status === "success") {
     return (
       <div className="mx-auto max-w-[1120px] px-6">
-        <div className="flex items-center gap-3 rounded-[24px] bg-[#d4f1df] p-6 text-m font-bold text-[#14532d]">
+        <div className="flex items-center gap-3 rounded-[24px] bg-[#e3e8fb] p-6 text-m font-bold text-[#172fa3]">
           <span aria-hidden>✓</span>
           <span>You&rsquo;re subscribed! We&rsquo;ll notify you when new resources drop.</span>
         </div>

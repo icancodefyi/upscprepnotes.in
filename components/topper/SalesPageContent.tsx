@@ -121,7 +121,7 @@ export default function SalesPageContent() {
               Get 3 Free Guides
             </button>
           </form>
-          <p id="samples-success" className="mt-2 hidden text-center text-s font-bold text-[#14532d]">Check your inbox — we sent 3 free guides!</p>
+          <p id="samples-success" className="mt-2 hidden text-center text-s font-bold text-[#172fa3]">Check your inbox — we sent 3 free guides!</p>
           <p id="samples-error" className="mt-2 hidden text-center text-s text-[var(--mark-deep)]"></p>
           <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-s text-[var(--muted)]">
             {["7-day refund", "Starting at ₹99", "Card / UPI"].map((t) => (

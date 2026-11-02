@@ -14,6 +14,7 @@ export async function createAdminToken(password: string): Promise<string> {
 }
 
 export async function verifyAdminToken(token: string): Promise<boolean> {
+  if (!process.env.ADMIN_PASSWORD) return false;
   try {
     const payload = JSON.parse(atob(token));
     const { passwordHash, timestamp } = payload;
@@ -35,4 +36,10 @@ export async function verifyAdminToken(token: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/** True when the request carries a valid admin session cookie. Use at the top of every admin-only API route. */
+export async function isAdminRequest(req: { cookies: { get(name: string): { value: string } | undefined } }): Promise<boolean> {
+  const token = req.cookies.get("admin_session")?.value;
+  return !!token && (await verifyAdminToken(token));
 }

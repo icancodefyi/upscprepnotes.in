@@ -51,8 +51,8 @@ export async function sendOrderConfirmationEmail(
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
         <div style="text-align:center;margin-bottom:24px">
-          <div style="width:56px;height:56px;border-radius:50%;background:#d1fae5;display:inline-flex;align-items:center;justify-content:center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <div style="width:56px;height:56px;border-radius:50%;background:#dbe2fb;display:inline-flex;align-items:center;justify-content:center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f3fd6" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
         </div>
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Payment Successful!</h1>
@@ -61,7 +61,7 @@ export async function sendOrderConfirmationEmail(
           <p style="margin:0 0 8px;font-size:13px;color:#888;font-weight:600">ITEMS PURCHASED</p>
           <table style="width:100%;border-collapse:collapse">${itemList}</table>
         </div>
-        <a href="${downloadUrl}" style="display:block;text-align:center;background:#059669;color:#fff;text-decoration:none;padding:14px 24px;border-radius:12px;font-size:16px;font-weight:700;margin:24px 0">Download Your Files</a>
+        <a href="${downloadUrl}" style="display:block;text-align:center;background:#1f3fd6;color:#fff;text-decoration:none;padding:14px 24px;border-radius:12px;font-size:16px;font-weight:700;margin:24px 0">Download Your Files</a>
         <p style="color:#666;font-size:13px;line-height:1.6;text-align:center;margin:0 0 12px">The page lists every PDF separately — download them one at a time. That is far more reliable than the full ZIP on a phone. Use Wi-Fi for large bundles.</p>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">This link is unique to you. Do not share it.</p>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />

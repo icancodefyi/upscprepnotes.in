@@ -1,7 +1,9 @@
+import { isAdminRequest } from "@/lib/admin-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/lib/resend";
 
 export async function POST(req: NextRequest) {
+  if (!(await isAdminRequest(req))) return Response.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { to, subject, html } = await req.json();
 
