@@ -26,7 +26,7 @@ export default function LeadPack() {
 
   return (
     <section>
-      <div className="panel grain relative overflow-hidden bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
+      <div className="panel grain relative overflow-clip bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
         <Outline kind="envelope" className="-bottom-5 -left-5 h-48 w-72 rotate-[-8deg] text-white/[0.11]" />
         <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
