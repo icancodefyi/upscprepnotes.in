@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { sendEmail } from "@/lib/resend";
+import { FIRST_EMAIL_DELAY_DAYS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
           email: normalizedEmail,
           topperName: FREE_PRODUCT_NAME,
           step: 0,
-          nextScheduledAt: new Date(),
+          nextScheduledAt: new Date(Date.now() + FIRST_EMAIL_DELAY_DAYS * 86400000),
           sentAt: [],
           completed: false,
         },

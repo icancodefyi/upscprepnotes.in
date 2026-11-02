@@ -4,6 +4,7 @@ import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
+import { FIRST_EMAIL_DELAY_DAYS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
@@ -63,12 +64,12 @@ async function sendUnavailableEmail(email: string, topperName: string) {
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Being Scanned</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're digitizing the original answer sheet right now and will email the link within 24–48 hours.</p>
-        <div style="text-align:center;margin-bottom:24px;padding:20px;background:#eef1fd;border-radius:16px;border:2px solid #1f3fd6">
-          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#172fa3">Don't wait — get 50+ topper copies now</p>
-          <p style="margin:0 0 14px;font-size:13px;color:#172fa3">50+ verified copies (GS1–4, Essay, Optional) + 21 strategy guides.<br/>Just <strong>₹99</strong> during the launch sale (84% off, ends soon).</p>
-          <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get the Full Compilation for ₹99 →</a>
+        <div style="text-align:center;margin-bottom:24px;padding:20px;background:#eef1fd;border-radius:16px">
+          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#172fa3">Want to compare ${topperName} with other toppers while you wait?</p>
+          <p style="margin:0 0 14px;font-size:13px;color:#172fa3">The compilation has 63 booklets from 27 toppers, GS1–4 and Essay. ₹199, one time.</p>
+          <a href="https://upscprepnotes.in/store/answer-copies-compilation?utm_source=email&utm_medium=transactional&utm_campaign=free-copy-pending" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">See the compilation, ₹199 →</a>
         </div>
-        <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">7-day refund · Instant download</p>
+        <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">Instant email delivery · 7-day refund · No subscription</p>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
           <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
             📬 Join 100+ aspirants on Telegram for daily current affairs →
@@ -136,8 +137,9 @@ export async function POST(request: NextRequest) {
         $setOnInsert: {
           email: email.toLowerCase(),
           topperName,
+          topperSlug,
           step: 0,
-          nextScheduledAt: new Date(),
+          nextScheduledAt: new Date(Date.now() + FIRST_EMAIL_DELAY_DAYS * 86400000),
           sentAt: [],
           completed: false,
         },

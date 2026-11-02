@@ -97,6 +97,30 @@ export default function TermsPage() {
       </section>
 
       <section className="space-y-5">
+        <h2 className="text-2xl font-semibold">Purchases and Refunds</h2>
+        <p className="leading-8 text-zinc-700">
+          Paid products on UPSCPrepNotes are digital files. Each is a one-time
+          payment for the listed price. There is no subscription and nothing
+          renews automatically. After payment we email the download link to the
+          address you entered at checkout.
+        </p>
+        <p className="leading-8 text-zinc-700">
+          <strong>7-day refund.</strong> If a product is not useful to you,
+          write to hello@upscprepnotes.in within 7 days of purchase from the
+          email address you used to buy it, and include your order reference.
+          We will refund the full amount you paid to your original payment
+          method. The time the money takes to reach your account depends on
+          your bank or payment provider.
+        </p>
+        <p className="leading-8 text-zinc-700">
+          If you were charged but did not receive your download, or the files
+          do not open, write to the same address. We will resend the link or
+          refund you. Products are for your personal use. We may decline a
+          refund where files have been shared or resold.
+        </p>
+      </section>
+
+      <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Limitation of Liability</h2>
         <p className="leading-8 text-zinc-700">
           UPSCPrepNotes and its operators shall not be liable for any direct,
@@ -115,7 +139,7 @@ export default function TermsPage() {
           the platform after changes constitutes acceptance of the modified terms.
         </p>
         <p className="leading-8 text-zinc-700">
-          These terms were last updated on May 26, 2026.
+          These terms were last updated on November 3, 2026.
         </p>
       </section>
       </LegalPage>

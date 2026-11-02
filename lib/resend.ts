@@ -16,11 +16,13 @@ export async function sendEmail({
   subject,
   html,
   replyTo,
+  headers,
 }: {
   to: string;
   subject: string;
   html: string;
   replyTo?: string;
+  headers?: Record<string, string>;
 }) {
   const resend = getResend();
   return resend.emails.send({
@@ -29,6 +31,7 @@ export async function sendEmail({
     subject,
     html,
     replyTo,
+    headers,
   });
 }
 

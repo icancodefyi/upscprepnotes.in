@@ -4,6 +4,7 @@ const nurtureCampaignSchema = new Schema(
   {
     email: { type: String, required: true, lowercase: true, trim: true },
     topperName: { type: String, default: "" },
+    topperSlug: { type: String, default: "" },
     step: { type: Number, default: 0 },
     nextScheduledAt: { type: Date, default: () => new Date() },
     sentAt: [{ type: Date }],

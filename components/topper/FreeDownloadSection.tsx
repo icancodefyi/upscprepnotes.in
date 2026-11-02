@@ -66,10 +66,10 @@ export function FreeDownloadSection({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-m font-bold">
-                  Complete compilation
+                  Compare {topperName} with other toppers
                 </p>
                 <p className="mt-0.5 text-s text-[var(--ink-2)]">
-                  50+ topper copies — all GS papers, essay, and {optionalSubject} optional. Instant download.
+                  63 booklets from 27 toppers across GS1-4 and Essay. Instant email delivery, 7-day refund.
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -78,14 +78,24 @@ export function FreeDownloadSection({
                   <span className="ml-1 text-s text-[var(--muted)]">starting</span>
                 </div>
                 <Link
-                  href="/store"
+                  href="/store/answer-copies-compilation"
                   data-track="topper-bundle-upsell"
                   className="btn btn-ink h-10 shrink-0 px-4 [--btn-fs:14px]"
                 >
-                  Browse store &rarr;
+                  See the compilation &rarr;
                 </Link>
               </div>
             </div>
+            {/Anthropology/i.test(optionalSubject) && (
+              <div className="mt-4 flex flex-col gap-2 border-t border-[var(--line)] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-s text-[var(--ink-2)]">
+                  <span className="font-bold text-[var(--ink)]">Taking Anthropology?</span> 14 files covering Paper 1 and 2, with notes by AIR 176 and AIR 9.
+                </p>
+                <Link href="/store/anthropology-bundle" data-track="topper-optional-upsell" className="btn btn-paper h-10 shrink-0 px-4 [--btn-fs:14px]">
+                  Anthropology bundle, ₹99 &rarr;
+                </Link>
+              </div>
+            )}
           </div>
 
         </div>

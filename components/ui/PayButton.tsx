@@ -194,7 +194,16 @@ function EmailDialog({
         }}
         className="w-full max-w-[420px] rounded-[28px] bg-white p-6 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] sm:p-7"
       >
+        <ul className="mb-4 flex flex-wrap gap-x-4 gap-y-1 text-s font-bold text-[var(--ink-2)]">
+          {["Instant email delivery", "7-day refund", "No subscription"].map((t) => (
+            <li key={t} className="flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+              {t}
+            </li>
+          ))}
+        </ul>
         <p className="text-m font-bold text-[var(--ink)]">Enter your email to continue</p>
+        <p className="mt-1 text-s text-[var(--muted)]">Your files are sent to this address.</p>
         <input
           type="email"
           value={value}

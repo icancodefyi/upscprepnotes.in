@@ -1,30 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
+import { EmailSuppressionModel } from "@/models/email-suppression.model";
+import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
+import { OrderModel } from "@/models/order.model";
 import { sendEmail } from "@/lib/resend";
-import fs from "fs";
+import { unsubscribeHeaders } from "@/lib/email-links";
+import { NURTURE_EMAILS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
-import path from "path";
 
-const EMAILS_DIR = path.join(process.cwd(), "emails");
+export const maxDuration = 60;
 
-const EMAIL_SUBJECTS = [
-  "The structure that gets 140+ marks in UPSC Mains",
-  "Free UPSC study material — test series, PYQs, and more",
-  "50+ actual topper answer sheets — see how rank holders wrote",
-  "What 280+ toppers taught us about studying smarter",
-];
-
-const EMAIL_FILES = [
-  "nurture-seq-1.html",
-  "nurture-seq-2.html",
-  "nurture-seq-3.html",
-  "nurture-seq-4.html",
-];
-
-const STEP_DELAY_DAYS = [2, 3, 2, 3];
-
-const BATCH_SIZE = 10;
+// Emails per run. The backlog from the August outage drains at this rate, so keep it under your Resend daily limit.
+const BATCH_SIZE = Number(process.env.NURTURE_BATCH) || 80;
 
 export async function GET(req: NextRequest) {
   // Callers must send `Authorization: Bearer $CRON_SECRET` (Vercel Cron does this automatically).
@@ -38,63 +26,81 @@ export async function GET(req: NextRequest) {
   try {
     await connectDB();
 
-    const now = new Date();
+    const total = NURTURE_EMAILS.length;
     const due = await NurtureCampaignModel.find({
       completed: false,
-      step: { $lt: 4 },
-      nextScheduledAt: { $lte: now },
+      step: { $lt: total },
+      nextScheduledAt: { $lte: new Date() },
     })
       .sort({ nextScheduledAt: 1 })
       .limit(BATCH_SIZE)
       .lean();
 
-    if (due.length === 0) {
-      return NextResponse.json({ sent: 0, message: "No campaigns due" });
-    }
+    if (due.length === 0) return NextResponse.json({ sent: 0, message: "No campaigns due" });
 
     let sent = 0;
+    let skipped = 0;
     const errors: string[] = [];
 
     for (const campaign of due) {
       try {
-        const filePath = path.join(EMAILS_DIR, EMAIL_FILES[campaign.step]);
-        const html = fs.readFileSync(filePath, "utf8");
+        const email = campaign.email as string;
 
-        await sendEmail({
-          to: campaign.email,
-          subject: EMAIL_SUBJECTS[campaign.step],
-          html,
+        // Never mail people who unsubscribed or who already bought.
+        const [suppressed, bought] = await Promise.all([
+          EmailSuppressionModel.exists({ email }),
+          OrderModel.exists({ email, status: { $in: ["paid", "delivered"] } }),
+        ]);
+        if (suppressed || bought) {
+          await NurtureCampaignModel.updateOne({ _id: campaign._id }, { $set: { completed: true } });
+          skipped++;
+          continue;
+        }
+
+        // Older campaigns stored only the topper's name; recover the slug from the lead so email 1 can link back.
+        let topperSlug: string = campaign.topperSlug || "";
+        let topperName: string = campaign.topperName || "";
+        if (!topperSlug) {
+          const lead = await FreeDownloadLeadModel.findOne({ email }).sort({ createdAt: -1 }).lean();
+          if (lead?.topperSlug) {
+            topperSlug = lead.topperSlug;
+            topperName = lead.topperName || topperName;
+          } else {
+            topperName = ""; // lead-form campaigns store a guide title here, not a person
+          }
+        }
+
+        const template = NURTURE_EMAILS[campaign.step];
+        const result = await sendEmail({
+          to: email,
+          subject: template.subject,
+          html: template.build({ email, topperName, topperSlug }),
+          replyTo: process.env.EMAIL_FROM || "hello@upscprepnotes.in",
+          headers: unsubscribeHeaders(email),
         });
+        // Resend reports failures in the result instead of throwing.
+        if (result && "error" in result && result.error) {
+          throw new Error(result.error.message || "Resend rejected the email");
+        }
 
         const nextStep = campaign.step + 1;
-        const delayDays = STEP_DELAY_DAYS[campaign.step] || 3;
-
-        const nextDate = new Date();
-        nextDate.setDate(nextDate.getDate() + delayDays);
+        const next = NURTURE_EMAILS[nextStep];
+        const nextDate = new Date(Date.now() + (next?.delayDays ?? 0) * 86400000);
 
         await NurtureCampaignModel.updateOne(
           { _id: campaign._id },
           {
-            $set: {
-              step: nextStep,
-              nextScheduledAt: nextDate,
-              completed: nextStep >= 4,
-            },
+            $set: { step: nextStep, nextScheduledAt: nextDate, completed: nextStep >= total, topperSlug },
             $push: { sentAt: new Date() },
           }
         );
-
         sent++;
       } catch (err: any) {
         errors.push(`${campaign.email}: ${err.message}`);
       }
     }
 
-    return NextResponse.json({
-      sent,
-      total_due: due.length,
-      errors: errors.length > 0 ? errors : undefined,
-    });
+    return NextResponse.json({ sent, skipped, total_due: due.length, errors: errors.length ? errors : undefined });
   } catch (err) {
     console.error("Nurture cron error:", err);
     return NextResponse.json({ error: "Cron failed" }, { status: 500 });

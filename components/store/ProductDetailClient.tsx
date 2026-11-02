@@ -474,7 +474,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
         <p>
           <span className="t-display tab inline-block -rotate-1 rounded-[8px] bg-[var(--hl)] px-2.5 py-0.5 text-l leading-tight">₹{fmt(product.price)}</span>
         </p>
-        <p className="pb-1 text-s text-[var(--muted)]">Secure payment · PDF delivered instantly</p>
+        <p className="pb-1 text-s text-[var(--muted)]">Instant email delivery · 7-day refund · No subscription</p>
       </div>
 
       {product.comingSoon ? (
@@ -500,7 +500,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
       {!product.comingSoon && !product.link && <BuyBoth product={product} />}
 
       <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5">
-        {["Instant download", "7-day refund", "Lifetime access", "1,400+ students"].map((label) => (
+        {["Instant email delivery", "7-day refund", "No subscription", "Lifetime access"].map((label) => (
           <li key={label} className="flex items-center gap-2 text-s text-[var(--ink-2)]">
             <Tick className="text-[var(--accent)]" />
             {label}

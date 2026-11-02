@@ -83,6 +83,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
 
   const input = "mt-1.5 h-12 w-full rounded-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none placeholder:text-[var(--muted)] focus:shadow-[0_0_0_2px_var(--accent)]";
   const badge = "mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]";
+  const compilationHref = "/store/answer-copies-compilation";
   const upsell = (title: string, line: string) => (
     <div className="mt-5 rounded-[20px] bg-[#fffbe6] p-5 text-left">
       <p className="text-m font-bold">{title}</p>
@@ -90,15 +91,15 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       <button
         type="button"
         onClick={() => {
-          window.open("/store", "_blank");
+          window.open(compilationHref, "_blank");
           onOpenChange(false);
         }}
         data-track="free-download-upsell"
         className="btn btn-ink mt-3 h-11 w-full justify-center [--btn-fs:14px]"
       >
-        Get the full compilation, ₹199 &rarr;
+        See the compilation, ₹199 &rarr;
       </button>
-      <p className="mt-2 text-s text-[var(--muted)]">7-day refund · Instant download</p>
+      <p className="mt-2 text-s text-[var(--muted)]">Instant email delivery · 7-day refund · No subscription</p>
     </div>
   );
 
@@ -184,7 +185,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             >
               Join 100+ aspirants on Telegram for daily current affairs
             </a>
-            {upsell("Want 50+ topper copies and 21 guides?", "All papers: GS1-4, Essay and Optional. Just ₹199.")}
+            {upsell(`Compare ${topperName} with other toppers`, "63 booklets from 27 toppers across GS1-4 and Essay. ₹199, one time.")}
           </div>
         ) : (
           <div className="text-center">
@@ -193,7 +194,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <p className="mt-2 text-s leading-[1.55] text-[var(--ink-2)]">
               <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet. We&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready, usually within 24-48 hours. Check Spam or Promotions if you don&apos;t see it.
             </p>
-            {upsell("Don't wait, get 50+ copies now", "50+ verified topper copies (GS1-4, Essay, Optional) and 21 strategy guides. Just ₹199.")}
+            {upsell(`While you wait: compare ${topperName} with other toppers`, "63 booklets from 27 toppers across GS1-4 and Essay. ₹199, one time.")}
             <button type="button" onClick={() => onOpenChange(false)} className="mt-3 h-11 w-full rounded-full text-s font-bold text-[var(--ink-2)] hover:bg-[var(--canvas)]">
               Close
             </button>
