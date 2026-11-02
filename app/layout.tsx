@@ -34,8 +34,11 @@ export const metadata: Metadata = {
     "Master UPSC CSE with 280+ topper profiles, 50+ handwritten answer copies, GS/Optional marks breakdowns, and an AI mentor. Compare strategies and download free PDFs.",
   metadataBase: new URL("https://upscprepnotes.in"),
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   alternates: {},
   openGraph: {
