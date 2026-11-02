@@ -351,18 +351,18 @@ const SOURCE_TYPE_COLORS: Record<
   SourceType,
   { bg: string; text: string; dot: string }
 > = {
-  government: { bg: "bg-brand-muted", text: "text-blue-700", dot: "bg-blue-500" },
+  government: { bg: "bg-[#e9edff]", text: "text-blue-700", dot: "bg-blue-500" },
   official: {
-    bg: "bg-brand-muted",
-    text: "text-brand",
-    dot: "bg-brand",
+    bg: "bg-[#e9edff]",
+    text: "text-[#1f3fd6]",
+    dot: "bg-[#1f3fd6]",
   },
   academic: {
     bg: "bg-violet-50",
     text: "text-violet-700",
     dot: "bg-violet-500",
   },
-  coaching: { bg: "bg-brand-muted", text: "text-brand", dot: "bg-brand-muted" },
+  coaching: { bg: "bg-[#e9edff]", text: "text-[#1f3fd6]", dot: "bg-[#e9edff]" },
   reference: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
   community: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },
   topper: { bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-500" },
@@ -1390,20 +1390,20 @@ async function copyShareText() {
           <Link
             href="/store/all-strategy-reports"
             data-track="ask-purchase-banner"
-            className="flex w-full items-center gap-3 rounded-xl bg-gradient-to-r from-brand to-teal-600 px-4 py-2.5 text-white shadow-sm transition hover:from-brand hover:to-teal-500"
+            className="flex w-full items-center gap-3 rounded-[16px] bg-[#0b0c10] px-4 py-2.5 text-white transition hover:bg-[#1f2229]"
           >
             <div className="flex min-w-0 flex-1 items-center gap-2.5">
               <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div className="min-w-0">
-                <p className="truncate text-xs font-bold leading-tight">Get All 280+ Strategy Reports</p>
-                <p className="truncate text-[10px] text-emerald-100">
+                <p className="truncate text-[14px] font-bold leading-tight">Get All 280+ Strategy Reports</p>
+                <p className="truncate text-[12px] text-white/60">
                   One-time payment · Lifetime access · ₹27,720 value at ₹799
                 </p>
               </div>
             </div>
-            <span className="shrink-0 rounded-lg bg-white/20 px-2.5 py-1 text-[11px] font-bold">Shop Now →</span>
+            <span className="shrink-0 rounded-full bg-[#ffe45c] px-3 py-1 text-[13px] font-bold text-[#5c4a00]">Shop Now →</span>
           </Link>
         </div>
 
@@ -1423,10 +1423,10 @@ async function copyShareText() {
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
               <div className="w-full max-w-md text-center">
-                <h1 className="text-2xl font-bold text-foreground">
+                <h1 className="text-[clamp(32px,2.4vw+18px,48px)] font-bold leading-[1.05] tracking-[-0.03em] text-foreground">
                   Ask the AI Mentor
                 </h1>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-3 text-[17px] leading-[1.5] text-muted-foreground">
                   Get instant answers from 280+ topper strategies and real UPSC
                   data.
                 </p>
@@ -1439,7 +1439,7 @@ async function copyShareText() {
                     <Button
                       key={q}
                       variant="outline"
-                      className="w-full justify-start text-left text-muted-foreground"
+                      className="h-auto w-full justify-between whitespace-normal rounded-[16px] px-4 py-3 text-left text-[15px] font-normal text-foreground shadow-none hover:border-[#1f3fd6] hover:bg-white hover:text-[#1f3fd6]"
                       onClick={() => {
                         setInput(q);
                         inputRef.current?.focus();
@@ -1626,7 +1626,7 @@ async function copyShareText() {
                 {streaming && isSearching && !streamingMessage && (
                   <div className="mx-auto max-w-[720px] px-4 py-4">
                     <div className="flex items-start gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-3">
-                      <Spinner className="size-4 shrink-0 text-brand mt-0.5" />
+                      <Spinner className="size-4 shrink-0 text-[#1f3fd6] mt-0.5" />
                       <div className="min-w-0 space-y-1.5">
                         <p className="text-xs font-medium text-foreground">
                           {researchLabel || "Researching..."}
@@ -1639,7 +1639,7 @@ async function copyShareText() {
                                 key={ri}
                                 className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2 py-0.5 text-[10px] text-muted-foreground"
                               >
-                                <span className="size-1 rounded-full bg-brand" />
+                                <span className="size-1 rounded-full bg-[#1f3fd6]" />
                                 <span className="max-w-[140px] truncate">{r.label}</span>
                               </span>
                             ))}
@@ -1714,7 +1714,7 @@ async function copyShareText() {
         <div className="shrink-0 border-t border-border/60 bg-background px-4 pt-4 pb-4 md:px-6">
           <div className="mx-auto max-w-3xl">
             <form onSubmit={handleSubmit}>
-              <div className="relative flex items-end gap-2 rounded-2xl border border-input bg-background p-2 shadow-sm transition-colors focus-within:border-ring">
+              <div className="relative flex items-end gap-2 rounded-[24px] border border-input bg-background p-2 shadow-[0_8px_24px_-12px_rgba(11,12,16,0.18)] transition-colors focus-within:border-ring focus-within:shadow-[0_0_0_3px_rgba(31,63,214,0.12)]">
                 <Textarea
                   ref={inputRef}
                   value={input}
@@ -1748,7 +1748,7 @@ async function copyShareText() {
                     size="icon"
                     disabled={streaming || loading || !input.trim()}
                     aria-label="Send message"
-                    className="shrink-0"
+                    className="shrink-0 rounded-full"
                   >
                     {streaming ? (
                       <Spinner className="size-4" />

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { brandFonts } from "@/components/brand/fonts";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import AskMentorButton from "@/components/AskMentorButton";
@@ -24,23 +26,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (pathname?.startsWith("/ask")) {
     return (
       <CartProvider>
-        <div className="flex h-screen flex-col overflow-hidden bg-white">
-          <a
-            href="/store"
-            className="shrink-0 block relative bg-gradient-to-r from-zinc-900 via-black to-zinc-900 text-white py-2 px-4 z-50 overflow-hidden text-center border-b border-brand/20"
-          >
-            <div className="absolute inset-0 bg-[length:200%_100%] animate-shimmer bg-gradient-to-r from-transparent via-brand/25 to-transparent pointer-events-none" />
-            <span className="relative text-xs sm:text-sm font-bold">
-              <span className="text-brand">Best Value</span>
-              <span className="text-white/60 mx-2">—</span>
-              Starting at <span className="text-brand">₹49</span>
-              <span className="text-white/60 mx-2 hidden sm:inline">—</span>
-              <span className="hidden sm:inline text-white/60">Instant download</span>
-              <span className="ml-2 sm:ml-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-black">
+        <div className={`ask-brand ${brandFonts} flex h-screen flex-col overflow-hidden bg-white`}>
+          <Link href="/store" className="relative z-50 block shrink-0 bg-[#0b0c10] px-4 py-2 text-center text-white">
+            <span className="text-[13px] font-bold sm:text-[14px]">
+              <span className="text-[#ffe45c]">Best Value</span>
+              <span className="mx-2 text-white/40">—</span>
+              Starting at <span className="text-[#ffe45c]">₹49</span>
+              <span className="mx-2 hidden text-white/40 sm:inline">—</span>
+              <span className="hidden text-white/60 sm:inline">Instant download</span>
+              <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-0.5 text-[12px] font-bold text-[#0b0c10] sm:ml-3">
                 Shop &rarr;
               </span>
             </span>
-          </a>
+          </Link>
           <AskHeader />
           <div className="flex flex-1 flex-col overflow-hidden">{children}</div>
         </div>

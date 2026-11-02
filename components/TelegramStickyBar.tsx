@@ -13,7 +13,8 @@ export default function TelegramStickyBar() {
 
   useEffect(() => {
     // Redesigned pages have their own bottom bar (or none).
-    if (!isLegacyRoute(pathname)) return;
+    // Not on redesigned pages, and not on /ask where it would cover the chat input.
+    if (!isLegacyRoute(pathname) || pathname?.startsWith("/ask")) return;
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (!dismissed) {
       const timer = setTimeout(() => setVisible(true), 4000);
@@ -26,7 +27,7 @@ export default function TelegramStickyBar() {
     localStorage.setItem(STORAGE_KEY, "1");
   }
 
-  if (!visible || !isLegacyRoute(pathname)) return null;
+  if (!visible || !isLegacyRoute(pathname) || pathname?.startsWith("/ask")) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">

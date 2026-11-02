@@ -1,0 +1,33 @@
+/* /ask on the brand: the chat is built from shadcn parts that read these variables, so remap them in one place. */
+.ask-brand {
+  --background: #ffffff;
+  --foreground: #0b0c10;
+  --card: #ffffff;
+  --card-foreground: #0b0c10;
+  --popover: #ffffff;
+  --popover-foreground: #0b0c10;
+  --primary: #1f3fd6;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f5f9;
+  --secondary-foreground: #0b0c10;
+  --muted: #f4f5f9;
+  --muted-foreground: #5b606b;
+  --accent: #eef1ff;
+  --accent-foreground: #13238a;
+  --border: rgba(11, 12, 16, 0.1);
+  --input: rgba(11, 12, 16, 0.16);
+  --ring: #1f3fd6;
+  --radius: 1rem;
+  --sidebar: #f7f8fb;
+  --sidebar-foreground: #0b0c10;
+  --sidebar-primary: #1f3fd6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eceef4;
+  --sidebar-accent-foreground: #0b0c10;
+  --sidebar-border: rgba(11, 12, 16, 0.08);
+  --sidebar-ring: #1f3fd6;
+  font-family: var(--up-sans), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--foreground);
+}
+.ask-brand ::selection { background: #ffe45c; color: #0b0c10; }
