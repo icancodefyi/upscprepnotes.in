@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AppShell from "@/components/AppShell";
 import AuthProvider from "@/components/AuthProvider";
 import AnalyticsScripts from "@/components/AnalyticsScripts";
-import TelegramStickyBar from "@/components/TelegramStickyBar";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -147,7 +146,6 @@ export default function RootLayout({
             <AppShell>
               {children}
             </AppShell>
-            <TelegramStickyBar />
           </AuthProvider>
         </TooltipProvider>
       </body>

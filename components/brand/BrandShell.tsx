@@ -22,7 +22,6 @@ export async function getFooterData(): Promise<FooterData> {
 
 /**
  * The frame every redesigned page sits in: brand tokens and fonts, pill nav, yellow footer.
- * Also add the route to BRAND_ROUTES (./routes.ts) so the old site chrome stays off it.
  */
 export default async function BrandShell({ children, footer }: { children: React.ReactNode; footer?: FooterData }) {
   const data = footer ?? (await getFooterData());

@@ -11,8 +11,6 @@ const DEFAULTS: Record<string, RateLimitConfig> = {
   ai: { maxRequests: 5, windowMs: 60000 },
   broadcast: { maxRequests: 5, windowMs: 60000 },
   cron: { maxRequests: 10, windowMs: 60000 },
-  "debug-email": { maxRequests: 3, windowMs: 60000 },
-  outreach: { maxRequests: 10, windowMs: 60000 },
   leads: { maxRequests: 10, windowMs: 60000 },
   analytics: { maxRequests: 100, windowMs: 60000 },
   form: { maxRequests: 20, windowMs: 60000 },
