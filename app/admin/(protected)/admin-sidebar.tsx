@@ -90,35 +90,49 @@ const Icons = {
   ),
 };
 
-const navGroups = [
-    {
+type NavItem = { href: string; label: string; icon: (p: IconProps) => React.ReactNode; external?: boolean; exact?: boolean };
+
+const navGroups: { label: string; items: NavItem[] }[] = [
+  {
     label: "Overview",
     items: [
-      { href: "/admin", label: "Toppers", icon: Icons.award },
+      { href: "/admin", label: "Dashboard", icon: Icons.dashboard, exact: true },
       { href: "/admin/payments", label: "Payments", icon: Icons.chart },
-      { href: "https://us.posthog.com", label: "Analytics", icon: Icons.chart, external: true },
     ],
   },
   {
-    label: "Users",
+    label: "Insights",
+    items: [
+      { href: "/admin/tracking", label: "Traffic", icon: Icons.activity, exact: true },
+      { href: "/admin/tracking/demand", label: "Demand", icon: Icons.message },
+      { href: "/admin/tracking/funnel", label: "Store funnel", icon: Icons.chart },
+      { href: "/admin/tracking/journeys", label: "Journeys", icon: Icons.users },
+      { href: "/admin/tracking/live", label: "Live", icon: Icons.activity },
+      { href: "/admin/analytics", label: "Old analytics", icon: Icons.chart },
+      { href: "https://us.posthog.com", label: "PostHog", icon: Icons.chart, external: true },
+    ],
+  },
+  {
+    label: "Audience",
     items: [
       { href: "/admin/users", label: "Users", icon: Icons.users },
       { href: "/admin/broadcast", label: "Broadcast", icon: Icons.mail },
       { href: "/admin/feedback", label: "Feedback", icon: Icons.message },
+      { href: "/admin/requests", label: "Copy requests", icon: Icons.inbox },
     ],
   },
   {
     label: "Content",
     items: [
-      { href: "/admin/new", label: "Add Topper", icon: Icons.plus },
+      { href: "/admin/toppers", label: "Toppers", icon: Icons.award },
+      { href: "/admin/new", label: "Add topper", icon: Icons.plus },
       { href: "/admin/pyq", label: "PYQ", icon: Icons.file },
-      { href: "/admin/requests", label: "Requests", icon: Icons.inbox },
     ],
   },
   {
     label: "System",
     items: [
-      { href: "/admin/ai", label: "AI Chats", icon: Icons.bot },
+      { href: "/admin/ai", label: "AI chats", icon: Icons.bot },
       { href: "/admin/settings", label: "Settings", icon: Icons.settings },
     ],
   },
@@ -138,9 +152,11 @@ export function AdminSidebar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  function isActive(href: string) {
-    if (href === "/admin") return pathname === "/admin";
-    return pathname.startsWith(href);
+  function isActive(item: NavItem) {
+    if (item.exact) return pathname === item.href;
+    // Topper edit pages (/admin/<id>) belong to Toppers.
+    if (item.href === "/admin/toppers" && /^\/admin\/[a-f0-9]{24}$/.test(pathname)) return true;
+    return pathname === item.href || pathname.startsWith(item.href + "/");
   }
 
   const sidebarContent = (
@@ -171,7 +187,7 @@ export function AdminSidebar() {
             </p>
             <div className="space-y-0.5">
               {group.items.map((item) => {
-                const active = !item.external && isActive(item.href);
+                const active = !item.external && isActive(item);
                 const Icon = item.icon;
                 const linkProps = item.external
                   ? { target: "_blank", rel: "noopener noreferrer" }

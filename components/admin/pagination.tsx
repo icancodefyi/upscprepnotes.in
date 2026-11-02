@@ -13,7 +13,7 @@ export function Pagination({ currentPage, totalPages, search }: PaginationProps)
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     params.set("page", String(page));
-    return `/admin?${params.toString()}`;
+    return `/admin/toppers?${params.toString()}`;
   }
 
   const pages: (number | "...")[] = [];

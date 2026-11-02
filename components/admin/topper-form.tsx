@@ -171,7 +171,7 @@ export function TopperForm({ topper }: TopperFormProps) {
         return;
       }
 
-      router.push("/admin");
+      router.push("/admin/toppers");
       router.refresh();
     } catch {
       setError("Something went wrong.");
@@ -554,7 +554,7 @@ export function TopperForm({ topper }: TopperFormProps) {
         <Button
           type="button"
           variant="outline"
-          onClick={() => router.push("/admin")}
+          onClick={() => router.push("/admin/toppers")}
         >
           Cancel
         </Button>

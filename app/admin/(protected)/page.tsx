@@ -1,155 +1,143 @@
 import Link from "next/link";
-import { connectDB } from "@/lib/mongodb";
-import { TopperModel } from "@/models/topper.model";
-import { SearchBar } from "@/components/admin/search-bar";
-import { Pagination } from "@/components/admin/pagination";
-import { DeleteButton } from "./delete-button";
+import { getOverview, parseRange, delta } from "@/lib/admin/insights";
+import { BarList, Card, DailyBars, Empty, PageHeader, Stat, ago, inr, num, when } from "@/components/admin/insights-ui";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminDashboard({
-  searchParams,
-}: {
-  searchParams: Promise<{ search?: string; page?: string }>;
-}) {
-  const params = await searchParams;
-  const search = params.search || "";
-  const page = Math.max(1, parseInt(params.page || "1", 10));
-  const limit = 20;
-  const skip = (page - 1) * limit;
+type OrderRow = { _id: unknown; email?: string; items?: { title?: string; slug?: string }[]; total?: number; status?: string; createdAt?: Date; ref?: string };
 
-  await connectDB();
+const STATUS: Record<string, string> = {
+  paid: "bg-emerald-50 text-emerald-700",
+  delivered: "bg-emerald-50 text-emerald-700",
+  pending: "bg-amber-50 text-amber-700",
+};
 
-  const query = search
-    ? {
-        $or: [
-          { firstName: { $regex: search, $options: "i" } },
-          { lastName: { $regex: search, $options: "i" } },
-          { slug: { $regex: search, $options: "i" } },
-          { optionalSubject: { $regex: search, $options: "i" } },
-        ],
-      }
-    : {};
-
-  const [toppers, total] = await Promise.all([
-    TopperModel.find(query)
-      .sort({ year: -1, rank: 1 })
-      .skip(skip)
-      .limit(limit)
-      .lean(),
-    TopperModel.countDocuments(query),
-  ]);
-
-  const totalPages = Math.ceil(total / limit);
-  const showingFrom = total === 0 ? 0 : skip + 1;
-  const showingTo = Math.min(skip + limit, total);
+export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
+  const range = parseRange((await searchParams).range);
+  const o = await getOverview(range);
+  const period = `vs previous ${range} days`;
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Toppers</h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            {total > 0 ? (
-              <>
-                Showing {showingFrom}–{showingTo} of {total}
-              </>
-            ) : (
-              "No toppers found"
-            )}
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <SearchBar initialSearch={search} />
-          <Link
-            href="/admin/new"
-            className="rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-medium transition hover:bg-black hover:text-white"
-          >
-            + Add Topper
-          </Link>
-        </div>
+      <PageHeader title="Dashboard" desc="How the store and the site are doing. Revenue and orders come from paid orders; visitors from site tracking." range={range} basePath="/admin" />
+
+      {/* Money */}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Stat label="Revenue" value={inr(o.revenue.cur)} change={delta(o.revenue.cur, o.revenue.prev)} sub={period} />
+        <Stat label="Paid orders" value={num(o.orders.cur)} change={delta(o.orders.cur, o.orders.prev)} sub={`${num(o.checkouts.cur)} checkouts started`} />
+        <Stat label="Average order" value={o.aov.cur ? inr(o.aov.cur) : "—"} change={delta(o.aov.cur, o.aov.prev)} sub={period} />
+        <Stat label="Checkout → paid" value={`${o.checkoutConversion.cur}%`} change={delta(o.checkoutConversion.cur, o.checkoutConversion.prev)} sub={`${inr(o.pendingValue)} left unpaid`} />
       </div>
 
-      {toppers.length === 0 ? (
-        <div className="rounded-[32px] border border-black/[0.06] bg-white p-16 text-center">
-          <p className="text-lg text-zinc-500">
-            {search
-              ? "No toppers match your search."
-              : "No toppers yet."}
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="overflow-x-auto rounded-[32px] border border-black/[0.06] bg-white">
-            <table className="w-full text-left text-sm">
+      {/* Audience */}
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Stat label="Visitors" value={num(o.visitors.cur)} change={delta(o.visitors.cur, o.visitors.prev)} sub={`from ${o.visitorSource}`} />
+        <Stat label="Visitor → buyer" value={`${o.buyerConversion.cur}%`} change={delta(o.buyerConversion.cur, o.buyerConversion.prev)} sub="paid orders / visitors" />
+        <Stat label="New emails" value={num(o.leads.cur)} change={delta(o.leads.cur, o.leads.prev)} sub="all lead forms" />
+        <Stat label="AI questions" value={num(o.ai.questions)} sub={`${num(o.ai.conversations)} new conversations`} />
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <Card title="Revenue per day" desc="Paid orders, IST">
+          <DailyBars series={o.revenueDaily} format={inr} color="#1f3fd6" />
+        </Card>
+        <Card title="Visitors per day" desc={`Unique visitors, from ${o.visitorSource}`}>
+          <DailyBars series={o.visitorsDaily} />
+        </Card>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <Card title="Needs attention" className="lg:col-span-1">
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/admin/payments" className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 hover:bg-zinc-100">
+                <span>Abandoned checkouts with an email</span>
+                <span className="font-semibold tabular-nums">{o.attention.abandoned}</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/feedback" className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 hover:bg-zinc-100">
+                <span>Unread feedback</span>
+                <span className="font-semibold tabular-nums">{o.attention.newFeedback}</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/requests" className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 hover:bg-zinc-100">
+                <span>Answer-copy requests ({range} days)</span>
+                <span className="font-semibold tabular-nums">{o.attention.copyReqs}</span>
+              </Link>
+            </li>
+          </ul>
+          <h3 className="mt-5 text-sm font-semibold text-zinc-900">Where new emails came from</h3>
+          <div className="mt-2">
+            <BarList rows={o.leads.bySource.filter((s) => s.value > 0)} empty="No new emails in this period." />
+          </div>
+        </Card>
+
+        <Card title="Top products" desc={`Paid, last ${range} days`} className="lg:col-span-1" action={<Link href={`/admin/tracking/funnel?range=${range}`} className="text-xs font-medium text-zinc-500 hover:text-zinc-900">Funnel →</Link>}>
+          <BarList rows={o.topProducts.map((p) => ({ label: p.title, value: p.revenue, hint: `${p.qty} sold` }))} format={inr} empty="No paid orders in this period." />
+        </Card>
+
+        <Card title="Abandoned checkouts" desc="Pending over an hour, with an email: worth a follow-up" className="lg:col-span-1">
+          {o.abandoned.length ? (
+            <ul className="divide-y divide-black/[0.05] text-sm">
+              {(o.abandoned as OrderRow[]).map((a) => (
+                <li key={String(a._id)} className="flex items-center justify-between gap-3 py-2">
+                  <span className="min-w-0">
+                    <Link href={`/admin/tracking/journeys?q=${encodeURIComponent(a.email ?? "")}`} className="block truncate font-medium text-zinc-900 hover:underline">{a.email}</Link>
+                    <span className="block truncate text-xs text-zinc-500">{a.items?.map((i) => i.title).join(", ")}</span>
+                  </span>
+                  <span className="shrink-0 text-right">
+                    <span className="block font-medium tabular-nums">{inr(a.total ?? 0)}</span>
+                    <span className="block text-xs text-zinc-400">{ago(a.createdAt)}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Empty>None in this period.</Empty>
+          )}
+        </Card>
+      </div>
+
+      <Card title="Recent orders" className="mt-4" action={<Link href="/admin/payments" className="text-xs font-medium text-zinc-500 hover:text-zinc-900">All payments →</Link>}>
+        {o.recent.length ? (
+          <div className="-mx-2 overflow-x-auto">
+            <table className="w-full min-w-[560px] text-sm">
               <thead>
-                <tr className="border-b border-black/10">
-                  <th className="p-4 font-semibold">Name</th>
-                  <th className="p-4 font-semibold">Rank</th>
-                  <th className="p-4 font-semibold">Year</th>
-                  <th className="p-4 font-semibold">Optional</th>
-                  <th className="p-4 font-semibold">Featured</th>
-                  <th className="p-4 font-semibold">Slug</th>
-                  <th className="p-4 font-semibold">Actions</th>
+                <tr className="text-left text-xs text-zinc-500">
+                  <th className="px-2 pb-2 font-medium">When</th>
+                  <th className="px-2 pb-2 font-medium">Customer</th>
+                  <th className="px-2 pb-2 font-medium">Items</th>
+                  <th className="px-2 pb-2 text-right font-medium">Total</th>
+                  <th className="px-2 pb-2 text-right font-medium">Status</th>
                 </tr>
               </thead>
-              <tbody>
-                {toppers.map((t: Record<string, unknown>) => {
-                  const id = String(t._id);
-                  return (
-                    <tr
-                      key={id}
-                      className="border-b border-black/[0.04] last:border-b-0 hover:bg-zinc-50"
-                    >
-                      <td className="p-4 font-medium">
-                        {String(t.firstName || "")} {String(t.lastName || "")}
-                      </td>
-                      <td className="p-4 text-zinc-600">{String(t.rank)}</td>
-                      <td className="p-4 text-zinc-600">{String(t.year)}</td>
-                      <td className="p-4 text-zinc-600">
-                        {String(t.optionalSubject || "-")}
-                      </td>
-                      <td className="p-4">
-                        {t.isFeatured ? (
-                          <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                            Yes
-                          </span>
-                        ) : (
-                          <span className="rounded-full bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-400">
-                            No
-                          </span>
-                        )}
-                      </td>
-                      <td className="max-w-[160px] truncate p-4 font-mono text-xs text-zinc-500">
-                        {String(t.slug || "")}
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <Link
-                            href={`/admin/${id}`}
-                            className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium transition hover:bg-black hover:text-white"
-                          >
-                            Edit
-                          </Link>
-                          <Link
-                            href={`/upsc-topper/${t.slug}`}
-                            target="_blank"
-                            className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium transition hover:bg-black hover:text-white"
-                          >
-                            View
-                          </Link>
-                          <DeleteButton id={id} />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+              <tbody className="divide-y divide-black/[0.05]">
+                {(o.recent as OrderRow[]).map((r) => (
+                  <tr key={String(r._id)}>
+                    <td className="whitespace-nowrap px-2 py-2 text-zinc-500">{when(r.createdAt)}</td>
+                    <td className="max-w-[220px] truncate px-2 py-2">
+                      {r.email ? (
+                        <Link href={`/admin/tracking/journeys?q=${encodeURIComponent(r.email)}`} className="hover:underline">{r.email}</Link>
+                      ) : (
+                        <span className="text-zinc-400">no email</span>
+                      )}
+                    </td>
+                    <td className="max-w-[260px] truncate px-2 py-2 text-zinc-600">{r.items?.map((i) => i.title).join(", ")}</td>
+                    <td className="px-2 py-2 text-right font-medium tabular-nums">{inr(r.total ?? 0)}</td>
+                    <td className="px-2 py-2 text-right">
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS[r.status ?? ""] ?? "bg-zinc-100 text-zinc-600"}`}>{r.status}</span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <Pagination currentPage={page} totalPages={totalPages} search={search} />
-        </>
-      )}
+        ) : (
+          <Empty>No orders yet.</Empty>
+        )}
+      </Card>
     </div>
   );
 }
