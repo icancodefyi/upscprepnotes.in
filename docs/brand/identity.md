@@ -1,4 +1,4 @@
-# UPSCPrepNotes — Brand Identity (v0.1, draft)
+# UPSCPrepNotes — Brand Identity (v1.0)
 
 ## 1. What we are
 **The archive of real topper work.** Marksheets, answer booklets and paper-by-paper marks of UPSC rank holders, shown as they are.
@@ -35,8 +35,8 @@ One typeface, two weights, three sizes, plus one page-title size for the H1.
 | Size | Class | Value | Leading | Use |
 |---|---|---|---|---|
 | Small | `text-s` | 14px | 1.45 | Labels, meta, chips, table cells, captions |
-| Medium | `text-m` | 17px | 1.55 | Body, buttons, card titles, inputs |
-| Large | `text-l` | 28–40px (fluid) | 1.12 | Section headings, headline numbers, long page titles |
+| Medium | `text-m` | 17px | 1.55 | Body, buttons, card and tile titles (bold), inputs |
+| Large | `text-l` | 28–40px (fluid) | 1.12 | Section headings, headline figures (a mark, a count), long page titles. Not card titles |
 | Page title | `text-h1` | 38–60px (fluid) | 1.02 | The one H1 per page, when it is short (a name, a page name). The only exception to three sizes, so the title always outranks section headings |
 
 | Weight | Class | Use |
@@ -48,11 +48,12 @@ Rules:
 - Never use an arbitrary size (`text-[15px]`) or another weight (500, 600). Pick one of the three.
 - Buttons are medium by default; a compact button uses small via `[--btn-fs:14px]`.
 - Hierarchy comes from weight, colour (`--ink` vs `--ink-2` vs `--muted`) and space, not from more sizes.
+- The ladder inside a section: heading `text-l`, then a card or tile title `text-m` bold, then its description `text-s`. A headline figure inside a card may be `text-l`; a card title never is, or the cards outrank the section they sit in.
 - Tabular figures for every number; `text-wrap: balance` on headings; body measure 55–70 characters.
 - Max marks are written "of 2,025 marks", never "/ 2,025", which reads as the year 2025.
 - Graphic badges (the rank stamp, the footer seal) scale their lettering with the artwork and are exempt.
 
-## 5. Colour (v1, in use on /try)
+## 5. Colour
 Three brand colours carry everything: **ballpoint blue, paper white, highlighter yellow.** Examiner red is an accent for marks only.
 
 | Role | Token | Hex | Use |
@@ -92,14 +93,52 @@ Borrowed from Emil Kowalski / Rauno Freiberg practice.
 ## 8. Imagery
 Real scans and real numbers only. No stock photos, no AI illustrations, no avatars of people who aren't who they claim to be. Scans keep their watermarks; we never crop out a source. Pages carrying another reseller's watermark are not used.
 
-## 9. Building a page on the brand
+**Line illustrations** (`components/brand/Outline.tsx`) are the one kind of drawn art we allow: a single faint outline (envelope, shield, calendar, pen, book, file, chat) set large and low-contrast in the corner of a coloured band or call-to-action, hinting at what the section is for. Stroke only, 6 units on a 200×150 grid, white at 6–12% on dark or blue, accent at 7–12% on light. Never a gradient, never filled, never behind body text at a strength that hurts legibility, never more than two per band. Decorative: `aria-hidden`.
+
+## 9. Logo and icons
+The mark is the booklet: an ink rounded square, an examiner-red margin rule, two white lines of writing and a last line in pale ballpoint blue. The wordmark is **UPSCPrepNotes** in Funnel Sans Bold, set tight (`-0.02em`), never split, never recoloured.
+
+| Asset | File | Use |
+|---|---|---|
+| Tab icon (vector) | `public/icon.svg` | Browser tab; sharp at any size |
+| Favicon | `app/favicon.ico` | 16, 32 and 48px for browsers that ask for `/favicon.ico` |
+| Logo | `public/logo.png` | 1024px, transparent corners. Organisation schema logo, fallback share image |
+| Apple touch icon | `public/apple-touch-icon.png` | 180px, full-bleed (iOS rounds it itself) |
+| In-app mark | `Mark` in `components/brand/Nav.tsx` | The same drawing as a React component, sized by prop |
+
+Clear space: half the mark's width on every side. Minimum size: 16px (the favicon). Do not put the mark on a photograph, rotate it, or add a shadow. The nav mark tilts 6 degrees on hover; that is the only motion.
+
+## 10. Share images
+Every page that has no image of its own shares one of four 1200×630 images in `public/og/`: `default.png`, `store.png`, `ask.png`, `advertise.png`. Same template: mark and wordmark top left, a two or three line headline in bold with one highlighter swipe, one sentence beneath, the domain bottom left, and one piece of art on the right (paper sheets with a red-circled mark; real product covers with a price sticker; a chat; the three ad slots). White background, no gradients. Headlines use the same words as the page's H1.
+
+## 11. Navigation
+`components/brand/Nav.tsx`: a floating pill. Left: mark and wordmark. Centre: **Toppers**, **Study**, **Ask AI**, **More**. Right: search and the **Store** button.
+
+- Toppers and Study open mega-menus, More a list, Store a product list with covers and prices. Panels are anchored to the bar (centre; Store aligns to the right edge).
+- Open on hover with a 140ms close delay, or on click or Arrow Down; close on Escape, outside click, route change or tabbing out.
+- A pale pill slides under whichever top-level item the pointer is on. The section you are in carries a 3px blue underline (and a dot in the mobile drawer). The current page is blue inside the panels.
+- Panel entrance: 8px rise and fade with a 24ms stagger on the items; `transform` and `opacity` only. Reduced motion turns it all off.
+- Below 1024px a drawer replaces the links: Ask AI first, then one-open accordion groups (Toppers, Study, Store, More), then Search and Store.
+- Store products come from `lib/store-products.ts` through `BrandShell`, best seller first; images load only after the Store menu is first opened.
+- Ask AI is a direct link, not a menu. Links added here must exist: there is no `/compare` index, so the compare pages are reached from topper profiles only.
+
+## 12. Building a page on the brand
 Shared pieces live in `components/brand/`:
 
 | File | What it is |
 |---|---|
-| `BrandShell.tsx` | Wrap a page in it: brand tokens, fonts, pill nav, yellow footer |
-| `routes.ts` | Add the route to `BRAND_ROUTES` so the old header, footer and banner stay off it |
-| `brand.css` | Tokens and utilities (`.btn`, `.panel`, `.h-sec`, `.swipe`, `.paper`…), scoped to `.up` |
+| `BrandShell.tsx` | Wrap a page in it: brand tokens, fonts, navbar, yellow footer. Every route except `/ask` and `/admin` is inside it, including the 404 |
+| `Nav.tsx` | The navbar and the `Mark` |
+| `Footer.tsx` | The yellow footer |
+| `brand.css` | Tokens and utilities (`.btn`, `.panel`, `.h-sec`, `.swipe`, `.paper`, `.nav-panel`…), scoped to `.up` |
 | `SectionHead.tsx` | The one section heading pattern: title, lead, optional action |
 | `Props.tsx` | Push pin (`red`, `blue`, `yellow`) and paperclip |
+| `Outline.tsx` | The faint line illustrations for bands and CTAs |
 | `Lens.tsx` | Magnifier over a real scan |
+
+`/ask` is the one full-height app: it has its own frame in `AppShell` and `app/ask/ask.css` (`.ask-brand` remaps the shadcn theme variables to the brand palette).
+
+## 13. Still to bring onto the brand
+- **Emails** (`emails/*.html`, order and download emails): still the old green palette and wording.
+- **Admin panel**: internal, not branded.
+- **PDF products**: covers and interiors are the sellers' own.
