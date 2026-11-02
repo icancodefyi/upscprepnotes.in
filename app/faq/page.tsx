@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata: Metadata = {
   title: "UPSC Topper Answer Copies & Marksheets FAQ — Free Download, Pricing & How to Use",
@@ -58,7 +59,7 @@ const FAQS = [
   },
 ];
 
-export default function FAQPage() {
+export default async function FAQPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -70,7 +71,7 @@ export default function FAQPage() {
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-20">
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -81,31 +82,60 @@ export default function FAQPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-        UPSC Topper Answer Copies & Marksheets — FAQ
-      </h1>
-      <p className="mt-4 text-lg text-muted-foreground">
-        Everything you need to know about UPSC topper answer copies, marksheet data, free downloads, pricing, and how to use them in your preparation.
-      </p>
-      <div className="mt-12 divide-y divide-border">
-        {FAQS.map((faq, i) => (
-          <div key={i} className="py-6">
-            <h2 className="text-lg font-semibold text-foreground">{faq.q}</h2>
-            <p className="mt-2 text-base leading-7 text-muted-foreground">{faq.a}</p>
+      <div className="mx-auto max-w-[1120px] px-6 pb-24 pt-28 sm:pt-32">
+        <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">
+          <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
+          <span aria-hidden>/</span>
+          <span className="text-[var(--ink-2)]">FAQ</span>
+        </nav>
+
+        <header className="mt-8 max-w-[46rem]">
+          <h1 className="t-display text-h1">UPSC Topper Answer Copies & Marksheets — FAQ</h1>
+          <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
+            Everything you need to know about UPSC topper answer copies, marksheet data, free downloads, pricing, and how to use them in your preparation.
+          </p>
+        </header>
+
+        <div className="mt-14 grid gap-10 lg:grid-cols-[260px_1fr] lg:gap-16">
+          {/* Question index (desktop) */}
+          <nav aria-label="Questions" className="hidden lg:block">
+            <ol className="sticky top-28 space-y-1 border-l border-[var(--line)]">
+              {FAQS.map((faq, i) => (
+                <li key={i}>
+                  <a href={`#q${i + 1}`} className="-ml-px flex gap-3 border-l-2 border-transparent py-1.5 pl-4 text-s leading-snug text-[var(--ink-2)] hover:border-[var(--accent)] hover:text-[var(--ink)]">
+                    <span className="tab text-[var(--muted)]">{String(i + 1).padStart(2, "0")}</span>
+                    {faq.q}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <div className="space-y-3">
+            {FAQS.map((faq, i) => (
+              <section key={i} id={`q${i + 1}`} className="scroll-mt-28 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] sm:p-7">
+                <div className="flex gap-4">
+                  <span aria-hidden className="tab grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-s font-bold text-[var(--accent)]">{i + 1}</span>
+                  <div className="min-w-0">
+                    <h2 className="pt-1 text-m font-bold leading-snug">{faq.q}</h2>
+                    <p className="mt-2 text-m leading-[1.7] text-[var(--ink-2)]">{faq.a}</p>
+                  </div>
+                </div>
+              </section>
+            ))}
+
+            <div className="relative !mt-10 overflow-hidden rounded-[28px] bg-[var(--accent)] p-7 text-white sm:p-9">
+              <svg aria-hidden viewBox="0 0 200 140" className="pointer-events-none absolute -right-6 -top-8 h-40 w-56 rotate-[12deg] text-white/10" fill="none" stroke="currentColor" strokeWidth="6" strokeLinejoin="round"><rect x="8" y="8" width="184" height="124" rx="10" /><path d="M10 14l90 66 90-66" /></svg>
+              <p className="relative text-m">
+                Still have questions?{" "}
+                <Link href="/contact" className="font-bold underline decoration-white/40 underline-offset-4 hover:decoration-white">
+                  Contact us
+                </Link>
+              </p>
+            </div>
           </div>
-        ))}
+        </div>
       </div>
-      <div className="mt-12 rounded-2xl bg-secondary p-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          Still have questions?{" "}
-          <Link
-            href="/contact"
-            className="font-medium text-brand hover:text-brand"
-          >
-            Contact us
-          </Link>
-        </p>
-      </div>
-    </main>
+    </BrandShell>
   );
 }
