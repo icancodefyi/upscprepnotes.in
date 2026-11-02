@@ -1,4 +1,3 @@
-import PrivacyChoice from "@/components/PrivacyChoice";
 import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -77,9 +76,8 @@ export default function PrivacyPolicyPage() {
           only as a salted hash, and emails or phone numbers typed into free text are removed.
           Your email is linked to your activity only when you give it to us in a form. We
           honour the browser Do Not Track and Global Privacy Control signals, and the
-          data is deleted after about 13 months. Nothing is recorded until you accept the notice.
+          data is deleted after about 13 months.
         </p>
-        <PrivacyChoice />
       </section>
 
       <section className="space-y-5">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { captureAttribution, flush, hasConsent, identify, track } from "@/lib/track";
+import { captureAttribution, flush, identify, track } from "@/lib/track";
 
 /**
  * Site-wide interaction capture into the `tracking` collection. Mounted once in AppShell.
@@ -19,7 +19,6 @@ type NavExt = Navigator & { connection?: { effectiveType?: string; downlink?: nu
 
 /** Once per browser session: how many times this browser has visited, and how long since last time. */
 function startSession() {
-  if (!hasConsent()) return;
   try {
     if (sessionStorage.getItem("_tss")) return;
     sessionStorage.setItem("_tss", "1");
