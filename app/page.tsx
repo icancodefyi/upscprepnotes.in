@@ -6,7 +6,6 @@ import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { PDFModel } from "@/models/pdf.model";
 import { PYQModel } from "@/models/pyq.model";
 import { PRODUCTS } from "@/lib/store-products";
-import { getFeaturedToppers } from "@/services/topper.service";
 import Hero from "./_home/Hero";
 import Pillars from "./_home/Pillars";
 import StackedSheets from "./_home/StackedSheets";
@@ -205,16 +204,24 @@ async function getData() {
     fileCount: p.fileCount ?? null,
   }));
 
-  const featured = (await getFeaturedToppers()).map((t) => ({
+  const featuredRows = (await TopperModel.find({ isFeatured: true }, { firstName: 1, lastName: 1, slug: 1, rank: 1 })
+    .sort({ rank: 1 })
+    .limit(10)
+    .lean()) as unknown as { firstName: string; lastName: string; slug: string }[];
+  const featured = featuredRows.map((t) => ({
     href: `/upsc-topper/${t.slug}`,
     label: `${t.firstName} ${t.lastName}`.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_: string, a: string, b: string) => a + b.toLowerCase()),
   }));
 
-  const [dl, mat, pdfs, pyqCount, pyqYears] = await Promise.all([
+  // Counted in the database: loading every resource list just to count it took ~7s per render.
+  const [dl, mat, resourceTotal, pyqCount, pyqYears] = await Promise.all([
     FreeDownloadLeadModel.distinct("email"),
     FreeMaterialLeadModel.distinct("email"),
-    PDFModel.find({}, { resources: 1 }).lean() as Promise<{ resources?: unknown[] }[]>,
-    PYQModel.countDocuments(),
+    PDFModel.aggregate<{ t: number }>([
+      { $project: { n: { $size: { $ifNull: ["$resources", []] } } } },
+      { $group: { _id: null, t: { $sum: "$n" } } },
+    ]).then((r) => r[0]?.t ?? 0),
+    PYQModel.estimatedDocumentCount(),
     PYQModel.distinct("year") as Promise<number[]>,
   ]);
 
@@ -235,7 +242,7 @@ async function getData() {
       aspirants: new Set([...dl, ...mat]).size,
       freeCopies,
       optionals: new Set(toppers.map((t) => subjectOf(t.optionalSubject)).filter(Boolean)).size,
-      resources: pdfs.reduce((s, d) => s + (d.resources?.length ?? 0), 0),
+      resources: resourceTotal,
       pyqs: pyqCount,
       pyqYears: [...pyqYears].sort(),
     },

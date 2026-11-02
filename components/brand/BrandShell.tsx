@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
-import { getFeaturedToppers } from "@/services/topper.service";
 import { PRODUCTS } from "@/lib/store-products";
 import Nav, { type NavProduct } from "./Nav";
 import Footer from "./Footer";
@@ -14,7 +13,11 @@ const titleCase = (s: string) => s.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_: st
 /** Live numbers and featured toppers for the footer. Pages that already hold them can pass them in. */
 export async function getFooterData(): Promise<FooterData> {
   await connectDB();
-  const [toppers, featured] = await Promise.all([TopperModel.countDocuments(), getFeaturedToppers()]);
+  // Names and links only: the footer must not pull whole topper documents on every page.
+  const [toppers, featured] = await Promise.all([
+    TopperModel.countDocuments(),
+    TopperModel.find({ isFeatured: true }, { firstName: 1, lastName: 1, slug: 1, rank: 1 }).sort({ rank: 1 }).limit(10).lean() as Promise<{ firstName: string; lastName: string; slug: string }[]>,
+  ]);
   return {
     counts: { toppers },
     featured: featured.map((t) => ({ href: `/upsc-topper/${t.slug}`, label: titleCase(`${t.firstName} ${t.lastName}`) })),

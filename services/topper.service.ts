@@ -65,7 +65,7 @@ function normalizeTopper(topper: any) {
 export async function getTopperBySlug(slug: string) {
   await connectDB();
 
-  const topper = await TopperModel.findOne({ slug }).lean();
+  const topper = await TopperModel.findOne({ slug }).select("-imageBase64").lean();
 
   if (!topper) return null;
 
@@ -75,7 +75,7 @@ export async function getTopperBySlug(slug: string) {
 export async function getFeaturedToppers() {
   await connectDB();
 
-  const toppers = await TopperModel.find({ isFeatured: true })
+  const toppers = await TopperModel.find({ isFeatured: true }).select("-imageBase64")
     .sort({ rank: 1 })
     .limit(10)
     .lean();
@@ -92,7 +92,7 @@ export async function getRelatedToppers(
   const toppers = await TopperModel.find({
     optionalSubject: optionalSubject,
     slug: { $ne: currentSlug },
-  })
+  }).select("-imageBase64")
     .limit(6)
     .lean();
 
@@ -105,7 +105,7 @@ export async function getToppersByRank(rank: number, currentSlug: string) {
   const toppers = await TopperModel.find({
     rank,
     slug: { $ne: currentSlug },
-  })
+  }).select("-imageBase64")
     .sort({ year: -1 })
     .limit(6)
     .lean();
@@ -119,7 +119,7 @@ export async function getToppersByYear(year: number, currentSlug: string) {
   const toppers = await TopperModel.find({
     year,
     slug: { $ne: currentSlug },
-  })
+  }).select("-imageBase64")
     .sort({ rank: 1 })
     .limit(10)
     .lean();
