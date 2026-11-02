@@ -58,7 +58,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] sm:p-6">
+    <div data-track-view="topper_lead_form" className="relative overflow-hidden rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] sm:p-6">
       <Outline kind="envelope" className="-right-5 -top-5 h-28 w-40 rotate-[12deg] text-[var(--accent)]/[0.07]" />
       <h2 className="relative text-m font-bold">Get Free Answer Copies</h2>
       <p className="relative mt-1 text-s text-[var(--ink-2)]">

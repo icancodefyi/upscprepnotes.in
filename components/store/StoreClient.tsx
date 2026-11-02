@@ -24,6 +24,7 @@ const SHELVES: { key: string; label: string; match: (p: Product) => boolean }[] 
 function Spotlight({ product }: { product: Product }) {
   return (
     <div
+      data-track-view="store_spotlight"
       className="group relative grid overflow-hidden rounded-[28px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] transition-shadow duration-300 hover:shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.3)] md:grid-cols-[1fr_1.1fr]"
     >
       <div className="grain relative min-h-[300px] overflow-hidden sm:min-h-[380px]" style={{ background: folderOf(product) }}>

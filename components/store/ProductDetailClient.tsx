@@ -39,9 +39,9 @@ export default function ProductDetailClient({ product }: { product: StoreProduct
 }
 
 /** A section on the product page: one plain heading, then its content. */
-function Block({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) {
+function Block({ title, children, id, view }: { title: string; children: React.ReactNode; id?: string; view?: string }) {
   return (
-    <section id={id} className="mt-16 scroll-mt-28">
+    <section id={id} data-track-view={view} className="mt-16 scroll-mt-28">
       <h2 className="t-head text-l">{title}</h2>
       <div className="mt-6">{children}</div>
     </section>
@@ -270,7 +270,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             )}
 
             {product.slug === "answer-copies-compilation" && (
-              <Block title="Sample Preview" id="preview">
+              <Block title="Sample Preview" id="preview" view="product_samples">
                 <SamplePreview />
               </Block>
             )}
@@ -341,7 +341,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
             )}
 
             {reviews.length > 0 && (
-              <Block title={`Customer Reviews (${reviews.length})`}>
+              <Block title={`Customer Reviews (${reviews.length})`} view="product_reviews">
                 <ReviewsBlock reviews={reviews} rating={product.rating} reviewCount={product.reviewCount} />
               </Block>
             )}
@@ -453,7 +453,7 @@ function BuyBoth({ product }: { product: StoreProduct }) {
 
 function PurchaseCard({ product }: { product: StoreProduct }) {
   return (
-    <div className="rounded-[28px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.35)] sm:p-7">
+    <div data-track-view="product_buy_box" className="rounded-[28px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.35)] sm:p-7">
       {product.badge && <span className={`inline-block rounded-full px-3 py-1 text-s font-bold ${badgeCls(product.badgeColor)}`}>{product.badge}</span>}
 
       <h1 className={`t-display text-l ${product.badge ? "mt-4" : ""}`}>{product.title}</h1>

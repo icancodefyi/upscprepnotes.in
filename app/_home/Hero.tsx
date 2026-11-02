@@ -78,6 +78,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
         </h1>
 
         <form
+          data-track="home-search"
           action="/toppers"
           method="GET"
           className="rise mx-auto mt-10 flex max-w-[32rem] items-center rounded-full bg-white p-1.5 pl-6 shadow-[0_0_0_1px_var(--line-2),0_2px_4px_rgba(11,12,16,0.04)] transition-shadow duration-200 focus-within:shadow-[0_0_0_2px_var(--accent)]"

@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import posthog from "posthog-js";
-import { track, flush } from "@/lib/track";
+import { track, flush, identify } from "@/lib/track";
 import { getSessionId, getVisitorId } from "@/lib/client-analytics";
 
 interface CartItem {
@@ -78,6 +78,7 @@ export default function PayButton({
 
       if (email) {
         try { localStorage.setItem("upsc-email", email); } catch {}
+        identify(email, "checkout");
       }
 
       track("checkout_redirect", { items: checkoutItems.map((i) => i.slug), amount, tracking });

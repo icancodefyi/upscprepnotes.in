@@ -30,10 +30,23 @@ Every user interaction we need for curation goes into one MongoDB collection, **
 | `checkout_started` | Server, order created | `ref`, `total`, `items` |
 | `purchase` | Server, payment succeeded | `ref`, `total`, `items`, `payment` |
 | `js_error` | Uncaught error (max 5 per page) | `message`, `source` / `kind` |
+| `session_start` | First page of each browser session | `visit_number`, `returning`, `days_since_last`, `days_since_first`, `screen`, `langs`, `tz_offset`, `connection`, `dark`, `reduced_motion`, `standalone`, `cores`, `memory` |
+| `web_vitals` | Tab hidden after a hard page load | `lcp`, `cls`, `fcp`, `inp`, `ttfb` (ms; cls unitless), `nav_type` |
+| `form_start` / `form_abandon` | First field focused / left the page without submitting | `form`, `section` |
+| `rage_click` | 3 clicks within 1s in the same spot | `tag`, `text`, `section` |
+| `copy` | Text selected and copied | `length` (never the text) |
+| `section_view` | An element marked `data-track-view="name"` is half on screen | `name` |
+| `ask_answer` | Server: the AI answered | `path` (`fast` = topper answer from the database, `model`), `ms`, `chars`, `sources`, `web_search`, `signed_in` |
+| `ask_error` / `ask_limit` | Server: the model failed / the free limit blocked a question | `code`, `status`, `ms` / `authenticated` |
+
+Clicks on links to files (`.pdf`, `.zip`…) and `/api/download` carry `download: true`. Marked sections so far: `home_lead_pack`, `topper_lead_form`, `topper_answer_copies`, `store_email_band`, `store_spotlight`, `product_buy_box`, `product_samples`, `product_reviews`.
 
 `checkout_started` and `purchase` share `props.ref`, so a purchase can be joined back to the visitor and everything they did before it.
 
 To label something for analysis, add `data-track="name"` to the element; to capture typing in a non-search input, add `data-track-input`; to keep an element out, add `data-track-ignore`.
+
+## Admin pages that read this data
+`/admin` (dashboard) and `/admin/tracking/*`: **Traffic**, **Audience** (new vs returning, stickiness, weekly retention cohorts, time to first return, busiest hours), **Acquisition** (sources, campaigns, landing pages → emails and buyers), **Demand**, **Store funnel**, **Buyers** (lead → buyer, what buyers did first), **Leads** (list growth, sources, CSV export at `/api/admin/leads/export`), **AI mentor**, **Technology** (browsers, screens, languages, page speed), **Journeys** and **Live**. Audience and Technology use the long `analyticsevents` history, so they work before `tracking` has any data; the rest fill in once the site is live.
 
 ## Questions this answers (mongosh)
 ```js

@@ -13,6 +13,7 @@ import {
 } from "@/lib/ai/quota";
 import { auth } from "@/lib/auth";
 import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
+import { trackServer } from "@/lib/tracking/server";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -139,7 +140,10 @@ export async function POST(request: NextRequest) {
     const userId = session?.user?.id || null;
 
     const quota = await getQuota(sessionId, userId);
+    const startedAt = Date.now();
+    const base = { signed_in: !!userId, web_search: !!wantsSearch, conversation: conversationId || undefined };
     if (!quota.canQuery) {
+      await trackServer("ask_limit", { sessionId, path: "/api/ai/ask", props: { ...base, authenticated: quota.isAuthenticated } });
       return NextResponse.json(
         { error: quota.isAuthenticated ? "Daily limit reached. Upgrade for unlimited access." : "Free limit reached. Sign in for 20 queries/day or purchase for unlimited." },
         { status: 429 },
@@ -197,6 +201,7 @@ export async function POST(request: NextRequest) {
             fullContent = fast.text;
             emit({ t: "end" });
             await saveMessage(cid, "assistant", fullContent, fast.sources);
+            await trackServer("ask_answer", { sessionId, path: "/api/ai/ask", props: { ...base, path: "fast", ms: Date.now() - startedAt, chars: fullContent.length, sources: fast.sources.length } });
             controller.close();
             return;
           }
@@ -299,6 +304,7 @@ export async function POST(request: NextRequest) {
             `[ask-error] code=${info.code} status=${err?.status ?? "n/a"} message=${String(err?.error?.message || err?.message || "").slice(0, 300)}`,
           );
           streamFailed = true;
+          await trackServer("ask_error", { sessionId, path: "/api/ai/ask", props: { ...base, code: info.code, status: err?.status, ms: Date.now() - startedAt } });
           emit({
             t: "error",
             code: info.code,
@@ -317,6 +323,7 @@ export async function POST(request: NextRequest) {
 
         const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
         await saveMessage(cid, "assistant", fullContent, sources);
+        await trackServer("ask_answer", { sessionId, path: "/api/ai/ask", props: { ...base, path: "model", ms: Date.now() - startedAt, chars: fullContent.length, sources: sources.length } });
         controller.close();
       },
     });

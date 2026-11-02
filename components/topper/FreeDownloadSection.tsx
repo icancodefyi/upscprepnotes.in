@@ -23,7 +23,7 @@ export function FreeDownloadSection({
 
   return (
     <>
-      <section id="answer-copy" className="scroll-mt-28">
+      <section id="answer-copy" data-track-view="topper_answer_copies" className="scroll-mt-28">
         <h2 className="t-head mb-5 text-l">Answer copies</h2>
 
         <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]">
