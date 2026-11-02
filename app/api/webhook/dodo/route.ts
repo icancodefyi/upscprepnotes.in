@@ -41,6 +41,26 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
 
+    // 1. Signature (Standard Webhooks). Set DODO_WEBHOOK_KEY from the Dodo dashboard (Webhooks > your endpoint > Secret).
+    const webhookKey = process.env.DODO_WEBHOOK_KEY;
+    if (webhookKey) {
+      try {
+        dodo.webhooks.unwrap(body, {
+          key: webhookKey,
+          headers: {
+            "webhook-id": request.headers.get("webhook-id") || "",
+            "webhook-signature": request.headers.get("webhook-signature") || "",
+            "webhook-timestamp": request.headers.get("webhook-timestamp") || "",
+          },
+        });
+      } catch {
+        console.error(`[${webhookId}] Invalid webhook signature`);
+        return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+      }
+    } else {
+      console.warn(`[${webhookId}] DODO_WEBHOOK_KEY is not set: relying on the payment lookup below`);
+    }
+
     let event;
     try {
       event = JSON.parse(body);
@@ -68,23 +88,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing session_id" }, { status: 400 });
     }
 
+    // 2. Never trust the payload: ask Dodo whether this payment really succeeded, for this session.
+    //    A lookup failure throws (500), so Dodo retries the webhook later.
+    if (!paymentId) {
+      return NextResponse.json({ error: "Missing payment id" }, { status: 400 });
+    }
+    let payment;
+    try {
+      payment = await dodo.payments.retrieve(paymentId);
+    } catch (err) {
+      const status = (err as { status?: number })?.status;
+      if (status && status >= 400 && status < 500) {
+        console.error(`[${webhookId}] Dodo does not know payment ${paymentId} (${status})`);
+        return NextResponse.json({ error: "Unknown payment" }, { status: 400 });
+      }
+      throw err;
+    }
+    if (payment.status !== "succeeded" || (payment.checkout_session_id && payment.checkout_session_id !== sessionId)) {
+      console.error(`[${webhookId}] Payment ${paymentId} not verified: status=${payment.status}`);
+      return NextResponse.json({ error: "Payment not verified" }, { status: 400 });
+    }
+
     await connectDB();
 
-    let customerEmail = paymentData.customer?.email || paymentData.email || "";
-    let total = paymentData.amount ? Math.round(paymentData.amount / 100) : 0;
-
-    if (!customerEmail || !total) {
-      try {
-        const payment = await dodo.payments.retrieve(paymentId).catch(() => null);
-        if (payment) {
-          customerEmail = customerEmail || (payment as any).customer?.email || "";
-          const paid = payment.total_amount || (payment as any).amount || 0;
-          total = total || Math.round(paid / 100);
-        }
-      } catch {
-        console.error(`[${webhookId}] Failed to retrieve payment details for ${paymentId}`);
-      }
-    }
+    // From here on only Dodo's own record is used, not the posted JSON.
+    const customerEmail: string = (payment as any).customer?.email || "";
+    const total = Math.round(((payment as any).total_amount || 0) / 100);
+    const verifiedMeta = ((payment as any).metadata || metadata || {}) as Record<string, string>;
 
     console.log(`[${webhookId}] Looking up order by sessionId=${sessionId}`);
 
@@ -98,11 +128,13 @@ export async function POST(request: NextRequest) {
         });
         console.log(`[${webhookId}] Order ${existing._id} updated: pending → paid`);
         const recipientEmail = customerEmail || existing.email || "";
-        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);        await trackServer("purchase", {
+        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);
+        await trackServer("purchase", {
           email: customerEmail || existing.email,
           path: "/api/webhook/dodo",
           props: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug), payment: paymentId },
-        });        try {
+        });
+        try {
           await sendAdminNotification(customerEmail, existing.items, existing.total);
         } catch (err) {
           console.error(`[${webhookId}] Admin notification failed:`, err);
@@ -117,7 +149,7 @@ export async function POST(request: NextRequest) {
 
     let items: { slug: string; quantity: number; price: number; title: string }[];
     try {
-      items = JSON.parse(metadata.items || "[]");
+      items = JSON.parse(verifiedMeta.items || "[]");
     } catch {
       items = [];
     }
@@ -131,7 +163,7 @@ export async function POST(request: NextRequest) {
       email: customerEmail || "unknown@checkout",
       items,
       total,
-      ref: metadata.ref || "",
+      ref: verifiedMeta.ref || "",
       dodoSessionId: sessionId,
       dodoPaymentId: paymentId,
       downloadToken,
