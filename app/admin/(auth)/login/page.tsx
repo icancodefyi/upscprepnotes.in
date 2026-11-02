@@ -2,6 +2,7 @@
 
 import { Suspense, useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Mark } from "@/components/brand/Nav";
 
 function LoginForm() {
   const router = useRouter();
@@ -39,15 +40,13 @@ function LoginForm() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm">
+      <div className="rounded-[28px] bg-white p-8 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-28px_rgba(11,12,16,0.35)]">
         {/* Brand */}
         <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-sm font-bold text-white">
-            UP
-          </div>
+          <Mark size={40} />
           <div>
-            <p className="text-sm font-semibold tracking-tight text-zinc-900">Admin Panel</p>
-            <p className="text-xs text-zinc-400">UPSCPrepNotes</p>
+            <p className="text-m font-bold tracking-[-0.02em] text-zinc-900">UPSCPrepNotes</p>
+            <p className="text-s text-zinc-400">Admin</p>
           </div>
         </div>
 
@@ -64,7 +63,7 @@ function LoginForm() {
               placeholder="Enter admin password"
               autoFocus
               required
-              className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-zinc-400 focus:ring-4 focus:ring-zinc-100"
+              className="h-12 w-full rounded-full bg-white px-5 text-m shadow-[0_0_0_1px_var(--line-2)] outline-none transition focus:shadow-[0_0_0_2px_var(--accent)]"
             />
           </div>
 
@@ -77,7 +76,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50"
+            className="btn btn-blue h-12 w-full justify-center disabled:opacity-50"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">

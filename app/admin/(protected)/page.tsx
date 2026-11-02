@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getOverview, parseRange, delta } from "@/lib/admin/insights";
+import { getAudience, getOverview, parseRange, delta } from "@/lib/admin/insights";
 import { BarList, Card, DailyBars, Empty, PageHeader, Stat, ago, inr, num, when } from "@/components/admin/insights-ui";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +14,7 @@ const STATUS: Record<string, string> = {
 
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   const range = parseRange((await searchParams).range);
-  const o = await getOverview(range);
+  const [o, aud] = await Promise.all([getOverview(range), getAudience(range)]);
   const period = `vs previous ${range} days`;
 
   return (
@@ -37,7 +37,16 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
         <Stat label="AI questions" value={num(o.ai.questions)} sub={`${num(o.ai.conversations)} new conversations`} />
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      {/* Do they come back? */}
+      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Stat label="Returning visitors" value={`${aud.returningRate}%`} sub={`${num(aud.returningInWindow)} of ${num(aud.activeInWindow)} active`} />
+        <Stat label="New who came back" value={`${aud.newCameBackRate}%`} sub="visited on another day" />
+        <Stat label="Stickiness" value={`${aud.stickiness.dauMau}%`} sub="daily ÷ monthly visitors" />
+        <Stat label="Time to first return" value={`${aud.gapMedian} days`} sub="median, for those who return" />
+      </div>
+      <p className="mt-2 text-right text-xs"><Link href={`/admin/tracking/audience?range=${range}`} className="font-bold text-zinc-500 hover:text-zinc-900">Audience and retention →</Link></p>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <Card title="Revenue per day" desc="Paid orders, IST">
           <DailyBars series={o.revenueDaily} format={inr} color="#1f3fd6" />
         </Card>

@@ -254,3 +254,37 @@
 @media (prefers-reduced-motion: reduce) {
   .up .nav-panel, .up .nav-drawer, .up .nav-item { transition: none !important; transform: none !important; }
 }
+
+/* Admin on the brand: the admin pages are written with Tailwind's zinc/emerald/red/amber/blue colours.
+   Remapping those tokens inside .admin-brand puts every admin screen on the brand palette at once. */
+.up.admin-brand {
+  --color-zinc-50: #f7f8fb; --color-zinc-100: #eff1f6; --color-zinc-200: #e3e6ee; --color-zinc-300: #c9cfdd;
+  --color-zinc-400: #858a96; --color-zinc-500: #5f6571; --color-zinc-600: #3f4450; --color-zinc-700: #2b2f39;
+  --color-zinc-800: #171a21; --color-zinc-900: #0b0c10; --color-zinc-950: #06070a;
+  --color-gray-50: #f7f8fb; --color-gray-100: #eff1f6; --color-gray-200: #e3e6ee; --color-gray-300: #c9cfdd;
+  --color-gray-400: #858a96; --color-gray-500: #5f6571; --color-gray-600: #3f4450; --color-gray-700: #2b2f39;
+  --color-gray-800: #171a21; --color-gray-900: #0b0c10;
+  --color-emerald-50: #eaf7ef; --color-emerald-100: #d4f1df; --color-emerald-200: #b4e4c7; --color-emerald-300: #86d1a5;
+  --color-emerald-400: #4fb67c; --color-emerald-500: #2a9a5f; --color-emerald-600: #1f7a46; --color-emerald-700: #14532d;
+  --color-emerald-800: #0f4124; --color-emerald-900: #0a2f1a;
+  --color-green-50: #eaf7ef; --color-green-100: #d4f1df; --color-green-200: #b4e4c7; --color-green-500: #2a9a5f;
+  --color-green-600: #1f7a46; --color-green-700: #14532d;
+  --color-red-50: #fff1ef; --color-red-100: #ffe0dc; --color-red-200: #ffc4bc; --color-red-300: #ff9b8f;
+  --color-red-400: #ff6f60; --color-red-500: #ff4a3d; --color-red-600: #d9342a; --color-red-700: #b3261d;
+  --color-red-800: #8c1d16; --color-red-900: #6b1611;
+  --color-amber-50: #fff8d6; --color-amber-100: #fff0a8; --color-amber-200: #ffe97a; --color-amber-300: #ffe45c;
+  --color-amber-400: #f2cf2e; --color-amber-500: #d9b400; --color-amber-600: #a68900; --color-amber-700: #7d6700;
+  --color-amber-800: #5c4a00; --color-amber-900: #473a00;
+  --color-blue-50: #eef1ff; --color-blue-100: #e1e7ff; --color-blue-200: #c6d1ff; --color-blue-300: #9fb0ff;
+  --color-blue-400: #6f87f7; --color-blue-500: #3a58e4; --color-blue-600: #1f3fd6; --color-blue-700: #172fa3;
+  --color-blue-800: #13238a; --color-blue-900: #0f1b6b;
+  --color-indigo-50: #eef1ff; --color-indigo-100: #e1e7ff; --color-indigo-500: #3a58e4; --color-indigo-600: #1f3fd6;
+  --color-indigo-700: #172fa3;
+  --color-violet-50: #f1ecff; --color-violet-100: #e4dcff; --color-violet-600: #5b36c9; --color-violet-700: #43249b;
+  --color-purple-50: #f1ecff; --color-purple-100: #e4dcff; --color-purple-600: #5b36c9; --color-purple-700: #43249b;
+  --radius-xl: 16px; --radius-2xl: 24px; --radius-3xl: 28px;
+  min-height: 100vh;
+}
+.admin-brand .uppercase { text-transform: none; }
+.admin-brand .tracking-wider, .admin-brand .tracking-widest { letter-spacing: 0; }
+.admin-brand input:not([type="checkbox"]):not([type="radio"]), .admin-brand select, .admin-brand textarea { font-family: inherit; }

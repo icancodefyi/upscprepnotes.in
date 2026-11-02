@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyAdminToken } from "@/lib/admin-auth";
 import { AdminSidebar } from "./admin-sidebar";
+import { brandFonts } from "@/components/brand/fonts";
+import "@/components/brand/brand.css";
 
 async function checkAuth() {
   const cookieStore = await cookies();
@@ -19,10 +21,10 @@ export default async function ProtectedLayout({
   await checkAuth();
 
   return (
-    <div className="min-h-screen bg-zinc-50/50">
+    <div className={`up admin-brand ${brandFonts} bg-white`}>
       <AdminSidebar />
-      <div className="lg:pl-64">
-        <main className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-28 pt-8 lg:pt-10">
+      <div className="lg:pl-[272px]">
+        <main className="relative mx-auto max-w-[1180px] px-4 pb-28 pt-16 sm:px-6 lg:px-10 lg:pt-10">
           {children}
         </main>
       </div>

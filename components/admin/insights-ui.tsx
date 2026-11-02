@@ -24,18 +24,18 @@ export function PageHeader({ title, desc, range, basePath, extra }: { title: str
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">{title}</h1>
+        <h1 className="t-display text-[28px] leading-tight text-zinc-900">{title}</h1>
         {desc && <p className="mt-1 max-w-2xl text-sm text-zinc-500">{desc}</p>}
       </div>
       <div className="flex items-center gap-2">
         {extra}
         {range && basePath && (
-          <div className="flex rounded-full border border-black/[0.08] bg-white p-1 text-sm">
+          <div className="flex rounded-full bg-white p-1 text-sm shadow-[0_0_0_1px_var(--line-2)]">
             {[7, 30, 90].map((r) => (
               <Link
                 key={r}
                 href={`${basePath}?range=${r}`}
-                className={`rounded-full px-3 py-1 font-medium transition-colors ${r === range ? "bg-zinc-900 text-white" : "text-zinc-500 hover:text-zinc-900"}`}
+                className={`rounded-full px-3.5 py-1.5 font-bold transition-colors ${r === range ? "bg-zinc-900 text-white" : "text-zinc-500 hover:text-zinc-900"}`}
               >
                 {r} days
               </Link>
@@ -49,19 +49,26 @@ export function PageHeader({ title, desc, range, basePath, extra }: { title: str
 
 const INSIGHT_TABS = [
   { href: "/admin/tracking", label: "Traffic" },
+  { href: "/admin/tracking/audience", label: "Audience" },
+  { href: "/admin/tracking/acquisition", label: "Acquisition" },
   { href: "/admin/tracking/demand", label: "Demand" },
   { href: "/admin/tracking/funnel", label: "Store funnel" },
+  { href: "/admin/tracking/buyers", label: "Buyers" },
+  { href: "/admin/tracking/leads", label: "Leads" },
+  { href: "/admin/tracking/ai", label: "AI mentor" },
+  { href: "/admin/tracking/tech", label: "Technology" },
   { href: "/admin/tracking/journeys", label: "Journeys" },
   { href: "/admin/tracking/live", label: "Live" },
 ];
+const NO_RANGE = ["/admin/tracking/journeys", "/admin/tracking/live", "/admin/tracking/buyers"];
 export function InsightTabs({ active, range }: { active: string; range?: number }) {
   return (
-    <nav className="mb-6 flex gap-1 overflow-x-auto border-b border-black/[0.06] text-sm">
+    <nav className="mb-6 flex gap-1.5 overflow-x-auto pb-1 text-sm [scrollbar-width:none]">
       {INSIGHT_TABS.map((t) => (
         <Link
           key={t.href}
-          href={range && !t.href.endsWith("journeys") && !t.href.endsWith("live") ? `${t.href}?range=${range}` : t.href}
-          className={`-mb-px whitespace-nowrap border-b-2 px-3 py-2.5 font-medium transition-colors ${t.href === active ? "border-zinc-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-zinc-900"}`}
+          href={range && !NO_RANGE.includes(t.href) ? `${t.href}?range=${range}` : t.href}
+          className={`whitespace-nowrap rounded-full px-4 py-2 font-bold transition-colors ${t.href === active ? "bg-blue-50 text-blue-800" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"}`}
         >
           {t.label}
         </Link>
@@ -72,7 +79,7 @@ export function InsightTabs({ active, range }: { active: string; range?: number 
 
 export function Card({ title, desc, action, children, className = "" }: { title?: string; desc?: string; action?: React.ReactNode; children: React.ReactNode; className?: string }) {
   return (
-    <section className={`rounded-2xl border border-black/[0.06] bg-white p-5 ${className}`}>
+    <section className={`rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] sm:p-6 ${className}`}>
       {(title || action) && (
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
@@ -92,10 +99,10 @@ export function Stat({ label, value, sub, change, good = "up" }: { label: string
   const show = change !== undefined;
   const isGood = change == null ? true : good === "up" ? change >= 0 : change <= 0;
   return (
-    <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+    <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]">
       <p className="text-sm text-zinc-500">{label}</p>
-      <p className="mt-1.5 text-3xl font-semibold tracking-tight text-zinc-900 tabular-nums">{value}</p>
-      <div className="mt-1 flex items-center gap-2 text-xs">
+      <p className="t-display mt-1.5 text-[32px] leading-none text-zinc-900 tabular-nums">{value}</p>
+      <div className="mt-2 flex items-center gap-2 text-xs">
         {show && (
           <span className={`rounded-full px-1.5 py-0.5 font-medium tabular-nums ${change == null ? "bg-zinc-100 text-zinc-500" : isGood ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
             {change == null ? "new" : `${change > 0 ? "+" : ""}${change}%`}
@@ -117,7 +124,7 @@ export function BarList({ rows, format = num, empty = "Nothing yet.", max = 12, 
         const href = hrefFor?.(r.label);
         const inner = (
           <>
-            <span className="absolute inset-y-0 left-0 rounded-md bg-zinc-100" style={{ width: `${Math.max(3, (r.value / top) * 100)}%` }} />
+            <span className="absolute inset-y-0 left-0 rounded-md bg-blue-50" style={{ width: `${Math.max(3, (r.value / top) * 100)}%` }} />
             <span className="relative min-w-0 flex-1 truncate" title={r.label}>
               {r.label || "(empty)"}
               {r.hint && <span className="ml-2 text-xs text-zinc-400">{r.hint}</span>}
@@ -142,7 +149,7 @@ export function BarList({ rows, format = num, empty = "Nothing yet.", max = 12, 
 }
 
 /** One bar per day; the label under the first, middle and last bar. */
-export function DailyBars({ series, format = num, color = "#18181b", height = 120 }: { series: { day: string; value: number }[]; format?: (n: number) => string; color?: string; height?: number }) {
+export function DailyBars({ series, format = num, color = "#1f3fd6", height = 120 }: { series: { day: string; value: number }[]; format?: (n: number) => string; color?: string; height?: number }) {
   const max = Math.max(...series.map((s) => s.value), 1);
   const total = series.reduce((a, s) => a + s.value, 0);
   if (!total) return <Empty>No data in this period yet.</Empty>;

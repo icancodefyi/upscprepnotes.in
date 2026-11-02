@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Mark } from "@/components/brand/Nav";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -104,12 +105,16 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "Insights",
     items: [
       { href: "/admin/tracking", label: "Traffic", icon: Icons.activity, exact: true },
+      { href: "/admin/tracking/audience", label: "Audience", icon: Icons.users },
+      { href: "/admin/tracking/acquisition", label: "Acquisition", icon: Icons.chart },
       { href: "/admin/tracking/demand", label: "Demand", icon: Icons.message },
       { href: "/admin/tracking/funnel", label: "Store funnel", icon: Icons.chart },
+      { href: "/admin/tracking/buyers", label: "Buyers", icon: Icons.award },
+      { href: "/admin/tracking/leads", label: "Leads", icon: Icons.mail },
+      { href: "/admin/tracking/ai", label: "AI mentor", icon: Icons.bot },
+      { href: "/admin/tracking/tech", label: "Technology", icon: Icons.settings },
       { href: "/admin/tracking/journeys", label: "Journeys", icon: Icons.users },
       { href: "/admin/tracking/live", label: "Live", icon: Icons.activity },
-      { href: "/admin/analytics", label: "Old analytics", icon: Icons.chart },
-      { href: "https://us.posthog.com", label: "PostHog", icon: Icons.chart, external: true },
     ],
   },
   {
@@ -133,6 +138,8 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "System",
     items: [
       { href: "/admin/ai", label: "AI chats", icon: Icons.bot },
+      { href: "/admin/analytics", label: "Old analytics", icon: Icons.chart },
+      { href: "https://us.posthog.com", label: "PostHog", icon: Icons.chart, external: true },
       { href: "/admin/settings", label: "Settings", icon: Icons.settings },
     ],
   },
@@ -162,51 +169,46 @@ export function AdminSidebar() {
   const sidebarContent = (
     <div className="flex h-full flex-col">
       {/* Brand */}
-      <div className="flex h-16 shrink-0 items-center gap-2.5 px-5 border-b border-zinc-100">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-xs font-bold text-white">
-          UP
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold tracking-tight text-zinc-900">Admin Panel</p>
-          <p className="text-[10px] text-zinc-400 truncate">UPSCPrepNotes</p>
-        </div>
+      <div className="flex h-[72px] shrink-0 items-center gap-2.5 px-5">
+        <Link href="/admin" className="flex min-w-0 flex-1 items-center gap-2.5" aria-label="Admin dashboard">
+          <Mark size={30} />
+          <span className="min-w-0">
+            <span className="block truncate text-m font-bold leading-tight tracking-[-0.02em] text-zinc-900">UPSCPrepNotes</span>
+            <span className="block text-s leading-tight text-zinc-400">Admin</span>
+          </span>
+        </Link>
         <button
           onClick={() => setMobileOpen(false)}
-          className="lg:hidden rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 transition"
+          className="lg:hidden rounded-full p-2 text-zinc-400 transition hover:bg-zinc-100"
+          aria-label="Close menu"
         >
           <Icons.close className="h-5 w-5" />
         </button>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 scrollbar-thin">
+      <nav className="flex-1 overflow-y-auto px-3 pb-4 scrollbar-thin">
         {navGroups.map((group) => (
-          <div key={group.label} className="mb-5">
-            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-              {group.label}
-            </p>
+          <div key={group.label} className="mb-4">
+            <p className="mb-1 px-3 text-s font-bold text-zinc-400">{group.label}</p>
             <div className="space-y-0.5">
               {group.items.map((item) => {
                 const active = !item.external && isActive(item);
                 const Icon = item.icon;
-                const linkProps = item.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {};
+                const linkProps = item.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     {...linkProps}
-                    className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-150 ${
-                      active
-                        ? "bg-emerald-50 text-emerald-700 font-medium"
-                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
+                    aria-current={active ? "page" : undefined}
+                    className={`group flex items-center gap-3 rounded-full px-3.5 py-2 text-sm transition-colors duration-150 ${
+                      active ? "bg-blue-50 font-bold text-blue-800" : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                     }`}
                   >
-                    <Icon className={`h-[18px] w-[18px] shrink-0 transition ${active ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"}`} />
+                    <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-blue-600" : "text-zinc-400 group-hover:text-zinc-600"}`} />
                     <span className="truncate">{item.label}</span>
                     {item.external && <Icons.external className="h-3 w-3 shrink-0 text-zinc-300 group-hover:text-zinc-500" />}
-                    {active && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" />}
                   </Link>
                 );
               })}
@@ -216,22 +218,13 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="shrink-0 border-t border-zinc-100 p-3 space-y-2">
-        <Link
-          href="/"
-          className="flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-3 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-        >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-          </svg>
-          <span>Back to Home</span>
+      <div className="shrink-0 space-y-2 p-3">
+        <Link href="/" className="btn btn-ink h-11 w-full justify-center [--btn-fs:14px]">
+          View site
         </Link>
-        <button
-          onClick={handleLogout}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 px-3 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-red-50 hover:text-red-600"
-        >
+        <button onClick={handleLogout} className="btn btn-paper h-11 w-full justify-center [--btn-fs:14px] hover:text-red-600">
           <Icons.logout className="h-4 w-4 shrink-0" />
-          <span>Logout</span>
+          Log out
         </button>
       </div>
     </div>
@@ -242,7 +235,7 @@ export function AdminSidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-30 flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-white shadow-sm transition hover:bg-zinc-50"
+        className="lg:hidden fixed top-3 left-3 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[0_0_0_1px_var(--line-2),0_4px_12px_-4px_rgba(11,12,16,0.2)] transition hover:bg-zinc-50"
         aria-label="Open menu"
       >
         <Icons.menu className="h-5 w-5 text-zinc-600" />
@@ -258,7 +251,7 @@ export function AdminSidebar() {
 
       {/* Mobile sidebar */}
       <aside
-        className={`lg:hidden fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl transition-transform duration-300 ease-out ${
+        className={`lg:hidden fixed top-0 left-0 z-50 h-full w-[272px] bg-white shadow-xl transition-transform duration-300 ease-out ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -266,7 +259,7 @@ export function AdminSidebar() {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed top-0 left-0 z-20 h-full w-64 border-r border-zinc-100 bg-white">
+      <aside className="hidden lg:flex fixed top-0 left-0 z-20 h-full w-[272px] border-r border-black/[0.07] bg-white">
         {sidebarContent}
       </aside>
     </>
