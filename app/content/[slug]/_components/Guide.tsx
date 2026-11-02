@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Outline from "@/components/brand/Outline";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ContentPage } from "@/data/content";
@@ -294,10 +295,12 @@ export default function Guide({
               </div>
 
               {/* Closing call to action (original copy) */}
-              <section className="rounded-[28px] bg-[var(--accent)] p-8 text-center text-white sm:p-12">
-                <h2 className="t-head mx-auto max-w-[22ch] text-l">{t.ctaFinal}</h2>
-                <p className="mx-auto mt-3 max-w-[34rem] text-m leading-[1.6] text-white/80">{t.ctaFinalSub}</p>
-                <Link href={t.ctaFinalHref} data-track="content-cta-final" className="mt-7 inline-flex h-12 items-center rounded-full bg-white px-7 text-m font-bold text-[var(--accent)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
+              <section className="relative overflow-hidden rounded-[28px] bg-[var(--accent)] p-8 text-center text-white sm:p-12">
+                <Outline kind="book" className="-left-8 -top-6 h-40 w-56 rotate-[-10deg] text-white/[0.09]" />
+                <Outline kind="pen" className="-bottom-8 -right-6 h-40 w-52 rotate-[10deg] text-white/[0.09]" />
+                <h2 className="t-head relative mx-auto max-w-[22ch] text-l">{t.ctaFinal}</h2>
+                <p className="relative mx-auto mt-3 max-w-[34rem] text-m leading-[1.6] text-white/80">{t.ctaFinalSub}</p>
+                <Link href={t.ctaFinalHref} data-track="content-cta-final" className="relative mt-7 inline-flex h-12 items-center rounded-full bg-white px-7 text-m font-bold text-[var(--accent)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5">
                   {t.ctaFinalBtn}
                 </Link>
               </section>
