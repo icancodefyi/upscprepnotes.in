@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { IconDownload, IconX, IconCheck, IconClock, IconStar, IconEye, IconLayoutKanban } from "@tabler/icons-react";
+import { createPortal } from "react-dom";
+import { IconDownload, IconX, IconCheck, IconClock } from "@tabler/icons-react";
+import { brandFonts } from "@/components/brand/fonts";
 
 interface FreeDownloadDialogProps {
   topperName: string;
@@ -79,109 +81,97 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
     setDownloaded(true);
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} aria-hidden="true" />
+  const input = "mt-1.5 h-12 w-full rounded-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none placeholder:text-[var(--muted)] focus:shadow-[0_0_0_2px_var(--accent)]";
+  const badge = "mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]";
+  const upsell = (title: string, line: string) => (
+    <div className="mt-5 rounded-[20px] bg-[#fffbe6] p-5 text-left">
+      <p className="text-m font-bold">{title}</p>
+      <p className="mt-1 text-s text-[var(--ink-2)]">{line}</p>
+      <button
+        type="button"
+        onClick={() => {
+          window.open("/store", "_blank");
+          onOpenChange(false);
+        }}
+        data-track="free-download-upsell"
+        className="btn btn-ink mt-3 h-11 w-full justify-center [--btn-fs:14px]"
+      >
+        Get the full compilation, ₹199 &rarr;
+      </button>
+      <p className="mt-2 text-s text-[var(--muted)]">7-day refund · Instant download</p>
+    </div>
+  );
+
+  const dialog = (
+    <div className={`up ${brandFonts} fixed inset-0 z-[70] flex items-end justify-center bg-transparent p-0 sm:items-center sm:p-4`}>
+      <div className="fixed inset-0 bg-[rgba(11,12,16,0.55)]" onClick={handleClose} aria-hidden="true" />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label={`Download ${topperName}'s answer copy`}
         tabIndex={-1}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card p-6 shadow-xl"
+        className="relative z-10 max-h-[92dvh] w-full max-w-[460px] overflow-y-auto rounded-t-[28px] bg-white p-6 pb-[max(24px,env(safe-area-inset-bottom))] shadow-[0_24px_60px_-20px_rgba(11,12,16,0.45)] sm:rounded-[28px] sm:p-8"
       >
         <button
+          type="button"
           onClick={handleClose}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"
+          className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full text-[var(--ink-2)] transition-colors hover:bg-[var(--canvas)]"
         >
           <IconX size={18} />
         </button>
 
         {!submitted ? (
           <>
-            <div className="text-center mb-5">
-              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
-                <IconDownload size={24} className="text-brand" />
-              </div>
-              <h2 className="text-lg font-semibold">Get {topperName}&apos;s Answer Copy</h2>
-              <p className="mt-1 text-xs text-muted-foreground">
-                See the exact handwriting, structure, and presentation that scored high marks in UPSC Mains.
-              </p>
-            </div>
+            <h2 className="t-head max-w-[18ch] pr-10 text-l">{`${topperName}'s answer copy, free`}</h2>
+            <p className="mt-3 text-s leading-[1.55] text-[var(--ink-2)]">
+              See the exact handwriting, structure and presentation that scored high marks in UPSC Mains.
+            </p>
+            <ul className="mt-4 space-y-1.5 text-s text-[var(--ink-2)]">
+              {["Real answer structure", "Handwriting and diagrams", "How they managed time"].map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <IconCheck size={16} className="shrink-0 text-[var(--accent)]" />
+                  {t}
+                </li>
+              ))}
+            </ul>
 
-            <div className="mb-5 grid grid-cols-3 gap-2">
-              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
-                <IconStar size={16} className="mx-auto text-brand" />
-                <p className="mt-1 text-[10px] font-medium leading-tight">Real answer structure</p>
-              </div>
-              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
-                <IconEye size={16} className="mx-auto text-brand" />
-                <p className="mt-1 text-[10px] font-medium leading-tight">Handwriting analysis</p>
-              </div>
-              <div className="rounded-lg bg-brand-muted p-2.5 text-center">
-                <IconLayoutKanban size={16} className="mx-auto text-brand" />
-                <p className="mt-1 text-[10px] font-medium leading-tight">Time management</p>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div>
-                <label htmlFor="free-download-email" className="text-xs font-medium">Email *</label>
-                <input
-                  id="free-download-email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  type="email"
-                  className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand"
-                  placeholder="Send the download link here"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="mt-6">
+              <label htmlFor="free-download-email" className="text-s font-bold">Your email</label>
+              <input
+                id="free-download-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                type="email"
+                autoComplete="email"
+                inputMode="email"
+                className={input}
+                placeholder="Where should we send the link?"
+              />
               {dialogError && (
-                <p className="text-xs text-destructive" role="alert">{dialogError}</p>
+                <p className="mt-2 text-s text-[var(--mark-deep)]" role="alert">{dialogError}</p>
               )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-full bg-brand py-3 text-sm font-bold text-brand-foreground hover:bg-brand/90 disabled:opacity-50 transition-all"
-              >
-                {loading ? "Sending..." : "Send My Free Copy →"}
+              <button type="submit" disabled={loading} className="btn btn-blue mt-4 h-12 w-full justify-center disabled:opacity-60 [--btn-fs:16px]">
+                {loading ? "Sending..." : "Send my free copy"}
               </button>
             </form>
-            <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
-              <span>🔒 Free download</span>
-              <span className="h-1 w-1 rounded-full bg-gray-300" />
-              <span>No spam</span>
-              <span className="h-1 w-1 rounded-full bg-gray-300" />
-              <span>Unsubscribe anytime</span>
-            </div>
+            <p className="mt-3 text-center text-s text-[var(--muted)]">Free · No spam · Unsubscribe anytime</p>
           </>
         ) : available ? (
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
-              <IconCheck size={24} className="text-brand" />
-            </div>
-            <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              We sent {pdfUrls.length > 1 ? `${pdfUrls.length} answer copies` : "the download link"} for <strong>{topperName}</strong> to <strong>{email}</strong>.
-            </p>
-            <p className="mt-2 text-xs text-brand font-medium">
-              ⚠️ If you don&apos;t see the email in a few minutes, check your <strong>Spam</strong> or <strong>Promotions</strong> folder — it may have landed there.
+            <div className={badge}><IconCheck size={26} /></div>
+            <h2 className="t-head mt-4 text-l">Check your inbox</h2>
+            <p className="mt-2 text-s leading-[1.55] text-[var(--ink-2)]">
+              We sent {pdfUrls.length > 1 ? `${pdfUrls.length} answer copies` : "the download link"} for <strong>{topperName}</strong> to <strong>{email}</strong>. If it isn&apos;t there in a few minutes, look in Spam or Promotions.
             </p>
             {pdfUrls.length > 0 && (
-              <div className="mt-4 space-y-2">
+              <div className="mt-5 flex flex-col gap-2">
                 {pdfUrls.map((url, i) => (
-                  <a
-                    key={url}
-                    href={url}
-                    download
-                    onClick={handleDownload}
-                    data-track="free-download-pdf"
-                    className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-sm font-bold text-brand-foreground hover:bg-brand/90 transition-colors"
-                  >
-                    <IconDownload size={14} />
-                    {pdfUrls.length > 1 ? `Download Copy ${i + 1}` : "Download Now"}
+                  <a key={url} href={url} download onClick={handleDownload} data-track="free-download-pdf" className="btn btn-blue h-12 justify-center [--btn-fs:16px]">
+                    <IconDownload size={16} />
+                    {pdfUrls.length > 1 ? `Download copy ${i + 1}` : "Download now"}
                   </a>
                 ))}
               </div>
@@ -190,57 +180,21 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               href="https://t.me/+2eV0YCTGdNcyNmFl"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl border-2 border-telegram/30 bg-telegram/10 px-4 py-2.5 text-xs font-semibold text-telegram transition hover:bg-telegram/20"
+              className="mt-3 flex h-11 items-center justify-center rounded-full text-s font-bold text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] transition-colors hover:bg-[var(--canvas)]"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              Join 100+ aspirants on Telegram for daily current affairs →
+              Join 100+ aspirants on Telegram for daily current affairs
             </a>
-            <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
-              <p className="text-xs font-bold">Want 50+ topper copies + 21 guides?</p>
-              <p className="text-xs text-muted-foreground mt-0.5">All papers — GS1-4, Essay, Optional. Just ₹199.</p>
-              <button
-                onClick={() => {
-                  window.open("/store", "_blank");
-                  onOpenChange(false);
-                }}
-                className="mt-2 w-full rounded-full bg-foreground px-4 py-2 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
-              >
-                Get the Complete Compilation →
-              </button>
-            </div>
+            {upsell("Want 50+ topper copies and 21 guides?", "All papers: GS1-4, Essay and Optional. Just ₹199.")}
           </div>
         ) : (
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-muted">
-              <IconClock size={24} className="text-brand" />
-            </div>
-            <h2 className="text-lg font-semibold">Check Your Inbox!</h2>
-            <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-              <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet right now — we&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready (usually within 24-48 hours).
+            <div className={badge}><IconClock size={26} /></div>
+            <h2 className="t-head mt-4 text-l">Check your inbox</h2>
+            <p className="mt-2 text-s leading-[1.55] text-[var(--ink-2)]">
+              <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet. We&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready, usually within 24-48 hours. Check Spam or Promotions if you don&apos;t see it.
             </p>
-            <p className="mt-2 text-xs text-brand font-medium">
-              ⚠️ Check your <strong>Spam</strong> or <strong>Promotions</strong> folder if you don&apos;t see it.
-            </p>
-            <div className="mt-4 rounded-xl border-2 border-brand/30 bg-brand-muted p-4">
-              <p className="text-xs font-bold">Don&apos;t wait — get 50+ copies now</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                50+ verified topper copies (GS1-4, Essay, Optional) + 21 strategy guides. Just ₹199.
-              </p>
-              <button
-                onClick={() => {
-                  window.open("/store", "_blank");
-                  onOpenChange(false);
-                }}
-                className="mt-2.5 w-full rounded-full bg-foreground px-4 py-2.5 text-xs font-bold text-background hover:bg-foreground/90 transition-colors"
-              >
-                Get the Full Compilation for ₹199 &rarr;
-              </button>
-              <p className="mt-1.5 text-[10px] text-muted-foreground">7-day refund · Instant download · Now ₹199.</p>
-            </div>
-            <button
-              onClick={() => onOpenChange(false)}
-              className="mt-3 w-full rounded-full border border-border px-4 py-2 text-xs text-muted-foreground hover:bg-secondary transition-colors"
-            >
+            {upsell("Don't wait, get 50+ copies now", "50+ verified topper copies (GS1-4, Essay, Optional) and 21 strategy guides. Just ₹199.")}
+            <button type="button" onClick={() => onOpenChange(false)} className="mt-3 h-11 w-full rounded-full text-s font-bold text-[var(--ink-2)] hover:bg-[var(--canvas)]">
               Close
             </button>
           </div>
@@ -248,4 +202,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       </div>
     </div>
   );
+
+  return typeof document === "undefined" ? null : createPortal(dialog, document.body);
 }

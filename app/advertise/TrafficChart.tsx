@@ -93,8 +93,8 @@ export default function TrafficChart({
             <stop offset="100%" stopColor="#1f3fd6" stopOpacity="0.01" />
           </linearGradient>
           <linearGradient id="advAreaGradDark" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.65 0.18 158)" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="oklch(0.65 0.18 158)" stopOpacity="0.03" />
+            <stop offset="0%" stopColor="oklch(0.55 0.2 265)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="oklch(0.55 0.2 265)" stopOpacity="0.03" />
           </linearGradient>
         </defs>
 

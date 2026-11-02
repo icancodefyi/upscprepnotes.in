@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
+import { brandFonts } from "@/components/brand/fonts";
 
 type FeedbackType = "complaint" | "suggestion" | "bug" | "correction" | "other";
 
@@ -72,104 +74,56 @@ export default function FeedbackDialog({
     setError("");
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:p-4">
-      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 flex max-h-[85vh] w-full flex-col rounded-t-2xl bg-white shadow-2xl sm:max-h-[80vh] sm:max-w-lg sm:rounded-2xl mx-auto">
-        <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
-          <h3 className="text-sm font-semibold text-zinc-800">
-            {sent ? "Thanks!" : "Send feedback"}
-          </h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md p-1 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition"
-            aria-label="Close"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+  const field = "mt-1.5 w-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none placeholder:text-[var(--muted)] focus:shadow-[0_0_0_2px_var(--accent)]";
+  const dialog = (
+    <div className={`up ${brandFonts} fixed inset-0 z-[70] flex items-end justify-center bg-transparent sm:items-center sm:p-4`}>
+      <div className="fixed inset-0 bg-[rgba(11,12,16,0.55)]" onClick={onClose} aria-hidden="true" />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Send feedback"
+        className="relative z-10 flex max-h-[92dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-t-[28px] bg-white shadow-[0_24px_60px_-20px_rgba(11,12,16,0.45)] sm:rounded-[28px]"
+      >
+        <div className="flex items-center justify-between px-6 pb-2 pt-6 sm:px-8 sm:pt-8">
+          <h3 className="t-head text-l">{sent ? "Thank you" : "Send feedback"}</h3>
+          <button type="button" onClick={onClose} aria-label="Close" className="grid h-10 w-10 place-items-center rounded-full text-[var(--ink-2)] transition-colors hover:bg-[var(--canvas)]">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
         {sent ? (
-          <div className="flex flex-col items-center px-5 py-12 text-center">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e3e8fb]">
-              <svg className="h-6 w-6 text-[#1f3fd6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+          <div className="px-6 pb-8 pt-4 text-center sm:px-8">
+            <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M5 13l4 4L19 7" /></svg>
             </div>
-            <p className="text-sm font-medium text-zinc-800">We got your message</p>
-            <p className="mt-1 text-xs text-zinc-500">We review all feedback and respond within 2-3 business days if needed.</p>
-            <button
-              type="button"
-              onClick={() => { handleReset(); onClose(); }}
-              className="mt-6 rounded-lg border border-zinc-200 px-4 py-2 text-sm text-zinc-600 hover:bg-zinc-50 transition"
-            >
-              Done
-            </button>
+            <p className="mt-4 text-m font-bold">We got your message</p>
+            <p className="mt-1 text-s text-[var(--ink-2)]">We read all feedback and reply within 2-3 business days when needed.</p>
+            <button type="button" onClick={() => { handleReset(); onClose(); }} className="btn btn-ink mt-6 h-11 justify-center px-8 [--btn-fs:14px]">Done</button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+          <form onSubmit={handleSubmit} className="flex-1 space-y-4 overflow-y-auto px-6 pb-[max(24px,env(safe-area-inset-bottom))] pt-3 sm:px-8 sm:pb-8">
             <div>
-              <label className="text-xs font-medium text-zinc-500">Type</label>
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value as FeedbackType)}
-                className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-zinc-400 focus:outline-none"
-              >
+              <label className="text-s font-bold">What is it about?</label>
+              <select value={type} onChange={(e) => setType(e.target.value as FeedbackType)} className={`${field} h-12 rounded-full`}>
                 {FEEDBACK_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
                 ))}
               </select>
             </div>
-
             <div>
-              <label className="text-xs font-medium text-zinc-500">
-                Name <span className="text-zinc-300">(optional)</span>
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
-                className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 placeholder:text-zinc-300 focus:border-zinc-400 focus:outline-none"
-              />
+              <label className="text-s font-bold">Name <span className="font-normal text-[var(--muted)]">(optional)</span></label>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" className={`${field} h-12 rounded-full`} />
             </div>
-
             <div>
-              <label className="text-xs font-medium text-zinc-500">Email <span className="text-red-400">*</span></label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 placeholder:text-zinc-300 focus:border-zinc-400 focus:outline-none"
-              />
+              <label className="text-s font-bold">Email</label>
+              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" inputMode="email" className={`${field} h-12 rounded-full`} />
             </div>
-
             <div>
-              <label className="text-xs font-medium text-zinc-500">Message <span className="text-red-400">*</span></label>
-              <textarea
-                required
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Tell us what's on your mind..."
-                rows={5}
-                className="mt-1 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 placeholder:text-zinc-300 focus:border-zinc-400 focus:outline-none resize-none"
-              />
+              <label className="text-s font-bold">Message</label>
+              <textarea required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Tell us what's on your mind" rows={5} className={`${field} resize-none rounded-[24px] py-3.5`} />
             </div>
-
-            {error && (
-              <p className="text-xs text-red-500">{error}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={sending || !email.trim() || !message.trim()}
-              className="w-full rounded-xl bg-zinc-800 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            {error && <p className="text-s text-[var(--mark-deep)]" role="alert">{error}</p>}
+            <button type="submit" disabled={sending || !email.trim() || !message.trim()} className="btn btn-blue h-12 w-full justify-center disabled:opacity-50 [--btn-fs:16px]">
               {sending ? "Sending..." : "Send feedback"}
             </button>
           </form>
@@ -177,4 +131,6 @@ export default function FeedbackDialog({
       </div>
     </div>
   );
+
+  return typeof document === "undefined" ? null : createPortal(dialog, document.body);
 }
