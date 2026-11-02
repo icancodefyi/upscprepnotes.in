@@ -6,6 +6,7 @@ import upscFreeMaterial from "@/data/content/upsc-free-material";
 import upscFullFormHindi from "@/data/content/upsc-full-form-hindi";
 import answerWriting from "@/data/content/how-to-write-upsc-mains-answers";
 import BrandShell from "@/components/brand/BrandShell";
+import Outline from "@/components/brand/Outline";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -104,12 +105,13 @@ export default async function ResourcesPage() {
         </div>
 
         {/* Bonus section */}
-        <section className="mt-14 rounded-[24px] bg-[#e9edff] p-6 sm:p-8">
-          <h2 className="t-head text-l">Not What You&apos;re Looking For?</h2>
-          <p className="mt-2 text-m leading-[1.6] text-[var(--ink-2)]">
+        <section className="relative mt-14 overflow-hidden rounded-[24px] bg-[#e9edff] p-6 sm:p-8">
+          <Outline kind="book" className="-right-6 -top-6 h-40 w-56 rotate-[10deg] text-[var(--accent)]/[0.10]" />
+          <h2 className="t-head relative text-l">Not What You&apos;re Looking For?</h2>
+          <p className="relative mt-2 text-m leading-[1.6] text-[var(--ink-2)]">
             These pages cover fundamentals and free resources. If you&apos;re ready to practice with actual topper answer copies, check out the compilation.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="relative mt-6 flex flex-wrap gap-2">
             <Link href="/free-materials" data-track="resources-free-materials" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">Free Study Material →</Link>
             <Link href="/toppers" data-track="resources-browse-toppers" className="btn btn-ink h-11 px-5 [--btn-fs:14px]">Browse Toppers →</Link>
             <Link href="/store" data-track="resources-view-bundle" className="btn btn-paper h-11 px-5 [--btn-fs:14px]">Browse Store →</Link>
