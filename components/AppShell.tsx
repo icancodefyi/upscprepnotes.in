@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { brandFonts } from "@/components/brand/fonts";
 import Tracker from "@/components/Tracker";
+import ConsentBanner from "@/components/ConsentBanner";
+import { getConsent, onConsentChange } from "@/lib/consent";
 
 /**
  * Root client shell. Every page brings its own frame (components/brand/BrandShell, or the admin layout),
@@ -10,11 +13,15 @@ import Tracker from "@/components/Tracker";
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  // Restart the tracker when the visitor makes their choice, so the current page is counted too.
+  const [consent, setConsentState] = useState("");
+  useEffect(() => onConsentChange(() => setConsentState(getConsent() ?? "")), []);
 
   if (pathname?.startsWith("/ask")) {
     return (
       <div className={`ask-brand ${brandFonts} h-screen overflow-hidden bg-white`}>
-        <Tracker />
+        <Tracker key={consent} />
+        <ConsentBanner />
         <div className="flex h-full flex-col overflow-hidden">{children}</div>
       </div>
     );
@@ -22,7 +29,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Tracker />
+      <Tracker key={consent} />
+      <ConsentBanner />
       {children}
     </>
   );

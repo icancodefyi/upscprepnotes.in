@@ -6,6 +6,7 @@ Every user interaction we need for curation goes into one MongoDB collection, **
 - **Browser:** `components/Tracker.tsx` (mounted once in `AppShell`) captures interactions globally; `lib/track.ts` queues them and sends batches to `POST /api/track` every 4 seconds, at 20 events, and with `sendBeacon` when the tab hides.
 - **Server:** `lib/tracking/server.ts` → `trackServer()` writes checkout and payment events directly.
 - **Production only:** the browser does not send, and `/api/track` + `trackServer` do not write, unless `NODE_ENV=production` (and, on Vercel, `VERCEL_ENV=production`, so previews are excluded). Dev and local runs never record (`lib/tracking/env.ts`).
+- **Consent:** the browser records nothing until the visitor taps Accept on the notice (`components/ConsentBanner.tsx`, choice in `localStorage._consent`, `lib/consent.ts`). The choice can be changed on `/privacy-policy`. The `_vid` cookie is functional (Ask AI history) and is set regardless; server-side order events are business records.
 - **Not recorded:** bots and crawlers, `/admin`, localhost, visitors with Do Not Track or Global Privacy Control, and your own browser after you open any page with `?optex=1` (`?optex=0` re-enables).
 - **Privacy:** emails and phone numbers are stripped from all free text; password, email and phone fields are never read as text; IPs are stored only as a salted hash (`TRACKING_SALT`, falls back to `AUTH_SECRET`). An email is stored only on `identify`, in its own field. Events expire after about 13 months.
 

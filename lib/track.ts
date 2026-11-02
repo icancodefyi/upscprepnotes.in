@@ -1,5 +1,7 @@
 "use client";
 
+import { getConsent } from "@/lib/consent";
+
 /**
  * Browser side of the `tracking` collection. `track()` queues an event; the queue is sent in batches
  * to /api/track every few seconds, when it reaches 20 events, and with sendBeacon when the page hides.
@@ -26,6 +28,11 @@ const ATTR_PARAMS: [string, string][] = [
 ];
 
 /** Anonymous browser id (cookie `_vid`, one year) and per-tab session id. */
+/** True once the visitor has accepted analytics. */
+export function hasConsent(): boolean {
+  return typeof window !== "undefined" && getConsent() === "yes";
+}
+
 export function getVisitorId(): string {
   try {
     const match = document.cookie.match(/(?:^|;\s*)_vid=([^;]*)/);
@@ -52,11 +59,12 @@ export function getSessionId(): string {
 }
 
 /**
- * Tracking runs only on the live site: production build, not localhost, not /admin, not Do Not Track / GPC.
+ * Tracking runs only on the live site, after the visitor accepts the notice (lib/consent.ts): production build, not localhost, not /admin, not Do Not Track / GPC.
  * Open any page with ?optex=1 to exclude your own browser (?optex=0 switches it back on).
  */
 function enabled() {
   if (typeof window === "undefined") return false;
+  if (getConsent() !== "yes") return false;
   if (process.env.NODE_ENV !== "production") return false;
   if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname)) return false;
   if (window.location.pathname.startsWith("/admin")) return false;
@@ -82,7 +90,7 @@ function read(store: Storage | undefined, key: string): Record<string, string> |
 
 /** Remember where this session (and this visitor, ever) came from. Call once on load. */
 export function captureAttribution() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || getConsent() !== "yes") return;
   try {
     const q = new URLSearchParams(window.location.search);
     const found: Record<string, string> = {};
