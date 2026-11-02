@@ -1,3 +1,4 @@
+import { PRODUCTS } from "@/lib/store-products";
 export interface TopperData {
   name: string;
   rank: string;
@@ -28,7 +29,7 @@ export const FAQS = [
   { q: "How is this different from free answer copies on Telegram?", a: "Free copies are scattered, unverified, and low-quality scans. This is a curated compilation organized by paper and marks — with original strategy guides, examiner commentary, and AI access that no free source provides." },
   { q: "How will I receive the files?", a: "After payment verification, we email you a download link. The compilation comes as a single ZIP file organized by paper (GS1–4, Essay, Optional). You get lifetime access and free updates." },
   { q: "What if I am not satisfied?", a: "Email us within 7 days of receiving the download link. We will refund your payment. No questions asked." },
-  { q: "Can I pay via GPay or PhonePe?", a: 'Yes. Tap the "Pay ₹99" button anywhere on the page to open your UPI app. You can also manually pay to rakhangezaid8@pingpay via GPay, PhonePe, or any UPI app.' },
+  { q: "Can I pay via GPay or PhonePe?", a: 'Yes. The secure checkout accepts UPI (GPay, PhonePe, Paytm and any UPI app), cards and net banking, and the download link is emailed right after payment.' },
 ];
 
 export const FEATURES = [
@@ -45,4 +46,4 @@ export const WHATSAPP_NUMBER = "919152750079";
 export const UPI_ID = "rakhangezaid8@pingpay";
 export const SITE = "upscprepnotes.in";
 export const TIER = "Offer";
-export const PRICE = 99;
+export const PRICE = PRODUCTS.find((p) => p.slug === "all-strategy-reports")?.price ?? 199;

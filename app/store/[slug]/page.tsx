@@ -68,29 +68,6 @@ export default async function ProductPage({
     },
   };
 
-  if (product.rating && product.reviewCount) {
-    productSchema.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-      bestRating: 5,
-    };
-    productSchema.review = [
-      {
-        "@type": "Review",
-        reviewRating: {
-          "@type": "Rating",
-          ratingValue: product.rating,
-          bestRating: 5,
-        },
-        author: {
-          "@type": "Organization",
-          name: "UPSCPrepNotes",
-        },
-      },
-    ];
-  }
-
   return (
     <BrandShell>
       <BreadcrumbSchema

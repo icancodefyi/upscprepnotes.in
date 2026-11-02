@@ -35,7 +35,7 @@ const FAQS = [
   },
   {
     q: "Can I download answer copies?",
-    a: "Free sample answer copies are available for many toppers. The full compilation (50+ toppers, all GS papers + essay) is a paid product at Rs 799.",
+    a: "Free sample answer copies are available for many toppers. The full compilation (50+ toppers, all GS papers + essay) is a paid product at Rs 199.",
   },
   {
     q: "How does the AI tutor work?",

@@ -164,13 +164,13 @@ None of these replace the All India Rank benchmark or structured mentor access a
   ctaMid:
     "Want to see how 50+ real toppers structured their Mains answers before you pay for a test series evaluation?",
   ctaMidSub: "The full answer copy compilation includes GS, Essay, and Optional answers from AIR 1-50+.",
-  ctaMidBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaMidBtn: "Get the Answer Copy Compilation — ₹199",
   ctaMidHref: "/store/answer-copies-compilation",
 
   ctaFinal:
     "Before you commit ₹20,000+ to a Mains test series, see exactly how toppers wrote the answers that scored.",
-  ctaFinalSub: "50+ topper answer copies across GS papers, Essay, and Optional — ₹799.",
-  ctaFinalBtn: "Get the Answer Copy Compilation — ₹799",
+  ctaFinalSub: "50+ topper answer copies across GS papers, Essay, and Optional — ₹199.",
+  ctaFinalBtn: "Get the Answer Copy Compilation — ₹199",
   ctaFinalHref: "/store/answer-copies-compilation",
 
   relatedPages: [

@@ -114,7 +114,7 @@ export default function AboutPage() {
           Because nobody had done it. Topper data was scattered across interview transcripts, coaching site articles, and random PDFs. No single place had it organized in a way you could actually analyze. So I built one.
         </p>
         <p className="leading-8 text-zinc-700">
-          Everything is free except the answer copy compilation (₹99). I am not a coaching institute, a test series provider, or a content mill. I am just someone who got obsessed with UPSC data and built a site around it.
+          Everything is free except the answer copy compilation (₹199). I am not a coaching institute, a test series provider, or a content mill. I am just someone who got obsessed with UPSC data and built a site around it.
         </p>
       </section>
 
@@ -139,7 +139,7 @@ export default function AboutPage() {
           <div>
             <h3 className="text-lg font-semibold">Is this free?</h3>
             <p className="mt-2 leading-8 text-zinc-700">
-              Yes. Profiles, strategies, year archives, optional hubs, PYQs, AI assistant — all free. Only the answer copy compilation costs ₹99 because verifying those copies takes real work.
+              Yes. Profiles, strategies, year archives, optional hubs, PYQs, AI assistant — all free. Only the answer copy compilation costs ₹199 because verifying those copies takes real work.
             </p>
           </div>
 

@@ -135,7 +135,7 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
           <section className="mt-20 rounded-[28px] bg-[var(--ink)] p-8 text-center text-white sm:p-12">
             <h2 className="t-head text-l">Want Actual Topper Answer Copies Too?</h2>
             <p className="mx-auto mt-3 max-w-md text-m leading-[1.6] text-white/70">
-              The ₹799 compilation includes 50+ verified topper answer copies plus 21 strategy guides.
+              The ₹199 compilation includes 50+ verified topper answer copies plus 21 strategy guides.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <Link href="/store" data-track="pdf-hub-cta" className="btn btn-blue">

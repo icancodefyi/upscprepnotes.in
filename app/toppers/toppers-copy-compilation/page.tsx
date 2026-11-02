@@ -4,16 +4,16 @@ import type { Metadata } from "next";
 import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata: Metadata = {
-  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹99 Launch Sale | UPSCPrepNotes",
+  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹199 | UPSCPrepNotes",
   description:
-    "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹99 during the launch sale. Pay via UPI. 7-day refund.",
+    "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹199. Pay by UPI or card. 7-day refund.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
   },
   openGraph: {
     title: "UPSC Topper Answer Copy Compilation — 50+ Copies + 21 Guides",
     description:
-      "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹99 during the launch sale. 7-day refund.",
+      "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹199. 7-day refund.",
     url: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
     images: [{ url: "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80", width: 1200, height: 900 }],
   },
@@ -69,12 +69,6 @@ const productSchema = {
         },
       },
     },
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    bestRating: "5",
-    ratingCount: "2300",
   },
   category: "UPSC Preparation Materials",
   audience: {
@@ -132,7 +126,7 @@ const faqSchema = {
       name: "Can I pay via GPay or PhonePe?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: 'Yes. Pay directly via UPI to rakhangezaid8@pingpay through GPay, PhonePe, or any UPI app. The compilation costs ₹799 and you receive the download link via email within 2 hours.',
+        text: 'Yes. The secure checkout accepts UPI (GPay, PhonePe, Paytm and any UPI app), cards and net banking. The compilation costs ₹199 and the download link is emailed to you right after payment.',
       },
     },
   ],

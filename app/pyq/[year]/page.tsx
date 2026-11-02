@@ -364,17 +364,13 @@ export default async function PYQYearPage({ params }: Props) {
 
               <div className="mt-6 border-t border-[var(--line)] pt-6">
                 <div className="rounded-[18px] bg-[var(--canvas)] p-5">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-[var(--hl)] px-2 py-0.5 text-s font-bold text-[var(--hl-ink)]">₹799 Launch</span>
-                    <span className="text-s text-[var(--muted)] line-through">₹4,999</span>
-                  </div>
                   <h4 className="mt-2 text-m font-bold">Complete Compilation</h4>
                   <p className="mt-1 text-s text-[var(--ink-2)]">21 strategy guides + topper copies + interview prep. Everything in one pack.</p>
                   <Link href="/free-materials" data-track="pyq-sidebar-free-materials" className="mt-4 flex items-center justify-between rounded-[12px] bg-white px-3 py-2.5 text-s font-bold text-[var(--accent)] shadow-[0_0_0_1px_var(--line-2)]">
                     Free Study Material <span aria-hidden>→</span>
                   </Link>
                   <Link href="/store" data-track="pyq-sidebar-bundle" className="btn btn-ink mt-2 h-11 w-full justify-center [--btn-fs:14px]">
-                    Browse Store — ₹799 →
+                    Browse Store — ₹199 →
                   </Link>
                 </div>
               </div>

@@ -20,7 +20,6 @@ import ReactMarkdown from "react-markdown";
 import { getRelatedToppers, getToppersByRank, getToppersByYear } from "@/services/topper.service";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
-import ExitPopup from "@/components/topper/ExitPopup";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
 
 export const revalidate = 3600;
@@ -476,7 +475,6 @@ export default async function TopperPage({ params }: Props) {
         </div>
       </div>
       <StickyCopyBar label={copyLabel} note={copyNote} />
-      <ExitPopup />
     </BrandShell>
   );
 }

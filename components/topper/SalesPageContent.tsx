@@ -26,7 +26,7 @@ export default function SalesPageContent() {
             <br />
             <span className="text-[var(--accent)]">presentation &amp; structure</span>
           </h1>
-          <p className="mt-5 max-w-md text-m leading-[1.6] text-[var(--ink-2)]">Starting at ₹99. Instant download · 7-day refund guarantee.</p>
+          <p className="mt-5 max-w-md text-m leading-[1.6] text-[var(--ink-2)]">Starting at ₹49. Instant download · 7-day refund guarantee.</p>
           <div className="mt-7">
             <Link href="/store" className="btn btn-blue">
               Shop Now &rarr;
@@ -63,7 +63,7 @@ export default function SalesPageContent() {
       {/* TOPPER GRID */}
       <section id="toppers" className="mx-auto mt-24 max-w-[1120px] px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="t-head text-l">Starting at ₹99</h2>
+          <h2 className="t-head text-l">Starting at ₹49</h2>
           <p className="mt-1 text-s text-[var(--muted)]">Who is inside</p>
           <p className="mt-3 text-m text-[var(--ink-2)]">Instant download · 7-day refund guarantee.</p>
         </div>
@@ -90,7 +90,7 @@ export default function SalesPageContent() {
       {/* WHAT YOU GET */}
       <section className="mx-auto mt-24 max-w-[1120px] px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="t-head text-l">Starting at ₹99</h2>
+          <h2 className="t-head text-l">Starting at ₹49</h2>
           <p className="mt-1 text-s text-[var(--muted)]">Offer</p>
           <p className="mt-3 text-m text-[var(--ink-2)]">Instant download · 7-day refund guarantee.</p>
         </div>
@@ -98,7 +98,7 @@ export default function SalesPageContent() {
           <div className="text-center">
             <span className="inline-block rounded-full bg-[var(--hl)] px-3 py-1 text-s font-bold text-[var(--hl-ink)]">Offer</span>
             <p className="t-display tab mt-4 text-h1">₹99</p>
-            <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹99 · Instant download</p>
+            <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹49 · Instant download</p>
           </div>
           <ul className="mt-6 space-y-3 border-t border-[var(--line)] pt-6">
             {FEATURES.map((f) => (
@@ -124,7 +124,7 @@ export default function SalesPageContent() {
           <p id="samples-success" className="mt-2 hidden text-center text-s font-bold text-[#172fa3]">Check your inbox — we sent 3 free guides!</p>
           <p id="samples-error" className="mt-2 hidden text-center text-s text-[var(--mark-deep)]"></p>
           <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-s text-[var(--muted)]">
-            {["7-day refund", "Starting at ₹99", "Card / UPI"].map((t) => (
+            {["7-day refund", "Starting at ₹49", "Card / UPI"].map((t) => (
               <li key={t} className="flex items-center gap-1.5">
                 <span aria-hidden className="font-bold text-[var(--accent)]">&#10003;</span>
                 {t}

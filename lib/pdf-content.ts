@@ -198,7 +198,7 @@ export function generateFAQs(p: PDFMeta): Array<{ q: string; a: string }> {
       },
       {
         q: `Do I need to pay for these test papers?`,
-        a: `No — all ${totalItems} test papers in this collection are available for free download. Click the download button next to each paper to save it. If you want verified topper answer copies with real scores, check the ₹799 bundle.`,
+        a: `No — all ${totalItems} test papers in this collection are available for free download. Click the download button next to each paper to save it. If you want verified topper answer copies with real scores, check the ₹199 bundle.`,
       },
       {
         q: `Can I use these for answer writing practice?`,

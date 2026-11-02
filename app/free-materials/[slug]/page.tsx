@@ -309,8 +309,8 @@ export default async function PDFDetailPage({ params }: Props) {
               <section className="flex flex-col gap-4 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
                 <div>
                   <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">Offer</span>
-                  <h2 className="t-head mt-3 text-l">Starting at ₹99</h2>
-                  <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹99 · Instant download.</p>
+                  <h2 className="t-head mt-3 text-l">Starting at ₹49</h2>
+                  <p className="mt-1 text-s text-[var(--muted)]">Starting at ₹49 · Instant download.</p>
                 </div>
                 <Link href="/store" data-track={`pdf-upsell-${p.slug}`} className="btn btn-blue shrink-0 self-start sm:self-center">
                   Shop Now &rarr;

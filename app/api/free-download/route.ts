@@ -68,7 +68,7 @@ async function sendUnavailableEmail(email: string, topperName: string) {
           <p style="margin:0 0 14px;font-size:13px;color:#172fa3">50+ verified copies (GS1–4, Essay, Optional) + 21 strategy guides.<br/>Just <strong>₹99</strong> during the launch sale (84% off, ends soon).</p>
           <a href="https://upscprepnotes.in/store" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">Get the Full Compilation for ₹99 →</a>
         </div>
-        <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">7-day refund · Instant download · Price returns to ₹799 after the sale</p>
+        <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">7-day refund · Instant download</p>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
           <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
             📬 Join 100+ aspirants on Telegram for daily current affairs →

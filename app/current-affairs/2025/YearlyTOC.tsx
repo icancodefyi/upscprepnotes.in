@@ -96,8 +96,8 @@ export default function YearlyTOC() {
           <div className="mt-3 space-y-2">
             {[
               { href: "/store/top-10-rankers-strategy", t: "Top 10 Rankers Strategy", d: "Compiled strategies · ₹299" },
-              { href: "/store/answer-copies-compilation", t: "Answer Copies Compilation", d: "60+ topper answer copies · ₹799" },
-              { href: "/store/all-strategy-reports", t: "Complete Strategy Bundle", d: "280+ toppers · ₹799" },
+              { href: "/store/answer-copies-compilation", t: "Answer Copies Compilation", d: "60+ topper answer copies · ₹199" },
+              { href: "/store/all-strategy-reports", t: "Complete Strategy Bundle", d: "280+ toppers · ₹199" },
             ].map((x) => (
               <Link key={x.href} href={x.href} className="block rounded-[14px] bg-[var(--canvas)] p-3 hover:bg-[#e9edff]">
                 <p className="text-s font-bold leading-tight">{x.t}</p>

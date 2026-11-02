@@ -66,8 +66,8 @@ All free, all accessible without any registration.`,
 This is completely free, no login required, no daily limits.`,
     },
     {
-      heading: "Free vs Paid — What You Get for ₹799",
-      body: `| Resource | Free | Compilation (₹799) |
+      heading: "Free vs Paid — What You Get for ₹199",
+      body: `| Resource | Free | Compilation (₹199) |
 |----------|------|---------------|
 | Topper Profiles (280+) | ✅ Full access | ✅ Included |
 | PYQ Papers (2023-2025) | ✅ Full access | ✅ Included |
@@ -87,7 +87,7 @@ This is completely free, no login required, no daily limits.`,
 ✅ **Ethics Case Studies** — 50+ solved case studies with step-by-step frameworks  
 ✅ **Value-Addition Data** — Key schemes, Supreme Court judgments, maps, diagrams  
 
-At **₹799** (launch price, moving to ₹4,999), this compilation replaces months of hunting for scattered resources online. The free material covers strategy and reference — the compilation gives you the **actual answer sheets** that no free resource provides.`,
+At **₹199**, this compilation replaces months of hunting for scattered resources online. The free material covers strategy and reference — the compilation gives you the **actual answer sheets** that no free resource provides.`,
     },
   ],
   relatedPages: [

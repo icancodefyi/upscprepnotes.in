@@ -29,7 +29,7 @@ const page: ContentPage = {
     },
     {
       heading: "How Much Do Verified Topper Answer Copy Compilations Cost?",
-      body: 'Verified topper answer copy compilations typically range from ₹499 to ₹1,499 depending on the number of copies, included resources, and organization quality. The UPSCPrepNotes compilation costs ₹799 (approximately ₹11 per copy) and includes 50+ answer copy PDFs, 21 strategy guides, interview preparation pack, ethics case studies, and AI assistant access — delivered via email within 2 hours of payment. Individual copies from coaching platforms are priced higher per copy, while free resources on Telegram and coaching sites offer limited, unorganized selections. A paid compilation provides lifetime access, free updates, organized folders by paper, and verified authenticity — making it significantly more useful for focused preparation.',
+      body: 'Verified topper answer copy compilations typically range from ₹499 to ₹1,499 depending on the number of copies, included resources, and organization quality. The UPSCPrepNotes compilation costs ₹199 (approximately ₹11 per copy) and includes 50+ answer copy PDFs, 21 strategy guides, interview preparation pack, ethics case studies, and AI assistant access — delivered via email within 2 hours of payment. Individual copies from coaching platforms are priced higher per copy, while free resources on Telegram and coaching sites offer limited, unorganized selections. A paid compilation provides lifetime access, free updates, organized folders by paper, and verified authenticity — making it significantly more useful for focused preparation.',
     },
     {
       heading: "How to Use Topper Answer Copies Effectively for UPSC Mains?",
@@ -82,15 +82,15 @@ const page: ContentPage = {
 
   ctaIntro:
     "Ready to study real topper answer copies? Get 50+ verified handwritten copies organized by paper.",
-  ctaIntroBtn: "Get the Compilation — ₹799",
+  ctaIntroBtn: "Get the Compilation — ₹199",
   ctaMid:
     "Access 50+ actual UPSC answer sheets from AIR 1–1249 in one organized compilation.",
   ctaMidSub: "GS1–4, Essay, Optional — all included. ₹11 per copy.",
-  ctaMidBtn: "Buy Now — ₹799",
+  ctaMidBtn: "Buy Now — ₹199",
   ctaFinal:
     "Start improving your answer writing today with real topper copies.",
   ctaFinalSub: "72 resources including 50+ answer copy PDFs, 21 strategy guides, and AI assistant access.",
-  ctaFinalBtn: "Get Instant Access — ₹799",
+  ctaFinalBtn: "Get Instant Access — ₹199",
 
   relatedPages: [
     {

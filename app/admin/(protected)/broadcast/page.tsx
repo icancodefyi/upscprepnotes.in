@@ -150,7 +150,7 @@ export default function BroadcastPage() {
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-zinc-400"
-            placeholder="Great Weekend Sale — Starting at ₹99"
+            placeholder="Great Weekend Sale — Starting at ₹49"
           />
         </div>
 
