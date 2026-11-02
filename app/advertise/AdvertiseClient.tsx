@@ -138,7 +138,7 @@ export default function AdvertiseClient() {
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   useEffect(() => {
-    fetch("/api/analytics/stats?days=30")
+    fetch("/api/public-stats")
       .then((r) => r.json())
       .then((data) => {
         if (data.success && data.stats) {

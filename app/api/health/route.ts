@@ -19,9 +19,6 @@ export async function GET() {
   checks.dodoApiKey = process.env.DODO_API_KEY ? "set" : "missing";
   if (!process.env.DODO_API_KEY) healthy = false;
 
-  // PostHog
-  checks.posthog = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ? "set" : "missing";
-
   // Pending orders (stuck > 1 hour)
   try {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);

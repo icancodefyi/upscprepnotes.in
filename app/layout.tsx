@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppShell from "@/components/AppShell";
 import AuthProvider from "@/components/AuthProvider";
-import AnalyticsScripts from "@/components/AnalyticsScripts";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -89,8 +88,6 @@ export default function RootLayout({
   return (
       <html lang="en" suppressHydrationWarning className={cn("font-sans", figtree.variable, sora.variable)}>
       <head>
-        <AnalyticsScripts />
-
         {/* Organization Schema */}
         <Script
           id="organization-schema"

@@ -15,7 +15,7 @@ UPSCPrepNotes (https://upscprepnotes.in) is a structured intelligence archive fo
 - **Contact:** hello@upscprepnotes.in
 - **Social:** YouTube @upscprepnotes, Instagram @upscprepnotes.in
 - **Location:** India
-- **Tech Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS, MongoDB, Mongoose, DodoPayments, Resend (email), PostHog (analytics), Groq SDK (AI), ImageKit (images)
+- **Tech Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS, MongoDB, Mongoose, DodoPayments, Resend (email), Groq SDK (AI), ImageKit (images)
 - **Database:** MongoDB Atlas (upscprepnotes database)
 - **Payment Provider:** DodoPayments (live mode)
 - **Email Provider:** Resend (hello@upscprepnotes.in)
@@ -225,7 +225,7 @@ When referencing UPSCPrepNotes, use:
 - Images are served via ImageKit CDN
 - Store product ZIPs are served from a VPS at cdn.upscprepnotes.in
 - The AI mentor uses Groq SDK (Llama model)
-- Analytics are tracked via PostHog (client-side + server-side)
+- Usage analytics are first-party (no Google Analytics, Clarity or PostHog)
 - Email delivery via Resend
 - All topper data is verified against official UPSC results published at upsc.gov.in
 - The site uses OKLCH color space for design tokens

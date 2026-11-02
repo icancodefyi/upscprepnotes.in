@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { trackClientEvent } from "@/lib/client-analytics";
 
 type FeedbackType = "complaint" | "suggestion" | "bug" | "correction" | "other";
 
@@ -56,7 +55,6 @@ export default function FeedbackDialog({
         throw new Error(data.error || "Failed to submit");
       }
 
-      trackClientEvent("feedback_submitted", { type });
       setSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

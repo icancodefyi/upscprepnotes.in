@@ -2,16 +2,11 @@
 
 import { useState, useEffect } from "react";
 import PayButton from "@/components/ui/PayButton";
-import { trackViewItem } from "@/lib/analytics";
 import { PRICE } from "./sales-page-data";
 
 export default function SalesPageClient({ children }: { children: React.ReactNode }) {
   const [previewImg, setPreviewImg] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  useEffect(() => {
-    trackViewItem("Topper Answer Copy Compilation", PRICE);
-  }, []);
 
   useEffect(() => {
     if (!previewImg) return;
@@ -76,7 +71,6 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
         if (!r.ok) { const d = await r.json(); throw new Error(d.error || "Failed"); }
         form.classList.add("hidden");
         success?.classList.remove("hidden");
-        try { window.gtag?.("event", "generate_lead", { event_label: "samples-form" }); } catch {}
       } catch (err: any) {
         error!.textContent = err.message;
         error?.classList.remove("hidden");

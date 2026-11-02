@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { brandFonts } from "@/components/brand/fonts";
-import { trackClientEvent } from "@/lib/client-analytics";
 import Tracker from "@/components/Tracker";
 
 /**
@@ -12,12 +10,6 @@ import Tracker from "@/components/Tracker";
  */
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-
-  useEffect(() => {
-    if (pathname && !pathname.startsWith("/ask")) {
-      trackClientEvent("page_view", { path: pathname });
-    }
-  }, [pathname]);
 
   if (pathname?.startsWith("/ask")) {
     return (

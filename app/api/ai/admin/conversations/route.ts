@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { AskConversationModel, type IAskConversation } from "@/models/ask.model";
-import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
@@ -38,14 +37,6 @@ export async function GET(req: NextRequest) {
 
     const enriched = await Promise.all(
       conversations.map(async (conv: IAskConversation) => {
-        const analyticsEvents = await AnalyticsEventModel.find({
-          sessionId: conv.sessionId,
-          event: { $in: ["checkout_completed", "file_download", "page_view"] },
-        })
-          .sort({ timestamp: -1 })
-          .limit(10)
-          .lean();
-
         return {
           id: conv._id,
           sessionId: conv.sessionId,
@@ -56,7 +47,6 @@ export async function GET(req: NextRequest) {
           createdAt: conv.createdAt,
           updatedAt: conv.updatedAt,
           messages: conv.messages.slice(-50),
-          analyticsEvents,
         };
       }),
     );

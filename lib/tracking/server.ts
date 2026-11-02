@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
 import { TrackingEventModel } from "@/models/tracking.model";
 import { normEmail, scrubProps } from "./scrub";
+import { trackingEnabled } from "./env";
 
 /**
  * Record a server-side event (checkout, payment) in the `tracking` collection.
@@ -10,6 +11,7 @@ export async function trackServer(
   event: string,
   data: { visitorId?: string; sessionId?: string; email?: string; path?: string; props?: Record<string, unknown> } = {},
 ) {
+  if (!trackingEnabled()) return;
   try {
     await connectDB();
     await TrackingEventModel.create({

@@ -1,3 +1,9 @@
+/**
+ * DEPRECATED: nothing writes to `analyticsevents` any more (collector, GA, Clarity and PostHog were removed).
+ * The collection is kept read-only for history (Audience, Technology and the /advertise numbers until
+ * `tracking` has 30 days). Use models/tracking.model.ts for everything new. Drop it once `tracking` has
+ * covered the same ground.
+ */
 import mongoose, { Schema, type Document } from "mongoose";
 
 export interface IAnalyticsEvent extends Document {

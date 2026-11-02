@@ -3,7 +3,6 @@
 import Outline from "@/components/brand/Outline";
 import { useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
-import { trackClientEvent } from "@/lib/client-analytics";
 
 interface Props {
   topperName: string;
@@ -43,13 +42,6 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
       if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
       else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
       setSubmitted(true);
-      trackClientEvent("free_download_lead", {
-        topperSlug,
-        topperName,
-        available: data.available,
-        email: email.trim(),
-        source: "availability_section",
-      });
     } catch (err: any) {
       setError(err.message);
     } finally {

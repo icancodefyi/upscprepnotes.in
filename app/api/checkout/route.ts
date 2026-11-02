@@ -3,9 +3,7 @@ import { DodoPayments } from "dodopayments";
 import { PRODUCTS } from "@/lib/store-products";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
-import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken } from "@/lib/order-utils";
-import { getPostHogClient } from "@/lib/posthog-server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { trackServer } from "@/lib/tracking/server";
 
@@ -124,33 +122,6 @@ export async function POST(request: NextRequest) {
       email,
       path: "/api/checkout",
       props: { ref, total, items: resolvedItems.map((i) => i.slug) },
-    });
-
-    try {
-      await AnalyticsEventModel.create({
-        event: "checkout_started",
-        pagePath: "/store",
-        sessionId: "server",
-        visitorId: "server",
-        referrer: "",
-        userAgent: "",
-        deviceType: "server",
-        metadata: { ref, total, items: resolvedItems.map(i => i.slug) },
-      });
-    } catch {}
-
-    const distinctId = email || `anon-${ref}`;
-    const posthog = getPostHogClient();
-    posthog.capture({
-      distinctId,
-      event: "checkout_started",
-      properties: {
-        ref,
-        total_amount: total,
-        item_slugs: resolvedItems.map((i) => i.slug),
-        item_count: resolvedItems.length,
-        email: email || undefined,
-      },
     });
 
     return NextResponse.json({

@@ -9,7 +9,6 @@ import { OrderModel } from "@/models/order.model";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { FeedbackModel } from "@/models/feedback.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
-import { AnalyticsEventModel } from "@/models/analytics-event.model";
 
 export const dynamic = "force-dynamic";
 

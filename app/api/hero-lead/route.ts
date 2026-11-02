@@ -3,7 +3,6 @@ import { connectDB } from "@/lib/mongodb";
 import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { sendEmail } from "@/lib/resend";
-import { getPostHogClient } from "@/lib/posthog-server";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
@@ -93,18 +92,6 @@ export async function POST(request: NextRequest) {
       },
       { upsert: true }
     );
-
-    const posthog = getPostHogClient();
-    posthog.identify({ distinctId: normalizedEmail, properties: { email: normalizedEmail } });
-    posthog.capture({
-      distinctId: normalizedEmail,
-      event: "hero_lead_captured",
-      properties: {
-        source: source || "hero_form",
-        product: "answer-copies-compilation",
-        product_value: FREE_PRODUCT_VALUE,
-      },
-    });
 
     await sendEmail({
       to: normalizedEmail,

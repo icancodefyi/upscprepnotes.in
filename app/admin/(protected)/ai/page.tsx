@@ -8,14 +8,6 @@ type Message = {
   sources?: { slug: string; name: string }[];
 };
 
-type AnalyticsEvent = {
-  _id: string;
-  event: string;
-  pagePath: string;
-  timestamp: string;
-  metadata: Record<string, unknown>;
-};
-
 type Conversation = {
   id: string;
   sessionId: string;
@@ -26,7 +18,6 @@ type Conversation = {
   createdAt: string;
   updatedAt: string;
   messages: Message[];
-  analyticsEvents: AnalyticsEvent[];
 };
 
 type ApiResponse = {
@@ -214,16 +205,6 @@ export default function AdminAIPage() {
               </div>
               <div className="mt-2 flex flex-wrap gap-2 text-xs">
                 <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-600">Session: {selected.sessionId.slice(0, 16)}…</span>
-                {selected.analyticsEvents.length > 0 && (
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700">
-                    {selected.analyticsEvents.filter(e => e.event === "checkout_completed").length} checkout completed
-                  </span>
-                )}
-                {selected.analyticsEvents.filter(e => e.event === "file_download").length > 0 && (
-                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-blue-700">
-                    {selected.analyticsEvents.filter(e => e.event === "file_download").length} downloads
-                  </span>
-                )}
               </div>
             </div>
 

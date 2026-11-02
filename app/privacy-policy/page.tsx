@@ -66,22 +66,27 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section className="space-y-5">
+        <h2 className="text-2xl font-semibold">How we measure usage</h2>
+        <p className="leading-8 text-zinc-700">
+          We run our own first-party analytics and do not use Google Analytics, Microsoft
+          Clarity or similar third-party trackers. On the live site we record which pages are
+          opened, clicks and scrolling, searches typed into our search boxes, the questions
+          you send to the Ask AI mentor, form activity, and basic device and browser details,
+          so we can see what students need and fix what is broken. Your IP address is stored
+          only as a salted hash, and emails or phone numbers typed into free text are removed.
+          Your email is linked to your activity only when you give it to us in a form. We
+          honour the browser Do Not Track and Global Privacy Control signals, and the
+          data is deleted after about 13 months.
+        </p>
+      </section>
+
+      <section className="space-y-5">
         <h2 className="text-2xl font-semibold">Third-Party Services</h2>
         <p className="leading-8 text-zinc-700">
-          UPSCPrepNotes uses the following third-party services, each with its
+          UPSCPrepNotes uses the following third-party service, which has its
           own privacy policy:
         </p>
         <ul className="list-disc pl-6 text-zinc-700 space-y-2">
-          <li>
-            <strong>Google Analytics</strong> (Measurement ID: G-Z58V360ESL) —
-            collects anonymous browsing data for traffic analysis. Google Analytics
-            uses cookies to distinguish unique users. You can learn more about
-            Google's privacy practices at policies.google.com.
-          </li>
-          <li>
-            <strong>Umami Analytics</strong> — a privacy-focused analytics service
-            that collects minimal usage data without cookies or personal identifiers.
-          </li>
           <li>
             <strong>Groq AI</strong> — used to power the Ask AI feature. Conversations
             submitted through the AI interface are processed by Groq's API. We do not
@@ -105,17 +110,11 @@ export default function PrivacyPolicyPage() {
             across sessions and to provide continuity for features like the Ask
             AI chat history. No personal information is stored in this cookie.
           </li>
-          <li>
-            <strong>Google Analytics cookies</strong> — set by Google Analytics
-            (Measurement ID: G-Z58V360ESL) to distinguish unique visitors and
-            track browsing sessions. These cookies do not contain personally
-            identifiable information.
-          </li>
         </ul>
         <p className="leading-8 text-zinc-700">
           You can configure your browser to reject cookies or notify you when a
           cookie is set. Disabling cookies will not affect your ability to browse
-          the platform, though analytics data may be less accurate and your Ask
+          the platform, though your Ask
           AI chat history will reset on each visit.
         </p>
       </section>

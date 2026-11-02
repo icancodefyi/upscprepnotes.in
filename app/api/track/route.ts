@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { TrackingEventModel } from "@/models/tracking.model";
 import { BOT_UA, normEmail, scrubProps, scrubText } from "@/lib/tracking/scrub";
+import { trackingEnabled } from "@/lib/tracking/env";
 
 export const dynamic = "force-dynamic";
 
@@ -26,9 +27,10 @@ export async function POST(req: NextRequest) {
   const rl = await checkRateLimit(req, "analytics");
   if (rl) return rl;
 
-  // Local runs and bots never reach the collection (set TRACK_LOCAL=1 to test locally).
+  // Only the live site writes; dev, local runs, previews and bots never reach the collection.
+  if (!trackingEnabled()) return done();
   const host = req.headers.get("host") || "";
-  if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])(:|$)/.test(host) && process.env.TRACK_LOCAL !== "1") return done();
+  if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])(:|$)/.test(host)) return done();
   const ua = req.headers.get("user-agent") || "";
   if (!ua || BOT_UA.test(ua)) return done();
 

@@ -138,8 +138,6 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "System",
     items: [
       { href: "/admin/ai", label: "AI chats", icon: Icons.bot },
-      { href: "/admin/analytics", label: "Old analytics", icon: Icons.chart },
-      { href: "https://us.posthog.com", label: "PostHog", icon: Icons.chart, external: true },
       { href: "/admin/settings", label: "Settings", icon: Icons.settings },
     ],
   },

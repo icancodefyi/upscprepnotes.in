@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 /**
- * One user interaction, in its own `tracking` collection (separate from `analyticsevents`).
+ * One user interaction, in its own `tracking` collection (replaces the old `analyticsevents`).
  * Written by /api/track (browser) and lib/tracking/server.ts (checkout, payment webhook).
  * See docs/tracking.md for the event list.
  */

@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { DodoPayments } from "dodopayments";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
-import { AnalyticsEventModel } from "@/models/analytics-event.model";
-import { getPostHogClient } from "@/lib/posthog-server";
 import { generateDownloadToken, sendAdminNotification, sendOrderConfirmationEmail } from "@/lib/order-utils";
 
 function buildDownloadUrl(token: string, items: { slug?: string }[]): string {
@@ -100,39 +98,11 @@ export async function POST(request: NextRequest) {
         });
         console.log(`[${webhookId}] Order ${existing._id} updated: pending → paid`);
         const recipientEmail = customerEmail || existing.email || "";
-        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);
-        try {
-          await AnalyticsEventModel.create({
-            event: "checkout_completed",
-            pagePath: "/store/success",
-            sessionId: "server",
-            visitorId: "server",
-            referrer: "",
-            userAgent: "",
-            deviceType: "server",
-            metadata: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug) },
-          });
-        } catch {}
-        await trackServer("purchase", {
+        await sendConfirmationSafely(recipientEmail, existing._id.toString(), existing.items, existing.downloadToken);        await trackServer("purchase", {
           email: customerEmail || existing.email,
           path: "/api/webhook/dodo",
           props: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug), payment: paymentId },
-        });
-        const distinctId = customerEmail || existing.email || `anon-${existing.ref}`;
-        const posthog = getPostHogClient();
-        posthog.capture({
-          distinctId,
-          event: "payment_completed",
-          properties: {
-            ref: existing.ref,
-            total_amount: existing.total,
-            item_slugs: existing.items.map((i: any) => i.slug),
-            item_count: existing.items.length,
-            payment_id: paymentId,
-            email: customerEmail || existing.email || undefined,
-          },
-        });
-        try {
+        });        try {
           await sendAdminNotification(customerEmail, existing.items, existing.total);
         } catch (err) {
           console.error(`[${webhookId}] Admin notification failed:`, err);
@@ -172,38 +142,10 @@ export async function POST(request: NextRequest) {
 
     await sendConfirmationSafely(customerEmail, order._id.toString(), order.items, order.downloadToken);
 
-    try {
-      await AnalyticsEventModel.create({
-        event: "checkout_completed",
-        pagePath: "/store/success",
-        sessionId: "server",
-        visitorId: "server",
-        referrer: "",
-        userAgent: "",
-        deviceType: "server",
-        metadata: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug) },
-      });
-    } catch {}
-
     await trackServer("purchase", {
       email: customerEmail,
       path: "/api/webhook/dodo",
       props: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug), payment: paymentId },
-    });
-
-    const newDistinctId = customerEmail || `anon-${order.ref}`;
-    const posthogNew = getPostHogClient();
-    posthogNew.capture({
-      distinctId: newDistinctId,
-      event: "payment_completed",
-      properties: {
-        ref: order.ref,
-        total_amount: order.total,
-        item_slugs: order.items.map((i: any) => i.slug),
-        item_count: order.items.length,
-        payment_id: paymentId,
-        email: customerEmail || undefined,
-      },
     });
 
     try {

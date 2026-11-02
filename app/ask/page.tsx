@@ -10,16 +10,13 @@ import {
 } from "react";
 import Link from "next/link";
 import { Mark } from "@/components/brand/Nav";
-import { track, identify } from "@/lib/track";
+import { track, identify, getVisitorId } from "@/lib/track";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getSuggestedQuestions } from "@/lib/ai/build-prompt";
-import { trackViewItem } from "@/lib/analytics";
-import { trackClientEvent, getVisitorId } from "@/lib/client-analytics";
-import posthog from "posthog-js";
 import {
   Message,
   MessageAvatar,
@@ -512,15 +509,7 @@ function AskPage() {
   }, [streaming, loading]);
 
   useEffect(() => {
-    trackViewItem("Ask AI Page", 0);
-  }, []);
-
-  useEffect(() => {
     if (status === "authenticated" && session?.user?.email) {
-      posthog.identify(session.user.email, {
-        email: session.user.email,
-        name: session.user.name || undefined,
-      });
     }
   }, [status, session?.user?.email, session?.user?.name]);
 
@@ -607,16 +596,6 @@ function AskPage() {
     setResearchSources([]);
     setFollowUpQuestions([]);
 
-    trackClientEvent("ask_question", {
-      messageLength: text.length,
-      conversationId: activeId || "new",
-      hasHistory: messages.length > 0,
-    });
-    posthog.capture("ai_question_asked", {
-      message_length: text.length,
-      conversation_id: activeId || "new",
-      has_history: messages.length > 0,
-    });
 
     try {
       const res = await fetch("/api/ai/ask", {
@@ -639,10 +618,6 @@ function AskPage() {
         setQuota((prev) =>
           prev ? { ...prev, remaining: 0, canQuery: false } : prev,
         );
-        trackClientEvent("ask_error", {
-          status: 429,
-          error: errBody.error || "quota_exhausted",
-        });
         setStreaming(false);
         return;
       }
@@ -652,10 +627,6 @@ function AskPage() {
         const message = friendlyHttpError(res.status, err.error);
         setAskError({ code: `http_${res.status}`, message });
         setStreamingMessage(null);
-        trackClientEvent("ask_error", {
-          status: res.status,
-          error: err.error || "unknown",
-        });
         setStreaming(false);
         return;
       }
@@ -694,10 +665,6 @@ function AskPage() {
             };
             streamErr = detail;
             setAskError(detail);
-            trackClientEvent("ask_error", {
-              code: ev.code || "unknown",
-              via: "stream",
-            });
             break;
           }
           case "end":
@@ -767,11 +734,6 @@ function AskPage() {
       const shuffled = [...suggestedQuestions].sort(() => Math.random() - 0.5);
       setFollowUpQuestions(shuffled.slice(0, 4));
 
-      trackClientEvent("ask_response", {
-        responseLength: fullContent.length,
-        conversationId: newId || activeId || "unknown",
-        wasSearching: hasShownSearch,
-      });
     } catch {
       setAskError({
         code: "network",
@@ -779,7 +741,6 @@ function AskPage() {
           "We lost the connection while writing your answer. Check your internet and try again.",
       });
       setStreamingMessage(null);
-      trackClientEvent("ask_error", { error: "fetch_crash" });
     } finally {
       setStreaming(false);
       setStreamingMessage(null);
@@ -834,7 +795,6 @@ function AskPage() {
       });
       if (!res.ok) throw new Error("report failed");
       setReportState("sent");
-      trackClientEvent("ask_error_reported", { code: askError?.code || "unknown" });
       setTimeout(() => {
         setReportOpen(false);
         setReportNote("");
@@ -1072,7 +1032,6 @@ async function copyShareText() {
             type="button"
             variant="outline"
             onClick={() => {
-              posthog.capture("user_signed_in", { method: "google", trigger: "quota_modal" });
               signIn("google");
               setShowQuotaModal(false);
             }}
@@ -1342,7 +1301,6 @@ async function copyShareText() {
               variant="ghost"
               size="sm"
               onClick={() => {
-                posthog.capture("user_signed_in", { method: "google", trigger: "sidebar" });
                 signIn("google");
               }}
               className="w-full justify-start gap-2 text-muted-foreground"

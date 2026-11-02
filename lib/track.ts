@@ -1,7 +1,5 @@
 "use client";
 
-import { getSessionId, getVisitorId } from "@/lib/client-analytics";
-
 /**
  * Browser side of the `tracking` collection. `track()` queues an event; the queue is sent in batches
  * to /api/track every few seconds, when it reaches 20 events, and with sendBeacon when the page hides.
@@ -27,9 +25,47 @@ const ATTR_PARAMS: [string, string][] = [
   ["ref", "ref"],
 ];
 
+/** Anonymous browser id (cookie `_vid`, one year) and per-tab session id. */
+export function getVisitorId(): string {
+  try {
+    const match = document.cookie.match(/(?:^|;\s*)_vid=([^;]*)/);
+    if (match) return match[1];
+    const id = "v" + Date.now() + Math.random().toString(36).slice(2, 12);
+    document.cookie = `_vid=${id};path=/;max-age=31536000;SameSite=Lax`;
+    return id;
+  } catch {
+    return "unknown";
+  }
+}
+
+export function getSessionId(): string {
+  try {
+    let s = sessionStorage.getItem("_sid");
+    if (!s) {
+      s = "s" + Date.now() + Math.random().toString(36).slice(2, 8);
+      sessionStorage.setItem("_sid", s);
+    }
+    return s;
+  } catch {
+    return "unknown";
+  }
+}
+
+/**
+ * Tracking runs only on the live site: production build, not localhost, not /admin, not Do Not Track / GPC.
+ * Open any page with ?optex=1 to exclude your own browser (?optex=0 switches it back on).
+ */
 function enabled() {
   if (typeof window === "undefined") return false;
+  if (process.env.NODE_ENV !== "production") return false;
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname)) return false;
   if (window.location.pathname.startsWith("/admin")) return false;
+  try {
+    const q = new URLSearchParams(window.location.search).get("optex");
+    if (q === "1") localStorage.setItem("_optex", "1");
+    else if (q === "0") localStorage.removeItem("_optex");
+    if (localStorage.getItem("_optex") === "1") return false;
+  } catch {}
   const nav = navigator as Navigator & { globalPrivacyControl?: boolean };
   if (nav.doNotTrack === "1" || nav.globalPrivacyControl) return false;
   return true;

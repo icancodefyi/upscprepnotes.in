@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { sendEmail } from "@/lib/resend";
-import { getPostHogClient } from "@/lib/posthog-server";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
@@ -52,18 +51,6 @@ export async function POST(request: NextRequest) {
       to: email,
       subject: `Your Free Download — ${pdfTitle}`,
       html,
-    });
-
-    const posthog = getPostHogClient();
-    posthog.identify({ distinctId: email, properties: { email } });
-    posthog.capture({
-      distinctId: email,
-      event: "free_material_downloaded",
-      properties: {
-        pdf_slug: pdfSlug,
-        pdf_title: pdfTitle,
-        category: category || "unknown",
-      },
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

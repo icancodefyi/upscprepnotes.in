@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { IconDownload, IconX, IconCheck, IconClock, IconStar, IconEye, IconLayoutKanban } from "@tabler/icons-react";
-import { trackClientEvent } from "@/lib/client-analytics";
 
 interface FreeDownloadDialogProps {
   topperName: string;
@@ -23,10 +22,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    trackClientEvent("dialog_open", { dialog: "free_download", topperSlug, topperName });
-  }, []);
-
-  useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         handleClose();
@@ -42,7 +37,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
   }, []);
 
   function handleClose() {
-    trackClientEvent("dialog_close", { dialog: "free_download", topperSlug, topperName, submitted });
     onOpenChange(false);
   }
 
@@ -74,8 +68,6 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
       else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
       setSubmitted(true);
-      trackClientEvent("dialog_submit", { dialog: "free_download", topperSlug, topperName, status: data.available ? "delivered" : "pending", email: email.trim() });
-      trackClientEvent("free_download_lead", { topperSlug, topperName, available: data.available, count: data.pdfUrls?.length || 1, email: email.trim() });
     } catch (err: any) {
       setDialogError(err.message);
     } finally {
@@ -84,15 +76,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
   }
 
   function handleDownload() {
-    if (!downloaded) {
-      setDownloaded(true);
-      trackClientEvent("file_download", {
-        topperSlug,
-        topperName,
-        fileType: "answer_copy",
-        source: "free_download_dialog",
-      });
-    }
+    setDownloaded(true);
   }
 
   return (

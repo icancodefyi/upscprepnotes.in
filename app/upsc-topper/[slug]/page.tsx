@@ -8,7 +8,6 @@ import { PRODUCTS } from "@/lib/store-products";
 import { displayName, fmt, freeCopiesOf, isComplete, isPlaceholder, paperStats, previewFor, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
 import BrandShell from "@/components/brand/BrandShell";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
-import TrackingProvider from "./TrackingProvider";
 import { Header, Sidebar } from "./_components/Profile";
 import Marksheet from "./_components/Marksheet";
 import { Faq, type QA } from "./_components/Content";
@@ -326,7 +325,6 @@ export default async function TopperPage({ params }: Props) {
 
   return (
     <BrandShell>
-      <TrackingProvider name={fullName} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />

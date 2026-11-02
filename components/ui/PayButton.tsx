@@ -2,9 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import posthog from "posthog-js";
-import { track, flush, identify } from "@/lib/track";
-import { getSessionId, getVisitorId } from "@/lib/client-analytics";
+import { track, flush, identify, getSessionId, getVisitorId } from "@/lib/track";
 
 interface CartItem {
   slug: string;
@@ -92,12 +90,6 @@ export default function PayButton({
 
   const handlePay = useCallback(async () => {
     track("buy_click", { items: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), amount, tracking, has_email: !!effectiveEmail });
-    posthog.capture("cart_checkout_clicked", {
-      total_amount: amount,
-      item_slugs: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []),
-      item_count: items?.length || (productSlug ? 1 : 0),
-      tracking,
-    });
     if (!effectiveEmail) {
       setShowEmailPrompt(true);
       return;
