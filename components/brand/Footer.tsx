@@ -110,10 +110,10 @@ export default function Footer({ counts, featured = [] }: { counts: { toppers: n
           {[...FOOTER.slice(0, 2), ...(featured.length ? [{ title: "Featured toppers", links: featured }] : []), ...FOOTER.slice(2)].map((col) => (
             <nav key={col.title} aria-label={col.title}>
               <p className="text-s font-bold text-[var(--ink)]">{col.title}</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 sm:mt-4 sm:space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="hover:underline">{l.label}</Link>
+                    <Link href={l.href} className="block py-2 hover:underline sm:py-0">{l.label}</Link>
                   </li>
                 ))}
               </ul>

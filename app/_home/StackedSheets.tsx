@@ -53,11 +53,11 @@ function Sheet({ b, i }: { b: Booklet; i: number }) {
             </div>
           </div>
 
-          <ul className="mt-8 grid grid-cols-2 gap-x-8 sm:grid-cols-2">
+          <ul className="mt-6 grid grid-cols-2 gap-x-5 sm:mt-8 sm:gap-x-8">
             {ROWS.map((r) => (
               <li
                 key={r.key}
-                className="flex items-baseline justify-between gap-3 py-2.5 text-m"
+                className="flex items-baseline justify-between gap-2 whitespace-nowrap py-2.5 text-s sm:gap-3 sm:text-m"
                 style={{ borderBottom: `1px solid ${t.rule}` }}
               >
                 <span style={{ color: t.sub }}>{r.label}</span>
@@ -109,16 +109,21 @@ export default function StackedSheets({ booklets }: { booklets: Booklet[] }) {
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           title={<>They sat the same exam. <span className="text-[var(--accent)]">Here&apos;s what they wrote.</span></>}
-          lead="Real UPSC topper answer copies beside the marks each paper earned. Hover a scan to read the handwriting."
+          lead={<>Real UPSC topper answer copies beside the marks each paper earned. <span className="[@media(hover:none)]:hidden">Hover a scan to read the handwriting.</span><span className="hidden [@media(hover:none)]:inline">Tap a scan to read the handwriting.</span></>}
         />
 
-        <div className="mt-14">
+        {/* Phones: swipe through the sheets. Desktop: they stack as you scroll. */}
+        <div
+          className="mt-10 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto pb-6 [-ms-overflow-style:none] [scrollbar-width:none] max-lg:-mx-6 max-lg:px-6 max-lg:[scroll-padding-inline:24px] lg:mt-14 lg:block lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden"
+          aria-label="Topper answer copies"
+        >
           {booklets.map((b, i) => (
-            <div key={b.slug} className="mb-6 last:mb-0 lg:sticky lg:mb-[12vh]" style={{ top: `${96 + i * 22}px` }}>
+            <div key={b.slug} className="w-[88%] shrink-0 snap-center sm:w-[80%] lg:mb-[12vh] lg:w-auto lg:sticky lg:last:mb-0" style={{ top: `${96 + i * 22}px` }}>
               <Sheet b={b} i={i} />
             </div>
           ))}
         </div>
+        <p className="mt-1 text-center text-s text-[var(--muted)] lg:hidden">Swipe for more toppers →</p>
       </div>
     </section>
   );

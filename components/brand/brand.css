@@ -288,3 +288,8 @@
 .admin-brand .uppercase { text-transform: none; }
 .admin-brand .tracking-wider, .admin-brand .tracking-widest { letter-spacing: 0; }
 .admin-brand input:not([type="checkbox"]):not([type="radio"]), .admin-brand select, .admin-brand textarea { font-family: inherit; }
+
+/* Phones: breadcrumb links get a finger-sized hit area without changing the layout. */
+@media (max-width: 767px) {
+  .up nav[aria-label="Breadcrumb"] a { display: inline-block; padding-block: 12px; margin-block: -12px; }
+}

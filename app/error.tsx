@@ -14,9 +14,9 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className={`up ${brandFonts} min-h-screen`}>
+    <div className={`up ${brandFonts} min-h-dvh`}>
       <Nav />
-      <main className="mx-auto grid min-h-screen max-w-3xl place-items-center px-6 pb-24 pt-32 text-center">
+      <main className="mx-auto grid min-h-dvh max-w-3xl place-items-center px-6 pb-24 pt-32 text-center">
         <div>
           <div aria-hidden className="paper relative mx-auto h-[190px] w-[150px] rotate-[2deg] overflow-hidden px-5 pt-6">
             <span className="absolute inset-y-0 left-8 w-px bg-[var(--mark)]/40" />

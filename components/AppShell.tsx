@@ -13,7 +13,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   if (pathname?.startsWith("/ask")) {
     return (
-      <div className={`ask-brand ${brandFonts} h-screen overflow-hidden bg-white`}>
+      <div className={`ask-brand ${brandFonts} h-dvh overflow-hidden bg-white`}>
         <Tracker />
         <div className="flex h-full flex-col overflow-hidden">{children}</div>
       </div>
