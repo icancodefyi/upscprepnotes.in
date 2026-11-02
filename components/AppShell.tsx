@@ -9,7 +9,7 @@ import AskHeader from "@/components/AskHeader";
 import { CartProvider } from "@/lib/cart-context";
 import { trackClientEvent } from "@/lib/client-analytics";
 import { markPopup } from "@/lib/popup-state";
-import { isBrandRoute } from "@/components/brand/routes";
+import { isLegacyRoute } from "@/components/brand/routes";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -54,8 +54,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isAdmin = pathname?.startsWith("/admin");
-  // Redesigned pages bring their own nav and footer (components/brand/BrandShell).
-  if (isBrandRoute(pathname)) {
+  // Only the old homepage (until /try replaces it) and admin still use the old chrome. Everything else,
+  // redesigned pages and any 404, brings its own nav and footer (components/brand/BrandShell).
+  if (!isLegacyRoute(pathname)) {
     return <CartProvider>{children}</CartProvider>;
   }
 

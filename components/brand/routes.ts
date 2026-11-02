@@ -9,3 +9,12 @@ export function isBrandRoute(pathname: string | null | undefined) {
   if (!pathname) return false;
   return BRAND_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
 }
+
+/**
+ * Routes still on the old design: the old homepage (until /try replaces it), the AI chat and admin.
+ * Only these get the old header, footer and Telegram bar. Anything else, including any 404, is on the brand.
+ */
+export function isLegacyRoute(pathname: string | null | undefined) {
+  if (!pathname) return false;
+  return pathname === "/" || pathname === "/ask" || pathname.startsWith("/ask/") || pathname === "/admin" || pathname.startsWith("/admin/");
+}
