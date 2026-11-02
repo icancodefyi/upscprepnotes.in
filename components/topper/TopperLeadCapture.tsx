@@ -1,5 +1,6 @@
 "use client";
 
+import Outline from "@/components/brand/Outline";
 import { useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
 import { trackClientEvent } from "@/lib/client-analytics";
@@ -57,13 +58,14 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
   }
 
   return (
-    <div className="rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] sm:p-6">
-      <h2 className="text-m font-bold">Get Free Answer Copies</h2>
-      <p className="mt-1 text-s text-[var(--ink-2)]">
+    <div className="relative overflow-hidden rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] sm:p-6">
+      <Outline kind="envelope" className="-right-5 -top-5 h-28 w-40 rotate-[12deg] text-[var(--accent)]/[0.07]" />
+      <h2 className="relative text-m font-bold">Get Free Answer Copies</h2>
+      <p className="relative mt-1 text-s text-[var(--ink-2)]">
         Enter your email and we&apos;ll send you the free answer copies we have for {topperName}.
       </p>
       {!submitted ? (
-        <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+        <form onSubmit={handleSubmit} className="relative mt-4 flex gap-2">
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
