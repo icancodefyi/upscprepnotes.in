@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import posthog from "posthog-js";
+import { track, flush } from "@/lib/track";
+import { getSessionId, getVisitorId } from "@/lib/client-analytics";
 
 interface CartItem {
   slug: string;
@@ -62,6 +64,8 @@ export default function PayButton({
         body: JSON.stringify({
           items: checkoutItems,
           email: email || undefined,
+          visitorId: getVisitorId(),
+          sessionId: getSessionId(),
         }),
       });
 
@@ -76,14 +80,17 @@ export default function PayButton({
         try { localStorage.setItem("upsc-email", email); } catch {}
       }
 
+      track("checkout_redirect", { items: checkoutItems.map((i) => i.slug), amount, tracking });
+      flush(true);
       window.location.href = data.checkoutUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setLoading(false);
     }
-  }, [items, productSlug, amount]);
+  }, [items, productSlug, amount, tracking]);
 
   const handlePay = useCallback(async () => {
+    track("buy_click", { items: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), amount, tracking, has_email: !!effectiveEmail });
     posthog.capture("cart_checkout_clicked", {
       total_amount: amount,
       item_slugs: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []),

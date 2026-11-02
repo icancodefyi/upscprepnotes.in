@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import posthog from "posthog-js";
+import { track } from "@/lib/track";
 import PayButton from "@/components/ui/PayButton";
 import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
 import { Paperclip } from "@/components/brand/Props";
@@ -202,6 +203,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
   const [showBar, setShowBar] = useState(false);
 
   useEffect(() => {
+    track("product_view", { slug: product.slug, price: product.price, category: product.category });
     posthog.capture("product_viewed", {
       product_slug: product.slug,
       product_title: product.title,

@@ -10,6 +10,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { Mark } from "@/components/brand/Nav";
+import { track, identify } from "@/lib/track";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
@@ -407,6 +408,9 @@ function AskPage() {
   const { data: session, status } = useSession();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
+  useEffect(() => {
+    if (session?.user?.email) identify(session.user.email, "google_signin");
+  }, [session?.user?.email]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [streamingMessage, setStreamingMessage] = useState<string | null>(null);
   const [input, setInput] = useState("");
@@ -590,6 +594,9 @@ function AskPage() {
 
     if (!reuseUserMessage) {
       setMessages((prev) => [...prev, { role: "user", content: text }]);
+      track("ask_question", { question: text.slice(0, 1000), length: text.length, web_search: searchWeb, conversation: activeId || undefined });
+    } else {
+      track("ask_retry", { length: text.length });
     }
     setAskError(null);
     setStreaming(true);

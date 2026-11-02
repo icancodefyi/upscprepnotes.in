@@ -7,6 +7,7 @@ import { AnalyticsEventModel } from "@/models/analytics-event.model";
 import { generateDownloadToken } from "@/lib/order-utils";
 import { getPostHogClient } from "@/lib/posthog-server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { trackServer } from "@/lib/tracking/server";
 
 function shortRef() {
   return Date.now().toString(36).slice(-6) + Math.random().toString(36).slice(2, 6);
@@ -29,11 +30,13 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { items, email, successUrl, cancelUrl } = body as {
+    const { items, email, successUrl, cancelUrl, visitorId, sessionId } = body as {
       items: CheckoutItem[];
       email?: string;
       successUrl?: string;
       cancelUrl?: string;
+      visitorId?: string;
+      sessionId?: string;
     };
 
     const origin = request.headers.get("origin") || request.headers.get("referer") || "https://upscprepnotes.in";
@@ -113,6 +116,14 @@ export async function POST(request: NextRequest) {
 
     await OrderModel.findByIdAndUpdate(order._id, {
       dodoSessionId: session.session_id,
+    });
+
+    await trackServer("checkout_started", {
+      visitorId: typeof visitorId === "string" ? visitorId : undefined,
+      sessionId: typeof sessionId === "string" ? sessionId : undefined,
+      email,
+      path: "/api/checkout",
+      props: { ref, total, items: resolvedItems.map((i) => i.slug) },
     });
 
     try {

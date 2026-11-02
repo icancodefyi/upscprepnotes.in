@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { brandFonts } from "@/components/brand/fonts";
 import { trackClientEvent } from "@/lib/client-analytics";
+import Tracker from "@/components/Tracker";
 
 /**
  * Root client shell. Every page brings its own frame (components/brand/BrandShell, or the admin layout),
@@ -21,10 +22,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (pathname?.startsWith("/ask")) {
     return (
       <div className={`ask-brand ${brandFonts} h-screen overflow-hidden bg-white`}>
+        <Tracker />
         <div className="flex h-full flex-col overflow-hidden">{children}</div>
       </div>
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Tracker />
+      {children}
+    </>
+  );
 }

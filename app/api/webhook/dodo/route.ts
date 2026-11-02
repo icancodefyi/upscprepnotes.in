@@ -1,3 +1,4 @@
+import { trackServer } from "@/lib/tracking/server";
 import { NextRequest, NextResponse } from "next/server";
 import { DodoPayments } from "dodopayments";
 import { connectDB } from "@/lib/mongodb";
@@ -112,6 +113,11 @@ export async function POST(request: NextRequest) {
             metadata: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug) },
           });
         } catch {}
+        await trackServer("purchase", {
+          email: customerEmail || existing.email,
+          path: "/api/webhook/dodo",
+          props: { ref: existing.ref, total: existing.total, items: existing.items.map((i: any) => i.slug), payment: paymentId },
+        });
         const distinctId = customerEmail || existing.email || `anon-${existing.ref}`;
         const posthog = getPostHogClient();
         posthog.capture({
@@ -178,6 +184,12 @@ export async function POST(request: NextRequest) {
         metadata: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug) },
       });
     } catch {}
+
+    await trackServer("purchase", {
+      email: customerEmail,
+      path: "/api/webhook/dodo",
+      props: { ref: order.ref, total: order.total, items: order.items.map((i: any) => i.slug), payment: paymentId },
+    });
 
     const newDistinctId = customerEmail || `anon-${order.ref}`;
     const posthogNew = getPostHogClient();

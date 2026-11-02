@@ -12,7 +12,7 @@ export function getVisitorId(): string {
   }
 }
 
-function getSessionId(): string {
+export function getSessionId(): string {
   try {
     let s = sessionStorage.getItem("_sid");
     if (!s) {
