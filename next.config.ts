@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/requests", destination: "/admin/requests", permanent: true },
+      // The redesigned homepage was previewed at /try before it replaced /.
+      { source: "/try", destination: "/", permanent: true },
       {
         source: "/upsc-topper/toppers-copy-compilation",
         destination: "/toppers/toppers-copy-compilation",

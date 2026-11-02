@@ -52,7 +52,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isAdmin = pathname?.startsWith("/admin");
-  // Only the old homepage (until /try replaces it) and admin still use the old chrome. Everything else,
+  // Only the chat (handled above) and admin keep their own chrome. Everything else,
   // redesigned pages and any 404, brings its own nav and footer (components/brand/BrandShell).
   if (!isLegacyRoute(pathname)) {
     return <CartProvider>{children}</CartProvider>;

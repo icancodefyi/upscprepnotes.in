@@ -3,7 +3,7 @@
  * so AppShell skips the old header, footer, banner and floating buttons for them.
  * Add a route here when its page is redesigned.
  */
-export const BRAND_ROUTES = ["/try", "/upsc-topper", "/compare", "/free-materials", "/toppers", "/year", "/optional", "/content", "/store", "/download", "/search", "/current-affairs", "/pyq", "/resources", "/about", "/contact", "/privacy-policy", "/terms", "/disclaimer", "/faq", "/report-preview", "/advertise"];
+export const BRAND_ROUTES = ["/", "/upsc-topper", "/compare", "/free-materials", "/toppers", "/year", "/optional", "/content", "/store", "/download", "/search", "/current-affairs", "/pyq", "/resources", "/about", "/contact", "/privacy-policy", "/terms", "/disclaimer", "/faq", "/report-preview", "/advertise"];
 
 export function isBrandRoute(pathname: string | null | undefined) {
   if (!pathname) return false;
@@ -11,10 +11,10 @@ export function isBrandRoute(pathname: string | null | undefined) {
 }
 
 /**
- * Routes still on the old design: the old homepage (until /try replaces it), the AI chat and admin.
- * Only these get the old header, footer and Telegram bar. Anything else, including any 404, is on the brand.
+ * Routes with their own frame: the AI chat and admin.
+ * Only these skip the brand frame (the chat keeps its own header; admin its own layout). Anything else, including any 404, is on the brand.
  */
 export function isLegacyRoute(pathname: string | null | undefined) {
   if (!pathname) return false;
-  return pathname === "/" || pathname === "/ask" || pathname.startsWith("/ask/") || pathname === "/admin" || pathname.startsWith("/admin/");
+  return pathname === "/ask" || pathname.startsWith("/ask/") || pathname === "/admin" || pathname.startsWith("/admin/");
 }

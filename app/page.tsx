@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
-
-import { getFeaturedToppers } from "@/services/topper.service";
-import { Button } from "@/components/ui/button";
-import { topperImageSrc } from "@/lib/utils";
+import { connectDB } from "@/lib/mongodb";
+import { TopperModel } from "@/models/topper.model";
+import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
+import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
+import { PDFModel } from "@/models/pdf.model";
+import { PYQModel } from "@/models/pyq.model";
 import { PRODUCTS } from "@/lib/store-products";
-import {
-  ArrowRight,
-  Brain,
-  Database,
-  FileText,
-  ChevronDown,
-  TrendingUp,
-} from "lucide-react";
-import HeroLeadForm from "@/components/hero/HeroLeadForm";
-import SalePrice from "@/components/store/SalePrice";
+import { getFeaturedToppers } from "@/services/topper.service";
+import Hero from "./_home/Hero";
+import Pillars from "./_home/Pillars";
+import StackedSheets from "./_home/StackedSheets";
+import MarksStory, { type StoryPaper } from "./_home/MarksStory";
+import Guides, { type Guide } from "./_home/Guides";
+import OptionalFolders, { type OptionalTile } from "./_home/OptionalFolders";
+import Years, { type YearCard } from "./_home/Years";
+import StoreShelf, { type ShelfItem } from "./_home/StoreShelf";
+import Verify from "./_home/Verify";
+import Founder from "./_home/Founder";
+import LeadPack from "./_home/LeadPack";
+import Faq, { FAQS } from "./_home/Faq";
+import BrandShell from "@/components/brand/BrandShell";
+import type { Booklet } from "./_home/types";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
+// Metadata and the WebPage schema are the old homepage's, unchanged: the redesign does not touch SEO.
 export const metadata: Metadata = {
   title: "UPSCPrepNotes — Topper Answer Copies, Marksheets, AI Mentor & Strategy Guides for UPSC CSE",
   description:
@@ -42,444 +48,259 @@ export const metadata: Metadata = {
   },
 };
 
-const OPTIONAL_SUBJECTS = [
-  "PSIR", "Anthropology", "Sociology", "Mathematics",
-  "Geography", "History", "Public Administration", "Philosophy",
+
+type LeanTopper = {
+  firstName?: string;
+  lastName?: string;
+  rank?: number;
+  year?: number;
+  slug?: string;
+  optionalSubject?: string;
+  marks?: Record<string, number | undefined>;
+  freeAnswerCopyUrls?: string[];
+  answerCopies?: Record<string, string[] | undefined>;
+};
+
+const n = (t: LeanTopper, k: string) => t.marks?.[k] ?? 0;
+// Some names are stored in capitals ("UMA Harathi"); show them in normal case.
+const name = (t: LeanTopper) =>
+  `${t.firstName ?? ""} ${t.lastName ?? ""}`.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_, a: string, b: string) => a + b.toLowerCase());
+const opt = (t: LeanTopper) => n(t, "optional1") + n(t, "optional2");
+const subjectOf = (s?: string) => (s && /political science/i.test(s) ? "PSIR" : s ?? "");
+
+const STORY_PAPERS: { key: string; label: string; max: number; get: (t: LeanTopper) => number }[] = [
+  { key: "essay", label: "Essay", max: 250, get: (t) => n(t, "essay") },
+  { key: "gs1", label: "GS Paper I", max: 250, get: (t) => n(t, "gs1") },
+  { key: "gs2", label: "GS Paper II", max: 250, get: (t) => n(t, "gs2") },
+  { key: "gs3", label: "GS Paper III", max: 250, get: (t) => n(t, "gs3") },
+  { key: "gs4", label: "GS Paper IV · Ethics", max: 250, get: (t) => n(t, "gs4") },
+  { key: "optional", label: "Optional · Papers I + II", max: 500, get: opt },
+  { key: "interview", label: "Personality Test", max: 275, get: (t) => n(t, "interview") },
 ];
 
-const YEARS = [2022, 2023, 2024, 2025];
+// Real booklet scans hosted on ImageKit. Harshita Goyal's preview is excluded: it carries a reseller's watermark.
+const BOOKLETS = ["ishita-kishore", "garima-lohia", "uma-harathi", "divya-tanwar", "ayan-jain", "shivani-ettaboyina", "vaishali-chopra"];
 
-const STRATEGY_GUIDES = [
-  { title: "Score 130+ in GS1", desc: "Indian Society, History, and Geography — topper-backed strategies with real marks data.", href: "/content/how-to-score-130-plus-in-gs1", score: "130+", paper: "GS1" },
-  { title: "Score 120+ in GS2", desc: "Polity, Governance, and Social Justice — framework-based answer writing.", href: "/content/how-to-score-120-plus-in-gs2", score: "120+", paper: "GS2" },
-  { title: "Score 120+ in GS3", desc: "Economy, Agriculture, and Environment — data-driven answers with current affairs.", href: "/content/how-to-score-120-plus-in-gs3", score: "120+", paper: "GS3" },
-  { title: "Score 100+ in GS4", desc: "Ethics, Integrity, and Case Studies — stakeholder analysis and ethical frameworks.", href: "/content/how-to-score-100-plus-in-gs4", score: "100+", paper: "GS4" },
-  { title: "Score 300+ in PSIR Optional", desc: "Political Science & IR — complete strategy with topper marks and answer patterns.", href: "/content/how-to-score-300-plus-in-psir-optional", score: "300+", paper: "PSIR" },
-  { title: "Optional Subject Marks Analysis", desc: "Which optionals score highest? Full ranking of 9 subjects with topper data.", href: "/content/upsc-optional-subject-marks-analysis", score: "Analysis", paper: "All" },
+// Strategy guides that exist under /content, each tied to the paper whose top score we can show.
+const GUIDES: { slug: string; title: string; paper: string; key: string; blurb: string }[] = [
+  { slug: "how-to-score-130-plus-in-gs1", title: "GS Paper I strategy: history, geography, society", paper: "GS I", key: "gs1", blurb: "History, geography and Indian society, built from toppers' actual GS I marks." },
+  { slug: "how-to-score-120-plus-in-gs2", title: "How to score 120+ in GS Paper II", paper: "GS II", key: "gs2", blurb: "Polity, governance and IR answers structured the way high scorers wrote them." },
+  { slug: "how-to-score-120-plus-in-gs3", title: "GS Paper III strategy: economy and environment", paper: "GS III", key: "gs3", blurb: "Economy, environment and security, with the current-affairs layer toppers added." },
+  { slug: "how-to-score-100-plus-in-gs4", title: "How to score 100+ in GS Paper IV (Ethics)", paper: "GS IV", key: "gs4", blurb: "Case studies, stakeholders and the frameworks behind the top Ethics scores." },
+  { slug: "how-to-score-300-plus-in-psir-optional", title: "How to score 300+ in PSIR optional", paper: "PSIR", key: "psir", blurb: "Paper I and II strategy for the most popular optional among toppers." },
+  { slug: "upsc-optional-subject-marks-analysis", title: "UPSC optional subject marks analysis", paper: "Optionals", key: "optional", blurb: "Which optional scores highest? Topper marks compared across subjects." },
+  { slug: "how-to-write-upsc-mains-answers", title: "How to write UPSC Mains answers", paper: "Mains", key: "essay", blurb: "Intro, body, conclusion: the answer-writing pattern seen across topper copies." },
 ];
 
-const FAQS = [
-  { q: "Is UPSCPrepNotes free?", a: "Yes. All topper profiles, marks data, 2,700+ free PDFs, and the AI tutor are completely free. We charge only for premium strategy reports and answer copy compilations." },
-  { q: "How is the topper data collected?", a: "Every mark is manually extracted from UPSC's official result PDFs on UPSC.gov.in. We verify each profile against the published gazette. Our dataset spans 2022-2025 with 271+ toppers." },
-  { q: "Can I download answer copies?", a: "Free sample answer copies are available on many topper profiles. The full compilation (50+ toppers, all GS papers + essay) is available in the store." },
-  { q: "How does the AI tutor work?", a: "Ask AI uses vector search over our topper strategy database to answer your UPSC questions with real, data-backed insights. Free tier: 20 queries/day." },
-  { q: "Which optional subjects are covered?", a: "We cover 37 optional subjects with marks analysis, score trends, and topper profiles — including PSIR, Anthropology, Sociology, Geography, History, and more." },
-  { q: "How often is the data updated?", a: "Topper profiles are updated within 2-4 weeks of UPSC results. Current affairs and free materials are updated weekly." },
-];
+function complete(t: LeanTopper) {
+  const tot = n(t, "total");
+  return (
+    tot > 800 && tot <= 2025 &&
+    ["essay", "gs1", "gs2", "gs3", "gs4", "optional1", "optional2"].every((k) => n(t, k) > 0 && n(t, k) <= 250) &&
+    n(t, "interview") > 0 && n(t, "interview") <= 275 &&
+    // Placeholder records repeat one number across papers (e.g. 100 everywhere); real sheets never do.
+    new Set(["essay", "gs1", "gs2", "gs3", "gs4"].map((k) => n(t, k))).size > 2
+  );
+}
+
+const median = (xs: number[]) => {
+  const s = [...xs].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
+};
+
+async function getData() {
+  await connectDB();
+  const toppers = (await TopperModel.find(
+    {},
+    { firstName: 1, lastName: 1, rank: 1, year: 1, slug: 1, optionalSubject: 1, marks: 1, freeAnswerCopyUrls: 1, answerCopies: 1 },
+  ).lean()) as LeanTopper[];
+  const full = toppers.filter(complete);
+
+  const booklets: Booklet[] = BOOKLETS.flatMap((prefix) => {
+    const t = toppers.find((x) => x.slug?.startsWith(`${prefix}-rank-`));
+    if (!t) return [];
+    return [{
+      name: name(t),
+      rank: t.rank ?? 0,
+      year: t.year ?? 0,
+      slug: t.slug ?? "",
+      optional: subjectOf(t.optionalSubject),
+      total: n(t, "total"),
+      src: `https://ik.imagekit.io/impiclabs/previews/${prefix}.png`,
+      papers: complete(t)
+        ? { essay: n(t, "essay"), gs1: n(t, "gs1"), gs2: n(t, "gs2"), gs3: n(t, "gs3"), gs4: n(t, "gs4"), optional: opt(t), interview: n(t, "interview") }
+        : null,
+    }];
+  });
+
+  const hero = full.filter((t) => t.rank === 1).sort((a, b) => (b.year ?? 0) - (a.year ?? 0))[0] ?? full[0];
+  const papers: StoryPaper[] = STORY_PAPERS.map((p) => {
+    const values = full.map(p.get).sort((a, b) => b - a);
+    const mine = p.get(hero);
+    return {
+      key: p.key,
+      label: p.label,
+      max: p.max,
+      score: mine,
+      average: Math.round(values.reduce((s, v) => s + v, 0) / values.length),
+      position: values.findIndex((v) => v <= mine) + 1,
+    };
+  });
+
+  const groups = new Map<string, LeanTopper[]>();
+  for (const t of toppers) {
+    const o1 = n(t, "optional1");
+    const o2 = n(t, "optional2");
+    if (!t.optionalSubject || o1 <= 0 || o2 <= 0 || o1 > 250 || o2 > 250) continue;
+    const subject = subjectOf(t.optionalSubject);
+    groups.set(subject, [...(groups.get(subject) ?? []), t]);
+  }
+  const optionals: OptionalTile[] = [...groups.entries()]
+    .filter(([, l]) => l.length >= 9)
+    .map(([subject, l]) => {
+      const best = l.reduce((a, b) => (opt(b) > opt(a) ? b : a));
+      return {
+        subject,
+        count: l.length,
+        median: median(l.map(opt)),
+        scores: l.map(opt).sort((a, b) => a - b),
+        best: { name: name(best), rank: best.rank ?? 0, year: best.year ?? 0, score: opt(best) },
+      };
+    })
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+
+  // Highest score on record for each guide's paper, so every guide card carries a real number.
+  const topOf = (key: string) => {
+    const pool = key === "psir" ? full.filter((t) => subjectOf(t.optionalSubject) === "PSIR") : full;
+    const get = key === "psir" || key === "optional" ? opt : (t: LeanTopper) => n(t, key);
+    const best = pool.reduce((a, b) => (get(b) > get(a) ? b : a), pool[0]);
+    return { score: get(best), name: name(best), rank: best.rank ?? 0, year: best.year ?? 0, max: key === "psir" || key === "optional" ? 500 : 250 };
+  };
+  const guides: Guide[] = GUIDES.map((g) => ({ ...g, top: topOf(g.key) }));
+
+  const years: YearCard[] = [...new Set(toppers.map((t) => t.year ?? 0).filter(Boolean))]
+    .sort((a, b) => b - a)
+    .map((y) => {
+      const list = toppers.filter((t) => t.year === y);
+      const air1 = list.find((t) => t.rank === 1);
+      const top3 = [...list].filter((t) => (t.rank ?? 999) <= 3).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+      return {
+        year: y,
+        count: list.length,
+        air1: air1 ? { name: name(air1), slug: air1.slug ?? "", total: n(air1, "total"), optional: subjectOf(air1.optionalSubject) } : null,
+        top3: top3.map((t) => ({ name: name(t), rank: t.rank ?? 0, slug: t.slug ?? "" })),
+      };
+    });
+
+  // Store: real titles and prices only. Ratings and review counts are deliberately not shown.
+  const shelf: ShelfItem[] = PRODUCTS.filter((p) => !p.comingSoon).map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    tagline: p.tagline,
+    price: p.price,
+    image: p.image ?? p.images?.[0] ?? null,
+    features: p.features.slice(0, 4),
+    fileCount: p.fileCount ?? null,
+  }));
+
+  const featured = (await getFeaturedToppers()).map((t) => ({
+    href: `/upsc-topper/${t.slug}`,
+    label: `${t.firstName} ${t.lastName}`.trim().replace(/\b([A-Z])([A-Z]+)\b/g, (_: string, a: string, b: string) => a + b.toLowerCase()),
+  }));
+
+  const [dl, mat, pdfs, pyqCount, pyqYears] = await Promise.all([
+    FreeDownloadLeadModel.distinct("email"),
+    FreeMaterialLeadModel.distinct("email"),
+    PDFModel.find({}, { resources: 1 }).lean() as Promise<{ resources?: unknown[] }[]>,
+    PYQModel.countDocuments(),
+    PYQModel.distinct("year") as Promise<number[]>,
+  ]);
+
+  const freeCopies = toppers.filter(
+    (t) => (t.freeAnswerCopyUrls?.length ?? 0) > 0 || Object.values(t.answerCopies ?? {}).some((v) => (v?.length ?? 0) > 0),
+  ).length;
+
+  return {
+    featured,
+    booklets,
+    optionals,
+    guides,
+    years,
+    shelf,
+    counts: {
+      toppers: toppers.length,
+      full: full.length,
+      aspirants: new Set([...dl, ...mat]).size,
+      freeCopies,
+      optionals: new Set(toppers.map((t) => subjectOf(t.optionalSubject)).filter(Boolean)).size,
+      resources: pdfs.reduce((s, d) => s + (d.resources?.length ?? 0), 0),
+      pyqs: pyqCount,
+      pyqYears: [...pyqYears].sort(),
+    },
+    story: {
+      name: name(hero),
+      rank: hero.rank ?? 1,
+      year: hero.year ?? 0,
+      slug: hero.slug ?? "",
+      optional: subjectOf(hero.optionalSubject),
+      total: n(hero, "total"),
+      compared: full.length,
+      papers,
+    },
+  };
+}
+
+
 
 export default async function HomePage() {
-  const toppers = await getFeaturedToppers();
+  const { featured, booklets, optionals, guides, years, shelf, counts, story } = await getData();
 
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
-    description: "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies, marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
-    url: "https://upscprepnotes.in",
-    publisher: { "@type": "Organization", name: "UPSCPrepNotes", url: "https://upscprepnotes.in" },
-    breadcrumb: { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" }] },
-  };
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
+      description: "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies, marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
+      url: "https://upscprepnotes.in",
+      publisher: { "@type": "Organization", name: "UPSCPrepNotes", url: "https://upscprepnotes.in" },
+      breadcrumb: { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" }] },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS(counts).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "UPSC topper answer booklets",
+      itemListElement: booklets.map((b, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://upscprepnotes.in/upsc-topper/${b.slug}`,
+        name: `${b.name}, AIR ${b.rank}, CSE ${b.year}`,
+      })),
+    },
+  ];
 
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
-      <main className="min-h-screen bg-background">
-
-        {/* ──────────────────────────── HERO ──────────────────────────── */}
-        <section className="border-b border-border">
-          <div className="mx-auto max-w-4xl px-4 pt-20 pb-24 md:pt-32 md:pb-36 text-center">
-
-            <p className="text-xs font-medium tracking-wider text-muted-foreground">UPSC CSE · 2022 – 2025</p>
-
-            <h1 className="mt-4 font-heading text-4xl font-extrabold leading-[1.1] tracking-tight md:text-5xl lg:text-[4rem]">
-              Every mark. Every topper.
-              <br />
-              <span className="text-brand">Verified from UPSC.gov.in.</span>
-            </h1>
-
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              271 topper profiles with paper-wise marks breakdowns, 50+ handwritten answer copies, optional subject analysis, and an AI mentor — all free.
-            </p>
-
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button asChild size="lg" className="rounded-full bg-brand px-7 text-brand-foreground hover:bg-brand/90">
-                <Link data-track="home-hero-cta" href="/year/2025">
-                  Explore topper profiles <ArrowRight size={16} className="ml-1" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-                <Link data-track="home-hero-store" href="/store">
-                  Browse store
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mx-auto mt-10 max-w-md">
-              <HeroLeadForm />
-            </div>
-
-            <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              {[
-                { value: "271+", label: "Verified profiles" },
-                { value: "37", label: "Optional subjects" },
-                { value: "50+", label: "Answer copies" },
-                { value: "2,700+", label: "Free resources" },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <p className="font-heading text-2xl font-bold tabular-nums tracking-tight md:text-3xl">{s.value}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{s.label}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-10 text-xs text-muted-foreground">
-              Data sourced from official UPSC result PDFs. No signup required to browse.
-            </p>
-
-          </div>
-        </section>
-
-        {/* ────────────────────── FEATURED TOPPERS ────────────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-                  More topper profiles
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Each profile includes paper-wise marks, optional subject, and strategy notes.
-                </p>
-              </div>
-              <Link data-track="home-browse-toppers" href="/year/2025" className="hidden shrink-0 text-sm font-medium text-brand hover:text-brand/80 md:block">
-                Browse all 271 →
-              </Link>
-            </div>
-
-            {/* Compact topper grid */}
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-              {toppers.slice(1, 7).map((topper: any) => (
-                <Link
-                  data-track={`home-topper-${topper.slug}`}
-                  key={topper.slug}
-                  href={`/upsc-topper/${topper.slug}`}
-                  className="group flex flex-col gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:border-foreground/20 hover:shadow-sm"
-                >
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={topperImageSrc(topper)}
-                      alt={`${topper.firstName} ${topper.lastName}`}
-                      width={36} height={36}
-                      loading="lazy"
-                      className="h-9 w-9 rounded-lg border border-border bg-secondary object-cover"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-bold">{topper.firstName} {topper.lastName}</p>
-                      <p className="text-xs text-muted-foreground">AIR {topper.rank} · {topper.year}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between border-t border-border pt-3">
-                    <span className="truncate text-xs text-muted-foreground">{topper.optionalSubject}</span>
-                    <span className="shrink-0 text-sm font-bold tabular-nums text-brand">{topper.marks.total}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Year filter */}
-            <div className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">Browse by year:</span>
-              {YEARS.map((year) => (
-                <Link
-                  data-track={`home-year-${year}`}
-                  key={year}
-                  href={`/year/${year}`}
-                  className="inline-flex items-center rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-all hover:border-foreground/20 hover:bg-secondary"
-                >
-                  {year}
-                </Link>
-              ))}
-              <Link
-                data-track="home-browse-toppers-mobile"
-                href="/year/2025"
-                className="ml-auto text-sm font-medium text-brand hover:text-brand/80 md:hidden"
-              >
-                Browse all →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ──────────────────── PLATFORM FEATURES ─────────────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
-              {/* AI Mentor — highlighted feature */}
-              <div className="lg:col-span-1">
-                <div className="rounded-2xl bg-foreground p-8 text-background">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand">
-                    <Brain className="h-5 w-5 text-brand-foreground" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold">Ask AI Mentor</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-background/70">
-                    Get instant answers about any topper's strategy, marks, or preparation approach. Trained on 271 verified profiles.
-                  </p>
-                  <Link
-                    data-track="home-feature-ask-ai-mentor"
-                    href="/ask"
-                    className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-brand"
-                  >
-                    Try it free <ArrowRight size={14} />
-                  </Link>
-                  <p className="mt-3 text-xs text-background/50">20 queries/day free</p>
-                </div>
-              </div>
-
-              {/* Other features — list format, not card grid */}
-              <div className="lg:col-span-2">
-                <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl mb-8">
-                  Tools & resources
-                </h2>
-                <div className="divide-y divide-border">
-                  {[
-                    { icon: Database, title: "Marks Database", desc: "Paper-wise marks breakdown for 271 toppers — compare scores across years and optionals.", href: "/toppers/marks-database" },
-                    { icon: FileText, title: "Answer Copies", desc: "50+ actual handwritten answer sheets from rank holders. See real structure and diagrams.", href: "/toppers/toppers-copy-compilation" },
-                    { icon: FileText, title: "Current Affairs", desc: "Monthly compilations — 60 topics across 12 sections, every month.", href: "/current-affairs" },
-                    { icon: FileText, title: "Free Materials", desc: "2,700+ free test series, notes, and magazines from top coaching institutes.", href: "/free-materials" },
-                    { icon: FileText, title: "Previous Year Questions", desc: "PYQs organized by year and paper with topic analysis and answer patterns.", href: "/pyq" },
-                  ].map((feat) => {
-                    const Icon = feat.icon;
-                    return (
-                      <Link
-                        key={feat.title}
-                        href={feat.href}
-                        data-track={`home-feature-${feat.title.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="group flex items-center gap-5 py-5 transition-colors hover:bg-secondary/50 -mx-4 px-4 rounded-lg"
-                      >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-brand">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h3 className="text-base font-bold">{feat.title}</h3>
-                          <p className="mt-0.5 text-sm text-muted-foreground">{feat.desc}</p>
-                        </div>
-                        <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-brand" />
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ────────────────────── STORE PRODUCTS ──────────────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-                  Strategy guides
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Premium products starting at ₹99 — built from real topper data.
-                </p>
-              </div>
-              <Link data-track="home-store-link" href="/store" className="hidden shrink-0 text-sm font-medium text-brand hover:text-brand/80 md:block">
-                View all products →
-              </Link>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {PRODUCTS.slice(0, 4).map((product) => (
-                <Link
-                  data-track={`home-product-${product.slug}`}
-                  key={product.slug}
-                  href={`/store/${product.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-sm"
-                >
-                  <div className="relative aspect-[3/4] overflow-hidden border-b border-border bg-secondary">
-                    {product.image && (
-                      <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />
-                    )}
-                    {product.badge && (
-                      <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                        product.badgeColor === "emerald" ? "bg-brand-muted text-brand" :
-                        product.badgeColor === "amber" ? "bg-brand-muted text-brand" :
-                        "bg-secondary text-foreground"
-                      }`}>
-                        {product.badge}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-sm font-bold leading-tight">{product.title}</h3>
-                    <p className="mt-1.5 text-xs text-muted-foreground line-clamp-2 flex-1">{product.tagline}</p>
-                    <div className="mt-3 flex items-baseline gap-2">
-                      <SalePrice product={product} />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div className="mt-6 md:hidden">
-              <Link data-track="home-store-link-mobile" href="/store" className="text-sm font-medium text-brand hover:text-brand/80">
-                View all products →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ────────────────── OPTIONAL SUBJECTS + STRATEGY ────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="grid gap-16 lg:grid-cols-2">
-              {/* Optional subjects — pill grid */}
-              <div>
-                <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-                  Optional subjects
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Compare scores, analyze trends, and find the best optional for your preparation.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {OPTIONAL_SUBJECTS.map((subject) => (
-                    <Link
-                      data-track={`home-optional-${subject.toLowerCase().replace(/\s+/g, "-")}`}
-                      key={subject}
-                      href={`/optional/${subject.toLowerCase()}`}
-                      className="group inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium transition-all hover:border-foreground/20 hover:bg-secondary"
-                    >
-                      <TrendingUp className="h-4 w-4 text-muted-foreground group-hover:text-brand" />
-                      {subject}
-                      <ArrowRight className="h-3.5 w-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Strategy guides — compact list */}
-              <div>
-                <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-                  Score targets
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Each guide breaks down what it takes to score in a specific paper.
-                </p>
-                <div className="mt-6 divide-y divide-border rounded-xl border border-border bg-card">
-                  {STRATEGY_GUIDES.map((guide) => (
-                    <Link
-                      data-track={`home-guide-${guide.paper.toLowerCase()}`}
-                      key={guide.paper}
-                      href={guide.href}
-                      className="group flex items-center gap-4 p-4 transition-colors hover:bg-secondary/50"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-muted text-xs font-bold text-brand">
-                        {guide.paper}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-bold leading-tight">{guide.title}</p>
-                        <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1">{guide.desc}</p>
-                      </div>
-                      <span className="shrink-0 text-sm font-bold tabular-nums text-brand">{guide.score}</span>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-brand" />
-                    </Link>
-                  ))}
-                </div>
-                <div className="mt-4">
-                  <Link data-track="home-methodology-link" href="/content/data-methodology-and-editorial-standards" className="text-sm font-medium text-brand hover:text-brand/80">
-                    Read our data methodology →
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ──────────────────────────── FAQ ──────────────────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-3xl px-4">
-            <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-              Frequently asked
-            </h2>
-            <div className="mt-8 divide-y divide-border rounded-xl border border-border bg-card">
-              {FAQS.map((faq) => (
-                <details key={faq.q} className="group">
-                  <summary className="flex cursor-pointer items-start justify-between gap-4 p-5 list-none">
-                    <h3 className="text-sm font-bold leading-tight">{faq.q}</h3>
-                    <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition group-open:rotate-180" />
-                  </summary>
-                  <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
-                </details>
-              ))}
-            </div>
-            <div className="mt-6">
-              <Link data-track="home-faq-link" href="/faq" className="text-sm font-medium text-brand hover:text-brand/80">
-                See all FAQs →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ──────────────────────── ABOUT / FOUNDER ───────────────────── */}
-        <section className="border-b border-border py-20 md:py-24">
-          <div className="mx-auto max-w-4xl px-4">
-            <h2 className="font-heading text-2xl font-bold tracking-tight md:text-3xl">
-              Built by a software engineer, not a coaching institute.
-            </h2>
-            <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
-              <div>
-                <p className="text-muted-foreground leading-relaxed">
-                  I'm Zaid Rakhange — a software engineer fascinated by UPSC data. I manually extract every mark from UPSC's official result PDFs because I believe the best prep resources should be accurate, free, and built with care.
-                </p>
-              </div>
-              <div>
-                <p className="text-muted-foreground leading-relaxed">
-                  No coaching institute agenda. No recycled content. Just verified data and tools that actually help you prepare smarter. 271 profiles, 37 optional subjects, 50+ answer copies — all sourced from UPSC.gov.in.
-                </p>
-              </div>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="rounded-full bg-brand px-7 text-brand-foreground hover:bg-brand/90">
-                <Link data-track="home-about-cta" href="/about">
-                  Read the full story <ArrowRight size={16} className="ml-1" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-                <Link data-track="home-contact-cta" href="/contact">
-                  Get in touch
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* ──────────────────────── CLOSING CTA ──────────────────────── */}
-        <section className="py-20 md:py-24">
-          <div className="mx-auto max-w-4xl px-4 text-center">
-            <h2 className="font-heading text-3xl font-extrabold tracking-tight md:text-4xl">
-              Stop guessing. Start studying what works.
-            </h2>
-            <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-              271 verified topper profiles. Every mark sourced from UPSC.gov.in. Free to explore — no signup required.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button asChild size="lg" className="rounded-full bg-brand px-7 text-brand-foreground hover:bg-brand/90">
-                <Link data-track="home-closing-cta" href="/year/2025">
-                  Browse profiles <ArrowRight size={16} className="ml-1" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-                <Link data-track="home-closing-secondary" href="/store">
-                  Visit store
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-      </main>
-    </>
+    <BrandShell footer={{ counts: { toppers: counts.toppers }, featured }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {/* The story: the exam, the proof, the relief, the choices, the work, the list, the tools, the trust, the start. */}
+      <Hero booklets={booklets} counts={counts} />
+      <StackedSheets booklets={booklets.filter((b) => b.papers)} />
+      <MarksStory story={story} />
+      <OptionalFolders optionals={optionals} />
+      <Guides guides={guides} />
+      <Years years={years} />
+      <Pillars counts={counts} />
+      <StoreShelf items={shelf} />
+      <Verify counts={counts} />
+      <Founder counts={counts} />
+      <LeadPack />
+      <Faq counts={counts} />
+    </BrandShell>
   );
 }
