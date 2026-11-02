@@ -9,6 +9,7 @@ import {
   useMemo,
 } from "react";
 import Link from "next/link";
+import { Mark } from "@/components/brand/Nav";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
@@ -1248,8 +1249,9 @@ async function copyShareText() {
       {/* Sidebar */}
       <Sidebar>
         <SidebarHeader>
-          <Link href="/" className="flex items-center px-2 py-1">
-            <img src="/logo.png" alt="UPSCPrepNotes" className="h-10 w-auto" />
+          <Link href="/" className="flex items-center gap-2.5 px-2 py-1.5 text-[17px] font-bold tracking-[-0.02em]" aria-label="UPSCPrepNotes home">
+            <Mark size={28} />
+            UPSCPrepNotes
           </Link>
         </SidebarHeader>
         <SidebarContent>
@@ -1364,52 +1366,15 @@ async function copyShareText() {
       </Sidebar>
 
       {/* Main */}
-      <SidebarInset className="flex h-full min-h-0 flex-col overflow-hidden">
-        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border/60 bg-background px-4">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger data-track="ask-sidebar-trigger" />
-            <span className="text-sm font-semibold text-foreground md:hidden">
-              AI Mentor
-            </span>
-          </div>
-          <span className="hidden text-sm font-semibold text-foreground md:block">
-            AI Mentor
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            asChild
-            className="text-muted-foreground"
-          >
-            <Link href="/" data-track="ask-mobile-home">Home</Link>
-          </Button>
-        </header>
-
-        {/* Top purchase banner — always visible */}
-        <div className="mx-auto w-full max-w-[720px] shrink-0 px-4 pt-3 md:pt-4">
-          <Link
-            href="/store/all-strategy-reports"
-            data-track="ask-purchase-banner"
-            className="flex w-full items-center gap-3 rounded-[16px] bg-[#0b0c10] px-4 py-2.5 text-white transition hover:bg-[#1f2229]"
-          >
-            <div className="flex min-w-0 flex-1 items-center gap-2.5">
-              <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div className="min-w-0">
-                <p className="truncate text-[14px] font-bold leading-tight">Get All 280+ Strategy Reports</p>
-                <p className="truncate text-[12px] text-white/60">
-                  One-time payment · Lifetime access · ₹27,720 value at ₹799
-                </p>
-              </div>
-            </div>
-            <span className="shrink-0 rounded-full bg-[#ffe45c] px-3 py-1 text-[13px] font-bold text-[#5c4a00]">Shop Now →</span>
-          </Link>
+      <SidebarInset className="relative flex h-full min-h-0 flex-col overflow-hidden">
+        {/* Just the sidebar toggle, like ChatGPT: everything else lives in the sidebar. */}
+        <div className="absolute left-3 top-3 z-10">
+          <SidebarTrigger data-track="ask-sidebar-trigger" />
         </div>
 
         <div
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto bg-background scrollbar-thin"
+          className="flex-1 overflow-y-auto bg-background pt-12 scrollbar-thin"
         >
           {loading ? (
             <div className="flex h-full flex-col items-center justify-center gap-3 px-6">
