@@ -1,3 +1,4 @@
+import { Children } from "react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { card } from "@/components/brand/ui";
@@ -55,28 +56,60 @@ export function About({ bio }: { bio: string }) {
   );
 }
 
-/** Strategy, one block per section. Machine-written first-person text is labelled, never passed off as a quote. */
-export function StrategyBlock({ first, strategy, generated }: { first: string; strategy: string; generated: boolean }) {
-  const parts = strategySections(strategy);
+const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
+
+// Strategy typography: lists with a bold label ("Polity (GS2): Laxmikanth…") become label / resources rows.
+const strat: Components = {
+  ...md,
+  p: ({ children }) => <p className="mt-4 max-w-[46rem] text-m leading-[1.75] text-[var(--ink-2)] first:mt-0">{children}</p>,
+  ul: ({ children }) => <ul className="mt-4 divide-y divide-[var(--line)] first:mt-0">{children}</ul>,
+  li: ({ node, children }) => {
+    const first = node?.children?.[0] as { type?: string; tagName?: string } | undefined;
+    const kids = Children.toArray(children);
+    if (first?.type === "element" && first.tagName === "strong" && kids.length > 1) {
+      return (
+        <li className="grid gap-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[10.5rem_1fr] sm:gap-5">
+          <span className="text-s font-bold leading-[1.5] text-[var(--ink)] sm:pt-[2px]">{kids[0]}</span>
+          <span className="text-m leading-[1.6] text-[var(--ink-2)]">{kids.slice(1)}</span>
+        </li>
+      );
+    }
+    return (
+      <li className="relative py-2 pl-5 text-m leading-[1.65] text-[var(--ink-2)] first:pt-0 last:pb-0">
+        <span aria-hidden className="absolute left-0 top-[1.05em] h-[6px] w-[6px] rounded-full bg-[var(--accent)] first:top-[0.6em]" />
+        {children}
+      </li>
+    );
+  },
+  blockquote: ({ children }) => <blockquote className="mt-4 border-l-[3px] border-[var(--hl)] bg-[#fffbe6] py-3 pl-4 pr-3 text-m leading-[1.65] text-[var(--ink)] [&_p]:mt-0">{children}</blockquote>,
+};
+
+/** Strategy: jump chips, then one numbered card per section. Empty sections are skipped. */
+export function Strategy({ first, strategy, heading }: { first: string; strategy: string; heading?: (title: string) => string }) {
+  const parts = strategySections(strategy).map((s, i) => ({ ...s, short: s.title, title: heading ? heading(s.title) : s.title, id: `strategy-${slugify(s.title || "overview")}-${i}` }));
   if (!parts.length) return null;
   return (
-    <div className={`${card} overflow-hidden`}>
-      {!generated && (
-        <p className="flex items-start gap-2.5 border-b border-[var(--line)] bg-[var(--canvas)] px-6 py-3.5 text-s leading-[1.5] text-[var(--ink-2)]">
-          {`Put together from ${first}'s public interviews and reports, in our words.`}
-        </p>
+    <div>
+      {parts.length > 2 && (
+        <nav aria-label={`${first}'s strategy sections`} className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden">
+          {parts.map((s) => (
+            <a key={s.id} href={`#${s.id}`} className="shrink-0 rounded-full bg-white px-4 py-2 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] transition-colors hover:text-[var(--accent)] hover:shadow-[0_0_0_1px_var(--accent)]">
+              {s.short || "Overview"}
+            </a>
+          ))}
+        </nav>
       )}
-      <div className="divide-y divide-[var(--line)]">
+      <div className={`${parts.length > 2 ? "mt-5" : ""} space-y-4`}>
         {parts.map((s, i) => (
-          <details key={s.title || i} open={i < 2} className="group px-6 py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-              <h3 className="t-head text-m">{s.title || "Overview"}</h3>
-              <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-200 group-open:rotate-45">+</span>
-            </summary>
-            <div className="mt-3">
-              <Prose>{s.body}</Prose>
+          <article key={s.id} id={s.id} className={`${card} scroll-mt-28 p-6 sm:p-8`}>
+            <header className="flex items-center gap-3.5">
+              <span className="tab grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-s font-bold text-[var(--accent)]">{i + 1}</span>
+              <h3 className="t-head text-m sm:text-[20px]">{s.title || "Overview"}</h3>
+            </header>
+            <div className="mt-5 sm:pl-[50px]">
+              <ReactMarkdown components={strat}>{s.body}</ReactMarkdown>
             </div>
-          </details>
+          </article>
         ))}
       </div>
     </div>

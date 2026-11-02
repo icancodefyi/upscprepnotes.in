@@ -124,6 +124,34 @@ function ResultCard({ h }: { h: HeaderData }) {
   );
 }
 
+/** Two sentences up front; the full background stays on the page, one tap away. */
+function Summary({ text }: { text: string }) {
+  const sentences = text.split(/(?<![A-Z]\.)(?<!Dr\.)(?<!Mr\.)(?<!Mrs\.)(?<!Ms\.)(?<!St\.)(?<=[.!?])\s+(?=[A-Z“"])/).map((x) => x.trim()).filter(Boolean);
+  let lead = "";
+  let n = 0;
+  for (const sent of sentences) {
+    if (n >= 2 || (lead && (lead + " " + sent).length > 260)) break;
+    lead = lead ? `${lead} ${sent}` : sent;
+    n++;
+  }
+  const rest = text.slice(text.indexOf(lead) + lead.length).trim();
+  return (
+    <div className="mt-5 max-w-[38rem]">
+      <p className="text-m leading-[1.6] text-[var(--ink-2)]">{lead || text}</p>
+      {rest && (
+        <details className="group mt-2">
+          <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 py-1 text-s font-bold text-[var(--accent)] [&::-webkit-details-marker]:hidden">
+            <span className="group-open:hidden">Read the full background</span>
+            <span className="hidden group-open:inline">Show less</span>
+            <span aria-hidden className="transition-transform duration-200 group-open:rotate-180">↓</span>
+          </summary>
+          <p className="mt-2 text-m leading-[1.7] text-[var(--ink-2)]">{rest}</p>
+        </details>
+      )}
+    </div>
+  );
+}
+
 /** Profile header: who and which rank on the left, the result on paper on the right. */
 export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; label: string }[] }) {
   return (
@@ -142,7 +170,7 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
           <h1 className="t-display text-h1">{h.name}</h1>
           {/* original subline: AIR · year · optional */}
           <p className="mt-3 text-m font-bold text-[var(--accent)]">{`AIR ${h.rank} · ${h.year} · ${h.optional}`}</p>
-          {h.summary && <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">{h.summary}</p>}
+          {h.summary && <Summary text={h.summary} />}
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/store" data-track="topper-hero-store" className="btn btn-blue">
               Browse store &rarr;

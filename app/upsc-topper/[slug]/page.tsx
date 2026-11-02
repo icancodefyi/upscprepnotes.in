@@ -10,13 +10,12 @@ import BrandShell from "@/components/brand/BrandShell";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { Header, Sidebar } from "./_components/Profile";
 import Marksheet from "./_components/Marksheet";
-import { Faq, type QA } from "./_components/Content";
+import { Faq, Strategy, type QA } from "./_components/Content";
 import { Section, card } from "@/components/brand/ui";
 import StickyCopyBar from "./_components/StickyCopyBar";
 import { CompareBox, ContinueReading, type Suggestion } from "./_components/Next";
 import type { PickItem } from "@/components/brand/ComparePicker";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
 import { getRelatedToppers, getToppersByRank, getToppersByYear } from "@/services/topper.service";
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
@@ -97,24 +96,6 @@ function getSubjectSlug(subject: string) {
 }
 
 /** Strategy markdown split at its headings (original behaviour). */
-function extractSections(markdown: string) {
-  if (!markdown) return {} as Record<string, string>;
-  if (![...markdown.matchAll(/^(#{1,6})\s*(.+)$/gm)].length) return {} as Record<string, string>;
-  const parts: Record<string, string> = {};
-  let current: string | null = null;
-  let buffer: string[] = [];
-  for (const line of markdown.split(/\r?\n/)) {
-    const m = line.match(/^(#{1,6})\s*(.+)$/);
-    if (m) {
-      if (current) parts[current] = buffer.join("\n").trim();
-      current = m[2].trim();
-      buffer = [];
-    } else buffer.push(line);
-  }
-  if (current) parts[current] = buffer.join("\n").trim();
-  return parts;
-}
-
 type Named = { firstName: string; lastName: string; optionalSubject: string };
 function resolveHeading(heading: string, t: Named): string {
   const lower = heading.toLowerCase();
@@ -129,20 +110,6 @@ function resolveHeading(heading: string, t: Named): string {
   if (lower.includes("mistake") || lower.includes("learning") || lower.includes("key takeaway")) return `Key Takeaways from ${t.firstName} ${t.lastName}`;
   return heading;
 }
-
-const deduplicateContent = (markdown: string): string => {
-  const seen = new Set<string>();
-  return markdown
-    .split("\n")
-    .filter((line) => {
-      const trimmed = line.trim();
-      if (!trimmed) return true;
-      if (seen.has(trimmed)) return false;
-      seen.add(trimmed);
-      return true;
-    })
-    .join("\n");
-};
 
 type Rel = { slug: string; firstName: string; lastName: string; rank: number; year: number; optionalSubject: string; ProfileImage?: string };
 
@@ -208,7 +175,6 @@ export default async function TopperPage({ params }: Props) {
   const copyLabel = "Download free copy";
   const copyNote = requests > 0 ? `${fmt(requests)} aspirants have requested this copy` : pdfs.length || preview ? "Free sample, sent by email" : "Free sample, sent by email";
 
-  const structuredStrategy = extractSections(topper.strategy || "");
   const insights: string[] = topper.insights ?? [];
 
   // Compare + continue reading (navigation only).
@@ -238,14 +204,16 @@ export default async function TopperPage({ params }: Props) {
   const prevNext = (t: LeanTopper | null) => (t && t.slug !== mainNext?.slug ? sugg(t, `AIR ${t.rank} · CSE ${t.year}`) : null);
 
   // FAQ — original copy: DB FAQs first, then the generic ones.
-  const dbFaqs: QA[] = (topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }));
+  // Stored FAQs that only point at another section ("covered above…") add nothing, so they are not shown.
+  const FILLER = /(covered|detailed|described|explained|mentioned|outlined) (above|in|on)\b|(strategy|preparation) section|section above/i;
+  const realFaqs = (topper.faqs || []).filter((f: { question: string; answer: string }) => f?.question && f?.answer && !FILLER.test(f.answer)).slice(0, 5);
+  const dbFaqs: QA[] = realFaqs.map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }));
   const faqs: QA[] = [
     ...dbFaqs,
     { q: `What was ${fullName}'s UPSC rank?`, a: `AIR ${topper.rank} in UPSC CSE ${topper.year}.` },
     { q: `What was ${fullName}'s optional subject?`, a: `${topper.optionalSubject}.` },
     { q: `What were ${fullName}'s total marks?`, a: `${m.total} marks out of 2025.` },
     { q: `Can I download ${fullName}'s answer copy?`, a: `Yes — enter your email on this page and we'll send a free sample. The full set (50+ copies) is in the <a href="/store" class="text-brand font-semibold no-underline hover:underline">store</a>.` },
-    { q: `How did ${fullName} prepare for UPSC?`, a: topper.strategy ? `Detailed above on this page.` : `Strategy details are not yet available.` },
   ];
 
   // Structured data — original schemas.
@@ -253,12 +221,11 @@ export default async function TopperPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: [
-      ...(topper.faqs || []).slice(0, 5).map((f: { question: string; answer: string }) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+      ...realFaqs.map((f: { question: string; answer: string }) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
       { "@type": "Question", name: `What was ${fullName}'s UPSC rank?`, acceptedAnswer: { "@type": "Answer", text: `${fullName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.` } },
       { "@type": "Question", name: `What was ${fullName}'s optional subject?`, acceptedAnswer: { "@type": "Answer", text: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.` } },
       { "@type": "Question", name: `What were ${fullName}'s total marks in UPSC?`, acceptedAnswer: { "@type": "Answer", text: `${fullName} scored a total of ${m.total} marks in UPSC CSE ${topper.year}.` } },
       { "@type": "Question", name: `Can I download ${fullName}'s answer copy PDF?`, acceptedAnswer: { "@type": "Answer", text: `Yes. Get a free sample answer copy of ${fullName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹199.` } },
-      { "@type": "Question", name: `How did ${fullName} prepare for UPSC?`, acceptedAnswer: { "@type": "Answer", text: `${fullName}'s UPSC preparation strategy is detailed on their topper page, covering subject-wise approach, optional strategy, and interview preparation for UPSC CSE ${topper.year}.` } },
     ],
     speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-section"] },
   };
@@ -382,28 +349,14 @@ export default async function TopperPage({ params }: Props) {
               {/* STRATEGY */}
               <section id="strategy" className="scroll-mt-28">
                 <h2 className="t-head text-l">{`How ${topper.firstName} Prepared for UPSC`}</h2>
-                <div className={`${card} mt-5 p-6 md:p-8`}>
-                  <div className="prose-brand">
-                    {topper.strategy ? (
-                      Object.keys(structuredStrategy).length > 0 ? (
-                        Object.entries(structuredStrategy).map(([heading, content], i) => (
-                          <section key={heading} className={i > 0 ? "mt-8 border-t border-[var(--line)] pt-8" : ""}>
-                            <h3 className="text-m font-bold">{resolveHeading(heading, topper)}</h3>
-                            <div className="mt-2">
-                              <ReactMarkdown>{deduplicateContent(content)}</ReactMarkdown>
-                            </div>
-                          </section>
-                        ))
-                      ) : (
-                        <ReactMarkdown>{topper.strategy}</ReactMarkdown>
-                      )
-                    ) : (
-                      <>
-                        <p>{fullName} secured AIR {topper.rank} in UPSC CSE {topper.year} with {topper.optionalSubject} optional. Total marks: {m.total} (Written: {m.written}, Interview: {m.interview}).</p>
-                        {topper.bio && <p>{topper.bio}</p>}
-                      </>
-                    )}
-                  </div>
+                <div className="mt-5">
+                  {topper.strategy ? (
+                    <Strategy first={topper.firstName} strategy={topper.strategy} heading={(t) => (/^(background|educational background|education|interview experience|interview preparation|personality test|prelims strategy|mains strategy|essay preparation|attempts|key takeaways|mistakes|learnings)$/i.test(t.trim()) ? resolveHeading(t, topper) : t)} />
+                  ) : (
+                    <div className={`${card} p-6 sm:p-8`}>
+                      <p className="max-w-[46rem] text-m leading-[1.75] text-[var(--ink-2)]">{fullName} secured AIR {topper.rank} in UPSC CSE {topper.year} with {topper.optionalSubject} optional. Total marks: {m.total} (Written: {m.written}, Interview: {m.interview}).</p>
+                    </div>
+                  )}
                 </div>
               </section>
 
