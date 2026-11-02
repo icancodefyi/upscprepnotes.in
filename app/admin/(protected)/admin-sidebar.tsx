@@ -138,6 +138,7 @@ const navGroups: { label: string; items: NavItem[] }[] = [
     label: "System",
     items: [
       { href: "/admin/ai", label: "AI chats", icon: Icons.bot },
+      { href: "/admin/cron", label: "Cron jobs", icon: Icons.activity },
       { href: "/admin/settings", label: "Settings", icon: Icons.settings },
     ],
   },

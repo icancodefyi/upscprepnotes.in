@@ -7,6 +7,7 @@ import { sendEmail } from "@/lib/resend";
 import { unsubscribeHeaders } from "@/lib/email-links";
 import { recoveryEmail1, recoveryEmail2 } from "@/lib/recovery-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { logCronRun } from "@/lib/cron-log";
 
 export const maxDuration = 60;
 
@@ -28,6 +29,7 @@ export async function GET(req: NextRequest) {
   const rl = await checkRateLimit(req, "cron");
   if (rl) return rl;
 
+  const startedAt = Date.now();
   try {
     await connectDB();
     const now = Date.now();
@@ -103,9 +105,11 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    await logCronRun("abandoned-checkout", startedAt, { ok: errors.length === 0 || sent > 0, sent, skipped, checked: pending.length, errors });
     return NextResponse.json({ sent, skipped, checked: pending.length, errors: errors.length ? errors : undefined });
   } catch (err) {
     console.error("Abandoned-checkout cron error:", err);
+    await logCronRun("abandoned-checkout", startedAt, { ok: false, errors: [err instanceof Error ? err.message : "Cron failed"] });
     return NextResponse.json({ error: "Cron failed" }, { status: 500 });
   }
 }

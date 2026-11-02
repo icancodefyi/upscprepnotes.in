@@ -42,7 +42,7 @@ export default function SettingsPage() {
         <button
           onClick={toggle}
           className={`relative h-6 w-11 rounded-full transition-colors ${
-            excluded ? "bg-emerald-500" : "bg-zinc-300"
+            excluded ? "bg-[#1f3fd6]" : "bg-zinc-300"
           }`}
         >
           <span

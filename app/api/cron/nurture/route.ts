@@ -8,6 +8,7 @@ import { sendEmail } from "@/lib/resend";
 import { unsubscribeHeaders } from "@/lib/email-links";
 import { NURTURE_EMAILS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { logCronRun } from "@/lib/cron-log";
 
 export const maxDuration = 60;
 
@@ -23,6 +24,7 @@ export async function GET(req: NextRequest) {
   const rl = await checkRateLimit(req, "cron");
   if (rl) return rl;
 
+  const startedAt = Date.now();
   try {
     await connectDB();
 
@@ -36,7 +38,10 @@ export async function GET(req: NextRequest) {
       .limit(BATCH_SIZE)
       .lean();
 
-    if (due.length === 0) return NextResponse.json({ sent: 0, message: "No campaigns due" });
+    if (due.length === 0) {
+      await logCronRun("nurture", startedAt, { ok: true, note: "No campaigns due" });
+      return NextResponse.json({ sent: 0, message: "No campaigns due" });
+    }
 
     let sent = 0;
     let skipped = 0;
@@ -100,9 +105,11 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    await logCronRun("nurture", startedAt, { ok: errors.length === 0 || sent > 0, sent, skipped, checked: due.length, errors });
     return NextResponse.json({ sent, skipped, total_due: due.length, errors: errors.length ? errors : undefined });
   } catch (err) {
     console.error("Nurture cron error:", err);
+    await logCronRun("nurture", startedAt, { ok: false, errors: [err instanceof Error ? err.message : "Cron failed"] });
     return NextResponse.json({ error: "Cron failed" }, { status: 500 });
   }
 }

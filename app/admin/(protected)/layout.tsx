@@ -4,6 +4,7 @@ import { verifyAdminToken } from "@/lib/admin-auth";
 import { AdminSidebar } from "./admin-sidebar";
 import { brandFonts } from "@/components/brand/fonts";
 import "@/components/brand/brand.css";
+import { warmAdminCaches } from "@/lib/admin/warm";
 
 async function checkAuth() {
   const cookieStore = await cookies();
@@ -19,6 +20,7 @@ export default async function ProtectedLayout({
   children: React.ReactNode;
 }) {
   await checkAuth();
+  warmAdminCaches();
 
   return (
     <div className={`up admin-brand ${brandFonts} bg-white`}>

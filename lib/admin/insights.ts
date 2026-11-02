@@ -10,6 +10,7 @@ import { SubscriberEmailModel } from "@/models/subscriber-email.model";
 import { FeedbackModel } from "@/models/feedback.model";
 import { CopyRequestModel } from "@/models/copy-request.model";
 import { PRODUCTS } from "@/lib/store-products";
+import { memo } from "@/lib/admin/memo";
 
 /** Read-only queries behind the admin dashboard and Insights pages. */
 
@@ -96,7 +97,7 @@ async function leadCount(from: Date, to: Date) {
   ] };
 }
 
-export async function getOverview(range: Range) {
+async function _getOverview(range: Range) {
   await connectDB();
   const { now, since, prevSince } = windows(range);
   const useTracking = await hasTracking(since);
@@ -168,7 +169,7 @@ export async function getOverview(range: Range) {
 
 /* ---------------- Traffic (tracking) ---------------- */
 
-export async function getTraffic(range: Range) {
+async function _getTraffic(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const keys = dayKeys(range);
@@ -279,7 +280,7 @@ const TOPICS: [string, RegExp][] = [
 const TEMPLATED = /^(tell me about .+?'?s? upsc strategy|tell me more about:|ask about:)/i;
 const TOPPER_PROMPT = /^tell me about (.+?)'?s? upsc strategy/i;
 
-export async function getDemand(range: Range) {
+async function _getDemand(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const norm = { $trim: { input: { $toLower: { $substrCP: ["$messages.content", 0, 160] } } } };
@@ -376,7 +377,7 @@ export async function getDemand(range: Range) {
 
 /* ---------------- Funnel ---------------- */
 
-export async function getFunnel(range: Range) {
+async function _getFunnel(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const [views, clicks, orders] = await Promise.all([
@@ -532,7 +533,7 @@ const visitorDays = () => [
   { $project: { n: 1, s: { $size: "$s" } } },
 ];
 
-export async function getAudience(range: Range) {
+async function _getAudience(range: Range) {
   await connectDB();
   const todayN = dayNum(istDay(Date.now()));
   const winStart = istDay(Date.now() - (range - 1) * DAY);
@@ -708,7 +709,7 @@ export async function getAudience(range: Range) {
 
 /* ---------------- Time of week ---------------- */
 
-export async function getTimePatterns(range: Range) {
+async function _getTimePatterns(range: Range) {
   await connectDB();
   const since = new Date(Date.now() - range * DAY);
   const rows = await AnalyticsEventModel.aggregate<{ _id: { d: number; h: number }; n: number }>([
@@ -745,7 +746,7 @@ const hostExpr = (field: string) => ({
 });
 const landingExpr = (field: string) => ({ $arrayElemAt: [{ $split: [{ $ifNull: [field, "/"] }, "?"] }, 0] });
 
-export async function getAcquisition(range: Range) {
+async function _getAcquisition(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const tracked = await hasTracking(since);
@@ -844,7 +845,7 @@ export async function getAcquisition(range: Range) {
 
 /* ---------------- Buyers ---------------- */
 
-export async function getBuyers() {
+async function _getBuyers() {
   await connectDB();
   const orders = (await OrderModel.find({ status: { $in: PAID }, email: { $nin: [null, ""] } }, { email: 1, total: 1, items: 1, createdAt: 1, ref: 1 }).sort({ createdAt: 1 }).lean()) as unknown as {
     email: string; total: number; items: { slug: string; title: string }[]; createdAt: Date; ref?: string;
@@ -942,7 +943,7 @@ export async function getBuyers() {
 
 /* ---------------- Leads ---------------- */
 
-export async function getLeads(range: Range) {
+async function _getLeads(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const keys = dayKeys(range);
@@ -1019,7 +1020,7 @@ export async function getLeads(range: Range) {
 
 /* ---------------- AI mentor ---------------- */
 
-export async function getAI(range: Range) {
+async function _getAI(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const keys = dayKeys(range);
@@ -1097,7 +1098,7 @@ export function parseUA(ua: string) {
 
 type SessionProps = { screen?: { w?: number }; langs?: string[]; connection?: { type?: string; save_data?: boolean }; dark?: boolean; standalone?: boolean; returning?: boolean; visit_number?: number };
 
-export async function getTech(range: Range) {
+async function _getTech(range: Range) {
   await connectDB();
   const { since } = windows(range);
   const [uaRows, sessions, vitals, vitalsByPage] = await Promise.all([
@@ -1167,3 +1168,16 @@ export async function getTech(range: Range) {
       .slice(0, 15),
   };
 }
+
+/* Cached entry points: fresh for 45 s, then served stale while refreshing. */
+export const getOverview = memo("getOverview", _getOverview);
+export const getTraffic = memo("getTraffic", _getTraffic);
+export const getDemand = memo("getDemand", _getDemand, 3 * 60_000, 30 * 60_000);
+export const getFunnel = memo("getFunnel", _getFunnel);
+export const getAudience = memo("getAudience", _getAudience, 3 * 60_000, 30 * 60_000);
+export const getTimePatterns = memo("getTimePatterns", _getTimePatterns, 3 * 60_000, 30 * 60_000);
+export const getAcquisition = memo("getAcquisition", _getAcquisition, 3 * 60_000, 30 * 60_000);
+export const getBuyers = memo("getBuyers", _getBuyers, 3 * 60_000, 30 * 60_000);
+export const getLeads = memo("getLeads", _getLeads, 3 * 60_000, 30 * 60_000);
+export const getAI = memo("getAI", _getAI, 3 * 60_000, 30 * 60_000);
+export const getTech = memo("getTech", _getTech, 3 * 60_000, 30 * 60_000);

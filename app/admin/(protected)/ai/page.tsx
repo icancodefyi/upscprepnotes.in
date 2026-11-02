@@ -129,7 +129,7 @@ export default function AdminAIPage() {
       {/* Conversation List */}
       {loading && !data ? (
         <div className="flex items-center justify-center py-32">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-800 border-t-transparent" />
         </div>
       ) : data?.conversations.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-32 text-zinc-500">
