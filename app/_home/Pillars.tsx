@@ -95,8 +95,8 @@ export default function Pillars({ counts }: { counts: Counts }) {
               >
                 <div>
                   <p className="t-display tab text-l">{t.value}</p>
-                  <h3 className="t-head mt-3 text-l">{t.title}</h3>
-                  <p className={`mt-2 max-w-[30rem] text-m leading-[1.5] ${light ? "text-white/75" : "text-[var(--ink-2)]"}`}>{t.desc}</p>
+                  <h3 className="t-head mt-4 text-m">{t.title}</h3>
+                  <p className={`mt-1.5 max-w-[30rem] text-s leading-[1.55] ${light ? "text-white/75" : "text-[var(--ink-2)]"}`}>{t.desc}</p>
                   <Art kind={t.art} light={light} />
                 </div>
                 <span

@@ -89,7 +89,7 @@ export default function Hero({ booklets, counts }: { booklets: Booklet[]; counts
             name="search"
             autoComplete="off"
             placeholder="Search a topper, rank or optional"
-            className="min-w-0 flex-1 bg-transparent text-m tracking-[-0.01em] outline-none placeholder:text-[var(--muted)]"
+            className="min-w-0 flex-1 text-ellipsis bg-transparent text-m tracking-[-0.01em] outline-none placeholder:text-[var(--muted)]"
           />
           <button type="submit" data-track="try-hero-search" className="btn btn-blue h-12">
             Search

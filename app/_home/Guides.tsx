@@ -33,8 +33,8 @@ function Card({ g, i }: { g: Guide; i: number }) {
         <span className="ml-1.5 text-m tracking-normal text-[var(--ink-2)]">{`/ ${g.top.max}`}</span>
       </p>
       <p className="text-s text-[var(--ink-2)]">{`Highest ${g.paper} on record · ${g.top.name}, AIR ${g.top.rank}`}</p>
-      <h3 className="t-head mt-auto text-l group-hover:text-[var(--accent)]">{g.title}</h3>
-      <p className="mt-2 text-s leading-[1.5] text-[var(--ink-2)]">{g.blurb}</p>
+      <h3 className="t-head mt-auto text-m group-hover:text-[var(--accent)]">{g.title}</h3>
+      <p className="mt-1.5 text-s leading-[1.5] text-[var(--ink-2)]">{g.blurb}</p>
       <span className="mt-5 inline-flex items-center gap-1.5 text-s font-bold text-[var(--accent)]">
         Read the strategy <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
       </span>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Outline from "@/components/brand/Outline";
 import SectionHead from "@/components/brand/SectionHead";
 import { Pin } from "@/components/brand/Props";
 
@@ -14,8 +15,9 @@ const fmt = (n: number) => n.toLocaleString("en-IN");
 /** One "result notice" per exam year, like the lists pinned outside UPSC's gate. */
 export default function Years({ years }: { years: YearCard[] }) {
   return (
-    <section className="panel grain relative bg-[var(--ink)] py-24 text-white sm:py-32">
-      <div className="mx-auto max-w-[1120px] px-6">
+    <section className="panel grain relative overflow-hidden bg-[var(--ink)] py-24 text-white sm:py-32">
+      <Outline kind="calendar" className="-right-8 top-6 h-48 w-64 rotate-[-8deg] text-white/[0.06]" />
+      <div className="relative mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark
           title={<>Every year, the list <span className="text-[var(--hl)]">gets new names.</span></>}

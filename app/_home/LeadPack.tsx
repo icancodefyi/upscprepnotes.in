@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Outline from "@/components/brand/Outline";
 
 /** Lead magnet: posts to the existing /api/hero-lead, which emails the Government Schemes Compendium. */
 export default function LeadPack() {
@@ -25,8 +26,9 @@ export default function LeadPack() {
 
   return (
     <section>
-      <div className="panel grain relative bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="panel grain relative overflow-hidden bg-[var(--accent)] px-6 py-16 text-white sm:px-14 sm:py-20">
+        <Outline kind="envelope" className="-bottom-5 -left-5 h-48 w-72 rotate-[-8deg] text-white/[0.11]" />
+        <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h2 className="t-display h-sec">
               Start tonight, <span className="text-[var(--hl)]">for free.</span>
@@ -72,7 +74,7 @@ export default function LeadPack() {
                 {k === 0 && (
                   <div className="p-6 text-[var(--ink)]">
                     <p className="t-meta">UPSCPrepNotes</p>
-                    <p className="t-display mt-3 text-l leading-[1]">Government Schemes Compendium</p>
+                    <p className="t-display mt-3 text-m leading-[1.1]">Government Schemes Compendium</p>
                     <div className="mt-5 space-y-2">
                       {[90, 70, 84, 60, 76].map((w, i) => (
                         <span key={i} className="block h-2 rounded-full bg-[var(--canvas)]" style={{ width: `${w}%` }} />

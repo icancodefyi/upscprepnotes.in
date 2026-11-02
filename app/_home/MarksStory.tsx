@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Outline from "@/components/brand/Outline";
 import Link from "next/link";
 import SectionHead from "@/components/brand/SectionHead";
 
@@ -61,7 +62,8 @@ export default function MarksStory({ story }: { story: Story }) {
   const interview = story.papers.find((p) => p.key === "interview")?.score ?? 0;
 
   return (
-    <section className="panel grain relative bg-[var(--accent)] py-24 text-white sm:py-32">
+    <section className="panel grain relative overflow-hidden bg-[var(--accent)] py-24 text-white sm:py-32">
+      <Outline kind="pen" className="-left-6 bottom-8 hidden h-56 w-72 rotate-[-14deg] text-white/[0.07] lg:block" />
       <div className="mx-auto max-w-[1120px] px-6">
         <SectionHead
           dark

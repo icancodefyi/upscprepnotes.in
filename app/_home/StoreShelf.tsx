@@ -56,7 +56,7 @@ function Featured({ p }: { p: ShelfItem }) {
             className="paper absolute left-1/2 top-[8%] w-[58%] -translate-x-1/2 rounded-[10px] transition-transform duration-700 ease-[var(--ease)] group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]"
           />
         )}
-        <span className="absolute bottom-6 left-6 rotate-[-4deg] rounded-[10px] bg-[var(--hl)] px-4 py-2 text-l font-bold tracking-[-0.02em] text-[var(--ink)] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]">
+        <span className="absolute bottom-6 left-6 rotate-[-4deg] rounded-[10px] bg-[var(--hl)] px-4 py-2 text-m font-bold tracking-[-0.02em] text-[var(--ink)] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]">
           {`₹${p.price}`}
         </span>
       </div>
@@ -162,7 +162,7 @@ export default function StoreShelf({ items }: { items: ShelfItem[] }) {
         </ul>
 
         <div className="mt-20 flex items-end justify-between gap-6">
-          <h3 className="t-head text-l">More from the store</h3>
+          <h3 className="t-head text-m">More from the store</h3>
           <div className="flex gap-2">
             <button aria-label="Previous products" disabled={edge.start} onClick={() => rail.current?.scrollBy({ left: -296, behavior: "smooth" })} className="btn btn-paper h-11 w-11 justify-center p-0 disabled:opacity-35">←</button>
             <button aria-label="Next products" disabled={edge.end} onClick={() => rail.current?.scrollBy({ left: 296, behavior: "smooth" })} className="btn btn-ink h-11 w-11 justify-center p-0 disabled:opacity-35">→</button>

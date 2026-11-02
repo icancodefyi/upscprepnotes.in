@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Outline from "@/components/brand/Outline";
 import type { Counts } from "./types";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
@@ -14,7 +15,7 @@ export default function Verify({ counts }: { counts: Counts }) {
   return (
     <section className="py-24 sm:py-32">
       <div className="mx-auto grid max-w-[1120px] gap-14 px-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="lg:sticky lg:top-28 lg:self-start">
+        <div className="relative lg:sticky lg:top-28 lg:self-start">
           <h2 className="t-display h-sec">
             Why you can trust <span className="swipe">these numbers.</span>
           </h2>
@@ -24,20 +25,22 @@ export default function Verify({ counts }: { counts: Counts }) {
           <Link href="/content/data-methodology-and-editorial-standards" className="btn btn-paper mt-8">
             Read our data methodology <span className="knob">↗</span>
           </Link>
+          <div aria-hidden className="relative mt-12 hidden h-44 lg:block">
+            <Outline kind="shield" className="-left-3 top-0 h-44 w-60 rotate-[-6deg] text-[var(--accent)]/[0.12]" />
+          </div>
         </div>
         <ol className="space-y-4">
           {steps.map((s, i) => (
             <li
               key={s.n}
-              className="relative flex gap-6 rounded-[24px] bg-white p-7 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)]"
-              style={{ marginLeft: `${(i % 2) * 28}px` }}
+              className={`relative flex gap-5 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] sm:gap-6 sm:p-7 ${i % 2 ? "sm:ml-7" : ""}`}
             >
-              <span className="t-display grid h-14 w-14 shrink-0 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-l text-[var(--mark)]" style={{ transform: "rotate(-8deg)" }}>
+              <span className="t-display grid h-11 w-11 shrink-0 place-items-center rounded-full border-[2.5px] border-[var(--mark)] text-m text-[var(--mark)]" style={{ transform: "rotate(-8deg)" }}>
                 {s.n}
               </span>
               <div>
-                <h3 className="t-head text-l">{s.title}</h3>
-                <p className="mt-2 text-m leading-[1.55] text-[var(--ink-2)]">{s.body}</p>
+                <h3 className="t-head text-m">{s.title}</h3>
+                <p className="mt-1.5 text-s leading-[1.6] text-[var(--ink-2)]">{s.body}</p>
               </div>
             </li>
           ))}

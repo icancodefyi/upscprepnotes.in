@@ -53,7 +53,7 @@ export default function Faq({ counts }: { counts: Counts }) {
               className="group rounded-[22px] bg-white p-6 shadow-[0_0_0_1px_var(--line),0_6px_16px_-10px_rgba(11,12,16,0.25)] open:bg-[#f7f8ff] sm:p-7"
             >
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
-                <h3 className="t-head text-m sm:text-l">{f.q}</h3>
+                <h3 className="t-head pt-1 text-m">{f.q}</h3>
                 <span
                   aria-hidden
                   className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--canvas)] text-m transition-transform duration-300 group-open:rotate-45 group-open:bg-[var(--accent)] group-open:text-white"
