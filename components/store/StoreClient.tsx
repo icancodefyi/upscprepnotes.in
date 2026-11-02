@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/store-products";
-import { fmt, folderOf, Star, Meta, BuyButton, PayMethods, Price, Sheet, Badge, ProductCard } from "./Shelf";
+import { fmt, folderOf, Star, Meta, BuyButton, Price, Sheet, Badge, ProductCard } from "./Shelf";
 import { Paperclip, Pin } from "@/components/brand/Props";
 import EmailCapture from "./EmailCapture";
 import FlashSaleBanner from "./FlashSaleBanner";
@@ -51,7 +51,6 @@ function Spotlight({ product }: { product: Product }) {
             <BuyButton product={product} label={`Buy now`} className="btn btn-blue h-12 px-6" track={`spotlight-buy-${product.slug}`} />
           </div>
         </div>
-        <PayMethods className="mt-4" />
       </div>
     </div>
   );

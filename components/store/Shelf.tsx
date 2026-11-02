@@ -75,46 +75,25 @@ const PAIRS: Record<string, string> = {
 };
 export const pairOf = (p: Product) => PRODUCTS.find((x) => x.slug === PAIRS[p.slug] && !x.comingSoon);
 
-/** The ways people can pay at checkout (Dodo: any UPI app, and cards including RuPay). */
+/** The ways people can pay at checkout (Dodo: any UPI app, and cards including RuPay). Official logos, in /public/pay. */
+const PAY_LOGOS = [
+  { src: "/pay/upi.svg", alt: "UPI", h: "h-[14px]" },
+  { src: "/pay/gpay.svg", alt: "Google Pay", h: "h-[16px]" },
+  { src: "/pay/phonepe.svg", alt: "PhonePe", h: "h-[15px]" },
+  { src: "/pay/visa.svg", alt: "Visa", h: "h-[11px]" },
+  { src: "/pay/mastercard.svg", alt: "Mastercard", h: "h-[18px]" },
+  { src: "/pay/rupay.svg", alt: "RuPay", h: "h-[12px]" },
+];
 export function PayMethods({ className = "" }: { className?: string }) {
-  const chip = "inline-flex h-7 items-center rounded-[8px] bg-white px-2 shadow-[0_0_0_1px_var(--line-2)]";
   return (
-    <div aria-label="Pay with UPI, Google Pay, PhonePe, Visa, Mastercard or RuPay" className={`flex flex-wrap items-center gap-1.5 ${className}`}>
-      <span className={chip} title="UPI">
-        <svg viewBox="0 0 44 16" className="h-3.5" aria-hidden>
-          <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="800" fontStyle="italic" fill="#5f6368">UPI</text>
-          <path d="M33 2l5 6-5 6z" fill="#F47920" />
-          <path d="M37 2l5 6-5 6z" fill="#108545" />
-        </svg>
-      </span>
-      <span className={chip} title="Google Pay">
-        <svg viewBox="0 0 46 16" className="h-3.5" aria-hidden>
-          <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700"><tspan fill="#4285F4">G</tspan><tspan dx="3" fill="#5f6368">Pay</tspan></text>
-        </svg>
-      </span>
-      <span className={chip} title="PhonePe">
-        <svg viewBox="0 0 62 16" className="h-3.5" aria-hidden>
-          <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="#5f259f">PhonePe</text>
-        </svg>
-      </span>
-      <span className={chip} title="Visa">
-        <svg viewBox="0 0 38 16" className="h-3" aria-hidden>
-          <text x="0" y="13.5" fontFamily="Arial, sans-serif" fontSize="15" fontWeight="900" fontStyle="italic" fill="#1A1F71">VISA</text>
-        </svg>
-      </span>
-      <span className={chip} title="Mastercard">
-        <svg viewBox="0 0 28 18" className="h-4" aria-hidden>
-          <circle cx="10" cy="9" r="7.5" fill="#EB001B" />
-          <circle cx="18" cy="9" r="7.5" fill="#F79E1B" />
-          <path d="M14 3.1a7.5 7.5 0 010 11.8 7.5 7.5 0 010-11.8z" fill="#FF5F00" />
-        </svg>
-      </span>
-      <span className={chip} title="RuPay">
-        <svg viewBox="0 0 50 16" className="h-3.5" aria-hidden>
-          <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="900" fontStyle="italic"><tspan fill="#1B3F8B">Ru</tspan><tspan fill="#F37021">Pay</tspan></text>
-        </svg>
-      </span>
-    </div>
+    <ul aria-label="Pay with UPI, Google Pay, PhonePe, Visa, Mastercard or RuPay" className={`grid grid-cols-6 gap-1.5 ${className}`}>
+      {PAY_LOGOS.map((l) => (
+        <li key={l.alt} className="grid h-9 place-items-center rounded-[8px] bg-white px-1.5 shadow-[0_0_0_1px_var(--line-2)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={l.src} alt={l.alt} title={l.alt} className={`${l.h} w-auto max-w-full object-contain`} />
+        </li>
+      ))}
+    </ul>
   );
 }
 

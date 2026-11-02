@@ -498,7 +498,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
           >
             Pay ₹{fmt(product.price)}
           </PayButton>
-          <PayMethods className="justify-center pt-1" />
+          <PayMethods className="pt-1" />
         </div>
       )}
 
