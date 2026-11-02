@@ -1,5 +1,6 @@
 import AdvertiseClient from "./AdvertiseClient";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata = {
   title: "Advertise on UPSCPrepNotes — Reach 5,000+ Monthly UPSC Aspirants",
@@ -22,9 +23,9 @@ export const metadata = {
   },
 };
 
-export default function AdvertisePage() {
+export default async function AdvertisePage() {
   return (
-    <>
+    <BrandShell>
       <BreadcrumbSchema
         items={[
           { name: "Home", href: "/" },
@@ -45,6 +46,6 @@ export default function AdvertisePage() {
         }}
       />
       <AdvertiseClient />
-    </>
+    </BrandShell>
   );
 }

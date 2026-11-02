@@ -39,8 +39,8 @@ export default function TrafficChart({
 
   if (!data || data.length < 2) {
     return (
-      <div ref={containerRef} className="traffic-chart">
-        <div className="traffic-chart__empty">
+      <div ref={containerRef} className="rounded-[24px] bg-white px-3 pb-3 pt-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] [&_svg]:h-auto [&_svg]:w-full">
+        <div className="flex min-h-24 items-center justify-center text-s text-[var(--muted)]">
           Not enough data to show a chart yet.
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function TrafficChart({
   const hi = hovered !== null ? points[hovered] : null;
 
   return (
-    <div ref={containerRef} className="traffic-chart">
+    <div ref={containerRef} className="rounded-[24px] bg-white px-3 pb-3 pt-5 shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)] [&_svg]:h-auto [&_svg]:w-full">
       <svg
         width={dims.w}
         height={dims.h}
@@ -89,8 +89,8 @@ export default function TrafficChart({
       >
         <defs>
           <linearGradient id="advAreaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.58 0.18 158)" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="oklch(0.58 0.18 158)" stopOpacity="0.01" />
+            <stop offset="0%" stopColor="#1f3fd6" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#1f3fd6" stopOpacity="0.01" />
           </linearGradient>
           <linearGradient id="advAreaGradDark" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="oklch(0.65 0.18 158)" stopOpacity="0.35" />
@@ -112,13 +112,13 @@ export default function TrafficChart({
         ))}
 
         {/* Area */}
-        <path d={areaPath} fill="url(#advAreaGrad)" />
+        <path d={areaPath} fill="rgba(31,63,214,0.07)" />
 
         {/* Line */}
         <path
           d={linePath}
           fill="none"
-          stroke="oklch(0.58 0.18 158)"
+          stroke="#1f3fd6"
           strokeWidth="2"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -163,10 +163,10 @@ export default function TrafficChart({
               r="5"
               fill={
                 hovered === i
-                  ? "oklch(0.58 0.18 158)"
+                  ? "#1f3fd6"
                   : "oklch(0.995 0 0)"
               }
-              stroke="oklch(0.58 0.18 158)"
+              stroke="#1f3fd6"
               strokeWidth="2"
               style={{ transition: "fill 100ms" }}
             />
@@ -182,7 +182,7 @@ export default function TrafficChart({
               x2={hi.x}
               y1={pad.top}
               y2={pad.top + innerH}
-              stroke="oklch(0.58 0.18 158)"
+              stroke="#1f3fd6"
               strokeWidth="1"
               strokeDasharray="4 3"
               opacity="0.6"
@@ -229,8 +229,8 @@ export default function TrafficChart({
         )}
       </svg>
 
-      <div className="traffic-chart__legend">
-        <span className="traffic-chart__legend-dot" />
+      <div className="mt-1.5 flex items-center justify-center gap-1.5 text-s text-[var(--muted)]">
+        <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
         Daily page views (30 days)
       </div>
     </div>
