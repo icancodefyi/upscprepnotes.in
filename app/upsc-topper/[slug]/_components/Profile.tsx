@@ -8,6 +8,7 @@ import ReportButton from "@/components/ReportButton";
 import AfterHeader from "./AfterHeader";
 import { card } from "@/components/brand/ui";
 import { Paperclip } from "@/components/brand/Props";
+import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 
 export type HeaderData = {
   name: string;
@@ -179,6 +180,9 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
               Ask AI
             </AskLink>
           </div>
+          <div className="mt-4">
+            <InterviewPackPromo variant="line" track="topper-hero-interview-pack" />
+          </div>
           <div className="mt-4 flex flex-wrap items-center gap-4">
             <LiveCounter />
             <ReportButton topperName={h.name} />
@@ -229,6 +233,8 @@ export function Sidebar({ s }: { s: SidebarData }) {
         <Toc items={s.toc} />
       </nav>
 
+      <InterviewPackPromo variant="side" track="topper-side-interview-pack" />
+
       {s.compilation && (
         <Link href={s.compilation.href} data-track="topper-side-store" className={`${card} group flex gap-4 p-4`}>
           {s.compilation.image && (
@@ -252,6 +258,7 @@ export function Sidebar({ s }: { s: SidebarData }) {
             { href: "/toppers/marks-database", label: "Marks database" },
             { href: "/toppers/highest-marks-in-upsc", label: "Highest marks in UPSC" },
             { href: "/toppers/upsc-interview-marks", label: "UPSC interview marks" },
+            { href: "/store/upsc-interview-pack", label: "UPSC Interview Pack" },
             { href: "/free-materials", label: "Free study material" },
           ].map((l) => (
             <li key={l.href}>

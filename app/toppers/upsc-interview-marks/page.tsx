@@ -8,6 +8,7 @@ import PayButton from "@/components/ui/PayButton";
 import { getInterviewData, INTERVIEW_URL, INTERVIEW_PACK_SLUG, type IVTopper } from "@/lib/interview-marks";
 import { IV_TRANSCRIPTS, transcriptStats } from "@/data/content/interview-transcripts";
 import { getProductBySlug } from "@/lib/store-products";
+import { PackGlimpse } from "@/components/store/InterviewPackPromo";
 
 export const revalidate = 86400;
 
@@ -40,10 +41,11 @@ function PackCard({ compact = false }: { compact?: boolean }) {
   const pack = getProductBySlug(INTERVIEW_PACK_SLUG);
   if (!pack) return null;
   return (
-    <div className={`relative overflow-hidden rounded-[28px] bg-[var(--accent)] text-white ${compact ? "p-6" : "p-7 sm:p-9"}`}>
+    <div className={`relative grid items-center gap-8 rounded-[28px] bg-[var(--accent)] text-white sm:grid-cols-[1fr_150px] md:grid-cols-[1fr_170px] ${compact ? "p-6" : "p-7 sm:p-9"}`}>
+      <div className="min-w-0">
       <p className="t-head text-l">The UPSC Interview Pack</p>
       <p className="mt-3 max-w-[36rem] text-m leading-[1.55] text-white/80">
-        Everything on this page, plus the work: a field-by-field DAF worksheet, question patterns for your degree, a home district dossier, answer methods, 150 practice questions and a day-by-day 30-day plan. A 22-page PDF to print and write on.
+        This page shows what happens in the room. The pack is how you prepare for it: a field-by-field DAF worksheet, question patterns for your degree, a home district dossier, answer methods, 150 practice questions and a day-by-day 30-day plan. A 22-page PDF to print and write on.
       </p>
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <PayButton amount={pack.price} items={[{ slug: pack.slug, quantity: 1, price: pack.price }]} tracking={compact ? "interview-pack-buy-bottom" : "interview-pack-buy"} className="btn btn-paper h-12 px-6 [--btn-fs:16px]">
@@ -52,6 +54,8 @@ function PackCard({ compact = false }: { compact?: boolean }) {
         <Link href={`/store/${pack.slug}`} data-track="interview-pack-details" className="text-s font-bold text-white underline underline-offset-4">See what&rsquo;s inside</Link>
       </div>
       <p className="mt-4 text-s text-white/70">Instant email delivery · 7-day refund · No subscription</p>
+      </div>
+      <PackGlimpse className="mx-auto mt-4 w-[150px] sm:mt-0 sm:w-full" />
     </div>
   );
 }
@@ -361,13 +365,20 @@ export default async function InterviewMarksPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[var(--line)]">
-                      {IV_TRANSCRIPTS.slice(0, 6).map((t) => (
+                      {IV_TRANSCRIPTS.slice(0, 2).map((t) => (
                         <tr key={t.url}>
                           <td className="px-5 py-2.5 font-bold">{t.board}</td>
                           <td className="px-3 py-2.5 text-[var(--ink-2)]">{[t.background, t.home].filter(Boolean).join(" · ")}</td>
                           <td className="px-5 py-2.5 text-[var(--ink-2)]">{t.examples[0]}</td>
                         </tr>
                       ))}
+                      <tr>
+                        <td colSpan={3} className="px-5 py-3">
+                          <Link href={`/store/${INTERVIEW_PACK_SLUG}`} data-track="interview-page-questions-more" className="font-bold text-[var(--accent)] hover:underline">
+                            {`All ${ts.n} interviews and 150 practice questions are in the Interview Pack →`}
+                          </Link>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -375,16 +386,23 @@ export default async function InterviewMarksPage() {
 
               <section id="daf" className="scroll-mt-28">
                 <h2 className="t-head text-l">Your DAF decides most of the questions</h2>
-                <p className="mt-3 max-w-[44rem] text-m leading-[1.6] text-[var(--ink-2)]">{`About ${ts.dafShare}% of questions came straight from the Detailed Application Form, and most current-affairs questions were linked to it. Here is what each part of the form tends to trigger.`}</p>
+                <p className="mt-3 max-w-[44rem] text-m leading-[1.6] text-[var(--ink-2)]">{`About ${ts.dafShare}% of questions came straight from the Detailed Application Form, and most current-affairs questions were linked to it. Here is what the two most-asked parts of the form trigger.`}</p>
                 <div className={`${card} mt-6 overflow-x-auto`}>
                   <table className="w-full min-w-[520px] text-s">
                     <tbody className="divide-y divide-[var(--line)]">
-                      {DAF_ROWS.map(([f, t]) => (
+                      {DAF_ROWS.slice(0, 2).map(([f, t]) => (
                         <tr key={f}>
                           <th scope="row" className="w-[34%] px-5 py-3 text-left align-top font-bold">{f}</th>
                           <td className="px-5 py-3 text-[var(--ink-2)]">{t}</td>
                         </tr>
                       ))}
+                      <tr>
+                        <td colSpan={2} className="px-5 py-3">
+                          <Link href={`/store/${INTERVIEW_PACK_SLUG}`} data-track="interview-page-daf-more" className="font-bold text-[var(--accent)] hover:underline">
+                            Every DAF field, with a worksheet to fill in before you submit, is in the Interview Pack →
+                          </Link>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
