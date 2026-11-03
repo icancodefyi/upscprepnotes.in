@@ -8,6 +8,12 @@ import {
 } from "@/data/upsc/pyq/cse-pyq";
 import BrandShell from "@/components/brand/BrandShell";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import mainsQuestions from "@/data/upsc/pyq/mains-gs-questions.json";
+
+type MainsQ = { q: string; marks: number | null; words: number | null };
+/** Mains GS questions as text, read from UPSC's official papers. Empty for years we have not added. */
+const questionsFor = (y: string) => (mainsQuestions as Record<string, Record<string, MainsQ[]>>)[y] ?? null;
+const countQs = (y: string) => Object.values(questionsFor(y) ?? {}).reduce((a, qs) => a + qs.length, 0);
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -30,9 +36,12 @@ export async function generateMetadata({
     return { title: "PYQ Not Found" };
   }
 
+  const nq = countQs(year);
   return {
-    title: `UPSC CSE ${year} Question Papers PDF - Prelims & Mains`,
-    description: `Download official UPSC Civil Services Exam ${year} question papers. Includes GS Paper 1, CSAT, Essay, and General Studies I-IV papers in PDF format.`,
+    title: nq ? `UPSC Mains ${year} Question Paper: GS 1–4 Questions + PDF` : `UPSC CSE ${year} Question Papers PDF - Prelims & Mains`,
+    description: nq
+      ? `${nq} UPSC Mains ${year} GS questions (Papers I–IV) as text, with marks and word limits, plus the official ${year} question paper PDFs for Prelims, Essay and GS.`
+      : `Download official UPSC Civil Services Exam ${year} question papers. Includes GS Paper 1, CSAT, Essay, and General Studies I-IV papers in PDF format.`,
     openGraph: {
       title: `UPSC CSE ${year} Official Question Papers`,
       description: `Complete set of UPSC CSE ${year} question papers for Prelims and Mains. Download PDFs now.`,
@@ -51,43 +60,6 @@ export async function generateMetadata({
 export default async function PYQYearPage({ params }: Props) {
   const { year } = await params;
 
-  function getPYQAnalysis(y: string): { title: string; paragraphs: string[] } | null {
-    const analyses: Record<string, { title: string; paragraphs: string[] }> = {
-      "2025": {
-        title: "UPSC CSE 2025 Question Paper Analysis",
-        paragraphs: [
-          `The UPSC CSE 2025 question papers reflected a continued emphasis on application-based learning. The GS Paper 1 questions moved beyond traditional art and culture topics, testing candidates on contemporary historical interpretations. GS Paper 2 (Polity, Governance) placed greater weight on case-study based questions about administrative ethics and policy implementation.`,
-          `In the 2025 Mains examination, the Essay paper offered a balanced mix of philosophical and contemporary topics, allowing candidates from diverse backgrounds to demonstrate their analytical abilities. The General Studies papers showed a trend towards cross-disciplinary questions — for instance, combining environment topics with economic development in GS Paper 3.`,
-          `One standout feature of the 2025 papers was the increased emphasis on India-specific examples. Questions explicitly asked candidates to reference Indian case studies, judgments, and policy initiatives rather than generic international examples. Aspirants preparing for future exams should prioritize government schemes, Supreme Court judgments, and India-specific data points in their preparation.`,
-        ],
-      },
-      "2024": {
-        title: "Breaking Down the UPSC 2024 Papers",
-        paragraphs: [
-          `The UPSC CSE 2024 question papers continued the trend of unpredictable question formats. GS Paper 1 surprised many with detailed questions on post-independence consolidation, moving beyond the usual freedom struggle focus. The Art and Culture section tested lesser-known temple architecture styles, rewarding candidates who had done comprehensive reading.`,
-          `GS Paper 4 (Ethics) in 2024 featured longer, more complex case studies requiring nuanced ethical reasoning. The paper moved away from straightforward "what would you do" scenarios towards multi-stakeholder analysis with conflicting ethical obligations. This shift underscores the importance of practicing diverse case studies rather than relying on formulaic approaches.`,
-          `For GS Paper 2, the 2024 paper heavily emphasized comparative analysis — comparing governance models across states, analyzing different constitutional provisions, and evaluating policy outcomes. The International Relations section focused more on India's neighborhood policy and multilateral engagements rather than great power dynamics.`,
-        ],
-      },
-      "2023": {
-        title: "Key Themes in UPSC 2023 Question Papers",
-        paragraphs: [
-          `UPSC CSE 2023 question papers marked a noticeable shift towards current affairs integration across all GS papers. Rather than having isolated current affairs questions, the examiner wove contemporary developments into the fabric of every paper — from GS1's coverage of cultural festivals in news to GS3's questions on recent technological developments.`,
-          `The 2023 Optional subject papers from popular choices like PSIR, Geography, and Sociology showed that the commission expects deep, analytical engagement rather than rote reproduction of standard textbooks. Many questions required candidates to critically evaluate established theories in the Indian context, testing original thinking.`,
-          `A significant observation for future aspirants: the 2023 papers introduced more "compare and contrast" questions, particularly in GS Paper 2 and the Essay paper. The ability to synthesize information from multiple sources and present balanced arguments emerged as a key differentiator between average and top-scoring answers.`,
-        ],
-      },
-      "2022": {
-        title: "What UPSC 2022 Papers Reveal About Exam Trends",
-        paragraphs: [
-          `The UPSC CSE 2022 examination papers represented a return to pre-pandemic question patterns after COVID-era adjustments. The GS papers featured a wider distribution of questions across topics, making it difficult for candidates to skip entire sections during preparation. This reinforced the importance of covering the entire syllabus comprehensively.`,
-          `GS Paper 3 in 2022 was notable for its emphasis on disaster management and internal security — topics that UPSC had traditionally given less weight to. The Economic Development section tested not just theoretical concepts but their application to post-pandemic recovery challenges, requiring candidates to connect textbook learning with real-world economic data.`,
-          `The 2022 Ethics paper continued the trend of practical case studies but introduced more dilemmas involving digital governance and technology ethics — a reflection of the growing importance of technology in public administration. The interview panel questions in 2022 also showed increased focus on digital India initiatives.`,
-        ],
-      },
-    };
-    return analyses[y] || null;
-  }
   const formattedData = await getFormattedYearData(year);
   const allYears = await getAllPYQYears();
 
@@ -127,7 +99,8 @@ export default async function PYQYearPage({ params }: Props) {
     );
   }
 
-  const analysis = getPYQAnalysis(year);
+  const qs = questionsFor(year);
+  const nq = countQs(year);
 
   return (
     <BrandShell>
@@ -158,18 +131,6 @@ export default async function PYQYearPage({ params }: Props) {
                 Official UPSC Civil Services Examination {year} question papers for Prelims (GS + CSAT) and Mains (Essay + GS Papers).
               </p>
             </header>
-
-            {analysis && (
-              <section className={`${card} p-6 md:p-8`}>
-                <h2 className="t-head text-l">{analysis.title}</h2>
-                <p className="mt-1 text-s text-[var(--muted)]">Analysis</p>
-                <div className="mt-4 space-y-4">
-                  {analysis.paragraphs.map((para, i) => (
-                    <p key={i} className="text-m leading-[1.7] text-[var(--ink-2)]">{para}</p>
-                  ))}
-                </div>
-              </section>
-            )}
 
             {/* Inline Conversion */}
             <div className="flex flex-col gap-4 rounded-[20px] bg-[#fff8d6] p-6 sm:flex-row sm:items-center">
@@ -208,6 +169,43 @@ export default async function PYQYearPage({ params }: Props) {
                   {mainsPapers.map((paper, idx) => (
                     <PaperCard key={idx} paper={paper} />
                   ))}
+                </div>
+              </section>
+            )}
+
+            {qs && nq > 0 && (
+              <section id="questions">
+                <h2 className="t-head text-l">{`UPSC Mains ${year} GS questions, paper by paper`}</h2>
+                <p className="mt-2 text-s leading-[1.55] text-[var(--muted)]">
+                  {`${nq} questions read from UPSC's official CSE ${year} papers (English version). A few that did not scan cleanly are left out, so open the PDF above for the full paper and exact wording.`}
+                </p>
+                <div className="mt-6 space-y-8">
+                  {Object.entries(qs).filter(([, list]) => list.length).map(([paper, list]) => (
+                    <div key={paper}>
+                      <h3 className="text-m font-bold">{`${paper} · ${year}`}</h3>
+                      <ol className="mt-3 space-y-2.5">
+                        {list.map((x, i) => (
+                          <li key={i} className={`${card} flex gap-4 p-4`}>
+                            <span className="tab w-6 shrink-0 text-s font-bold text-[var(--muted)]">{i + 1}</span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-m leading-[1.6] text-[var(--ink)]">{x.q}</span>
+                              {(x.marks || x.words) && (
+                                <span className="mt-1 block text-s text-[var(--muted)]">{[x.marks ? `${x.marks} marks` : "", x.words ? `${x.words} words` : ""].filter(Boolean).join(" · ")}</span>
+                              )}
+                            </span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 flex flex-col gap-3 rounded-[20px] bg-[#fff8d6] p-5 sm:flex-row sm:items-center">
+                  <p className="flex-1 text-s text-[var(--ink-2)]">
+                    <strong>See how toppers answered papers like these.</strong> 63 real Mains booklets from 27 toppers, each named with the marks.
+                  </p>
+                  <Link href="/store/answer-copies-compilation" data-track="pyq-questions-copies" className="btn btn-ink h-11 shrink-0 px-5 [--btn-fs:14px]">
+                    Answer Copies, ₹199 →
+                  </Link>
                 </div>
               </section>
             )}
