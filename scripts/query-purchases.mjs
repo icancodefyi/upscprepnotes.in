@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = 'mongodb+srv://<user>:<password>@zoneis.sn2fa.mongodb.net/';
-const DB_NAME = 'upscprepnotes';
+// Run with: node --env-file=.env.local scripts/query-purchases.mjs
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) throw new Error('Set MONGODB_URI (node --env-file=.env.local ...)');
+const DB_NAME = process.env.DB_NAME || 'upscprepnotes';
 
 async function main() {
   await mongoose.connect(MONGODB_URI, { dbName: DB_NAME });
