@@ -20,6 +20,7 @@ import { getRelatedToppers, getToppersByRank, getToppersByYear } from "@/service
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
+import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 
 export const revalidate = 3600;
 
@@ -52,8 +53,6 @@ export async function generateMetadata({ params }: Props) {
   const topper = await getTopperBySlug(slug);
   if (!topper) return { title: "Topper Not Found" };
 
-  const topperImage = topperImageSrc(topper);
-  const ogImage = topperImage?.startsWith("http") ? topperImage : `https://upscprepnotes.in${topperImage || "/logo.png"}`;
 
   return {
     title: `${topper.firstName} ${topper.lastName} UPSC Marksheet, Answer Copy PDF & ${topper.optionalSubject || "Optional Subject"} — Free Download (AIR ${topper.rank}, ${topper.year})`,
@@ -64,7 +63,6 @@ export async function generateMetadata({ params }: Props) {
       description: buildMetaDescription(topper),
       url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
       siteName: "UPSCPrepNotes",
-      images: [{ url: ogImage, width: 788, height: 1050 }],
     },
   };
 }
@@ -346,6 +344,9 @@ export default async function TopperPage({ params }: Props) {
               {/* ANSWER COPY */}
               <FreeDownloadSection topperName={fullName} topperSlug={topper.slug} optionalSubject={topper.optionalSubject} freeAnswerCopyUrl={topper.freeAnswerCopyUrl} freeAnswerCopyUrls={topper.freeAnswerCopyUrls} />
 
+              {/* INTERVIEW PACK: after the free copy, so the lead form stays first */}
+              <InterviewPackPromo first={first} interview={m.interview || 0} track="topper-marksheet-interview-pack" />
+
               {/* STRATEGY */}
               <section id="strategy" className="scroll-mt-28">
                 <h2 className="t-head text-l">{`How ${topper.firstName} Prepared for UPSC`}</h2>
@@ -405,6 +406,7 @@ export default async function TopperPage({ params }: Props) {
               <section className="border-t border-[var(--line)] pt-8">
                 <div className="flex flex-wrap gap-2">
                   {[
+                    { href: "/store/upsc-interview-pack", label: "UPSC Interview Pack →", track: "topper-explore-interview-pack" },
                     { href: "/store", label: "Store →", track: "topper-explore-compilation" },
                     { href: `/year/${topper.year}`, label: `UPSC ${topper.year} toppers →`, track: "topper-explore-year" },
                     { href: `/optional/${getSubjectSlug(topper.optionalSubject)}`, label: `${topper.optionalSubject} toppers →`, track: "topper-explore-optional" },

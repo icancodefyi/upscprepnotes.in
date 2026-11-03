@@ -5,6 +5,7 @@ import { topperImageSrc } from "@/lib/utils";
 import BrandShell from "@/components/brand/BrandShell";
 import { card } from "@/components/brand/ui";
 import MarksDB, { type Row } from "./_components/MarksDB";
+import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 
 export const metadata = {
   title: "UPSC Topper Marks Database — Optional, GS1-4, Essay & Interview Scores",
@@ -19,11 +20,9 @@ export const metadata = {
       "Search and sort marks of 50+ UPSC toppers across GS1-4, Essay, Optional, Written, Interview, and Total. Free access to every rank holder's marksheet.",
     url: "https://upscprepnotes.in/toppers/marks-database",
     siteName: "UPSCPrepNotes",
-    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og/default.png"],
   },
 };
 
@@ -95,6 +94,7 @@ export default async function MarksDatabasePage() {
               <p className="mt-4 max-w-[46rem] text-m leading-[1.6] text-[var(--ink-2)]">
                 Complete marksheets of {toppers.length}+ UPSC rank holders — sortable by every subject. See how the toppers scored across GS papers, essay, optional, written, and interview. Free data for your UPSC prep strategy.
               </p>
+              <div className="mt-5"><InterviewPackPromo variant="line" track="marksdb-interview-pack" /></div>
             </div>
 
             {/* Stats Summary */}

@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
+import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -172,11 +173,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `UPSC ${yearNum} Toppers — Complete Marks Dataset`,
       description: `Full marks breakdown for UPSC ${yearNum} toppers including GS papers, optional subject, essay, interview, and total scores.`,
       url: `https://upscprepnotes.in/year/${year}`,
-      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/og/default.png"],
     },
   };
 }
@@ -257,6 +256,7 @@ export default async function YearPage({ params }: Props) {
             <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
               Full marks breakdown for UPSC {yearNum} toppers including GS papers, optional subject, essay, interview, and total scores. {toppers.length} topper profiles available.
             </p>
+            <div className="mt-5"><InterviewPackPromo variant="line" track="year-interview-pack" /></div>
           </header>
 
           {/* YEAR SELECTOR */}

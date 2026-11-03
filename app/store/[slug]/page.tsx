@@ -20,7 +20,6 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
-  const imageUrl = product.image || "/logo.png";
   return {
       title: product.title,
     description: product.description.slice(0, 160),
@@ -32,11 +31,9 @@ export async function generateMetadata({
       description: product.description.slice(0, 160),
       url: `https://upscprepnotes.in/store/${product.slug}`,
       siteName: "UPSCPrepNotes",
-      images: [{ url: imageUrl, width: 464, height: 600 }],
     },
     twitter: {
       card: "summary_large_image",
-      images: [imageUrl],
     },
   };
 }

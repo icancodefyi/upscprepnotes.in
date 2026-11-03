@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
+import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -390,11 +391,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${subjectInfo.name} Optional Marks & Strategy — UPSC Topper Scores & Preparation`,
       description: subjectInfo.description,
       url: `https://upscprepnotes.in/optional/${subjectKey}`,
-      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/og/default.png"],
     },
   };
 }
@@ -406,9 +405,9 @@ export async function generateStaticParams() {
 async function getSubjectData(subjectName: string) {
   await connectDB();
 
-  const toppers = await TopperModel.find({
-    optionalSubject: new RegExp(subjectName, "i"),
-  }).lean();
+  // PSIR is stored as "PSIR" for most toppers and as "Political Science…" for the rest.
+  const match = /political science/i.test(subjectName) ? /psir|political science/i : new RegExp(subjectName, "i");
+  const toppers = await TopperModel.find({ optionalSubject: match }).lean();
 
   const mapped: TopperData[] = toppers.map((t: any) => ({
     firstName: t.firstName,
@@ -540,6 +539,7 @@ export default async function SubjectPage({ params }: Props) {
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
                 {subjectInfo.name} optional subject for UPSC CSE — {subjectInfo.description.slice(0, 1).toLowerCase() + subjectInfo.description.slice(1)}
               </p>
+              <div className="mt-5"><InterviewPackPromo variant="line" track="optional-interview-pack" /></div>
             </div>
             {stats && (
               <dl className={`${card} grid grid-cols-2 divide-[var(--line)] sm:grid-cols-4 sm:divide-x lg:grid-cols-2 lg:divide-x-0`}>

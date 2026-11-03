@@ -50,11 +50,9 @@ export async function generateMetadata({ params }: Props) {
       url: `https://upscprepnotes.in${contentPath}`,
       siteName: "UPSCPrepNotes",
       locale: page.lang === "hi" ? "hi_IN" : "en_IN",
-      images: [{ url: "/og/default.png", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/og/default.png"],
     },
     other: {
       "content-language": page.lang === "hi" ? "hi" : "en",
