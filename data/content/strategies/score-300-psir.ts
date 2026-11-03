@@ -114,6 +114,11 @@ I also checked PSIR marks against GS2 marks specifically, since the syllabus ove
 
   relatedPages: [
     {
+      title: "Highest Marks in UPSC, Paper by Paper",
+      href: "/toppers/highest-marks-in-upsc",
+      description: "Records, medians and AIR 1 vs the cut-off from real topper marksheets, with a free PDF handbook.",
+    },
+    {
       title: "How to Score 120+ in GS2",
       href: "/content/how-to-score-120-plus-in-gs2",
       description: "PSIR overlaps heavily with GS2 — useful companion strategy for candidates preparing both.",

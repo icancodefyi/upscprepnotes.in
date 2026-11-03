@@ -6,6 +6,8 @@ const FOOTER = [
   { title: "Archive", links: [
     { href: "/toppers", label: "UPSC toppers" },
     { href: "/toppers/marks-database", label: "Marks database" },
+    { href: "/toppers/highest-marks-in-upsc", label: "Highest marks in UPSC" },
+    { href: "/toppers/upsc-interview-marks", label: "UPSC interview marks" },
     { href: "/toppers/toppers-copy-compilation", label: "Topper answer copies" },
     { href: "/pyq", label: "Previous year questions" },
     { href: "/current-affairs", label: "Current affairs" },

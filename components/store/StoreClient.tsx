@@ -30,7 +30,7 @@ function Spotlight({ product }: { product: Product }) {
       <div className="grain relative min-h-[300px] overflow-hidden sm:min-h-[380px]" style={{ background: folderOf(product) }}>
         <Badge product={product} />
         <div className="absolute left-1/2 top-[12%] w-[46%] max-w-[250px] -translate-x-[62%] rotate-[-7deg] opacity-90">
-          <Sheet product={VISIBLE.find((p) => p.slug === "top-10-rankers-strategy") ?? product} />
+          <Sheet product={VISIBLE.find((p) => p.slug === (product.slug === "upsc-interview-pack" ? "answer-copies-compilation" : "top-10-rankers-strategy")) ?? product} />
         </div>
         <div className="absolute left-1/2 top-[9%] w-[50%] max-w-[270px] -translate-x-[40%] rotate-[3deg] transition-transform duration-500 ease-[var(--ease)] group-hover:-translate-y-2 group-hover:rotate-[1deg]">
           <Sheet product={product} eager />
@@ -144,7 +144,8 @@ export default function StoreClient() {
     return VISIBLE.filter((p) => s.match(p) && (!searching || p.title.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)));
   }, [search, shelf]);
 
-  const featured = VISIBLE.find((p) => p.slug === "answer-copies-compilation");
+  // Interview season: the Interview Pack leads until the CSE 2026 interviews end.
+  const featured = VISIBLE.find((p) => p.slug === "upsc-interview-pack") ?? VISIBLE.find((p) => p.slug === "answer-copies-compilation");
   const rest = VISIBLE.filter((p) => p.slug !== "answer-copies-compilation");
   const count = (key: string) => VISIBLE.filter((SHELVES.find((x) => x.key === key) ?? SHELVES[0]).match).length;
 

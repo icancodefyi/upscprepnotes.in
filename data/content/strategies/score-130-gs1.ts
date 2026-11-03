@@ -110,6 +110,11 @@ Toppers who scored 130+ in GS1 typically scored **900+ overall written marks**, 
     },
   ],
   relatedPages: [
+    {
+      title: "Highest Marks in UPSC, Paper by Paper",
+      href: "/toppers/highest-marks-in-upsc",
+      description: "Records, medians and AIR 1 vs the cut-off from real topper marksheets, with a free PDF handbook.",
+    },
     { title: "How to Score 120+ in GS Paper 2", href: "/content/how-to-score-120-plus-in-gs2", description: "GS2 strategy with topper marks data" },
     { title: "Topper Answer Copies Compilation", href: "/content/upsc-topper-answer-copies", description: "50+ topper answer copies" },
     { title: "UPSC Previous Year Papers (PYQ)", href: "/pyq", description: "Download official UPSC PYQ PDFs for Prelims and Mains — free." },

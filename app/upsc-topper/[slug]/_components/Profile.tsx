@@ -250,6 +250,8 @@ export function Sidebar({ s }: { s: SidebarData }) {
             { href: `/year/${s.year}`, label: `All CSE ${s.year} toppers` },
             ...(s.optionalHref ? [{ href: s.optionalHref, label: `${s.optional} toppers` }] : []),
             { href: "/toppers/marks-database", label: "Marks database" },
+            { href: "/toppers/highest-marks-in-upsc", label: "Highest marks in UPSC" },
+            { href: "/toppers/upsc-interview-marks", label: "UPSC interview marks" },
             { href: "/free-materials", label: "Free study material" },
           ].map((l) => (
             <li key={l.href}>

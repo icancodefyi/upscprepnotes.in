@@ -118,6 +118,8 @@ All products are digital downloads (PDFs/ZIPs). Payments processed via DodoPayme
 - `/` — Homepage with hero, featured toppers, stats, store preview
 - `/toppers` — Browse all 280+ topper profiles
 - `/toppers/marks-database` — Searchable marks database
+- `/toppers/highest-marks-in-upsc` — Highest marks in every UPSC paper (Essay, GS I–IV, Ethics, Optional, Interview), medians, rank bands, AIR 1 vs cut-off; free PDF: `/handbook/upsc-topper-marks-handbook.pdf`
+- `/toppers/upsc-interview-marks` — UPSC interview (Personality Test) marks of 282 toppers: median, highest, by rank band, rank swing; what boards asked in 14 real CSE 2025 interviews (Jan–Feb 2026); DAF guidance. Paid Interview Pack: `/store/upsc-interview-pack`
 - `/toppers/toppers-copy-compilation` — Answer copy compilation product page
 - `/upsc-topper/[slug]` — Individual topper profile (marksheet, strategy, answer copies, FAQs)
 - `/store` — Digital products store

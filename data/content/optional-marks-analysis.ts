@@ -140,6 +140,11 @@ The best way to use this data: cross-reference it with your own aptitude, intere
 
   relatedPages: [
     {
+      title: "Highest Marks in UPSC, Paper by Paper",
+      href: "/toppers/highest-marks-in-upsc",
+      description: "Records, medians and AIR 1 vs the cut-off from real topper marksheets, with a free PDF handbook.",
+    },
+    {
       title: "How to Score 130+ in GS1",
       href: "/content/how-to-score-130-plus-in-gs1",
       description: "Strategy page built from the same marks dataset.",

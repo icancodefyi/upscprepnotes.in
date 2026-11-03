@@ -39,6 +39,8 @@ type Link2 = { href: string; title: string; desc: string };
 const ARCHIVE: Link2[] = [
   { href: "/toppers", title: "All toppers", desc: "Every rank holder, CSE 2022–2025" },
   { href: "/toppers/marks-database", title: "Marks database", desc: "Paper-wise marks, sortable by any paper" },
+  { href: "/toppers/highest-marks-in-upsc", title: "Highest marks in UPSC", desc: "Records and medians for every paper" },
+  { href: "/toppers/upsc-interview-marks", title: "Interview marks", desc: "What toppers scored and what boards ask" },
   { href: "/toppers/toppers-copy-compilation", title: "Answer copies", desc: "Handwritten scans to read and compare" },
   { href: "/search", title: "Search the archive", desc: "Find a topper by name, rank or optional" },
 ];

@@ -115,6 +115,11 @@ GS4's case studies (Section B) carry roughly the same weight as the entire theor
 
   relatedPages: [
     {
+      title: "Highest Marks in UPSC, Paper by Paper",
+      href: "/toppers/highest-marks-in-upsc",
+      description: "Records, medians and AIR 1 vs the cut-off from real topper marksheets, with a free PDF handbook.",
+    },
+    {
       title: "How to Score 120+ in GS2",
       href: "/content/how-to-score-120-plus-in-gs2",
       description: "Strategy and topper marks data for GS Paper 2, covering Polity, Governance, and IR.",

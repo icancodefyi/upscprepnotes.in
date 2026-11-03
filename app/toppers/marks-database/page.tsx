@@ -120,6 +120,10 @@ export default async function MarksDatabasePage() {
 
           {/* SEO Text */}
           <div className="mx-auto mt-16 max-w-[46rem] space-y-4">
+            <Link href="/toppers/highest-marks-in-upsc" data-track="marksdb-highest-marks" className={`${card} group mb-8 flex flex-col gap-1 p-6 sm:p-7`}>
+              <span className="text-m font-bold group-hover:text-[var(--accent)]">Highest marks in UPSC, paper by paper &rarr;</span>
+              <span className="text-s leading-[1.55] text-[var(--ink-2)]">The record in every paper, what a typical topper scores, AIR 1 against the cut-off, and a free PDF handbook of all of it.</span>
+            </Link>
             <h2 className="t-head text-l">Why This Marks Data Matters for Your UPSC Prep</h2>
             <p className="text-m leading-[1.7] text-[var(--ink-2)]">
               Understanding how UPSC toppers scored across individual papers is the key to building your own target score. This database gives you real marks data from actual rank holders — not hypotheticals.

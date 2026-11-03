@@ -16,6 +16,7 @@ const ZIP_NAMES: Record<string, string> = {
   "complete-gs-notes-bundle": "Complete-GS-Notes-Bundle.zip",
   "all-strategy-reports": "All-Strategy-Reports.zip",
   "vision-ias-mains-2026-test-series": "Vision-IAS-Mains-2026-Test-Series.zip",
+  "upsc-interview-pack": "Upsc-Interview-Pack.zip",
 };
 
 export async function GET(

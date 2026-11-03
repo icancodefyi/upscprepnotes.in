@@ -14,6 +14,7 @@ export const coverOf = (p: Product) => p.image || p.images?.[0];
 
 /** Each product sits in its own coloured folder; the cover is the real sheet pulled half out of it. */
 const FOLDER: Record<string, string> = {
+  "upsc-interview-pack": "#FFF3B8",
   "answer-copies-compilation": "#DBE2FF",
   "top-10-rankers-strategy": "#FDE9C4",
   "government-schemes-compilation": "#e3e8fb",

@@ -61,7 +61,7 @@ export default async function ToppersPage() {
           </div>
 
           {/* Free Materials CTA */}
-          <div className="mt-16 grid gap-4 md:grid-cols-2">
+          <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div className={`${card} flex flex-col p-6 sm:p-7`}>
               <h2 className="text-m font-bold">Free UPSC Study Material</h2>
               <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
@@ -75,6 +75,20 @@ export default async function ToppersPage() {
               <h2 className="text-m font-bold group-hover:text-[var(--accent)]">UPSC Topper Marks Database</h2>
               <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
                 Sortable marksheets for 50+ rank holders — compare GS papers, optional scores, interview marks, and totals.
+              </p>
+              <span aria-hidden className="mt-5 text-m text-[var(--accent)] transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
+            <Link href="/toppers/highest-marks-in-upsc" data-track="toppers-highest-marks" className={`${card} group flex flex-col p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5 sm:p-7`}>
+              <h2 className="text-m font-bold group-hover:text-[var(--accent)]">Highest Marks in UPSC, Paper by Paper</h2>
+              <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
+                The record in Essay, every GS paper, Ethics, the optional and the interview, with what a typical topper scores. Free PDF handbook.
+              </p>
+              <span aria-hidden className="mt-5 text-m text-[var(--accent)] transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
+            <Link href="/toppers/upsc-interview-marks" data-track="toppers-interview-marks" className={`${card} group flex flex-col p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5 sm:p-7`}>
+              <h2 className="text-m font-bold group-hover:text-[var(--accent)]">UPSC Interview Marks and What Boards Ask</h2>
+              <p className="mt-1 flex-1 text-s leading-[1.55] text-[var(--ink-2)]">
+                What 282 toppers scored in the interview, how far it moved their rank, and the questions boards asked in 14 real 2026 interviews.
               </p>
               <span aria-hidden className="mt-5 text-m text-[var(--accent)] transition-transform group-hover:translate-x-1">&rarr;</span>
             </Link>
