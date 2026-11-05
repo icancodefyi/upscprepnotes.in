@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { track } from "@/lib/track";
@@ -203,6 +204,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 
   useEffect(() => {
     track("product_view", { slug: product.slug, price: product.price, category: product.category });
+    posthog.capture("product_viewed", { product_slug: product.slug, product_title: product.title, product_price: product.price, product_category: product.category });
   }, [product.slug, product.title, product.price, product.category]);
 
   // Mobile: once the purchase card scrolls away, a slim bar keeps price and Add to Cart in reach.

@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import {
   Suspense,
   useState,
@@ -407,6 +408,7 @@ function AskPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
   useEffect(() => {
     if (session?.user?.email) identify(session.user.email, "google_signin");
+    if (session?.user?.email) posthog.identify(session.user.email);
   }, [session?.user?.email]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [streamingMessage, setStreamingMessage] = useState<string | null>(null);
@@ -584,6 +586,7 @@ function AskPage() {
     if (!reuseUserMessage) {
       setMessages((prev) => [...prev, { role: "user", content: text }]);
       track("ask_question", { question: text.slice(0, 1000), length: text.length, web_search: searchWeb, conversation: activeId || undefined });
+      posthog.capture("ai_question_asked", { question: text.slice(0, 1000), length: text.length, web_search: searchWeb });
     } else {
       track("ask_retry", { length: text.length });
     }

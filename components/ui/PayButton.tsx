@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { track, flush, identify, getSessionId, getVisitorId } from "@/lib/track";
@@ -90,6 +91,7 @@ export default function PayButton({
 
   const handlePay = useCallback(async () => {
     track("buy_click", { items: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), amount, tracking, has_email: !!effectiveEmail });
+    posthog.capture("cart_checkout_clicked", { total_amount: amount, item_slugs: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), item_count: items?.length || (productSlug ? 1 : 0), tracking });
     if (!effectiveEmail) {
       setShowEmailPrompt(true);
       return;
