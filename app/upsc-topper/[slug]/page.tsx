@@ -21,6 +21,7 @@ import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
+import { marksheetPageFor } from "@/lib/marksheet-pages";
 
 export const revalidate = 3600;
 
@@ -55,11 +56,11 @@ export async function generateMetadata({ params }: Props) {
 
 
   return {
-    title: `${topper.firstName} ${topper.lastName} UPSC Marksheet, Answer Copy PDF & ${topper.optionalSubject || "Optional Subject"} — Free Download (AIR ${topper.rank}, ${topper.year})`,
+    title: `${topper.firstName} ${topper.lastName} UPSC Marksheet, Answer Copy PDF${topper.optionalSubject ? ` & ${topper.optionalSubject}` : ""} — Free Download (AIR ${topper.rank}, ${topper.year})`,
     description: buildMetaDescription(topper),
     alternates: { canonical: `https://upscprepnotes.in/upsc-topper/${topper.slug}` },
     openGraph: {
-      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy, ${topper.optionalSubject || "Optional Subject"} & Strategy (AIR ${topper.rank})`,
+      title: `${topper.firstName} ${topper.lastName} — UPSC Marksheet, Answer Copy${topper.optionalSubject ? `, ${topper.optionalSubject}` : ""} & Strategy (AIR ${topper.rank})`,
       description: buildMetaDescription(topper),
       url: `https://upscprepnotes.in/upsc-topper/${topper.slug}`,
       siteName: "UPSCPrepNotes",
@@ -144,7 +145,7 @@ export default async function TopperPage({ params }: Props) {
       { firstName: 1, lastName: 1, rank: 1, year: 1, slug: 1, optionalSubject: 1, marks: 1, freeAnswerCopyUrls: 1, freeAnswerCopyUrl: 1, ProfileImage: 1 },
     ).lean() as Promise<LeanTopper[]>,
     FreeDownloadLeadModel.distinct("email", { topperSlug: topper.slug }) as Promise<string[]>,
-    getRelatedToppers(topper.optionalSubject, topper.slug) as Promise<Rel[]>,
+    (topper.optionalSubject ? getRelatedToppers(topper.optionalSubject, topper.slug) : Promise.resolve([])) as Promise<Rel[]>,
     getToppersByRank(topper.rank, topper.slug) as Promise<Rel[]>,
     getToppersByYear(topper.year, topper.slug) as Promise<Rel[]>,
   ]);
@@ -209,7 +210,7 @@ export default async function TopperPage({ params }: Props) {
   const faqs: QA[] = [
     ...dbFaqs,
     { q: `What was ${fullName}'s UPSC rank?`, a: `AIR ${topper.rank} in UPSC CSE ${topper.year}.` },
-    { q: `What was ${fullName}'s optional subject?`, a: `${topper.optionalSubject}.` },
+    ...(topper.optionalSubject ? [{ q: `What was ${fullName}'s optional subject?`, a: `${topper.optionalSubject}.` }] : []),
     { q: `What were ${fullName}'s total marks?`, a: `${m.total} marks out of 2025.` },
     { q: `Can I download ${fullName}'s answer copy?`, a: `Yes — enter your email on this page and we'll send a free sample. The full set (50+ copies) is in the <a href="/store" class="text-brand font-semibold no-underline hover:underline">store</a>.` },
   ];
@@ -221,7 +222,7 @@ export default async function TopperPage({ params }: Props) {
     mainEntity: [
       ...realFaqs.map((f: { question: string; answer: string }) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
       { "@type": "Question", name: `What was ${fullName}'s UPSC rank?`, acceptedAnswer: { "@type": "Answer", text: `${fullName} secured AIR ${topper.rank} in UPSC CSE ${topper.year}.` } },
-      { "@type": "Question", name: `What was ${fullName}'s optional subject?`, acceptedAnswer: { "@type": "Answer", text: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.` } },
+      ...(topper.optionalSubject ? [{ "@type": "Question", name: `What was ${fullName}'s optional subject?`, acceptedAnswer: { "@type": "Answer", text: `${topper.firstName} chose ${topper.optionalSubject} as the optional subject for UPSC CSE ${topper.year}.` } }] : []),
       { "@type": "Question", name: `What were ${fullName}'s total marks in UPSC?`, acceptedAnswer: { "@type": "Answer", text: `${fullName} scored a total of ${m.total} marks in UPSC CSE ${topper.year}.` } },
       { "@type": "Question", name: `Can I download ${fullName}'s answer copy PDF?`, acceptedAnswer: { "@type": "Answer", text: `Yes. Get a free sample answer copy of ${fullName} by entering your email — we will send the download link instantly. The full set is in the store — Starting at ₹199.` } },
     ],
@@ -233,8 +234,8 @@ export default async function TopperPage({ params }: Props) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" },
       { "@type": "ListItem", position: 2, name: `UPSC ${topper.year} Toppers`, item: `https://upscprepnotes.in/year/${topper.year}` },
-      { "@type": "ListItem", position: 3, name: `${topper.optionalSubject} Toppers`, item: `https://upscprepnotes.in/optional/${getSubjectSlug(topper.optionalSubject)}` },
-      { "@type": "ListItem", position: 4, name: `AIR ${topper.rank} ${fullName}`, item: `https://upscprepnotes.in/upsc-topper/${topper.slug}` },
+      ...(topper.optionalSubject ? [{ "@type": "ListItem", position: 3, name: `${topper.optionalSubject} Toppers`, item: `https://upscprepnotes.in/optional/${getSubjectSlug(topper.optionalSubject)}` }] : []),
+      { "@type": "ListItem", position: topper.optionalSubject ? 4 : 3, name: `AIR ${topper.rank} ${fullName}`, item: `https://upscprepnotes.in/upsc-topper/${topper.slug}` },
     ],
   };
   const personSchema = {
@@ -247,7 +248,7 @@ export default async function TopperPage({ params }: Props) {
     datePublished: "2025-01-01",
     dateModified: new Date().toISOString().split("T")[0],
     about: { "@id": "https://en.wikipedia.org/wiki/Union_Public_Service_Commission", name: "UPSC" },
-    knowsAbout: [{ "@type": "Thing", name: `UPSC CSE ${topper.year}` }, { "@type": "Thing", name: topper.optionalSubject }],
+    knowsAbout: [{ "@type": "Thing", name: `UPSC CSE ${topper.year}` }, ...(topper.optionalSubject ? [{ "@type": "Thing", name: topper.optionalSubject }] : [])],
     succeeding: [{ "@type": "Person", name: `UPSC ${topper.year} Rank ${topper.rank} Holder` }],
     hasOccupation: { "@type": "Occupation", name: "Civil Servant", occupationLocation: { "@type": "Country", name: "India" } },
   };
@@ -255,7 +256,7 @@ export default async function TopperPage({ params }: Props) {
   const crumbs = [
     { href: "/", label: "Home" },
     { href: `/year/${topper.year}`, label: `UPSC ${topper.year}` },
-    { href: `/optional/${getSubjectSlug(topper.optionalSubject)}`, label: topper.optionalSubject },
+    ...(topper.optionalSubject ? [{ href: `/optional/${getSubjectSlug(topper.optionalSubject)}`, label: topper.optionalSubject }] : []),
     { label: fullName },
   ];
 
@@ -328,6 +329,11 @@ export default async function TopperPage({ params }: Props) {
                   year={topper.year}
                   pool={pool.length}
                 />
+                {marksheetPageFor(topper.slug) && (
+                  <Link href={marksheetPageFor(topper.slug)!} data-track="topper-marksheet-page" className="mt-3 inline-flex items-center gap-1.5 text-s font-bold text-[var(--accent)] hover:underline">
+                    {`${topper.firstName}'s full marksheet, compared with other toppers →`}
+                  </Link>
+                )}
                 {strong.length >= 2 && (
                   <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[16px] bg-white px-4 py-3 text-s shadow-[0_0_0_1px_var(--line)]">
                     <span className="text-[var(--muted)]">Strongest paper:</span>
@@ -355,7 +361,7 @@ export default async function TopperPage({ params }: Props) {
                     <Strategy first={topper.firstName} strategy={topper.strategy} heading={(t) => (/^(background|educational background|education|interview experience|interview preparation|personality test|prelims strategy|mains strategy|essay preparation|attempts|key takeaways|mistakes|learnings)$/i.test(t.trim()) ? resolveHeading(t, topper) : t)} />
                   ) : (
                     <div className={`${card} p-6 sm:p-8`}>
-                      <p className="max-w-[46rem] text-m leading-[1.75] text-[var(--ink-2)]">{fullName} secured AIR {topper.rank} in UPSC CSE {topper.year} with {topper.optionalSubject} optional. Total marks: {m.total} (Written: {m.written}, Interview: {m.interview}).</p>
+                      <p className="max-w-[46rem] text-m leading-[1.75] text-[var(--ink-2)]">{fullName} secured AIR {topper.rank} in UPSC CSE {topper.year}{topper.optionalSubject ? ` with ${topper.optionalSubject} optional` : ""}. Total marks: {m.total} (Written: {m.written}, Interview: {m.interview}).</p>
                     </div>
                   )}
                 </div>
@@ -388,8 +394,8 @@ export default async function TopperPage({ params }: Props) {
               {hasRelated && (
                 <section id="related" className="scroll-mt-28 space-y-6">
                   <h2 className="t-head text-l">Related toppers</h2>
-                  <RelatedGroup title={`Same year — UPSC ${topper.year}`} items={sameYearToppers} sub={(t) => `AIR ${t.rank} · ${t.optionalSubject}`} track="topper-related" />
-                  <RelatedGroup title={`Same rank — AIR ${topper.rank}`} items={sameRankToppers} sub={(t) => `${t.year} · ${t.optionalSubject}`} track="topper-samerank" />
+                  <RelatedGroup title={`Same year — UPSC ${topper.year}`} items={sameYearToppers} sub={(t) => [`AIR ${t.rank}`, t.optionalSubject].filter(Boolean).join(" · ")} track="topper-related" />
+                  <RelatedGroup title={`Same rank — AIR ${topper.rank}`} items={sameRankToppers} sub={(t) => [t.year, t.optionalSubject].filter(Boolean).join(" · ")} track="topper-samerank" />
                   <RelatedGroup title={`Same optional — ${topper.optionalSubject}`} items={relatedToppers} sub={(t) => `AIR ${t.rank} · ${t.year}`} track="topper-related" />
                 </section>
               )}
@@ -409,7 +415,7 @@ export default async function TopperPage({ params }: Props) {
                     { href: "/store/upsc-interview-pack", label: "UPSC Interview Pack →", track: "topper-explore-interview-pack" },
                     { href: "/store", label: "Store →", track: "topper-explore-compilation" },
                     { href: `/year/${topper.year}`, label: `UPSC ${topper.year} toppers →`, track: "topper-explore-year" },
-                    { href: `/optional/${getSubjectSlug(topper.optionalSubject)}`, label: `${topper.optionalSubject} toppers →`, track: "topper-explore-optional" },
+                    ...(topper.optionalSubject ? [{ href: `/optional/${getSubjectSlug(topper.optionalSubject)}`, label: `${topper.optionalSubject} toppers →`, track: "topper-explore-optional" }] : []),
                     { href: "/ask", label: "Ask AI mentor →", track: "topper-explore-ai" },
                     { href: "/free-materials", label: "Free study materials →", track: "topper-explore-free" },
                   ].map((l) => (
