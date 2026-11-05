@@ -170,7 +170,7 @@ export function Header({ h, crumbs }: { h: HeaderData; crumbs: { href?: string; 
         <div className="min-w-0 max-w-[40rem] lg:pt-10">
           <h1 className="t-display text-h1">{h.name}</h1>
           {/* original subline: AIR · year · optional */}
-          <p className="mt-3 text-m font-bold text-[var(--accent)]">{`AIR ${h.rank} · ${h.year} · ${h.optional}`}</p>
+          <p className="mt-3 text-m font-bold text-[var(--accent)]">{[`AIR ${h.rank}`, h.year, h.optional].filter(Boolean).join(" · ")}</p>
           {h.summary && <Summary text={h.summary} />}
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link href="/store" data-track="topper-hero-store" className="btn btn-blue">
