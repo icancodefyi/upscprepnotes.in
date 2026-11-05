@@ -9,10 +9,12 @@ import {
 import BrandShell from "@/components/brand/BrandShell";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import mainsQuestions from "@/data/upsc/pyq/mains-gs-questions.json";
+import essayTopics from "@/data/upsc/pyq/mains-essay-topics.json";
 
 type MainsQ = { q: string; marks: number | null; words: number | null };
 /** Mains GS questions as text, read from UPSC's official papers. Empty for years we have not added. */
 const questionsFor = (y: string) => (mainsQuestions as Record<string, Record<string, MainsQ[]>>)[y] ?? null;
+const essaysFor = (y: string) => (essayTopics as Record<string, string[]>)[y] ?? [];
 const countQs = (y: string) => Object.values(questionsFor(y) ?? {}).reduce((a, qs) => a + qs.length, 0);
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
@@ -38,9 +40,9 @@ export async function generateMetadata({
 
   const nq = countQs(year);
   return {
-    title: nq ? `UPSC Mains ${year} Question Paper: GS 1–4 Questions + PDF` : `UPSC CSE ${year} Question Papers PDF - Prelims & Mains`,
+    title: nq ? `UPSC Mains ${year} Question Paper: Essay Topics, GS 1–4 Questions + PDF` : `UPSC CSE ${year} Question Papers PDF - Prelims & Mains`,
     description: nq
-      ? `${nq} UPSC Mains ${year} GS questions (Papers I–IV) as text, with marks and word limits, plus the official ${year} question paper PDFs for Prelims, Essay and GS.`
+      ? `UPSC Mains ${year} essay topics and ${nq} GS questions (Papers I–IV) as text, with marks and word limits, plus the official ${year} question paper PDFs for Prelims, Essay and GS.`
       : `Download official UPSC Civil Services Exam ${year} question papers. Includes GS Paper 1, CSAT, Essay, and General Studies I-IV papers in PDF format.`,
     openGraph: {
       title: `UPSC CSE ${year} Official Question Papers`,
@@ -121,15 +123,24 @@ export default async function PYQYearPage({ params }: Props) {
           <div className="min-w-0 space-y-12 lg:col-span-8">
             <header>
               <h1 className="t-display text-h1">
-                UPSC CSE <span className="swipe">{year}</span> Question Papers
+                UPSC <span className="swipe">{year}</span> Question Papers{nq ? ": Mains GS 1–4 & Prelims" : ""}
               </h1>
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-[var(--ink)] px-3 py-1 text-s font-bold text-white">Official Papers</span>
                 <span className="rounded-full bg-white px-3 py-1 text-s text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)]">Year: {year}</span>
               </div>
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
-                Official UPSC Civil Services Examination {year} question papers for Prelims (GS + CSAT) and Mains (Essay + GS Papers).
+                {nq
+                  ? `The UPSC ${year} question papers from upsc.gov.in: Mains Essay and General Studies Papers I–IV (250 marks each), with ${nq} GS questions written out below, and the Prelims papers where UPSC has released them.`
+                  : `The official UPSC Civil Services Examination ${year} question papers for Prelims (GS + CSAT) and Mains (Essay + GS Papers), as released on upsc.gov.in.`}
               </p>
+              {nq > 0 && qs && (
+                <nav aria-label="Jump to a paper" className="mt-4 flex flex-wrap gap-2">
+                  {Object.keys(qs).filter((k) => qs[k].length).map((paper) => (
+                    <a key={paper} href={`#${paper.toLowerCase().replace(/\s+/g, "-")}`} className="rounded-full bg-white px-3 py-1.5 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--accent)]">{`${paper} ${year}`}</a>
+                  ))}
+                </nav>
+              )}
             </header>
 
             {/* Inline Conversion */}
@@ -173,6 +184,21 @@ export default async function PYQYearPage({ params }: Props) {
               </section>
             )}
 
+            {essaysFor(year).length > 0 && (
+              <section id="essay-topics" className="scroll-mt-28">
+                <h2 className="t-head text-l">{`UPSC Essay ${year} topics`}</h2>
+                <p className="mt-2 text-s leading-[1.55] text-[var(--muted)]">{`The ${essaysFor(year).length} essay topics of the CSE ${year} Mains, from UPSC's official paper. Candidates write two essays, one from each section, in about 1,000–1,200 words each (125 marks each).`}</p>
+                <ol className="mt-4 space-y-2">
+                  {essaysFor(year).map((t, i) => (
+                    <li key={t} className={`${card} flex gap-4 p-4`}>
+                      <span className="tab w-6 shrink-0 text-s font-bold text-[var(--muted)]">{i + 1}</span>
+                      <span className="text-m leading-[1.55] text-[var(--ink)]">{t}</span>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
+
             {qs && nq > 0 && (
               <section id="questions">
                 <h2 className="t-head text-l">{`UPSC Mains ${year} GS questions, paper by paper`}</h2>
@@ -181,8 +207,8 @@ export default async function PYQYearPage({ params }: Props) {
                 </p>
                 <div className="mt-6 space-y-8">
                   {Object.entries(qs).filter(([, list]) => list.length).map(([paper, list]) => (
-                    <div key={paper}>
-                      <h3 className="text-m font-bold">{`${paper} · ${year}`}</h3>
+                    <div key={paper} id={paper.toLowerCase().replace(/\s+/g, "-")} className="scroll-mt-28">
+                      <h3 className="text-m font-bold">{`UPSC Mains ${year} ${paper} questions`}</h3>
                       <ol className="mt-3 space-y-2.5">
                         {list.map((x, i) => (
                           <li key={i} className={`${card} flex gap-4 p-4`}>
@@ -209,6 +235,18 @@ export default async function PYQYearPage({ params }: Props) {
                 </div>
               </section>
             )}
+
+            {(() => {
+              const i = allYears.indexOf(year);
+              const newer = i > 0 ? allYears[i - 1] : null;
+              const older = i >= 0 && i < allYears.length - 1 ? allYears[i + 1] : null;
+              return newer || older ? (
+                <nav aria-label="Other years" className="flex flex-wrap gap-3">
+                  {older && <Link href={`/pyq/${older}`} data-track="pyq-year-older" className="btn btn-paper">{`← UPSC ${older} question papers`}</Link>}
+                  {newer && <Link href={`/pyq/${newer}`} data-track="pyq-year-newer" className="btn btn-paper">{`UPSC ${newer} question papers →`}</Link>}
+                </nav>
+              ) : null;
+            })()}
 
             {/* Paper Structure & Breakdown */}
             <section className={`${card} p-6 md:p-8`}>
@@ -263,9 +301,8 @@ export default async function PYQYearPage({ params }: Props) {
 
             {/* Answer Keys & Solutions */}
             <section className={`${card} p-6 md:p-8`}>
-              <h2 className="t-head text-l">Answer Keys & Solutions for {year} Papers</h2>
-              <p className="mt-1 text-s text-[var(--muted)]">Solutions</p>
-              <p className="mt-4 text-m leading-[1.7] text-[var(--ink-2)]">
+              <h2 className="t-head text-l">Where to check your answers for {year} papers</h2>
+                            <p className="mt-4 text-m leading-[1.7] text-[var(--ink-2)]">
                 After solving the papers, check your answers against reliable answer keys. For Prelims, compare with answer keys published by leading coaching institutes. For Mains, review model answers to understand the expected content depth and structure.
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -289,10 +326,10 @@ export default async function PYQYearPage({ params }: Props) {
               <h2 className="t-head text-l">Frequently Asked Questions about UPSC CSE {year} Papers</h2>
               <div className={`${card} mt-5 divide-y divide-[var(--line)]`}>
                 {[
-                  { q: `What is included in the UPSC CSE ${year} question papers PDF?`, a: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` },
-                  { q: `Where can I find solutions for UPSC ${year} question papers?`, a: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies to understand answer writing standards.` },
+                  { q: `What is included in the UPSC CSE ${year} question papers PDF?`, a: `${prelimsPapers.length ? "Prelims GS Paper 1 and CSAT Paper 2, " : ""}the Mains Essay and General Studies Papers I to IV${mainsPapers.length > 5 ? ", and optional subject papers" : ""}, each as the official PDF from upsc.gov.in.` },
+                  { q: `Where can I check my answers to the UPSC ${year} papers?`, a: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies to understand answer writing standards.` },
                   { q: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, a: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied for incorrect answers.` },
-                  { q: `What topics were emphasized in the ${year} Mains GS papers?`, a: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples. GS Paper 4 (Ethics) featured longer case studies requiring multi-stakeholder analysis.` },
+                  { q: `How many questions are in each UPSC Mains ${year} GS paper?`, a: `Each General Studies paper is worth 250 marks and is written in three hours. GS Papers I to III have 20 questions: 10 of 10 marks (150 words) and 10 of 15 marks (250 words). GS Paper IV (Ethics) has two sections, theory questions and case studies.${nq ? ` This page lists ${nq} of the ${year} GS questions as text.` : ""}` },
                 ].map((faq) => (
                   <details key={faq.q} className="group px-6 py-5">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
@@ -313,7 +350,7 @@ export default async function PYQYearPage({ params }: Props) {
                   "@type": "FAQPage",
                   mainEntity: [
                     { "@type": "Question", name: `What is included in the UPSC CSE ${year} question papers PDF?`, acceptedAnswer: { "@type": "Answer", text: `The ${year} question papers PDF set includes Prelims GS Paper 1 (General Studies), Prelims CSAT Paper 2, Mains Essay, Mains GS Papers 1-4, and optional subject papers where available.` } },
-                    { "@type": "Question", name: `Where can I find solutions for UPSC ${year} question papers?`, acceptedAnswer: { "@type": "Answer", text: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies.` } },
+                    { "@type": "Question", name: `Where can I check my answers to the UPSC ${year} papers?`, acceptedAnswer: { "@type": "Answer", text: `You can find model solutions and answer keys from coaching institutes like Drishti IAS, Vajiram & Ravi, and Forum IAS. We also recommend reviewing verified topper answer copies.` } },
                     { "@type": "Question", name: `How many questions were asked in UPSC ${year} Prelims GS Paper 1?`, acceptedAnswer: { "@type": "Answer", text: `The UPSC CSE ${year} Prelims GS Paper 1 contained 100 questions worth 2 marks each, totaling 200 marks. Negative marking of 1/3rd mark applied.` } },
                     { "@type": "Question", name: `What topics were emphasized in the ${year} Mains GS papers?`, acceptedAnswer: { "@type": "Answer", text: `The ${year} GS papers emphasized application-based questions with case studies, current affairs integration, and India-specific examples.` } },
                   ],
