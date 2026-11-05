@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 
 import { PRODUCTS } from "@/lib/store-products";
+import { MARKSHEET_PAGES } from "@/lib/marksheet-pages";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
 import { getAllSlugs } from "@/data/content/registry";
 import syllabusPage from "@/data/content/upsc-syllabus";
@@ -28,6 +29,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/toppers/marks-database`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/toppers/highest-marks-in-upsc`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/toppers/upsc-interview-marks`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/toppers/upsc-mains-marks-needed`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    ...Object.keys(MARKSHEET_PAGES).map((name) => ({ url: `${baseUrl}/toppers/marksheets/${name}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 })),
     { url: `${baseUrl}/pyq`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/toppers/toppers-copy-compilation`, lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
     { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
@@ -112,7 +115,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Store pages
   const storePages: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/store`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.9 },
-    ...PRODUCTS.map((p) => ({
+    ...PRODUCTS.filter((p) => !p.comingSoon).map((p) => ({
       url: `${baseUrl}/store/${p.slug}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,

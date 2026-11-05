@@ -6,6 +6,7 @@ import BrandShell from "@/components/brand/BrandShell";
 import { card } from "@/components/brand/ui";
 import MarksDB, { type Row } from "./_components/MarksDB";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
+import PopularLinks from "@/components/brand/PopularLinks";
 
 export const metadata = {
   title: "UPSC Topper Marks Database — Optional, GS1-4, Essay & Interview Scores",
@@ -95,6 +96,7 @@ export default async function MarksDatabasePage() {
                 Complete marksheets of {toppers.length}+ UPSC rank holders — sortable by every subject. See how the toppers scored across GS papers, essay, optional, written, and interview. Free data for your UPSC prep strategy.
               </p>
               <div className="mt-5"><InterviewPackPromo variant="line" track="marksdb-interview-pack" /></div>
+              <PopularLinks track="marksdb-popular" />
             </div>
 
             {/* Stats Summary */}

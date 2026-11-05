@@ -6,6 +6,7 @@ import { topperImageSrc } from "@/lib/utils";
 import BrandShell from "@/components/brand/BrandShell";
 import ToppersSearch from "./ToppersSearch";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
+import PopularLinks from "@/components/brand/PopularLinks";
 
 export const metadata = {
   title: "UPSC Toppers List — Search All Rank Holders by Name, Rank, Year & Optional Subject",
@@ -54,6 +55,7 @@ export default async function ToppersPage() {
               Search {toppers.length}+ rank holders by name, rank, year, or optional subject. View marks, answer copies, and preparation strategies.
             </p>
             <div className="mt-5"><InterviewPackPromo variant="line" track="toppers-index-interview-pack" /></div>
+              <PopularLinks track="toppers-popular" />
           </header>
 
           <div className="mt-10">

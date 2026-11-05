@@ -6,6 +6,7 @@ import Toc from "@/components/brand/Toc";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getHandbook, CUTOFFS, HANDBOOK_PDF, HANDBOOK_URL, type HBRecord, type HBTopper, type Handbook, type PaperKey } from "@/lib/marks-handbook";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
+import PopularLinks from "@/components/brand/PopularLinks";
 
 export const revalidate = 86400;
 
@@ -246,6 +247,7 @@ export default async function HighestMarksPage() {
               </p>
               <p className="mt-3 text-s text-[var(--muted)]">{`Updated ${updated} · Source: UPSC marks of recommended candidates`}</p>
               <div className="mt-5"><InterviewPackPromo variant="line" track="highest-marks-interview-pack" /></div>
+              <PopularLinks track="highest-popular" />
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href={HANDBOOK_PDF} data-track="handbook-pdf-hero" className="btn btn-blue h-12 px-6 [--btn-fs:16px]">Download the free PDF</a>
                 <Link href="/toppers/marks-database" className="btn btn-paper h-12 px-6 [--btn-fs:16px]">Search all marksheets</Link>
