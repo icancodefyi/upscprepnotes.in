@@ -199,8 +199,9 @@ export default async function PYQYearPage({ params }: Props) {
               </section>
             )}
 
+            <p className="text-m leading-[1.6] text-[var(--ink-2)]">For the Mains marks each rank needed in CSE 2025, see <Link href="/toppers/upsc-mains-marks-needed" className="underline">UPSC Mains marks needed for a rank</Link>.</p>
             {qs && nq > 0 && (
-              <section id="questions">
+            <section id="questions">
                 <h2 className="t-head text-l">{`UPSC Mains ${year} GS questions, paper by paper`}</h2>
                 <p className="mt-2 text-s leading-[1.55] text-[var(--muted)]">
                   {`${nq} questions read from UPSC's official CSE ${year} papers (English version). A few that did not scan cleanly are left out, so open the PDF above for the full paper and exact wording.`}

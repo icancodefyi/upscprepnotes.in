@@ -131,6 +131,7 @@ export default async function PYQIndexPage() {
         {/* Years Grid */}
         <section className="mt-14">
           <h2 className="t-head text-l">UPSC PYQ papers by year</h2>
+          <p className="mt-3 text-m leading-[1.6] text-[var(--ink-2)]">For the Mains marks each rank needed in CSE 2025, see <Link href="/toppers/upsc-mains-marks-needed" className="underline">UPSC Mains marks needed for a rank</Link>.</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {years.map((year) => (
               <Link key={year} href={`/pyq/${year}`} data-track={`pyq-year-card-${year}`} className={`${card} group flex flex-col p-7 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-1`}>
@@ -272,7 +273,6 @@ export default async function PYQIndexPage() {
         <section className="mt-4 flex flex-col gap-6 rounded-[28px] bg-[var(--ink)] p-8 text-white md:flex-row md:items-center md:p-12">
           <div className="flex-1">
             <h2 className="t-head text-l">PYQs + Answer Copy Compilation</h2>
-            <p className="mt-1 text-s font-bold text-[var(--hl)]">RECOMMENDED</p>
             <p className="mt-3 max-w-xl text-m text-white/70">
               See how toppers actually wrote their answers. 50+ verified copies across GS1-4 and Essay with marks-wise compilation.
             </p>
