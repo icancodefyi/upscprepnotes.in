@@ -21,6 +21,8 @@ export async function generateMetadata({
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
   return {
+    // Staged products stay out of search until they can be bought.
+    ...(product.comingSoon ? { robots: { index: false, follow: true } } : {}),
       title: product.title,
     description: product.description.slice(0, 160),
     alternates: {
