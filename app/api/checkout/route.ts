@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
     const resolvedItems: { slug: string; quantity: number; price: number; title: string }[] = [];
     for (const item of items) {
       const product = PRODUCTS.find((p) => p.slug === item.slug);
-      if (!product) {
+      // Staged products (comingSoon) are not for sale, even through the API.
+      if (!product || product.comingSoon) {
         return NextResponse.json(
           { error: `Product not found: ${item.slug}` },
           { status: 400 }

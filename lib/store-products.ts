@@ -178,7 +178,7 @@ export const PRODUCTS: StoreProduct[] = [
     // Staged for result day. Hidden from the store and not buyable while comingSoon is true.
     // To launch: create the product in Dodo, paste its id below, set comingSoon: false, upload the files (see docs).
     slug: "upsc-mains-2027-pack",
-    dodoProductId: "",
+    dodoProductId: "pdt_0NrRYNg7NaZYsHSAjJciw",
     title: "UPSC Mains 2027 Pack",
     image: "/store/mains-2027-pack/page-1.jpg",
     images: [
