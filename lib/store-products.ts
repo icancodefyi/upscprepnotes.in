@@ -634,7 +634,8 @@ export const PRODUCTS: StoreProduct[] = [
     payNote: "Vision IAS Mains Test Series 2026",
     payAmount: 199,
     link: null,
-    comingSoon: false,
+    // Hidden: this resells Vision IAS's paid test papers. Not for sale until we have a licence or our own papers.
+    comingSoon: true,
     fileCount: 10,
     totalSizeMB: 34,
     specs: [
