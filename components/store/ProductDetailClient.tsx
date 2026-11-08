@@ -399,7 +399,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
           <div className="mx-auto flex max-w-[560px] items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="truncate text-s font-bold">{product.title}</p>
-              <p className="tab text-m font-bold">₹{fmt(product.price)}</p>
+              <p className="tab text-m font-bold">{product.originalPrice && <span className="mr-2 font-normal text-[var(--muted)] line-through">₹{fmt(product.originalPrice)}</span>}₹{fmt(product.price)}</p>
             </div>
             <div className="shrink-0">
               <BuyButton product={product} label={`Pay ₹${fmt(product.price)}`} className="btn btn-blue h-12 px-6 [--btn-fs:15px]" track={`mobilebar-buy-${product.slug}`} />
@@ -474,6 +474,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
       {/* Fixed price — one number, same everywhere */}
       <div className="mt-6 flex items-end justify-between gap-4 border-t border-[var(--line)] pt-6">
         <p>
+          {product.originalPrice && <span className="tab mr-2 text-m text-[var(--muted)] line-through">₹{fmt(product.originalPrice)}</span>}
           <span className="t-display tab inline-block -rotate-1 rounded-[8px] bg-[var(--hl)] px-2.5 py-0.5 text-l leading-tight">₹{fmt(product.price)}</span>
         </p>
         <p className="pb-1 text-s text-[var(--muted)]">Instant email delivery · 7-day refund · No subscription</p>
