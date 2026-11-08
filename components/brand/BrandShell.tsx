@@ -24,6 +24,22 @@ export async function getFooterData(): Promise<FooterData> {
   };
 }
 
+/** One store link above the footer, on every page in the shell. Tracked by campaign. */
+function StoreStrip() {
+  return (
+    <section className="px-4 py-10 text-center">
+      <p>Topper answer copies, marks analysis and notes, in one store.</p>
+      <a
+        href="/store?utm_source=site&utm_medium=strip&utm_campaign=brand_shell"
+        data-track="store-strip"
+        className="btn btn-blue mt-4 inline-flex"
+      >
+        See the store
+      </a>
+    </section>
+  );
+}
+
 /**
  * The frame every redesigned page sits in: brand tokens and fonts, pill nav, yellow footer.
  */
@@ -41,6 +57,7 @@ export default async function BrandShell({ children, footer }: { children: React
     <div className={`up ${brandFonts}`}>
       <Nav products={navProducts()} toppers={data.counts.toppers} />
       <main>{children}</main>
+      <StoreStrip />
       <Footer counts={data.counts} featured={data.featured} />
     </div>
   );
