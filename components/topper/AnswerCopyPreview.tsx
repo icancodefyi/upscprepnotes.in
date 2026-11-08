@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import SampleAnswerCarousel from "./SampleAnswerCarousel";
 import ImageLightbox from "@/components/ui/ImageLightbox";
+import PayButton from "@/components/ui/PayButton";
+import { PRODUCTS } from "@/lib/store-products";
+
+const COMPILATION = PRODUCTS.find((p) => p.slug === "answer-copies-compilation" && !p.comingSoon);
 
 const PREVIEW_SLUGS = new Set([
   "ishita-kishore", "garima-lohia", "harshita-goyal",
@@ -86,22 +90,27 @@ export default function AnswerCopyPreview({ topper }: Props) {
       <div className="mt-4 rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">Offer</span>
-            <p className="mt-2 text-m font-bold">
-              Starting at ₹199
+            <p className="text-m font-bold">
+              All 63 topper answer copies{COMPILATION ? `, ₹${COMPILATION.price}` : ""}
             </p>
             <p className="mt-0.5 text-s text-[var(--muted)]">
               Instant download · 7-day refund guarantee.
             </p>
           </div>
-          <Link
-            href="/store"
-            data-track="topper-preview-cta"
-            className="btn btn-blue h-11 shrink-0 px-5 [--btn-fs:14px]"
-          >
-            Shop Now
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </Link>
+          {COMPILATION ? (
+            <PayButton
+              amount={COMPILATION.price}
+              productSlug={COMPILATION.slug}
+              tracking="topper-preview-buy"
+              className="btn btn-blue h-11 shrink-0 px-5 [--btn-fs:14px]"
+            >
+              {`Buy now, ₹${COMPILATION.price}`}
+            </PayButton>
+          ) : (
+            <Link href="/store" data-track="topper-preview-cta" className="btn btn-blue h-11 shrink-0 px-5 [--btn-fs:14px]">
+              See the store
+            </Link>
+          )}
         </div>
       </div>
       <p className="mt-2 text-center text-s text-[var(--muted)]">Click the preview to zoom in</p>

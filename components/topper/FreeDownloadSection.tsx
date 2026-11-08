@@ -3,6 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FreeDownloadDialog } from "./FreeDownloadDialog";
+import PayButton from "@/components/ui/PayButton";
+import { PRODUCTS } from "@/lib/store-products";
+
+const COMPILATION = PRODUCTS.find((p) => p.slug === "answer-copies-compilation" && !p.comingSoon);
 
 interface FreeDownloadSectionProps {
   topperName: string;
@@ -73,17 +77,26 @@ export function FreeDownloadSection({
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div>
-                  <span className="rounded-[6px] bg-[var(--hl)] px-2 py-0.5 text-m font-bold tabular-nums">₹199</span>
-                  <span className="ml-1 text-s text-[var(--muted)]">starting</span>
-                </div>
-                <Link
-                  href="/store/answer-copies-compilation"
-                  data-track="topper-bundle-upsell"
-                  className="btn btn-ink h-10 shrink-0 px-4 [--btn-fs:14px]"
-                >
-                  See the compilation &rarr;
-                </Link>
+                {COMPILATION ? (
+                  <div className="flex flex-col items-end gap-1">
+                    {/* One click to the payment page: no store detour. */}
+                    <PayButton
+                      amount={COMPILATION.price}
+                      productSlug={COMPILATION.slug}
+                      tracking="topper-bundle-buy"
+                      className="btn btn-ink h-10 shrink-0 px-4 [--btn-fs:14px]"
+                    >
+                      {`Get all 63 copies, ₹${COMPILATION.price}`}
+                    </PayButton>
+                    <Link href="/store/answer-copies-compilation" data-track="topper-bundle-upsell" className="text-s font-bold text-[var(--muted)] hover:text-[var(--ink)]">
+                      See what&apos;s inside &rarr;
+                    </Link>
+                  </div>
+                ) : (
+                  <Link href="/store" data-track="topper-bundle-upsell" className="btn btn-ink h-10 shrink-0 px-4 [--btn-fs:14px]">
+                    See the store &rarr;
+                  </Link>
+                )}
               </div>
             </div>
             {/Anthropology/i.test(optionalSubject) && (
