@@ -14,6 +14,8 @@ export const MARKSHEET_PAGES: Record<string, string> = {
   "garima-lohia": "garima-lohia-rank-2-2022",
   "anuj-agnihotri": "anuj-agnihotri-rank-1-2025",
   "shakti-dubey": "shakti-dubey-rank-1-2024",
+  "ishita-kishore": "ishita-kishore-rank-1-2022",
+  "akansh-dhull": "akansh-dhull-rank-3-2025",
 };
 
 /** The marksheet page for a profile slug, if it has one. */

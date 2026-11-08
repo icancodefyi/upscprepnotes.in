@@ -10,6 +10,7 @@ import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import { displayName, fmt, freeCopiesOf, isComplete, median, n, paperStats, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
 import official2025 from "@/data/official/cse-2025-recommended-marks.json";
 import { MARKSHEET_PAGES } from "@/lib/marksheet-pages";
+import PopularLinks from "@/components/brand/PopularLinks";
 
 
 export const revalidate = 86400;
@@ -216,6 +217,8 @@ export default async function MarksheetPage({ params }: Props) {
         <div className="mt-12">
           <InterviewPackPromo first={first} interview={interview} track="marksheet-page-interview-pack" />
         </div>
+
+        <PopularLinks track="marksheet-popular" exclude={t.slug} />
 
         <section className="mt-12">
           <h2 className="t-head text-l">Frequently asked questions</h2>

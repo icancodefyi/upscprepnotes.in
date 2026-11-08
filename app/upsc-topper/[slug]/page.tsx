@@ -22,6 +22,7 @@ import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import { marksheetPageFor } from "@/lib/marksheet-pages";
+import PopularLinks from "@/components/brand/PopularLinks";
 
 export const revalidate = 3600;
 
@@ -424,6 +425,7 @@ export default async function TopperPage({ params }: Props) {
                     </Link>
                   ))}
                 </div>
+                <PopularLinks track="topper-popular" exclude={topper.slug} />
               </section>
 
               <Section id="continue" title="Continue reading">
