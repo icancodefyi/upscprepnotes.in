@@ -6,7 +6,6 @@ import { PRODUCTS } from "@/lib/store-products";
 import { fmt, folderOf, Star, Meta, BuyButton, Price, Sheet, Badge, ProductCard } from "./Shelf";
 import { Paperclip, Pin } from "@/components/brand/Props";
 import EmailCapture from "./EmailCapture";
-import PriceRiseBanner from "./PriceRiseBanner";
 
 const VISIBLE = PRODUCTS.filter((p) => !p.comingSoon);
 type Product = (typeof PRODUCTS)[number];
@@ -151,7 +150,6 @@ export default function StoreClient() {
 
   return (
     <>
-      <PriceRiseBanner />
       <div className="pb-24 pt-28 sm:pt-32">
         <div className="mx-auto max-w-[1120px] px-6">
           <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">

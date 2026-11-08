@@ -3,6 +3,7 @@ import { TopperModel } from "@/models/topper.model";
 import { PRODUCTS } from "@/lib/store-products";
 import Nav, { type NavProduct } from "./Nav";
 import Footer from "./Footer";
+import PriceRiseBanner from "@/components/store/PriceRiseBanner";
 import { brandFonts } from "./fonts";
 import "./brand.css";
 
@@ -55,6 +56,7 @@ export default async function BrandShell({ children, footer }: { children: React
   const data = footer ?? (await getFooterData());
   return (
     <div className={`up ${brandFonts}`}>
+      <PriceRiseBanner />
       <Nav products={navProducts()} toppers={data.counts.toppers} />
       <main>{children}</main>
       <StoreStrip />

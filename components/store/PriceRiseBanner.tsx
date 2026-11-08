@@ -43,14 +43,15 @@ export default function PriceRiseBanner() {
   const t = remainingParts(PRICE_RISE_AT.getTime() - now);
   const pad = (n: number) => String(n).padStart(2, "0");
   return (
-    <div
-      role="status"
-      className="fixed inset-x-0 top-0 z-[60] flex h-[44px] items-center justify-center gap-3 bg-[#ffd43b] px-4 text-[#0b0c10]"
+    <a
+      href="/store?utm_source=site&utm_medium=banner&utm_campaign=price_rise"
+      data-track="price-rise-banner"
+      className="fixed inset-x-0 top-0 z-[60] flex h-[44px] items-center justify-center gap-3 bg-[#1f3fd6] px-4 text-white"
     >
-      <p className="text-xs font-bold sm:text-base">Prices go up 10 Nov, 11:59pm IST. Buy at today&apos;s price</p>
-      <p className="tabular-nums rounded-md bg-[#0b0c10] px-2.5 py-1 text-xs font-extrabold text-[#ffd43b] sm:text-base">
+      <span className="text-xs font-bold sm:text-base">Prices go up 10 Nov, 11:59pm IST. Buy at today&apos;s price</span>
+      <span className="tabular-nums rounded-md bg-[#ffd43b] px-2.5 py-1 text-xs font-extrabold text-[#0b0c10] sm:text-base">
         {t.d}d {pad(t.h)}h {pad(t.m)}m {pad(t.s)}s
-      </p>
-    </div>
+      </span>
+    </a>
   );
 }

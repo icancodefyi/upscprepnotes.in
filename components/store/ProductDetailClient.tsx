@@ -9,7 +9,6 @@ import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
 import { Paperclip } from "@/components/brand/Props";
 import { fmt, folderOf, ProductCard, BuyButton, PayMethods, Sheet, pairOf } from "./Shelf";
 import { TOPPERS } from "@/components/topper/sales-page-data";
-import PriceRiseBanner from "./PriceRiseBanner";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -222,7 +221,6 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
 
   return (
     <div className="pb-24 pt-28 sm:pt-32">
-      <PriceRiseBanner />
       <div className="mx-auto max-w-[1180px] px-6">
         {/* Top bar */}
         <div className="flex items-center justify-between gap-4">
