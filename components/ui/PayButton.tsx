@@ -2,7 +2,6 @@
 
 import posthog from "posthog-js";
 import { useState, useCallback, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { track, flush, identify, getSessionId, getVisitorId } from "@/lib/track";
 
 interface CartItem {
@@ -22,14 +21,21 @@ interface Props {
   email?: string;
 }
 
+// If the checkout link has not come back by then, stop the spinner and let the buyer retry.
+const CHECKOUT_TIMEOUT_MS = 20000;
+
 function getStoredEmail(): string {
   if (typeof window === "undefined") return "";
   try { return localStorage.getItem("upsc-email") || ""; } catch { return ""; }
 }
 
+/**
+ * One click to the payment page. Dodo's checkout asks for the email, and the payment
+ * webhook delivers the files to it, so there is no email step on our side. A known
+ * email (from a form or an earlier purchase) is passed along so Dodo can pre-fill it.
+ */
 export default function PayButton({
   amount,
-  note,
   className = "",
   tracking,
   items,
@@ -39,27 +45,42 @@ export default function PayButton({
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
-  const [emailInput, setEmailInput] = useState("");
 
-  const storedEmail = getStoredEmail();
-  const effectiveEmail = propEmail || storedEmail;
+  // Coming back from the payment page with the browser's back button restores this page
+  // from cache with the spinner still on. Reset it so the button works again.
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setLoading(false);
+    };
+    window.addEventListener("pageshow", onShow);
+    return () => window.removeEventListener("pageshow", onShow);
+  }, []);
 
-  const proceedToCheckout = useCallback(async (email: string) => {
+  const handlePay = useCallback(async () => {
+    const checkoutItems = items || (productSlug ? [{ slug: productSlug, quantity: 1, price: amount }] : []);
+    const slugs = checkoutItems.map((i) => i.slug);
+    const email = propEmail || getStoredEmail();
+
+    track("buy_click", { items: slugs, amount, tracking, has_email: !!email });
+    posthog.capture("cart_checkout_clicked", { total_amount: amount, item_slugs: slugs, item_count: checkoutItems.length, tracking });
+
+    if (checkoutItems.length === 0) {
+      setError("Nothing to check out. Please refresh the page and try again.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
-    try {
-      const checkoutItems = items || (productSlug ? [{ slug: productSlug, quantity: 1, price: amount }] : []);
-      if (checkoutItems.length === 0) {
-        setError("No items to checkout");
-        setLoading(false);
-        return;
-      }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), CHECKOUT_TIMEOUT_MS);
+    let status = 0;
 
+    try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           items: checkoutItems,
           email: email || undefined,
@@ -67,48 +88,31 @@ export default function PayButton({
           sessionId: getSessionId(),
         }),
       });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Checkout creation failed");
+      status = res.status;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.checkoutUrl) {
+        throw new Error(data.error || "Checkout could not be opened");
       }
 
-      const data = await res.json();
-
-      if (email) {
-        try { localStorage.setItem("upsc-email", email); } catch {}
-        identify(email, "checkout");
-      }
-
-      track("checkout_redirect", { items: checkoutItems.map((i) => i.slug), amount, tracking });
+      if (email) identify(email, "checkout");
+      track("checkout_redirect", { items: slugs, amount, tracking });
       flush(true);
       window.location.href = data.checkoutUrl;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      const timedOut = err instanceof DOMException && err.name === "AbortError";
+      const reason = timedOut ? "timeout" : err instanceof Error ? err.message : "unknown";
+      posthog.capture("checkout_failed", { item_slugs: slugs, total_amount: amount, tracking, status, reason });
+      track("checkout_failed", { items: slugs, amount, tracking, status, reason });
+      setError(
+        timedOut
+          ? "The payment page is taking too long to open. Please tap the button again."
+          : "We couldn't open the payment page. Please tap the button again, or email hello@upscprepnotes.in.",
+      );
       setLoading(false);
+    } finally {
+      clearTimeout(timer);
     }
-  }, [items, productSlug, amount, tracking]);
-
-  const handlePay = useCallback(async () => {
-    track("buy_click", { items: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), amount, tracking, has_email: !!effectiveEmail });
-    posthog.capture("cart_checkout_clicked", { total_amount: amount, item_slugs: items?.map((i) => i.slug) || (productSlug ? [productSlug] : []), item_count: items?.length || (productSlug ? 1 : 0), tracking });
-    if (!effectiveEmail) {
-      setShowEmailPrompt(true);
-      return;
-    }
-    await proceedToCheckout(effectiveEmail);
-  }, [effectiveEmail, proceedToCheckout, amount, items, productSlug, tracking]);
-
-  const handleEmailSubmit = useCallback(async () => {
-    const trimmed = emailInput.trim();
-    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setError("Please enter a valid email");
-      return;
-    }
-    setShowEmailPrompt(false);
-    setError("");
-    await proceedToCheckout(trimmed);
-  }, [emailInput, proceedToCheckout]);
+  }, [items, productSlug, amount, tracking, propEmail]);
 
   return (
     <>
@@ -117,111 +121,27 @@ export default function PayButton({
         onClick={handlePay}
         data-track={tracking}
         disabled={loading}
+        aria-busy={loading}
         className={className}
       >
         {loading ? (
           <span className="inline-flex items-center gap-2">
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Opening Checkout...
+            Opening checkout…
           </span>
         ) : (
           children || `Pay ₹${amount}`
         )}
       </button>
 
-      {error && !showEmailPrompt && (
-        <p className="mt-2 text-s text-[var(--mark-deep)]">{error}</p>
+      {error && (
+        <p role="alert" className="mt-2 text-s font-bold text-[var(--mark-deep)]">
+          {error}
+        </p>
       )}
-
-      {showEmailPrompt &&
-        createPortal(
-          <EmailDialog
-            value={emailInput}
-            onChange={setEmailInput}
-            onSubmit={handleEmailSubmit}
-            onClose={() => {
-              setShowEmailPrompt(false);
-              setError("");
-            }}
-            loading={loading}
-            error={error}
-          />,
-          document.body,
-        )}
     </>
-  );
-}
-
-/** Asks once for the email the PDFs are sent to, then hands off to checkout. */
-function EmailDialog({
-  value,
-  onChange,
-  onSubmit,
-  onClose,
-  loading,
-  error,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  onSubmit: () => void;
-  onClose: () => void;
-  loading: boolean;
-  error: string;
-}) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-  return (
-    // The dialog is portalled but React events still bubble to the button's ancestors (often a card link): stop them here.
-    <div
-      className="up fixed inset-0 z-[120] flex items-end justify-center p-4 backdrop-blur-sm sm:items-center"
-      style={{ background: "rgba(11,12,16,0.55)" }}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <form
-        role="dialog"
-        aria-modal="true"
-        aria-label="Enter your email to continue"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-        className="w-full max-w-[420px] rounded-[28px] bg-white p-6 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] sm:p-7"
-      >
-        <ul className="mb-4 flex flex-wrap gap-x-4 gap-y-1 text-s font-bold text-[var(--ink-2)]">
-          {["Instant email delivery", "7-day refund", "No subscription"].map((t) => (
-            <li key={t} className="flex items-center gap-1.5">
-              <svg className="h-3.5 w-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-              {t}
-            </li>
-          ))}
-        </ul>
-        <p className="text-m font-bold text-[var(--ink)]">Enter your email to continue</p>
-        <p className="mt-1 text-s text-[var(--muted)]">Your files are sent to this address.</p>
-        <input
-          type="email"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="your@email.com"
-          autoFocus
-          className="mt-4 h-12 w-full rounded-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none focus:shadow-[0_0_0_2px_var(--accent)]"
-        />
-        {error && <p className="mt-2 text-s text-[var(--mark-deep)]">{error}</p>}
-        <button type="submit" disabled={loading} className="btn btn-blue mt-4 w-full justify-center">
-          {loading ? "Processing..." : "Continue to Payment"}
-        </button>
-        <button type="button" onClick={onClose} className="mt-2 w-full py-2 text-s font-bold text-[var(--muted)] hover:text-[var(--ink)]">
-          Cancel
-        </button>
-      </form>
-    </div>
   );
 }
