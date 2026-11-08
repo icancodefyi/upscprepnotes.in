@@ -348,7 +348,7 @@ export default function Nav({ products = [], toppers }: NavProps) {
   const anyOpen = openId !== null || mobile;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-[max(10px,env(safe-area-inset-top))] sm:px-4">
+    <div className="pointer-events-none fixed inset-x-0 top-[var(--banner-h,0px)] z-50 px-3 pt-[max(10px,env(safe-area-inset-top))] sm:px-4">
       <nav
         ref={navRef}
         data-scrolled={scrolled || anyOpen}
