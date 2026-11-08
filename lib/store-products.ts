@@ -175,8 +175,7 @@ export const PRODUCTS: StoreProduct[] = [
     ],
   },
   {
-    // Staged for result day. Hidden from the store and not buyable while comingSoon is true.
-    // To launch: create the product in Dodo, paste its id below, set comingSoon: false, upload the files (see docs).
+    // Launched 8 Nov 2026. Files: cdn /files/Mains-2027-Pack/ (Playbook PDF + spreadsheet) and Mains-2027-Pack.zip.
     slug: "upsc-mains-2027-pack",
     dodoProductId: "pdt_0NrRYNg7NaZYsHSAjJciw",
     title: "UPSC Mains 2027 Pack",
@@ -192,7 +191,7 @@ export const PRODUCTS: StoreProduct[] = [
     description: "Plan Mains 2027 from real numbers: the marks each rank needed, paper by paper, from 236 topper marksheets and UPSC's official CSE 2025 list, plus 471 past GS questions sorted by theme.",
     longDescription: [
       "Most Mains advice is opinion. This pack is numbers: what rank holders actually scored in every paper, and what UPSC actually asked.",
-      "The Mains 2027 Playbook (43 pages) shows the written marks each rank band needed in CSE 2025 (all 958 recommended candidates), the target marksheet for a top-100 rank, where top rankers pull away (the optional, then Essay and GS I), what toppers with your optional scored, and every GS question from 2019 and 2021–2026 that scanned cleanly, 471 in all, sorted by theme with counts, and 54 essay topics.",
+      "The Mains 2027 Playbook (41 pages) shows the written marks each rank band needed in CSE 2025 (all 958 recommended candidates), the target marksheet for a top-100 rank, where top rankers pull away (the optional, then Essay and GS I), what toppers with your optional scored, and every GS question from 2019 and 2021–2026 that scanned cleanly, 471 in all, sorted by theme with counts, and 54 essay topics.",
       "Then the work: a month-by-month plan to Mains 2027, weekly answer-writing targets, and a \"Where I stand\" worksheet you fill in after every mock.",
       "Also inside: the Topper Marks Spreadsheet (236 marksheets, sortable, with a sheet that calculates your gaps).",
     ],
@@ -215,9 +214,9 @@ export const PRODUCTS: StoreProduct[] = [
     payNote: "UPSC Mains 2027 Pack",
     payAmount: 499,
     link: null,
-    comingSoon: true,
+    comingSoon: false,
     specs: [
-      { label: "Playbook", value: "PDF, 43 pages" },
+      { label: "Playbook", value: "PDF, 41 pages" },
       { label: "Spreadsheet", value: "Excel, 236 marksheets + 958 CSE 2025 totals" },
       { label: "Past questions", value: "471, 2019 and 2021–2026" },
     ],
