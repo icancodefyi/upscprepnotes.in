@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import PayButton from "@/components/ui/PayButton";
-import { PRICE } from "./sales-page-data";
+import { PRICE, PRODUCT_SLUG } from "./sales-page-data";
 
 export default function SalesPageClient({ children }: { children: React.ReactNode }) {
   const [previewImg, setPreviewImg] = useState<string | null>(null);
@@ -105,9 +105,9 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
         <div className="mx-auto flex max-w-[520px] items-center justify-between gap-3 rounded-full bg-[var(--ink)] py-2 pl-5 pr-2 text-white shadow-[0_12px_30px_-10px_rgba(11,12,16,0.6)]">
           <div className="flex flex-col leading-tight">
             <span className="tab text-m font-bold">₹{PRICE}</span>
-            <span className="text-s text-white/60">72 resources · 7-day refund</span>
+            <span className="text-s text-white/60">63 answer copies · 7-day refund</span>
           </div>
-          <PayButton amount={PRICE} productSlug="all-strategy-reports" tracking="dodo-mobile-sticky" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">
+          <PayButton amount={PRICE} productSlug={PRODUCT_SLUG} tracking="dodo-mobile-sticky" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">
             Get the Compilation →
           </PayButton>
         </div>

@@ -28,7 +28,7 @@ export default function SalesPageContent() {
           </h1>
           <p className="mt-5 max-w-md text-m leading-[1.6] text-[var(--ink-2)]">Starting at ₹49. Instant download · 7-day refund guarantee.</p>
           <div className="mt-7">
-            <Link href="/store" className="btn btn-blue">
+            <Link href="/store/answer-copies-compilation" className="btn btn-blue">
               Shop Now &rarr;
             </Link>
           </div>
@@ -81,7 +81,7 @@ export default function SalesPageContent() {
         </div>
         <p className="mt-8 text-center text-s text-[var(--ink-2)]">Every copy includes the original scorecard for verification</p>
         <div className="mt-6 text-center">
-          <Link href="/store" className="btn btn-blue">
+          <Link href="/store/answer-copies-compilation" className="btn btn-blue">
             Shop Now &rarr;
           </Link>
         </div>
@@ -108,7 +108,7 @@ export default function SalesPageContent() {
               </li>
             ))}
           </ul>
-          <Link href="/store" className="btn btn-blue mt-8 w-full justify-center">
+          <Link href="/store/answer-copies-compilation" className="btn btn-blue mt-8 w-full justify-center">
             Shop Now &rarr;
           </Link>
           <div className="relative mt-6 text-center">

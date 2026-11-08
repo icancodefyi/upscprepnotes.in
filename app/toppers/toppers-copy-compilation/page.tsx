@@ -4,16 +4,16 @@ import type { Metadata } from "next";
 import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata: Metadata = {
-  title: "50+ UPSC Topper Answer Copies + 21 Strategy Guides — ₹199 | UPSCPrepNotes",
+  title: "50+ UPSC Topper Answer Copies (63 PDFs) — ₹199 | UPSCPrepNotes",
   description:
-    "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹199. Pay by UPI or card. 7-day refund.",
+    "UPSC Mains compilation of 63 handwritten topper answer copies (GS1–4, Essay, Optional), each labelled with rank, year and marks. Just ₹199. Pay by UPI or card. 7-day refund.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
   },
   openGraph: {
-    title: "UPSC Topper Answer Copy Compilation — 50+ Copies + 21 Guides",
+    title: "UPSC Topper Answer Copy Compilation — 63 Copies",
     description:
-      "Complete UPSC Mains compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Just ₹199. 7-day refund.",
+      "UPSC Mains compilation of 63 handwritten topper answer copies (GS1–4, Essay, Optional). Just ₹199. 7-day refund.",
     url: "https://upscprepnotes.in/toppers/toppers-copy-compilation",
     images: [{ url: "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80", width: 1200, height: 900 }],
   },
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
 const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "UPSC Topper Answer Copy Compilation — 50+ Copies + 21 Strategy Guides",
+  name: "UPSC Topper Answer Copy Compilation — 63 Copies",
   description:
-    "Complete UPSC Mains preparation compilation with 50+ verified handwritten topper answer copies (GS1–4, Essay, Optional) + 21 original strategy guides. Organized by paper, marks, and year. Includes AI assistant access and lifetime updates.",
+    "UPSC Mains compilation of 63 handwritten topper answer copies (GS1–4, Essay, Optional), organised by paper and marks, each labelled with rank, year and marks.",
   image: [
     "https://ik.imagekit.io/impiclabs/previews/ishita-kishore.png?tr=w-788,f-auto,q-80",
     "https://ik.imagekit.io/impiclabs/previews/garima-lohia.png?tr=w-788,f-auto,q-80",
@@ -108,7 +108,7 @@ const faqSchema = {
       name: "How is this different from free answer copies on Telegram?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Free copies are scattered, unverified, and low-quality scans. This is a curated compilation organized by paper and marks — with original strategy guides, examiner commentary, and AI access that no free source provides.",
+        text: "Free copies are scattered and hard to compare. This compilation puts 63 copies in one place, organised by paper and marks, with each topper's rank, year and marks on the copy.",
       },
     },
     {
@@ -116,7 +116,7 @@ const faqSchema = {
       name: "How will I receive the files?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "After payment verification, we email you a download link. The compilation comes as a single ZIP file organized by paper (GS1–4, Essay, Optional). You get lifetime access and free updates.",
+        text: "Right after payment you land on a download page with every PDF, organised by paper (GS1–4, Essay, Optional). We also email you the link, so you can download again later.",
       },
     },
     {

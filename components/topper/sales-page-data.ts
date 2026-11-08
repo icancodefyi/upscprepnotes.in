@@ -26,24 +26,23 @@ export const TOPPERS: TopperData[] = [
 export const FAQS = [
   { q: "Are these typed notes or handwritten answer copies?", a: "These are scanned copies of actual handwritten UPSC Mains answer sheets — exactly as toppers wrote them in the exam hall. If you're looking for typed notes, this compilation is not for you. These show you real handwriting, structure, underlining, and diagrams that scored 140+." },
   { q: "Are these the actual UPSC answer sheets?", a: "Yes. All 50+ copies are real handwritten UPSC Mains answer sheets from verified toppers (AIR 1–1249). Each copy includes the original scorecard for verification." },
-  { q: "How is this different from free answer copies on Telegram?", a: "Free copies are scattered, unverified, and low-quality scans. This is a curated compilation organized by paper and marks — with original strategy guides, examiner commentary, and AI access that no free source provides." },
-  { q: "How will I receive the files?", a: "After payment verification, we email you a download link. The compilation comes as a single ZIP file organized by paper (GS1–4, Essay, Optional). You get lifetime access and free updates." },
+  { q: "How is this different from free answer copies on Telegram?", a: "Free copies are scattered and hard to compare. This compilation puts 63 copies in one place, organised by paper and marks, with each topper's rank, year and marks on the copy." },
+  { q: "How will I receive the files?", a: "Right after payment you land on a download page with every PDF, organised by paper (GS1–4, Essay, Optional). We also email you the link, so you can download again later." },
   { q: "What if I am not satisfied?", a: "Email us within 7 days of receiving the download link. We will refund your payment. No questions asked." },
   { q: "Can I pay via GPay or PhonePe?", a: 'Yes. The secure checkout accepts UPI (GPay, PhonePe, Paytm and any UPI app), cards and net banking, and the download link is emailed right after payment.' },
 ];
 
 export const FEATURES = [
-  "50+ actual handwritten topper answer copy PDFs (GS1–4, Essay, Optional)",
-  "21 original strategy guides by rank holders",
-  "Interview preparation pack with 100+ questions",
-  "Ethics case studies with model answers",
-  "AI assistant trained on these copies for instant feedback",
-  "Organised by paper, marks, and year — ready to download",
-  "Lifetime access + free updates",
+  "63 handwritten topper answer copy PDFs (GS1–4, Essay, Optional)",
+  "Each copy labelled with the topper's name, rank, year and marks",
+  "Organised by paper and marks, ready to download",
+  "Instant email delivery and a 7-day refund",
 ];
 
 export const WHATSAPP_NUMBER = "919152750079";
 export const UPI_ID = "rakhangezaid8@pingpay";
 export const SITE = "upscprepnotes.in";
 export const TIER = "Offer";
-export const PRICE = PRODUCTS.find((p) => p.slug === "all-strategy-reports")?.price ?? 199;
+// This page sells the Answer Copies Compilation (its files are on the CDN).
+export const PRODUCT_SLUG = "answer-copies-compilation";
+export const PRICE = PRODUCTS.find((p) => p.slug === PRODUCT_SLUG)?.price ?? 199;
