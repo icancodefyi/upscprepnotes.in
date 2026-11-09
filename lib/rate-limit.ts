@@ -8,7 +8,10 @@ interface RateLimitConfig {
 }
 
 const DEFAULTS: Record<string, RateLimitConfig> = {
-  ai: { maxRequests: 5, windowMs: 60000 },
+  // Asking a question (costs an AI call). Loading chats uses "ai-read" so browsing
+  // your history never eats into how fast you can ask.
+  ai: { maxRequests: 8, windowMs: 60000 },
+  "ai-read": { maxRequests: 60, windowMs: 60000 },
   broadcast: { maxRequests: 5, windowMs: 60000 },
   cron: { maxRequests: 10, windowMs: 60000 },
   leads: { maxRequests: 10, windowMs: 60000 },
@@ -33,12 +36,11 @@ export async function rateLimit(
 
   const windowStart = now - cfg.windowMs;
 
-  const [countResult] = await Promise.all([
-    coll.countDocuments({ key, createdAt: { $gte: new Date(windowStart) } }),
-    coll.insertOne({ key, createdAt: new Date(now) }),
-  ]);
-
+  const countResult = await coll.countDocuments({ key, createdAt: { $gte: new Date(windowStart) } });
   const allowed = countResult < cfg.maxRequests;
+  // Only allowed requests count, so someone who is told to wait isn't kept blocked by retrying.
+  if (allowed) await coll.insertOne({ key, createdAt: new Date(now) });
+
   const remaining = Math.max(0, cfg.maxRequests - countResult - 1);
 
   return { allowed, remaining, resetIn: cfg.windowMs };

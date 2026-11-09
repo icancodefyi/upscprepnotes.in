@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
-  const rl = await checkRateLimit(request, "ai");
+  const rl = await checkRateLimit(request, "ai-read");
   if (rl) return rl;
   const sessionId = request.nextUrl.searchParams.get("sessionId");
 
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const rl = await checkRateLimit(request, "ai");
+  const rl = await checkRateLimit(request, "ai-read");
   if (rl) return rl;
   try {
     const { sessionId } = await request.json();

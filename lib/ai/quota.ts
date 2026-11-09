@@ -4,6 +4,14 @@ import { AskSessionModel, AskConversationModel } from "@/models/ask.model";
 const FREE_QUOTA = 5;
 const AUTH_QUOTA = 20;
 
+/** Midnight in India (IST, UTC+5:30), so the daily limit resets at 12am for our users, not 5:30am. */
+export function startOfTodayIST(now = new Date()): Date {
+  const IST = 330 * 60 * 1000;
+  const d = new Date(now.getTime() + IST);
+  d.setUTCHours(0, 0, 0, 0);
+  return new Date(d.getTime() - IST);
+}
+
 export async function getQuota(
   sessionId: string,
   userId?: string | null,
@@ -14,8 +22,7 @@ export async function getQuota(
 }> {
   await connectDB();
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = startOfTodayIST();
   const maxQuota = userId ? AUTH_QUOTA : FREE_QUOTA;
 
   if (userId) {
@@ -49,8 +56,7 @@ export async function incrementQuota(
 ): Promise<void> {
   await connectDB();
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = startOfTodayIST();
 
   if (userId) {
     const { UserModel } = await import("@/models/user.model");
@@ -196,4 +202,44 @@ export async function createConversation(
   });
 
   return conversation._id.toString();
+}
+
+/**
+ * Gives a question back when no answer was delivered (the model failed), so a failed
+ * answer never costs a free question.
+ */
+export async function refundQuota(
+  sessionId: string,
+  userId?: string | null,
+): Promise<void> {
+  await connectDB();
+  if (userId) {
+    const { UserModel } = await import("@/models/user.model");
+    await UserModel.updateOne({ _id: userId, queriesToday: { $gt: 0 } }, { $inc: { queriesToday: -1 } });
+    return;
+  }
+  await AskSessionModel.updateOne({ sessionId, queriesToday: { $gt: 0 } }, { $inc: { queriesToday: -1 } });
+}
+
+/** Removes the question we saved when its answer failed, so a retry doesn't leave it in the history twice. */
+export async function removeLastMessage(conversationId: string): Promise<void> {
+  await connectDB();
+  await AskConversationModel.updateOne({ _id: conversationId }, { $pop: { messages: 1 } });
+}
+
+/**
+ * A chat belongs to the signed-in account that owns it, or, for a guest chat, to the browser
+ * (session id) that started it. Nobody else can read it or add to it.
+ */
+export async function canAccessConversation(
+  conversationId: string,
+  sessionId: string,
+  userId?: string | null,
+): Promise<boolean> {
+  if (!/^[a-f0-9]{24}$/i.test(conversationId)) return false;
+  await connectDB();
+  const c = await AskConversationModel.findById(conversationId).select("sessionId userId").lean();
+  if (!c) return false;
+  if (c.userId) return !!userId && String(c.userId) === String(userId);
+  return !!sessionId && c.sessionId === sessionId;
 }

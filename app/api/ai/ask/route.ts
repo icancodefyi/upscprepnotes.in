@@ -10,6 +10,9 @@ import {
   createConversation,
   updateConversationTitle,
   getConversation,
+  refundQuota,
+  removeLastMessage,
+  canAccessConversation,
 } from "@/lib/ai/quota";
 import { auth } from "@/lib/auth";
 import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
@@ -126,6 +129,8 @@ export async function POST(request: NextRequest) {
   const rl = await checkRateLimit(request, "ai");
   if (rl) return rl;
 
+  // Set once the question has been counted, so any later failure can give it back.
+  let counted: { sessionId: string; userId: string | null; cid: string } | null = null;
   try {
     const { message, sessionId, conversationId, searchWeb: wantsSearch } = await request.json();
 
@@ -134,6 +139,9 @@ export async function POST(request: NextRequest) {
     }
     if (!sessionId || typeof sessionId !== "string") {
       return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
+    }
+    if (message.length > 2000) {
+      return NextResponse.json({ error: "Please keep your question under 2,000 characters." }, { status: 400 });
     }
 
     const session = await auth();
@@ -145,18 +153,31 @@ export async function POST(request: NextRequest) {
     if (!quota.canQuery) {
       await trackServer("ask_limit", { sessionId, path: "/api/ai/ask", props: { ...base, authenticated: quota.isAuthenticated } });
       return NextResponse.json(
-        { error: quota.isAuthenticated ? "Daily limit reached. Upgrade for unlimited access." : "Free limit reached. Sign in for 20 queries/day or purchase for unlimited." },
+        {
+          code: "quota",
+          error: quota.isAuthenticated ? "Daily limit reached." : "Free limit reached. Sign in for 20 questions a day.",
+        },
         { status: 429 },
       );
     }
 
-    let cid = conversationId;
+    // Only continue a chat this browser or account owns; anything else starts a new chat.
+    let cid: string | null =
+      typeof conversationId === "string" && (await canAccessConversation(conversationId, sessionId, userId))
+        ? conversationId
+        : null;
     if (!cid) {
       cid = await createConversation(sessionId, userId, message);
     }
 
     await saveMessage(cid, "user", message);
     await incrementQuota(sessionId, userId);
+    counted = { sessionId, userId, cid };
+    const refund = async () => {
+      counted = null;
+      await refundQuota(sessionId, userId).catch(() => {});
+      await removeLastMessage(cid as string).catch(() => {});
+    };
 
     const conv = await getConversation(cid);
     if (conv && conv.messages.length === 1) {
@@ -315,8 +336,10 @@ export async function POST(request: NextRequest) {
 
         emit({ t: "end" });
 
-        if (streamFailed) {
-          // Never persist a fake/empty answer as a real assistant message
+        if (streamFailed || !fullContent.trim()) {
+          // Never persist a fake/empty answer, and give the question back: a failed answer is free.
+          if (!streamFailed) emit({ t: "error", code: "empty", message: "We couldn't write an answer this time. Please try again." });
+          await refund();
           controller.close();
           return;
         }
@@ -337,6 +360,11 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Ask error:", err);
+    if (counted) {
+      const c = counted as { sessionId: string; userId: string | null; cid: string };
+      await refundQuota(c.sessionId, c.userId).catch(() => {});
+      await removeLastMessage(c.cid).catch(() => {});
+    }
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
       { status: 500 },

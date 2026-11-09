@@ -35,6 +35,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import Gilu from "@/components/brand/Gilu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
@@ -132,7 +133,7 @@ function friendlyHttpError(status: number, serverMsg: unknown): string {
   if (typeof serverMsg === "string" && serverMsg.trim() && serverMsg.length < 180)
     return serverMsg.trim();
   if (status === 401 || status === 403) return "Please sign in to continue asking questions.";
-  if (status === 429) return "You've reached your daily limit. Please try again later.";
+  if (status === 429) return "You're asking a little fast. Wait a few seconds and try again.";
   if (status >= 500) return "We hit a snag on our side. Please try again in a moment.";
   return "We couldn't send that just now. Please try again.";
 }
@@ -425,7 +426,8 @@ function AskPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [showQuotaModal, setShowQuotaModal] = useState(false);
   const [quotaExhausted, setQuotaExhausted] = useState(false);
-  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
+  // True when the daily limit was hit while signed in (different message, no sign-in button).
+  const [limitSignedIn, setLimitSignedIn] = useState(false);
   const [researchLabel, setResearchLabel] = useState("");
   const [researchSources, setResearchSources] = useState<
     { domain: string; label: string }[]
@@ -472,7 +474,7 @@ function AskPage() {
       setActiveId(id);
       setMessages([]);
       setAskError(null);
-      const res = await fetch(`/api/ai/conversations/${id}`);
+      const res = await fetch(`/api/ai/conversations/${id}?sessionId=${encodeURIComponent(getAskSessionId())}`);
       if (!res.ok) return;
       const data = await res.json();
       setMessages(data.messages || []);
@@ -515,40 +517,43 @@ function AskPage() {
     }
   }, [status, session?.user?.email, session?.user?.name]);
 
-  // Migrate anonymous conversations and resend pending message when user signs in
+  // On sign-in, move this browser's guest chats into the account, then put back the question
+  // that was waiting when the limit hit. The question is kept in sessionStorage because Google
+  // sign-in reloads the page, which wipes React state.
+  const migrated = useRef(false);
   useEffect(() => {
-    if (status === "authenticated" && pendingMessage) {
-      (async () => {
-        try {
-          await fetch("/api/ai/migrate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sessionId: getAskSessionId() }),
-          });
-          await fetchConversations();
-        } catch {}
-      })();
-    }
-  }, [status, fetchConversations, pendingMessage]);
+    if (status !== "authenticated" || migrated.current) return;
+    migrated.current = true;
+    (async () => {
+      try {
+        await fetch("/api/ai/migrate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: getAskSessionId() }),
+        });
+      } catch {}
+      await fetchConversations();
+      let pending: string | null = null;
+      try {
+        pending = sessionStorage.getItem("ask:pending");
+        sessionStorage.removeItem("ask:pending");
+      } catch {}
+      if (pending) {
+        setInput(pending);
+        setShowQuotaModal(false);
+        setTimeout(() => inputRef.current?.focus(), 50);
+      }
+    })();
+  }, [status, fetchConversations]);
 
-  // Resend pending message after migration completes
-  const migrationDone = useRef(false);
-  useEffect(() => {
-    if (
-      status === "authenticated" &&
-      pendingMessage &&
-      !migrationDone.current
-    ) {
-      migrationDone.current = true;
-      setInput(pendingMessage);
-      setPendingMessage(null);
-      setShowQuotaModal(false);
-      setTimeout(() => {
-        const form = document.querySelector("form");
-        if (form) form.requestSubmit();
-      }, 300);
-    }
-  }, [status, pendingMessage]);
+  // Sign in with Google, keeping whatever question is waiting so it comes back after the redirect.
+  function signInKeepingQuestion(question?: string) {
+    const q = (question ?? input).trim();
+    try {
+      if (q) sessionStorage.setItem("ask:pending", q);
+    } catch {}
+    signIn("google");
+  }
 
   async function newConversation() {
     try {
@@ -612,9 +617,18 @@ function AskPage() {
         }),
       });
 
-      if (res.status === 429) {
-        const errBody = await res.json().catch(() => ({}));
-        setPendingMessage(text);
+      // 429 means either "used today's questions" (code: quota) or "too many requests too
+      // fast" (rate limiter). Only the first is the daily limit; the second is a short wait.
+      const limitBody = res.status === 429 ? await res.clone().json().catch(() => ({})) : null;
+      if (res.status === 429 && limitBody?.code === "quota") {
+        // Take the unanswered question off the thread and put it back in the box,
+        // so it can be sent once the limit allows (after sign-in, or tomorrow).
+        setMessages((prev) => {
+          const last = prev[prev.length - 1];
+          return last && last.role === "user" && last.content === text ? prev.slice(0, -1) : prev;
+        });
+        setInput(text);
+        setLimitSignedIn(status === "authenticated");
         setShowQuotaModal(true);
         setQuotaExhausted(true);
         setStreamingMessage(null);
@@ -1024,18 +1038,27 @@ async function copyShareText() {
       <Dialog open={showQuotaModal} onOpenChange={setShowQuotaModal}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Daily limit reached</DialogTitle>
+            <DialogTitle>
+              {limitSignedIn ? "You've used today's 20 questions" : "You've used your 5 free questions"}
+            </DialogTitle>
             <DialogDescription>
-              You&apos;ve used all your queries for today. Sign in to get{" "}
-              <span className="font-semibold text-foreground">20 queries/day</span>{" "}
-              instead of 5.
+              {limitSignedIn ? (
+                <>Your questions reset at midnight (IST). Your question is still in the box, ready to send tomorrow.</>
+              ) : (
+                <>
+                  Sign in to get{" "}
+                  <span className="font-semibold text-foreground">20 questions a day</span>. Your
+                  question and your chats so far come with you.
+                </>
+              )}
             </DialogDescription>
           </DialogHeader>
+          {!limitSignedIn && (
           <Button
             type="button"
             variant="outline"
             onClick={() => {
-              signIn("google");
+              signInKeepingQuestion();
               setShowQuotaModal(false);
             }}
             className="w-full"
@@ -1060,14 +1083,15 @@ async function copyShareText() {
             </svg>
             Sign in with Google
           </Button>
+          )}
           <DialogFooter>
             <p className="w-full text-center text-xs text-muted-foreground">
-              Already signed in?{" "}
+              {limitSignedIn ? "Meanwhile, " : "Or "}
               <Link
                 href="/store"
                 className="underline underline-offset-2 hover:text-foreground"
               >
-                Browse premium resources
+                browse topper answer copies
               </Link>
             </p>
           </DialogFooter>
@@ -1303,9 +1327,7 @@ async function copyShareText() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => {
-                signIn("google");
-              }}
+              onClick={() => signInKeepingQuestion()}
               className="w-full justify-start gap-2 text-muted-foreground"
             >
               <svg className="size-3.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -1356,6 +1378,7 @@ async function copyShareText() {
           ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center px-6">
               <div className="w-full max-w-md text-center">
+                <Gilu pose="hello" size={128} className="mx-auto mb-3 h-auto w-[104px] sm:w-[128px]" />
                 <h1 className="text-[clamp(32px,2.4vw+18px,48px)] font-bold leading-[1.05] tracking-[-0.03em] text-foreground">
                   Ask the AI Mentor
                 </h1>
@@ -1489,21 +1512,8 @@ async function copyShareText() {
                       </MessageAvatar>
                       <MessageContent>
                         <div className="rounded-xl border border-amber-500/40 bg-amber-500/5 p-4">
-                          <div className="flex items-start gap-3">
-                            <svg
-                              className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              aria-hidden="true"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-                              />
-                            </svg>
+                          <div className="flex items-center gap-3">
+                            <Gilu pose="sorry" size={64} className="h-auto w-14 shrink-0" />
                             <div className="min-w-0 space-y-1">
                               <p className="text-sm font-medium text-foreground">
                                 We couldn't answer that
@@ -1558,8 +1568,8 @@ async function copyShareText() {
                 {/* Research progress — shown only while Web search is active, hidden the instant content arrives */}
                 {streaming && isSearching && !streamingMessage && (
                   <div className="mx-auto max-w-[720px] px-4 py-4">
-                    <div className="flex items-start gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-3">
-                      <Spinner className="size-4 shrink-0 text-[#1f3fd6] mt-0.5" />
+                    <div role="status" className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-3">
+                      <Gilu pose="reading" size={64} className="h-auto w-14 shrink-0" />
                       <div className="min-w-0 space-y-1.5">
                         <p className="text-xs font-medium text-foreground">
                           {researchLabel || "Researching..."}
@@ -1598,7 +1608,15 @@ async function copyShareText() {
                 )}
 
                 {/* Streaming indicator — shown while streaming but not in the research phase */}
-                {streaming && !isSearching && (
+                {streaming && !isSearching && !streamingMessage && (
+                  <div className="mx-auto max-w-[720px] px-4 py-4">
+                    <div role="status" className="flex items-center gap-3">
+                      <Gilu pose="thinking" size={64} className="h-auto w-14 shrink-0" />
+                      <p className="text-sm text-muted-foreground">Thinking…</p>
+                    </div>
+                  </div>
+                )}
+                {streaming && !isSearching && streamingMessage && (
                   <div className="mx-auto max-w-[720px] px-4 py-4">
                     <Marker role="status">
                       <MarkerIcon>
@@ -1654,6 +1672,7 @@ async function copyShareText() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   disabled={streaming || loading}
+                  maxLength={2000}
                   rows={1}
                   placeholder="Ask about UPSC preparation..."
                   className="min-h-[52px] max-h-[220px] flex-1 resize-none border-0 bg-transparent px-3 py-2 text-[15px] leading-6 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:border-0 shadow-none"
@@ -1719,7 +1738,7 @@ async function copyShareText() {
                       variant="link"
                       size="xs"
                       className="h-auto p-0 text-xs"
-                      onClick={() => signIn("google")}
+                      onClick={() => signInKeepingQuestion()}
                     >
                       Sign in for 20/day
                     </Button>
