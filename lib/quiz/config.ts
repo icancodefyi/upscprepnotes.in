@@ -7,4 +7,4 @@
  * Turn it on only after every item in docs/product/quiz-launch-checklist.md section 1 is done
  * (all answers checked against UPSC's official key).
  */
-export const QUIZ_LIVE = false;
+export const QUIZ_LIVE = true;

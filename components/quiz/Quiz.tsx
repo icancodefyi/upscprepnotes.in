@@ -730,6 +730,8 @@ type InstallState = { prompt: (() => void) | null; ios: boolean };
 function Result({ run, outcome, before, after, live, install, onJoin, onHome, onPractice }: { run: Run; outcome: Outcome; before: Progress; after: Progress; live: Progress; install: InstallState; onJoin: () => void; onHome: () => void; onPractice: () => void }) {
   const questions = SETS[run.setIndex];
   const [open, setOpen] = useState<number | null>(null);
+  // iPhones get the manual steps instead of a prompt; count how often they are shown.
+  useEffect(() => { if (install.ios && !install.prompt) qev("quiz_install_ios_seen", {}); }, [install.ios, install.prompt]);
   const [shareMsg, setShareMsg] = useState("");
   const levelUp = levelFor(after.xp).index > levelFor(before.xp).index;
   const projected = Math.round(outcome.score * (100 / SET_SIZE) * 10) / 10;
@@ -966,9 +968,9 @@ export default function Quiz() {
   useEffect(() => { qev("quiz_view", {}); }, []);
 
   // Install to home screen: keep Android's prompt for the results screen; detect iPhones that aren't installed yet.
-  const [deferred, setDeferred] = useState<(Event & { prompt: () => Promise<void> }) | null>(null);
+  const [deferred, setDeferred] = useState<(Event & { prompt: () => Promise<void>; userChoice?: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> }) | null>(null);
   useEffect(() => {
-    const onPrompt = (e: Event) => { e.preventDefault(); setDeferred(e as Event & { prompt: () => Promise<void> }); };
+    const onPrompt = (e: Event) => { e.preventDefault(); setDeferred(e as Event & { prompt: () => Promise<void>; userChoice?: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> }); };
     const onInstalled = () => { qev("quiz_installed", {}); setDeferred(null); };
     window.addEventListener("beforeinstallprompt", onPrompt);
     window.addEventListener("appinstalled", onInstalled);
@@ -976,7 +978,12 @@ export default function Quiz() {
   }, []);
   const installed = typeof window !== "undefined" && (window.matchMedia?.("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true);
   const install: InstallState = {
-    prompt: deferred && !installed ? () => { qev("quiz_install_prompt", {}); void deferred.prompt(); } : null,
+    prompt: deferred && !installed ? () => {
+      qev("quiz_install_prompt", {});
+      void deferred.prompt();
+      // The browser's own answer: accepted (added to home screen) or dismissed.
+      deferred.userChoice?.then((c) => qev("quiz_install_choice", { outcome: c.outcome, platform: c.platform })).catch(() => {});
+    } : null,
     ios: !installed && typeof navigator !== "undefined" && /iphone|ipad|ipod/i.test(navigator.userAgent),
   };
 

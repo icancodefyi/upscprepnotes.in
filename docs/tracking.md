@@ -39,6 +39,10 @@ Every user interaction we need for curation goes into one MongoDB collection, **
 | `section_view` | An element marked `data-track-view="name"` is half on screen | `name` |
 | `ask_answer` | Server: the AI answered | `path` (`fast` = topper answer from the database, `model`), `ms`, `chars`, `sources`, `web_search`, `signed_in` |
 | `ask_error` / `ask_limit` | Server: the model failed / the free limit blocked a question | `code`, `status`, `ms` / `authenticated` |
+| `quiz_install_prompt` | Quiz results: "Add Gilu's quiz to home screen" clicked (Android prompt opens) | — |
+| `quiz_install_choice` | The browser's answer to that prompt | `outcome` (`accepted` / `dismissed`), `platform` |
+| `quiz_install_ios_seen` | Quiz results shown to an iPhone, with the Share → Add to Home Screen steps | — |
+| `quiz_installed` | The app was installed (browser `appinstalled`) | — |
 
 Clicks on links to files (`.pdf`, `.zip`…) and `/api/download` carry `download: true`. Marked sections so far: `home_lead_pack`, `topper_lead_form`, `topper_answer_copies`, `store_email_band`, `store_spotlight`, `product_buy_box`, `product_samples`, `product_reviews`.
 

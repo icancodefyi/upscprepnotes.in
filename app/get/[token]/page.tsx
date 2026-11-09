@@ -21,21 +21,22 @@ const TELEGRAM = "https://t.me/+2eV0YCTGdNcyNmFl";
 /** Offers shown while people wait. Prices and availability come from the store, so they never go stale. */
 function promos(kind: DownloadHandoff["kind"]): Promo[] {
   const list: Promo[] = [];
-  const comp = PRODUCTS.find((p) => p.slug === "answer-copies-compilation" && !p.comingSoon);
-  const mains = PRODUCTS.find((p) => p.slug === "upsc-mains-2027-pack" && !p.comingSoon);
+  const comp = PRODUCTS.find((x) => x.slug === "answer-copies-compilation" && !x.comingSoon);
+  const mains = PRODUCTS.find((x) => x.slug === "upsc-mains-2027-pack" && !x.comingSoon);
+  const top10 = PRODUCTS.find((x) => x.slug === "top-10-rankers-strategy" && !x.comingSoon);
   if (QUIZ_LIVE) {
-    list.push({ id: "quiz", title: "Test yourself while you wait", body: "5 real UPSC Prelims questions, marked the exam way. Free, no sign-up.", cta: "Play today's 5", href: "/quiz", pose: "correct" });
+    list.push({ id: "quiz", kicker: "Free", title: "Test yourself: today's 5", body: "Five real UPSC Prelims questions, marked the exam way. Free, no sign-up.", cta: "Play the quiz", href: "/quiz", pose: "correct" });
   }
-  if (comp && kind !== "answer-copy") {
-    list.push({ id: "compilation", title: "See how toppers actually write", body: "63 handwritten topper answer copies, GS1–4 and Essay, each with rank and marks.", cta: `See the compilation, ₹${comp.price}`, href: "/store/answer-copies-compilation", pose: "reading" });
-  }
-  if (comp && kind === "answer-copy") {
-    list.push({ id: "compilation", title: "Compare with 63 more toppers", body: "Every answer copy in one place: GS1–4 and Essay, with marks on each.", cta: `See the compilation, ₹${comp.price}`, href: "/store/answer-copies-compilation", pose: "reading" });
+  if (comp) {
+    list.push({ id: "compilation", kicker: "Bestseller", title: "63 topper answer copies", body: kind === "answer-copy" ? "Compare Anuj's copy with 63 more, GS1–4 and Essay, with marks on each." : "Handwritten copies from real toppers, GS1–4 and Essay, each with rank and marks.", cta: "See the compilation", href: "/store/answer-copies-compilation", pose: "reading", image: comp.image, price: comp.price });
   }
   if (mains) {
-    list.push({ id: "mains", title: "Writing Mains 2027?", body: "The Mains playbook (471 real questions) plus the topper marks spreadsheet.", cta: `See the Mains pack, ₹${mains.price}`, href: "/store/upsc-mains-2027-pack", pose: "hello" });
+    list.push({ id: "mains", kicker: "Mains 2027", title: "Mains 2027 Pack", body: "The playbook with 471 real questions, plus the topper marks spreadsheet.", cta: "See the pack", href: "/store/upsc-mains-2027-pack", pose: "hello", image: mains.image, price: mains.price });
   }
-  list.push({ id: "telegram", title: "Daily current affairs, free", body: "Join 100+ aspirants on our Telegram channel.", cta: "Join on Telegram", href: TELEGRAM, external: true, pose: "celebrating" });
+  if (top10) {
+    list.push({ id: "top10", kicker: "Strategy", title: "Top 10 Rankers Strategy", body: "How the top ten of UPSC 2024 prepared, week by week.", cta: "See the strategy", href: "/store/top-10-rankers-strategy", pose: "thinking", image: top10.image, price: top10.price });
+  }
+  list.push({ id: "telegram", kicker: "Free", title: "Daily current affairs", body: "Join 100+ aspirants on our Telegram channel.", cta: "Join on Telegram", href: TELEGRAM, external: true, pose: "celebrating" });
   return list;
 }
 
