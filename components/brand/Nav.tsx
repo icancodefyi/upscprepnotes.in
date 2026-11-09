@@ -36,7 +36,12 @@ const GUIDES = [
   { href: "/content/how-to-write-upsc-mains-answers", label: "How to write Mains answers" },
 ];
 
-type Link2 = { href: string; title: string; desc: string };
+type Link2 = { href: string; title: string; desc: string; isNew?: boolean };
+
+/** Small "New" tag for a link that has just launched. */
+function NewPill() {
+  return <span className="inline-flex shrink-0 items-center rounded-full bg-[var(--accent)] px-2 py-0.5 text-[11px] font-bold leading-none text-white">New</span>;
+}
 const ARCHIVE: Link2[] = [
   { href: "/toppers", title: "All toppers", desc: "Every rank holder, CSE 2022–2025" },
   { href: "/toppers/marks-database", title: "Marks database", desc: "Paper-wise marks, sortable by any paper" },
@@ -46,7 +51,7 @@ const ARCHIVE: Link2[] = [
   { href: "/search", title: "Search the archive", desc: "Find a topper by name, rank or optional" },
 ];
 const STUDY: Link2[] = [
-  ...(QUIZ_LIVE ? [{ href: "/quiz", title: "Daily UPSC quiz", desc: "5 real Prelims questions a day, with Gilu" }] : []),
+  ...(QUIZ_LIVE ? [{ href: "/quiz", title: "Daily UPSC quiz", desc: "5 real Prelims questions a day, with Gilu", isNew: true }] : []),
   { href: "/pyq", title: "Previous year questions", desc: "Mains PYQs by year and paper" },
   { href: "/current-affairs", title: "Current affairs", desc: "Monthly and yearly compilations" },
   { href: "/free-materials", title: "Free study material", desc: "Test series, notes, books and magazines" },
@@ -66,7 +71,8 @@ const MENUS = [
   { id: "ask", match: (p: string) => is(p, "/ask") },
   { id: "store", match: (p: string) => is(p, "/store", "/download") },
   { id: "toppers", match: (p: string) => is(p, "/toppers", "/year", "/optional", "/upsc-topper", "/compare") },
-  { id: "study", match: (p: string) => is(p, "/quiz", "/pyq", "/current-affairs", "/free-materials", "/resources", "/content", "/search") },
+  { id: "quiz", match: (p: string) => is(p, "/quiz") },
+  { id: "study", match: (p: string) => is(p, "/pyq", "/current-affairs", "/free-materials", "/resources", "/content", "/search") },
 ] as const;
 type MenuId = (typeof MENUS)[number]["id"];
 
@@ -102,7 +108,10 @@ function Row({ l, path, i, onNavigate }: { l: Link2; path: string; i: number; on
     >
       <span aria-hidden className={`mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full transition-colors ${current ? "bg-[var(--accent)]" : "bg-[var(--line-2)] group-hover:bg-[var(--accent)]"}`} />
       <span className="min-w-0">
-        <span className={`block text-s font-bold leading-snug ${current ? "text-[var(--accent)]" : "text-[var(--ink)]"}`}>{l.title}</span>
+        <span className={`flex items-center gap-2 text-s font-bold leading-snug ${current ? "text-[var(--accent)]" : "text-[var(--ink)]"}`}>
+          {l.title}
+          {l.isNew && <NewPill />}
+        </span>
         <span className="mt-0.5 block text-s leading-snug text-[var(--muted)]">{l.desc}</span>
       </span>
     </Link>
@@ -232,9 +241,10 @@ function StorePanel({ path, products, show }: { path: string; products: NavProdu
   );
 }
 
-const TRIGGERS: { id: MenuId; label: string; href?: string }[] = [
+const TRIGGERS: { id: MenuId; label: string; href?: string; isNew?: boolean }[] = [
   { id: "toppers", label: "Toppers" },
   { id: "study", label: "Study" },
+  ...(QUIZ_LIVE ? [{ id: "quiz" as const, label: "Daily quiz", href: "/quiz", isNew: true }] : []),
   { id: "ask", label: "Ask AI", href: "/ask" },
   { id: "more", label: "More" },
 ];
@@ -399,6 +409,7 @@ export default function Nav({ products = [], toppers }: NavProps) {
                       <path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" opacity=".7" />
                     </svg>
                     {t.label}
+                    {t.isNew && <NewPill />}
                     {underline}
                   </Link>
                 ) : (
@@ -500,6 +511,20 @@ export default function Nav({ products = [], toppers }: NavProps) {
         className="nav-drawer pointer-events-auto mx-auto mt-2 max-w-[1080px] overflow-hidden rounded-[28px] bg-white shadow-[0_0_0_1px_var(--line),0_16px_40px_-18px_rgba(11,12,16,0.4)] lg:hidden"
       >
         <div className="max-h-[calc(100dvh-96px)] overflow-y-auto overscroll-contain p-2">
+          {QUIZ_LIVE && (
+            <Link
+              href="/quiz"
+              onClick={() => setMobile(false)}
+              aria-current={pathname === "/quiz" ? "page" : undefined}
+              className="mb-1 flex items-center justify-between rounded-[18px] px-4 py-3.5 text-m font-bold text-[var(--ink)] hover:bg-[var(--canvas)]"
+            >
+              <span className="flex items-center gap-2.5">
+                Daily UPSC quiz
+                <NewPill />
+              </span>
+              <span className="text-[var(--muted)]"><Arrow /></span>
+            </Link>
+          )}
           <Link
             href="/ask"
             onClick={() => setMobile(false)}
@@ -549,7 +574,10 @@ export default function Nav({ products = [], toppers }: NavProps) {
                           aria-current={pathname === l.href ? "page" : undefined}
                           className="flex items-center justify-between gap-3 rounded-[14px] py-2.5 pl-8 pr-4 text-s text-[var(--ink-2)] hover:bg-[var(--canvas)] hover:text-[var(--ink)] aria-[current=page]:font-bold aria-[current=page]:text-[var(--accent)]"
                         >
-                          <span>{l.title}</span>
+                          <span className="flex items-center gap-2">
+                            {l.title}
+                            {l.isNew && <NewPill />}
+                          </span>
                           {l.desc.startsWith("₹") && <span className="tab rounded-[6px] bg-[var(--hl)] px-2 py-0.5 font-bold text-[var(--ink)]">{l.desc}</span>}
                         </Link>
                       </li>
