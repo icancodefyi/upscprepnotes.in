@@ -257,7 +257,7 @@ function MilestoneTrack({ progress, onJoin }: { progress: Progress; onJoin: () =
 
 /* ---------- home ---------- */
 
-function Home({ progress, onPlay, onReset, onJoin }: { progress: Progress; onPlay: (set: number, daily: boolean) => void; onReset: () => void; onJoin: () => void }) {
+function Home({ progress, onPlay, onReset, onJoin, install }: { progress: Progress; onPlay: (set: number, daily: boolean) => void; onReset: () => void; onJoin: () => void; install: InstallState }) {
   const today = istDay();
   const doneToday = progress.lastDailyDay === today;
   const daily = dailySetIndex(today);
@@ -369,6 +369,10 @@ function Home({ progress, onPlay, onReset, onJoin }: { progress: Progress; onPla
               })}
             </div>
           </section>
+
+          <div className="mt-8">
+            <InstallCard install={install} />
+          </div>
 
           <p className="mt-8 text-[13px] leading-relaxed" style={{ color: C.muted }}>
             Questions are from UPSC Civil Services Prelims 2024, GS Paper I. Progress is saved on this device.{" "}
@@ -724,14 +728,39 @@ async function shareImage(o: Outcome, streak: number): Promise<Blob | null> {
   return new Promise((r) => cv.toBlob((b) => r(b), "image/png"));
 }
 
-/** Android offers an install prompt; iPhones need the Share › Add to Home Screen steps. */
-type InstallState = { prompt: (() => void) | null; ios: boolean };
+/** Android offers an install prompt when the browser allows it; otherwise (and on iPhone) the steps are shown instead. */
+type InstallState = { prompt: (() => void) | null; ios: boolean; android: boolean };
+
+/** "Play every day from your home screen": one card, used on the home screen and the results screen. */
+function InstallCard({ install }: { install: InstallState }) {
+  const manual = !install.prompt && (install.ios || install.android);
+  useEffect(() => {
+    if (manual && install.ios) qev("quiz_install_ios_seen", {});
+    if (manual && install.android) qev("quiz_install_android_steps_seen", {});
+  }, [manual, install.ios, install.android]);
+  if (!install.prompt && !install.ios && !install.android) return null;
+  return (
+    <div className="qz-up flex items-center gap-3 rounded-2xl bg-white p-4" style={{ boxShadow: `inset 0 0 0 1.5px #c6d1ff` }} data-track="quiz-install-card">
+      <Gilu pose="hello" size={64} className="h-auto w-14 shrink-0" />
+      <div className="min-w-0 flex-1">
+        <p className="text-[15px] font-bold" style={{ color: C.ink }}>Play every day from your home screen</p>
+        {install.prompt ? (
+          <button type="button" onClick={install.prompt} className="mt-2 rounded-xl px-3.5 py-2 text-[14px] font-bold text-white" style={{ background: C.blue }} data-track="quiz-install">
+            Add Gilu&apos;s quiz to home screen
+          </button>
+        ) : install.ios ? (
+          <p className="mt-1 text-[13.5px] leading-snug" style={{ color: C.ink2 }}>Tap the <b>Share</b> button at the bottom of Safari, then <b>Add to Home Screen</b>.</p>
+        ) : (
+          <p className="mt-1 text-[13.5px] leading-snug" style={{ color: C.ink2 }}>Tap the <b>⋮ menu</b> at the top right of Chrome, then <b>Add to Home screen</b> or <b>Install app</b>.</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function Result({ run, outcome, before, after, live, install, onJoin, onHome, onPractice }: { run: Run; outcome: Outcome; before: Progress; after: Progress; live: Progress; install: InstallState; onJoin: () => void; onHome: () => void; onPractice: () => void }) {
   const questions = SETS[run.setIndex];
   const [open, setOpen] = useState<number | null>(null);
-  // iPhones get the manual steps instead of a prompt; count how often they are shown.
-  useEffect(() => { if (install.ios && !install.prompt) qev("quiz_install_ios_seen", {}); }, [install.ios, install.prompt]);
   const [shareMsg, setShareMsg] = useState("");
   const levelUp = levelFor(after.xp).index > levelFor(before.xp).index;
   const projected = Math.round(outcome.score * (100 / SET_SIZE) * 10) / 10;
@@ -922,21 +951,9 @@ function Result({ run, outcome, before, after, live, install, onJoin, onHome, on
             </div>
           </section>
 
-          {(install.prompt || install.ios) && (
-            <div className="qz-up mt-6 flex items-center gap-3 rounded-2xl bg-white p-4" style={{ boxShadow: `inset 0 0 0 1.5px #c6d1ff` }}>
-              <Gilu pose="hello" size={64} className="h-auto w-14 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-bold" style={{ color: C.ink }}>Play every day from your home screen</p>
-                {install.prompt ? (
-                  <button type="button" onClick={install.prompt} className="mt-2 rounded-xl px-3.5 py-2 text-[14px] font-bold text-white" style={{ background: C.blue }} data-track="quiz-install">
-                    Add Gilu&apos;s quiz to home screen
-                  </button>
-                ) : (
-                  <p className="mt-1 text-[13.5px] leading-snug" style={{ color: C.ink2 }}>On iPhone: tap the Share button, then <b>Add to Home Screen</b>.</p>
-                )}
-              </div>
-            </div>
-          )}
+          <div className="mt-6">
+            <InstallCard install={install} />
+          </div>
 
           <Link href="/store/answer-copies-compilation?utm_source=quiz&utm_medium=result&utm_campaign=quiz_v1" data-track="quiz-store" className="mt-6 flex items-center gap-3 rounded-2xl p-4 transition-transform hover:-translate-y-[1px]" style={{ background: C.blueSoft, boxShadow: `inset 0 0 0 1.5px #c6d1ff` }}>
             <Gilu pose="reading" size={64} className="h-auto w-14 shrink-0" />
@@ -966,6 +983,11 @@ export default function Quiz() {
   const [screen, setScreen] = useState<Screen>({ name: "home" });
 
   useEffect(() => { qev("quiz_view", {}); }, []);
+  // Installability: Chrome needs a registered service worker before it fires the install prompt.
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("/quiz/sw.js", { scope: "/quiz/" }).catch(() => {});
+  }, []);
 
   // Install to home screen: keep Android's prompt for the results screen; detect iPhones that aren't installed yet.
   const [deferred, setDeferred] = useState<(Event & { prompt: () => Promise<void>; userChoice?: Promise<{ outcome: "accepted" | "dismissed"; platform: string }> }) | null>(null);
@@ -985,6 +1007,7 @@ export default function Quiz() {
       deferred.userChoice?.then((c) => qev("quiz_install_choice", { outcome: c.outcome, platform: c.platform })).catch(() => {});
     } : null,
     ios: !installed && typeof navigator !== "undefined" && /iphone|ipad|ipod/i.test(navigator.userAgent),
+    android: !installed && typeof navigator !== "undefined" && /android/i.test(navigator.userAgent),
   };
 
   const join = () => {
@@ -1047,6 +1070,7 @@ export default function Quiz() {
   return (
     <Home
       progress={progress}
+      install={install}
       onPlay={play}
       onJoin={join}
       onReset={() => {
