@@ -6,6 +6,7 @@ import { TopperModel } from "@/models/topper.model";
 import { sendEmail } from "@/lib/resend";
 import { FIRST_EMAIL_DELAY_DAYS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { createHandoff, EMAIL_RE } from "@/lib/handoff";
 
 const BUNDLE_URL = "https://upscprepnotes.in/toppers/toppers-copy-compilation";
 
@@ -102,6 +103,12 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address." },
+        { status: 400 }
+      );
+    }
 
     await connectDB();
 
@@ -147,15 +154,30 @@ export async function POST(request: NextRequest) {
       { upsert: true }
     );
 
-    if (available) {
-      await sendAvailableEmail(email, topperName, pdfUrls);
-    } else {
-      await sendUnavailableEmail(email, topperName);
+    // The waiting page delivers the file itself, so a failed email must not block the download.
+    try {
+      if (available) {
+        await sendAvailableEmail(email, topperName, pdfUrls);
+      } else {
+        await sendUnavailableEmail(email, topperName);
+      }
+    } catch (mailErr) {
+      console.error("Free download email failed:", mailErr);
     }
+
+    const redirect = await createHandoff({
+      kind: "answer-copy",
+      title: `${topperName}'s answer copy`,
+      files: pdfUrls.map((url, i) => ({ name: pdfUrls.length > 1 ? `Download copy ${i + 1}` : `${topperName}'s answer copy`, url })),
+      pending: !available,
+      email,
+      returnTo: sourceUrl,
+    });
 
     return NextResponse.json(
       {
         success: true,
+        redirect,
         available,
         pdfUrls,
         pdfUrl: pdfUrls[0] || null,

@@ -1,3 +1,4 @@
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
@@ -299,6 +300,7 @@ export default async function HomePage() {
       <Hero booklets={booklets} counts={counts} />
       <StackedSheets booklets={booklets.filter((b) => b.papers)} />
       <MarksStory story={story} />
+      <QuizTeaser track="home" variant="spotlight" />
       <OptionalFolders optionals={optionals} />
       <Guides guides={guides} />
       <Years years={years} />

@@ -7,6 +7,7 @@ import upscFullFormHindi from "@/data/content/upsc-full-form-hindi";
 import answerWriting from "@/data/content/how-to-write-upsc-mains-answers";
 import BrandShell from "@/components/brand/BrandShell";
 import Outline from "@/components/brand/Outline";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -118,6 +119,9 @@ export default async function ResourcesPage() {
             <Link href="/pyq" data-track="resources-pyq-archive" className="btn btn-paper h-11 px-5 [--btn-fs:14px]">PYQ Archive →</Link>
           </div>
         </section>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="resources" />
       </div>
     </BrandShell>
   );

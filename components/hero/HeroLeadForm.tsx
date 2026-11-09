@@ -18,12 +18,17 @@ export default function HeroLeadForm({ variant = "default" }: { variant?: "defau
       const res = await fetch("/api/hero-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "hero_form" }),
+        body: JSON.stringify({ email, source: "hero_form", returnTo: window.location.pathname }),
       });
       const data = await res.json();
       if (!res.ok) {
         setStatus("error");
         setErrorMsg(data.error || "Something went wrong.");
+        return;
+      }
+      // Send them to the "getting your files ready" page; the download is delivered there.
+      if (data.redirect) {
+        window.location.assign(data.redirect);
         return;
       }
       setStatus("success");

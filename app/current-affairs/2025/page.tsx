@@ -4,6 +4,7 @@ import { CA_2025 } from "@/lib/current-affairs-2025";
 import AskLink from "@/components/AskLink";
 import YearlyTOC from "./YearlyTOC";
 import BrandShell from "@/components/brand/BrandShell";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -181,6 +182,9 @@ export default async function CurrentAffairs2025Page() {
           <Link href="/current-affairs/download" className="underline underline-offset-4 hover:text-[var(--accent)]">/current-affairs/download</Link>
         </p>
       </article>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="current-affairs-2025" />
+      </div>
     </BrandShell>
   );
 }

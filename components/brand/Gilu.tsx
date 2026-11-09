@@ -6,7 +6,8 @@ export type GiluPose =
   | "wrong"
   | "sorry"
   | "celebrating"
-  | "dozing";
+  | "dozing"
+  | "run";
 
 /**
  * Gilu, the site's squirrel mascot. Each pose is an SVG in /public/mascot with its own
@@ -30,7 +31,7 @@ export default function Gilu({
     <img
       src={`/mascot/gilu-${pose}.svg`}
       width={size}
-      height={Math.round(size * 1.1)}
+      height={Math.round(size * (pose === "run" ? 0.78 : 1.1))}
       alt={label ?? ""}
       aria-hidden={label ? undefined : true}
       draggable={false}

@@ -1,5 +1,7 @@
 "use client";
 
+import QuizTeaser from "@/components/quiz/QuizTeaser";
+
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { IconDownload, IconX, IconCheck, IconClock } from "@tabler/icons-react";
@@ -50,6 +52,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
     }
     setLoading(true);
     setDialogError("");
+    let leaving = false;
 
     try {
       const res = await fetch("/api/free-download", {
@@ -66,6 +69,12 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
       }
+      // Send them to the "getting your files ready" page; the download is delivered there.
+      if (data.redirect) {
+        leaving = true;
+        window.location.assign(data.redirect);
+        return;
+      }
       setAvailable(data.available);
       if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
       else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
@@ -73,7 +82,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
     } catch (err: any) {
       setDialogError(err.message);
     } finally {
-      setLoading(false);
+      if (!leaving) setLoading(false);
     }
   }
 
@@ -185,6 +194,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             >
               Join 100+ aspirants on Telegram for daily current affairs
             </a>
+            <QuizTeaser track="download-ready" variant="compact" />
             {upsell(`Compare ${topperName} with other toppers`, "63 booklets from 27 toppers across GS1-4 and Essay. ₹199, one time.")}
           </div>
         ) : (
@@ -195,6 +205,7 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
               <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet. We&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready, usually within 24-48 hours. Check Spam or Promotions if you don&apos;t see it.
             </p>
             {upsell(`While you wait: compare ${topperName} with other toppers`, "63 booklets from 27 toppers across GS1-4 and Essay. ₹199, one time.")}
+            <QuizTeaser track="download-wait" variant="compact" lead="While you wait:" />
             <button type="button" onClick={() => onOpenChange(false)} className="mt-3 h-11 w-full rounded-full text-s font-bold text-[var(--ink-2)] hover:bg-[var(--canvas)]">
               Close
             </button>

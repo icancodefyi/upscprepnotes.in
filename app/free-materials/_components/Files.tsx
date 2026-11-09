@@ -93,25 +93,30 @@ export default function Files({
     const f = files[i];
     if (!f || !email.trim()) return;
     setStatus("loading");
-    // Open the tab now (inside the click) so popup blockers allow it, then point it at the file.
-    const tab = window.open("", "_blank");
+    let leaving = false;
     try {
       const res = await fetch("/api/free-material-download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), pdfSlug: leadSlug(i), pdfTitle: single ? title : f.name, category: single ? category : "resource-collection", downloadUrl: f.downloadUrl }),
+        body: JSON.stringify({ email: email.trim(), pdfSlug: leadSlug(i), pdfTitle: single ? title : f.name, category: single ? category : "resource-collection", downloadUrl: f.downloadUrl, returnTo: window.location.pathname }),
       });
       if (!res.ok) throw new Error();
+      const data = await res.json().catch(() => ({}));
       write(EMAIL_KEY, email.trim());
       write(unlockKey(slug), "1");
       setUnlocked(true);
       setPending(null);
       setStatus("success");
-      if (tab) tab.location.href = f.downloadUrl;
-      else window.location.href = f.downloadUrl;
+      // Send them to the "getting your files ready" page; the download is delivered there, and
+      // the whole collection stays unlocked when they come back.
+      if (data.redirect) {
+        leaving = true;
+        window.location.assign(data.redirect);
+        return;
+      }
+      window.location.href = f.downloadUrl;
     } catch {
-      tab?.close();
-      setStatus("error");
+      if (!leaving) setStatus("error");
     }
   }
 

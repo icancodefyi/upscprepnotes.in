@@ -7,6 +7,7 @@ import BrandShell from "@/components/brand/BrandShell";
 import ToppersSearch from "./ToppersSearch";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const metadata = {
   title: "UPSC Toppers List — Search All Rank Holders by Name, Rank, Year & Optional Subject",
@@ -96,6 +97,9 @@ export default async function ToppersPage() {
             </Link>
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="toppers-hub" />
       </div>
     </BrandShell>
   );

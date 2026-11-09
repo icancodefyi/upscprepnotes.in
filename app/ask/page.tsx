@@ -36,6 +36,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import Gilu from "@/components/brand/Gilu";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
@@ -1405,6 +1406,7 @@ async function copyShareText() {
                     </Button>
                   ))}
                 </div>
+                <QuizTeaser track="ask-empty" variant="compact" lead="Or practise:" />
               </div>
             </div>
           ) : (

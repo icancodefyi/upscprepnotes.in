@@ -7,6 +7,7 @@ import { card } from "@/components/brand/ui";
 import MarksDB, { type Row } from "./_components/MarksDB";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const metadata = {
   title: "UPSC Topper Marks Database — Optional, GS1-4, Essay & Interview Scores",
@@ -150,6 +151,9 @@ export default async function MarksDatabasePage() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="marks-database" />
       </div>
     </BrandShell>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import CurrentAffairsClient from "./CurrentAffairsClient";
 import BrandShell from "@/components/brand/BrandShell";
 import { getMonth, getCanonical, monthMeta, getSlug, MONTHS } from "@/lib/current-affairs-utils";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export async function generateStaticParams() {
   return Object.keys(MONTHS).map((slug) => ({ month: slug }));
@@ -127,6 +128,9 @@ export default async function MonthPage({ params }: { params: Promise<{ month: s
           </div>
         </div>
       </section>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="current-affairs-month" />
+      </div>
     </BrandShell>
   );
 }

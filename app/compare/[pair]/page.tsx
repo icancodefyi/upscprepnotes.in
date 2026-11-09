@@ -17,6 +17,7 @@ import {
 } from "@/lib/topper-stats";
 import BrandShell from "@/components/brand/BrandShell";
 import ComparePicker, { type PickItem } from "@/components/brand/ComparePicker";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 3600;
 
@@ -272,6 +273,9 @@ export default async function ComparePage({ params }: Props) {
             )}
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="compare" />
       </div>
     </BrandShell>
   );

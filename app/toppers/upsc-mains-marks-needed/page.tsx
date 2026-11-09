@@ -10,6 +10,7 @@ import { buildHandbook, CUTOFFS } from "@/lib/marks-handbook";
 import { median } from "@/lib/topper-stats";
 import { getProductBySlug } from "@/lib/store-products";
 import official from "@/data/official/cse-2025-recommended-marks.json";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 86400;
 
@@ -130,6 +131,9 @@ export default async function Page() {
         <p className="mt-10 text-s text-[var(--muted)]">
           More: <Link href="/toppers/highest-marks-in-upsc" className="underline">highest marks in UPSC</Link> · <Link href="/toppers/marks-database" className="underline">marks of 290 toppers</Link> · <Link href="/pyq/2026" className="underline">UPSC Mains 2026 questions</Link>
         </p>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="mains-marks-needed" />
       </div>
     </BrandShell>
   );

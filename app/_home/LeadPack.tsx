@@ -16,9 +16,19 @@ export default function LeadPack() {
       const res = await fetch("/api/hero-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "landing_starter_pack" }),
+        body: JSON.stringify({ email, source: "landing_starter_pack", returnTo: window.location.pathname }),
       });
-      setStatus(res.ok ? "done" : "error");
+      if (!res.ok) {
+        setStatus("error");
+        return;
+      }
+      // Send them to the "getting your files ready" page; the download is delivered there.
+      const data = await res.json().catch(() => ({}));
+      if (data.redirect) {
+        window.location.assign(data.redirect);
+        return;
+      }
+      setStatus("done");
     } catch {
       setStatus("error");
     }

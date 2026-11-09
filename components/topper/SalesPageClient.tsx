@@ -67,8 +67,11 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
       submit.disabled = true;
       submit.textContent = "Sending...";
       try {
-        const r = await fetch("/api/free-guides", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: "", email: email.trim() }) });
+        const r = await fetch("/api/free-guides", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: "", email: email.trim(), returnTo: window.location.pathname }) });
         if (!r.ok) { const d = await r.json(); throw new Error(d.error || "Failed"); }
+        // Send them to the "getting your files ready" page; the download is delivered there.
+        const done = await r.json().catch(() => ({}));
+        if (done.redirect) { window.location.assign(done.redirect); return; }
         form.classList.add("hidden");
         success?.classList.remove("hidden");
       } catch (err: any) {

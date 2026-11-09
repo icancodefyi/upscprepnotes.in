@@ -3,12 +3,13 @@ import { connectDB } from "@/lib/mongodb";
 import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { sendEmail } from "@/lib/resend";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { createHandoff, EMAIL_RE } from "@/lib/handoff";
 
 export async function POST(request: NextRequest) {
   const rl = await checkRateLimit(request, "form");
   if (rl) return rl;
   try {
-    const { email, pdfSlug, pdfTitle, category, downloadUrl } = await request.json();
+    const { email, pdfSlug, pdfTitle, category, downloadUrl, returnTo } = await request.json();
 
     if (!email || !pdfSlug || !downloadUrl) {
       return NextResponse.json(
@@ -17,7 +18,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
+      return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+    }
+
     await connectDB();
+
+    const redirect = await createHandoff({
+      kind: "free-material",
+      title: pdfTitle || "Your free download",
+      files: [{ name: pdfTitle || "Download", url: downloadUrl }],
+      pending: false,
+      email,
+      returnTo,
+    });
 
     await FreeMaterialLeadModel.findOneAndUpdate(
       { email: email.toLowerCase(), pdfSlug },
@@ -47,13 +61,18 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    await sendEmail({
-      to: email,
-      subject: `Your Free Download — ${pdfTitle}`,
-      html,
-    });
+    // The waiting page delivers the file itself, so a failed email must not block the download.
+    try {
+      await sendEmail({
+        to: email,
+        subject: `Your Free Download — ${pdfTitle}`,
+        html,
+      });
+    } catch (mailErr) {
+      console.error("Free material email failed:", mailErr);
+    }
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, redirect }, { status: 201 });
   } catch (err: any) {
     if (err?.code === 11000) {
       return NextResponse.json({ success: true, existed: true }, { status: 200 });

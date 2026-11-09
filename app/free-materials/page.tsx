@@ -4,6 +4,7 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
 import { CATEGORY, getCollections } from "@/lib/materials";
 import Library from "./_components/Library";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 3600;
 
@@ -158,6 +159,9 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
             </Link>
           </section>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="free-materials-list" />
       </div>
     </BrandShell>
   );

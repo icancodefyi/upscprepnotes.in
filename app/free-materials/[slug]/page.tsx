@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 import { connectDB } from "@/lib/mongodb";
 import { PDFModel } from "@/models/pdf.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -317,6 +318,7 @@ export default async function PDFDetailPage({ params }: Props) {
                 </Link>
               </section>
               <PopularLinks track="pdf-popular" />
+              <QuizTeaser track="free-material" />
 
               {/* FAQ */}
               {faqs.length > 0 && (

@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Dev server only: let phones on the same Wi-Fi load the page's code, so new screens can be
+  // checked on a real phone. Has no effect on the live site.
+  allowedDevOrigins: ["192.168.*.*", "10.*.*.*"],
   async redirects() {
     return [
       { source: "/requests", destination: "/admin/requests", permanent: true },

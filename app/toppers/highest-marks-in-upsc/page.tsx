@@ -7,6 +7,7 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getHandbook, CUTOFFS, HANDBOOK_PDF, HANDBOOK_URL, type HBRecord, type HBTopper, type Handbook, type PaperKey } from "@/lib/marks-handbook";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 86400;
 
@@ -632,6 +633,9 @@ export default async function HighestMarksPage() {
             </article>
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="highest-marks" />
       </div>
     </BrandShell>
   );

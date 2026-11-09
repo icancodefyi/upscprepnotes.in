@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { QUIZ_LIVE } from "@/lib/quiz/config";
 
 /** Brand mark: an answer booklet — margin rule, three written lines, the last in ballpoint blue. */
 export function Mark({ size = 24 }: { size?: number }) {
@@ -45,6 +46,7 @@ const ARCHIVE: Link2[] = [
   { href: "/search", title: "Search the archive", desc: "Find a topper by name, rank or optional" },
 ];
 const STUDY: Link2[] = [
+  ...(QUIZ_LIVE ? [{ href: "/quiz", title: "Daily UPSC quiz", desc: "5 real Prelims questions a day, with Gilu" }] : []),
   { href: "/pyq", title: "Previous year questions", desc: "Mains PYQs by year and paper" },
   { href: "/current-affairs", title: "Current affairs", desc: "Monthly and yearly compilations" },
   { href: "/free-materials", title: "Free study material", desc: "Test series, notes, books and magazines" },
@@ -64,7 +66,7 @@ const MENUS = [
   { id: "ask", match: (p: string) => is(p, "/ask") },
   { id: "store", match: (p: string) => is(p, "/store", "/download") },
   { id: "toppers", match: (p: string) => is(p, "/toppers", "/year", "/optional", "/upsc-topper", "/compare") },
-  { id: "study", match: (p: string) => is(p, "/pyq", "/current-affairs", "/free-materials", "/resources", "/content", "/search") },
+  { id: "study", match: (p: string) => is(p, "/quiz", "/pyq", "/current-affairs", "/free-materials", "/resources", "/content", "/search") },
 ] as const;
 type MenuId = (typeof MENUS)[number]["id"];
 

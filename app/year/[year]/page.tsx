@@ -5,6 +5,7 @@ import { TopperModel } from "@/models/topper.model";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -364,6 +365,9 @@ export default async function YearPage({ params }: Props) {
             </Link>
           </section>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="year" />
       </div>
     </BrandShell>
   );

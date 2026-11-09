@@ -25,6 +25,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
     }
     setLoading(true);
     setError("");
+    let leaving = false;
     try {
       const res = await fetch("/api/free-download", {
         method: "POST",
@@ -38,6 +39,12 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
+      // Send them to the "getting your files ready" page; the download is delivered there.
+      if (data.redirect) {
+        leaving = true;
+        window.location.assign(data.redirect);
+        return;
+      }
       setAvailable(data.available);
       if (data.pdfUrls?.length) setPdfUrls(data.pdfUrls);
       else if (data.pdfUrl) setPdfUrls([data.pdfUrl]);
@@ -45,7 +52,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
     } catch (err: any) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      if (!leaving) setLoading(false);
     }
   }
 

@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { TopperModel } from "@/models/topper.model";
 
 import { PRODUCTS } from "@/lib/store-products";
+import { QUIZ_LIVE } from "@/lib/quiz/config";
 import { MARKSHEET_PAGES } from "@/lib/marksheet-pages";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
 import { getAllSlugs } from "@/data/content/registry";
@@ -123,8 +124,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
+  // The quiz joins the sitemap only once it is switched live (see lib/quiz/config.ts).
+  const quizPages: MetadataRoute.Sitemap = QUIZ_LIVE
+    ? [{ url: "https://upscprepnotes.in/quiz", lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.7 }]
+    : [];
+
   return [
     ...staticPages,
+    ...quizPages,
     ...contentPages,
     ...pyqPages,
     ...optionalPages,

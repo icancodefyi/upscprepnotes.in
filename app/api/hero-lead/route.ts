@@ -5,6 +5,7 @@ import { NurtureCampaignModel } from "@/models/nurture-campaign.model";
 import { sendEmail } from "@/lib/resend";
 import { FIRST_EMAIL_DELAY_DAYS } from "@/lib/nurture-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { createHandoff } from "@/lib/handoff";
 
 const VPS_URL = process.env.VPS_URL || "https://cdn.upscprepnotes.in";
 const FREE_PRODUCT_NAME = "Government Schemes Compendium";
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { email, source } = body;
+    const { email, source, returnTo } = body;
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
@@ -94,14 +95,28 @@ export async function POST(request: NextRequest) {
       { upsert: true }
     );
 
-    await sendEmail({
-      to: normalizedEmail,
-      subject: EMAIL_SUBJECT,
-      html: buildEmailHtml(),
+    // The waiting page delivers the file itself, so a failed email must not block the download.
+    try {
+      await sendEmail({
+        to: normalizedEmail,
+        subject: EMAIL_SUBJECT,
+        html: buildEmailHtml(),
+      });
+    } catch (mailErr) {
+      console.error("Hero lead email failed:", mailErr);
+    }
+
+    const redirect = await createHandoff({
+      kind: "schemes",
+      title: FREE_PRODUCT_NAME,
+      files: [{ name: FREE_PRODUCT_NAME, url: DOWNLOAD_URL }],
+      pending: false,
+      email: normalizedEmail,
+      returnTo,
     });
 
     return NextResponse.json(
-      { success: true, downloadUrl: DOWNLOAD_URL },
+      { success: true, downloadUrl: DOWNLOAD_URL, redirect },
       { status: 201 }
     );
   } catch (err) {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { MONTHS } from "@/lib/current-affairs-utils";
 import BrandShell from "@/components/brand/BrandShell";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -237,6 +238,9 @@ export default async function CurrentAffairsHub() {
 
           <p className="mt-12 border-t border-[var(--line)] pt-6 text-center text-s text-[var(--muted)]">UPSCPrepNotes · Monthly &amp; Yearly Current Affairs for UPSC · Free PDF Downloads</p>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="current-affairs" />
       </div>
     </BrandShell>
   );

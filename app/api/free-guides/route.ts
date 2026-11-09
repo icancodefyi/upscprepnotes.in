@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { FreeGuideLeadModel } from "@/models/free-guide-lead.model";
 import { sendEmail } from "@/lib/resend";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { createHandoff, EMAIL_RE } from "@/lib/handoff";
 
 const GUIDES = [
   {
@@ -63,11 +64,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, email } = body;
+    const { name, email, returnTo } = body;
 
-    if (!email) {
+    if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
       return NextResponse.json(
-        { error: "Email is required." },
+        { error: "Please enter a valid email address." },
         { status: 400 }
       );
     }
@@ -76,11 +77,26 @@ export async function POST(request: NextRequest) {
 
     await FreeGuideLeadModel.create({ name: name || "Guest", email });
 
-    await sendGuideEmail(name, email);
+    // The waiting page delivers the files itself, so a failed email must not block the download.
+    try {
+      await sendGuideEmail(name, email);
+    } catch (mailErr) {
+      console.error("Free guides email failed:", mailErr);
+    }
+
+    const redirect = await createHandoff({
+      kind: "guide",
+      title: "Your 3 free guides",
+      files: GUIDES.map((g) => ({ name: g.title, url: g.url })),
+      pending: false,
+      email,
+      returnTo,
+    });
 
     return NextResponse.json(
       {
         success: true,
+        redirect,
         guides: GUIDES,
       },
       { status: 201 }

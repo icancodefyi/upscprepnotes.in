@@ -11,6 +11,7 @@ import { displayName, fmt, freeCopiesOf, isComplete, median, n, paperStats, subj
 import official2025 from "@/data/official/cse-2025-recommended-marks.json";
 import { MARKSHEET_PAGES } from "@/lib/marksheet-pages";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 
 export const revalidate = 86400;
@@ -219,6 +220,7 @@ export default async function MarksheetPage({ params }: Props) {
         </div>
 
         <PopularLinks track="marksheet-popular" exclude={t.slug} />
+        <QuizTeaser track="marksheet" />
 
         <section className="mt-12">
           <h2 className="t-head text-l">Frequently asked questions</h2>

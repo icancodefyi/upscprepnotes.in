@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getAllPYQYears } from "@/data/upsc/pyq/cse-pyq";
 import BrandShell from "@/components/brand/BrandShell";
 import mainsQuestions from "@/data/upsc/pyq/mains-gs-questions.json";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 type MainsQ = { q: string; marks: number | null; words: number | null };
 const MQ = mainsQuestions as Record<string, Record<string, MainsQ[]>>;
@@ -281,6 +282,9 @@ export default async function PYQIndexPage() {
             Browse Store <span className="knob">→</span>
           </Link>
         </section>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="pyq" />
       </div>
     </BrandShell>
   );

@@ -9,6 +9,7 @@ import { getInterviewData, INTERVIEW_URL, INTERVIEW_PACK_SLUG, type IVTopper } f
 import { IV_TRANSCRIPTS, transcriptStats } from "@/data/content/interview-transcripts";
 import { getProductBySlug } from "@/lib/store-products";
 import { PackGlimpse } from "@/components/store/InterviewPackPromo";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 86400;
 
@@ -460,6 +461,9 @@ export default async function InterviewMarksPage() {
             </article>
           </div>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="interview-marks" />
       </div>
     </BrandShell>
   );

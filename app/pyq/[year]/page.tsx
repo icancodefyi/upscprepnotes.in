@@ -10,6 +10,7 @@ import BrandShell from "@/components/brand/BrandShell";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import mainsQuestions from "@/data/upsc/pyq/mains-gs-questions.json";
 import essayTopics from "@/data/upsc/pyq/mains-essay-topics.json";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 type MainsQ = { q: string; marks: number | null; words: number | null };
 /** Mains GS questions as text, read from UPSC's official papers. Empty for years we have not added. */
@@ -429,6 +430,9 @@ export default async function PYQYearPage({ params }: Props) {
             </div>
           </aside>
         </div>
+      </div>
+      <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
+        <QuizTeaser track="pyq-year" />
       </div>
     </BrandShell>
   );

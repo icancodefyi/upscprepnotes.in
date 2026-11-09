@@ -23,6 +23,7 @@ import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import { marksheetPageFor } from "@/lib/marksheet-pages";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 export const revalidate = 3600;
 
@@ -426,6 +427,7 @@ export default async function TopperPage({ params }: Props) {
                   ))}
                 </div>
                 <PopularLinks track="topper-popular" exclude={topper.slug} />
+        <QuizTeaser track="topper" />
               </section>
 
               <Section id="continue" title="Continue reading">

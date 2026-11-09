@@ -5,6 +5,7 @@ import { getPage, getAllSlugs, getEnglishSlug, getHindiSlug } from "@/data/conte
 import type { ContentPage } from "@/data/content";
 import Guide from "./_components/Guide";
 import PopularLinks from "@/components/brand/PopularLinks";
+import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 /** Load a guide's original content, unchanged. */
 async function load(slug: string): Promise<{ page: ContentPage } | null> {
@@ -134,6 +135,7 @@ export default async function ContentPage({ params }: Props) {
       <Guide page={page} stats={null} alt={alt} />
       <div className="mx-auto max-w-[1180px] px-6 pb-16">
         <PopularLinks track="guide-popular" />
+        <QuizTeaser track="guide" />
       </div>
     </BrandShell>
   );
