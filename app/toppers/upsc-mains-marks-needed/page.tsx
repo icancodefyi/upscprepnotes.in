@@ -12,6 +12,7 @@ import { getProductBySlug } from "@/lib/store-products";
 import official from "@/data/official/cse-2025-recommended-marks.json";
 import QuizTeaser from "@/components/quiz/QuizTeaser";
 import MarksCalculator from "@/components/marks/MarksCalculator";
+import AdRail from "@/components/brand/AdRail";
 
 export const revalidate = 86400;
 
@@ -58,7 +59,9 @@ export default async function Page() {
     <BrandShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <BreadcrumbSchema items={[{ name: "Home", href: "/" }, { name: "Toppers", href: "/toppers" }, { name: "UPSC Mains marks needed", href: "/toppers/upsc-mains-marks-needed" }]} />
-      <div className="mx-auto max-w-[920px] px-6 pb-24 pt-28 sm:pt-32">
+      <div className="mx-auto max-w-[1180px] px-4 pb-24 pt-28 sm:px-6 sm:pt-32">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="min-w-0">
         <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-2">
           <Link href="/toppers" className="hover:text-[var(--ink)]">Toppers</Link><span aria-hidden>/</span><span className="text-[var(--ink-2)]">UPSC Mains marks needed</span>
         </nav>
@@ -145,6 +148,12 @@ export default async function Page() {
         <p className="mt-10 text-s text-[var(--muted)]">
           More: <Link href="/toppers/highest-marks-in-upsc" className="underline">highest marks in UPSC</Link> · <Link href="/toppers/marks-database" className="underline">marks of 290 toppers</Link> · <Link href="/pyq/2026" className="underline">UPSC Mains 2026 questions</Link> · <Link href="/content/best-upsc-coaching-2027" className="underline">best UPSC coaching 2027</Link>
         </p>
+        </div>
+
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          <AdRail page="upsc-mains-marks-needed" product="upsc-mains-2027-pack" />
+        </aside>
+        </div>
       </div>
       <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
         <QuizTeaser track="mains-marks-needed" />

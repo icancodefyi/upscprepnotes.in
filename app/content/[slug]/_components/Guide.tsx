@@ -9,7 +9,7 @@ import type { OptionalStats, PaperStats } from "@/lib/paper-stats";
 import PaperData from "./PaperData";
 import OptionalData from "./OptionalData";
 import ReadingProgress from "./ReadingProgress";
-import SidebarPromo from "./SidebarPromo";
+import AdRail from "@/components/brand/AdRail";
 
 export const slugify = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9ऀ-ॿ]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "section";
@@ -334,6 +334,12 @@ export default function Guide({
                 </Link>
               </section>
             </article>
+
+            {!hi && (
+              <div className="mt-12 max-w-[46rem] lg:hidden">
+                <AdRail page={page.slug} product={page.promoProduct} inline />
+              </div>
+            )}
           </div>
 
           <aside className="hidden space-y-4 lg:sticky lg:top-24 lg:block lg:self-start">
@@ -361,13 +367,13 @@ export default function Guide({
                   <p className="text-m font-bold">{hi ? "इस पेज पर" : "On this page"}</p>
                   {!glance && <p className="text-s text-[var(--muted)]">{`${minutes} ${hi ? "मिनट" : "min read"}`}</p>}
                 </div>
-                <div className="mt-3 max-h-[26vh] overflow-y-auto pr-1">
+                <div className="mt-3 max-h-[24vh] overflow-y-auto pr-1">
                   <Toc items={chapters} />
                 </div>
               </nav>
             )}
 
-            {!hi && <SidebarPromo slug={page.slug} productSlug={page.promoProduct} />}
+            {!hi && <AdRail page={page.slug} product={page.promoProduct} />}
           </aside>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BrandShell from "@/components/brand/BrandShell";
+import AdRail from "@/components/brand/AdRail";
 import { card } from "@/components/brand/ui";
 import Toc from "@/components/brand/Toc";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -163,7 +164,7 @@ export default async function InterviewMarksPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="pb-24 pt-28 sm:pt-32">
-        <div className="mx-auto max-w-[1180px] px-4 sm:px-6">
+        <div className="mx-auto max-w-[1180px] px-4 sm:px-6 xl:max-w-[1380px]">
           <nav aria-label="Breadcrumb" className="t-meta flex flex-wrap items-center gap-x-2">
             <Link href="/" className="hover:text-[var(--ink)]">Home</Link>
             <span aria-hidden>/</span>
@@ -201,7 +202,7 @@ export default async function InterviewMarksPage() {
             </dl>
           </header>
 
-          <div className="mt-16 grid gap-12 lg:grid-cols-[220px_1fr]">
+          <div className="mt-16 grid gap-12 lg:grid-cols-[220px_1fr] xl:grid-cols-[200px_minmax(0,1fr)_300px]">
             <aside className="hidden lg:block">
               <div className="sticky top-28">
                 <p className="text-s font-bold">On this page</p>
@@ -460,6 +461,14 @@ export default async function InterviewMarksPage() {
                 </ul>
               </section>
             </article>
+
+            <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
+              <AdRail page="upsc-interview-marks" product="upsc-interview-pack" />
+            </aside>
+          </div>
+
+          <div className="mt-12 xl:hidden">
+            <AdRail page="upsc-interview-marks" product="upsc-interview-pack" inline />
           </div>
         </div>
       </div>
