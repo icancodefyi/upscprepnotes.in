@@ -143,7 +143,7 @@ export default async function Page() {
         </section>
 
         <p className="mt-10 text-s text-[var(--muted)]">
-          More: <Link href="/toppers/highest-marks-in-upsc" className="underline">highest marks in UPSC</Link> · <Link href="/toppers/marks-database" className="underline">marks of 290 toppers</Link> · <Link href="/pyq/2026" className="underline">UPSC Mains 2026 questions</Link>
+          More: <Link href="/toppers/highest-marks-in-upsc" className="underline">highest marks in UPSC</Link> · <Link href="/toppers/marks-database" className="underline">marks of 290 toppers</Link> · <Link href="/pyq/2026" className="underline">UPSC Mains 2026 questions</Link> · <Link href="/content/best-upsc-coaching-2027" className="underline">best UPSC coaching 2027</Link>
         </p>
       </div>
       <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">

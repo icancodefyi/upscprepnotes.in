@@ -18,6 +18,9 @@ const linkCls = "font-bold text-[var(--accent)] underline decoration-[var(--acce
 const md: Components = {
   // A paragraph that opens with a bold phrase ("**Underlining.** …") is a point: give it a margin rule so it scans.
   p: ({ node, children }) => {
+    // A paragraph that holds only an image is the image itself: a figure cannot sit inside a <p>.
+    const only = node?.children?.length === 1 ? node.children[0] : null;
+    if (only && only.type === "element" && only.tagName === "img") return <>{children}</>;
     const first = node?.children?.[0];
     const text = first && first.type === "text" ? first.value : first && first.type === "element" && first.children[0]?.type === "text" ? first.children[0].value : "";
     // "The practical takeaway: …", "Key insight: …" — the one line to remember from a section.
@@ -47,6 +50,31 @@ const md: Components = {
   li: ({ children }) => <li className="guide-li text-m leading-[1.65] text-[var(--ink-2)]">{children}</li>,
   strong: ({ children }) => <strong className="font-bold text-[var(--ink)]">{children}</strong>,
   h3: ({ children }) => <h3 className="mt-8 text-m font-bold">{children}</h3>,
+  // Images: ![alt|1200x630](/path.png "caption"). The size after the bar stops the page jumping while it loads.
+  img: ({ src, alt, title }) => {
+    const [text, size] = String(alt ?? "").split("|");
+    // ![Gilu says|gilu](/quiz/gilu-hello.png "Tip text"): the mascot beside a short tip, as real text.
+    if (size === "gilu") {
+      return (
+        <span className="mt-6 flex items-center gap-4 rounded-[20px] bg-[#fff8d6] p-4 shadow-[inset_0_0_0_1px_rgba(92,74,0,0.12)] sm:gap-5 sm:p-5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={typeof src === "string" ? src : undefined} alt="Gilu the squirrel" width={88} height={97} loading="lazy" decoding="async" className="h-auto w-[72px] shrink-0 sm:w-[88px]" />
+          <span className="min-w-0">
+            <span className="block text-s font-bold text-[var(--ink)]">{text}</span>
+            <span className="mt-1 block text-m leading-[1.55] text-[var(--ink-2)]">{title}</span>
+          </span>
+        </span>
+      );
+    }
+    const [w, h] = (size ?? "").split("x").map((n) => Number(n));
+    return (
+      <figure className="mt-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={typeof src === "string" ? src : undefined} alt={text} width={w || undefined} height={h || undefined} loading="lazy" decoding="async" className="h-auto w-full rounded-[20px] shadow-[0_0_0_1px_var(--line-2)]" />
+        {title && <figcaption className="mt-2 text-s leading-[1.5] text-[var(--muted)]">{title}</figcaption>}
+      </figure>
+    );
+  },
   blockquote: ({ children }) => (
     <blockquote className="relative mt-5 rounded-[16px] bg-[#fff8d6] px-5 py-4 [&_p]:mt-0 [&_p]:border-0 [&_p]:pl-0 [&_p]:text-[var(--ink)]">{children}</blockquote>
   ),
@@ -171,7 +199,7 @@ export default function Guide({
                 <img src="https://zaid.impiclabs.com/_next/image?url=%2Fprofile.jpg&w=96&q=75" alt="Zaid Rakhange" width={36} height={36} className="h-9 w-9 rounded-full object-cover shadow-[0_0_0_1px_var(--line)]" />
                 <p className="text-s text-[var(--muted)]">
                   <a href="https://zaid.impiclabs.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[var(--ink)] hover:text-[var(--accent)]">Zaid Rakhange</a>
-                  {` — I manually extract every data point from UPSC's official result PDFs. Updated ${fmtDate(page.lastUpdated, false)}`}
+                  {` · ${page.byline ?? "I manually extract every data point from UPSC's official result PDFs."} Updated ${fmtDate(page.lastUpdated, false)}`}
                 </p>
                 {alt && (
                   <Link href={alt.href} hrefLang={hi ? "en" : "hi"} className="rounded-full bg-white px-3 py-1 text-s font-bold text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)] hover:text-[var(--accent)] hover:shadow-[0_0_0_1px_var(--accent)]">
@@ -272,7 +300,7 @@ export default function Guide({
 
               {page.sources && page.sources.length > 0 && (
                 <div className="border-t border-[var(--line)] pt-6">
-                  <p className="text-s font-bold">Data Sources</p>
+                  <p className="text-s font-bold">{page.sourcesTitle ?? "Data Sources"}</p>
                   <ul className="mt-2 space-y-1">
                     {page.sources.map((src) => (
                       <li key={src.url + src.label}>

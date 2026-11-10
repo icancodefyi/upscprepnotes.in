@@ -91,6 +91,7 @@ At **₹199**, this compilation replaces months of hunting for scattered resourc
     },
   ],
   relatedPages: [
+    { title: "Best UPSC Coaching 2027: 10 Institutes Compared", href: "/content/best-upsc-coaching-2027", description: "Free resources only go so far. See what ten institutes publish on fees, tests and evaluation." },
     { title: "All UPSC Resources", href: "/resources", description: "Browse every resource — syllabus, study material, Hindi guides & more" },
     { title: "UPSC Full Form", href: "/content/upsc-full-form", description: "What UPSC stands for, exams it conducts, and how to prepare" },
     { title: "UPSC Syllabus 2026", href: "/content/upsc-syllabus", description: "Complete syllabus breakdown for Prelims, Mains, and Interview" },

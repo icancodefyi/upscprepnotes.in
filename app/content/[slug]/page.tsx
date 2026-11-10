@@ -52,9 +52,19 @@ export async function generateMetadata({ params }: Props) {
       url: `https://upscprepnotes.in${contentPath}`,
       siteName: "UPSCPrepNotes",
       locale: page.lang === "hi" ? "hi_IN" : "en_IN",
+      ...(page.image
+        ? {
+            type: "article" as const,
+            publishedTime: page.datePublished ?? page.lastUpdated,
+            modifiedTime: page.lastUpdated,
+            authors: [page.author?.name ?? "UPSCPrepNotes"],
+            images: [{ url: `https://upscprepnotes.in${page.image}`, width: 1200, height: 630, alt: page.imageAlt ?? page.title }],
+          }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
+      ...(page.image ? { title: page.title, description: page.description, images: [`https://upscprepnotes.in${page.image}`] } : {}),
     },
     other: {
       "content-language": page.lang === "hi" ? "hi" : "en",
@@ -78,13 +88,18 @@ export default async function ContentPage({ params }: Props) {
     "@type": "Article",
     headline: page.h1 || page.title,
     description: page.description,
-    datePublished: page.lastUpdated,
+    datePublished: page.datePublished ?? page.lastUpdated,
     dateModified: page.lastUpdated,
-    author: {
-      "@type": "Organization",
-      name: "UPSCPrepNotes",
-      url: "https://upscprepnotes.in",
-    },
+    inLanguage: page.lang === "hi" ? "hi-IN" : "en-IN",
+    ...(page.image ? { image: [`https://upscprepnotes.in${page.image}`] } : {}),
+    ...(page.sources?.length ? { citation: page.sources.map((s) => s.url) } : {}),
+    author: page.author
+      ? { "@type": "Person", name: page.author.name, ...(page.author.url ? { url: page.author.url } : {}) }
+      : {
+          "@type": "Organization",
+          name: "UPSCPrepNotes",
+          url: "https://upscprepnotes.in",
+        },
     publisher: {
       "@type": "Organization",
       name: "UPSCPrepNotes",
@@ -117,6 +132,21 @@ export default async function ContentPage({ params }: Props) {
         <script
           dangerouslySetInnerHTML={{
             __html: `document.documentElement.lang="hi"`,
+          }}
+        />
+      )}
+      {page.itemList && page.itemList.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: page.h1 || page.title,
+              itemListOrder: "https://schema.org/ItemListUnordered",
+              numberOfItems: page.itemList.length,
+              itemListElement: page.itemList.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, ...(it.url ? { url: it.url } : {}) })),
+            }),
           }}
         />
       )}

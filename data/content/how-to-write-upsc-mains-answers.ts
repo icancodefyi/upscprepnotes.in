@@ -175,6 +175,7 @@ Seeing 63 real answers side by side teaches more than any guide, including this 
   ctaFinalHref: "/store/answer-copies-compilation",
 
   relatedPages: [
+    { title: "Best UPSC Coaching 2027: 10 Institutes Compared", href: "/content/best-upsc-coaching-2027", description: "How the answer evaluation and test series of ten institutes compare, and when self-study is enough." },
     { title: "Answer Copies Compilation: 63 Topper Copies", href: "/toppers/toppers-copy-compilation", description: "Handwritten answer sheets with marks, organised by paper and year." },
     { title: "UPSC Mains Marks Needed for a Rank", href: "/toppers/upsc-mains-marks-needed", description: "The marks each rank band scored in CSE 2025, paper by paper." },
     { title: "UPSC Syllabus 2026: Complete Breakdown", href: "/content/upsc-syllabus", description: "Prelims, Mains and Interview syllabus with topic-wise analysis." },

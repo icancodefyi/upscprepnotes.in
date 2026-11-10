@@ -5,6 +5,7 @@ import upscSyllabus from "@/data/content/upsc-syllabus";
 import upscFreeMaterial from "@/data/content/upsc-free-material";
 import upscFullFormHindi from "@/data/content/upsc-full-form-hindi";
 import answerWriting from "@/data/content/how-to-write-upsc-mains-answers";
+import bestCoaching from "@/data/content/best-upsc-coaching-2027";
 import BrandShell from "@/components/brand/BrandShell";
 import Outline from "@/components/brand/Outline";
 import QuizTeaser from "@/components/quiz/QuizTeaser";
@@ -57,6 +58,11 @@ const resources = [
     ...answerWriting,
     badge: "Guide",
     readTime: "8 min",
+  },
+  {
+    ...bestCoaching,
+    badge: "Guide",
+    readTime: "20 min",
   },
   {
     slug: "how-to-score-130-plus-in-gs1",

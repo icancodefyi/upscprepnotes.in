@@ -32,7 +32,20 @@ export type ContentPage = {
   ctaFinalHref?: string;
   relatedPages?: RelatedPage[];
   sources?: { label: string; url: string }[];
+  /** Heading above the sources list. Defaults to "Data Sources". */
+  sourcesTitle?: string;
   noindex?: boolean;
+  /** Share image and Article image, a path on this site (1200 x 630). */
+  image?: string;
+  imageAlt?: string;
+  /** Named author for the Article markup. Defaults to the organisation. */
+  author?: { name: string; url?: string };
+  /** Text after the author name in the byline. Defaults to the marks-data line used on strategy guides. */
+  byline?: string;
+  /** First publication date (ISO). Defaults to lastUpdated. */
+  datePublished?: string;
+  /** For list-style articles: the entries, marked up as an ItemList. */
+  itemList?: { name: string; url?: string }[];
 };
 
 
