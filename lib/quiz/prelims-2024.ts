@@ -1,8 +1,8 @@
 /**
  * UPSC Civil Services (Preliminary) Examination 2024, General Studies Paper I (Set A).
  * Questions are transcribed from UPSC's own question paper. Answers follow UPSC's official
- * answer key (released 21 May 2025) but were entered by hand, so `verified` stays false
- * until each one is checked against that PDF. Explanations are drafts for review.
+ * answer key (released 21 May 2025). Every answer that is served was checked against that key,
+ * see EXCLUDED_QNOS below. Explanations are drafts for review.
  */
 export type QuizQuestion = {
   id: string;
@@ -37,7 +37,7 @@ const STATEMENT_OPTIONS: [string, string, string, string] = [
   "Statement-I is incorrect, but Statement-II is correct",
 ];
 
-export const PRELIMS_2024: QuizQuestion[] = [
+const ALL_2024: QuizQuestion[] = [
   {
     id: "p24-1", year: 2024, qno: 1, subject: "Geography",
     question: "Consider the following statements:",
@@ -918,3 +918,15 @@ export const PRELIMS_2024: QuizQuestion[] = [
     verified: false,
   },
 ];
+
+/**
+ * Checked against UPSC's official key for Series A (CSP-2024, GS Paper I, released 21 May 2025) on 10 Nov 2026.
+ * These seven are left out of the quiz:
+ *  - Q20 and Q57 were dropped by UPSC, so they have no correct answer.
+ *  - Q11, Q13, Q42, Q70 and Q94 had a different answer in our first transcription, and their
+ *    explanations were written for that answer. Put them back only after the explanations are redone.
+ */
+const EXCLUDED_QNOS = new Set([11, 13, 20, 42, 57, 70, 94]);
+
+export const PRELIMS_2024: QuizQuestion[] = ALL_2024.filter((q) => !EXCLUDED_QNOS.has(q.qno)).map((q) => ({ ...q, verified: true }));
+
