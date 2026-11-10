@@ -2,39 +2,42 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Gilu from "@/components/brand/Gilu";
+import { MailIcon, ZipIcon } from "@/components/store/icons";
 
-/** Shown when an order's files are still being prepared (original copy). */
+const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
+
+/** Shown when an order's files are still being prepared. */
 export default function PreparingClient() {
   const searchParams = useSearchParams();
   const title = searchParams.get("title") || "Your product";
 
   return (
-    <div className="mx-auto max-w-lg px-6 pb-24 pt-36 text-center">
-      <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#e3e8fb] text-l font-bold text-[#172fa3]">✓</span>
-      <h1 className="t-display mt-5 text-h1">We received your order</h1>
-      <p className="mt-4 text-m text-[var(--ink-2)]">
-        <strong>{title}</strong> is being prepared right now.
+    <div className="mx-auto max-w-lg px-6 pb-24 pt-28 text-center sm:pt-32">
+      <Gilu pose="reading" size={170} className="mx-auto h-auto w-[140px]" />
+      <h1 className="t-display mt-4 text-h1">We&apos;ve got your order</h1>
+      <p className="mt-3 text-m leading-[1.55] text-[var(--ink-2)]">
+        Gilu is packing your files. You&apos;ll have them in about 10 minutes.
       </p>
 
-      <div className="mt-8 rounded-[20px] bg-[#e3e8fb] p-5">
-        <p className="text-m font-bold text-[#172fa3]">You&apos;ll receive it within 10 minutes.</p>
-        <p className="mt-1 text-s text-[#172fa3]/80">Thanks for your patience. We&apos;re on it.</p>
-      </div>
-
-      <div className="mt-6 rounded-[20px] bg-white p-5 text-left shadow-[0_0_0_1px_var(--line-2)]">
-        <p className="text-m font-bold">What happens next</p>
-        <ul className="mt-3 space-y-2 text-s text-[var(--ink-2)]">
-          {["We're preparing your download file right now", "You'll get an email the moment it's ready", "Check your spam folder if you don't see it"].map((t) => (
-            <li key={t} className="flex items-start gap-2">
-              <span aria-hidden className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
-              {t}
-            </li>
-          ))}
-        </ul>
+      <div className={`${card} mt-8 p-5 text-left`}>
+        <div className="flex items-center gap-4">
+          <ZipIcon size={52} />
+          <div className="min-w-0">
+            <p className="text-m font-bold leading-snug">{title}</p>
+            <p className="mt-0.5 text-s text-[var(--muted)]">Being packed right now</p>
+          </div>
+        </div>
+        <div className="mt-4 flex items-start gap-3 border-t border-[var(--line)] pt-4">
+          <MailIcon size={36} />
+          <p className="text-s leading-[1.55] text-[var(--ink-2)]">
+            We&apos;ll email you the moment it&apos;s ready. If it doesn&apos;t arrive, check Spam or Promotions.
+          </p>
+        </div>
       </div>
 
       <Link href="/store" className="mt-10 inline-block text-s font-bold text-[var(--ink-2)] hover:text-[var(--accent)]">
-        ← Back to Store
+        Back to the store
       </Link>
     </div>
   );
