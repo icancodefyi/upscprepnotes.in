@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Prices change at this moment (IST). Until then, every product shows its current price.
-export const PRICE_RISE_AT = new Date("2026-11-10T23:59:00+05:30");
+export const PRICE_RISE_AT = new Date("2026-11-12T23:59:00+05:30");
 const BANNER_HEIGHT = "44px";
 
 function remainingParts(ms: number) {
@@ -48,7 +48,7 @@ export default function PriceRiseBanner() {
       data-track="price-rise-banner"
       className="fixed inset-x-0 top-0 z-[60] flex h-[44px] items-center justify-center gap-3 bg-[#1f3fd6] px-4 text-white"
     >
-      <span className="text-xs font-bold sm:text-base">Diwali prices end 10 Nov, 11:59pm IST. Buy at today&apos;s price</span>
+      <span className="text-xs font-bold sm:text-base">Diwali prices end 12 Nov, 11:59pm IST. Buy at today&apos;s price</span>
       <span className="tabular-nums rounded-md bg-[#ffd43b] px-2.5 py-1 text-xs font-extrabold text-[#0b0c10] sm:text-base">
         {t.d}d {pad(t.h)}h {pad(t.m)}m {pad(t.s)}s
       </span>
