@@ -13,6 +13,7 @@ const page: ContentPage = {
   image: `${IMG}/og-upsc-interview-guidance-programs-2026.png`,
   imageAlt: "Gilu the squirrel waving next to the title: UPSC interview guidance 2026",
   author: { name: "Zaid Rakhange", url: "https://upscprepnotes.in/about" },
+  promoProduct: "upsc-interview-pack",
   sourcesTitle: "Sources, all checked on 10 November 2026",
   byline: "Compiled from each institute's own pages. No institute paid to be listed.",
 

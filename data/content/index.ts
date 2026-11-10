@@ -34,6 +34,8 @@ export type ContentPage = {
   sources?: { label: string; url: string }[];
   /** Heading above the sources list. Defaults to "Data Sources". */
   sourcesTitle?: string;
+  /** Store product slug for the sidebar promo. Defaults to the Answer Copies Compilation. */
+  promoProduct?: string;
   noindex?: boolean;
   /** Share image and Article image, a path on this site (1200 x 630). */
   image?: string;

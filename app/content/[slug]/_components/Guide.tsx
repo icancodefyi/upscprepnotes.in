@@ -9,6 +9,7 @@ import type { OptionalStats, PaperStats } from "@/lib/paper-stats";
 import PaperData from "./PaperData";
 import OptionalData from "./OptionalData";
 import ReadingProgress from "./ReadingProgress";
+import SidebarPromo from "./SidebarPromo";
 
 export const slugify = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9ऀ-ॿ]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "section";
@@ -360,10 +361,13 @@ export default function Guide({
                   <p className="text-m font-bold">{hi ? "इस पेज पर" : "On this page"}</p>
                   {!glance && <p className="text-s text-[var(--muted)]">{`${minutes} ${hi ? "मिनट" : "min read"}`}</p>}
                 </div>
-                <Toc items={chapters} />
+                <div className="mt-3 max-h-[26vh] overflow-y-auto pr-1">
+                  <Toc items={chapters} />
+                </div>
               </nav>
             )}
 
+            {!hi && <SidebarPromo slug={page.slug} productSlug={page.promoProduct} />}
           </aside>
         </div>
       </div>
