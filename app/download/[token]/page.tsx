@@ -12,7 +12,7 @@ import {
 } from "@/lib/download-manifest";
 import BrandShell from "@/components/brand/BrandShell";
 import Gilu from "@/components/brand/Gilu";
-import { DownloadIcon, ZipIcon } from "@/components/store/icons";
+import FileLibrary from "@/components/store/FileLibrary";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -103,44 +103,23 @@ export default async function DownloadPage({ params, searchParams }: Props) {
                 </p>
               </div>
 
-              <div className="mt-4 space-y-3">
-                {groups.map((group, index) => (
-                  <details key={group.title} open={index === 0 && groups.length <= 6} className={`${card} group overflow-hidden`}>
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-                      <span className="text-m font-bold">{group.title}</span>
-                      <span className="text-s text-[var(--muted)]">
-                        {group.files.length} {group.files.length === 1 ? "file" : "files"}
-                      </span>
-                    </summary>
-                    <ul className="divide-y divide-[var(--line)] border-t border-[var(--line)]">
-                      {group.files.map((file) => (
-                        <li key={file.path}>
-                          <a href={fileUrl(files.folder, file.path)} className="flex items-center justify-between gap-3 px-5 py-3 text-s transition hover:bg-[var(--canvas)]">
-                            <span className="flex min-w-0 items-center gap-2">
-                              <span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#e3e8fb] text-[var(--accent)]">
-                                <DownloadIcon size={14} />
-                              </span>
-                              <span className="truncate">{file.name}</span>
-                            </span>
-                            <span className="tab shrink-0 text-[var(--muted)]">{formatBytes(file.size)}</span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                ))}
+              <div className="mt-4">
+                <FileLibrary
+                  storageKey={`${token}:${item.slug}`}
+                  totalFiles={files.count}
+                  totalSize={formatBytes(files.size)}
+                  zipUrl={zipUrl(files.folder)}
+                  groups={groups.map((group) => ({
+                    title: group.title,
+                    files: group.files.map((file) => ({
+                      name: file.name,
+                      path: file.path,
+                      size: formatBytes(file.size),
+                      url: fileUrl(files.folder, file.path),
+                    })),
+                  }))}
+                />
               </div>
-
-              <a href={zipUrl(files.folder)} className={`${card} mt-3 flex items-center gap-4 p-4 transition-transform hover:-translate-y-[1px]`}>
-                <ZipIcon size={44} />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-m font-bold leading-snug">Download everything as one ZIP</span>
-                  <span className="mt-0.5 block text-s text-[var(--muted)]">{formatBytes(files.size)}. Best on a laptop.</span>
-                </span>
-                <span aria-hidden className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-white">
-                  <DownloadIcon size={16} />
-                </span>
-              </a>
             </section>
           );
         })}
