@@ -73,6 +73,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   "upsc-free-material-hindi": "2026-06-16",
   "how-to-write-upsc-mains-answers-hindi": "2026-06-16",
   "best-upsc-coaching-2027": "2026-11-10",
+  "best-upsc-test-series-2027": "2026-11-10",
+  "upsc-interview-guidance-programs-2026": "2026-11-10",
+  "choose-upsc-optional-subject-marks-data": "2026-11-10",
   };
   const contentPages: MetadataRoute.Sitemap = CONTENT_SLUGS.map((slug) => ({
     url: `${baseUrl}/content/${slug}`,

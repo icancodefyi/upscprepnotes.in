@@ -14,6 +14,9 @@ import dataMethodology from "./data-methodology";
 import optionalMarksAnalysis from "./optional-marks-analysis";
 import forumIasTestSeriesReview from "./forum-ias-test-series-review";
 import bestUpscCoaching from "./best-upsc-coaching-2027";
+import bestTestSeries from "./best-upsc-test-series-2027";
+import interviewPrograms from "./upsc-interview-guidance-programs-2026";
+import chooseOptional from "./choose-upsc-optional-subject-marks-data";
 
 // Strategies — short, fact-dense, LLM-targeted pages
 import strategies from "./strategies/registry";
@@ -34,6 +37,9 @@ const guides: Record<string, () => Promise<PageModule>> = {
   "upsc-optional-subject-marks-analysis": () => Promise.resolve({ default: optionalMarksAnalysis }),
   "forum-ias-test-series-review": () => Promise.resolve({ default: forumIasTestSeriesReview }),
   "best-upsc-coaching-2027": () => Promise.resolve({ default: bestUpscCoaching }),
+  "best-upsc-test-series-2027": () => Promise.resolve({ default: bestTestSeries }),
+  "upsc-interview-guidance-programs-2026": () => Promise.resolve({ default: interviewPrograms }),
+  "choose-upsc-optional-subject-marks-data": () => Promise.resolve({ default: chooseOptional }),
 };
 
 const EN_TO_HI: Record<string, string> = {

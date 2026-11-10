@@ -140,6 +140,11 @@ The best way to use this data: cross-reference it with your own aptitude, intere
 
   relatedPages: [
     {
+      title: "How to Choose a UPSC Optional Subject",
+      href: "/content/choose-upsc-optional-subject-marks-data",
+      description: "Optional paper marks of 239 toppers from 2022 to 2025 and a simple way to decide.",
+    },
+    {
       title: "Highest Marks in UPSC, Paper by Paper",
       href: "/toppers/highest-marks-in-upsc",
       description: "Records, medians and AIR 1 vs the cut-off from real topper marksheets, with a free PDF handbook.",

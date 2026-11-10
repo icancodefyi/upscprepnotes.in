@@ -444,6 +444,7 @@ export default async function InterviewMarksPage() {
                   {[
                     { href: "/toppers/highest-marks-in-upsc", t: "Highest marks in UPSC", d: "Records and medians for every Mains paper, with a free PDF." },
                     { href: "/toppers/marks-database", t: "Topper marks database", d: "Sort every marksheet by interview or any paper." },
+                    { href: "/content/upsc-interview-guidance-programs-2026", t: "Interview guidance programs 2026", d: "Which programs are free, which cost money, and what each includes." },
                     { href: "/content/upsc-optional-subject-marks-analysis", t: "Optional marks analysis", d: "Which optional scores, and why." },
                     { href: "/content/upsc-topper-answer-copies", t: "Topper answer copies", d: "How rank holders wrote their Mains." },
                     { href: "/store/answer-copies-compilation", t: "Answer Copies Compilation", d: "63 topper answer booklets in one download." },

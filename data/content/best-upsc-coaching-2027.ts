@@ -346,6 +346,9 @@ If you want to go further on your own, the [Mains 2027 Pack](/store/upsc-mains-2
 
   relatedPages: [
     { title: "Forum IAS Test Series Review 2026", href: "/content/forum-ias-test-series-review", description: "A longer, independent look at the ForumIAS Prelims and Mains test series." },
+    { title: "Best UPSC Test Series 2027", href: "/content/best-upsc-test-series-2027", description: "Prelims and Mains test series compared on tests, price, evaluation and refunds." },
+    { title: "UPSC Interview Guidance 2026: Free and Paid Programs", href: "/content/upsc-interview-guidance-programs-2026", description: "What eight institutes publish for the Personality Test, and how to prepare." },
+    { title: "How to Choose a UPSC Optional Subject", href: "/content/choose-upsc-optional-subject-marks-data", description: "Optional marks of 239 toppers and a simple way to decide." },
     { title: "How to Write UPSC Mains Answers", href: "/content/how-to-write-upsc-mains-answers", description: "What strong openings, data use and time management look like in real topper copies." },
     { title: "UPSC Mains Marks Needed for a Rank", href: "/toppers/upsc-mains-marks-needed", description: "The marks each rank band scored in CSE 2025, with a calculator." },
     { title: "UPSC Interview Marks and What Boards Ask", href: "/toppers/upsc-interview-marks", description: "Interview marks of 282 toppers and what boards asked in 2026." },

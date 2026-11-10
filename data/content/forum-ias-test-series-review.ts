@@ -175,6 +175,7 @@ None of these replace the All India Rank benchmark or structured mentor access a
 
   relatedPages: [
     { title: "Best UPSC Coaching 2027: 10 Institutes Compared", href: "/content/best-upsc-coaching-2027", description: "Fees, test series, evaluation, refund terms and regulator findings for ten institutes, with sources." },
+    { title: "Best UPSC Test Series 2027", href: "/content/best-upsc-test-series-2027", description: "Prelims and Mains test series compared on tests, price, evaluation and refunds." },
     {
       title: "How to Write UPSC Mains Answers",
       href: "/content/how-to-write-upsc-mains-answers",
