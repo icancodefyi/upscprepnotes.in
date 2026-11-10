@@ -4,6 +4,9 @@ import { PRODUCTS } from "@/lib/store-products";
 import Nav, { type NavProduct } from "./Nav";
 import Footer from "./Footer";
 import PriceRiseBanner from "@/components/store/PriceRiseBanner";
+import AdRail from "./AdRail";
+import ShellRail from "./ShellRail";
+import { PITCH } from "@/lib/rail";
 import { brandFonts } from "./fonts";
 import "./brand.css";
 
@@ -54,11 +57,14 @@ function navProducts(): NavProduct[] {
 
 export default async function BrandShell({ children, footer }: { children: React.ReactNode; footer?: FooterData }) {
   const data = footer ?? (await getFooterData());
+  const keys = Object.keys(PITCH);
+  const rails = Object.fromEntries(keys.map((k) => [k, <AdRail key={k} page={k} product={k} />]));
+  const inlineRails = Object.fromEntries(keys.map((k) => [k, <AdRail key={k} page={k} product={k} inline />]));
   return (
     <div className={`up ${brandFonts}`}>
       <PriceRiseBanner />
       <Nav products={navProducts()} toppers={data.counts.toppers} />
-      <main>{children}</main>
+      <ShellRail rails={rails} inlineRails={inlineRails}>{children}</ShellRail>
       <StoreStrip />
       <Footer counts={data.counts} featured={data.featured} />
     </div>
