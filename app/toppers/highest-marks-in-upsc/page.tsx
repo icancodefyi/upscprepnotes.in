@@ -633,7 +633,7 @@ export default async function HighestMarksPage() {
               </section>
             </article>
 
-            <aside className="hidden xl:sticky xl:top-28 xl:block xl:self-start">
+            <aside className="hidden xl:block xl:self-start xl:[@media(min-height:760px)]:sticky xl:[@media(min-height:760px)]:top-28">
               <AdRail page="highest-marks-in-upsc" product="upsc-mains-2027-pack" />
             </aside>
           </div>

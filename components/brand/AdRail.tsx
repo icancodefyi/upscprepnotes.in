@@ -16,21 +16,22 @@ function ProductCard({ page, productSlug }: { page: string; productSlug?: string
       href={`/store/${p.slug}`}
       data-track="rail-product"
       data-track-page={page}
-      className={`${card} group block overflow-hidden transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
+      className={`${card} group block p-3.5 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
     >
-      <div className="flex items-end gap-4 bg-[#fff8d6] px-4 pt-4">
+      <div className="flex gap-3.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={p.image} alt={p.title} width={88} height={114} loading="lazy" className="h-[114px] w-[88px] shrink-0 rounded-t-[10px] bg-white object-cover shadow-[0_0_0_1px_rgba(92,74,0,0.15)]" />
-        <p className="pb-4 text-s leading-[1.35] text-[var(--ink-2)]">{p.title}</p>
-      </div>
-      <div className="p-4">
-        <p className="t-head text-m leading-[1.25]">{pitch.headline}</p>
-        <p className="mt-1.5 text-s leading-[1.45] text-[var(--ink-2)]">{pitch.line}</p>
-        <div className="mt-4 flex items-center justify-between gap-3">
-          <span className="text-m font-bold">{`₹${p.price}`}</span>
-          <span className="btn btn-blue h-10 px-5 [--btn-fs:14px]">{pitch.cta}</span>
+        <img src={p.image} alt={p.title} width={72} height={94} loading="lazy" className="h-[94px] w-[72px] shrink-0 rounded-[10px] bg-[var(--canvas)] object-cover shadow-[0_0_0_1px_var(--line-2)]" />
+        <div className="min-w-0">
+          <p className="t-head text-m leading-[1.2]">{pitch.headline}</p>
+          <p className="mt-1.5 text-s leading-[1.4] text-[var(--ink-2)]">{pitch.line}</p>
         </div>
-        <p className="mt-3 text-s text-[var(--muted)]">Instant email delivery, 7-day refund</p>
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
+        <span>
+          <span className="block text-m font-bold leading-none">{`₹${p.price}`}</span>
+          <span className="mt-1 block text-s text-[var(--muted)]">Instant delivery, 7-day refund</span>
+        </span>
+        <span className="btn btn-blue h-10 shrink-0 px-5 [--btn-fs:14px]">{pitch.cta}</span>
       </div>
     </Link>
   );
@@ -39,17 +40,16 @@ function ProductCard({ page, productSlug }: { page: string; productSlug?: string
 /** What an advertiser's slot looks like, shown until a real ad is booked. */
 function SampleAd() {
   return (
-    <div aria-hidden className="overflow-hidden rounded-[16px] bg-white shadow-[0_0_0_1px_var(--line-2)] [@media(max-height:800px)]:hidden">
-      <div className="flex h-[88px] items-center justify-center bg-[#e9edff]">
-        <svg viewBox="0 0 64 40" className="h-9 w-14 text-[var(--accent)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <div aria-hidden className="overflow-hidden rounded-[16px] bg-white shadow-[0_0_0_1px_var(--line-2)] ">
+      <div className="flex h-[48px] items-center justify-center bg-[#e9edff]">
+        <svg viewBox="0 0 64 40" className="h-6 w-9 text-[var(--accent)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="4" y="4" width="56" height="32" rx="6" />
           <path d="M4 28l16-12 12 9 10-7 18 12" />
         </svg>
       </div>
-      <div className="p-3 text-left">
+      <div className="flex items-center justify-between gap-2 p-3 text-left">
         <p className="text-s font-bold leading-[1.3]">Your course, app or book</p>
-        <p className="mt-0.5 text-s leading-[1.4] text-[var(--muted)]">A headline that makes an aspirant stop scrolling.</p>
-        <span className="mt-2.5 inline-flex h-8 items-center rounded-full bg-[var(--ink)] px-3.5 text-s font-bold text-white">Learn more</span>
+        <span className="inline-flex h-8 shrink-0 items-center rounded-full bg-[var(--ink)] px-3.5 text-s font-bold text-white">Learn more</span>
       </div>
     </div>
   );
@@ -75,12 +75,11 @@ function SponsorSlot({ page }: { page: string }) {
     );
   }
   return (
-    <div className={`${card} relative p-3.5`}>
+    <div className={`${card} relative p-3`}>
       <span className="absolute right-3.5 top-3.5 z-10 rounded-full bg-white px-2 py-0.5 text-[11px] font-bold text-[var(--muted)] shadow-[0_0_0_1px_var(--line-2)]">Sample ad</span>
       <SampleAd />
-      <p className="mt-3 text-s leading-[1.45] text-[var(--ink-2)]">This is how your ad would look here, on every page, in front of UPSC aspirants.</p>
-      <Link href="/advertise" data-track="rail-ad-slot" data-track-page={page} className="mt-2 inline-block text-s font-bold text-[var(--accent)] underline decoration-[var(--accent)]/30 decoration-2 underline-offset-[3px] hover:decoration-[var(--accent)]">
-        Advertise with us
+      <Link href="/advertise" data-track="rail-ad-slot" data-track-page={page} className="mt-2.5 block text-s font-bold text-[var(--accent)] underline decoration-[var(--accent)]/30 decoration-2 underline-offset-[3px] hover:decoration-[var(--accent)]">
+        Your ad would look like this, on every page. Advertise with us
       </Link>
     </div>
   );

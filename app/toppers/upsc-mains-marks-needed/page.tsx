@@ -150,7 +150,7 @@ export default async function Page() {
         </p>
         </div>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <aside className="lg:self-start lg:[@media(min-height:760px)]:sticky lg:[@media(min-height:760px)]:top-24">
           <AdRail page="upsc-mains-marks-needed" product="upsc-mains-2027-pack" />
         </aside>
         </div>

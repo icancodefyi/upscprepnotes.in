@@ -342,7 +342,7 @@ export default function Guide({
             )}
           </div>
 
-          <aside className="hidden space-y-4 lg:sticky lg:top-24 lg:block lg:self-start">
+          <aside className="hidden space-y-4 lg:block lg:self-start lg:[@media(min-height:760px)]:sticky lg:[@media(min-height:760px)]:top-24">
             {/* At a glance (guides with live numbers only) */}
             {glance && (
             <div className={`${card} p-5`}>
@@ -367,7 +367,7 @@ export default function Guide({
                   <p className="text-m font-bold">{hi ? "इस पेज पर" : "On this page"}</p>
                   {!glance && <p className="text-s text-[var(--muted)]">{`${minutes} ${hi ? "मिनट" : "min read"}`}</p>}
                 </div>
-                <div className="mt-3 max-h-[24vh] overflow-y-auto pr-1">
+                <div className="mt-3 max-h-[17vh] overflow-y-auto pr-1">
                   <Toc items={chapters} />
                 </div>
               </nav>
