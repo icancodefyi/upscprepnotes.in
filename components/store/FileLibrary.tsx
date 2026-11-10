@@ -2,15 +2,13 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 import Gilu from "@/components/brand/Gilu";
-import { DownloadIcon, FileIcon, ZipIcon } from "@/components/store/icons";
+import { DownloadIcon, ZipIcon } from "@/components/store/icons";
 
 type LibFile = { name: string; url: string; size: string; path: string };
 type LibGroup = { title: string; files: LibFile[] };
 type Props = {
   /** Used to remember which files this browser has opened. */
   storageKey: string;
-  totalFiles: number;
-  totalSize: string;
   zipUrl: string;
   groups: LibGroup[];
 };
@@ -72,25 +70,16 @@ function useOpened(storageKey: string) {
   return { opened, mark };
 }
 
-export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl, groups }: Props) {
+export default function FileLibrary({ storageKey, zipUrl, groups }: Props) {
   const [query, setQuery] = useState("");
-  const [year, setYear] = useState<string | null>(null);
   const { opened, mark } = useOpened(storageKey);
 
   const parsed = useMemo(() => groups.map((g) => ({ ...g, ...parseTitle(g.title) })), [groups]);
-  const years = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const g of parsed) if (g.year) counts.set(g.year, (counts.get(g.year) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => b[0].localeCompare(a[0]));
-  }, [parsed]);
-
   const q = query.trim().toLowerCase();
   const shown = parsed.filter((g) => {
-    if (year && g.year !== year) return false;
     if (!q) return true;
     return g.title.toLowerCase().includes(q) || g.files.some((f) => f.name.toLowerCase().includes(q));
   });
-  const openedCount = opened.size;
   const showToolbar = groups.length > 6;
 
   return (
@@ -100,7 +89,7 @@ export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl,
         <ZipIcon size={52} />
         <span className="min-w-0 flex-1">
           <span className="block text-m font-bold leading-snug">Get everything in one ZIP</span>
-          <span className="mt-0.5 block text-s text-[var(--muted)]">{totalFiles} files, {totalSize}. Best on a laptop with Wi-Fi.</span>
+          <span className="mt-0.5 block text-s text-[var(--muted)]">Best on a laptop with Wi-Fi.</span>
         </span>
         <span
           aria-hidden
@@ -112,7 +101,7 @@ export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl,
       </a>
 
       {showToolbar && (
-        <div className="mt-6">
+        <div className="mt-7">
           <label htmlFor="lib-search" className="sr-only">Search by name or rank</label>
           <div className="relative">
             <svg aria-hidden viewBox="0 0 24 24" className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--muted)]">
@@ -129,49 +118,22 @@ export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl,
             />
           </div>
 
-          <div className="-mx-6 mt-3 flex gap-2 overflow-x-auto px-6 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-            {[{ label: "All", value: null as string | null, n: groups.length }, ...years.map(([y, n]) => ({ label: y, value: y as string | null, n }))].map((c) => {
-              const on = year === c.value;
-              return (
-                <button
-                  key={c.label}
-                  type="button"
-                  onClick={() => setYear(c.value)}
-                  aria-pressed={on}
-                  className="shrink-0 rounded-full px-4 py-2 text-s font-bold transition-colors"
-                  style={on ? { background: "#1f3fd6", color: "#fff" } : { background: "#fff", color: "var(--ink-2)", boxShadow: "inset 0 0 0 1.5px var(--line-2)" }}
-                >
-                  {c.label} <span className="font-normal opacity-70">{c.n}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <p className="mt-3 text-s text-[var(--muted)]" aria-live="polite">
-            {shown.length === groups.length ? `${groups.length} toppers` : `${shown.length} of ${groups.length} toppers`}
-            {openedCount > 0 && <> · you&apos;ve opened {openedCount} {openedCount === 1 ? "file" : "files"}</>}
-          </p>
         </div>
       )}
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-5 space-y-3">
         {shown.map((g, index) => {
           const color = paletteFor(g.name);
-          const done = g.files.filter((f) => opened.has(f.path)).length;
+          const meta = [g.rank, g.year ? `CSE ${g.year}` : null, g.files.length > 1 ? `${g.files.length} files` : null].filter(Boolean).join(" · ");
           return (
-            <details key={`${g.title}-${q}-${year}`} open={(q || year) && shown.length <= 6 ? true : !showToolbar && index === 0} className={`${card} group overflow-hidden`}>
-              <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3.5 transition-colors hover:bg-[var(--canvas)] sm:px-5 [&::-webkit-details-marker]:hidden">
+            <details key={`${g.title}-${q}`} open={q && shown.length <= 6 ? true : !showToolbar && index === 0} className={`${card} group overflow-hidden`}>
+              <summary className="flex cursor-pointer list-none items-center gap-4 px-4 py-4 transition-colors hover:bg-[var(--canvas)] sm:px-5 [&::-webkit-details-marker]:hidden">
                 <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: color.bg, color: color.fg }}>
                   {initials(g.name) || "·"}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-m font-bold leading-snug">{g.name}</span>
-                  <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-s text-[var(--muted)]">
-                    {g.rank && <span className="rounded-full bg-[#e3e8fb] px-2 py-0.5 text-[12px] font-bold text-[#172fa3]">{g.rank}</span>}
-                    {g.year && <span>CSE {g.year}</span>}
-                    <span>{g.files.length} {g.files.length === 1 ? "file" : "files"}</span>
-                    {done > 0 && <span className="font-bold text-[#14613a]">{done === g.files.length ? "Opened" : `${done} opened`}</span>}
-                  </span>
+                  {meta && <span className="mt-0.5 block text-s text-[var(--muted)]">{meta}</span>}
                 </span>
                 <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180">
                   <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -182,8 +144,7 @@ export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl,
                   const seen = opened.has(f.path);
                   return (
                     <li key={f.path}>
-                      <a href={f.url} onClick={() => mark(f.path)} className="flex items-center gap-3 px-4 py-3 text-s transition-colors hover:bg-[var(--canvas)] sm:px-5">
-                        <FileIcon size={26} />
+                      <a href={f.url} onClick={() => mark(f.path)} className="flex items-center gap-3 px-4 py-3.5 text-s transition-colors hover:bg-[var(--canvas)] sm:px-5">
                         <span className="min-w-0 flex-1">
                           <span className="block truncate font-bold text-[var(--ink)]">{f.name}</span>
                           <span className="block text-[var(--muted)]">{f.size}</span>
@@ -212,10 +173,10 @@ export default function FileLibrary({ storageKey, totalFiles, totalSize, zipUrl,
           <div className={`${card} px-6 py-10 text-center`}>
             <Gilu pose="thinking" size={120} className="mx-auto h-auto w-[100px]" />
             <p className="mt-3 text-m font-bold">No one matches that</p>
-            <p className="mt-1 text-s text-[var(--muted)]">Try a first name, an AIR number or a different year.</p>
+            <p className="mt-1 text-s text-[var(--muted)]">Try a first name or an AIR number.</p>
             <button
               type="button"
-              onClick={() => { setQuery(""); setYear(null); }}
+              onClick={() => setQuery("")}
               className="mt-4 rounded-full bg-[var(--accent)] px-5 py-2.5 text-s font-bold text-white"
             >
               Show everyone

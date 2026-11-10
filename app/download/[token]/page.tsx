@@ -106,8 +106,6 @@ export default async function DownloadPage({ params, searchParams }: Props) {
               <div className="mt-4">
                 <FileLibrary
                   storageKey={`${token}:${item.slug}`}
-                  totalFiles={files.count}
-                  totalSize={formatBytes(files.size)}
                   zipUrl={zipUrl(files.folder)}
                   groups={groups.map((group) => ({
                     title: group.title,
