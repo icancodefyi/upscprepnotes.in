@@ -11,6 +11,7 @@ import { median } from "@/lib/topper-stats";
 import { getProductBySlug } from "@/lib/store-products";
 import official from "@/data/official/cse-2025-recommended-marks.json";
 import QuizTeaser from "@/components/quiz/QuizTeaser";
+import MarksCalculator from "@/components/marks/MarksCalculator";
 
 export const revalidate = 86400;
 
@@ -80,6 +81,19 @@ export default async function Page() {
             </table>
           </div>
           <p className="mt-3 text-s text-[var(--muted)]">{`All categories together. Single ranks: AIR 1 wrote ${at(1).written}, AIR 10 ${at(10).written}, AIR 100 ${at(100).written}, AIR 300 ${at(300).written}, AIR 500 ${at(500).written}. Source: UPSC, marks of recommended candidates, CSE 2025.`}</p>
+        </section>
+
+        <section className="mt-12" id="where-you-stand">
+          <h2 className="t-head text-l">Where does your Mains score land?</h2>
+          <p className="mt-3 max-w-[44rem] text-m leading-[1.7] text-[var(--ink-2)]">Enter marks from a mock test, or the marks you are aiming for in each paper. You will see which rank band your written total matches and which papers are furthest from the median topper.</p>
+          <div className="mt-5">
+            <MarksCalculator
+              official={bands.map((b) => ({ label: b.label, written: b.written }))}
+              paperBands={h.bands.map((b) => ({ label: b.label, n: b.n, med: { essay: b.med.essay, gs1: b.med.gs1, gs2: b.med.gs2, gs3: b.med.gs3, gs4: b.med.gs4, optional: b.med.optional } }))}
+              packHref={packLive ? "/store/upsc-mains-2027-pack" : "/store/answer-copies-compilation"}
+              packLabel={packLive ? `Get the target marksheet in the Mains 2027 Pack · ₹${pack!.price}` : "See how these marks were written"}
+            />
+          </div>
         </section>
 
         <section className="mt-12">
