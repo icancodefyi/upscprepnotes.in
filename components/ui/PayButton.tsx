@@ -3,6 +3,7 @@
 import posthog from "posthog-js";
 import { useState, useCallback, useEffect } from "react";
 import { track, flush, identify, getSessionId, getVisitorId } from "@/lib/track";
+import { loadRazorpay, type RazorpayPaymentResponse } from "@/lib/razorpay-client";
 
 interface CartItem {
   slug: string;
@@ -21,21 +22,22 @@ interface Props {
   email?: string;
 }
 
-// If the checkout link has not come back by then, stop the spinner and let the buyer retry.
-const CHECKOUT_TIMEOUT_MS = 20000;
-
 function getStoredEmail(): string {
   if (typeof window === "undefined") return "";
   try { return localStorage.getItem("upsc-email") || ""; } catch { return ""; }
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 /**
- * One click to the payment page. Dodo's checkout asks for the email, and the payment
- * webhook delivers the files to it, so there is no email step on our side. A known
- * email (from a form or an earlier purchase) is passed along so Dodo can pre-fill it.
+ * One click opens the Razorpay payment window on this page. The server sets the price from the
+ * product list, saves the order, and delivers the files after payment (webhook plus the order page).
+ * If we already know the buyer's email (a form or an earlier purchase) it is pre-filled; otherwise
+ * the payment window asks for it.
  */
 export default function PayButton({
   amount,
+  note,
   className = "",
   tracking,
   items,
@@ -45,9 +47,9 @@ export default function PayButton({
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
 
-  // Coming back from the payment page with the browser's back button restores this page
-  // from cache with the spinner still on. Reset it so the button works again.
+  // Coming back to this page with the browser's back button can restore a stuck spinner. Reset it.
   useEffect(() => {
     const onShow = (e: PageTransitionEvent) => {
       if (e.persisted) setLoading(false);
@@ -59,9 +61,10 @@ export default function PayButton({
   const handlePay = useCallback(async () => {
     const checkoutItems = items || (productSlug ? [{ slug: productSlug, quantity: 1, price: amount }] : []);
     const slugs = checkoutItems.map((i) => i.slug);
-    const email = propEmail || getStoredEmail();
+    const knownEmail = (propEmail || getStoredEmail()).trim().toLowerCase();
+    const prefill = EMAIL_RE.test(knownEmail) ? knownEmail : "";
 
-    track("buy_click", { items: slugs, amount, tracking, has_email: !!email });
+    track("buy_click", { items: slugs, amount, tracking, has_email: !!prefill });
     posthog.capture("cart_checkout_clicked", { total_amount: amount, item_slugs: slugs, item_count: checkoutItems.length, tracking });
 
     if (checkoutItems.length === 0) {
@@ -71,48 +74,87 @@ export default function PayButton({
 
     setLoading(true);
     setError("");
+    setNotice("");
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), CHECKOUT_TIMEOUT_MS);
     let status = 0;
-
     try {
-      const res = await fetch("/api/checkout", {
+      await loadRazorpay();
+
+      const res = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
         body: JSON.stringify({
-          items: checkoutItems,
-          email: email || undefined,
+          items: slugs,
+          email: prefill || undefined,
           visitorId: getVisitorId(),
           sessionId: getSessionId(),
         }),
       });
       status = res.status;
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.checkoutUrl) {
-        throw new Error(data.error || "Checkout could not be opened");
+      if (!res.ok || !data.order_id) {
+        throw new Error(data.error || "Payment could not be started");
       }
 
-      if (email) identify(email, "checkout");
+      if (prefill) identify(prefill, "checkout");
       track("checkout_redirect", { items: slugs, amount, tracking });
       flush(true);
-      window.location.href = data.checkoutUrl;
+
+      const RazorpayCtor = window.Razorpay;
+      if (!RazorpayCtor) throw new Error("The payment window could not load. Please try again.");
+
+      const rzp = new RazorpayCtor({
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency,
+        order_id: data.order_id,
+        name: "UPSCPrepNotes",
+        description: note || "Study material",
+        prefill: prefill ? { email: prefill } : undefined,
+        theme: { color: "#1f3fd6" },
+        handler: async (response: RazorpayPaymentResponse) => {
+          try {
+            const v = await fetch("/api/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response),
+            });
+            // 202 means the bank is still capturing the payment; the order page waits for it.
+            if ((v.ok && (await v.json()).success) || v.status === 202) {
+              window.location.assign(`/store/success?ref=${encodeURIComponent(data.ref)}`);
+              return;
+            }
+            setLoading(false);
+            setError("We could not confirm this payment yet. If money was taken, your download link will still arrive by email.");
+          } catch {
+            setLoading(false);
+            setError("Network problem while confirming the payment. Check your email for the download link.");
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+            setNotice("Payment cancelled. You have not been charged.");
+          },
+        },
+      });
+      rzp.on("payment.failed", (r) => {
+        setLoading(false);
+        setError(r.error.description || "The payment failed. Please try another method.");
+      });
+      rzp.open();
     } catch (err) {
-      const timedOut = err instanceof DOMException && err.name === "AbortError";
-      const reason = timedOut ? "timeout" : err instanceof Error ? err.message : "unknown";
+      const reason = err instanceof Error ? err.message : "unknown";
       posthog.capture("checkout_failed", { item_slugs: slugs, total_amount: amount, tracking, status, reason });
       track("checkout_failed", { items: slugs, amount, tracking, status, reason });
       setError(
-        timedOut
-          ? "The payment page is taking too long to open. Please tap the button again."
-          : "We couldn't open the payment page. Please tap the button again, or email hello@upscprepnotes.in.",
+        reason.startsWith("Payment could not") || reason.includes("payment window")
+          ? reason
+          : "We couldn't open the payment window. Please tap the button again, or email hello@upscprepnotes.in.",
       );
       setLoading(false);
-    } finally {
-      clearTimeout(timer);
     }
-  }, [items, productSlug, amount, tracking, propEmail]);
+  }, [items, productSlug, amount, tracking, propEmail, note]);
 
   return (
     <>
@@ -130,13 +172,18 @@ export default function PayButton({
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Opening checkout…
+            Opening payment…
           </span>
         ) : (
           children || `Pay ₹${amount}`
         )}
       </button>
 
+      {notice && !error && (
+        <p role="status" className="mt-2 text-s text-[var(--ink-2)]">
+          {notice}
+        </p>
+      )}
       {error && (
         <p role="alert" className="mt-2 text-s font-bold text-[var(--mark-deep)]">
           {error}

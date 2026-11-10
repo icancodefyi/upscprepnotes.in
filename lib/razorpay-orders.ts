@@ -38,7 +38,7 @@ export function priceCart(slugs: unknown): { items: { slug: string; title: strin
 }
 
 /** Creates a pending order with a download token. Nothing is delivered until it is paid. */
-export async function createPendingOrder(slugs: unknown, email: string) {
+export async function createPendingOrder(slugs: unknown, email?: string) {
   const { items, total } = priceCart(slugs);
   await connectDB();
   const ref = shortRef();
@@ -48,7 +48,7 @@ export async function createPendingOrder(slugs: unknown, email: string) {
     total,
     ref,
     downloadToken: generateDownloadToken(),
-    email,
+    email: email || undefined,
     status: "pending",
   });
   return { order, ref, total };

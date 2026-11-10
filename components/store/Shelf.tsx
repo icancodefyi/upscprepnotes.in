@@ -76,7 +76,7 @@ const PAIRS: Record<string, string> = {
 };
 export const pairOf = (p: Product) => PRODUCTS.find((x) => x.slug === PAIRS[p.slug] && !x.comingSoon);
 
-/** The ways people can pay at checkout (Dodo: any UPI app, and cards including RuPay). Official logos, in /public/pay. */
+/** The ways people can pay at checkout (Razorpay: any UPI app, and cards including RuPay). Official logos, in /public/pay. */
 const PAY_LOGOS = [
   { src: "/pay/upi.svg", alt: "UPI", h: "h-[14px]" },
   { src: "/pay/gpay.svg", alt: "Google Pay", h: "h-[16px]" },

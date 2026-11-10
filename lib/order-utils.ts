@@ -86,7 +86,7 @@ export async function sendAdminNotification(
   email: string,
   items: { title: string }[],
   total: number,
-  provider: "Dodo" | "Razorpay" = "Dodo"
+  provider: "Razorpay" | "Dodo" = "Razorpay"
 ) {
   const itemList = items
     .map((i) => `<tr><td style="padding:4px 0">• ${i.title}</td></tr>`)

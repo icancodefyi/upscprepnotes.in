@@ -110,7 +110,7 @@ export default function SalesPageClient({ children }: { children: React.ReactNod
             <span className="tab text-m font-bold">₹{PRICE}</span>
             <span className="text-s text-white/60">63 answer copies · 7-day refund</span>
           </div>
-          <PayButton amount={PRICE} productSlug={PRODUCT_SLUG} tracking="dodo-mobile-sticky" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">
+          <PayButton amount={PRICE} productSlug={PRODUCT_SLUG} tracking="buy-mobile-sticky" className="btn btn-blue h-11 px-5 [--btn-fs:14px]">
             Get the Compilation →
           </PayButton>
         </div>

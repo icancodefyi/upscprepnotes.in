@@ -15,9 +15,11 @@ export async function GET() {
     healthy = false;
   }
 
-  // DodoPayments API key
-  checks.dodoApiKey = process.env.DODO_API_KEY ? "set" : "missing";
-  if (!process.env.DODO_API_KEY) healthy = false;
+  // Razorpay keys (checkout and signature checks)
+  checks.razorpayKeys = process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET ? "set" : "missing";
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) healthy = false;
+  checks.razorpayWebhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET ? "set" : "missing";
+  if (!process.env.RAZORPAY_WEBHOOK_SECRET) healthy = false;
 
   // Pending orders (stuck > 1 hour)
   try {

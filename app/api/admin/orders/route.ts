@@ -14,7 +14,7 @@ async function authenticate(request: NextRequest) {
   return true;
 }
 
-function serializeOrder(o: { _id: { toString(): string }; ref?: string; email?: string; items?: unknown; total?: number; offeredPrice?: number | null; status?: string; dodoSessionId?: string | null; dodoPaymentId?: string | null; createdAt?: Date | string | null }) {
+function serializeOrder(o: { _id: { toString(): string }; ref?: string; email?: string; items?: unknown; total?: number; offeredPrice?: number | null; status?: string; provider?: string | null; dodoSessionId?: string | null; dodoPaymentId?: string | null; razorpayOrderId?: string | null; razorpayPaymentId?: string | null; createdAt?: Date | string | null }) {
   return {
     id: o._id.toString(),
     ref: o.ref,
@@ -23,8 +23,12 @@ function serializeOrder(o: { _id: { toString(): string }; ref?: string; email?: 
     total: o.total,
     offeredPrice: o.offeredPrice ?? null,
     status: o.status,
+    provider: o.provider ?? "dodo",
     dodoSessionId: o.dodoSessionId ?? null,
     dodoPaymentId: o.dodoPaymentId ?? null,
+    razorpayOrderId: o.razorpayOrderId ?? null,
+    razorpayPaymentId: o.razorpayPaymentId ?? null,
+    paymentId: o.razorpayPaymentId || o.dodoPaymentId || null,
     createdAt: o.createdAt ? new Date(o.createdAt).toISOString() : null,
   };
 }
@@ -52,6 +56,8 @@ export async function GET(request: NextRequest) {
         { email: { $regex: q, $options: "i" } },
         { ref: { $regex: q, $options: "i" } },
         { dodoPaymentId: { $regex: q, $options: "i" } },
+        { razorpayPaymentId: { $regex: q, $options: "i" } },
+        { razorpayOrderId: { $regex: q, $options: "i" } },
       ];
     }
 

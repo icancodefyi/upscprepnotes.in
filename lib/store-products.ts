@@ -15,7 +15,6 @@ export interface ProductReview {
 
 export interface StoreProduct {
   slug: string;
-  dodoProductId?: string;
   title: string;
   tagline: string;
   description: string;
@@ -117,7 +116,6 @@ export const INSTITUTES: Institute[] = [
 export const PRODUCTS: StoreProduct[] = [
   {
     slug: "upsc-interview-pack",
-    dodoProductId: "pdt_0Nr7VzNL2QmXkxu2jIRG7",
     title: "UPSC Interview Pack",
     image: "/store/interview-pack/page-1.jpg",
     images: [
@@ -177,7 +175,6 @@ export const PRODUCTS: StoreProduct[] = [
   {
     // Launched 8 Nov 2026. Files: cdn /files/Mains-2027-Pack/ (Playbook PDF + spreadsheet) and Mains-2027-Pack.zip.
     slug: "upsc-mains-2027-pack",
-    dodoProductId: "pdt_0NrRYNg7NaZYsHSAjJciw",
     title: "UPSC Mains 2027 Pack",
     image: "/store/mains-2027-pack/page-1.jpg",
     images: [
@@ -236,7 +233,6 @@ export const PRODUCTS: StoreProduct[] = [
 
   {
     slug: "top-10-rankers-strategy",
-    dodoProductId: "pdt_0NiRYsqj11mE2Xcw8A1nJ",
     title: "Top 10 Rankers Strategy",
     image: "https://ik.imagekit.io/impiclabs/products/top-10-rankers-strategy.png?tr=w-464,h-600,f-auto,q-80",
     images: [
@@ -297,7 +293,6 @@ export const PRODUCTS: StoreProduct[] = [
 
   {
     slug: "answer-copies-compilation",
-    dodoProductId: "pdt_0NiRYspHtFcNZIxO9Jyop",
     title: "Answer Copies Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "50+ handwritten answer sheets",
@@ -353,7 +348,6 @@ export const PRODUCTS: StoreProduct[] = [
 
   {
     slug: "all-strategy-reports",
-    dodoProductId: "pdt_0NjVzyc2byQLoEW4VzgZv",
     title: "All Strategy Reports",
     image: "https://ik.imagekit.io/impiclabs/products/all-strategy-reports.png?tr=w-464,h-600,f-auto,q-80",
     tagline: "All 280+ topper strategies bundled",
@@ -408,7 +402,6 @@ export const PRODUCTS: StoreProduct[] = [
 
   {
     slug: "government-schemes-compilation",
-    dodoProductId: "pdt_0NiRYsuBZ0zyVvmW4gDKN",
     title: "Government Schemes Compilation",
     image: "https://ik.imagekit.io/impiclabs/products/government-schemes-compilation.png?tr=w-464,h-600,f-auto,q-80",
     images: [
@@ -469,7 +462,6 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "complete-gs-notes-bundle",
-    dodoProductId: "pdt_0NiRYsxdN5boMQWsxQb4O",
     title: "Complete GS Notes Bundle",
     tagline: "81 files — all GS 1-4 + Prelims notes in one bundle",
     description: "Every GS notes bundle on the platform — GS 1, GS 2, GS 3, Ethics & GS 4, and Prelims Prep Pack — merged into one complete set.",
@@ -538,7 +530,6 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "anthropology-bundle",
-    dodoProductId: "pdt_0NiRYsvx8ApjyGrPDbdeW",
     title: "Anthropology Optional Bundle",
     tagline: "14 files — complete Anthropology coverage by Laghima Tiwari (AIR 176) & Dr. Apala Mishra (AIR 9)",
     description: "Comprehensive Anthropology optional notes with test papers by rank holders.",
@@ -600,7 +591,6 @@ export const PRODUCTS: StoreProduct[] = [
   },
   {
     slug: "vision-ias-mains-2026-test-series",
-    dodoProductId: "pdt_0Nifrye66JW2lrrGyHeum",
     institute: "vision-ias",
     title: "Vision IAS Mains Test Series 2026",
     tagline: "10 full-length Mains tests — GS Paper 1-4 by Vision IAS",

@@ -22,13 +22,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
+  // Optional: the payment window asks for the email if we don't have it. Delivery uses whichever we get.
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-  if (!EMAIL_RE.test(email)) {
-    return NextResponse.json({ error: "Enter a valid email so we can send your download link." }, { status: 400 });
+  if (email && !EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
   try {
-    const { order, ref, total } = await createPendingOrder(body.items, email);
+    const { order, ref, total } = await createPendingOrder(body.items, email || undefined);
 
     const rzpOrder = await getRazorpay().orders.create({
       amount: total * 100,
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
     await trackServer("checkout_started", {
       visitorId: typeof body.visitorId === "string" ? body.visitorId : undefined,
       sessionId: typeof body.sessionId === "string" ? body.sessionId : undefined,
-      email,
+      email: email || undefined,
       path: "/api/razorpay/create-order",
       props: { ref, total, items: order.items.map((i: { slug: string }) => i.slug), provider: "razorpay" },
     });

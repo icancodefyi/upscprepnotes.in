@@ -10,8 +10,12 @@ type Order = {
   total: number;
   offeredPrice: number | null;
   status: "pending" | "paid" | "delivered";
+  provider?: string | null;
   dodoSessionId: string | null;
   dodoPaymentId: string | null;
+  razorpayOrderId?: string | null;
+  razorpayPaymentId?: string | null;
+  paymentId?: string | null;
   createdAt: string | null;
 };
 
