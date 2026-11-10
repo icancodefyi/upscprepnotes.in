@@ -34,6 +34,7 @@
     "node-telegram-bot-api": "^1.1.2",
     "posthog-js": "^1.446.3",
     "radix-ui": "^1.4.3",
+    "razorpay": "^2.9.8",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0",
