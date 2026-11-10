@@ -2,10 +2,11 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 import Gilu from "@/components/brand/Gilu";
+import { parseTopperTitle } from "@/lib/topper-title";
 import { DownloadIcon, ZipIcon } from "@/components/store/icons";
 
 type LibFile = { name: string; url: string; size: string; path: string };
-type LibGroup = { title: string; files: LibFile[] };
+type LibGroup = { title: string; avatar?: string; files: LibFile[] };
 type Props = {
   /** Used to remember which files this browser has opened. */
   storageKey: string;
@@ -21,14 +22,6 @@ const PALETTE = [
   { bg: "#ffe0dc", fg: "#9b2a1f" },
   { bg: "#ece5ff", fg: "#4a2fb0" },
 ];
-
-/** "Abhishek Sharma (AIR 38, 2024)" → name, rank and year. Anything else is shown as it is. */
-function parseTitle(title: string): { name: string; rank?: string; year?: string } {
-  const m = title.match(/^(.*?)\s*\(([^)]*)\)\s*$/);
-  if (!m) return { name: title };
-  const parts = m[2].split(",").map((s) => s.trim());
-  return { name: m[1], rank: parts.find((p) => /^AIR\s*\d+/i.test(p)), year: parts.find((p) => /^\d{4}$/.test(p)) };
-}
 
 function initials(name: string): string {
   const words = name.split(/\s+/).filter(Boolean);
@@ -74,7 +67,7 @@ export default function FileLibrary({ storageKey, zipUrl, groups }: Props) {
   const [query, setQuery] = useState("");
   const { opened, mark } = useOpened(storageKey);
 
-  const parsed = useMemo(() => groups.map((g) => ({ ...g, ...parseTitle(g.title) })), [groups]);
+  const parsed = useMemo(() => groups.map((g) => ({ ...g, ...parseTopperTitle(g.title) })), [groups]);
   const q = query.trim().toLowerCase();
   const shown = parsed.filter((g) => {
     if (!q) return true;
@@ -128,9 +121,14 @@ export default function FileLibrary({ storageKey, zipUrl, groups }: Props) {
           return (
             <details key={`${g.title}-${q}`} open={q && shown.length <= 6 ? true : !showToolbar && index === 0} className={`${card} group overflow-hidden`}>
               <summary className="flex cursor-pointer list-none items-center gap-4 px-4 py-4 transition-colors hover:bg-[var(--canvas)] sm:px-5 [&::-webkit-details-marker]:hidden">
-                <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: color.bg, color: color.fg }}>
-                  {initials(g.name) || "·"}
-                </span>
+                {g.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={g.avatar} alt="" width={44} height={44} loading="lazy" decoding="async" className="h-11 w-11 shrink-0 rounded-full object-cover" style={{ background: color.bg }} />
+                ) : (
+                  <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: color.bg, color: color.fg }}>
+                    {initials(g.name) || "·"}
+                  </span>
+                )}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-m font-bold leading-snug">{g.name}</span>
                   {meta && <span className="mt-0.5 block text-s text-[var(--muted)]">{meta}</span>}

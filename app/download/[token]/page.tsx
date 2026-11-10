@@ -13,6 +13,9 @@ import {
 import BrandShell from "@/components/brand/BrandShell";
 import Gilu from "@/components/brand/Gilu";
 import FileLibrary from "@/components/store/FileLibrary";
+import { TopperModel } from "@/models/topper.model";
+import { topperImageSrc } from "@/lib/utils";
+import { parseTopperTitle } from "@/lib/topper-title";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 
@@ -26,6 +29,25 @@ export const metadata: Metadata = {
 interface Props {
   params: Promise<{ token: string }>;
   searchParams: Promise<{ slug?: string }>;
+}
+
+/** Pictures for the toppers named in the file list, matched by exam year and rank. Same images the toppers pages use. */
+async function loadAvatars(titles: string[]): Promise<Map<string, string>> {
+  const wanted = titles.map(parseTopperTitle).filter((t) => t.yearNumber && t.rankNumber);
+  const map = new Map<string, string>();
+  if (!wanted.length) return map;
+  try {
+    const rows = (await TopperModel.find(
+      { year: { $in: [...new Set(wanted.map((t) => t.yearNumber))] }, rank: { $in: [...new Set(wanted.map((t) => t.rankNumber))] } },
+      { firstName: 1, lastName: 1, rank: 1, year: 1, slug: 1, ProfileImage: 1 },
+    ).lean()) as unknown as { firstName?: string; lastName?: string; rank?: number; year?: number; slug?: string; ProfileImage?: string }[];
+    for (const r of rows) {
+      map.set(`${r.year}-${r.rank}`, topperImageSrc({ slug: r.slug, ProfileImage: r.ProfileImage, firstName: r.firstName ?? "", lastName: r.lastName ?? "" }));
+    }
+  } catch {
+    // Pictures are a nicety. The list still works without them.
+  }
+  return map;
 }
 
 export default async function DownloadPage({ params, searchParams }: Props) {
@@ -53,6 +75,12 @@ export default async function DownloadPage({ params, searchParams }: Props) {
   }
 
   const items = (order.items || []).filter((item: { slug: string }) => !single || item.slug === single);
+
+  const allTitles = items.flatMap((item: { slug: string }) => {
+    const f = getProductFiles(item.slug);
+    return f ? groupFiles(f.files).map((g) => g.title) : [];
+  });
+  const avatars = await loadAvatars(allTitles);
 
   return (
     <BrandShell>
@@ -107,15 +135,19 @@ export default async function DownloadPage({ params, searchParams }: Props) {
                 <FileLibrary
                   storageKey={`${token}:${item.slug}`}
                   zipUrl={zipUrl(files.folder)}
-                  groups={groups.map((group) => ({
+                  groups={groups.map((group) => {
+                    const t = parseTopperTitle(group.title);
+                    return {
                     title: group.title,
+                    avatar: t.yearNumber && t.rankNumber ? avatars.get(`${t.yearNumber}-${t.rankNumber}`) : undefined,
                     files: group.files.map((file) => ({
                       name: file.name,
                       path: file.path,
                       size: formatBytes(file.size),
                       url: fileUrl(files.folder, file.path),
                     })),
-                  }))}
+                    };
+                  })}
                 />
               </div>
             </section>
