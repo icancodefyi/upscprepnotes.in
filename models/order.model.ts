@@ -16,6 +16,10 @@ const orderSchema = new Schema(
     ref: { type: String, unique: true, sparse: true },
     dodoSessionId: { type: String, unique: true, sparse: true },
     dodoPaymentId: { type: String },
+    /** Which payment provider took the money. Orders created before this field are Dodo orders. */
+    provider: { type: String, enum: ["dodo", "razorpay"], default: "dodo" },
+    razorpayOrderId: { type: String, unique: true, sparse: true },
+    razorpayPaymentId: { type: String },
     downloadToken: { type: String, unique: true, sparse: true },
     status: {
       type: String,

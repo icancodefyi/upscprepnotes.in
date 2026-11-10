@@ -85,7 +85,8 @@ const result = await sendEmail({
 export async function sendAdminNotification(
   email: string,
   items: { title: string }[],
-  total: number
+  total: number,
+  provider: "Dodo" | "Razorpay" = "Dodo"
 ) {
   const itemList = items
     .map((i) => `<tr><td style="padding:4px 0">• ${i.title}</td></tr>`)
@@ -97,7 +98,7 @@ export async function sendAdminNotification(
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;padding:24px;background:#f9f9f9">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:32px">
-        <h2 style="margin:0 0 8px">New Dodo Payment Received</h2>
+        <h2 style="margin:0 0 8px">New ${provider} Payment Received</h2>
         <p style="margin:0 0 24px;color:#666">${email} completed payment of ₹${total}</p>
         <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tr><td style="padding:8px 0;color:#888">Email</td><td style="padding:8px 0">${email}</td></tr>

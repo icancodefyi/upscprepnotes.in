@@ -1,36 +1,69 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getRazorpay } from "@/lib/razorpay";
+import { createPendingOrder, OrderError } from "@/lib/razorpay-orders";
+import { EMAIL_RE } from "@/lib/handoff";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { trackServer } from "@/lib/tracking/server";
 
 export const runtime = "nodejs";
 
-/** Creates a Razorpay order. Amount is in paise (₹1 = 100 paise). */
-export async function POST(req: Request) {
-  let body: { amount?: unknown; receipt?: unknown };
+/**
+ * Starts a purchase: saves a pending order priced from the product list, then creates the Razorpay order
+ * for that exact amount. The browser sends product slugs and an email, never a price.
+ */
+export async function POST(request: NextRequest) {
+  const rl = await checkRateLimit(request, "form");
+  if (rl) return rl;
+
+  let body: { items?: unknown; email?: unknown; visitorId?: unknown; sessionId?: unknown };
   try {
-    body = await req.json();
+    body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const amount = body.amount;
-  if (typeof amount !== "number" || !Number.isInteger(amount) || amount < 100) {
-    return NextResponse.json({ error: "Amount must be a whole number of paise, at least 100" }, { status: 400 });
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: "Enter a valid email so we can send your download link." }, { status: 400 });
   }
-  const receipt = typeof body.receipt === "string" && body.receipt.length <= 40 ? body.receipt : `rcpt_${Date.now()}`;
 
   try {
-    const order = await getRazorpay().orders.create({ amount, currency: "INR", receipt });
-    return NextResponse.json({ order_id: order.id, amount: order.amount, currency: order.currency });
+    const { order, ref, total } = await createPendingOrder(body.items, email);
+
+    const rzpOrder = await getRazorpay().orders.create({
+      amount: total * 100,
+      currency: "INR",
+      receipt: ref,
+      notes: { ref, orderId: order._id.toString() },
+    });
+    order.razorpayOrderId = rzpOrder.id;
+    await order.save();
+
+    await trackServer("checkout_started", {
+      visitorId: typeof body.visitorId === "string" ? body.visitorId : undefined,
+      sessionId: typeof body.sessionId === "string" ? body.sessionId : undefined,
+      email,
+      path: "/api/razorpay/create-order",
+      props: { ref, total, items: order.items.map((i: { slug: string }) => i.slug), provider: "razorpay" },
+    });
+
+    return NextResponse.json({
+      order_id: rzpOrder.id,
+      amount: rzpOrder.amount,
+      currency: rzpOrder.currency,
+      key_id: process.env.RAZORPAY_KEY_ID,
+      ref,
+    });
   } catch (err) {
-    const e = err as { statusCode?: number; message?: string; message2?: string };
+    if (err instanceof OrderError) return NextResponse.json({ error: err.message }, { status: 400 });
+    const e = err as { statusCode?: number; message?: string };
     if (e.message === "RAZORPAY_NOT_CONFIGURED") {
-      return NextResponse.json({ error: "Payments are not configured" }, { status: 500 });
+      return NextResponse.json({ error: "Payments are not configured." }, { status: 500 });
     }
-    // Razorpay answers 401 when the key id or secret is wrong.
     if (e.statusCode === 401) {
       return NextResponse.json({ error: "Razorpay authentication failed. Check the API keys." }, { status: 401 });
     }
     console.error("razorpay create-order failed", e.statusCode, e.message);
-    return NextResponse.json({ error: "Could not create the order. Please try again." }, { status: 500 });
+    return NextResponse.json({ error: "Could not start the payment. Please try again." }, { status: 500 });
   }
 }

@@ -13,6 +13,7 @@ type RazorpayOptions = {
   order_id: string;
   name: string;
   description: string;
+  prefill?: { email?: string };
   handler: (r: RazorpayResponse) => void;
   modal?: { ondismiss?: () => void };
   theme?: { color: string };
@@ -23,17 +24,32 @@ declare global {
   }
 }
 
-type Props = { amountPaise: number; name: string; description: string; receipt?: string };
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/** Pays one amount through Razorpay Standard Checkout: create order, open the modal, verify the signature. */
-export default function RazorpayCheckout({ amountPaise, name, description, receipt }: Props) {
+type Props = {
+  /** Product slugs in the cart. The server sets every price. */
+  slugs: string[];
+  /** Shown in the payment window and on the button. */
+  name: string;
+  description: string;
+  /** Total in rupees, for the button label only. The server calculates the amount it charges. */
+  displayTotal: number;
+};
+
+/** Pays a cart through Razorpay Standard Checkout: create the order, open the modal, verify, then show the order page. */
+export default function RazorpayCheckout({ slugs, name, description, displayTotal }: Props) {
+  const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ tone: "ok" | "error" | "info"; text: string } | null>(null);
-  const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+  function goToOrder(ref: string) {
+    window.location.assign(`/store/success?ref=${encodeURIComponent(ref)}`);
+  }
 
   async function pay() {
     setMessage(null);
-    if (!keyId) return setMessage({ tone: "error", text: "Payments are not configured." });
+    const cleanEmail = email.trim().toLowerCase();
+    if (!EMAIL_RE.test(cleanEmail)) return setMessage({ tone: "error", text: "Enter the email where you want your download link." });
     if (!window.Razorpay) return setMessage({ tone: "error", text: "The payment window is still loading. Try again in a moment." });
 
     setBusy(true);
@@ -41,7 +57,7 @@ export default function RazorpayCheckout({ amountPaise, name, description, recei
       const res = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amountPaise, receipt }),
+        body: JSON.stringify({ items: slugs, email: cleanEmail }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -51,23 +67,30 @@ export default function RazorpayCheckout({ amountPaise, name, description, recei
 
       const RazorpayCtor = window.Razorpay;
       const rzp = new RazorpayCtor({
-        key: keyId,
+        key: data.key_id,
         amount: data.amount,
         currency: data.currency,
         order_id: data.order_id,
         name,
         description,
+        prefill: { email: cleanEmail },
         theme: { color: "#1f3fd6" },
         handler: async (response) => {
-          const v = await fetch("/api/razorpay/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(response),
-          });
-          const result = await v.json();
-          setBusy(false);
-          if (v.ok && result.success) setMessage({ tone: "ok", text: `Payment received. Reference ${response.razorpay_payment_id}.` });
-          else setMessage({ tone: "error", text: "We could not confirm this payment. Contact us with your payment reference." });
+          try {
+            const v = await fetch("/api/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(response),
+            });
+            const result = await v.json();
+            if (v.ok && result.success) return goToOrder(data.ref);
+            if (v.status === 202) return goToOrder(data.ref); // still capturing; the order page waits for it
+            setBusy(false);
+            setMessage({ tone: "error", text: "We could not confirm this payment yet. If money was taken, your download link will still arrive by email." });
+          } catch {
+            setBusy(false);
+            setMessage({ tone: "error", text: "Network problem while confirming the payment. Check your email for the download link." });
+          }
         },
         modal: {
           ondismiss: () => {
@@ -92,13 +115,23 @@ export default function RazorpayCheckout({ amountPaise, name, description, recei
   return (
     <div>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      <label className="block text-[14px] font-bold" htmlFor="rzp-email">Email for your download link</label>
+      <input
+        id="rzp-email"
+        type="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="mt-1 w-full rounded-xl border border-[#c9cfdd] px-3 py-2.5 text-[15px]"
+        placeholder="you@example.com"
+      />
       <button
         type="button"
         onClick={pay}
         disabled={busy}
-        className="rounded-xl bg-[#1f3fd6] px-5 py-3 text-[15px] font-bold text-white disabled:opacity-60"
+        className="mt-4 rounded-xl bg-[#1f3fd6] px-5 py-3 text-[15px] font-bold text-white disabled:opacity-60"
       >
-        {busy ? "Opening payment…" : `Pay ₹${(amountPaise / 100).toLocaleString("en-IN")}`}
+        {busy ? "Opening payment…" : `Pay ₹${displayTotal.toLocaleString("en-IN")}`}
       </button>
       {message && (
         <p role="status" className="mt-3 text-[14px]" style={{ color }}>
