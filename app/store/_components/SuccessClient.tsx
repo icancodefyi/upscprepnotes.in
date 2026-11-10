@@ -50,7 +50,11 @@ export default function SuccessClient() {
         .then((data) => {
           if (data.found && data.status === "paid") {
             setOrder(data);
-            posthog.capture("purchase_completed", { order_id: data.orderId, total_amount: data.total, item_slugs: data.items?.map((i: { slug: string }) => i.slug), item_count: data.items?.length });
+            // Reloading this page must not count the same payment twice.
+            const seenKey = `purchase_tracked_${data.orderId}`;
+            let seen = false;
+            try { seen = sessionStorage.getItem(seenKey) === "1"; sessionStorage.setItem(seenKey, "1"); } catch {}
+            if (!seen) posthog.capture("purchase_completed", { order_id: data.orderId, total_amount: data.total, item_slugs: data.items?.map((i: { slug: string }) => i.slug), item_count: data.items?.length });
             setLoading(false);
           } else if (attempts < maxAttempts) {
             attempts++;

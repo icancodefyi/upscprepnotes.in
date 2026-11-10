@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { captureAttribution, flush, identify, track } from "@/lib/track";
+import { captureAttribution, flush, identify, pathWithoutEmail, track } from "@/lib/track";
 
 /**
  * Site-wide interaction capture into the `tracking` collection. Mounted once in AppShell.
@@ -236,7 +236,7 @@ export default function Tracker() {
       if (document.visibilityState === "hidden") leave();
       else if (!page.current.start) {
         page.current.start = Date.now();
-        page.current.path = window.location.pathname + window.location.search;
+        page.current.path = pathWithoutEmail();
       }
     };
 
@@ -275,7 +275,7 @@ export default function Tracker() {
     started.current.clear();
     seenViews.current = new Set();
     if (p.start) track("page_leave", { duration_ms: Date.now() - p.start, max_scroll: p.maxScroll }, { path: prevPath });
-    const path = window.location.pathname + window.location.search;
+    const path = pathWithoutEmail();
     page.current = { start: Date.now(), maxScroll: 0, marks: new Set(), path };
     // Wait a beat so the new page's <title> is in place.
     const t = setTimeout(() => track("page_view", { title: document.title.slice(0, 160), from: prevPath || undefined }, { path }), 300);

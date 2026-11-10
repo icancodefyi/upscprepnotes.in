@@ -38,6 +38,17 @@ export function getVisitorId(): string {
   }
 }
 
+/** Current path and query, with any email removed. The payment provider puts the buyer's email in the success URL. */
+export function pathWithoutEmail(): string {
+  try {
+    const u = new URL(window.location.href);
+    u.searchParams.delete("email");
+    return u.pathname + u.search;
+  } catch {
+    return window.location.pathname;
+  }
+}
+
 export function getSessionId(): string {
   try {
     let s = sessionStorage.getItem("_sid");
@@ -117,7 +128,7 @@ export function track(event: string, props: Props = {}, opts: { path?: string } 
   queue.push({
     event,
     ts: Date.now(),
-    path: opts.path ?? window.location.pathname + window.location.search,
+    path: opts.path ?? pathWithoutEmail(),
     props,
   });
   if (queue.length >= 20) flush();
