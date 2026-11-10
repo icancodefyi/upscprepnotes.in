@@ -3,7 +3,7 @@
 import { useMemo, useState, useSyncExternalStore } from "react";
 import Gilu from "@/components/brand/Gilu";
 import { parseTopperTitle } from "@/lib/topper-title";
-import { DownloadIcon, ZipIcon } from "@/components/store/icons";
+import { DownloadIcon, ZipIcon } from "@/components/brand/icons";
 
 type LibFile = { name: string; url: string; size: string; path: string };
 type LibGroup = { title: string; avatar?: string; files: LibFile[] };

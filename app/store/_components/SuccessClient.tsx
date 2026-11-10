@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Gilu from "@/components/brand/Gilu";
-import { ChatIcon, DownloadIcon, FileIcon, MailIcon, ZipIcon } from "@/components/store/icons";
+import { ChatIcon, DownloadIcon, FileIcon, MailIcon, ZipIcon } from "@/components/brand/icons";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
 

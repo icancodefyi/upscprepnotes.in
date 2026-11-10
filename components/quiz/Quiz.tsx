@@ -14,7 +14,7 @@ import {
   nextPracticeSet, resetProgress, saveProgress, totalMarks, xpFor,
   type Answer, type Badge, type Pick, type Progress, type Run,
 } from "@/lib/quiz/engine";
-import { Flame, Mark, Medal, TrackIcon } from "./icons";
+import { Flame, Mark, Medal, TrackIcon } from "@/components/brand/icons";
 import "./quiz.css";
 
 /** Every quiz event goes to PostHog and to our own tracking under the same name, so both dashboards agree. */

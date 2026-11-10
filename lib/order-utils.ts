@@ -37,6 +37,8 @@ export async function sendOrderConfirmationEmail(
   items: { title: string }[],
   downloadUrl: string
 ) {
+  // Brand icons are hosted PNGs (see public/icons): Gmail strips inline SVG.
+  const siteBase = process.env.SITE_URL || "https://upscprepnotes.in";
   const itemList = items
     .map(
       (i) =>
@@ -50,10 +52,8 @@ export async function sendOrderConfirmationEmail(
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
-        <div style="text-align:center;margin-bottom:24px">
-          <div style="width:56px;height:56px;border-radius:50%;background:#dbe2fb;display:inline-flex;align-items:center;justify-content:center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1f3fd6" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+        <div style="text-align:center;margin-bottom:20px">
+          <img src="${siteBase}/icons/zip.png" width="72" height="72" alt="" style="display:inline-block;border:0">
         </div>
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Payment Successful!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 4px;line-height:1.6">Order ID: <strong>${orderId}</strong></p>
