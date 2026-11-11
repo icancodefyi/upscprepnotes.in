@@ -246,16 +246,16 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
           <div className="min-w-0 lg:col-span-7">
             <Gallery product={product} />
 
+            {/* Mobile purchase card */}
+            <div ref={buyRef} className="mt-6 lg:hidden">
+              <PurchaseCard product={product} />
+            </div>
+
             {product.slug === "answer-copies-compilation" && (
               <Block title="Read real copies before you buy" id="preview" view="product_samples">
                 <SamplePreview />
               </Block>
             )}
-
-            {/* Mobile purchase card */}
-            <div ref={buyRef} className="mt-6 lg:hidden">
-              <PurchaseCard product={product} />
-            </div>
 
             {product.specs && product.specs.length > 0 && (
               <Block title="Product Details">
