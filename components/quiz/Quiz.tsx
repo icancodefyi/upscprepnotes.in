@@ -11,7 +11,7 @@ import { shareCode } from "@/lib/quiz/share";
 import {
   BADGES, CUTOFF_2024_GENERAL, EMPTY, EXAM_PACE_S, SETS, SET_SIZE,
   MILESTONES, dailySetIndex, finishRun, fmtMarks, istDay, joinChallenge, levelFor, loadProgress, nextMilestone,
-  nextPracticeSet, resetProgress, saveProgress, totalMarks, xpFor,
+  resetProgress, saveProgress, totalMarks, xpFor,
   type Answer, type Badge, type Pick, type Progress, type Run,
 } from "@/lib/quiz/engine";
 import { Flame, Mark, Medal, TrackIcon } from "@/components/brand/icons";
@@ -258,26 +258,30 @@ function MilestoneTrack({ progress, onJoin }: { progress: Progress; onJoin: () =
 /* ---------- home ---------- */
 
 function Home({ progress, onPlay, onReset, onJoin, install }: { progress: Progress; onPlay: (set: number, daily: boolean) => void; onReset: () => void; onJoin: () => void; install: InstallState }) {
+  // Re-check the Indian calendar day every minute, so the new set appears at midnight without a reload.
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => tick((n) => n + 1), 60_000);
+    return () => clearInterval(id);
+  }, []);
   const today = istDay();
   const doneToday = progress.lastDailyDay === today;
   const daily = dailySetIndex(today);
-  const lastSetToday = progress.history.find((h) => h.day === today)?.setIndex ?? daily;
-  const practice = nextPracticeSet(lastSetToday);
   const subjects = Object.entries(progress.subjects)
     .map(([s, v]) => ({ s, pct: v && v.total ? v.right / v.total : 0, n: v?.total ?? 0 }))
     .sort((a, b) => b.n - a.n);
   const weakest = [...subjects].filter((x) => x.n >= 2).sort((a, b) => a.pct - b.pct)[0];
   const say = progress.history.length === 0 ? SAYS.start[0]
-    : doneToday ? "Today's set is done. Want 5 more for practice?"
+    : doneToday ? "Done for today! Come back tomorrow for 5 new questions."
       : progress.streak > 0 ? `Day ${progress.streak + 1} is waiting. Don't break the streak!`
         : SAYS.start[1];
 
   const cta = doneToday ? (
-    <Btn onClick={() => onPlay(practice, false)} icon="replay" data-track="quiz-practice">Practice 5 more</Btn>
+    <p className="rounded-2xl px-5 py-4 text-[16px] font-bold" style={{ background: C.yellowSoft, color: C.ink }}>Come back tomorrow at midnight for 5 new questions.</p>
   ) : (
     <Btn onClick={() => onPlay(daily, true)} icon="play" className="qz-glow" data-track="quiz-start">Play today&apos;s 5</Btn>
   );
-  const ctaNote = doneToday ? "A new daily set unlocks at midnight." : "About 5 minutes · no sign-up needed";
+  const ctaNote = doneToday ? "Everyone gets the same five each day. New set at 12am IST." : "Everyone gets the same five each day · About 5 minutes · no sign-up needed";
 
   return (
     <Shell>
@@ -290,7 +294,7 @@ function Home({ progress, onPlay, onReset, onJoin, install }: { progress: Progre
           </section>
           <h1 className="mt-2 text-[34px] font-bold leading-[1.05] tracking-[-0.03em] lg:mt-6 lg:text-[56px]" style={{ color: C.ink }}>Daily UPSC quiz</h1>
           <p className="mt-2 text-[16px] leading-relaxed lg:mt-4 lg:max-w-[46ch] lg:text-[19px]" style={{ color: C.ink2 }}>
-            Five real questions from the UPSC Prelims 2024 paper, marked the exam way: <b style={{ color: C.green }}>+2</b> right,{" "}
+            Five real questions a day from the UPSC Prelims 2024 paper, marked the exam way: <b style={{ color: C.green }}>+2</b> right,{" "}
             <b style={{ color: C.redDeep }}>−0.66</b> wrong, <b>0</b> skipped.
           </p>
           <div className="mt-8 hidden max-w-[380px] lg:block">
@@ -758,7 +762,7 @@ function InstallCard({ install }: { install: InstallState }) {
   );
 }
 
-function Result({ run, outcome, before, after, live, install, onJoin, onHome, onPractice }: { run: Run; outcome: Outcome; before: Progress; after: Progress; live: Progress; install: InstallState; onJoin: () => void; onHome: () => void; onPractice: () => void }) {
+function Result({ run, outcome, before, after, live, install, onJoin, onHome }: { run: Run; outcome: Outcome; before: Progress; after: Progress; live: Progress; install: InstallState; onJoin: () => void; onHome: () => void }) {
   const questions = SETS[run.setIndex];
   const [open, setOpen] = useState<number | null>(null);
   const [shareMsg, setShareMsg] = useState("");
@@ -809,8 +813,8 @@ function Result({ run, outcome, before, after, live, install, onJoin, onHome, on
         <Btn onClick={whatsapp} kind="green" icon="whatsapp" data-track="quiz-share-whatsapp" aria-label="Challenge a friend on WhatsApp">WhatsApp</Btn>
       </div>
       <div className="grid grid-cols-2 gap-2.5">
-        <Btn onClick={onPractice} icon="replay" data-track="quiz-practice-more">5 more</Btn>
         <Btn onClick={onHome} kind="ghost" icon="home" data-track="quiz-home">Home</Btn>
+        <p className="flex items-center justify-center rounded-full text-center text-[13px] font-bold" style={{ color: C.ink2 }}>Come back tomorrow for 5 more</p>
       </div>
       {shareMsg && <p className="text-center text-[13px]" style={{ color: C.green }} role="status">{shareMsg}</p>}
     </div>
@@ -1062,7 +1066,6 @@ export default function Quiz() {
         install={install}
         onJoin={join}
         onHome={() => { setScreen({ name: "home" }); window.scrollTo({ top: 0 }); }}
-        onPractice={() => play(nextPracticeSet(screen.run.setIndex), false)}
       />
     );
   }
