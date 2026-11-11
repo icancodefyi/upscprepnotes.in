@@ -300,7 +300,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
                 <FieldError id="phone-error">{fieldErr.phone}</FieldError>
               </div>
             </div>
-            <p className="mt-3 text-s text-[var(--muted)]"><span aria-hidden className="text-[var(--mark-deep)]">*</span> Compulsory. We need both to send you the copy.</p>
+            <p className="mt-2.5 text-[13px] leading-[1.45] text-[var(--ink-2)] sm:mt-3 sm:text-s sm:leading-[1.5]"><span aria-hidden className="font-bold text-[var(--mark-deep)]">*</span> Compulsory. <strong>Please enter accurate details</strong> so we can send you all the important, curated free study material as soon as it is available.</p>
 
             {/* What they told us, with a way back to change any of it */}
             <div className="mt-3 flex gap-3 rounded-[18px] bg-[#e3e8fb] p-3.5 text-[#172fa3]">

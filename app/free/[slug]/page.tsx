@@ -63,7 +63,7 @@ export default async function FreeCopyPage({ params }: Props) {
 
             {/* Desktop only: what happens next, and the promise. On phones the form carries both. */}
             <ol className="mt-8 hidden max-w-[44ch] space-y-3 text-left lg:block">
-              {["Answer seven quick questions", "We email you the link", "Read it on any phone or laptop"].map((t, i) => (
+              {["Answer seven quick questions, honestly", "We email you the link", "Get new curated free material as it comes"].map((t, i) => (
                 <li key={t} className="flex items-center gap-3 text-m font-bold">
                   <span aria-hidden className="tab grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-s text-[var(--accent)]">{i + 1}</span>
                   {t}
