@@ -67,7 +67,7 @@ export default async function TrafficPage({ searchParams }: { searchParams: Prom
             <Card title="Devices" desc="Unique visitors">
               <BarList rows={t.devices} />
             </Card>
-            <Card title="Countries" desc="Unique visitors (needs the Vercel deployment)">
+            <Card title="Countries" desc="Unique visitors with a known location">
               <BarList rows={t.countries} />
             </Card>
           </div>

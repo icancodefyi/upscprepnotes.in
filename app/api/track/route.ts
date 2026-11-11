@@ -1,3 +1,4 @@
+import { geoFrom } from "@/lib/geo";
 import { NextRequest } from "next/server";
 import { createHash } from "crypto";
 import { connectDB } from "@/lib/mongodb";
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
   const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || req.headers.get("x-real-ip") || "";
   const salt = process.env.TRACKING_SALT || process.env.AUTH_SECRET || "upscprepnotes";
   const ipHash = ip ? createHash("sha256").update(ip + salt).digest("hex").slice(0, 16) : undefined;
-  const city = req.headers.get("x-vercel-ip-city");
+  const geo = geoFrom(req.headers);
   const screen = (body.screen || {}) as { w?: number; h?: number };
   const w = Number(screen.w) || undefined;
   const common = {
@@ -66,9 +67,9 @@ export async function POST(req: NextRequest) {
     },
     lang: typeof body.lang === "string" ? body.lang.slice(0, 20) : undefined,
     tz: typeof body.tz === "string" ? body.tz.slice(0, 60) : undefined,
-    country: req.headers.get("x-vercel-ip-country") || undefined,
-    region: req.headers.get("x-vercel-ip-country-region") || undefined,
-    city: city ? decodeURIComponent(city).slice(0, 80) : undefined,
+    country: geo.country,
+    region: geo.region,
+    city: geo.city,
     ipHash,
   };
 

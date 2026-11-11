@@ -13,6 +13,10 @@ const freeDownloadLeadSchema = new Schema(
     profile: {
       stage: String, attempt: String, mode: String, working: String, optional: String, state: String, phone: String,
     },
+    /** Approximate location from the request's network headers, captured at submit (see lib/geo.ts). Not typed by the visitor. */
+    country: { type: String, default: "" },
+    region: { type: String, default: "" },
+    city: { type: String, default: "" },
   },
   { timestamps: true }
 );

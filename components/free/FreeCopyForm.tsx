@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import posthog from "posthog-js";
 import Gilu, { type GiluPose } from "@/components/brand/Gilu";
-import { ATTEMPTS, MODES, OPTIONALS, PROFILE_KEY, STAGES, STATES, WORKING, type LeadProfile, type Option } from "@/lib/lead-profile";
+import { identify } from "@/lib/track";
+import { ATTEMPTS, MODES, OPTIONALS, PROFILE_KEY, STAGES, WORKING, type LeadProfile, type Option } from "@/lib/lead-profile";
 
 type Saved = LeadProfile & { email?: string };
 type Key = Exclude<keyof LeadProfile, "phone">;
 
 /** One question per screen. Every question is required. Short lists show as rows, long lists as a chip grid. */
 const TOP_OPTIONAL = ["PSIR", "Sociology", "Anthropology", "Geography", "History", "Public Administration", "Law", "Literature", "Economics", "Mathematics", "Medical Science", "Not decided"];
-const TOP_STATE = ["Delhi", "Uttar Pradesh", "Bihar", "Rajasthan", "Maharashtra", "Madhya Pradesh", "Haryana", "Karnataka", "Tamil Nadu", "Gujarat", "West Bengal", "Telangana"];
 
 const QUESTIONS: { key: Key; title: string; hint: string; options: Option[]; grid?: boolean; top?: string[] }[] = [
   { key: "stage", title: "Where are you in your preparation?", hint: "Pick the closest one.", options: STAGES },
@@ -18,15 +18,13 @@ const QUESTIONS: { key: Key; title: string; hint: string; options: Option[]; gri
   { key: "mode", title: "How are you preparing?", hint: "So we send material that fits how you study.", options: MODES },
   { key: "working", title: "What describes you best?", hint: "Your daily routine shapes what helps most.", options: WORKING },
   { key: "optional", title: "What is your optional subject?", hint: "Choose “Not decided” if you have not picked yet.", options: OPTIONALS, grid: true, top: TOP_OPTIONAL },
-  { key: "state", title: "Where do you live?", hint: "We use this to share relevant local resources.", options: STATES, grid: true, top: TOP_STATE },
 ];
 const LAST = QUESTIONS.length; // the contact step
 const GILU: { pose: GiluPose; line: (first: string) => string }[] = [
-  { pose: "hello", line: (f) => `Hi! Seven quick taps and ${f}'s copy is yours.` },
-  { pose: "thinking", line: () => "Good start. Six to go." },
-  { pose: "reading", line: () => "Five to go. You are quick." },
-  { pose: "thinking", line: () => "Four to go. Past the halfway mark soon." },
-  { pose: "reading", line: () => "Three to go." },
+  { pose: "hello", line: (f) => `Hi! Five quick taps and ${f}'s copy is yours.` },
+  { pose: "thinking", line: () => "Good start. Four to go." },
+  { pose: "reading", line: () => "Three to go. You are quick." },
+  { pose: "thinking", line: () => "Halfway there. Keep going." },
   { pose: "run", line: () => "Two to go. Nearly there." },
   { pose: "celebrating", line: (f) => `Unlocked! One last step and ${f}'s copy is on its way.` },
 ];
@@ -160,6 +158,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
       write({ ...profile, phone: clean, email: email.trim() });
+      identify(email.trim(), "free_copy");
       posthog.capture("free_copy_submitted", { topper_slug: topperSlug, returning: known });
       if (data.redirect) {
         leaving = true;
@@ -268,7 +267,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
                   onChange={(e) => e.target.value && choose(q.key, e.target.value)}
                   className={`h-11 w-full rounded-full px-5 text-s font-bold outline-none sm:text-m ${profile[q.key] && !q.top.includes(profile[q.key]!) ? "bg-[var(--ink)] text-white" : "bg-white text-[var(--ink-2)] shadow-[0_0_0_1px_var(--line-2)]"}`}
                 >
-                  <option value="">{q.key === "optional" ? "Other subject" : "Other state"}</option>
+                  <option value="">Other subject</option>
                   {q.options.filter((o) => !q.top!.includes(o.value)).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
               </div>

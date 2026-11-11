@@ -1,4 +1,5 @@
 import { sanitizeProfile } from "@/lib/lead-profile";
+import { geoFrom } from "@/lib/geo";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
@@ -114,7 +115,7 @@ export async function POST(request: NextRequest) {
 
     if (source === "free_page") {
       if (!profile.phone) return NextResponse.json({ error: "Please enter a valid 10-digit WhatsApp number." }, { status: 400 });
-      const required = ["stage", "attempt", "mode", "working", "optional", "state"] as const;
+      const required = ["stage", "attempt", "mode", "working", "optional"] as const;
       if (required.some((k) => !profile[k])) return NextResponse.json({ error: "Please answer every question to get the copy." }, { status: 400 });
     }
 
@@ -145,6 +146,7 @@ export async function POST(request: NextRequest) {
       sourceUrl: sourceUrl || "",
       available,
       profile,
+      ...geoFrom(request.headers),
     });
 
     await NurtureCampaignModel.updateOne(

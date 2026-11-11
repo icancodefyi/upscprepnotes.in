@@ -36,12 +36,23 @@ export default function PrivacyPolicyPage() {
           UPSCPrepNotes collects minimal information necessary for platform
           operation and improvement. This includes anonymous usage data such
           as page views, browser type, device category, and general geographic
-          location (at the country or city level).
+          location (at the country, state or city level).
         </p>
         <p className="leading-8 text-zinc-700">
-          We do not collect personal information such as names, email addresses,
-          or phone numbers unless you voluntarily provide it (for example, by
-          sending us an email or filling a contact form).
+          We collect personal information only when you give it to us: your
+          email address when you request a free copy, subscribe or buy a
+          product, and your WhatsApp number and answers to a few questions when
+          you request a free copy. We use these to send what you asked for and
+          study updates that match your answers. You can stop those updates at
+          any time.
+        </p>
+        <p className="leading-8 text-zinc-700">
+          When you request a free copy we also record an approximate location
+          (country, state and city), worked out from your internet connection at
+          that moment. It is an estimate, not your address, and we do not store
+          your IP address. We do not sell this information or share it with
+          third parties. If we ever share leads with anyone outside UPSCPrepNotes,
+          we will ask for your consent first and this policy will be updated.
         </p>
         <p className="leading-8 text-zinc-700">
           No sensitive personal information is knowingly collected, stored, or
@@ -89,9 +100,9 @@ export default function PrivacyPolicyPage() {
         <ul className="list-disc pl-6 text-zinc-700 space-y-2">
           <li>
             <strong>Groq AI</strong> — used to power the Ask AI feature. Conversations
-            submitted through the AI interface are processed by Groq's API. We do not
+            submitted through the AI interface are processed by Groq&apos;s API. We do not
             store the content of these conversations beyond the current session unless
-            explicitly saved by the user. Review Groq's privacy policy for details on
+            explicitly saved by the user. Review Groq&apos;s privacy policy for details on
             their data handling.
           </li>
         </ul>
