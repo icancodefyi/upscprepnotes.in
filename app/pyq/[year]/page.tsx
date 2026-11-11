@@ -7,6 +7,7 @@ import {
   getFormattedYearData,
 } from "@/data/upsc/pyq/cse-pyq";
 import BrandShell from "@/components/brand/BrandShell";
+import { SponsorSlot } from "@/components/brand/AdRail";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import mainsQuestions from "@/data/upsc/pyq/mains-gs-questions.json";
 import essayTopics from "@/data/upsc/pyq/mains-essay-topics.json";
@@ -428,6 +429,7 @@ export default async function PYQYearPage({ params }: Props) {
                 ))}
               </div>
             </div>
+            <SponsorSlot page="pyq" />
           </aside>
         </div>
       </div>

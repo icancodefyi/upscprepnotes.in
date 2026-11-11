@@ -15,6 +15,7 @@ import {
   generateEditorialContent,
 } from "@/lib/pdf-content";
 import BrandShell from "@/components/brand/BrandShell";
+import { SponsorSlot } from "@/components/brand/AdRail";
 import Toc from "@/components/brand/Toc";
 import { Section, card } from "@/components/brand/ui";
 import { CATEGORY, getCollection } from "@/lib/materials";
@@ -415,6 +416,7 @@ export default async function PDFDetailPage({ params }: Props) {
                   ))}
                 </ul>
               </div>
+              <SponsorSlot page="free-material" />
             </aside>
           </div>
         </div>

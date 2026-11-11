@@ -294,7 +294,9 @@ export const PRODUCTS: StoreProduct[] = [
   {
     slug: "answer-copies-compilation",
     title: "Answer Copies Compilation",
-    image: "https://ik.imagekit.io/impiclabs/products/answer-copies-compilation.png?tr=w-464,h-600,f-auto,q-80",
+    // Real scanned pages from the compilation, not a staged photo.
+    image: "/products/answer-copies/gs1-flowchart.jpg",
+    images: ["/products/answer-copies/gs1-flowchart.jpg", "/products/answer-copies/essay.jpg", "/products/answer-copies/hindi-diagram.jpg"],
     tagline: "50+ handwritten answer sheets",
     description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay.",
     longDescription: [

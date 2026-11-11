@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { MONTHS } from "@/lib/current-affairs-utils";
 import BrandShell from "@/components/brand/BrandShell";
+import { SponsorSlot } from "@/components/brand/AdRail";
 import QuizTeaser from "@/components/quiz/QuizTeaser";
 
 const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_rgba(11,12,16,0.04)]";
@@ -222,6 +223,7 @@ export default async function CurrentAffairsHub() {
                   </li>
                 </ul>
               </div>
+              <SponsorSlot page="current-affairs" />
             </aside>
           </div>
 

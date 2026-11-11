@@ -17,7 +17,7 @@ export default function ShellRail({ rails, inlineRails, children }: { rails: Rec
       <div className="mx-auto max-w-[1680px] xl:grid xl:grid-cols-[minmax(0,1fr)_316px]">
         <main className="min-w-0">{children}</main>
         <aside className="hidden xl:block xl:pr-6 xl:pt-32">
-          <div className="[@media(min-height:720px)]:sticky [@media(min-height:720px)]:top-24">{rails[key]}</div>
+          <div className="[@media(min-height:720px)]:sticky [@media(min-height:720px)]:top-[7.5rem]">{rails[key]}</div>
         </aside>
       </div>
       <div className="mx-auto max-w-[1080px] px-4 pb-12 pt-4 xl:hidden">{inlineRails[key]}</div>

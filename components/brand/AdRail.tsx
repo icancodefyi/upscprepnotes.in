@@ -55,7 +55,7 @@ function SampleAd() {
   );
 }
 
-function SponsorSlot({ page }: { page: string }) {
+export function SponsorSlot({ page }: { page: string }) {
   const ad = activeAd();
   if (ad) {
     return (

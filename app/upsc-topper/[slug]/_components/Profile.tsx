@@ -3,6 +3,7 @@ import AskLink from "@/components/AskLink";
 import { fmt } from "@/lib/topper-stats";
 import ReportLink from "./ReportLink";
 import Toc from "@/components/brand/Toc";
+import { SponsorSlot } from "@/components/brand/AdRail";
 import LiveCounter from "@/components/topper/LiveCounter";
 import ReportButton from "@/components/ReportButton";
 import AfterHeader from "./AfterHeader";
@@ -272,6 +273,8 @@ export function Sidebar({ s }: { s: SidebarData }) {
           <ReportLink first={s.first} />
         </div>
       </div>
+
+      <SponsorSlot page="topper" />
     </aside>
   );
 }
