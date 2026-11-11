@@ -162,6 +162,73 @@ function Gallery({ product }: { product: StoreProduct }) {
   );
 }
 
+/** Answer Copies only: what is inside, what a reader takes from it, how delivery works and the refund. All facts, no promises of rank. */
+function AnswerCopiesTrust() {
+  const stats = [
+    { big: "63", small: "full answer booklets" },
+    { big: "27", small: "toppers, each named with rank and year" },
+    { big: "5 papers", small: "GS1, GS2, GS3, GS4 and Essay" },
+    { big: "Lifetime", small: "download and keep the PDFs" },
+  ];
+  const learn = [
+    { t: "How a 10-mark answer is built", d: "The opening line, the body and the closing line, written inside the word limit by people who scored well." },
+    { t: "Where diagrams and flowcharts go", d: "See which answers got a diagram, how small it is and where it sits on the page." },
+    { t: "Headings, underlining and spacing", d: "The presentation habits that make a copy easy for an examiner to read quickly." },
+    { t: "What the marks look like", d: "Where a copy carries examiner marks or remarks, you can see what separates a strong answer from an average one." },
+  ];
+  const steps = [
+    { t: "Pay ₹199", d: "UPI, cards or netbanking through Razorpay." },
+    { t: "Check your email", d: "Your download link is emailed to you right after payment." },
+    { t: "Open it on your phone", d: "Each booklet is a separate PDF, so you can read one at a time." },
+  ];
+  return (
+    <section data-track-view="product_trust" className="mt-16">
+      <dl className={`${card} grid grid-cols-2 sm:grid-cols-4`}>
+        {stats.map((s, i) => (
+          <div key={s.big} className={`p-5 ${i % 2 ? "border-l border-[var(--line)]" : ""} ${i >= 2 ? "border-t border-[var(--line)] sm:border-t-0" : ""} ${i === 2 ? "sm:border-l" : ""}`}>
+            <dt className="t-display tab text-l leading-tight">{s.big}</dt>
+            <dd className="mt-1 text-s leading-[1.4] text-[var(--muted)]">{s.small}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 className="t-head mt-14 text-l">What you will learn from reading them</h2>
+      <ol className={`${card} mt-6 divide-y divide-[var(--line)]`}>
+        {learn.map((l, i) => (
+          <li key={l.t} className="flex items-start gap-4 p-5 sm:px-6">
+            <span aria-hidden className="tab grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-m font-bold text-[var(--accent)]">{i + 1}</span>
+            <div>
+              <p className="text-m font-bold leading-snug">{l.t}</p>
+              <p className="mt-0.5 text-m leading-[1.55] text-[var(--ink-2)]">{l.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <h2 className="t-head mt-14 text-l">How it works</h2>
+      <ol className="mt-6 grid gap-3 sm:grid-cols-3">
+        {steps.map((s, i) => (
+          <li key={s.t} className={`${card} p-5`}>
+            <span className="tab text-s font-bold text-[var(--accent)]">Step {i + 1}</span>
+            <p className="mt-1 text-m font-bold leading-snug">{s.t}</p>
+            <p className="mt-1 text-s leading-[1.5] text-[var(--ink-2)]">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-6 flex items-start gap-3 rounded-[20px] bg-[#e3e8fb] p-5">
+        <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-[#172fa3]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" />
+          <path d="M8.5 12l2.5 2.5 4.5-4.5" />
+        </svg>
+        <p className="text-m leading-[1.55] text-[#172fa3]">
+          <strong>Read the sample copies above first.</strong> If the full set is not useful to you, email hello@upscprepnotes.in within 7 days with your order reference and we refund the full amount. See the <Link href="/terms" className="underline underline-offset-2">terms page</Link>.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 /** The eight sample sheets as real pages you can open and read. */
 function SamplePreview() {
   const toppers = TOPPERS.slice(0, 8);
@@ -256,6 +323,8 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
                 <SamplePreview />
               </Block>
             )}
+
+            {product.slug === "answer-copies-compilation" && <AnswerCopiesTrust />}
 
             {product.specs && product.specs.length > 0 && (
               <Block title="Product Details">

@@ -297,8 +297,8 @@ export const PRODUCTS: StoreProduct[] = [
     // Real scanned pages from the compilation, not a staged photo.
     image: "/products/answer-copies/gs1-flowchart.jpg",
     images: ["/products/answer-copies/gs1-flowchart.jpg", "/products/answer-copies/essay.jpg", "/products/answer-copies/hindi-diagram.jpg"],
-    tagline: "50+ handwritten answer sheets",
-    description: "Actual handwritten answer sheets from 50+ toppers (AIR 1-1249). GS1-4, Essay.",
+    tagline: "63 handwritten answer booklets from 27 toppers",
+    description: "63 full handwritten answer booklets from 27 toppers. GS1-4 and Essay.",
     longDescription: [
       "This compilation contains actual scanned answer sheets written by UPSC toppers in the exam hall. See exactly how rank holders structured their answers, used headings, diagrams, and underlining to score 140+.",
       "Covers GS Papers 1-4 and Essay. Each copy is labelled with the topper's name, rank, year, and marks obtained.",
@@ -313,7 +313,7 @@ export const PRODUCTS: StoreProduct[] = [
     badgeColor: "amber",
     gradient: "bg-amber-500",
     features: [
-      "50+ actual handwritten answer sheets from toppers",
+      "63 full answer booklets from 27 toppers",
       "Covers GS1-4 and Essay",
       "Each copy labelled with name, rank, year, and marks",
       "See real handwriting, structure, underlining, and diagrams",
@@ -326,7 +326,7 @@ export const PRODUCTS: StoreProduct[] = [
     comingSoon: false,
     specs: [
       { label: "Format", value: "Scanned PDFs" },
-      { label: "Answer Sheets", value: "60+" },
+      { label: "Answer booklets", value: "63 from 27 toppers" },
       { label: "Papers Covered", value: "GS1-4 + Essay" },
       { label: "Total Size", value: "832 MB" },
     ],
