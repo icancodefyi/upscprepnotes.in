@@ -812,10 +812,14 @@ function Result({ run, outcome, before, after, live, install, onJoin, onHome }: 
         <Btn onClick={share} kind="yellow" icon="share" data-track="quiz-share">Share score</Btn>
         <Btn onClick={whatsapp} kind="green" icon="whatsapp" data-track="quiz-share-whatsapp" aria-label="Challenge a friend on WhatsApp">WhatsApp</Btn>
       </div>
-      <div className="grid grid-cols-2 gap-2.5">
-        <Btn onClick={onHome} kind="ghost" icon="home" data-track="quiz-home">Home</Btn>
-        <p className="flex items-center justify-center rounded-full text-center text-[13px] font-bold" style={{ color: C.ink2 }}>Come back tomorrow for 5 more</p>
+      <div className="flex items-center gap-3 rounded-2xl p-4" style={{ background: C.yellowSoft }} data-track="quiz-come-back">
+        <Gilu pose="celebrating" size={64} className="h-auto w-14 shrink-0" />
+        <div className="min-w-0">
+          <p className="text-[20px] font-bold leading-tight tracking-[-0.01em]" style={{ color: C.ink }}>Come back tomorrow for 5 more</p>
+          <p className="mt-1 text-[13px] leading-snug" style={{ color: C.ink2 }}>Everyone gets the same five. The new set arrives at 12am IST.</p>
+        </div>
       </div>
+      <Btn onClick={onHome} kind="ghost" icon="home" data-track="quiz-home">Home</Btn>
       {shareMsg && <p className="text-center text-[13px]" style={{ color: C.green }} role="status">{shareMsg}</p>}
     </div>
   );
