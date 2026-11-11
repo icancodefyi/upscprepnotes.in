@@ -20,13 +20,13 @@ const QUESTIONS: { key: Key; title: string; hint: string; options: Option[]; gri
   { key: "optional", title: "What is your optional subject?", hint: "Choose “Not decided” if you have not picked yet.", options: OPTIONALS, grid: true, top: TOP_OPTIONAL },
 ];
 const LAST = QUESTIONS.length; // the contact step
-const GILU: { pose: GiluPose; line: (first: string) => string }[] = [
-  { pose: "hello", line: (f) => `Hi! Five quick taps and ${f}'s copy is yours.` },
+const GILU: { pose: GiluPose; line: (item: string) => string }[] = [
+  { pose: "hello", line: (f) => `Hi! Five quick taps and ${f} is yours.` },
   { pose: "thinking", line: () => "Good start. Four to go." },
   { pose: "reading", line: () => "Three to go. You are quick." },
   { pose: "thinking", line: () => "Halfway there. Keep going." },
   { pose: "run", line: () => "Two to go. Nearly there." },
-  { pose: "celebrating", line: (f) => `Unlocked! One last step and ${f}'s copy is on its way.` },
+  { pose: "celebrating", line: (f) => `Unlocked! One last step and ${f} is on its way.` },
 ];
 const TOTAL = QUESTIONS.length + 1;
 
@@ -61,9 +61,18 @@ function write(s: Saved) {
   }
 }
 
-/** The request flow for one topper's free copy: six quick taps, then email and WhatsApp. Remembers answers in this browser. */
-export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: string; topperName: string }) {
-  const first = topperName.split(" ")[0];
+/** What is being unlocked: an answer copy on a topper page, or a free material (one PDF or one file of a collection). */
+export type Target =
+  | { kind: "copy"; topperSlug: string }
+  | { kind: "material"; pdfSlug: string; pdfTitle: string; category: string; downloadUrl: string; returnTo?: string };
+
+/**
+ * The request flow for any free download: a few quick taps, then email and WhatsApp.
+ * Remembers answers in this browser, so a returning visitor only sees the last step.
+ * `item` is how the thing reads in a sentence, for example "Anuj's copy" or "this PDF".
+ */
+export default function FreeCopyForm({ item, target, onUnlocked }: { item: string; target: Target; onUnlocked?: () => void }) {
+  const slug = target.kind === "copy" ? target.topperSlug : target.pdfSlug;
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState<LeadProfile>({});
   const [email, setEmail] = useState("");
@@ -100,7 +109,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
     setError("");
     setStepError("");
     setStep(n);
-    posthog.capture("free_copy_step", { topper_slug: topperSlug, step: n + 1, of: TOTAL });
+    posthog.capture("free_copy_step", { target: target.kind, slug, step: n + 1, of: TOTAL });
   }
 
   function choose(k: Key, v: string) {
@@ -150,16 +159,18 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
     let leaving = false;
     try {
       const clean = phone.replace(/[\s-]/g, "");
-      const res = await fetch("/api/free-download", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), topperSlug, source: "free_page", sourceUrl: window.location.href, profile: { ...profile, phone: clean } }),
-      });
+      const details = { email: email.trim(), phone: clean, profile: { ...profile, phone: clean } };
+      const req =
+        target.kind === "copy"
+          ? { url: "/api/free-download", body: { ...details, topperSlug: target.topperSlug, source: "free_page", sourceUrl: window.location.href } }
+          : { url: "/api/free-material-download", body: { ...details, pdfSlug: target.pdfSlug, pdfTitle: target.pdfTitle, category: target.category, downloadUrl: target.downloadUrl, returnTo: target.returnTo } };
+      const res = await fetch(req.url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(req.body) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
       write({ ...profile, phone: clean, email: email.trim() });
-      identify(email.trim(), "free_copy");
-      posthog.capture("free_copy_submitted", { topper_slug: topperSlug, returning: known });
+      identify(email.trim(), target.kind === "copy" ? "free_copy" : "free_material");
+      posthog.capture("free_download_submitted", { target: target.kind, slug, returning: known });
+      onUnlocked?.();
       if (data.redirect) {
         leaving = true;
         window.location.assign(data.redirect);
@@ -195,7 +206,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
                 <rect x="5" y="11" width="14" height="9" rx="2.5" />
                 <path d={step === LAST ? "M8.5 11V8a3.5 3.5 0 016.7-1.4" : "M8.5 11V8a3.5 3.5 0 017 0v3"} />
               </svg>
-              {step === LAST ? "Unlocked" : `Unlocking ${first}'s copy`}
+              {step === LAST ? "Unlocked" : `Unlocking ${item}`}
             </span>
             <span className="tab text-[var(--muted)]">{step + 1} of {TOTAL}</span>
           </div>
@@ -218,7 +229,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
 
       <div className="mt-4 flex items-center gap-3 rounded-[18px] bg-[var(--canvas)] py-2 pl-2 pr-4 [@media(max-height:700px)]:hidden">
         <Gilu pose={GILU[step].pose} size={44} className="h-auto w-11 shrink-0" />
-        <p className="text-s font-bold leading-snug text-[var(--ink-2)]">{GILU[step].line(first)}</p>
+        <p className="text-s font-bold leading-snug text-[var(--ink-2)]">{GILU[step].line(item)}</p>
       </div>
 
       <div key={step} className="fc-step mt-5">
@@ -275,7 +286,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
           </>
         ) : (
           <>
-            <h2 ref={heading} tabIndex={-1} className="t-head text-[22px] leading-[1.15] outline-none sm:text-[26px]">Where should we send {first}&apos;s copy?</h2>
+            <h2 ref={heading} tabIndex={-1} className="t-head text-[22px] leading-[1.15] outline-none sm:text-[26px]">Where should we send {item}?</h2>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div className="min-w-0">
@@ -304,7 +315,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
             {/* What they told us, with a way back to change any of it */}
             <div className="mt-3 flex gap-3 rounded-[18px] bg-[#e3e8fb] p-3.5 text-[#172fa3]">
               <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" /><path d="M8.5 12l2.5 2.5 4.5-4.5" /></svg>
-              <p className="text-[13px] leading-[1.45] sm:text-s sm:leading-[1.5]"><strong>No spam.</strong> We use your email and WhatsApp number only to send this copy and a few study updates that match your answers. You can stop them any time.</p>
+              <p className="text-[13px] leading-[1.45] sm:text-s sm:leading-[1.5]"><strong>No spam.</strong> We use your email and WhatsApp number only to send {target.kind === "copy" ? "this copy" : "this download"} and a few study updates that match your answers. You can stop them any time.</p>
             </div>
 
             <div className="mt-3 hidden flex-wrap items-center gap-1.5 rounded-[18px] bg-[var(--canvas)] p-3 sm:flex">
@@ -317,7 +328,7 @@ export default function FreeCopyForm({ topperSlug, topperName }: { topperSlug: s
             {error && <p className="mt-4 text-s text-[var(--mark-deep)]" role="alert">{error}</p>}
 
             <button type="submit" disabled={loading} data-track="free-copy-submit" className="btn btn-blue mt-4 h-14 w-full justify-center disabled:opacity-60 [--btn-fs:16px]">
-              {loading ? "Sending..." : `Send me ${first}'s copy`}
+              {loading ? "Sending..." : target.kind === "copy" ? `Send me ${item}` : `Get ${item}`}
             </button>
             <p className="mt-2.5 text-center text-s text-[var(--muted)]">Free · Opens right after you send</p>
             {known && (

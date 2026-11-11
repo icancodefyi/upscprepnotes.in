@@ -137,17 +137,23 @@ export async function POST(request: NextRequest) {
         : [];
     const available = pdfUrls.length > 0;
 
-    await FreeDownloadLeadModel.create({
-      email,
-      name: name || "",
-      topperSlug,
-      topperName,
-      source: source || "topper_page",
-      sourceUrl: sourceUrl || "",
-      available,
-      profile,
-      ...geoFrom(request.headers),
-    });
+    // One record per person per topper. A repeat request updates it instead of adding a new row.
+    await FreeDownloadLeadModel.findOneAndUpdate(
+      { email: email.toLowerCase(), topperSlug },
+      {
+        $set: {
+          name: name || "",
+          topperName,
+          source: source || "topper_page",
+          sourceUrl: sourceUrl || "",
+          available,
+          ...(Object.keys(profile).length ? { profile } : {}),
+          ...geoFrom(request.headers),
+        },
+        $setOnInsert: { email: email.toLowerCase(), topperSlug },
+      },
+      { upsert: true, new: true },
+    );
 
     await NurtureCampaignModel.updateOne(
       { email: email.toLowerCase() },

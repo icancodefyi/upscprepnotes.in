@@ -4,12 +4,16 @@ import { FreeMaterialLeadModel } from "@/models/free-material-lead.model";
 import { sendEmail } from "@/lib/resend";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { createHandoff, EMAIL_RE } from "@/lib/handoff";
+import { sanitizeProfile } from "@/lib/lead-profile";
+import { geoFrom } from "@/lib/geo";
 
 export async function POST(request: NextRequest) {
   const rl = await checkRateLimit(request, "form");
   if (rl) return rl;
   try {
-    const { email, pdfSlug, pdfTitle, category, downloadUrl, returnTo } = await request.json();
+    const body = await request.json();
+    const { email, pdfSlug, pdfTitle, category, downloadUrl, returnTo } = body;
+    const profile = sanitizeProfile(body.profile);
 
     if (!email || !pdfSlug || !downloadUrl) {
       return NextResponse.json(
@@ -22,6 +26,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
 
+    // Every free material asks the same questions, so the answers are required here too.
+    const required = ["stage", "attempt", "mode", "working", "optional"] as const;
+    if (!profile.phone) return NextResponse.json({ error: "Please enter a valid 10-digit WhatsApp number." }, { status: 400 });
+    if (required.some((k) => !profile[k])) return NextResponse.json({ error: "Please answer every question to get this download." }, { status: 400 });
+
     await connectDB();
 
     const redirect = await createHandoff({
@@ -33,9 +42,13 @@ export async function POST(request: NextRequest) {
       returnTo,
     });
 
+    // One record per person per material. A repeat updates the answers instead of adding a row.
     await FreeMaterialLeadModel.findOneAndUpdate(
       { email: email.toLowerCase(), pdfSlug },
-      { $setOnInsert: { email: email.toLowerCase(), pdfSlug, pdfTitle, category: category || "" } },
+      {
+        $set: { profile, ...geoFrom(request.headers) },
+        $setOnInsert: { email: email.toLowerCase(), pdfSlug, pdfTitle, category: category || "" },
+      },
       { upsert: true, new: true }
     );
 
@@ -73,8 +86,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, redirect }, { status: 201 });
-  } catch (err: any) {
-    if (err?.code === 11000) {
+  } catch (err: unknown) {
+    if ((err as { code?: number })?.code === 11000) {
       return NextResponse.json({ success: true, existed: true }, { status: 200 });
     }
     console.error("Free material download API error:", err);

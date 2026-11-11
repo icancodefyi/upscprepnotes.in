@@ -77,7 +77,7 @@ export default async function FreeCopyPage({ params }: Props) {
           </header>
 
           <div id="get" className="rounded-[28px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.35)] sm:p-7 lg:sticky lg:top-28">
-            <FreeCopyForm topperSlug={t.slug} topperName={name} />
+            <FreeCopyForm item={`${name.split(" ")[0]}'s copy`} target={{ kind: "copy", topperSlug: t.slug }} />
           </div>
         </div>
       </div>
