@@ -46,13 +46,13 @@ export function FreeDownloadSection({
               Sourced from topper contributions and verified against published marksheets.
             </p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <button
-                onClick={() => setDialogOpen(true)}
+              <Link
+                href={`/free/${topperSlug}`}
                 data-track="topper-free-download"
                 className="btn btn-blue h-11 justify-center px-5 [--btn-fs:14px]"
               >
                 Download free copy
-              </button>
+              </Link>
               <a
                 href="https://t.me/+2eV0YCTGdNcyNmFl"
                 target="_blank"

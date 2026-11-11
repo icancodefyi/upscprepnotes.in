@@ -1,3 +1,4 @@
+import { sanitizeProfile } from "@/lib/lead-profile";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
@@ -96,6 +97,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { email, topperSlug, name, source, sourceUrl } = body;
+    const profile = sanitizeProfile(body.profile);
 
     if (!topperSlug) {
       return NextResponse.json(
@@ -108,6 +110,12 @@ export async function POST(request: NextRequest) {
         { error: "Please enter a valid email address." },
         { status: 400 }
       );
+    }
+
+    if (source === "free_page") {
+      if (!profile.phone) return NextResponse.json({ error: "Please enter a valid 10-digit WhatsApp number." }, { status: 400 });
+      const required = ["stage", "attempt", "mode", "working", "optional", "state"] as const;
+      if (required.some((k) => !profile[k])) return NextResponse.json({ error: "Please answer every question to get the copy." }, { status: 400 });
     }
 
     await connectDB();
@@ -136,6 +144,7 @@ export async function POST(request: NextRequest) {
       source: source || "topper_page",
       sourceUrl: sourceUrl || "",
       available,
+      profile,
     });
 
     await NurtureCampaignModel.updateOne(

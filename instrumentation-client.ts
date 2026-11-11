@@ -11,7 +11,9 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
   // that never ship to real users, adding noise to error tracking.
   capture_exceptions: isProduction,
   // The payment provider's success URL carries the buyer's email. Strip it from every URL property before sending.
-  sanitize_properties: (props) => {
+  before_send: (event) => {
+    const props = event?.properties;
+    if (!props) return event;
     for (const key of Object.keys(props)) {
       const value = props[key];
       if (typeof value !== "string" || !value.includes("email=")) continue;
@@ -21,7 +23,7 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
         props[key] = u.toString();
       } catch {}
     }
-    return props;
+    return event;
   },
   debug: process.env.NODE_ENV === "development",
 });

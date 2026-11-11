@@ -38,7 +38,7 @@ export function railProductFor(path: string): string {
 }
 
 /** Routes with no rail: money pages, tools, the home page and pages that carry their own rail. */
-const NO_RAIL = ["/store", "/download", "/get", "/quiz", "/ask", "/admin", "/unsubscribe", "/advertise", "/content/", "/toppers/highest-marks-in-upsc", "/toppers/upsc-interview-marks", "/toppers/upsc-mains-marks-needed"];
+const NO_RAIL = ["/free", "/store", "/download", "/get", "/quiz", "/ask", "/admin", "/unsubscribe", "/advertise", "/content/", "/toppers/highest-marks-in-upsc", "/toppers/upsc-interview-marks", "/toppers/upsc-mains-marks-needed"];
 
 /** Pages that already have their own right sidebar: it carries the sponsor slot itself, so no second column. */
 const OWN_SIDEBAR = [/^\/upsc-topper\/[^/]+$/, /^\/current-affairs$/, /^\/pyq\/[^/]+$/, /^\/free-materials\/[^/]+$/];

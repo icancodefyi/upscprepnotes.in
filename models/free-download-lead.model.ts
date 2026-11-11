@@ -9,6 +9,10 @@ const freeDownloadLeadSchema = new Schema(
     source: { type: String, default: "" },
     sourceUrl: { type: String, default: "" },
     available: { type: Boolean, default: false },
+    /** Optional answers from the request page. Fixed choices only (see lib/lead-profile.ts). */
+    profile: {
+      stage: String, attempt: String, mode: String, working: String, optional: String, state: String, phone: String,
+    },
   },
   { timestamps: true }
 );
