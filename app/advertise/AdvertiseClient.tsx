@@ -110,7 +110,7 @@ const WHY = [
   { title: "Intent-driven traffic", desc: "Visitors arrive searching for specific study topics — they are in learning mode and open to relevant course or book recommendations." },
   { title: "No ad fatigue", desc: "We show max 1–2 ads per page. Your brand gets undivided attention, not lost in a sea of banners." },
   { title: "Organic + growing", desc: "Traffic grows steadily through Google Search. You benefit from compounding visibility without paying for acquisition." },
-  { title: "Zero bots, all real", desc: "Verified analytics. Every session is a real aspirant. We run on first-party data with no algorithm noise." },
+  { title: "Our own numbers", desc: "Counted on our own first-party analytics. We report India visitors separately, since that is the audience sponsors buy." },
   { title: "India-optimised pricing", desc: "Designed for Indian edtech budgets. No minimum commitment. Month-to-month with no lock-in." },
   { title: "Transparent reporting", desc: "Monthly reports with impressions, clicks, and engagement data. You always know exactly what you’re getting." },
 ];
@@ -264,7 +264,7 @@ export default function AdvertiseClient() {
         <section id="audience" className="mt-24 scroll-mt-28">
           <Head
             label="Who you’ll reach"
-            title="100% UPSC CSE aspirants"
+            title="Built for UPSC aspirants"
             desc="Every visitor arrives with intent — researching a topic, downloading study material, or looking for test series and courses."
           />
           <div className="mt-8 grid gap-3 sm:grid-cols-2">

@@ -155,6 +155,8 @@ function TopBar({ xp }: { xp: number }) {
 }
 
 /* ---------- the 30-day challenge ---------- */
+/** Rewards are shown only once they can actually be delivered. Keep false until then. */
+const REWARDS_LIVE = false;
 
 /** Where along the track a streak sits: stops are evenly spaced, from day 0 to day 30. */
 function trackPos(streak: number): number {
@@ -167,6 +169,7 @@ function trackPos(streak: number): number {
 }
 
 function MilestoneTrack({ progress, onJoin }: { progress: Progress; onJoin: () => void }) {
+  if (!REWARDS_LIVE) return null;
   const joined = !!progress.joined;
   const streak = progress.streak;
   const next = nextMilestone(streak);
@@ -882,7 +885,7 @@ function Result({ run, outcome, before, after, live, install, onJoin, onHome }: 
               Your streak shield saved your streak for the day you missed.
             </p>
           )}
-          {live.joined && run.daily && outcome.milestones.length === 0 && nextMilestone(after.streak) && (() => {
+          {REWARDS_LIVE && live.joined && run.daily && outcome.milestones.length === 0 && nextMilestone(after.streak) && (() => {
             const m = nextMilestone(after.streak)!;
             const left = m.day - after.streak;
             return (
@@ -891,7 +894,7 @@ function Result({ run, outcome, before, after, live, install, onJoin, onHome }: 
               </p>
             );
           })()}
-          {!live.joined && (
+          {REWARDS_LIVE && !live.joined && (
             <div className="qz-up mt-2.5 rounded-2xl p-4" style={{ background: C.yellowSoft, boxShadow: `inset 0 0 0 1.5px #f2d36b` }}>
               <p className="text-[16px] font-bold" style={{ color: C.ink }}>Join the 30-day challenge</p>
               <p className="mt-1 text-[14.5px] leading-snug" style={{ color: C.ink2 }}>

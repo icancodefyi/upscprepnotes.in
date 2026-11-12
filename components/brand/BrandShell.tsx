@@ -3,7 +3,6 @@ import { TopperModel } from "@/models/topper.model";
 import { PRODUCTS } from "@/lib/store-products";
 import Nav, { type NavProduct } from "./Nav";
 import Footer from "./Footer";
-import PriceRiseBanner from "@/components/store/PriceRiseBanner";
 import AdRail from "./AdRail";
 import ShellRail from "./ShellRail";
 import { PITCH } from "@/lib/rail";
@@ -62,7 +61,6 @@ export default async function BrandShell({ children, footer }: { children: React
   const inlineRails = Object.fromEntries(keys.map((k) => [k, <AdRail key={k} page={k} product={k} inline />]));
   return (
     <div className={`up ${brandFonts}`}>
-      <PriceRiseBanner />
       <Nav products={navProducts()} toppers={data.counts.toppers} />
       <ShellRail rails={rails} inlineRails={inlineRails}>{children}</ShellRail>
       <StoreStrip />

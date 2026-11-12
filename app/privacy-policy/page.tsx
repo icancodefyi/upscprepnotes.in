@@ -40,7 +40,9 @@ export default function PrivacyPolicyPage() {
         </p>
         <p className="leading-8 text-zinc-700">
           We collect personal information only when you give it to us: your
-          email address when you request a free copy, subscribe or buy a
+          email address as soon as you enter it in a request form, even if you
+          do not finish the request, so that we can send what you asked for;
+          your email address when you subscribe or buy a
           product, and your WhatsApp number and answers to a few questions when
           you request a free copy. We use these to send what you asked for and
           study updates that match your answers. You can stop those updates at

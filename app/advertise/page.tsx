@@ -3,14 +3,14 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import BrandShell from "@/components/brand/BrandShell";
 
 export const metadata = {
-  title: "Advertise on UPSCPrepNotes — Reach 5,000+ Monthly UPSC Aspirants",
+  title: "Advertise on UPSCPrepNotes — About 5,000 India Visitors a Month",
   description:
     "Sponsor banner ads, sponsored content, and newsletter placements on UPSCPrepNotes. Target serious UPSC CSE aspirants with high engagement. Starting at ₹3,000/month.",
   alternates: {
     canonical: "https://upscprepnotes.in/advertise",
   },
   openGraph: {
-    title: "Advertise on UPSCPrepNotes — Reach 5,000+ Monthly UPSC Aspirants",
+    title: "Advertise on UPSCPrepNotes — About 5,000 India Visitors a Month",
     description:
       "Sponsor banner ads, sponsored content, and newsletter placements on UPSCPrepNotes. Target serious UPSC CSE aspirants with high engagement.",
     url: "https://upscprepnotes.in/advertise",

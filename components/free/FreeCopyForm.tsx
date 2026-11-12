@@ -112,6 +112,14 @@ export default function FreeCopyForm({ item, target, onUnlocked }: { item: strin
     posthog.capture("free_copy_step", { target: target.kind, slug, step: n + 1, of: TOTAL });
   }
 
+  // Save the email as soon as it is valid, so people who leave later still leave a lead.
+  function saveEarly(value: string) {
+    const e = value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) return;
+    const body = target.kind === "copy" ? { target: "copy", topperSlug: target.topperSlug } : { target: "material", pdfSlug: target.pdfSlug, pdfTitle: target.pdfTitle, category: target.category };
+    fetch("/api/free-start", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...body, email: e }), keepalive: true }).catch(() => {});
+  }
+
   function choose(k: Key, v: string) {
     const next = { ...profile, [k]: v };
     setProfile(next);
@@ -297,7 +305,7 @@ export default function FreeCopyForm({ item, target, onUnlocked }: { item: strin
                     <button type="button" onClick={() => setEditEmail(true)} className="h-9 shrink-0 rounded-full px-3.5 text-s font-bold text-[var(--accent)] hover:bg-white">Change</button>
                   </div>
                 ) : (
-                  <input id="free-copy-email" value={email} onChange={(e) => { setEmail(e.target.value); setFieldErr((f) => ({ ...f, email: undefined })); }} aria-required="true" aria-invalid={!!fieldErr.email} aria-describedby={fieldErr.email ? "email-error" : undefined} type="email" autoComplete="email" inputMode="email" className={`${input} ${fieldErr.email ? "!shadow-[0_0_0_2px_var(--mark-deep)]" : ""}`} placeholder="you@example.com" />
+                  <input id="free-copy-email" value={email} onChange={(e) => { setEmail(e.target.value); setFieldErr((f) => ({ ...f, email: undefined })); }} onBlur={(e) => saveEarly(e.target.value)} aria-required="true" aria-invalid={!!fieldErr.email} aria-describedby={fieldErr.email ? "email-error" : undefined} type="email" autoComplete="email" inputMode="email" className={`${input} ${fieldErr.email ? "!shadow-[0_0_0_2px_var(--mark-deep)]" : ""}`} placeholder="you@example.com" />
                 )}
                 <FieldError id="email-error">{fieldErr.email}</FieldError>
               </div>

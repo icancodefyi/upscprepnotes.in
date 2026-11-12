@@ -48,6 +48,12 @@ export default function PayButton({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  // The email is compulsory before the payment window opens: it is how the buyer gets the file and any follow-up.
+  const [saved, setSaved] = useState("");
+  const [typed, setTyped] = useState("");
+  useEffect(() => {
+    setSaved(getStoredEmail());
+  }, []);
 
   // Coming back to this page with the browser's back button can restore a stuck spinner. Reset it.
   useEffect(() => {
@@ -61,8 +67,15 @@ export default function PayButton({
   const handlePay = useCallback(async () => {
     const checkoutItems = items || (productSlug ? [{ slug: productSlug, quantity: 1, price: amount }] : []);
     const slugs = checkoutItems.map((i) => i.slug);
-    const knownEmail = (propEmail || getStoredEmail()).trim().toLowerCase();
+    const knownEmail = (propEmail || typed || saved || getStoredEmail()).trim().toLowerCase();
     const prefill = EMAIL_RE.test(knownEmail) ? knownEmail : "";
+    if (!prefill) {
+      setError("Please enter your email first. The download link is sent there.");
+      return;
+    }
+    try {
+      localStorage.setItem("upsc-email", prefill);
+    } catch {}
 
     track("buy_click", { items: slugs, amount, tracking, has_email: !!prefill });
     posthog.capture("cart_checkout_clicked", { total_amount: amount, item_slugs: slugs, item_count: checkoutItems.length, tracking });
@@ -154,15 +167,34 @@ export default function PayButton({
       );
       setLoading(false);
     }
-  }, [items, productSlug, amount, tracking, propEmail, note]);
+  }, [items, productSlug, amount, tracking, propEmail, note, typed, saved]);
+
+  const current = (propEmail || typed || saved).trim();
+  const emailOk = EMAIL_RE.test(current);
 
   return (
     <>
+      {!propEmail && !saved && (
+        <label className="mb-2.5 block">
+          <span className="block text-s font-bold text-[var(--ink)]">Your email <span className="text-[var(--mark-deep)]" aria-hidden="true">*</span><span className="sr-only"> (compulsory)</span></span>
+          <input
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            required
+            aria-required="true"
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+            placeholder="We send your download link here"
+            className="mt-1.5 h-12 w-full rounded-full bg-white px-5 text-m text-[var(--ink)] shadow-[0_0_0_1px_var(--line-2)] outline-none placeholder:text-[var(--muted)] focus:shadow-[0_0_0_2px_var(--accent)]"
+          />
+        </label>
+      )}
       <button
         type="button"
         onClick={handlePay}
         data-track={tracking}
-        disabled={loading}
+        disabled={loading || (!propEmail && !saved && !emailOk)}
         aria-busy={loading}
         className={className}
       >
