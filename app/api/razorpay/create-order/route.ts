@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
       notes: { ref, orderId: order._id.toString() },
     });
     order.razorpayOrderId = rzpOrder.id;
+    if (typeof body.visitorId === "string") order.visitorId = body.visitorId.slice(0, 64);
+    if (typeof body.sessionId === "string") order.sessionId = body.sessionId.slice(0, 64);
     await order.save();
 
     await trackServer("checkout_started", {

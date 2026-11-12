@@ -27,6 +27,17 @@ function getStoredEmail(): string {
   try { return localStorage.getItem("upsc-email") || ""; } catch { return ""; }
 }
 
+/** Tells the server what happened in the payment window. Best effort: it never blocks the buyer. */
+function reportPayment(ref: string, kind: "failed" | "dismissed", reason?: string) {
+  try {
+    const body = JSON.stringify({ ref, kind, reason });
+    if (navigator.sendBeacon) navigator.sendBeacon("/api/razorpay/event", new Blob([body], { type: "application/json" }));
+    else fetch("/api/razorpay/event", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
+  } catch {
+    /* ignore */
+  }
+}
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /**
@@ -51,6 +62,7 @@ export default function PayButton({
   // The email is compulsory before the payment window opens: it is how the buyer gets the file and any follow-up.
   const [saved, setSaved] = useState("");
   const [typed, setTyped] = useState("");
+  const [changing, setChanging] = useState(false);
   useEffect(() => {
     setSaved(getStoredEmail());
   }, []);
@@ -67,7 +79,7 @@ export default function PayButton({
   const handlePay = useCallback(async () => {
     const checkoutItems = items || (productSlug ? [{ slug: productSlug, quantity: 1, price: amount }] : []);
     const slugs = checkoutItems.map((i) => i.slug);
-    const knownEmail = (propEmail || typed || saved || getStoredEmail()).trim().toLowerCase();
+    const knownEmail = (propEmail || typed || (changing ? "" : saved) || (changing ? "" : getStoredEmail())).trim().toLowerCase();
     const prefill = EMAIL_RE.test(knownEmail) ? knownEmail : "";
     if (!prefill) {
       setError("Please enter your email first. The download link is sent there.");
@@ -146,12 +158,14 @@ export default function PayButton({
         },
         modal: {
           ondismiss: () => {
+            reportPayment(data.ref, "dismissed");
             setLoading(false);
             setNotice("Payment cancelled. You have not been charged.");
           },
         },
       });
       rzp.on("payment.failed", (r) => {
+        reportPayment(data.ref, "failed", r.error?.description);
         setLoading(false);
         setError(r.error.description || "The payment failed. Please try another method.");
       });
@@ -167,14 +181,22 @@ export default function PayButton({
       );
       setLoading(false);
     }
-  }, [items, productSlug, amount, tracking, propEmail, note, typed, saved]);
+  }, [items, productSlug, amount, tracking, propEmail, note, typed, saved, changing]);
 
-  const current = (propEmail || typed || saved).trim();
+  const current = (propEmail || typed || (changing ? "" : saved)).trim();
   const emailOk = EMAIL_RE.test(current);
+  const showField = !propEmail && (!saved || changing);
+  const maskedSaved = saved.replace(/^(.{2}).*(@.*)$/, "$1***$2");
 
   return (
     <>
-      {!propEmail && !saved && (
+      {!propEmail && saved && !changing && (
+        <p className="mb-2.5 flex items-center justify-between gap-3 rounded-full bg-[var(--canvas)] py-1.5 pl-4 pr-1.5 text-s text-[var(--ink-2)]">
+          <span className="min-w-0 truncate">Link goes to <strong className="text-[var(--ink)]">{maskedSaved}</strong></span>
+          <button type="button" onClick={() => { setChanging(true); setTyped(""); }} className="h-8 shrink-0 rounded-full px-3 text-s font-bold text-[var(--accent)] hover:bg-white">Change</button>
+        </p>
+      )}
+      {showField && (
         <label className="mb-2.5 block">
           <span className="block text-s font-bold text-[var(--ink)]">Your email <span className="text-[var(--mark-deep)]" aria-hidden="true">*</span><span className="sr-only"> (compulsory)</span></span>
           <input
@@ -194,7 +216,7 @@ export default function PayButton({
         type="button"
         onClick={handlePay}
         data-track={tracking}
-        disabled={loading || (!propEmail && !saved && !emailOk)}
+        disabled={loading || (!propEmail && !emailOk)}
         aria-busy={loading}
         className={className}
       >

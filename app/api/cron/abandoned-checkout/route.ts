@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
 
     const pending = await OrderModel.find({
       status: "pending",
+      leftReason: { $exists: false }, // anyone who already told us why gets no more reminders
       email: { $exists: true, $ne: "" },
       createdAt: { $gte: new Date(now - STAGE2.maxAge), $lte: new Date(now - STAGE1.minAge) },
     })
@@ -76,7 +77,7 @@ export async function GET(req: NextRequest) {
 
         const items = (order.items || []) as { slug: string; title: string }[];
         if (!items.length) { skipped++; continue; }
-        const ctx = { email, slug: items[0].slug, titles: items.map((i) => i.title), total: order.total as number };
+        const ctx = { orderId, email, slug: items[0].slug, titles: items.map((i) => i.title), total: order.total as number };
         const mail = stage === 1 ? recoveryEmail1(ctx) : recoveryEmail2(ctx);
 
         // Claim the slot first: the unique (orderId, stage) index stops a parallel run from double-sending.

@@ -22,6 +22,14 @@ export function verifyEmailToken(email: string, token: string): boolean {
   }
 }
 
+export const LEAVE_REASONS = ["expensive", "failed", "unsure"] as const;
+export type LeaveReason = (typeof LEAVE_REASONS)[number];
+
+/** One-tap "why did you leave" link for an abandoned order. The token ties the answer to that order. */
+export function checkoutFeedbackUrl(orderId: string, reason: LeaveReason): string {
+  return `${SITE}/api/checkout-feedback?o=${encodeURIComponent(orderId)}&r=${reason}&t=${emailToken(`co:${orderId}:${reason}`)}`;
+}
+
 /** Page a person lands on from the email footer. */
 export function unsubscribePageUrl(email: string): string {
   return `${SITE}/unsubscribe?e=${encodeURIComponent(email)}&t=${emailToken(email)}`;
