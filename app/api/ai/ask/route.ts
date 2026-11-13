@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { searchToppers, findTopperByName, type TopperResult } from "@/lib/ai/search-toppers";
+import { findTopperByName } from "@/lib/ai/search-toppers";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { buildSystemPrompt } from "@/lib/ai/build-prompt";
 import {
@@ -15,28 +15,50 @@ import {
   canAccessConversation,
 } from "@/lib/ai/quota";
 import { auth } from "@/lib/auth";
-import { searchWeb, formatSearchResults } from "@/lib/ai/websearch";
+import { TOOLS, runTool } from "@/lib/ai/tools";
 import { trackServer } from "@/lib/tracking/server";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const webSearchTool = {
-  type: "function" as const,
-  function: {
-    name: "web_search",
-    description: "Search the web for current information on UPSC, government exams, current affairs, notifications, results, cutoffs, and policy changes.",
-    parameters: {
-      type: "object",
-      properties: {
-        query: {
-          type: "string",
-          description: "The search query to look up on the web",
-        },
-      },
-      required: ["query"],
-    },
-  },
+const MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
+const MAX_ROUNDS = 5;
+const CURRENT_RE = /\b(latest|today|this (week|month|year)|news|current affairs|notification|result|cut.?off|date|2026|2027|vacanc|recent|announced)\b/i;
+const MISUSE_RE = /\b(nude|naked|porn|xxx|sex video|boobs|nsfw)\b/i;
+const TOOL_LABEL: Record<string, string> = {
+  find_topper: "Reading topper data",
+  list_toppers: "Comparing toppers",
+  optional_stats: "Checking optional subjects",
+  answer_copy_info: "Checking answer copies",
+  get_products: "Finding the right pack",
+  search_free_materials: "Searching free material",
+  get_pyq: "Finding question papers",
+  web_search: "Searching the web",
 };
+
+async function callModel(messages: any[], tools: boolean): Promise<any> {
+  let lastErr: any;
+  for (const model of MODELS) {
+    for (const withTools of tools ? [true, false] : [false]) {
+      try {
+        const body: any = { model, messages, temperature: 0.5, max_completion_tokens: 3000, stream: false, reasoning_effort: "medium", include_reasoning: false };
+        if (withTools) {
+          body.tools = TOOLS;
+          body.tool_choice = "auto";
+        } else if (messages.some((m) => m.role === "tool")) {
+          body.tools = TOOLS;
+          body.tool_choice = "none";
+        }
+        return await groq.chat.completions.create(body);
+      } catch (err: any) {
+        lastErr = err;
+        const status = err?.status;
+        // Rate limits and outages: try the next model. Bad tool output (400): retry once without tools.
+        if (status === 429 || (status && status >= 500)) break;
+      }
+    }
+  }
+  throw lastErr;
+}
 
 // ── Fast path ───────────────────────────────────────────────────────────────
 // The seeded topper-page link asks `Tell me about X's UPSC strategy`, which is
@@ -184,16 +206,11 @@ export async function POST(request: NextRequest) {
       await updateConversationTitle(cid, message.slice(0, 60));
     }
 
-    const relevantToppers = (await searchToppers(message)).slice(0, 2);
-    const systemPrompt = buildSystemPrompt(relevantToppers);
-
+    const webAllowed = !!wantsSearch || CURRENT_RE.test(message);
     const history = conv?.messages.slice(-10) || [];
     const groqMessages: any[] = [
-      { role: "system", content: systemPrompt },
-      ...history.map((m: any) => ({
-        role: m.role,
-        content: m.content,
-      })),
+      { role: "system", content: buildSystemPrompt(webAllowed) },
+      ...history.map((m: any) => ({ role: m.role, content: m.content })),
     ];
 
     const readable = new ReadableStream({
@@ -206,8 +223,12 @@ export async function POST(request: NextRequest) {
         const emit = (obj: Record<string, unknown>) => {
           controller.enqueue(encoder.encode(`#@${JSON.stringify(obj)}\n`));
         };
+        const say = (text: string) => {
+          fullContent += text;
+          for (let i = 0; i < text.length; i += 48) controller.enqueue(encoder.encode(text.slice(i, i + 48)));
+        };
 
-        // Free path — answer the seeded topper question straight from the DB (0 tokens)
+        // Free path: the seeded topper-page question is answered straight from the DB (0 tokens)
         if (!wantsSearch) {
           let fast: Awaited<ReturnType<typeof buildFastTopperAnswer>> = null;
           try {
@@ -228,110 +249,62 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        // Phase 1: if user toggled search, detect need with fast 8B model
-        if (wantsSearch) {
-          emit({ t: "begin", label: "Analyzing your question" });
-          try {
-            const detection = await groq.chat.completions.create({
-              model: "openai/gpt-oss-20b",
-              messages: groqMessages,
-              tools: [webSearchTool],
-              tool_choice: "auto",
-              stream: false,
-              temperature: 0.7,
-              max_tokens: 512,
-            });
-
-            const toolCalls = detection.choices?.[0]?.message?.tool_calls;
-            const tc = toolCalls?.[0];
-            if (tc) {
-              let args: any;
-              try { args = JSON.parse(tc.function.arguments); } catch {}
-              const query = args?.query;
-              if (query) {
-                emit({ t: "status", label: "Searching the web" });
-                const indicator = `🔍 Searching the web for "${query.replace(/"/g, '\\"')}"...\n\n`;
-                controller.enqueue(encoder.encode(indicator));
-                fullContent += indicator;
-
-                let formattedResults = "";
-                let sources: { domain: string; label: string }[] = [];
-                try {
-                  const searchData = await searchWeb(query);
-                  formattedResults = formatSearchResults(query, searchData.results);
-                  sources = searchData.results
-                    .map((r) => {
-                      let domain = r.url;
-                      try {
-                        domain = new URL(r.url).hostname.replace(/^www\./, "");
-                      } catch {}
-                      return { domain, label: r.title.slice(0, 70) || domain };
-                    })
-                    .slice(0, 5);
-                } catch (err) {
-                  console.error("Web search failed:", err);
-                }
-
-                if (sources.length) emit({ t: "sources", items: sources });
-                emit({ t: "status", label: "Compiling the best info" });
-
-                groqMessages.push({
-                  role: "assistant",
-                  content: null,
-                  tool_calls: [{
-                    id: tc.id,
-                    type: "function",
-                    function: { name: "web_search", arguments: JSON.stringify(args) },
-                  }],
-                });
-
-                groqMessages.push({
-                  role: "tool",
-                  tool_call_id: tc.id,
-                  content: formattedResults
-                    ? `Web search results for "${query}". Use these to answer the user's question. When citing sources, use markdown links like [Source](actual_url) with the actual URLs. Always include citations for factual claims.\n\n${formattedResults}`
-                    : "No web search results were found. Answer using your existing knowledge.",
-                });
-              }
-            }
-          } catch (err) {
-            console.error("Web search detection failed:", err);
-          }
+        // Obvious misuse never reaches the model
+        if (MISUSE_RE.test(message)) {
+          emit({ t: "end" });
+          say("I can only help with UPSC preparation and this site. If you tell me your stage, attempt and optional subject, I can suggest what to study next.");
+          emit({ t: "end" });
+          await saveMessage(cid, "assistant", fullContent, []);
+          controller.close();
+          return;
         }
 
-        // Phase 2: stream the response (70B with or without search context)
-        emit({ t: "status", label: "Writing your answer" });
-        emit({ t: "end" });
-        try {
-          const stream = await groq.chat.completions.create({
-            model: "openai/gpt-oss-20b",
-            messages: groqMessages,
-            stream: true,
-            temperature: 0.7,
-            max_tokens: 1024,
-          });
+        const topperRefs = new Map<string, string>();
+        const webSources: { domain: string; label: string }[] = [];
+        const toolsUsed: string[] = [];
 
-          for await (const chunk of stream) {
-            const text = chunk.choices?.[0]?.delta?.content || "";
-            if (text) {
-              fullContent += text;
-              controller.enqueue(encoder.encode(text));
+        emit({ t: "begin", label: "Reading your question" });
+        try {
+          let answer = "";
+          for (let round = 0; round < MAX_ROUNDS; round++) {
+            const last = round === MAX_ROUNDS - 1;
+            const res = await callModel(groqMessages, !last);
+            const msg = res.choices?.[0]?.message;
+            const calls = msg?.tool_calls || [];
+            if (!calls.length || last) {
+              answer = (msg?.content || "").trim();
+              break;
+            }
+            groqMessages.push({ role: "assistant", content: msg.content || null, tool_calls: calls });
+            for (const tc of calls) {
+              let args: any = {};
+              try {
+                args = JSON.parse(tc.function.arguments || "{}");
+              } catch {}
+              const name = tc.function.name;
+              toolsUsed.push(name);
+              emit({ t: "status", label: TOOL_LABEL[name] || "Looking things up" });
+              const out = await runTool(name, args, { webAllowed });
+              for (const r of out.topperSlugs || []) topperRefs.set(r.slug, r.name);
+              if (out.webSources?.length) {
+                webSources.push(...out.webSources);
+                emit({ t: "sources", items: webSources.slice(0, 5) });
+              }
+              groqMessages.push({ role: "tool", tool_call_id: tc.id, content: out.text.slice(0, 12000) });
             }
           }
+          emit({ t: "status", label: "Writing your answer" });
+          emit({ t: "end" });
+          if (answer) say(answer);
         } catch (err: any) {
           const info = describeStreamError(err);
-          console.error("Stream error:", err);
+          console.error("Ask AI failed:", err);
           console.error(
             `[ask-error] code=${info.code} status=${err?.status ?? "n/a"} message=${String(err?.error?.message || err?.message || "").slice(0, 300)}`,
           );
           streamFailed = true;
           await trackServer("ask_error", { sessionId, path: "/api/ai/ask", props: { ...base, code: info.code, status: err?.status, ms: Date.now() - startedAt } });
-          emit({
-            t: "error",
-            code: info.code,
-            message: info.message,
-            retryAfter: info.retryAfter,
-          });
+          emit({ t: "error", code: info.code, message: info.message, retryAfter: info.retryAfter });
         }
 
         emit({ t: "end" });
@@ -344,9 +317,9 @@ export async function POST(request: NextRequest) {
           return;
         }
 
-        const sources = relevantToppers.map((t: any) => ({ slug: t.slug, name: t.name }));
+        const sources = [...topperRefs.entries()].slice(0, 3).map(([slug, name]) => ({ slug, name }));
         await saveMessage(cid, "assistant", fullContent, sources);
-        await trackServer("ask_answer", { sessionId, path: "/api/ai/ask", props: { ...base, path: "model", ms: Date.now() - startedAt, chars: fullContent.length, sources: sources.length } });
+        await trackServer("ask_answer", { sessionId, path: "/api/ai/ask", props: { ...base, path: "agent", ms: Date.now() - startedAt, chars: fullContent.length, sources: sources.length, tools: toolsUsed.join(",").slice(0, 120) } });
         controller.close();
       },
     });
