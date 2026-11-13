@@ -176,7 +176,12 @@ export default function StoreClient() {
                   </Link>
                 </div>
                 <p className="mt-5 flex items-center gap-2 text-s text-[var(--muted)]">
-                  2,800+ aspirants have used our free topper copies and materials
+                  <span className="flex gap-0.5 text-[var(--accent)]">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} />
+                    ))}
+                  </span>
+                  Trusted by 1,400+ UPSC students
                 </p>
               </div>
               <Desk />

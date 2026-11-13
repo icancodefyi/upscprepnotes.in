@@ -19,7 +19,7 @@ export default function SalesPageContent() {
       <section className="mx-auto grid max-w-[1120px] items-center gap-12 px-6 lg:grid-cols-2">
         <div>
           <p className="text-s text-[var(--muted)]">
-            <strong className="text-[var(--ink)]">2,800+</strong> aspirants have asked us for topper copies
+            <strong className="text-[var(--ink)]">2,300+</strong> products delivered
           </p>
           <h1 className="t-display mt-4 text-h1">
             Stop losing marks on

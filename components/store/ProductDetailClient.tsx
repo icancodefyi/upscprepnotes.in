@@ -537,7 +537,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
 
       <p className="mt-2 flex items-center gap-2 text-s text-[var(--muted)]">
         <span aria-hidden className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-        2,800+ aspirants have used our free topper copies and materials
+        {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}1,400+ students
       </p>
 
       {/* Fixed price — one number, same everywhere */}
