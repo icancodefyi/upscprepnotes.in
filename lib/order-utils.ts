@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { existsSync } from "fs";
 import { join } from "path";
 import { sendEmail } from "@/lib/resend";
-import { PRODUCTS, StoreProduct } from "@/lib/store-products";
+import { getProductBySlug, StoreProduct } from "@/lib/store-products";
 
 const ADMIN_EMAIL = "impic.tech@gmail.com";
 
@@ -27,7 +27,7 @@ export function getZipPath(slug: string): string | null {
 
 export function resolveProducts(items: { slug: string }[]): StoreProduct[] {
   return items
-    .map((item) => PRODUCTS.find((p) => p.slug === item.slug))
+    .map((item) => getProductBySlug(item.slug))
     .filter((p): p is StoreProduct => !!p);
 }
 

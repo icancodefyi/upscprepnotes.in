@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
-import { PRODUCTS } from "@/lib/store-products";
+import { getProductBySlug } from "@/lib/store-products";
 import {
   fileUrl,
   formatBytes,
@@ -103,7 +103,7 @@ export default async function DownloadPage({ params, searchParams }: Props) {
 
         {items.map((item: { slug: string; title: string }) => {
           const files = getProductFiles(item.slug);
-          const product = PRODUCTS.find((p) => p.slug === item.slug);
+          const product = getProductBySlug(item.slug);
           const title = product?.title || item.title;
 
           if (!files) {

@@ -653,8 +653,36 @@ export const PRODUCTS: StoreProduct[] = [
   },
 ];
 
+/**
+ * Hidden products: reachable only by direct link, never listed in the store, search, sitemap or the AI.
+ * "payment-test" is a ₹1 product for checking payment and delivery end to end.
+ */
+export const HIDDEN_PRODUCTS: StoreProduct[] = [
+  {
+    slug: "payment-test",
+    title: "Payment test (₹1)",
+    tagline: "Checks that payment and download work",
+    description: "A one rupee test product to check payment and delivery.",
+    longDescription: ["A one rupee product used to check that payment and the download page work end to end."],
+    price: 1,
+    originalPrice: null,
+    rating: null,
+    reviewCount: null,
+    badge: "Test",
+    badgeColor: "gray",
+    gradient: "bg-gray-500",
+    features: ["One small PDF", "Instant download after payment"],
+    payNote: "Payment test",
+    payAmount: 1,
+    link: null,
+    comingSoon: false,
+    category: "original",
+  },
+];
+
+/** Looks in the public catalogue first, then the hidden products. */
 export function getProductBySlug(slug: string): StoreProduct | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+  return PRODUCTS.find((p) => p.slug === slug) || HIDDEN_PRODUCTS.find((p) => p.slug === slug);
 }
 
 export function getProductsByInstitute(instituteSlug: string): StoreProduct[] {

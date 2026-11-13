@@ -1,4 +1,4 @@
-import { PRODUCTS } from "@/lib/store-products";
+import { getProductBySlug } from "@/lib/store-products";
 import { connectDB } from "@/lib/mongodb";
 import { OrderModel } from "@/models/order.model";
 import { generateDownloadToken, sendAdminNotification, sendOrderConfirmationEmail } from "@/lib/order-utils";
@@ -29,7 +29,7 @@ export function priceCart(slugs: unknown): { items: { slug: string; title: strin
     if (typeof slug !== "string") throw new OrderError("Invalid product in cart.");
     if (seen.has(slug)) throw new OrderError("The same product is in the cart twice.");
     seen.add(slug);
-    const product = PRODUCTS.find((p) => p.slug === slug);
+    const product = getProductBySlug(slug);
     if (!product || product.comingSoon) throw new OrderError(`Product not found: ${slug}`);
     items.push({ slug, title: product.title, quantity: 1, price: product.price });
     total += product.price;
