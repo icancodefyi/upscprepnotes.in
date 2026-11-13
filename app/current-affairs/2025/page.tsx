@@ -44,8 +44,15 @@ const breadcrumbSchema = {
 
 export default async function CurrentAffairs2025Page() {
   const events = CA_2025.reduce((a, m) => a + m.sections.reduce((b, sec) => b + sec.events.length, 0), 0);
+  const faqs = [
+    { q: "What does the UPSC current affairs 2025 compilation cover?", a: `It covers all ${CA_2025.length} months of 2025 with ${events} dated events, grouped by UPSC-relevant section, so each event can be revised with its month and topic.` },
+    { q: "Is the current affairs 2025 compilation free?", a: "Yes. You can read every month on this site and download the PDF for free." },
+    { q: "How should I use yearly current affairs for UPSC?", a: "Read it month by month, then revise by topic. Link each event to the static syllabus and write one short answer on the issues that repeat." },
+  ];
+  const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
   return (
     <BrandShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <article className="mx-auto max-w-[1180px] px-6 pb-24 pt-28 sm:pt-32">
         <nav aria-label="Breadcrumb" className="t-meta flex items-center gap-2">
@@ -185,6 +192,17 @@ export default async function CurrentAffairs2025Page() {
       <div className="mx-auto w-full max-w-[1080px] px-4 pb-12">
         <QuizTeaser track="current-affairs-2025" />
       </div>
+      <section aria-labelledby="ca-quick" className="mx-auto max-w-[46rem] px-6 pb-24">
+        <h2 id="ca-quick" className="t-head text-l">Quick answers</h2>
+        <dl className="mt-4 space-y-5">
+          {faqs.map((f) => (
+            <div key={f.q}>
+              <dt className="text-m font-bold">{f.q}</dt>
+              <dd className="mt-1 text-m leading-[1.65] text-[var(--ink-2)]">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
     </BrandShell>
   );
 }

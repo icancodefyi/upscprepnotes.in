@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { PRODUCTS, getProductBySlug } from "@/lib/store-products";
+import { PRODUCTS, getProductBySlug, SHOW_REVIEWS } from "@/lib/store-products";
 import { getEffectivePrice } from "@/lib/flash-sale";
 import ProductDetailClient from "@/components/store/ProductDetailClient";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
@@ -67,7 +67,7 @@ export default async function ProductPage({
     },
   };
 
-  if (product.rating && product.reviewCount) {
+  if (SHOW_REVIEWS && product.rating && product.reviewCount) {
     productSchema.aggregateRating = {
       "@type": "AggregateRating",
       ratingValue: product.rating,

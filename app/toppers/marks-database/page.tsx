@@ -8,18 +8,19 @@ import MarksDB, { type Row } from "./_components/MarksDB";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import PopularLinks from "@/components/brand/PopularLinks";
 import QuizTeaser from "@/components/quiz/QuizTeaser";
+import { cleanMarks } from "@/lib/marks-clean";
 
 export const metadata = {
   title: "UPSC Topper Marks Database — Optional, GS1-4, Essay & Interview Scores",
   description:
-    "Search and sort marks of 50+ UPSC toppers across all subjects — GS1, GS2, GS3, GS4, Essay, Optional (PSIR, Sociology, Anthropology, etc.), Written, Interview, and Total marks. Free access to every rank holder's marksheet.",
+    "Search and sort marks of hundreds of UPSC toppers across all subjects — GS1, GS2, GS3, GS4, Essay, Optional (PSIR, Sociology, Anthropology, etc.), Written, Interview, and Total marks. Free access to every rank holder's marksheet.",
   alternates: {
     canonical: "https://upscprepnotes.in/toppers/marks-database",
   },
   openGraph: {
     title: "UPSC Topper Marks Database — Optional, GS1-4 & Interview Scores",
     description:
-      "Search and sort marks of 50+ UPSC toppers across GS1-4, Essay, Optional, Written, Interview, and Total. Free access to every rank holder's marksheet.",
+      "Search and sort marks of hundreds of UPSC toppers across GS1-4, Essay, Optional, Written, Interview, and Total. Free access to every rank holder's marksheet.",
     url: "https://upscprepnotes.in/toppers/marks-database",
     siteName: "UPSCPrepNotes",
   },
@@ -35,7 +36,7 @@ async function load(): Promise<Row[]> {
   await connectDB();
   const toppers = (await TopperModel.find({}).select("firstName lastName rank year optionalSubject slug marks ProfileImage").sort({ rank: 1 }).lean()) as Raw[];
   return toppers.map((t) => {
-    const m = t.marks ?? {};
+    const m: Record<string, number | undefined> = cleanMarks(t.marks).marks;
     const v = (k: string) => m[k] || 0;
     return {
       slug: t.slug ?? "",
@@ -75,8 +76,63 @@ export default async function MarksDatabasePage() {
   for (const t of toppers) if (t.optional) optCounts.set(t.optional, (optCounts.get(t.optional) ?? 0) + 1);
   const optionals = [...optCounts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 
+  // Direct answers, written from the same rows as the table, so the page and its structured data agree.
+  const withTotal = toppers.filter((t) => t.total > 0);
+  const top = [...withTotal].sort((a, b) => b.total - a.total)[0];
+  const withInterview = toppers.filter((t) => t.interview > 0);
+  const topInterview = [...withInterview].sort((a, b) => b.interview - a.interview)[0];
+  const yearsLabel = years.length ? `${years[years.length - 1]} to ${years[0]}` : "";
+  const topOptional = optionals[0];
+  const faqs = [
+    {
+      q: "What is the average total marks of UPSC toppers?",
+      a: `Across the ${withTotal.length} toppers in our database (CSE ${yearsLabel}), the average final total is ${avgTotal} out of 2,025. The average written score is ${avgWritten} out of 1,750 and the average interview score is ${avgInterview} out of 275.`,
+    },
+    top
+      ? {
+          q: "Who has the highest total marks among UPSC toppers in this database?",
+          a: `${top.name} (AIR ${top.rank}, ${top.year}) has the highest verified final total in our data, ${top.total} out of 2,025${top.optional ? `, with ${top.optional} as the optional` : ""}.`,
+        }
+      : null,
+    topInterview
+      ? {
+          q: "What is the highest UPSC interview score in this database?",
+          a: `${topInterview.name} (AIR ${topInterview.rank}, ${topInterview.year}) scored ${topInterview.interview} out of 275 in the personality test, the highest interview mark in our data.`,
+        }
+      : null,
+    topOptional
+      ? {
+          q: "Which optional subject do most UPSC toppers take?",
+          a: `${topOptional[0]} is the most common optional among toppers in our database, with ${topOptional[1]} of ${toppers.length} toppers. Counts show choice, not which subject scores best.`,
+        }
+      : null,
+    {
+      q: "What is the maximum marks in the UPSC Civil Services mains and interview?",
+      a: "The written examination is out of 1,750 marks (GS1 to GS4 and the essay carry 250 each, and the two optional papers 250 each). The interview is out of 275. The final total is out of 2,025.",
+    },
+  ].filter((x): x is { q: string; a: string } => !!x);
+  const ld = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      name: "UPSC topper marks database",
+      description: `Paper-wise marks (GS1 to GS4, essay, optional papers, written, interview and final total) of ${toppers.length} UPSC Civil Services toppers, CSE ${yearsLabel}.`,
+      url: "https://upscprepnotes.in/toppers/marks-database",
+      temporalCoverage: years.length ? `${years[years.length - 1]}/${years[0]}` : undefined,
+      creator: { "@type": "Organization", name: "UPSCPrepNotes", url: "https://upscprepnotes.in" },
+      isAccessibleForFree: true,
+      variableMeasured: ["GS1", "GS2", "GS3", "GS4", "Essay", "Optional paper 1", "Optional paper 2", "Written total", "Interview", "Final total"],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+  ];
+
   return (
     <BrandShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
       <div className="pb-24 pt-28 sm:pt-32">
         <div className="mx-auto max-w-[1240px] px-4 sm:px-6">
           {/* Breadcrumb */}
@@ -121,8 +177,22 @@ export default async function MarksDatabasePage() {
             <MarksDB rows={toppers} years={years} optionals={optionals} />
           </div>
 
+          {/* Direct answers */}
+          <section aria-labelledby="quick-answers" className="mx-auto mt-16 max-w-[46rem]">
+            <h2 id="quick-answers" className="t-head text-l">Quick answers from the data</h2>
+            <dl className="mt-4 space-y-5">
+              {faqs.map((f) => (
+                <div key={f.q}>
+                  <dt className="text-m font-bold">{f.q}</dt>
+                  <dd className="mt-1 text-m leading-[1.65] text-[var(--ink-2)]">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-4 text-s text-[var(--muted)]">Marks are from UPSC&apos;s published marksheets. Values that fail a sanity check are left out. Updated {new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric", timeZone: "Asia/Kolkata" })}.</p>
+          </section>
+
           {/* SEO Text */}
-          <div className="mx-auto mt-16 max-w-[46rem] space-y-4">
+          <div className="mx-auto mt-12 max-w-[46rem] space-y-4">
             <Link href="/toppers/highest-marks-in-upsc" data-track="marksdb-highest-marks" className={`${card} group mb-8 flex flex-col gap-1 p-6 sm:p-7`}>
               <span className="text-m font-bold group-hover:text-[var(--accent)]">Highest marks in UPSC, paper by paper &rarr;</span>
               <span className="text-s leading-[1.55] text-[var(--ink-2)]">The record in every paper, what a typical topper scores, AIR 1 against the cut-off, and a free PDF handbook of all of it.</span>

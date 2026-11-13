@@ -1,3 +1,9 @@
+/**
+ * Ratings, review counts and testimonials stay hidden until they come from real buyers.
+ * The numbers in this file were never collected from orders, so they must not be shown or sent to search engines.
+ */
+export const SHOW_REVIEWS = false;
+
 export interface ProductFile {
   name: string;
   sizeMB: number;

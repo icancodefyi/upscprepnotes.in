@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { track } from "@/lib/track";
 import PayButton from "@/components/ui/PayButton";
-import { StoreProduct, PRODUCTS, ProductReview } from "@/lib/store-products";
+import { StoreProduct, PRODUCTS, ProductReview, SHOW_REVIEWS } from "@/lib/store-products";
 import { Paperclip } from "@/components/brand/Props";
 import { fmt, folderOf, ProductCard, BuyButton, PayMethods, Sheet, pairOf } from "./Shelf";
 import { TOPPERS } from "@/components/topper/sales-page-data";
@@ -283,7 +283,7 @@ function ProductDetailInner({ product }: { product: StoreProduct }) {
     return () => io.disconnect();
   }, []);
 
-  const reviews = product.reviews || [];
+  const reviews = SHOW_REVIEWS ? product.reviews || [] : [];
   const buyable = !product.comingSoon && !product.link;
 
   return (
@@ -523,7 +523,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
       <h1 className={`t-display text-l ${product.badge ? "mt-4" : ""}`}>{product.title}</h1>
       <p className="mt-2 text-m leading-[1.5] text-[var(--ink-2)]">{product.tagline}</p>
 
-      {product.rating && (
+      {SHOW_REVIEWS && product.rating && (
         <div className="mt-4 flex items-center gap-2">
           <span className="inline-flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
@@ -537,7 +537,7 @@ function PurchaseCard({ product }: { product: StoreProduct }) {
 
       <p className="mt-2 flex items-center gap-2 text-s text-[var(--muted)]">
         <span aria-hidden className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-        {product.reviewCount ? `${product.reviewCount} reviews · ` : ""}1,400+ students
+        2,800+ aspirants have used our free topper copies and materials
       </p>
 
       {/* Fixed price — one number, same everywhere */}

@@ -70,12 +70,6 @@ const productSchema = {
       },
     },
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    bestRating: "5",
-    ratingCount: "2300",
-  },
   category: "UPSC Preparation Materials",
   audience: {
     "@type": "Audience",

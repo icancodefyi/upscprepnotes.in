@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/store-products";
+import { PRODUCTS, SHOW_REVIEWS } from "@/lib/store-products";
 import PayButton from "@/components/ui/PayButton";
 
 /** Shared store pieces: the folder card, the cover sheet, price, buy and payment marks. Used by the listing and the product page. */
@@ -38,13 +38,14 @@ export function Star({ className = "" }: { className?: string }) {
 }
 
 export function Meta({ product }: { product: Product }) {
-  if (!product.rating && !product.fileCount) return null;
+  const rating = SHOW_REVIEWS ? product.rating : null;
+  if (!rating && !product.fileCount) return null;
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-s text-[var(--muted)]">
-      {product.rating && (
+      {rating && (
         <span className="inline-flex items-center gap-1 font-bold text-[var(--ink)]">
           <Star className="text-[var(--accent)]" />
-          {product.rating.toFixed(1)}
+          {rating.toFixed(1)}
         </span>
       )}
       {product.fileCount && (
