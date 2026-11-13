@@ -5,6 +5,8 @@ import Nav, { type NavProduct } from "./Nav";
 import Footer from "./Footer";
 import AdRail from "./AdRail";
 import ShellRail from "./ShellRail";
+import QuizToast from "./QuizToast";
+import { QUIZ_LIVE } from "@/lib/quiz/config";
 import { PITCH } from "@/lib/rail";
 import { brandFonts } from "./fonts";
 import "./brand.css";
@@ -65,6 +67,7 @@ export default async function BrandShell({ children, footer }: { children: React
       <ShellRail rails={rails} inlineRails={inlineRails}>{children}</ShellRail>
       <StoreStrip />
       <Footer counts={data.counts} featured={data.featured} />
+      {QUIZ_LIVE && <QuizToast />}
     </div>
   );
 }
