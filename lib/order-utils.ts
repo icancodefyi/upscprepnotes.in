@@ -4,8 +4,6 @@ import { join } from "path";
 import { sendEmail } from "@/lib/resend";
 import { getProductBySlug, StoreProduct } from "@/lib/store-products";
 
-const ADMIN_EMAIL = "impic.tech@gmail.com";
-
 const ZIP_DIR = join(process.cwd(), "private", "zips");
 
 export function generateDownloadToken(): string {
@@ -112,7 +110,7 @@ export async function sendAdminNotification(
 
   await sendEmail({
     to: process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "upscprepnotes.in@gmail.com",
-    subject: `New Dodo Sale: ₹${total} — ${email}`,
+    subject: `New sale: ₹${total} — ${email} (${provider})`,
     html,
   });
 }
