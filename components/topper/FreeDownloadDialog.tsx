@@ -202,9 +202,9 @@ export function FreeDownloadDialog({ topperName, topperSlug, freeAnswerCopyUrl, 
             <div className={badge}><IconClock size={26} /></div>
             <h2 className="t-head mt-4 text-l">Check your inbox</h2>
             <p className="mt-2 text-s leading-[1.55] text-[var(--ink-2)]">
-              <strong>{topperName}</strong>&apos;s copy is being scanned from the original answer sheet. We&apos;ll email the link to <strong>{email}</strong> as soon as it&apos;s ready, usually within 24-48 hours. Check Spam or Promotions if you don&apos;t see it.
+              We don&apos;t have <strong>{topperName}</strong>&apos;s copy yet. We saved your request and will email <strong>{email}</strong> as soon as we get it. We can&apos;t promise a date.
             </p>
-            {upsell(`While you wait: compare ${topperName} with other toppers`, "63 booklets from 27 toppers across GS1-4 and Essay. ₹199, one time.")}
+            {upsell("Want real copies today?", "63 booklets from 27 other toppers across GS1-4 and Essay. ₹199, one time.")}
             <QuizTeaser track="download-wait" variant="compact" lead="While you wait:" />
             <button type="button" onClick={() => onOpenChange(false)} className="mt-3 h-11 w-full rounded-full text-s font-bold text-[var(--ink-2)] hover:bg-[var(--canvas)]">
               Close

@@ -14,6 +14,8 @@ interface FreeDownloadSectionProps {
   optionalSubject: string;
   freeAnswerCopyUrl?: string | null;
   freeAnswerCopyUrls?: string[];
+  /** True when the topper's own copy is inside the paid compilation. */
+  inCompilation?: boolean;
 }
 
 export function FreeDownloadSection({
@@ -22,8 +24,10 @@ export function FreeDownloadSection({
   optionalSubject,
   freeAnswerCopyUrl,
   freeAnswerCopyUrls,
+  inCompilation = false,
 }: FreeDownloadSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const hasCopy = !!(freeAnswerCopyUrls?.length || freeAnswerCopyUrl);
 
   return (
     <>
@@ -35,23 +39,40 @@ export function FreeDownloadSection({
           {/* FREE DOWNLOAD — top */}
           <div className="p-5 sm:p-6">
             <div className="mb-2 flex flex-wrap gap-1.5">
-              <span className="rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-s font-bold text-[var(--accent)]">Free Download</span>
-              <span className="rounded-full bg-[var(--canvas)] px-2.5 py-0.5 text-s font-bold text-[var(--ink)]">Verified</span>
+              {hasCopy ? (
+                <>
+                  <span className="rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-s font-bold text-[var(--accent)]">Free Download</span>
+                  <span className="rounded-full bg-[var(--canvas)] px-2.5 py-0.5 text-s font-bold text-[var(--ink)]">Verified</span>
+                </>
+              ) : (
+                <span className="rounded-full bg-[var(--hl)] px-2.5 py-0.5 text-s font-bold text-[var(--hl-ink)]">Not available yet</span>
+              )}
             </div>
-            <h3 className="text-m font-bold">{topperName}&apos;s Answer Copy</h3>
-            <p className="mt-1.5 text-m leading-[1.6] text-[var(--ink-2)]">
-              One free GS paper answer copy from the actual UPSC Mains exam. See the exact handwriting, structure, and presentation that scored high marks.
-            </p>
-            <p className="mt-1.5 text-s text-[var(--muted)]">
-              Sourced from topper contributions and verified against published marksheets.
-            </p>
+            <h3 className="text-m font-bold">{hasCopy ? `${topperName}'s Answer Copy` : `${topperName}'s answer copy`}</h3>
+            {hasCopy ? (
+              <>
+                <p className="mt-1.5 text-m leading-[1.6] text-[var(--ink-2)]">
+                  One free GS paper answer copy from the actual UPSC Mains exam. See the exact handwriting, structure, and presentation that scored high marks.
+                </p>
+                <p className="mt-1.5 text-s text-[var(--muted)]">
+                  Sourced from topper contributions and verified against published marksheets.
+                </p>
+              </>
+            ) : (
+              <p className="mt-1.5 text-m leading-[1.6] text-[var(--ink-2)]">
+                We don&apos;t have {topperName}&apos;s answer copy yet. Leave your details and we&apos;ll email it as soon as we get it. We can&apos;t promise a date.{" "}
+                {inCompilation
+                  ? "Their copy is already inside the compilation below."
+                  : "Until then, the compilation below has real copies from 27 other toppers."}
+              </p>
+            )}
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <Link
                 href={`/free/${topperSlug}`}
                 data-track="topper-free-download"
                 className="btn btn-blue h-11 justify-center px-5 [--btn-fs:14px]"
               >
-                Download free copy
+                {hasCopy ? "Download free copy" : "Notify me when it\u2019s available"}
               </Link>
               <a
                 href="https://t.me/+2eV0YCTGdNcyNmFl"
@@ -70,10 +91,10 @@ export function FreeDownloadSection({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-m font-bold">
-                  Compare {topperName} with other toppers
+                  {hasCopy ? `Compare ${topperName} with other toppers` : inCompilation ? `Read ${topperName}'s copy in the compilation` : "Read real copies from 27 other toppers"}
                 </p>
                 <p className="mt-0.5 text-s text-[var(--ink-2)]">
-                  63 booklets from 27 toppers across GS1-4 and Essay. Instant email delivery, 7-day refund.
+                  63 booklets from 27 toppers across GS1-4 and Essay.{!hasCopy && !inCompilation ? ` It does not include ${topperName}'s copy.` : ""} Instant email delivery, 7-day refund.
                 </p>
               </div>
               <div className="flex items-center gap-3">

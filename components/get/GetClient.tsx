@@ -158,11 +158,11 @@ export default function GetClient({ kind, title, files, pending, emailMasked, re
             <Gilu pose={pending ? "dozing" : "celebrating"} size={130} className="h-auto w-[64px] shrink-0 sm:w-[120px]" />
             <div className="min-w-0">
               <h1 className="text-[22px] font-bold leading-tight tracking-[-0.02em] sm:text-[30px]" style={{ color: C.ink }}>
-                {pending ? "We're getting your copy ready" : "Your download is ready"}
+                {pending ? "Your request is saved" : "Your download is ready"}
               </h1>
               <p className="mt-1 text-[14.5px] leading-snug" style={{ color: C.ink2 }}>
                 {pending
-                  ? <><b>{title}</b> is being scanned from the original answer sheet. It reaches <b>{emailMasked}</b>{" "}within 24–48 hours.</>
+                  ? <>We don&apos;t have <b>{title}</b> yet. We&apos;ll email <b>{emailMasked}</b> as soon as we get it. We can&apos;t promise a date.</>
                   : title}
               </p>
             </div>

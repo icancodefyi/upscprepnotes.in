@@ -1,3 +1,4 @@
+import { copyFor } from "@/lib/ai/answer-copies";
 import { sanitizeProfile } from "@/lib/lead-profile";
 import { geoFrom } from "@/lib/geo";
 import { NextRequest, NextResponse } from "next/server";
@@ -57,25 +58,26 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
 }
 
 async function sendUnavailableEmail(email: string, topperName: string) {
-
+  const inCompilation = !!copyFor(topperName);
+  const compilationUrl = "https://upscprepnotes.in/store/answer-copies-compilation?utm_source=email&utm_medium=transactional&utm_campaign=free-copy-pending";
   const html = `
     <!DOCTYPE html>
     <html>
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
-        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Your Download is Being Scanned</h1>
-        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for requesting <strong>${topperName}</strong>'s answer copy.</p>
-        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We're digitizing the original answer sheet right now and will email the link within 24–48 hours.</p>
+        <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">We saved your request</h1>
+        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 8px;line-height:1.6">Thanks for asking for <strong>${topperName}</strong>'s answer copy.</p>
+        <p style="color:#666;font-size:14px;text-align:center;margin:0 0 24px;line-height:1.6">We don't have it yet. When we get it, we'll email you the link. We can't promise a date, so please don't wait on it for your preparation.</p>
         <div style="text-align:center;margin-bottom:24px;padding:20px;background:#eef1fd;border-radius:16px">
-          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#172fa3">Want to compare ${topperName} with other toppers while you wait?</p>
-          <p style="margin:0 0 14px;font-size:13px;color:#172fa3">The compilation has 63 booklets from 27 toppers, GS1–4 and Essay. ₹199, one time.</p>
-          <a href="https://upscprepnotes.in/store/answer-copies-compilation?utm_source=email&utm_medium=transactional&utm_campaign=free-copy-pending" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">See the compilation, ₹199 →</a>
+          <p style="margin:0 0 4px;font-size:14px;font-weight:800;color:#172fa3">Want real topper copies you can read today?</p>
+          <p style="margin:0 0 14px;font-size:13px;color:#172fa3">The compilation has 63 booklets from 27 toppers, GS1 to GS4 and Essay. ${inCompilation ? `${topperName}'s copy is in it.` : `It does not include ${topperName}'s copy.`} ₹199, one time.</p>
+          <a href="${compilationUrl}" style="display:inline-block;background:#1f3fd6;color:#fff;padding:13px 30px;border-radius:40px;text-decoration:none;font-weight:700;font-size:14px">See the compilation, ₹199 →</a>
         </div>
         <p style="color:#999;font-size:11px;text-align:center;margin:0 0 20px">Instant email delivery · 7-day refund · No subscription</p>
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
           <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
-            📬 Join 100+ aspirants on Telegram for daily current affairs →
+            Join 100+ aspirants on Telegram for daily current affairs →
           </a>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:0">— UPSCPrepNotes Team</p>
@@ -86,7 +88,7 @@ async function sendUnavailableEmail(email: string, topperName: string) {
 
   await sendEmail({
     to: email,
-    subject: `Your ${topperName} Answer Copy — On Its Way`,
+    subject: `We saved your request for ${topperName}'s answer copy`,
     html,
   });
 }

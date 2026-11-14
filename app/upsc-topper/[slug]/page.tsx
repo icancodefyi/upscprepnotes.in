@@ -20,6 +20,7 @@ import { getRelatedToppers, getToppersByRank, getToppersByYear } from "@/service
 import { FreeDownloadSection } from "@/components/topper/FreeDownloadSection";
 import AnswerCopyPreview from "@/components/topper/AnswerCopyPreview";
 import { TopperLeadCapture } from "@/components/topper/TopperLeadCapture";
+import { copyFor } from "@/lib/ai/answer-copies";
 import InterviewPackPromo from "@/components/store/InterviewPackPromo";
 import { marksheetPageFor } from "@/lib/marksheet-pages";
 import PopularLinks from "@/components/brand/PopularLinks";
@@ -350,7 +351,7 @@ export default async function TopperPage({ params }: Props) {
               </Section>
 
               {/* ANSWER COPY */}
-              <FreeDownloadSection topperName={fullName} topperSlug={topper.slug} optionalSubject={topper.optionalSubject} freeAnswerCopyUrl={topper.freeAnswerCopyUrl} freeAnswerCopyUrls={topper.freeAnswerCopyUrls} />
+              <FreeDownloadSection topperName={fullName} topperSlug={topper.slug} optionalSubject={topper.optionalSubject} freeAnswerCopyUrl={topper.freeAnswerCopyUrl} freeAnswerCopyUrls={topper.freeAnswerCopyUrls} inCompilation={!!copyFor(fullName)} />
 
               {/* INTERVIEW PACK: after the free copy, so the lead form stays first */}
               <InterviewPackPromo first={first} interview={m.interview || 0} track="topper-marksheet-interview-pack" />
@@ -375,10 +376,10 @@ export default async function TopperPage({ params }: Props) {
                 </Section>
               )}
 
-              <AnswerCopyPreview topper={{ slug: topper.slug, firstName: topper.firstName, lastName: topper.lastName, rank: topper.rank, year: topper.year, optionalSubject: topper.optionalSubject, marks: { essay: m.essay, total: m.total } }} />
+              <AnswerCopyPreview topper={{ slug: topper.slug, firstName: topper.firstName, lastName: topper.lastName, rank: topper.rank, year: topper.year, optionalSubject: topper.optionalSubject, marks: { essay: m.essay, total: m.total } }} inCompilation={!!copyFor(fullName)} />
 
               {/* FREE ANSWER COPY */}
-              <TopperLeadCapture topperName={fullName} topperSlug={topper.slug} />
+              <TopperLeadCapture topperName={fullName} topperSlug={topper.slug} hasCopy={!!(topper.freeAnswerCopyUrls?.length || topper.freeAnswerCopyUrl)} />
 
               {/* INSIGHTS */}
               {insights.length > 0 && (

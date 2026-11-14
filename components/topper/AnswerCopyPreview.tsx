@@ -25,9 +25,11 @@ interface Props {
     optionalSubject?: string;
     marks?: { essay?: number; total?: number };
   };
+  /** True when this topper's own copy is inside the paid compilation. */
+  inCompilation?: boolean;
 }
 
-export default function AnswerCopyPreview({ topper }: Props) {
+export default function AnswerCopyPreview({ topper, inCompilation = false }: Props) {
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const name = `${topper.firstName} ${topper.lastName}`;
   const hasPreview = PREVIEW_SLUGS.has(topper.slug);
@@ -37,9 +39,13 @@ export default function AnswerCopyPreview({ topper }: Props) {
     <section>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="t-head text-l">{name}&apos;s Answer Copy</h2>
+          <h2 className="t-head text-l">{hasPreview ? `${name}'s Answer Copy` : "Sample answer copy pages"}</h2>
           <p className="mt-1 text-s text-[var(--muted)]">
-            See how they structured their {topper.optionalSubject || "subject"} paper
+            {hasPreview
+              ? `See how they structured their ${topper.optionalSubject || "subject"} paper`
+              : inCompilation
+                ? `${name}'s copy is in the compilation. These are sample pages from it.`
+                : `We don't have ${name}'s copy yet. These are sample pages from other toppers in the compilation.`}
           </p>
         </div>
         <span className="rounded-full bg-[#e3e8fb] px-2.5 py-0.5 text-s font-bold text-[#172fa3]">

@@ -26,7 +26,7 @@ const GILU: { pose: GiluPose; line: (item: string) => string }[] = [
   { pose: "reading", line: () => "Three to go. You are quick." },
   { pose: "thinking", line: () => "Halfway there. Keep going." },
   { pose: "run", line: () => "Two to go. Nearly there." },
-  { pose: "celebrating", line: (f) => `Unlocked! One last step and ${f} is on its way.` },
+  { pose: "celebrating", line: () => "Unlocked! One last step." },
 ];
 const TOTAL = QUESTIONS.length + 1;
 
@@ -71,7 +71,7 @@ export type Target =
  * Remembers answers in this browser, so a returning visitor only sees the last step.
  * `item` is how the thing reads in a sentence, for example "Anuj's copy" or "this PDF".
  */
-export default function FreeCopyForm({ item, target, onUnlocked }: { item: string; target: Target; onUnlocked?: () => void }) {
+export default function FreeCopyForm({ item, target, onUnlocked, pending = false }: { item: string; target: Target; onUnlocked?: () => void; pending?: boolean }) {
   const slug = target.kind === "copy" ? target.topperSlug : target.pdfSlug;
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState<LeadProfile>({});
@@ -336,7 +336,7 @@ export default function FreeCopyForm({ item, target, onUnlocked }: { item: strin
             {error && <p className="mt-4 text-s text-[var(--mark-deep)]" role="alert">{error}</p>}
 
             <button type="submit" disabled={loading} data-track="free-copy-submit" className="btn btn-blue mt-4 h-14 w-full justify-center disabled:opacity-60 [--btn-fs:16px]">
-              {loading ? "Sending..." : target.kind === "copy" ? `Send me ${item}` : `Get ${item}`}
+              {loading ? "Sending..." : pending ? "Notify me when it\u2019s available" : target.kind === "copy" ? `Send me ${item}` : `Get ${item}`}
             </button>
             <p className="mt-2.5 text-center text-s text-[var(--muted)]">Free · Opens right after you send</p>
             {known && (

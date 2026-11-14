@@ -5,6 +5,7 @@ import BrandShell from "@/components/brand/BrandShell";
 import FreeCopyForm from "@/components/free/FreeCopyForm";
 import { displayName, fmt, freeCopiesOf, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
 import { getTopperBySlug } from "@/services/topper.service";
+import { copyFor } from "@/lib/ai/answer-copies";
 
 export const revalidate = 3600;
 
@@ -34,6 +35,7 @@ export default async function FreeCopyPage({ params }: Props) {
   const total = totalOf(lean);
   const copies = freeCopiesOf(lean).length;
   const ready = copies > 0;
+  const inCompilation = !!copyFor(name);
 
   return (
     <BrandShell>
@@ -52,13 +54,26 @@ export default async function FreeCopyPage({ params }: Props) {
             <p className="mt-3 hidden max-w-[44ch] text-m leading-[1.6] text-[var(--ink-2)] sm:block sm:text-[18px] lg:mx-0">
               {ready
                 ? "The full handwritten Mains booklet, scanned as submitted. Free, sent to your email."
-                : "The handwritten Mains booklet is being scanned. Answer a few questions and the link arrives by email."}
+                : `We don't have ${name}'s answer copy yet. Answer a few questions and we'll email it as soon as we get it. We can't promise a date.`}
             </p>
+            {!ready && (
+              <div className="mx-auto mt-4 max-w-[44ch] rounded-[20px] bg-[#fffbe6] p-4 text-left lg:mx-0">
+                <p className="text-m font-bold">{inCompilation ? "Want it today?" : "Want real copies today?"}</p>
+                <p className="mt-1 text-s leading-[1.55] text-[var(--ink-2)]">
+                  {inCompilation
+                    ? `${name}'s copy is inside the Answer Copies Compilation: 63 booklets from 27 toppers, GS1 to GS4 and Essay.`
+                    : `The Answer Copies Compilation has 63 booklets from 27 toppers, GS1 to GS4 and Essay. It does not include ${name}'s copy.`}
+                </p>
+                <Link href="/store/answer-copies-compilation?utm_source=site&utm_medium=free_page&utm_campaign=copy_pending" data-track="free-page-compilation" className="btn btn-ink mt-3 h-11 justify-center px-5 [--btn-fs:14px]">
+                  See the compilation, ₹199
+                </Link>
+              </div>
+            )}
             <ul className="mt-3 flex flex-wrap justify-center gap-1.5 sm:mt-5 sm:gap-2 lg:justify-start">
               {[`AIR ${t.rank}`, `UPSC ${t.year}`, optional ? `${optional} optional` : "", total ? `${fmt(total)} marks` : ""].filter(Boolean).map((c, i) => (
                 <li key={c} className={`${i > 1 ? "hidden sm:block " : ""}rounded-full bg-white px-3 py-1 text-[13px] font-bold shadow-[0_0_0_1px_var(--line-2)] sm:px-4 sm:py-1.5 sm:text-s`}>{c}</li>
               ))}
-              <li className={`rounded-full px-3 py-1 text-[13px] font-bold sm:px-4 sm:py-1.5 sm:text-s ${ready ? "bg-[#e3e8fb] text-[#172fa3]" : "bg-[var(--hl)] text-[var(--hl-ink)]"}`}>{ready ? "Ready to send" : "Being scanned"}</li>
+              <li className={`rounded-full px-3 py-1 text-[13px] font-bold sm:px-4 sm:py-1.5 sm:text-s ${ready ? "bg-[#e3e8fb] text-[#172fa3]" : "bg-[var(--hl)] text-[var(--hl-ink)]"}`}>{ready ? "Ready to send" : "Not available yet"}</li>
             </ul>
 
             {/* Desktop only: what happens next, and the promise. On phones the form carries both. */}
@@ -77,7 +92,7 @@ export default async function FreeCopyPage({ params }: Props) {
           </header>
 
           <div id="get" className="rounded-[28px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2),0_24px_56px_-24px_rgba(11,12,16,0.35)] sm:p-7 lg:sticky lg:top-28">
-            <FreeCopyForm item={`${name.split(" ")[0]}'s copy`} target={{ kind: "copy", topperSlug: t.slug }} />
+            <FreeCopyForm item={`${name.split(" ")[0]}'s copy`} target={{ kind: "copy", topperSlug: t.slug }} pending={!ready} />
           </div>
         </div>
       </div>

@@ -7,9 +7,11 @@ import { IconDownload } from "@tabler/icons-react";
 interface Props {
   topperName: string;
   topperSlug: string;
+  /** False when we do not hold this topper's copy yet. */
+  hasCopy?: boolean;
 }
 
-export function TopperLeadCapture({ topperName, topperSlug }: Props) {
+export function TopperLeadCapture({ topperName, topperSlug, hasCopy = true }: Props) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -59,9 +61,11 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
   return (
     <div data-track-view="topper_lead_form" className="relative overflow-hidden rounded-[24px] bg-white p-5 shadow-[0_0_0_1px_var(--line-2)] sm:p-6">
       <Outline kind="envelope" className="-right-5 -top-5 h-28 w-40 rotate-[12deg] text-[var(--accent)]/[0.07]" />
-      <h2 className="relative text-m font-bold">Get Free Answer Copies</h2>
+      <h2 className="relative text-m font-bold">{hasCopy ? "Get Free Answer Copies" : `Get ${topperName}'s copy when it's available`}</h2>
       <p className="relative mt-1 text-s text-[var(--ink-2)]">
-        Enter your email and we&apos;ll send you the free answer copies we have for {topperName}.
+        {hasCopy
+          ? `Enter your email and we'll send you the free answer copies we have for ${topperName}.`
+          : `We don't have ${topperName}'s answer copy yet. Enter your email and we'll send it as soon as we get it. We can't promise a date.`}
       </p>
       {!submitted ? (
         <form onSubmit={handleSubmit} className="relative mt-4 flex gap-2">
@@ -78,7 +82,7 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
             disabled={loading}
             className="btn btn-blue h-11 shrink-0 px-5 [--btn-fs:14px] disabled:opacity-50"
           >
-            {loading ? "Sending..." : "Send Free Copy"}
+            {loading ? "Sending..." : hasCopy ? "Send Free Copy" : "Notify me"}
           </button>
         </form>
       ) : available ? (
@@ -105,14 +109,14 @@ export function TopperLeadCapture({ topperName, topperSlug }: Props) {
       ) : (
         <div className="mt-3">
           <p className="text-sm font-medium text-[#172fa3]">
-            ✓ We&apos;ll send the download link for <strong>{topperName}</strong>&apos;s answer copy to your email shortly.
+            ✓ Saved. We don&apos;t have <strong>{topperName}</strong>&apos;s copy yet, and we&apos;ll email you when we do.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <a
-              href="/store"
+              href="/store/answer-copies-compilation?utm_source=site&utm_medium=topper_page&utm_campaign=copy_pending"
               className="inline-flex items-center gap-1.5 rounded-lg bg-[#1f3fd6] px-4 py-2 text-xs font-bold text-white hover:bg-[#172fa3] transition-colors"
             >
-              Browse 50+ topper copies in the store
+              See real copies from 27 other toppers
             </a>
           </div>
         </div>
