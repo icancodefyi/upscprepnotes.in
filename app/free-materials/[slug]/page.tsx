@@ -15,7 +15,9 @@ import {
   generateEditorialContent,
 } from "@/lib/pdf-content";
 import BrandShell from "@/components/brand/BrandShell";
-import { SponsorSlot } from "@/components/brand/AdRail";
+import { ProductCard, SponsorSlot } from "@/components/brand/AdRail";
+import { PITCH, productForMaterial } from "@/lib/rail";
+import { getProductBySlug } from "@/lib/store-products";
 import Toc from "@/components/brand/Toc";
 import { Section, card } from "@/components/brand/ui";
 import { CATEGORY, getCollection } from "@/lib/materials";
@@ -166,6 +168,11 @@ export default async function PDFDetailPage({ params }: Props) {
     : [];
   const optHref = opt ? `/optional/${optionalSlug(opt.subject)}` : null;
 
+  // The product this page promotes: card under the download on phones, in the sidebar on wide screens, and the offer at the end.
+  const promoSlug = productForMaterial(p.category);
+  const promo = getProductBySlug(promoSlug);
+  const promoPitch = promo ? PITCH[promo.slug] : undefined;
+
   const toc = [
     { id: "whats-included", label: "What’s Included" },
     { id: "about", label: "About This Resource" },
@@ -256,6 +263,11 @@ export default async function PDFDetailPage({ params }: Props) {
 
           <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="min-w-0 space-y-14">
+              {/* Phones: the sidebar sits below everything, so the product shows here, right under the download. */}
+              <div className="lg:hidden">
+                <ProductCard page="free-material-top" productSlug={promoSlug} track="material-promo-top" />
+              </div>
+
               {/* WHAT'S INCLUDED */}
               <Section id="whats-included" title="What’s Included">
                 <div className={`${card} p-6 sm:p-7`}>
@@ -309,15 +321,17 @@ export default async function PDFDetailPage({ params }: Props) {
               )}
 
               {/* OFFER */}
-              <section className="flex flex-col gap-4 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
-                <div>
-                  <h2 className="t-head text-l">How toppers actually wrote it</h2>
-                  <p className="mt-1 text-s text-[var(--muted)]">63 handwritten topper answer copies with their marks · ₹199 · Instant download.</p>
-                </div>
-                <Link href="/store/answer-copies-compilation" data-track={`pdf-upsell-${p.slug}`} className="btn btn-blue shrink-0 self-start sm:self-center">
-                  See the answer copies &rarr;
-                </Link>
-              </section>
+              {promo && promoPitch && (
+                <section data-track-view="material-promo-bottom" className="flex flex-col gap-4 rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+                  <div>
+                    <h2 className="t-head text-l">{promoPitch.headline}</h2>
+                    <p className="mt-1 text-s text-[var(--muted)]">{`${promoPitch.line} ₹${promo.price} · Instant download.`}</p>
+                  </div>
+                  <Link href={`/store/${promo.slug}`} data-track={`pdf-upsell-${p.slug}`} className="btn btn-blue shrink-0 self-start sm:self-center">
+                    {promoPitch.cta} &rarr;
+                  </Link>
+                </section>
+              )}
               <PopularLinks track="pdf-popular" />
               <QuizTeaser track="free-material" />
 
@@ -371,7 +385,7 @@ export default async function PDFDetailPage({ params }: Props) {
               )}
             </div>
 
-            <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+            <aside className="space-y-4 lg:self-start [@media(min-height:960px)]:lg:sticky [@media(min-height:960px)]:lg:top-24">
               <nav aria-label="On this page" className={`${card} hidden p-5 lg:block`}>
                 <p className="text-m font-bold">On this page</p>
                 <Toc items={toc} />
@@ -415,6 +429,9 @@ export default async function PDFDetailPage({ params }: Props) {
                     </li>
                   ))}
                 </ul>
+              </div>
+              <div className="hidden lg:block">
+                <ProductCard page="free-material" productSlug={promoSlug} track="material-promo-side" />
               </div>
               <SponsorSlot page="free-material" />
             </aside>

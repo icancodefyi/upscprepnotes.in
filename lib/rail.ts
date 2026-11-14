@@ -37,6 +37,12 @@ export function railProductFor(path: string): string {
   return "answer-copies-compilation";
 }
 
+/** Which product a free-material page promotes, by the material's category. Readers of current-affairs style material want schemes; the rest see the answer copies. */
+export function productForMaterial(category: string): string {
+  if (category === "current-affairs" || category === "magazines" || category === "books") return "government-schemes-compilation";
+  return "answer-copies-compilation";
+}
+
 /** Routes with no rail: money pages, tools, the home page and pages that carry their own rail. */
 const NO_RAIL = ["/free", "/store", "/download", "/get", "/quiz", "/ask", "/admin", "/unsubscribe", "/advertise", "/content/", "/toppers/highest-marks-in-upsc", "/toppers/upsc-interview-marks", "/toppers/upsc-mains-marks-needed"];
 

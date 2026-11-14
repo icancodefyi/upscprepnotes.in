@@ -6,7 +6,8 @@ import { card } from "./ui";
 
 const DEFAULT_PRODUCT = "answer-copies-compilation";
 
-function ProductCard({ page, productSlug }: { page: string; productSlug?: string }) {
+/** `track` names this placement in first-party analytics: its clicks carry that label and, when set, views are counted as section_view. */
+export function ProductCard({ page, productSlug, track }: { page: string; productSlug?: string; track?: string }) {
   const wanted = getProductBySlug(productSlug ?? DEFAULT_PRODUCT);
   const p = wanted && !wanted.comingSoon ? wanted : getProductBySlug(DEFAULT_PRODUCT);
   if (!p) return null;
@@ -14,7 +15,8 @@ function ProductCard({ page, productSlug }: { page: string; productSlug?: string
   return (
     <Link
       href={`/store/${p.slug}`}
-      data-track="rail-product"
+      data-track={track ?? "rail-product"}
+      data-track-view={track}
       data-track-page={page}
       className={`${card} group block p-3.5 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
     >

@@ -45,7 +45,7 @@ Every user interaction we need for curation goes into one MongoDB collection, **
 | `quiz_install_android_steps_seen` | Android browser without the install prompt: the ⋮ menu steps are shown (home screen or results) | — |
 | `quiz_installed` | The app was installed (browser `appinstalled`) | — |
 
-Clicks on links to files (`.pdf`, `.zip`…) and `/api/download` carry `download: true`. Marked sections so far: `home_lead_pack`, `topper_lead_form`, `topper_answer_copies`, `store_email_band`, `store_spotlight`, `product_buy_box`, `product_samples`, `product_reviews`.
+Clicks on links to files (`.pdf`, `.zip`…) and `/api/download` carry `download: true`. Marked sections so far: `home_lead_pack`, `topper_lead_form`, `topper_answer_copies`, `store_email_band`, `store_spotlight`, `product_buy_box`, `product_samples`, `product_reviews`. Free-material pages promote a product in three places, each with its own label for clicks (`click.track`) and views (`section_view.name`): `material-promo-top` (phones, under the download), `material-promo-side` (desktop sidebar) and `material-promo-bottom` (end of page). Click-through = clicks on the label / views of the label.
 
 `checkout_started` and `purchase` share `props.ref`, so a purchase can be joined back to the visitor and everything they did before it.
 
