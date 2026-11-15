@@ -17,7 +17,7 @@ import { track } from "@/lib/track";
 const KEY = "upn-quiz-toast"; // "seen" while waiting for a decision, "done" once handled
 const QUIZ_KEY = "upn-quiz-v1";
 const DELAY_MS = 20_000;
-const SKIP = [/^\/quiz/, /^\/store/, /^\/free/, /^\/admin/, /^\/download/, /^\/get/, /^\/unsubscribe/, /^\/requests/, /^\/api/, /^\/ask/];
+const SKIP = [/^\/quiz/, /^\/store/, /^\/free/, /^\/admin/, /^\/download/, /^\/get/, /^\/unsubscribe/, /^\/requests/, /^\/api/, /^\/ask/, /^\/interview-practice/];
 
 function read(key: string): string | null {
   try {
