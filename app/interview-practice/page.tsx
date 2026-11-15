@@ -49,7 +49,9 @@ function BoardPreview() {
       </div>
       <div className="relative z-10 -mt-3 grid grid-cols-5 gap-2 rounded-[8px] bg-gradient-to-b from-[#7d5735] via-[#5f4026] to-[#3f2a18] px-1 pb-2 pt-2.5 sm:-mt-4 sm:gap-3 sm:rounded-[12px] sm:px-2 sm:pb-3 sm:pt-3.5">
         {SEATS.map(({ member, title }) => (
-          <span key={member} className={`mx-auto w-[92%] truncate rounded-[3px] bg-gradient-to-b from-[#efe0ad] to-[#b9995a] px-1 py-0.5 text-center text-[7px] font-bold uppercase tracking-[0.08em] text-[#2b2210] shadow-[0_2px_0_#6b5629] sm:text-[10px] ${member === 0 ? "outline outline-2 outline-[#FFE45C]" : ""}`}>{title}</span>
+          <span key={member} className={`mx-auto w-[92%] truncate rounded-[3px] bg-gradient-to-b from-[#efe0ad] to-[#b9995a] px-1 py-0.5 text-center text-[7px] font-bold uppercase tracking-[0.08em] text-[#2b2210] shadow-[0_2px_0_#6b5629] sm:text-[10px] ${member === 0 ? "outline outline-2 outline-[#FFE45C]" : ""}`}>
+            {member === 0 ? <><span className="sm:hidden">Chair</span><span className="hidden sm:inline">{title}</span></> : title}
+          </span>
         ))}
       </div>
       <figcaption className="mt-5 rounded-[14px] bg-black/40 px-4 py-3 text-center text-[14px] leading-[1.5] text-white sm:text-[16px]">
