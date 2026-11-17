@@ -10,11 +10,11 @@ const card = "rounded-[24px] bg-white shadow-[0_0_0_1px_var(--line-2),0_1px_2px_
 export const metadata: Metadata = {
   title: "Current Affairs for UPSC 2026 – Free Monthly & Yearly Compilations",
   description:
-    "Free current affairs for UPSC preparation 2026. Monthly editions with 60 topics across 12 sections, daily quizzes, AI-powered reading, and downloadable PDFs. Yearly compilation covering 2025 events for UPSC Prelims, Mains & Interview.",
+    "Free current affairs for UPSC preparation 2026. Monthly editions with 60 topics across 12 sections, daily quizzes, an AI mentor that explains any topic, and downloadable PDFs. Yearly compilation covering 2025 events for UPSC Prelims, Mains & Interview.",
   openGraph: {
     title: "Current Affairs for UPSC – Free Monthly & Yearly Compilations",
     description:
-      "Free current affairs for UPSC preparation. Monthly editions with 60 topics, daily quizzes, and AI-powered reading. Yearly compilation covering all of 2025. Downloadable PDFs included.",
+      "Free current affairs for UPSC preparation. Monthly editions with 60 topics, daily quizzes, and an AI mentor that explains any topic. Yearly compilation covering all of 2025. Downloadable PDFs included.",
   },
   alternates: {
     canonical: "https://upscprepnotes.in/current-affairs",
@@ -38,7 +38,7 @@ const faqSchema = {
       name: "Is the current affairs content free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. We also offer an AI-powered reading experience and daily quiz for every edition.",
+        text: "Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. Every edition also has a daily quiz, and our AI mentor can explain any topic.",
       },
     },
     {
@@ -87,9 +87,8 @@ export default async function CurrentAffairsHub() {
           {/* Hero */}
           <header className="max-w-[48rem]">
             <h1 className="t-display text-h1">Current Affairs for UPSC — Free Monthly & Yearly Compilations</h1>
-            <p className="mt-2 text-s font-bold text-[var(--muted)]">Current Affairs</p>
             <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
-              Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers 12 UPSC-relevant sections with 60 topics, daily quizzes, AI-powered explanations, and downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
+              Free monthly and yearly current affairs compilations for UPSC preparation. Every edition covers 12 UPSC-relevant sections with 60 topics, daily quizzes, an AI mentor that explains any topic, and downloadable PDFs. Updated regularly with the latest events for Prelims, Mains & Interview.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/current-affairs/july-2026" className="btn btn-blue">
@@ -107,11 +106,13 @@ export default async function CurrentAffairsHub() {
               const labels: string[] = [];
               if (i === 0) labels.push("Latest");
               labels.push(`${data.sections.length} sections · ${data.sections.reduce((a, sec) => a + sec.items.length, 0)} topics`);
-              labels.push("with quiz & AI");
               return (
                 <Link key={slug} href={`/current-affairs/${slug}`} className={`${card} group p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
                   <div className="flex items-center gap-3">
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[var(--ink)] text-m font-bold text-white">{data.month[0]}</span>
+                    <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-[14px] bg-[var(--canvas)] leading-none shadow-[0_0_0_1px_var(--line-2)]">
+                      <span className="text-s font-bold">{data.month.slice(0, 3)}</span>
+                      <span className="mt-1 text-[11px] text-[var(--muted)]">{data.year}</span>
+                    </span>
                     <div className="min-w-0">
                       <p className="text-m font-bold group-hover:text-[var(--accent)]">{data.month} {data.year} Edition</p>
                       <p className="text-s text-[var(--muted)]">{labels.slice(0, 2).join(" · ")}</p>
@@ -124,13 +125,16 @@ export default async function CurrentAffairsHub() {
             })}
             <Link href="/current-affairs/2025" className={`${card} group p-6 transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}>
               <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[var(--hl)] text-m font-bold text-[var(--hl-ink)]">25</span>
+                <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-[14px] bg-[var(--hl)] leading-none text-[var(--hl-ink)]">
+                  <span className="text-s font-bold">2025</span>
+                  <span className="mt-1 text-[11px]">Year</span>
+                </span>
                 <div className="min-w-0">
                   <p className="text-m font-bold group-hover:text-[var(--accent)]">2025 Yearly Compilation</p>
                   <p className="text-s text-[var(--muted)]">12 months · ~850+ events · 11 sections per month</p>
                 </div>
               </div>
-              <p className="mt-4 text-s text-[var(--ink-2)]">All 12 months · Jan–Dec 2025 · Server-rendered · PDF download</p>
+              <p className="mt-4 text-s text-[var(--ink-2)]">All 12 months · Jan–Dec 2025 · PDF download</p>
             </Link>
           </section>
 
@@ -161,7 +165,7 @@ export default async function CurrentAffairsHub() {
                     That is why we built UPSCPrepNotes current affairs differently. Each monthly edition distills thousands of news items into 60 tightly curated topics across 12 UPSC-relevant sections — National News, International Relations, Economy, Environment, Science &amp; Technology, Government Schemes, Important Reports, Awards, Appointments, Obituaries, Sports, and Summits &amp; Important Days. Every topic includes key facts, data points, and context structured for quick revision. No fluff, no filler — just what you need for Prelims, Mains, and Interview.
                   </p>
                   <p>
-                    Beyond monthly compilations, we offer AI-powered explanations that break down complex events, interactive quizzes for self-assessment, and downloadable PDFs for offline study. Our 2025 yearly compilation brings together all 12 months in one place — over 850 events tagged by section for targeted revision. Whether you are preparing for the 2026 cycle or building your foundation for 2027, our current affairs coverage adapts to your pace.
+                    Beyond the monthly editions, you get interactive quizzes for self-assessment, downloadable PDFs for offline study, and an AI mentor you can ask to explain any event in plain words. Our 2025 yearly compilation brings together all 12 months in one place — over 850 events tagged by section for targeted revision. Whether you are preparing for the 2026 cycle or building your foundation for 2027, our current affairs coverage adapts to your pace.
                   </p>
                 </div>
               </section>
@@ -172,7 +176,7 @@ export default async function CurrentAffairsHub() {
                 <div className={`${card} mt-5 divide-y divide-[var(--line)]`}>
                   {[
                     { q: "What is covered in UPSCPrepNotes current affairs?", a: <>Each monthly edition covers 12 UPSC-relevant sections: National News, International Relations, Economy & Finance, Environment & Ecology, Science & Technology, Government Schemes, Important Reports, Awards & Honours, Appointments, Obituaries, Sports, and Summits & Important Days — with 5 topics per section (60 topics total). Yearly compilations cover all months with 400+ events.</> },
-                    { q: "Is the current affairs content free?", a: <>Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. We also offer an AI-powered reading experience and interactive quiz for every edition.</> },
+                    { q: "Is the current affairs content free?", a: <>Yes, all current affairs content on UPSCPrepNotes is completely free to read online. PDF downloads are also free. Every edition also has an interactive quiz, and our AI mentor can explain any topic.</> },
                     { q: "Can I download current affairs as PDF?", a: <>Yes, every monthly edition and the yearly compilation is available as a free downloadable PDF. Visit the <Link href="/current-affairs/download" className="font-bold text-[var(--accent)] hover:underline">Current Affairs PDF download page</Link> to get your copy.</> },
                   ].map((f, i) => (
                     <details key={f.q} open={i === 0} className="group px-6 py-5">

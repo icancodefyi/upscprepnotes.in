@@ -5,7 +5,7 @@ import { TopperModel } from "@/models/topper.model";
 import { getAllIndexedToppers, getTopperBySlug } from "@/services/topper.service";
 import { topperImageSrc } from "@/lib/utils";
 import { PRODUCTS } from "@/lib/store-products";
-import { displayName, fmt, freeCopiesOf, isComplete, isPlaceholder, paperStats, previewFor, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
+import { displayName, fmt, freeCopiesOf, isComplete, isPlaceholder, paperStats, subjectOf, totalOf, type LeanTopper } from "@/lib/topper-stats";
 import BrandShell from "@/components/brand/BrandShell";
 import { FreeDownloadLeadModel } from "@/models/free-download-lead.model";
 import { Header, Sidebar } from "./_components/Profile";
@@ -167,15 +167,17 @@ export default async function TopperPage({ params }: Props) {
   const optionalScore = (m.optional1 || 0) + (m.optional2 || 0);
 
   // Answer copy facts for the result card, sidebar and sticky bar.
-  const pdfs = freeCopiesOf(me);
-  const preview = previewFor(topper.slug);
   const comp = PRODUCTS.find((p) => p.slug === "answer-copies-compilation" && !p.comingSoon);
   const booklets = comp?.specs?.find((s) => s.label === "Answer Sheets")?.value;
   const compilation = comp
     ? { href: `/store/${comp.slug}`, title: comp.title, price: comp.price, image: comp.image ?? null, detail: `${booklets ? `${booklets} handwritten booklets` : comp.tagline}, one-time download` }
     : null;
-  const copyLabel = "Download free copy";
-  const copyNote = requests > 0 ? `${fmt(requests)} aspirants have requested this copy` : pdfs.length || preview ? "Free sample, sent by email" : "Free sample, sent by email";
+  // Honest label: only offer a download when we actually hold this topper's copy.
+  const hasCopy = !!(topper.freeAnswerCopyUrls?.length || topper.freeAnswerCopyUrl);
+  const copyLabel = hasCopy ? "Download free copy" : "Notify me when it\u2019s available";
+  const copyNote = hasCopy
+    ? requests > 0 ? `${fmt(requests)} aspirants have requested this copy` : "Free copy, sent by email"
+    : requests > 0 ? `${fmt(requests)} aspirants are waiting for it` : "We'll email you when we get it";
 
   const insights: string[] = topper.insights ?? [];
 
@@ -379,7 +381,7 @@ export default async function TopperPage({ params }: Props) {
               <AnswerCopyPreview topper={{ slug: topper.slug, firstName: topper.firstName, lastName: topper.lastName, rank: topper.rank, year: topper.year, optionalSubject: topper.optionalSubject, marks: { essay: m.essay, total: m.total } }} inCompilation={!!copyFor(fullName)} />
 
               {/* FREE ANSWER COPY */}
-              <TopperLeadCapture topperName={fullName} topperSlug={topper.slug} hasCopy={!!(topper.freeAnswerCopyUrls?.length || topper.freeAnswerCopyUrl)} />
+              <TopperLeadCapture topperName={fullName} topperSlug={topper.slug} hasCopy={hasCopy} />
 
               {/* INSIGHTS */}
               {insights.length > 0 && (

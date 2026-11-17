@@ -17,14 +17,13 @@ export default function InstitutePageClient({ institute, products }: { institute
 
         {/* Institute header */}
         <header className="mt-8 flex items-center gap-5">
-          <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-[20px] bg-white text-l font-bold shadow-[0_0_0_1px_var(--line-2)]">
-            {institute.logo.startsWith("/") || institute.logo.startsWith("http") ? (
-              // eslint-disable-next-line @next/next/no-img-element
+          {/* A real logo only; no made-up initials in a square. Without one, the name below is the mark. */}
+          {(institute.logo.startsWith("/") || institute.logo.startsWith("http")) && (
+            <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-[20px] bg-white shadow-[0_0_0_1px_var(--line-2)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={institute.logo} alt={institute.name} className="h-full w-full object-contain p-2" />
-            ) : (
-              institute.logo
-            )}
-          </div>
+            </div>
+          )}
           <div className="min-w-0">
             <h1 className="t-display text-h1">{institute.name}</h1>
             <p className="mt-2 text-m text-[var(--ink-2)]">{institute.description}</p>

@@ -404,10 +404,6 @@ export default function Nav({ products = [], toppers }: NavProps) {
               >
                 {t.href ? (
                   <Link href={t.href} aria-current={active ? "page" : undefined} className={cls}>
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[var(--accent)]" fill="currentColor" aria-hidden>
-                      <path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9z" />
-                      <path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" opacity=".7" />
-                    </svg>
                     {t.label}
                     {t.isNew && <NewPill />}
                     {underline}
@@ -530,12 +526,7 @@ export default function Nav({ products = [], toppers }: NavProps) {
             onClick={() => setMobile(false)}
             className="flex items-center justify-between rounded-[18px] bg-[var(--accent)] px-4 py-3.5 text-m font-bold text-white"
           >
-            <span className="flex items-center gap-2">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
-                <path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9z" />
-              </svg>
-              Ask the AI mentor
-            </span>
+            <span>Ask the AI mentor</span>
             <Arrow />
           </Link>
 

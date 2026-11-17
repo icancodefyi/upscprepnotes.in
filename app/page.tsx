@@ -270,7 +270,7 @@ export default async function HomePage() {
       "@context": "https://schema.org",
       "@type": "WebPage",
       name: "UPSCPrepNotes — Topper Strategies, Answer Copies & Marksheets",
-      description: "India's UPSC preparation intelligence platform. 280+ topper profiles, 50+ verified handwritten answer copies, marks breakdowns, optional subject analysis, and AI-powered preparation insights.",
+      description: "Real UPSC topper data: 280+ topper profiles, verified handwritten answer copies, marks breakdowns and optional subject analysis.",
       url: "https://upscprepnotes.in",
       publisher: { "@type": "Organization", name: "UPSCPrepNotes", url: "https://upscprepnotes.in" },
       breadcrumb: { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://upscprepnotes.in" }] },

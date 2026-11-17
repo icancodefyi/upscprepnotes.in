@@ -62,7 +62,6 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
           <header className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div className="max-w-[40rem]">
               <h1 className="t-display text-h1">Free UPSC Study Material</h1>
-              <p className="mt-2 text-s font-bold text-[var(--muted)]">Free Resource Library</p>
               <p className="mt-5 text-m leading-[1.6] text-[var(--ink-2)]">
                 Download free UPSC study material curated from top coaching institutes. Test series, notes, books, magazines — all in one place.
                 <span className="mt-1 block text-s text-[var(--muted)]">{`${totalResources.toLocaleString()} individual resources available`}</span>
@@ -102,7 +101,7 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {categories.map((cat) => {
+                {categories.filter((cat) => cat.count > 0).map((cat) => {
                   const tone = CATEGORY[cat.key] ?? CATEGORY.other;
                   return (
                     <Link
@@ -111,11 +110,10 @@ export default async function FreeMaterialsPage({ searchParams }: Props) {
                       data-track={`free-materials-category-${cat.key}`}
                       className="group rounded-[24px] bg-white p-6 shadow-[0_0_0_1px_var(--line-2)] transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5"
                     >
-                      <div className="flex items-center justify-between">
-                        <span aria-hidden className="h-8 w-11 rounded-[8px]" style={{ background: tone.tone, boxShadow: `inset 0 0 0 1px ${tone.ink}22` }} />
-                        <span className="text-s font-bold" style={{ color: tone.ink }}>{`${cat.count} items`}</span>
+                      <div className="flex items-baseline justify-between gap-3">
+                        <h2 className="text-m font-bold group-hover:text-[var(--accent)]">{cat.label}</h2>
+                        <span className="shrink-0 text-s font-bold" style={{ color: tone.ink }}>{`${cat.count} items`}</span>
                       </div>
-                      <h2 className="mt-4 text-m font-bold group-hover:text-[var(--accent)]">{cat.label}</h2>
                       <p className="mt-2 text-s leading-[1.6] text-[var(--ink-2)]">{cat.description}</p>
                     </Link>
                   );

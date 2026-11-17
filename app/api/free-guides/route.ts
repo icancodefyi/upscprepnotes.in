@@ -36,7 +36,6 @@ async function sendGuideEmail(name: string, email: string) {
     <body style="font-family:sans-serif;padding:24px;background:#f4f4f4;margin:0">
       <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:16px;padding:40px 32px">
         <div style="text-align:center;margin-bottom:24px">
-          <span style="font-size:40px">📚</span>
         </div>
         <h1 style="margin:0 0 8px;font-size:22px;color:#111;text-align:center">Thanks, ${name}!</h1>
         <p style="color:#666;font-size:14px;text-align:center;margin:0 0 28px;line-height:1.6">Here are your 3 free strategy guides to get started.</p>

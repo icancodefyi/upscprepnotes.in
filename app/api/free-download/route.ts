@@ -41,7 +41,7 @@ async function sendAvailableEmail(email: string, topperName: string, pdfUrls: st
         ${linksHtml}
         <div style="text-align:center;margin-bottom:28px;padding:12px;background:#e8f4fd;border-radius:40px">
           <a href="https://t.me/+2eV0YCTGdNcyNmFl" style="color:#0088cc;font-size:13px;font-weight:700;text-decoration:none">
-            📬 Join 100+ aspirants on Telegram for daily current affairs →
+            Join 100+ aspirants on Telegram for daily current affairs →
           </a>
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin:24px 0 0">You received this because you requested a free download on UPSCPrepNotes.in</p>

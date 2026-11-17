@@ -360,9 +360,9 @@ const SOURCE_TYPE_COLORS: Record<
     dot: "bg-[#1f3fd6]",
   },
   academic: {
-    bg: "bg-violet-50",
-    text: "text-violet-700",
-    dot: "bg-violet-500",
+    bg: "bg-[#fff6d6]",
+    text: "text-[#5C4A00]",
+    dot: "bg-[#e0b400]",
   },
   coaching: { bg: "bg-[#e9edff]", text: "text-[#1f3fd6]", dot: "bg-[#e9edff]" },
   reference: { bg: "bg-zinc-50", text: "text-zinc-600", dot: "bg-zinc-400" },

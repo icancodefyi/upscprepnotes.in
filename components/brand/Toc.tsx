@@ -48,7 +48,6 @@ export default function Toc({ items }: { items: { id: string; label: string }[] 
                 on ? "font-bold text-[var(--ink)]" : "text-[var(--ink-2)] hover:text-[var(--ink)]"
               }`}
             >
-              <span className={`t-meta tab w-5 shrink-0 ${on ? "text-[var(--accent)]" : ""}`}>{String(i + 1).padStart(2, "0")}</span>
               {/* one line per entry keeps the marker aligned; the full title shows on hover */}
               <span className="min-w-0 truncate" title={t.label}>{t.label}</span>
             </a>
