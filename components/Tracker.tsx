@@ -196,13 +196,21 @@ export default function Tracker() {
     };
 
     let errors = 0;
+    // Errors that are not ours: browser extensions, wallet apps and cross-origin scripts with no detail.
+    const NOISE = /^Script error\.?$|ethereum|web3|chrome-extension:|moz-extension:|safari(-web)?-extension:/i;
+    // Chrome's page translation rewrites text and is a known cause of React errors; flag those so they can be told apart.
+    const translated = () => /translated-(ltr|rtl)/.test(document.documentElement.className);
     const onError = (e: ErrorEvent) => {
+      const message = String(e.message || "");
+      if (NOISE.test(message) || NOISE.test(e.filename || "")) return;
       if (errors++ >= 5) return;
-      track("js_error", { message: String(e.message).slice(0, 200), source: `${e.filename?.split("/").pop() || ""}:${e.lineno || ""}` });
+      track("js_error", { message: message.slice(0, 200), source: `${e.filename?.split("/").pop() || ""}:${e.lineno || ""}`, translated: translated() });
     };
     const onRejection = (e: PromiseRejectionEvent) => {
+      const message = String((e.reason as Error)?.message || e.reason || "");
+      if (NOISE.test(message)) return;
       if (errors++ >= 5) return;
-      track("js_error", { message: String((e.reason as Error)?.message || e.reason).slice(0, 200), kind: "promise" });
+      track("js_error", { message: message.slice(0, 200), kind: "promise", translated: translated() });
     };
 
     let ticking = false;

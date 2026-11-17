@@ -30,7 +30,7 @@ Every user interaction we need for curation goes into one MongoDB collection, **
 | `checkout_redirect` | Leaving for the payment page | `items`, `amount`, `tracking` |
 | `checkout_started` | Server, order created | `ref`, `total`, `items` |
 | `purchase` | Server, payment succeeded | `ref`, `total`, `items`, `payment` |
-| `js_error` | Uncaught error (max 5 per page) | `message`, `source` / `kind` |
+| `js_error` | Uncaught error (max 5 per page). Skips noise that is not ours: browser extensions, wallet apps (`ethereum`) and empty cross-origin "Script error." | `message`, `source` / `kind`, `translated` (the page was machine-translated by the browser) |
 | `session_start` | First page of each browser session | `visit_number`, `returning`, `days_since_last`, `days_since_first`, `screen`, `langs`, `tz_offset`, `connection`, `dark`, `reduced_motion`, `standalone`, `cores`, `memory` |
 | `web_vitals` | Tab hidden after a hard page load | `lcp`, `cls`, `fcp`, `inp`, `ttfb` (ms; cls unitless), `nav_type` |
 | `form_start` / `form_abandon` | First field focused / left the page without submitting | `form`, `section` |
